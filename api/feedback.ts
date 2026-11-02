@@ -33,6 +33,7 @@ const ERR: Record<
     tooLong: string
     noKey: string
     gemini: string
+    quota: string
     authRequired: string
     authDown: string
     under18: string
@@ -46,6 +47,7 @@ const ERR: Record<
     tooLong: '文字太長',
     noKey: '伺服器未設定 GEMINI_API_KEY',
     gemini: 'Gemini 暫時未能回應，請稍後再試',
+    quota: 'AI 回饋暫時未能提供（配額）。請稍後再試。',
     authRequired: '請先登入 Google 帳戶先可以使用 AI 回饋。',
     authDown: '暫時未能核實登入狀態，請稍後再試。',
     under18: 'AI 回饋只開放畀已核實 18 歲或以上嘅用戶。寫作框架、檢查清單同術語助推仍然可以用。',
@@ -58,6 +60,7 @@ const ERR: Record<
     tooLong: '文字太长',
     noKey: '服务器未设定 GEMINI_API_KEY',
     gemini: 'Gemini 暂时未能回应，请稍后再试',
+    quota: 'AI 反馈暂时无法提供（配额）。请稍后再试。',
     authRequired: '请先登录 Google 账户才可以使用 AI 反馈。',
     authDown: '暂时未能核实登录状态，请稍后再试。',
     under18: 'AI 反馈只对已核实 18 岁或以上的用户开放。写作框架、检查清单和术语助推仍然可用。',
@@ -70,6 +73,7 @@ const ERR: Record<
     tooLong: 'Text too long',
     noKey: 'Server missing GEMINI_API_KEY',
     gemini: 'Gemini is temporarily unavailable — try again shortly',
+    quota: 'AI feedback is temporarily unavailable (quota). Please try later.',
     authRequired: 'Sign in with Google to use AI feedback.',
     authDown: 'Could not verify sign-in just now. Try again shortly.',
     under18: 'AI feedback is only available to verified users aged 18 or over. Writing frames, checklists and the vocab booster still work.',
@@ -235,7 +239,7 @@ async function readJsonBody(
  * GEMINI_MODEL, when set to a model id, is tried first; the list below is the fallback.
  */
 const GEMINI_MODEL = 'gemini-3.8-flash'
-const GEMINI_MODEL_FALLBACKS = ['gemini-2.5-flash', 'gemini-flash-latest'] as const
+const GEMINI_MODEL_FALLBACKS = ['gemini-flash-latest'] as const
 
 function isGeminiModelId(value: string): boolean {
   return /^[A-Za-z0-9._-]{1,80}$/.test(value) && !value.startsWith('AIza')
@@ -296,6 +300,14 @@ function upstreamErrorMessage(payload: unknown): string {
   return bits.join(': ') || 'upstream error'
 }
 
+function isGeminiQuota(httpStatus: number, payload: unknown): boolean {
+  if (httpStatus === 402 || httpStatus === 429) return true
+  if (!payload || typeof payload !== 'object') return false
+  const error = (payload as { error?: unknown }).error
+  if (!error || typeof error !== 'object') return false
+  return (error as { status?: unknown }).status === 'RESOURCE_EXHAUSTED'
+}
+
 function feedbackText(payload: unknown): string {
   if (!payload || typeof payload !== 'object') return ''
   const candidates = (payload as { candidates?: unknown }).candidates
@@ -316,7 +328,9 @@ function feedbackText(payload: unknown): string {
   return text.trim()
 }
 
-async function geminiFeedback(apiKey: string, system: string, userText: string): Promise<string | null> {
+type GeminiResult = { ok: true; feedback: string } | { ok: false; quota: boolean }
+
+async function geminiFeedback(apiKey: string, system: string, userText: string): Promise<GeminiResult> {
   const requestBody = {
     systemInstruction: { parts: [{ text: system }] },
     contents: [{ role: 'user', parts: [{ text: userText }] }],
@@ -353,16 +367,19 @@ async function geminiFeedback(apiKey: string, system: string, userText: string):
           parsed = null
         }
       }
-      logGeminiUpstream(model, res.status, upstreamErrorMessage(parsed))
+      const message = upstreamErrorMessage(parsed)
+      logGeminiUpstream(model, res.status, message)
+      // Quota is account-wide. Another model would get the same 402/429.
+      if (isGeminiQuota(res.status, parsed)) return { ok: false, quota: true }
       continue
     }
 
     const feedback = feedbackText(await res.json().catch(() => null))
-    if (feedback) return feedback
+    if (feedback) return { ok: true, feedback }
     logGeminiUpstream(model, res.status, 'empty candidates')
   }
 
-  return null
+  return { ok: false, quota: false }
 }
 
 async function handleFeedback(request: Request): Promise<Response> {
@@ -428,10 +445,10 @@ async function handleFeedback(request: Request): Promise<Response> {
     .filter(Boolean)
     .join('\n\n')
 
-  const feedback = await geminiFeedback(apiKey, system, userParts)
-  if (!feedback) return json(502, { error: err.gemini, code: 'gemini_upstream' })
-
-  return json(200, { feedback })
+  const result = await geminiFeedback(apiKey, system, userParts)
+  if (result.ok) return json(200, { feedback: result.feedback })
+  if (result.quota) return json(503, { error: err.quota, code: 'gemini_quota' })
+  return json(502, { error: err.gemini, code: 'gemini_upstream' })
 }
 
 export default {
