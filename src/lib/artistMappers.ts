@@ -64,6 +64,9 @@ export function mapDbArtist(row: DbArtist): Artist {
     style_keywords: splitTraits(row.formal_traits),
     bio_short: row.spld_summary || row.dse_concept || null,
     image_url: null,
+    dse_concept: row.dse_concept,
+    spld_summary: row.spld_summary,
+    culture_group: row.culture_group,
   }
 }
 
@@ -84,5 +87,7 @@ export function mapDbPair(row: DbArtistPair): ArtistPair {
     west_artist_id: row.west_artist_id,
     theme: row.theme,
     compare_prompt,
+    medium: row.medium,
+    comparison_matrix: row.comparison_matrix ?? null,
   }
 }
