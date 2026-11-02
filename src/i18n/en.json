@@ -438,5 +438,15 @@
   "fw.ai.birthYear.help": "Enter your birth year so we can check the 18+ AI rule. We store the year privately on your account and only use a can_use_ai flag in the app — we never show your birth year again or send it to Gemini.",
   "fw.ai.birthYear.privacy": "Birth year is private (account RLS). The UI only sees can_use_ai. Never exported.",
   "fw.ai.birthYear.err": "Could not save. Check the year and try again.",
-  "fw.ai.under18Saved": "Saved. AI feedback stays off until you are 18+."
+  "fw.ai.under18Saved": "Saved. AI feedback stays off until you are 18+.",
+  "sba.delete.note": "Delete note",
+  "sba.delete.photo": "Delete photo",
+  "sba.delete.confirmNote": "Delete this note? This cannot be undone.",
+  "sba.delete.confirmPhoto": "Delete this photo? This cannot be undone.",
+  "sba.delete.confirmNoteWithPhoto": "This note is linked to a photo. Delete the photo too?",
+  "sba.delete.keepPhoto": "Delete note only, keep photo",
+  "sba.delete.deleteBoth": "Delete note and photo",
+  "sba.delete.cancel": "Cancel",
+  "sba.delete.deleted": "Deleted",
+  "sba.delete.err": "Could not delete — try again shortly"
 }

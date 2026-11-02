@@ -438,5 +438,15 @@
   "fw.ai.birthYear.help": "請輸入出生年份，用嚟核對 18+ AI 規則。年份只會私密存喺你帳戶，介面只用 can_use_ai 旗標——之後唔會再顯示年份，亦唔會傳去 Gemini。",
   "fw.ai.birthYear.privacy": "出生年份屬私密資料（帳戶 RLS）。介面只見到 can_use_ai，唔會匯出。",
   "fw.ai.birthYear.err": "未能儲存，請檢查年份後再試。",
-  "fw.ai.under18Saved": "已儲存。未滿 18 歲前 AI 回饋會維持關閉。"
+  "fw.ai.under18Saved": "已儲存。未滿 18 歲前 AI 回饋會維持關閉。",
+  "sba.delete.note": "刪除筆記",
+  "sba.delete.photo": "刪除相片",
+  "sba.delete.confirmNote": "確定刪除呢條筆記？刪除之後唔可以還原。",
+  "sba.delete.confirmPhoto": "確定刪除呢張相片？刪除之後唔可以還原。",
+  "sba.delete.confirmNoteWithPhoto": "呢條筆記綁住相片。刪除筆記時要一齊刪相嗎？",
+  "sba.delete.keepPhoto": "只刪筆記，保留相片",
+  "sba.delete.deleteBoth": "筆記同相片一齊刪",
+  "sba.delete.cancel": "取消",
+  "sba.delete.deleted": "已刪除",
+  "sba.delete.err": "刪除失敗，請稍後再試"
 }

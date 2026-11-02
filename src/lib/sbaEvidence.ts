@@ -149,3 +149,54 @@ export async function savePrivateEvidence(
   if (error) throw error
   return withSignedUrls(data as PrivateRow[])
 }
+
+/* ---------- hard delete (MVP) ---------- */
+
+export type DeleteEvidenceMode = 'full' | 'note-only'
+
+/** Guest/local: remove note from localStorage; revoke session object URL if any. */
+export function deleteLocalEvidence(id: string, mode: DeleteEvidenceMode = 'full'): void {
+  try {
+    const existing = JSON.parse(localStorage.getItem(LOCAL_KEY) ?? '[]') as LocalNote[]
+    if (mode === 'note-only') {
+      // Local notes store note text only; clearing note means remove the local note row.
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(existing.filter((n) => n.id !== id)))
+    } else {
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(existing.filter((n) => n.id !== id)))
+    }
+  } catch {
+    /* ignore */
+  }
+}
+
+/**
+ * Signed-in hard delete (owner RLS).
+ * - full: delete DB row + storage object (if any)
+ * - note-only: clear note, keep photo/storage object
+ */
+export async function deletePrivateEvidence(
+  userId: string,
+  item: SbaEvidence,
+  mode: DeleteEvidenceMode = 'full',
+): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured')
+  if (mode === 'note-only') {
+    const { error } = await supabase
+      .from('sba_private_evidence')
+      .update({ note: null })
+      .eq('id', item.id)
+      .eq('user_id', userId)
+    if (error) throw error
+    return
+  }
+  if (item.file_path) {
+    const { error: storageErr } = await supabase.storage.from(SBA_PRIVATE_BUCKET).remove([item.file_path])
+    if (storageErr) throw storageErr
+  }
+  const { error } = await supabase
+    .from('sba_private_evidence')
+    .delete()
+    .eq('id', item.id)
+    .eq('user_id', userId)
+  if (error) throw error
+}

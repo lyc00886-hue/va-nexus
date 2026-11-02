@@ -13,6 +13,7 @@ import {
   LogIn,
   ShieldCheck,
   Unlock,
+  Trash2,
   UploadCloud,
   X,
 } from 'lucide-react'
@@ -23,11 +24,14 @@ import { XP } from '../game/rewards'
 import { contentJson } from '../i18n/content'
 import { signInWithGoogle, useAuth } from '../lib/auth'
 import {
+  deleteLocalEvidence,
+  deletePrivateEvidence,
   fetchPrivateEvidence,
   loadLocalNotes,
   savePrivateEvidence,
   saveLocal,
   validateImage,
+  type DeleteEvidenceMode,
   type SbaEvidence,
 } from '../lib/sbaEvidence'
 import { isSupabaseConfigured } from '../lib/supabase'
@@ -114,6 +118,15 @@ export function SbaQuest() {
   const [pending, setPending] = useState<{ file: File; preview: string }[]>([])
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState<{ kind: 'error' | 'ok'; text: string } | null>(null)
+  type DeleteConfirm =
+    | null
+    | {
+        item: SbaEvidence
+        kind: 'note' | 'photo' | 'note-with-photo'
+      }
+  const [deleteConfirm, setDeleteConfirm] = useState<DeleteConfirm>(null)
+  const [deleteBusy, setDeleteBusy] = useState(false)
+
   const [guideOpen, setGuideOpen] = useState(true)
   const [guideChecks, setGuideChecks] = useState<Record<string, string[]>>(loadGuideChecks)
   const [copiedFrame, setCopiedFrame] = useState<string | null>(null)
@@ -219,6 +232,61 @@ export function SbaQuest() {
     URL.revokeObjectURL(preview)
     setPending((p) => p.filter((x) => x.preview !== preview))
   }
+
+  async function applyDelete(mode: DeleteEvidenceMode) {
+    if (!deleteConfirm) return
+    const item = deleteConfirm.item
+    setDeleteBusy(true)
+    try {
+      const isLocal = Boolean(item.local) || source === 'guest' || source === 'local' || !userId
+      if (isLocal) {
+        if (item.url && mode === 'full') {
+          try {
+            URL.revokeObjectURL(item.url)
+          } catch {
+            /* ignore */
+          }
+        }
+        deleteLocalEvidence(item.id, mode)
+        setEvidence((list) => {
+          if (mode === 'note-only') {
+            return list
+              .map((e) => (e.id === item.id ? { ...e, note: null } : e))
+              .filter((e) => e.note || e.url || e.file_path)
+          }
+          return list.filter((e) => e.id !== item.id)
+        })
+      } else {
+        await deletePrivateEvidence(userId!, item, mode)
+        setEvidence((list) => {
+          if (mode === 'note-only') {
+            return list.map((e) => (e.id === item.id ? { ...e, note: null } : e))
+          }
+          return list.filter((e) => e.id !== item.id)
+        })
+      }
+      setMessage({ kind: 'ok', text: t('sba.delete.deleted') })
+      setDeleteConfirm(null)
+    } catch (e) {
+      console.warn('[sba] delete failed', e)
+      setMessage({ kind: 'error', text: t('sba.delete.err') })
+    } finally {
+      setDeleteBusy(false)
+    }
+  }
+
+  function requestDeleteNote(item: SbaEvidence) {
+    const hasPhoto = Boolean(item.file_path || item.url)
+    setDeleteConfirm({
+      item,
+      kind: hasPhoto && item.note ? 'note-with-photo' : 'note',
+    })
+  }
+
+  function requestDeletePhoto(item: SbaEvidence) {
+    setDeleteConfirm({ item, kind: 'photo' })
+  }
+
 
   async function onSave() {
     const files = canUpload || source === 'local' ? pending.map((p) => p.file) : []
@@ -619,7 +687,7 @@ export function SbaQuest() {
                 <h4 className="text-sm font-semibold text-teal-900">{t('sba.saved', { n: items.length })}</h4>
                 <ul className="mt-2 flex flex-wrap gap-3">
                   {items.map((e) => (
-                    <li key={e.id} className="w-32 overflow-hidden rounded-xl border border-teal-100 bg-teal-50">
+                    <li key={e.id} className="relative w-32 overflow-hidden rounded-xl border border-teal-100 bg-teal-50">
                       {e.url ? (
                         <a href={e.url} target="_blank" rel="noreferrer">
                           <img
@@ -636,6 +704,28 @@ export function SbaQuest() {
                       )}
                       {e.note && <p className="line-clamp-3 px-2 py-1 text-[11px] text-teal-900">{e.note}</p>}
                       {e.local && <p className="px-2 pb-1 text-[10px] text-amber-700">{t('sba.localCache')}</p>}
+                      <div className="flex flex-wrap gap-1 px-1.5 pb-1.5">
+                        {e.note ? (
+                          <button
+                            type="button"
+                            onClick={() => requestDeleteNote(e)}
+                            className="inline-flex items-center gap-0.5 rounded-md border border-rose-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
+                          >
+                            <Trash2 className="h-3 w-3" aria-hidden />
+                            {t('sba.delete.note')}
+                          </button>
+                        ) : null}
+                        {e.file_path || e.url ? (
+                          <button
+                            type="button"
+                            onClick={() => requestDeletePhoto(e)}
+                            className="inline-flex items-center gap-0.5 rounded-md border border-rose-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
+                          >
+                            <Trash2 className="h-3 w-3" aria-hidden />
+                            {t('sba.delete.photo')}
+                          </button>
+                        ) : null}
+                      </div>
                     </li>
                   ))}
                 </ul>
@@ -644,6 +734,75 @@ export function SbaQuest() {
           </section>
         )
       })}
+
+      {deleteConfirm && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="sba-delete-title"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+          onClick={() => !deleteBusy && setDeleteConfirm(null)}
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl bg-white p-4 shadow-xl"
+            onClick={(ev) => ev.stopPropagation()}
+          >
+            <h3 id="sba-delete-title" className="text-sm font-bold text-teal-950">
+              {deleteConfirm.kind === 'photo'
+                ? t('sba.delete.photo')
+                : t('sba.delete.note')}
+            </h3>
+            <p className="mt-2 text-sm text-teal-900">
+              {deleteConfirm.kind === 'photo'
+                ? t('sba.delete.confirmPhoto')
+                : deleteConfirm.kind === 'note-with-photo'
+                  ? t('sba.delete.confirmNoteWithPhoto')
+                  : t('sba.delete.confirmNote')}
+            </p>
+            <div className="mt-4 flex flex-col gap-2">
+              {deleteConfirm.kind === 'note-with-photo' ? (
+                <>
+                  <button
+                    type="button"
+                    disabled={deleteBusy}
+                    onClick={() => void applyDelete('note-only')}
+                    className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm font-semibold text-teal-900 hover:bg-teal-50 disabled:opacity-50"
+                  >
+                    {t('sba.delete.keepPhoto')}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={deleteBusy}
+                    onClick={() => void applyDelete('full')}
+                    className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-rose-700 px-3 py-2 text-sm font-semibold text-white hover:bg-rose-800 disabled:opacity-50"
+                  >
+                    {deleteBusy ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
+                    {t('sba.delete.deleteBoth')}
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="button"
+                  disabled={deleteBusy}
+                  onClick={() => void applyDelete('full')}
+                  className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-rose-700 px-3 py-2 text-sm font-semibold text-white hover:bg-rose-800 disabled:opacity-50"
+                >
+                  {deleteBusy ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden /> : null}
+                  {deleteConfirm.kind === 'photo' ? t('sba.delete.photo') : t('sba.delete.note')}
+                </button>
+              )}
+              <button
+                type="button"
+                disabled={deleteBusy}
+                onClick={() => setDeleteConfirm(null)}
+                className="rounded-xl px-3 py-2 text-sm font-medium text-teal-800 hover:bg-teal-50 disabled:opacity-50"
+              >
+                {t('sba.delete.cancel')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

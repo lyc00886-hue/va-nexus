@@ -152,5 +152,15 @@
   "fw.ai.birthYear.help": "请输入出生年份，用于核对 18+ AI 规则。年份只会私密存在你的账户，界面只用 can_use_ai 旗标——之后不会再显示年份，也不会传到 Gemini。",
   "fw.ai.birthYear.privacy": "出生年份属私密资料（账户 RLS）。界面只看到 can_use_ai，不会导出。",
   "fw.ai.birthYear.err": "未能保存，请检查年份后再试。",
-  "fw.ai.under18Saved": "已保存。未满 18 岁前 AI 反馈会保持关闭。"
+  "fw.ai.under18Saved": "已保存。未满 18 岁前 AI 反馈会保持关闭。",
+  "sba.delete.note": "删除笔记",
+  "sba.delete.photo": "删除照片",
+  "sba.delete.confirmNote": "确定删除这条笔记？删除后无法还原。",
+  "sba.delete.confirmPhoto": "确定删除这张照片？删除后无法还原。",
+  "sba.delete.confirmNoteWithPhoto": "这条笔记绑着照片。删除笔记时要一起删照片吗？",
+  "sba.delete.keepPhoto": "只删笔记，保留照片",
+  "sba.delete.deleteBoth": "笔记和照片一起删",
+  "sba.delete.cancel": "取消",
+  "sba.delete.deleted": "已删除",
+  "sba.delete.err": "删除失败，请稍后再试"
 }
