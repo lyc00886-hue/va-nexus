@@ -398,6 +398,278 @@
           "id": "rf2",
           "text": "每件作品反思幾乎一樣、或者最後先補一次＝進程空洞。"
         }
+      ],
+      "fields": [
+        {
+          "id": "self-rwb-1",
+          "is_new": false,
+          "step": 6,
+          "label": "自評：主題或意念的探索及發展",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-rwb-2",
+          "is_new": false,
+          "step": 6,
+          "label": "自評：藝術品的詮釋及其與創作的運用",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-rwb-3",
+          "is_new": false,
+          "step": 6,
+          "label": "自評：媒介及技巧的實驗",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-rwb-4",
+          "is_new": true,
+          "step": 6,
+          "label": "自評：反思及學習進程",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-1",
+          "is_new": true,
+          "step": 6,
+          "label": "自評：媒介、技巧及技法╱寫作技巧",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-2",
+          "is_new": true,
+          "step": 6,
+          "label": "自評：視覺表達形式╱分析",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-3",
+          "is_new": true,
+          "step": 6,
+          "label": "自評：與情境的關係",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-4",
+          "is_new": true,
+          "step": 6,
+          "label": "自評：創意及想像力╱批判思維",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-aw",
+          "is_new": false,
+          "step": 6,
+          "label": "自評：作品的整體表現及主題的傳意",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-6",
+          "is_new": true,
+          "step": 6,
+          "label": "自評：四件作品的改進",
+          "type": "select",
+          "placeholder": "按評核準則自評",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "未達標"
+            },
+            {
+              "value": "2",
+              "label": "基本"
+            },
+            {
+              "value": "3",
+              "label": "良好"
+            },
+            {
+              "value": "4",
+              "label": "優秀"
+            }
+          ]
+        }
       ]
     }
   ]

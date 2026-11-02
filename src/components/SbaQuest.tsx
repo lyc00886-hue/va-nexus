@@ -36,12 +36,23 @@ import {
 } from '../lib/sbaEvidence'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { t, type MessageKey } from '../i18n'
+import { setSelfSelect, useSelfAssessment } from '../lib/selfAssessment'
+import { SelfLevelSelect } from './SelfLevelSelect'
 
 
 const STEP_IDS = [1, 2, 3, 4, 5, 6] as const
 
 type SbaGuideCheckItem = { id: string; text: string }
 type SbaGuideRedFlag = { id: string; text: string }
+
+type SbaGuideField = {
+  id: string
+  label: string
+  type: string
+  placeholder?: string
+  required?: boolean
+  options?: { value: string; label: string }[]
+}
 
 type SbaGuideStep = {
   id: number
@@ -52,6 +63,8 @@ type SbaGuideStep = {
   sentenceFrames: string[]
   tip?: string
   redFlagReminders?: SbaGuideRedFlag[]
+  /** Step 6 self-assessment selects. Checklist items are not fields. */
+  fields?: SbaGuideField[]
 }
 
 type SbaGuideFile = {
@@ -109,6 +122,7 @@ export function SbaQuest() {
   const { cardPadding, focusTunnel, settings } = useSen()
   const { awardOnce } = useGame()
   const { ready, user } = useAuth()
+  const { selects } = useSelfAssessment()
   const userId = user?.id ?? null
   const STEPS = useMemo(getSteps, [])
   const [evidence, setEvidence] = useState<SbaEvidence[]>([])
@@ -590,6 +604,30 @@ export function SbaQuest() {
                     </div>
                   )}
                 </section>
+              )
+            })()}
+
+            {(() => {
+              const { guide } = getGuideForStep(s.id)
+              const fields = (guide?.fields ?? []).filter(
+                (field) => field.type === 'select' && field.id !== 'self-aw-5' && field.options && field.options.length > 0,
+              )
+              if (fields.length === 0) return null
+              return (
+                <fieldset className="mt-4 space-y-3">
+                  <legend className="text-sm font-semibold text-teal-950">{s.title}</legend>
+                  {fields.map((field) => (
+                    <SelfLevelSelect
+                      key={field.id}
+                      fieldId={field.id}
+                      label={field.label}
+                      placeholder={field.placeholder ?? ''}
+                      options={field.options ?? []}
+                      value={selects[field.id] ?? ''}
+                      onChange={(value) => setSelfSelect(field.id, value)}
+                    />
+                  ))}
+                </fieldset>
               )
             })()}
 

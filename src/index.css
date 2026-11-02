@@ -116,6 +116,11 @@ html {
   .tab-panel-enter {
     animation: none;
   }
+  .ability-chart,
+  .ability-chart * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 /* Library browser: sticky search chip while the list is collapsed.

@@ -398,6 +398,278 @@
           "id": "rf2",
           "text": "Nearly identical reflections on every piece, or one catch-up reflection at the end, look like an empty process."
         }
+      ],
+      "fields": [
+        {
+          "id": "self-rwb-1",
+          "is_new": false,
+          "step": 6,
+          "label": "Self-assessment: exploration and development of theme or ideas",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-rwb-2",
+          "is_new": false,
+          "step": 6,
+          "label": "Self-assessment: interpretation of artworks and articulation with artmaking",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-rwb-3",
+          "is_new": false,
+          "step": 6,
+          "label": "Self-assessment: experimentation of media and skills",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-rwb-4",
+          "is_new": true,
+          "step": 6,
+          "label": "Self-assessment: reflection and progression in learning",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-1",
+          "is_new": true,
+          "step": 6,
+          "label": "Self-assessment: media, skills and techniques / writing skills",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-2",
+          "is_new": true,
+          "step": 6,
+          "label": "Self-assessment: visual presentation / analysis",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-3",
+          "is_new": true,
+          "step": 6,
+          "label": "Self-assessment: relationship with context",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-4",
+          "is_new": true,
+          "step": 6,
+          "label": "Self-assessment: creativity and imagination / critical thinking skills",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-aw",
+          "is_new": false,
+          "step": 6,
+          "label": "Self-assessment: overall presentation and communication of theme",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        },
+        {
+          "id": "self-aw-6",
+          "is_new": true,
+          "step": 6,
+          "label": "Self-assessment: progression of all 4 pieces of work",
+          "type": "select",
+          "placeholder": "Rate yourself against the criteria",
+          "required": true,
+          "options": [
+            {
+              "value": "1",
+              "label": "Not yet"
+            },
+            {
+              "value": "2",
+              "label": "Basic"
+            },
+            {
+              "value": "3",
+              "label": "Good"
+            },
+            {
+              "value": "4",
+              "label": "Excellent"
+            }
+          ]
+        }
       ]
     }
   ]

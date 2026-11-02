@@ -1,0 +1,1079 @@
+{
+  "version": 1,
+  "id": "ability-chart",
+  "locale": "en",
+  "source": "sba-guide.en.json (final, 2026-11-03)",
+  "meta": {
+    "title": "My Ability Chart",
+    "subtitle": "See your own progress: self-assess against the HKEAA criteria. No ranking, no comparison with classmates.",
+    "disclaimer": "For self-review only; this is not an official SBA mark. Official marks are given by your subject teacher according to the HKEAA criteria. AI does not mark your work.",
+    "privacy": "Data stays on the student's own device / account; the chart never shows any special educational needs (SEN) label or diagnosis.",
+    "no_ranking": true,
+    "no_peer_comparison": true,
+    "no_sen_labels": true,
+    "ai_marks": false
+  },
+  "scale": {
+    "min": 1,
+    "max": 4,
+    "empty_label": "Not rated yet",
+    "levels": [
+      {
+        "value": 1,
+        "level": "not-yet",
+        "label": "Not yet",
+        "hkeaa_band": "0–1"
+      },
+      {
+        "value": 2,
+        "level": "basic",
+        "label": "Basic",
+        "hkeaa_band": "2"
+      },
+      {
+        "value": 3,
+        "level": "good",
+        "label": "Good",
+        "hkeaa_band": "3–4"
+      },
+      {
+        "value": 4,
+        "level": "excellent",
+        "label": "Excellent",
+        "hkeaa_band": "5"
+      }
+    ]
+  },
+  "scoring": {
+    "source": "self_assessment_select_only",
+    "rule": "Values come only from the four-level self-assessment the student selects for this criterion in Step 6 \"Reflection and Evaluation\" (Not yet=1, Basic=2, Good=3, Excellent=4). An unanswered criterion is not plotted (shows \"Not rated yet\") and is not treated as 0. Checklists, text, photo counts etc. never count toward the value.",
+    "rubric_note": "Level descriptors are taken from the teacher guidance of the matching guide step, for reference only. The four levels roughly match HKEAA bands 0–5; official marks follow the HKEAA marking guidelines.",
+    "counts_toward_score": [
+      "self_field"
+    ],
+    "never_counts": [
+      "checklist",
+      "text_fields",
+      "photo_count",
+      "step_progress",
+      "ai_output"
+    ]
+  },
+  "charts": [
+    {
+      "id": "research_workbook",
+      "type": "radar",
+      "component": "rwb",
+      "title": "Research Workbook (20%)",
+      "axes": [
+        {
+          "id": "rwb-1",
+          "label": "Exploration and development of theme or ideas",
+          "official_criterion": "Exploration and development of theme or ideas",
+          "self_field": {
+            "id": "self-rwb-1",
+            "is_new": false,
+            "step": 6,
+            "label": "Self-assessment: exploration and development of theme or ideas",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "Theme is vague or unrelated to the student; materials come from a single source or are irrelevant."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "A theme and a few keywords; limited sources, and the four-piece plan is incomplete."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Theme has a personal angle; uses some to a variety of sources, with an early sense of progression across four pieces."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Theme works on personal and social / cultural levels; diverse sources are already being transformed into original ideas, with a clear four-part progression."
+            }
+          ],
+          "rubric_source": {
+            "step": 1,
+            "step_title": "Theme Exploration",
+            "path": "steps[0].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c1",
+                "text": "The theme has a clear development across four pieces (personal → people around me → society / culture → reflection / way forward, or another logical progression)."
+              },
+              {
+                "id": "c2",
+                "text": "There is primary research (own photos, sketches, survey, interview, personal experience) and secondary research (books, news, websites), all acknowledged."
+              }
+            ]
+          }
+        },
+        {
+          "id": "rwb-2",
+          "label": "Interpretation of artworks and its articulation with artmaking / critical studies",
+          "official_criterion": "Interpretation of artworks and its articulation with artmaking / critical studies",
+          "self_field": {
+            "id": "self-rwb-2",
+            "is_new": false,
+            "step": 6,
+            "label": "Self-assessment: interpretation of artworks and articulation with artmaking",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "Only one or two isolated facts or a copied biography; no personal view."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "Limited understanding of context or formal qualities; personal view without support; limited application to own work."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Recognises one or two contexts and some formal qualities; views have some to adequate support; relates the knowledge to own work."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Recognises multiple contexts and formal qualities; informed or insightful views; translates the knowledge into own work."
+            }
+          ],
+          "rubric_source": {
+            "step": 2,
+            "step_title": "Reference Research",
+            "path": "steps[1].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c3",
+                "text": "Artists / artworks from more than one culture are studied, each with a Feldman four-stage analysis and a hands-on \"try by myself\" study."
+              },
+              {
+                "id": "c7",
+                "text": "The artist statement links every idea to a specific visual element and mentions how reference artists influenced the work."
+              }
+            ]
+          }
+        },
+        {
+          "id": "rwb-3",
+          "label": "Experimentation of media and skills, and exploration of ways of expression",
+          "official_criterion": "Experimentation of media and skills, and exploration of ways of expression",
+          "self_field": {
+            "id": "self-rwb-3",
+            "is_new": false,
+            "step": 6,
+            "label": "Self-assessment: experimentation of media and skills",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "No tests, or tests unrelated to the theme."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "Minimal to limited tests; results recorded without reasons or comparison."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Some to abundant tests, including failures, with reasons for choices."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Abundant, thorough tests that change variables systematically, turn failures into solutions and explore several ways of expression."
+            }
+          ],
+          "rubric_source": {
+            "step": 4,
+            "step_title": "Media Experiments",
+            "path": "steps[3].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c5",
+                "text": "Each piece has at least three media / technique tests, including at least one failed or unsatisfactory result."
+              }
+            ]
+          }
+        },
+        {
+          "id": "rwb-4",
+          "label": "Reflection and progression in learning",
+          "official_criterion": "Reflection and progression in learning",
+          "self_field": {
+            "id": "self-rwb-4",
+            "is_new": true,
+            "step": 6,
+            "label": "Self-assessment: reflection and progression in learning",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "No or rare reflection; no visible progression."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "Barely reflects; vague content (e.g. \"I'm satisfied\"); limited progression."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Occasionally to frequently reflects from some or various perspectives; some to adequate progression."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Continuously and thoroughly reflects from various perspectives with specific evidence; substantial progression across four pieces."
+            }
+          ],
+          "rubric_source": {
+            "step": 6,
+            "step_title": "Reflection and Evaluation",
+            "path": "steps[5].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c8",
+                "text": "Each finished piece has a reflection and explains how the next piece will improve."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "artwork",
+      "type": "radar",
+      "component": "artwork",
+      "title": "Artwork / Critical Studies (30%)",
+      "axes": [
+        {
+          "id": "aw-1",
+          "label": "Media, skills and techniques / writing skills",
+          "official_criterion": "Media, skills and techniques / writing skills",
+          "self_field": {
+            "id": "self-aw-1",
+            "is_new": true,
+            "step": 6,
+            "label": "Self-assessment: media, skills and techniques / writing skills",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "Minimal skill; theme not communicated; no process evidence."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "Limited skill; limited use of visual elements; incomplete communication of theme; little process evidence."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Average to proficient skill; appropriate to effective use of visual elements; theme clear and complete; adequate process records."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Excellent skill; exceptional use of visual elements and organisation; coherent, complete and innovative communication; thorough process records."
+            }
+          ],
+          "rubric_source": {
+            "step": 5,
+            "step_title": "Making the Artwork",
+            "path": "steps[4].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c5",
+                "text": "Each piece has at least three media / technique tests, including at least one failed or unsatisfactory result."
+              },
+              {
+                "id": "c6",
+                "text": "The making process has several photos and records \"problem → solution\"."
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-2",
+          "label": "Visual presentation / analysis",
+          "official_criterion": "Visual presentation / analysis",
+          "self_field": {
+            "id": "self-aw-2",
+            "is_new": true,
+            "step": 6,
+            "label": "Self-assessment: visual presentation / analysis",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "No sketches or only a final drawing; ideas imitated or unrelated to the theme."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "One or two options with incomplete ideas; materials used randomly, reasons only \"looks good / bad\"."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Three options; materials selected and organised; sensible reasons for choices; ideas are satisfactory to personal."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Varied, creative options; research continuously integrated into original ideas; critical choices with clear justification."
+            }
+          ],
+          "rubric_source": {
+            "step": 3,
+            "step_title": "Idea Development",
+            "path": "steps[2].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c4",
+                "text": "Each piece has at least three composition options; rejected ones are marked × with reasons."
+              },
+              {
+                "id": "c10",
+                "text": "3D works have clear photographs; animation / multimedia has a 2D storyboard."
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-3",
+          "label": "Relationship with context",
+          "official_criterion": "Relationship with context",
+          "self_field": {
+            "id": "self-aw-3",
+            "is_new": true,
+            "step": 6,
+            "label": "Self-assessment: relationship with context",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "Only one or two isolated facts or a copied biography; no personal view."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "Limited understanding of context or formal qualities; personal view without support; limited application to own work."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Recognises one or two contexts and some formal qualities; views have some to adequate support; relates the knowledge to own work."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Recognises multiple contexts and formal qualities; informed or insightful views; translates the knowledge into own work."
+            }
+          ],
+          "rubric_source": {
+            "step": 2,
+            "step_title": "Reference Research",
+            "path": "steps[1].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c2",
+                "text": "There is primary research (own photos, sketches, survey, interview, personal experience) and secondary research (books, news, websites), all acknowledged."
+              },
+              {
+                "id": "c3",
+                "text": "Artists / artworks from more than one culture are studied, each with a Feldman four-stage analysis and a hands-on \"try by myself\" study."
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-4",
+          "label": "Creativity and imagination / critical thinking skills",
+          "official_criterion": "Creativity and imagination / critical thinking skills",
+          "self_field": {
+            "id": "self-aw-4",
+            "is_new": true,
+            "step": 6,
+            "label": "Self-assessment: creativity and imagination / critical thinking skills",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "No sketches or only a final drawing; ideas imitated or unrelated to the theme."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "One or two options with incomplete ideas; materials used randomly, reasons only \"looks good / bad\"."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Three options; materials selected and organised; sensible reasons for choices; ideas are satisfactory to personal."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Varied, creative options; research continuously integrated into original ideas; critical choices with clear justification."
+            }
+          ],
+          "rubric_source": {
+            "step": 3,
+            "step_title": "Idea Development",
+            "path": "steps[2].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c4",
+                "text": "Each piece has at least three composition options; rejected ones are marked × with reasons."
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-5",
+          "label": "Overall presentation and communication of theme",
+          "official_criterion": "Overall presentation and communication of theme",
+          "self_field": {
+            "id": "self-aw",
+            "is_new": false,
+            "step": 6,
+            "label": "Self-assessment: overall presentation and communication of theme",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "Minimal skill; theme not communicated; no process evidence."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "Limited skill; limited use of visual elements; incomplete communication of theme; little process evidence."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Average to proficient skill; appropriate to effective use of visual elements; theme clear and complete; adequate process records."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Excellent skill; exceptional use of visual elements and organisation; coherent, complete and innovative communication; thorough process records."
+            }
+          ],
+          "rubric_source": {
+            "step": 5,
+            "step_title": "Making the Artwork",
+            "path": "steps[4].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c7",
+                "text": "The artist statement links every idea to a specific visual element and mentions how reference artists influenced the work."
+              },
+              {
+                "id": "c10",
+                "text": "3D works have clear photographs; animation / multimedia has a 2D storyboard."
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-6",
+          "label": "Progression of all 4 pieces of work",
+          "official_criterion": "Progression of all 4 pieces of work",
+          "self_field": {
+            "id": "self-aw-6",
+            "is_new": true,
+            "step": 6,
+            "label": "Self-assessment: progression of all 4 pieces of work",
+            "type": "select",
+            "placeholder": "Rate yourself against the criteria",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "Not yet"
+              },
+              {
+                "value": "2",
+                "label": "Basic"
+              },
+              {
+                "value": "3",
+                "label": "Good"
+              },
+              {
+                "value": "4",
+                "label": "Excellent"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "Not yet",
+              "hkeaa_band": "0–1",
+              "descriptor": "No or rare reflection; no visible progression."
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "Basic",
+              "hkeaa_band": "2",
+              "descriptor": "Barely reflects; vague content (e.g. \"I'm satisfied\"); limited progression."
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "Good",
+              "hkeaa_band": "3–4",
+              "descriptor": "Occasionally to frequently reflects from some or various perspectives; some to adequate progression."
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "Excellent",
+              "hkeaa_band": "5",
+              "descriptor": "Continuously and thoroughly reflects from various perspectives with specific evidence; substantial progression across four pieces."
+            }
+          ],
+          "rubric_source": {
+            "step": 6,
+            "step_title": "Reflection and Evaluation",
+            "path": "steps[5].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "Related checklist items are prompts only and do not count toward the value.",
+            "items": [
+              {
+                "id": "c1",
+                "text": "The theme has a clear development across four pieces (personal → people around me → society / culture → reflection / way forward, or another logical progression)."
+              },
+              {
+                "id": "c8",
+                "text": "Each finished piece has a reflection and explains how the next piece will improve."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "critique_daie",
+      "type": "radar",
+      "title": "Art critique (Feldman four stages)",
+      "note": "Self-review of DAIE critique practice; no ranking, no comparison with classmates.",
+      "axes": [
+        {
+          "id": "describe",
+          "label": "Description"
+        },
+        {
+          "id": "analyse",
+          "label": "Analysis"
+        },
+        {
+          "id": "interpret",
+          "label": "Interpretation"
+        },
+        {
+          "id": "judge",
+          "label": "Judgement"
+        }
+      ]
+    }
+  ],
+  "step_progress": {
+    "id": "sba_steps",
+    "type": "progress_bar",
+    "position": "below_sba_charts",
+    "title": "SBA six-step progress",
+    "note": "Shows completion of the six guide steps; not an HKEAA assessment criterion.",
+    "is_hkeaa_criterion": false,
+    "rule": "Step completion = required template fields filled ÷ total required fields (Step 4 needs at least 3 test rows).",
+    "steps": [
+      {
+        "id": 1,
+        "key": "theme",
+        "title": "Theme Exploration",
+        "required_fields": [
+          "theme",
+          "keywords",
+          "why",
+          "5w1h",
+          "mindmap",
+          "arc-1",
+          "artists",
+          "primary-photos"
+        ],
+        "min_rows": null
+      },
+      {
+        "id": 2,
+        "key": "research",
+        "title": "Reference Research",
+        "required_fields": [
+          "artist",
+          "context",
+          "works",
+          "work-image",
+          "feldman-describe",
+          "feldman-analyse",
+          "feldman-interpret",
+          "feldman-judge",
+          "learnt",
+          "rejected",
+          "try-by-myself",
+          "sources"
+        ],
+        "min_rows": null
+      },
+      {
+        "id": 3,
+        "key": "sketch",
+        "title": "Idea Development",
+        "required_fields": [
+          "concept-map",
+          "guiding-answers",
+          "option-a",
+          "option-a-notes",
+          "option-b",
+          "option-b-notes",
+          "option-c",
+          "option-c-notes",
+          "chosen",
+          "rejection-reasons",
+          "why-chosen"
+        ],
+        "min_rows": null
+      },
+      {
+        "id": 4,
+        "key": "media",
+        "title": "Media Experiments",
+        "required_fields": [
+          "question",
+          "variable",
+          "material",
+          "photo",
+          "effect",
+          "result",
+          "why",
+          "next-change",
+          "conclusion"
+        ],
+        "min_rows": 3
+      },
+      {
+        "id": 5,
+        "key": "making",
+        "title": "Making the Artwork",
+        "required_fields": [
+          "title",
+          "piece-no",
+          "media-size",
+          "idea",
+          "visual-meaning",
+          "media-why",
+          "artist-link",
+          "process-photos",
+          "problems",
+          "final-photo",
+          "ai-declaration"
+        ],
+        "min_rows": null
+      },
+      {
+        "id": 6,
+        "key": "reflection",
+        "title": "Reflection and Evaluation",
+        "required_fields": [
+          "first-vs-found",
+          "success",
+          "improve",
+          "self-rwb-1",
+          "self-rwb-2",
+          "self-rwb-3",
+          "self-aw",
+          "evidence-ref",
+          "next-plan",
+          "self-rwb-4",
+          "self-aw-1",
+          "self-aw-2",
+          "self-aw-3",
+          "self-aw-4",
+          "self-aw-6"
+        ],
+        "min_rows": null
+      }
+    ]
+  },
+  "field_mapping": [
+    {
+      "criterion": "rwb-1",
+      "self_field": "self-rwb-1",
+      "is_new": false
+    },
+    {
+      "criterion": "rwb-2",
+      "self_field": "self-rwb-2",
+      "is_new": false
+    },
+    {
+      "criterion": "rwb-3",
+      "self_field": "self-rwb-3",
+      "is_new": false
+    },
+    {
+      "criterion": "rwb-4",
+      "self_field": "self-rwb-4",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-1",
+      "self_field": "self-aw-1",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-2",
+      "self_field": "self-aw-2",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-3",
+      "self_field": "self-aw-3",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-4",
+      "self_field": "self-aw-4",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-5",
+      "self_field": "self-aw",
+      "is_new": false
+    },
+    {
+      "criterion": "aw-6",
+      "self_field": "self-aw-6",
+      "is_new": true
+    }
+  ]
+}
