@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "stages": [
+    {
+      "id": "describe", "zh": "描述", "en": "Description",
+      "goal": "客觀講出睇到乜，唔加判斷",
+      "frames": [
+        "呢件作品係一幅以＿＿（媒介）創作嘅＿＿（類型），尺寸約＿＿。",
+        "畫面主要描繪咗＿＿，位於畫面嘅＿＿（前景／中景／背景）。",
+        "藝術家運用咗＿＿色調，以＿＿色為主。",
+        "畫面可見＿＿嘅線條／筆觸／肌理。"
+      ],
+      "checklist": ["媒介與物料", "主題／題材", "色彩", "線條與形狀", "空間位置"]
+    },
+    {
+      "id": "analyse", "zh": "分析", "en": "Analysis",
+      "goal": "講元素同原理點樣組織畫面",
+      "frames": [
+        "藝術家以＿＿構圖，令視線由＿＿引向＿＿。",
+        "＿＿與＿＿形成強烈對比，突出＿＿。",
+        "重複出現嘅＿＿營造出＿＿嘅節奏感。",
+        "大面積留白／負空間令畫面產生＿＿嘅效果。"
+      ],
+      "checklist": ["構圖", "對比", "平衡", "節奏與重複", "焦點", "空間與比例"]
+    },
+    {
+      "id": "interpret", "zh": "詮釋", "en": "Interpretation",
+      "goal": "推論意義、情感同背景",
+      "frames": [
+        "我認為作品表達咗＿＿，因為＿＿（引用視覺證據）。",
+        "＿＿嘅色彩營造出＿＿嘅氛圍，令人聯想到＿＿。",
+        "結合藝術家身處嘅＿＿（時代／文化背景），作品可能反映＿＿。",
+        "作品中嘅＿＿可視為＿＿嘅象徵。"
+      ],
+      "checklist": ["主題意念", "情感氛圍", "象徵", "創作背景", "必須有視覺證據支持"]
+    },
+    {
+      "id": "judge", "zh": "評價", "en": "Judgement",
+      "goal": "有理據咁評價成效，並連結自己創作",
+      "frames": [
+        "作品成功地／未能＿＿，因為＿＿。",
+        "與＿＿（另一藝術家）相比，此作在＿＿方面更具＿＿。",
+        "作品嘅價值在於＿＿，對＿＿有啟發。",
+        "我會在自己嘅 SBA 中借鑑＿＿（構圖／概念／技法），而唔係模仿其畫風。"
+      ],
+      "checklist": ["評價準則清晰", "正反理據", "與其他作品比較", "連結個人創作"]
+    }
+  ],
+  "vocab": [
+    {"oral": ["好靚", "好正", "好好睇"], "term": "具視覺吸引力／和諧統一", "stage": "judge", "en": "visually compelling / unified"},
+    {"oral": ["好亂", "好多嘢"], "term": "構圖繁複／元素密集", "stage": "analyse", "en": "complex, dense composition"},
+    {"oral": ["好空", "冇嘢"], "term": "留白／負空間", "stage": "analyse", "en": "negative space"},
+    {"oral": ["好鮮", "好搶眼", "好鬼光"], "term": "高彩度／鮮明色彩", "stage": "describe", "en": "high saturation"},
+    {"oral": ["灰灰哋", "暗暗哋", "好沉"], "term": "低彩度／暗調", "stage": "describe", "en": "low saturation, low key"},
+    {"oral": ["冷冰冰", "藍藍哋好凍"], "term": "冷色調", "stage": "describe", "en": "cool palette"},
+    {"oral": ["暖笠笠", "紅紅黃黃"], "term": "暖色調", "stage": "describe", "en": "warm palette"},
+    {"oral": ["深淺差好遠", "黑白好分明"], "term": "明暗對比強烈", "stage": "analyse", "en": "strong tonal contrast"},
+    {"oral": ["一望就見", "最搶眼嗰度"], "term": "視覺焦點", "stage": "analyse", "en": "focal point"},
+    {"oral": ["兩邊差唔多", "對稱"], "term": "對稱平衡", "stage": "analyse", "en": "symmetrical balance"},
+    {"oral": ["一邊重一邊輕"], "term": "不對稱平衡", "stage": "analyse", "en": "asymmetrical balance"},
+    {"oral": ["重重複複", "不停出現"], "term": "重複與節奏", "stage": "analyse", "en": "repetition and rhythm"},
+    {"oral": ["好遠好深", "好似望入去"], "term": "空間深度／透視", "stage": "analyse", "en": "depth / perspective"},
+    {"oral": ["平平哋", "冇立體感"], "term": "平面化處理", "stage": "analyse", "en": "flattened space"},
+    {"oral": ["粗粗哋", "凹凸", "摸落去會刮手"], "term": "肌理／質感", "stage": "describe", "en": "texture"},
+    {"oral": ["筆好大力", "掃到亂晒"], "term": "奔放筆觸", "stage": "describe", "en": "expressive brushwork"},
+    {"oral": ["好幼細", "好精細"], "term": "細膩筆觸／工筆", "stage": "describe", "en": "fine detail"},
+    {"oral": ["線好硬", "直線多"], "term": "幾何線條", "stage": "describe", "en": "geometric lines"},
+    {"oral": ["彎彎曲曲", "好流"], "term": "有機線條／流動感", "stage": "describe", "en": "organic, flowing lines"},
+    {"oral": ["化開咗", "濕濕哋"], "term": "暈染／水墨渲染", "stage": "describe", "en": "wash / bleeding ink"},
+    {"oral": ["朦朦朧朧", "睇唔清"], "term": "模糊／半抽象", "stage": "describe", "en": "blurred / semi-abstract"},
+    {"oral": ["唔知畫乜", "得啲色"], "term": "抽象表現", "stage": "describe", "en": "abstraction"},
+    {"oral": ["好似真", "好似相"], "term": "寫實手法", "stage": "describe", "en": "realism"},
+    {"oral": ["好孤獨", "得佢一個"], "term": "疏離感／孤寂氛圍", "stage": "interpret", "en": "alienation / solitude"},
+    {"oral": ["好恐怖", "好詭異"], "term": "超現實／不安感", "stage": "interpret", "en": "uncanny, surreal unease"},
+    {"oral": ["好平靜", "好舒服"], "term": "寧靜氛圍／沉思性", "stage": "interpret", "en": "tranquil, contemplative"},
+    {"oral": ["好嬲", "好激"], "term": "強烈情感張力", "stage": "interpret", "en": "emotional intensity"},
+    {"oral": ["諷刺", "玩嘢"], "term": "反諷／批判意味", "stage": "interpret", "en": "irony / critique"},
+    {"oral": ["代表緊啲乜", "有意思"], "term": "象徵意義", "stage": "interpret", "en": "symbolism"},
+    {"oral": ["中西夾埋", "又中又西"], "term": "中西融合", "stage": "interpret", "en": "East–West synthesis"},
+    {"oral": ["好多人一齊用", "好商業"], "term": "大眾文化／消費主義", "stage": "interpret", "en": "popular culture / consumerism"},
+    {"oral": ["抄佢", "學佢咁畫"], "term": "借鑑其構圖或概念（非模仿畫風）", "stage": "judge", "en": "appropriate concept, not style"},
+    {"oral": ["好有心思", "好新"], "term": "具原創性及創意", "stage": "judge", "en": "original, innovative"},
+    {"oral": ["做得唔夠", "差少少"], "term": "未能充分表達／尚有發展空間", "stage": "judge", "en": "underdeveloped"}
+  ]
+}

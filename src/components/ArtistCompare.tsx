@@ -16,6 +16,7 @@ import {
   type DbArtistPair,
 } from '../lib/artistMappers'
 import { buildCompareRows, buildSbaTips, chunkText, type CompareRow, type SbaTip } from '../lib/compareInsights'
+import { curatedCompare, PAIR_COMPARE } from '../lib/content'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 import { useSpeech } from '../lib/useSpeech'
 import type { Artist, ArtistPair } from '../types'
@@ -184,10 +185,22 @@ export function ArtistCompare({
     () => (pair && east && west ? buildCompareRows(pair, east, west) : []),
     [pair, east, west],
   )
-  const tips = useMemo<SbaTip[]>(
-    () => (pair && east && west ? buildSbaTips(pair, east, west) : []),
-    [pair, east, west],
+  const curated = useMemo(
+    () => (pair ? curatedCompare(pair.id, pair.west_artist_id, pair.east_artist_id) : undefined),
+    [pair],
   )
+  const tips = useMemo<SbaTip[]>(() => {
+    if (!pair || !east || !west) return []
+    const generated = buildSbaTips(pair, east, west)
+    if (!curated) return generated
+    const curatedTips: SbaTip[] = curated.sba.map((body, i) => ({
+      title: curated.sba.length === 2 ? `借鑑${i === 0 ? west.name_zh || west.name_en : east.name_zh || east.name_en}` : `借鑑建議 ${i + 1}`,
+      body,
+    }))
+    // Keep the generic reflection-writing tip after the curated ones
+    const reflection = generated.find((t) => t.title === '反思寫作')
+    return reflection ? [...curatedTips, reflection] : curatedTips
+  }, [pair, east, west, curated])
 
   const { stop: stopSpeech } = tts
   useEffect(() => {
@@ -213,11 +226,15 @@ export function ArtistCompare({
     `主題：${pair.theme}。`,
     `東方：${eName}。${east.spld_summary || east.bio_short || ''}`,
     `西方：${wName}。${west.spld_summary || west.bio_short || ''}`,
-    `共同之處：${rows.flatMap((r) => r.shared).filter((x) => !x.startsWith('（')).join('；')}。`,
-    `相異之處：${rows
-      .map((r) => `${r.aspect}，${eName}：${r.east.join('、') || '無'}；${wName}：${r.west.join('、') || '無'}`)
-      .join('。')}。`,
-    `SBA 轉化建議：借鑑構圖或概念，唔係抄畫風。${tips.map((t, i) => `第${i + 1}，${t.title}：${t.body}`).join(' ')}`,
+    curated
+      ? `共同之處：${curated.same.join('；')}。`
+      : `共同之處：${rows.flatMap((r) => r.shared).filter((x) => !x.startsWith('（')).join('；')}。`,
+    curated
+      ? `相異之處：${curated.diff.join('；')}。`
+      : `相異之處：${rows
+          .map((r) => `${r.aspect}，${eName}：${r.east.join('、') || '無'}；${wName}：${r.west.join('、') || '無'}`)
+          .join('。')}。`,
+    `SBA 轉化建議：${curated ? PAIR_COMPARE.note : '借鑑構圖或概念，唔係抄畫風。'}${tips.map((t, i) => `第${i + 1}，${t.title}：${t.body}`).join(' ')}`,
   ].join('\n')
 
   const textCls = easyRead ? 'text-base leading-loose' : 'text-sm leading-relaxed'
@@ -321,7 +338,25 @@ export function ArtistCompare({
           easyRead={easyRead}
         />
       </div>
-      <CompareTable rows={rows} eastName={eName} westName={wName} easyRead={easyRead} padding={cardPadding} />
+      {curated ? (
+        <>
+          <CuratedCompare
+            same={curated.same}
+            diff={curated.diff}
+            theme={curated.theme}
+            easyRead={easyRead}
+            padding={cardPadding}
+          />
+          <details className="rounded-2xl border border-dashed border-teal-200 bg-white/60 px-4 py-3 text-sm">
+            <summary className="cursor-pointer font-medium text-teal-900">更多範疇（按資料自動整理）</summary>
+            <div className="mt-3">
+              <CompareTable rows={rows} eastName={eName} westName={wName} easyRead={easyRead} padding={cardPadding} />
+            </div>
+          </details>
+        </>
+      ) : (
+        <CompareTable rows={rows} eastName={eName} westName={wName} easyRead={easyRead} padding={cardPadding} />
+      )}
 
       <section className={`rounded-2xl border border-amber-100 bg-amber-50/40 shadow-sm ${cardPadding}`}>
         <h3 className="inline-flex items-center gap-1.5 text-base font-bold text-teal-950">
@@ -329,7 +364,7 @@ export function ArtistCompare({
           SBA 轉化建議
         </h3>
         <p className="mt-1 rounded-lg bg-white/70 px-3 py-1.5 text-xs font-semibold text-amber-900 ring-1 ring-amber-100">
-          借鑑構圖／概念，唔係抄畫風。
+          {curated ? PAIR_COMPARE.note : '借鑑構圖／概念，唔係抄畫風。'}
         </p>
         <ol className="mt-3 grid gap-3 sm:grid-cols-2">
           {tips.map((t, i) => (
@@ -455,6 +490,58 @@ function CompareTable({
           </table>
         </div>
       )}
+    </section>
+  )
+}
+
+function CuratedCompare({
+  same,
+  diff,
+  theme,
+  easyRead,
+  padding,
+}: {
+  same: string[]
+  diff: string[]
+  theme: string
+  easyRead: boolean
+  padding: string
+}) {
+  const textCls = easyRead ? 'text-base leading-loose' : 'text-sm leading-relaxed'
+  const list = (items: string[], dot: string) =>
+    easyRead ? (
+      <ul className={`mt-2 list-disc space-y-1 pl-5 text-teal-950 ${textCls}`}>
+        {items.flatMap((x) => chunkText(x)).map((c) => (
+          <li key={c}>{c}</li>
+        ))}
+      </ul>
+    ) : (
+      <ul className={`mt-2 space-y-1.5 text-teal-950/90 ${textCls}`}>
+        {items.map((x) => (
+          <li key={x} className="flex gap-2">
+            <span className={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${dot}`} aria-hidden />
+            <span>{x}</span>
+          </li>
+        ))}
+      </ul>
+    )
+  return (
+    <section className={`rounded-2xl border border-teal-100 bg-white shadow-sm ${padding}`}>
+      <h3 className="inline-flex items-center gap-1.5 text-base font-bold text-teal-950">
+        <Scale className="h-4 w-4 text-teal-600" aria-hidden />
+        共同之處 vs 相異之處
+      </h3>
+      <p className="mt-0.5 text-xs text-teal-700/70">對比主題：{theme}</p>
+      <div className="mt-3 grid gap-3 md:grid-cols-2">
+        <div className="rounded-xl bg-teal-50/60 p-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-teal-700">共同之處</p>
+          {list(same, 'bg-teal-500')}
+        </div>
+        <div className="rounded-xl bg-amber-50/60 p-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-amber-800">相異之處</p>
+          {list(diff, 'bg-amber-500')}
+        </div>
+      </div>
     </section>
   )
 }

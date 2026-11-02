@@ -1,16 +1,16 @@
-import { Bot, Loader2, Sparkles } from 'lucide-react'
+import { Bot, CheckSquare, Loader2, Plus, Sparkles, Square } from 'lucide-react'
 import { useMemo, useState } from 'react'
-import { boostOralText, ORAL_TO_DSE } from '../data/vocab'
 import { useSen } from '../context/SenContext'
+import {
+  boostOralText,
+  FELDMAN_STAGES,
+  inlineTerm,
+  termEnglish,
+  vocabForStage,
+} from '../lib/content'
+import type { FeldmanStageId, FeldmanVocabEntry } from '../types'
 
-const STEPS = [
-  { key: 'describe', title: '1. 描述 Describe', prompt: '你見到啲咩？（物件、人物、顏色、構圖）' },
-  { key: 'analyse', title: '2. 分析 Analyse', prompt: '線條、形狀、質感、空間、節奏點樣組織？' },
-  { key: 'interpret', title: '3. 詮釋 Interpret', prompt: '作品想表達咩意思／情緒／故事？' },
-  { key: 'judge', title: '4. 評價 Judge', prompt: '以 DSE 準則評價優點與可改進處。' },
-] as const
-
-type StepKey = (typeof STEPS)[number]['key']
+type StepKey = FeldmanStageId
 
 type AiState = { status: 'idle' | 'loading' | 'done' | 'error'; text: string }
 
@@ -23,24 +23,25 @@ const STAGE_API: Record<StepKey, 'describe' | 'analyze' | 'interpret' | 'judge'>
 
 const AI_IDLE: AiState = { status: 'idle', text: '' }
 
+const STEPS = FELDMAN_STAGES.map((s, i) => ({
+  ...s,
+  key: s.id,
+  title: `${i + 1}. ${s.zh} ${s.en}`,
+}))
+
+function emptyRecord<T>(v: () => T): Record<StepKey, T> {
+  return { describe: v(), analyse: v(), interpret: v(), judge: v() }
+}
+
 export function FeldmanWriter() {
   const { cardPadding } = useSen()
-  const [texts, setTexts] = useState<Record<StepKey, string>>({
-    describe: '',
-    analyse: '',
-    interpret: '',
-    judge: '',
-  })
+  const [texts, setTexts] = useState<Record<StepKey, string>>(() => emptyRecord(() => ''))
+  const [checked, setChecked] = useState<Record<StepKey, string[]>>(() => emptyRecord(() => []))
   const [active, setActive] = useState<StepKey>('describe')
-  const [boosted, setBoosted] = useState<string | null>(null)
-  const [hits, setHits] = useState<string[]>([])
+  const [boostRan, setBoostRan] = useState(false)
+  const [hits, setHits] = useState<FeldmanVocabEntry[]>([])
   const [artwork, setArtwork] = useState('')
-  const [ai, setAi] = useState<Record<StepKey, AiState>>({
-    describe: AI_IDLE,
-    analyse: AI_IDLE,
-    interpret: AI_IDLE,
-    judge: AI_IDLE,
-  })
+  const [ai, setAi] = useState<Record<StepKey, AiState>>(() => emptyRecord(() => AI_IDLE))
 
   const draft = useMemo(
     () => STEPS.map((s) => `【${s.title}】\n${texts[s.key] || '（未寫）'}`).join('\n\n'),
@@ -49,11 +50,25 @@ export function FeldmanWriter() {
 
   function runBooster() {
     const result = boostOralText(texts[active])
-    setBoosted(result.boosted)
+    setBoostRan(true)
     setHits(result.hits)
     if (result.hits.length) {
       setTexts((t) => ({ ...t, [active]: result.boosted }))
     }
+  }
+
+  function insertFrame(key: StepKey, frame: string) {
+    setTexts((t) => {
+      const cur = t[key]
+      return { ...t, [key]: (cur && !cur.endsWith('\n') ? `${cur}\n` : cur) + frame }
+    })
+  }
+
+  function toggleCheck(key: StepKey, item: string) {
+    setChecked((c) => ({
+      ...c,
+      [key]: c[key].includes(item) ? c[key].filter((x) => x !== item) : [...c[key], item],
+    }))
   }
 
   async function requestAiFeedback(key: StepKey) {
@@ -88,7 +103,7 @@ export function FeldmanWriter() {
     <div className="space-y-4">
       <div>
         <h2 className="text-xl font-bold text-teal-950">費德曼四步寫作</h2>
-        <p className="text-sm text-teal-800/70">口語 → DSE 術語助推（客戶端詞典）＋ Gemini AI 回饋</p>
+        <p className="text-sm text-teal-800/70">句子框架＋檢查清單＋口語 → DSE 術語助推＋ Gemini AI 回饋</p>
       </div>
 
       <label className="block text-sm">
@@ -110,7 +125,7 @@ export function FeldmanWriter() {
             type="button"
             onClick={() => {
               setActive(s.key)
-              setBoosted(null)
+              setBoostRan(false)
               setHits([])
             }}
             className={
@@ -120,91 +135,169 @@ export function FeldmanWriter() {
             }
           >
             {s.title}
+            {checked[s.key].length > 0 && (
+              <span className="ml-1 opacity-80">
+                ({checked[s.key].length}/{s.checklist.length})
+              </span>
+            )}
           </button>
         ))}
       </div>
 
-      {STEPS.filter((s) => s.key === active).map((s) => (
-        <section
-          key={s.key}
-          className={`rounded-2xl border border-teal-100 bg-white shadow-sm ${cardPadding}`}
-        >
-          <h3 className="text-lg font-bold text-teal-950">{s.title}</h3>
-          <p className="mt-1 text-sm text-teal-800/70">{s.prompt}</p>
-          <textarea
-            className="mt-3 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
-            rows={5}
-            value={texts[s.key]}
-            onChange={(e) => setTexts((t) => ({ ...t, [s.key]: e.target.value }))}
-            placeholder="用粵語口語都得，再撳助推轉術語…"
-            maxLength={2000}
-          />
-          <div className="mt-3 flex flex-wrap gap-2">
-            <button
-              type="button"
-              onClick={runBooster}
-              className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600"
-            >
-              <Sparkles className="h-4 w-4" aria-hidden />
-              口語 → DSE 術語
-            </button>
-            <button
-              type="button"
-              onClick={() => requestAiFeedback(s.key)}
-              disabled={ai[s.key].status === 'loading'}
-              className="inline-flex items-center gap-2 rounded-full bg-teal-700 px-4 py-2 text-sm font-bold text-white hover:bg-teal-800 disabled:cursor-wait disabled:opacity-70"
-            >
-              {ai[s.key].status === 'loading' ? (
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-              ) : (
-                <Bot className="h-4 w-4" aria-hidden />
-              )}
-              {ai[s.key].status === 'loading' ? 'AI 分析中…' : 'AI 回饋'}
-            </button>
-          </div>
-          {boosted !== null && (
-            <div className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-950">
-              {hits.length === 0 ? (
-                <p>未偵測到詞典關鍵字。可試：靚、亂、空蕩蕩、光猛…</p>
-              ) : (
-                <p>
-                  已替換：{hits.map((h) => `「${h}」→ ${ORAL_TO_DSE[h]}`).join('；')}
-                </p>
-              )}
+      {STEPS.filter((s) => s.key === active).map((s) => {
+        const stageVocab = vocabForStage(s.key)
+        return (
+          <section
+            key={s.key}
+            className={`rounded-2xl border border-teal-100 bg-white shadow-sm ${cardPadding}`}
+          >
+            <h3 className="text-lg font-bold text-teal-950">{s.title}</h3>
+            <p className="mt-1 text-sm text-teal-800/70">目標：{s.goal}</p>
+
+            <div className="mt-3">
+              <p className="text-xs font-semibold text-teal-700">句子框架（撳一下加入草稿，再填＿＿）</p>
+              <ul className="mt-1.5 space-y-1.5">
+                {s.frames.map((f) => (
+                  <li key={f}>
+                    <button
+                      type="button"
+                      onClick={() => insertFrame(s.key, f)}
+                      className="inline-flex w-full items-start gap-2 rounded-xl border border-teal-100 bg-teal-50/50 px-3 py-2 text-left text-sm text-teal-950 hover:bg-teal-100"
+                    >
+                      <Plus className="mt-0.5 h-4 w-4 shrink-0 text-teal-600" aria-hidden />
+                      <span>{f}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
             </div>
-          )}
-          {ai[s.key].status === 'done' && (
-            <div
-              className="mt-3 rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-sm text-teal-950"
-              aria-live="polite"
-            >
-              <p className="mb-1 font-semibold">AI 老師回饋</p>
-              <p className="whitespace-pre-wrap">{ai[s.key].text}</p>
-              <p className="mt-2 text-xs text-teal-800/60">由 Gemini 生成，僅供參考。</p>
+
+            <textarea
+              className="mt-3 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+              rows={5}
+              value={texts[s.key]}
+              onChange={(e) => setTexts((t) => ({ ...t, [s.key]: e.target.value }))}
+              placeholder="用粵語口語都得，再撳助推轉術語…"
+              maxLength={2000}
+            />
+
+            <fieldset className="mt-3">
+              <legend className="text-xs font-semibold text-teal-700">檢查清單：寫咗未？</legend>
+              <div className="mt-1.5 flex flex-wrap gap-2">
+                {s.checklist.map((item) => {
+                  const on = checked[s.key].includes(item)
+                  return (
+                    <button
+                      key={item}
+                      type="button"
+                      role="checkbox"
+                      aria-checked={on}
+                      onClick={() => toggleCheck(s.key, item)}
+                      className={
+                        on
+                          ? 'inline-flex items-center gap-1.5 rounded-full bg-teal-700 px-3 py-1 text-xs font-semibold text-white'
+                          : 'inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1 text-xs font-medium text-teal-900 hover:bg-teal-50'
+                      }
+                    >
+                      {on ? (
+                        <CheckSquare className="h-3.5 w-3.5" aria-hidden />
+                      ) : (
+                        <Square className="h-3.5 w-3.5" aria-hidden />
+                      )}
+                      {item}
+                    </button>
+                  )
+                })}
+              </div>
+            </fieldset>
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={runBooster}
+                className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600"
+              >
+                <Sparkles className="h-4 w-4" aria-hidden />
+                口語 → DSE 術語
+              </button>
+              <button
+                type="button"
+                onClick={() => requestAiFeedback(s.key)}
+                disabled={ai[s.key].status === 'loading'}
+                className="inline-flex items-center gap-2 rounded-full bg-teal-700 px-4 py-2 text-sm font-bold text-white hover:bg-teal-800 disabled:cursor-wait disabled:opacity-70"
+              >
+                {ai[s.key].status === 'loading' ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                ) : (
+                  <Bot className="h-4 w-4" aria-hidden />
+                )}
+                {ai[s.key].status === 'loading' ? 'AI 分析中…' : 'AI 回饋'}
+              </button>
             </div>
-          )}
-          {ai[s.key].status === 'error' && (
-            <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-900" role="alert">
-              {ai[s.key].text}
-            </p>
-          )}
-        </section>
-      ))}
+            {boostRan && (
+              <div className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-950">
+                {hits.length === 0 ? (
+                  <p>
+                    未偵測到詞典關鍵字。呢一步可試：
+                    {stageVocab
+                      .slice(0, 4)
+                      .map((v) => `「${v.colloquial}」`)
+                      .join('、')}
+                    …
+                  </p>
+                ) : (
+                  <ul className="space-y-0.5">
+                    {hits.map((h) => (
+                      <li key={h.colloquial}>
+                        「{h.colloquial}」→ <span className="font-semibold">{inlineTerm(h.term)}</span>
+                        {h.term !== inlineTerm(h.term) && (
+                          <span className="text-amber-800/70">（亦可寫：{h.term}）</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+            {ai[s.key].status === 'done' && (
+              <div
+                className="mt-3 rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-sm text-teal-950"
+                aria-live="polite"
+              >
+                <p className="mb-1 font-semibold">AI 老師回饋</p>
+                <p className="whitespace-pre-wrap">{ai[s.key].text}</p>
+                <p className="mt-2 text-xs text-teal-800/60">由 Gemini 生成，僅供參考。</p>
+              </div>
+            )}
+            {ai[s.key].status === 'error' && (
+              <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-900" role="alert">
+                {ai[s.key].text}
+              </p>
+            )}
+
+            <details className="mt-3 rounded-xl border border-dashed border-teal-200 bg-teal-50/40 p-3 text-sm">
+              <summary className="cursor-pointer font-medium text-teal-900">
+                {s.zh}階段術語（{stageVocab.length} 條口語 → DSE 術語）
+              </summary>
+              <ul className="mt-2 space-y-1.5">
+                {stageVocab.map((v) => (
+                  <li key={v.colloquial}>
+                    <span className="font-semibold">{v.colloquial}</span> → {v.term}
+                    {termEnglish(v.term) && (
+                      <span className="text-xs text-teal-700/70"> · {termEnglish(v.term)}</span>
+                    )}
+                    <p className="text-xs text-teal-700/60">例：{v.example}</p>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </section>
+        )
+      })}
 
       <details className="rounded-2xl border border-teal-100 bg-white p-4 text-sm shadow-sm">
         <summary className="cursor-pointer font-semibold text-teal-950">四步草稿總覽</summary>
         <pre className="mt-3 whitespace-pre-wrap font-sans text-teal-900/90">{draft}</pre>
-      </details>
-
-      <details className="rounded-2xl border border-dashed border-teal-200 bg-teal-50/40 p-4 text-sm">
-        <summary className="cursor-pointer font-medium text-teal-900">詞典一覽</summary>
-        <ul className="mt-2 columns-1 gap-3 sm:columns-2">
-          {Object.entries(ORAL_TO_DSE).map(([k, v]) => (
-            <li key={k} className="mb-1 break-inside-avoid">
-              <span className="font-semibold">{k}</span> → {v}
-            </li>
-          ))}
-        </ul>
       </details>
     </div>
   )

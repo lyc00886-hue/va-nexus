@@ -29,3 +29,57 @@ export type ArtistPair = {
 }
 
 export type TabId = 'artists' | 'sba' | 'feldman'
+
+/* ---------- Content JSON (PEANUTS, src/content/*.json) ---------- */
+
+export type FeldmanStageId = 'describe' | 'analyse' | 'interpret' | 'judge'
+
+/** feldman.json → stages[] */
+export type FeldmanStage = {
+  id: FeldmanStageId
+  zh: string
+  en: string
+  goal: string
+  frames: string[]
+  checklist: string[]
+}
+
+/** feldman.json → vocab[] (grouped oral variants, with English gloss) */
+export type FeldmanVocabGroup = {
+  oral: string[]
+  term: string
+  stage: FeldmanStageId
+  en: string
+}
+
+export type FeldmanContent = {
+  version: number
+  stages: FeldmanStage[]
+  vocab: FeldmanVocabGroup[]
+}
+
+/** feldman-vocab.json → one entry per colloquial phrase (71 entries) */
+export type FeldmanVocabEntry = {
+  colloquial: string
+  term: string
+  stage: FeldmanStageId
+  /** Auto-generated placeholder example sentence; show as secondary text */
+  example: string
+}
+
+/** artist-pair-compare.json → pairs[]; a = west artist_id, b = east artist_id */
+export type PairCompareEntry = {
+  pair_id: string
+  a: string
+  b: string
+  theme: string
+  same: string[]
+  diff: string[]
+  sba: string[]
+}
+
+export type PairCompareContent = {
+  version: number
+  note: string
+  pairs: PairCompareEntry[]
+}
