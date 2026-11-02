@@ -870,7 +870,7 @@ export function ArtistCompare({
       {view === 'pairs' && (!pair || !east || !west) && (
         <div className="flex flex-col items-center gap-2 py-8 text-center">
           <img
-            src="/mascot-otter-empty.png"
+            src="/o2-otter.png"
             alt=""
             width={112}
             height={112}
