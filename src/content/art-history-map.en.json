@@ -8,6 +8,12 @@
     {
      "id": "U1-L1",
      "title": "The Lingnan School's Innovations",
+     "artistIds": [
+      "CN-GAOJF-01",
+      "CN-GAOQF-01",
+      "CN-CHENSR-01",
+      "HK-CHAOSA-01"
+     ],
      "cards": [
       "The Lingnan School (嶺南畫派) arose in Guangdong in the early 20th century. Its founders, Gao Jianfu (高劍父), Gao Qifeng (高奇峰) and Chen Shuren (陳樹人), are known as the 'Two Gaos and One Chen'.",
       "Gao Jianfu (高劍父) and Chen Shuren (陳樹人) first studied painting under Ju Lian (居廉); Gao Qifeng (高奇峰) learned from his elder brother Gao Jianfu. All three later studied in Japan.",
@@ -70,6 +76,9 @@
     {
      "id": "U1-L2",
      "title": "Xu Beihong and Realism",
+     "artistIds": [
+      "CN-XUBH-01"
+     ],
      "cards": [
       "Xu Beihong (徐悲鴻, 1895–1953) studied in France at the École des Beaux-Arts in Paris, learning Western academic drawing and oil painting.",
       "He believed Chinese painting needed 'reform', and argued that Western realist drawing should be the foundation for depicting form.",
@@ -132,6 +141,9 @@
     {
      "id": "U1-L3",
      "title": "Lin Fengmian's Fusion",
+     "artistIds": [
+      "CN-LINFM-01"
+     ],
      "cards": [
       "Lin Fengmian (林風眠, 1900–1991) studied in France and was strongly influenced by Western modernism, such as Fauvism and Cubism.",
       "In 1928 he founded the National Academy of Art (國立藝術院) in Hangzhou, today's China Academy of Art, promoting 'harmonising Chinese and Western art'.",
@@ -194,6 +206,9 @@
     {
      "id": "U1-L4",
      "title": "Wu Guanzhong and Formal Beauty",
+     "artistIds": [
+      "CN-WUGZ-01"
+     ],
      "cards": [
       "Wu Guanzhong (吳冠中, 1919–2010) studied under Lin Fengmian (林風眠) at the National Hangzhou Academy of Art, then went to study in Paris.",
       "He valued 'formal beauty' (形式美): dots, lines, planes and colours are beautiful in themselves, so a painting need not be realistic.",
@@ -256,6 +271,10 @@
     {
      "id": "U1-L5",
      "title": "Zao Wou-Ki and Abstraction",
+     "artistIds": [
+      "CN-ZAO-01",
+      "CN-CHUTC-01"
+     ],
      "cards": [
       "Zao Wou-Ki (趙無極, 1920–2013) studied under Lin Fengmian (林風眠) at the National Hangzhou Academy of Art, and moved to Paris in 1948.",
       "Early on he was inspired by Paul Klee (保羅·克利), and symbols like oracle bone script (甲骨文) appeared in his paintings.",
