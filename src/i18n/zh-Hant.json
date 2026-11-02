@@ -398,7 +398,7 @@
   "map.unitProgressAria": "{title}：已完成 {done} / {total} 課，{pct}%",
   "ach.overallProgress": "學習地圖總進度",
   "ach.overallProgressValue": "{pct}%（{done} / {total} 課）",
-  "fw.ai.gated": "AI 回饋暫時未開放畀 18 歲以下用戶（等待 Vertex AI 審核）。寫作框架、檢查清單同術語助推仍然可以用。",
+  "fw.ai.gated": "AI 回饋只開放畀已核實 18 歲或以上嘅用戶。寫作框架、檢查清單同術語助推仍然可以用。",
   "fw.ai.confirm18": "我明白評賞文字會傳去 Google Gemini 處理（僅限 18+）。",
   "fw.ai.enable": "啟用 AI 回饋（僅限 18+）",
   "fw.ai.disable": "關閉 AI 回饋",

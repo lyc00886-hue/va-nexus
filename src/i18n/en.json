@@ -398,7 +398,7 @@
   "map.unitProgressAria": "{title}: {done} of {total} lessons complete, {pct}%",
   "ach.overallProgress": "Overall learning-map progress",
   "ach.overallProgressValue": "{pct}% ({done} / {total} lessons)",
-  "fw.ai.gated": "AI feedback is temporarily unavailable for users under 18 (pending a Vertex AI review). Writing frames, checklists and the vocab booster still work.",
+  "fw.ai.gated": "AI feedback is only available to verified users aged 18 or over. Writing frames, checklists and the vocab booster still work.",
   "fw.ai.confirm18": "I understand my appreciation text will be sent to Google Gemini (18+ only).",
   "fw.ai.enable": "Enable AI feedback (18+ only)",
   "fw.ai.disable": "Turn off AI feedback",

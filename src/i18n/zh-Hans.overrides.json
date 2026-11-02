@@ -123,7 +123,7 @@
   "sba.guide.title": "SBA 引导（不经 AI）",
   "sba.guide.frames": "句式（点击复制）",
   "sba.guide.draft": "草稿内容，稍后会由内容组更新。",
-  "fw.ai.gated": "AI 反馈暂时未对 18 岁以下用户开放（等待 Vertex AI 审核）。写作框架、检查清单和术语助推仍然可用。",
+  "fw.ai.gated": "AI 反馈只对已核实 18 岁或以上的用户开放。写作框架、检查清单和术语助推仍然可用。",
   "fw.ai.confirm18": "我明白评赏文字会传到 Google Gemini 处理（仅限 18+）。",
   "fw.ai.enable": "启用 AI 反馈（仅限 18+）",
   "fw.ai.disable": "关闭 AI 反馈",

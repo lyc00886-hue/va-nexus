@@ -1,111 +1,88 @@
-import { createEmptyGame } from './progressSync'
-import { supabase } from './supabase'
-
 /**
  * 18+ AI gate: birth_year stays private on user_progress (owner RLS).
  * UI and local cache only ever see can_use_ai — never birth year / full DOB.
  * Never send birth_year to Gemini or include it in exports.
+ * can_use_ai is derived server-side from birth_year (trigger); clients cannot forge true.
+ * Reads/writes go through RPCs so birth_year is never SELECTed by the client.
  */
+import { supabase } from './supabase'
 
-export const CAN_USE_AI_CACHE_KEY = 'va-nexus:can-use-ai:v1'
+const CACHE_KEY = 'va-nexus:can-use-ai'
 
 export type AiAgeGate = {
-  /** Derived permission flag for UI / client gating. */
   canUseAi: boolean
   /** True when a birth_year row exists (year itself is never returned for display). */
   hasBirthYear: boolean
 }
 
-const EMPTY: AiAgeGate = { canUseAi: false, hasBirthYear: false }
-
-export function deriveCanUseAi(birthYear: number, now = new Date()): boolean {
-  if (!Number.isInteger(birthYear) || birthYear < 1900 || birthYear > 2100) return false
-  return now.getFullYear() - birthYear >= 18
+function cacheCanUseAi(v: boolean) {
+  try {
+    if (v) localStorage.setItem(CACHE_KEY, '1')
+    else localStorage.removeItem(CACHE_KEY)
+  } catch {
+    /* ignore */
+  }
 }
 
 export function loadCachedCanUseAi(): boolean {
   try {
-    return localStorage.getItem(CAN_USE_AI_CACHE_KEY) === '1'
+    return localStorage.getItem(CACHE_KEY) === '1'
   } catch {
     return false
   }
 }
 
-export function saveCachedCanUseAi(on: boolean) {
+export function clearCachedCanUseAi() {
   try {
-    if (on) localStorage.setItem(CAN_USE_AI_CACHE_KEY, '1')
-    else localStorage.removeItem(CAN_USE_AI_CACHE_KEY)
+    localStorage.removeItem(CACHE_KEY)
   } catch {
     /* ignore */
   }
 }
 
-export function clearCachedCanUseAi() {
-  try {
-    localStorage.removeItem(CAN_USE_AI_CACHE_KEY)
-  } catch {
-    /* ignore */
+function parseGate(raw: unknown): AiAgeGate {
+  const o = (raw && typeof raw === 'object' ? raw : {}) as {
+    can_use_ai?: unknown
+    has_birth_year?: unknown
+  }
+  return {
+    canUseAi: Boolean(o.can_use_ai),
+    hasBirthYear: Boolean(o.has_birth_year),
   }
 }
 
 /** Fetch gate flags only — never expose birth_year to UI. */
-export async function fetchAiAgeGate(uid: string): Promise<AiAgeGate> {
-  if (!supabase) return EMPTY
-  const { data, error } = await supabase
-    .from('user_progress')
-    .select('can_use_ai, birth_year')
-    .eq('user_id', uid)
-    .maybeSingle()
+export async function fetchAiAgeGate(_uid: string): Promise<AiAgeGate> {
+  if (!supabase) return { canUseAi: false, hasBirthYear: false }
+  const { data, error } = await supabase.rpc('get_ai_age_gate')
   if (error) throw error
-  const canUseAi = Boolean(data?.can_use_ai)
-  const hasBirthYear = data?.birth_year != null
-  saveCachedCanUseAi(canUseAi)
-  return { canUseAi, hasBirthYear }
+  const gate = parseGate(data)
+  cacheCanUseAi(gate.canUseAi)
+  return gate
 }
 
 /**
- * Persist birth_year privately and derived can_use_ai.
- * Returns gate flags only; birth year is never echoed for display.
+ * Persist birth_year privately via RPC; server derives can_use_ai.
+ * Client never writes can_use_ai and never SELECTs birth_year.
  */
-export async function saveBirthYearForAiGate(uid: string, birthYear: number): Promise<AiAgeGate> {
-  if (!supabase) throw new Error('Supabase not configured')
-  const maxYear = new Date().getFullYear()
-  if (!Number.isInteger(birthYear) || birthYear < 1900 || birthYear > maxYear) {
+export async function saveBirthYearForAiGate(_uid: string, birthYear: number): Promise<AiAgeGate> {
+  if (!supabase) throw new Error('no_supabase')
+  const y = Math.floor(Number(birthYear))
+  const max = new Date().getFullYear()
+  if (!Number.isFinite(y) || y < 1900 || y > max) {
     throw new Error('invalid_birth_year')
   }
-  const canUseAi = deriveCanUseAi(birthYear)
-
-  const { data: existing, error: readErr } = await supabase
-    .from('user_progress')
-    .select('user_id')
-    .eq('user_id', uid)
-    .maybeSingle()
-  if (readErr) throw readErr
-
-  if (existing) {
-    const { error } = await supabase
-      .from('user_progress')
-      .update({ birth_year: birthYear, can_use_ai: canUseAi })
-      .eq('user_id', uid)
-    if (error) throw error
-  } else {
-    const { error } = await supabase.from('user_progress').insert({
-      user_id: uid,
-      birth_year: birthYear,
-      can_use_ai: canUseAi,
-      game: createEmptyGame(),
-    })
-    if (error) throw error
-  }
-
-  saveCachedCanUseAi(canUseAi)
-  return { canUseAi, hasBirthYear: true }
+  const { data, error } = await supabase.rpc('set_ai_birth_year', { p_year: y })
+  if (error) throw error
+  const gate = parseGate(data)
+  cacheCanUseAi(gate.canUseAi)
+  return gate
 }
 
-/** Turn off AI in UI/cache; leave birth_year private on the server. */
+/** Turn off AI: clear birth_year server-side so can_use_ai cannot stay true. */
 export async function revokeCanUseAi(uid: string | null): Promise<void> {
-  saveCachedCanUseAi(false)
+  clearCachedCanUseAi()
   if (!uid || !supabase) return
-  const { error } = await supabase.from('user_progress').update({ can_use_ai: false }).eq('user_id', uid)
+  const { error } = await supabase.rpc('clear_ai_birth_year')
   if (error) throw error
 }

@@ -5,6 +5,7 @@ import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
 import { PrivacyLink } from './PrivacyModal'
 import { signInWithGoogle, useAuth } from '../lib/auth'
+import { supabase } from '../lib/supabase'
 import {
   fetchAiAgeGate,
   loadCachedCanUseAi,
@@ -135,15 +136,22 @@ export function FeldmanWriter() {
     }
     setAi((a) => ({ ...a, [key]: { status: 'loading', text: '' } }))
     try {
+      const { data: sess } = await supabase!.auth.getSession()
+      const accessToken = sess.session?.access_token
+      if (!accessToken) {
+        throw new Error(t('fw.ai.signIn'))
+      }
       const res = await fetch('/api/feedback', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
         body: JSON.stringify({
           stage: STAGE_API[key],
           text: text.slice(0, 2000),
           artwork: artwork.trim() || undefined,
           locale: getLocale(),
-          adultConfirmed: true,
         }),
       })
       const data = (await res.json().catch(() => ({}))) as { feedback?: string; error?: string }
