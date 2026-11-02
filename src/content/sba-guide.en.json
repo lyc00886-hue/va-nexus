@@ -1,0 +1,404 @@
+{
+  "version": 1,
+  "id": "sba-self-guide",
+  "note": "Non-AI formative self-review for SBA steps. Not official marks.",
+  "steps": [
+    {
+      "id": 1,
+      "key": "theme",
+      "title": "Theme Exploration",
+      "checklist": [
+        {
+          "id": "th-c1",
+          "text": "My theme comes from my own experience or concern, not a copied online topic."
+        },
+        {
+          "id": "th-c2",
+          "text": "I listed 3–5 topics I truly care about, each with one sentence on why it matters to me."
+        },
+        {
+          "id": "th-c3",
+          "text": "I have a mind map that branches into objects, places, people, emotions and social issues."
+        },
+        {
+          "id": "th-c4",
+          "text": "The four pieces show a clear progression (e.g. personal → interpersonal → social/cultural → reflection/way forward)."
+        },
+        {
+          "id": "th-c5",
+          "text": "I have at least 3 primary images (my own photos or sketches)."
+        },
+        {
+          "id": "th-c6",
+          "text": "I listed 1–3 possible reference artists and the media I want to try."
+        },
+        {
+          "id": "th-c7",
+          "text": "The theme is feasible in time and materials; I have discussed or will discuss it with my teacher."
+        }
+      ],
+      "guidingQuestions": [
+        "Which real experience does this theme connect to most strongly?",
+        "If the theme is too broad, how can I narrow it to a personal angle?",
+        "How will each next piece respond to the previous one?",
+        "Which primary photos or sketches can support this theme?",
+        "Would a viewer understand what I care about from my keywords alone?",
+        "Does the medium I want to try match the feeling I need to express?"
+      ],
+      "sentenceFrames": [
+        "I chose this theme because I once＿＿, which made me feel＿＿.",
+        "Piece 1 will express my own＿＿; Piece 2 will extend to my relationship with＿＿.",
+        "My keywords include＿＿,＿＿ and＿＿, all linked to my experience of＿＿.",
+        "The four-part arc is: personal＿＿ → interpersonal＿＿ → social/cultural＿＿ → reflection/way forward＿＿."
+      ],
+      "tip": "A theme does not need to sound grand—it needs to be real and developable into four pieces.",
+      "redFlagReminders": [
+        {
+          "id": "rf1",
+          "text": "Avoid stiff, curator-style theme blurbs; write in your own voice about experience and feeling."
+        },
+        {
+          "id": "rf4",
+          "text": "Do not leave the theme as a slogan—link it to concrete visual elements you will use later."
+        },
+        {
+          "id": "rf2",
+          "text": "Do not rely only on online images; keep primary photos or drawings of your own."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "key": "research",
+      "title": "Reference Research",
+      "checklist": [
+        {
+          "id": "re-c1",
+          "text": "I have primary research (photos, sketches, survey or interview) and secondary sources, all cited."
+        },
+        {
+          "id": "re-c2",
+          "text": "I chose at least two reference artists, preferably from different cultures."
+        },
+        {
+          "id": "re-c3",
+          "text": "Each artist has a Feldman four-stage analysis with visual evidence in the judgement."
+        },
+        {
+          "id": "re-c4",
+          "text": "Each artist has a “try by myself” practice photo."
+        },
+        {
+          "id": "re-c5",
+          "text": "I wrote what I learnt and what I chose to reject, and why."
+        },
+        {
+          "id": "re-c6",
+          "text": "The research connects to my own making—it is not a copied biography."
+        },
+        {
+          "id": "re-c7",
+          "text": "All images and texts have a complete source list."
+        }
+      ],
+      "guidingQuestions": [
+        "Which technique from this artist can I transform for my theme?",
+        "What surface style did I reject, and why does it not fit me?",
+        "How did primary research change my original idea?",
+        "After a cross-cultural comparison, how do the two artists express the same feeling differently?",
+        "Does my judgement point to concrete evidence in the image?",
+        "If I only copy the surface look, how will viewers see through that?"
+      ],
+      "sentenceFrames": [
+        "From＿＿ I learnt＿＿, which I can use to express＿＿ in my theme.",
+        "＿＿ does not suit my work because＿＿.",
+        "I think the work expresses＿＿ because＿＿ (visual evidence).",
+        "I will borrow＿＿’s＿＿ approach, not imitate the whole style.",
+        "Primary research showed＿＿, which led me to add＿＿ in the image."
+      ],
+      "tip": "Research means transform, not cut-and-paste: for every artist, write what you learnt and what you rejected.",
+      "redFlagReminders": [
+        {
+          "id": "rf1",
+          "text": "Long passages that sound like the web or AI are a red flag—use your voice and cite sources."
+        },
+        {
+          "id": "rf4",
+          "text": "Do not only paste artwork images; link every claim to form and theme."
+        },
+        {
+          "id": "rf2",
+          "text": "“Try by myself” needs real practice evidence—not empty words added later."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "key": "sketch",
+      "title": "Idea Development",
+      "checklist": [
+        {
+          "id": "sk-c1",
+          "text": "I have a concept map linking keywords, primary material and artist approaches."
+        },
+        {
+          "id": "sk-c2",
+          "text": "I have at least three genuinely different composition options (viewpoint, scale, subject or medium changed)."
+        },
+        {
+          "id": "sk-c3",
+          "text": "Each option has strengths and weaknesses written down."
+        },
+        {
+          "id": "sk-c4",
+          "text": "Rejected options are marked × with clear reasons."
+        },
+        {
+          "id": "sk-c5",
+          "text": "My final choice is justified in terms of theme communication and visual focus."
+        },
+        {
+          "id": "sk-c6",
+          "text": "The sketches show the influence of Step 2 research."
+        },
+        {
+          "id": "sk-c7",
+          "text": "I kept rejected sketches; the development trail is complete."
+        }
+      ],
+      "guidingQuestions": [
+        "What should viewers see first?",
+        "Which object or symbol best represents my theme?",
+        "What feeling do I want, and which colour, line or texture can create it?",
+        "What did I borrow from a reference artist, and how did I make it mine?",
+        "Would a different viewpoint, scale or medium work better?",
+        "Are my rejection reasons about visual effect and theme—not just “looks bad”?"
+      ],
+      "sentenceFrames": [
+        "Strength:＿＿; weakness:＿＿.",
+        "× Option＿＿: because＿＿ (e.g. too cluttered, theme unclear).",
+        "I chose option＿＿ because it expresses＿＿ through＿＿.",
+        "This option borrows＿＿’s＿＿ approach, but I changed it to＿＿.",
+        "If I enlarge the subject / change the viewpoint, the focus becomes＿＿."
+      ],
+      "tip": "Rejected sketches are evidence of exploration—mark × with reasons; do not delete them.",
+      "redFlagReminders": [
+        {
+          "id": "rf2",
+          "text": "Sketches identical to the final piece look like after-the-fact padding—an empty-process red flag."
+        },
+        {
+          "id": "rf3",
+          "text": "Only one option with no comparison means little real exploration."
+        },
+        {
+          "id": "rf4",
+          "text": "Sketches must show how visual elements carry the theme; do not disconnect from research."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "key": "media",
+      "title": "Media Experiments",
+      "checklist": [
+        {
+          "id": "md-c1",
+          "text": "Each piece has at least three material/technique tests."
+        },
+        {
+          "id": "md-c2",
+          "text": "Each test changes only one variable (material, ratio, tool, surface, etc.)."
+        },
+        {
+          "id": "md-c3",
+          "text": "Each test has a photo or sample labelled with materials used."
+        },
+        {
+          "id": "md-c4",
+          "text": "There is at least one failed or weak test with reasons written."
+        },
+        {
+          "id": "md-c5",
+          "text": "I wrote what I will change next, then tested again."
+        },
+        {
+          "id": "md-c6",
+          "text": "Test questions link to the theme (e.g. which effect best expresses＿＿)."
+        },
+        {
+          "id": "md-c7",
+          "text": "I concluded which approach I chose and how it helps the theme."
+        },
+        {
+          "id": "md-c8",
+          "text": "Final materials match what appears in the experiment record."
+        }
+      ],
+      "guidingQuestions": [
+        "Which visual problem is this test trying to solve?",
+        "Which variable did I change, and how did the result change?",
+        "What did the failed test teach me, and what will I change next?",
+        "Which effect best expresses the emotion or idea in my theme?",
+        "Am I only asking “which looks nicer” instead of “which fits the theme”?",
+        "If every test succeeded once, did I really explore?"
+      ],
+      "sentenceFrames": [
+        "This test aims to solve:＿＿. I changed＿＿.",
+        "The result was＿＿; it looks＿＿. It worked/failed because＿＿.",
+        "Next time I will try＿＿ to see if I can＿＿.",
+        "This effect can express＿＿ in my theme.",
+        "After comparing＿＿ approaches, I chose＿＿ because＿＿."
+      ],
+      "tip": "Treat it like a science experiment: change one variable at a time and photograph failures too.",
+      "redFlagReminders": [
+        {
+          "id": "rf3",
+          "text": "No failures recorded is a red flag—add at least one contrast test per piece."
+        },
+        {
+          "id": "rf2",
+          "text": "Text-only tests with no photos, or tests that look faked later, signal an empty process."
+        },
+        {
+          "id": "rf4",
+          "text": "Link tests to the theme: find the approach that best expresses＿＿, not random material play."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "key": "making",
+      "title": "Making the Artwork",
+      "checklist": [
+        {
+          "id": "mk-c1",
+          "text": "I have start and stage process photos (app minimum 2; more is better)."
+        },
+        {
+          "id": "mk-c2",
+          "text": "I recorded problem → reason → solution entries."
+        },
+        {
+          "id": "mk-c3",
+          "text": "Installation/digital/3D/mixed media has structure photos or layer screenshots (aim for 5+)."
+        },
+        {
+          "id": "mk-c4",
+          "text": "Final photos are clear; 3D from multiple angles; animation/multimedia includes a storyboard."
+        },
+        {
+          "id": "mk-c5",
+          "text": "My artist statement is in my own voice; each idea maps to a concrete visual element."
+        },
+        {
+          "id": "mk-c6",
+          "text": "The statement mentions reference-artist influence and why I chose this medium."
+        },
+        {
+          "id": "mk-c7",
+          "text": "The piece clearly continues from research, sketches and experiments."
+        },
+        {
+          "id": "mk-c8",
+          "text": "I declared sources and whether I used any AI tools for help."
+        }
+      ],
+      "guidingQuestions": [
+        "Do process photos prove I made this myself?",
+        "What was the biggest making problem, and how did I solve it?",
+        "For each theme idea, where is the matching visual element on the surface?",
+        "Did I choose this medium because tests showed it fits the theme?",
+        "Does my statement sound like me, or like curator jargon?",
+        "If process records were removed, would my teacher still trust this is mine?"
+      ],
+      "sentenceFrames": [
+        "This piece aims to express＿＿, from my experience of＿＿.",
+        "I turned＿＿ into＿＿ [visual element] to show＿＿ [theme idea].",
+        "I chose＿＿ because tests showed it can＿＿.",
+        "I referred to＿＿’s＿＿ approach but changed it to＿＿ to fit my theme.",
+        "Problem:＿＿ → reason:＿＿ → solution:＿＿."
+      ],
+      "tip": "For every concept you write, point to one concrete place or element in the image.",
+      "redFlagReminders": [
+        {
+          "id": "rf2",
+          "text": "Polished product with empty process is a major red flag—keep structure or layer evidence for 3D/digital work."
+        },
+        {
+          "id": "rf1",
+          "text": "Over-polished long sentences unlike your usual voice suggest AI ghostwriting."
+        },
+        {
+          "id": "rf4",
+          "text": "Form disconnected from theme: do not only tell a story—explain how size, colour and texture serve the theme."
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "key": "reflection",
+      "title": "Reflection and Evaluation",
+      "checklist": [
+        {
+          "id": "rf-c1",
+          "text": "I compared the final piece with Step 1 plans: did I reach the original idea?"
+        },
+        {
+          "id": "rf-c2",
+          "text": "My reflection is specific, using “at first I wanted… later I found… so I changed…”."
+        },
+        {
+          "id": "rf-c3",
+          "text": "I reflected from several angles: idea, research, media, skill, viewer response."
+        },
+        {
+          "id": "rf-c4",
+          "text": "I self-assessed with one strength and one improvement point, with evidence."
+        },
+        {
+          "id": "rf-c5",
+          "text": "I recorded peer/teacher comments and how I respond."
+        },
+        {
+          "id": "rf-c6",
+          "text": "I wrote a concrete improvement plan for the next piece."
+        },
+        {
+          "id": "rf-c7",
+          "text": "After Piece 4, I summarised overall progress across the four pieces."
+        }
+      ],
+      "guidingQuestions": [
+        "Where does the final piece differ from my first idea, and what did I change?",
+        "What is most successful, and which part of the image proves it?",
+        "If I remade it, what one concrete action would I change?",
+        "Which peer/teacher comment do I agree or disagree with, and why?",
+        "Compared with the last piece, where did I truly improve?",
+        "How will the next piece answer this piece’s weaknesses?"
+      ],
+      "sentenceFrames": [
+        "At first I wanted＿＿; later I found＿＿, so I changed to＿＿.",
+        "The most successful part is＿＿ because＿＿.",
+        "If I did it again, I would＿＿ because＿＿.",
+        "My peer/teacher said＿＿; I agree/disagree because＿＿.",
+        "In the next piece I will try＿＿ to express＿＿ in the theme."
+      ],
+      "tip": "Be honest and evidence-based—“I’m happy / I learnt a lot” is too vague.",
+      "redFlagReminders": [
+        {
+          "id": "rf1",
+          "text": "Reflection that sounds unlike your usual writing may be read as AI ghostwriting."
+        },
+        {
+          "id": "rf3",
+          "text": "Do not only write successes—failures and next-step plans are also learning evidence."
+        },
+        {
+          "id": "rf2",
+          "text": "Nearly identical reflections on every piece, or one catch-up reflection at the end, look like an empty process."
+        }
+      ]
+    }
+  ]
+}

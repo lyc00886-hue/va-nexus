@@ -1,9 +1,16 @@
-import { Bot, CheckSquare, Loader2, Plus, Sparkles, Square } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { Bot, CheckSquare, Loader2, Lock, LogIn, Plus, Sparkles, Square } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
 import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
 import { PrivacyLink } from './PrivacyModal'
+import { signInWithGoogle, useAuth } from '../lib/auth'
+import {
+  fetchAiAgeGate,
+  loadCachedCanUseAi,
+  revokeCanUseAi,
+  saveBirthYearForAiGate,
+} from '../lib/aiAgeGate'
 import {
   boostOralText,
   getFeldmanStages,
@@ -45,6 +52,8 @@ function emptyRecord<T>(v: () => T): Record<StepKey, T> {
 export function FeldmanWriter() {
   const { cardPadding } = useSen()
   const { awardOnce } = useGame()
+  const { ready, user } = useAuth()
+  const userId = user?.id ?? null
   const STEPS = useMemo(buildSteps, [])
   const [texts, setTexts] = useState<Record<StepKey, string>>(() => emptyRecord(() => ''))
   const [checked, setChecked] = useState<Record<StepKey, string[]>>(() => emptyRecord(() => []))
@@ -53,6 +62,38 @@ export function FeldmanWriter() {
   const [hits, setHits] = useState<FeldmanVocabEntry[]>([])
   const [artwork, setArtwork] = useState('')
   const [ai, setAi] = useState<Record<StepKey, AiState>>(() => emptyRecord(() => AI_IDLE))
+  /** Derived permission flag only — never store/show birth year in UI. */
+  const [canUseAi, setCanUseAi] = useState(false)
+  const [gateReady, setGateReady] = useState(false)
+  const [birthYearInput, setBirthYearInput] = useState('')
+  const [gateBusy, setGateBusy] = useState(false)
+  const [gateMsg, setGateMsg] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    setCanUseAi(loadCachedCanUseAi())
+    if (!ready) return
+    if (!userId) {
+      setCanUseAi(false)
+      setGateReady(true)
+      return
+    }
+    setGateReady(false)
+    fetchAiAgeGate(userId)
+      .then((g) => {
+        if (cancelled) return
+        setCanUseAi(g.canUseAi)
+        setGateReady(true)
+      })
+      .catch(() => {
+        if (cancelled) return
+        setCanUseAi(loadCachedCanUseAi())
+        setGateReady(true)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [ready, userId])
 
   const draft = useMemo(
     () => STEPS.map((s) => `【${s.title}】\n${texts[s.key] || t('fw.unwritten')}`).join('\n\n'),
@@ -83,6 +124,10 @@ export function FeldmanWriter() {
   }
 
   async function requestAiFeedback(key: StepKey) {
+    if (!canUseAi) {
+      setAi((a) => ({ ...a, [key]: { status: 'error', text: t('fw.ai.gated') } }))
+      return
+    }
     const text = texts[key].trim()
     if (!text) {
       setAi((a) => ({ ...a, [key]: { status: 'error', text: t('fw.err.empty') } }))
@@ -98,6 +143,7 @@ export function FeldmanWriter() {
           text: text.slice(0, 2000),
           artwork: artwork.trim() || undefined,
           locale: getLocale(),
+          adultConfirmed: true,
         }),
       })
       const data = (await res.json().catch(() => ({}))) as { feedback?: string; error?: string }
@@ -116,11 +162,85 @@ export function FeldmanWriter() {
     <div className="space-y-4">
       <div>
         <h2 className="text-xl font-bold text-teal-950">{t('fw.title')}</h2>
-        <p className="text-sm text-teal-800/70">{t('fw.subtitle')}</p>
-        <p className="mt-2 rounded-xl bg-sky-50 px-3 py-2 text-xs text-sky-900">
-          {t('fw.geminiNote')}{' '}
-          <PrivacyLink />
-        </p>
+        <p className="text-sm text-teal-800/70">{t('fw.subtitle.noAi')}</p>
+        {!canUseAi ? (
+          <div className="mt-2 space-y-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-950">
+            <p>{t('fw.ai.gated')}</p>
+            {!userId ? (
+              <button
+                type="button"
+                onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-amber-700 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-amber-800"
+              >
+                <LogIn className="h-3.5 w-3.5" aria-hidden />
+                {t('fw.ai.signIn')}
+              </button>
+            ) : (
+              <>
+                <p>{t('fw.ai.birthYear.help')}</p>
+                <label className="block">
+                  <span className="font-medium">{t('fw.ai.birthYear')}</span>
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={1900}
+                    max={new Date().getFullYear()}
+                    autoComplete="bday-year"
+                    value={birthYearInput}
+                    onChange={(e) => setBirthYearInput(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    placeholder={t('fw.ai.birthYear.ph')}
+                    className="mt-1 w-28 rounded-lg border border-amber-300 bg-white px-2 py-1 text-sm text-amber-950"
+                    aria-describedby="fw-ai-birth-year-note"
+                  />
+                </label>
+                <p id="fw-ai-birth-year-note" className="text-[11px] text-amber-800/80">
+                  {t('fw.ai.birthYear.privacy')}
+                </p>
+                <button
+                  type="button"
+                  disabled={gateBusy || birthYearInput.length !== 4 || !gateReady}
+                  onClick={() => {
+                    const y = Number(birthYearInput)
+                    setGateBusy(true)
+                    setGateMsg(null)
+                    // Clear input immediately so the year is never left visible after submit.
+                    setBirthYearInput('')
+                    void saveBirthYearForAiGate(userId, y)
+                      .then((g) => {
+                        setCanUseAi(g.canUseAi)
+                        setGateMsg(g.canUseAi ? null : t('fw.ai.under18Saved'))
+                      })
+                      .catch(() => setGateMsg(t('fw.ai.birthYear.err')))
+                      .finally(() => setGateBusy(false))
+                  }}
+                  className="inline-flex items-center gap-1 rounded-lg bg-amber-700 px-2.5 py-1 text-xs font-semibold text-white hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {gateBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden /> : null}
+                  {t('fw.ai.enable')}
+                </button>
+                {gateMsg && <p className="text-[11px] font-medium text-amber-900">{gateMsg}</p>}
+              </>
+            )}
+            <p className="text-[11px] text-amber-800/80">
+              {t('fw.geminiNote')} <PrivacyLink />
+            </p>
+          </div>
+        ) : (
+          <div className="mt-2 flex flex-wrap items-center gap-2 rounded-xl bg-sky-50 px-3 py-2 text-xs text-sky-900">
+            <span className="flex-1">
+              {t('fw.geminiNote')} <PrivacyLink />
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                void revokeCanUseAi(userId).then(() => setCanUseAi(false))
+              }}
+              className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-[11px] font-semibold text-sky-900 hover:bg-sky-100"
+            >
+              {t('fw.ai.disable')}
+            </button>
+          </div>
+        )}
       </div>
 
       <label className="block text-sm">
@@ -237,19 +357,31 @@ export function FeldmanWriter() {
                 <Sparkles className="h-4 w-4" aria-hidden />
                 {t('fw.boost')}
               </button>
-              <button
-                type="button"
-                onClick={() => requestAiFeedback(s.key)}
-                disabled={ai[s.key].status === 'loading'}
-                className="inline-flex items-center gap-2 rounded-full bg-teal-700 px-4 py-2 text-sm font-bold text-white hover:bg-teal-800 disabled:cursor-wait disabled:opacity-70"
-              >
-                {ai[s.key].status === 'loading' ? (
-                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                ) : (
-                  <Bot className="h-4 w-4" aria-hidden />
-                )}
-                {ai[s.key].status === 'loading' ? t('fw.ai.loading') : t('fw.ai')}
-              </button>
+              {canUseAi ? (
+                <button
+                  type="button"
+                  onClick={() => requestAiFeedback(s.key)}
+                  disabled={ai[s.key].status === 'loading'}
+                  className="inline-flex items-center gap-2 rounded-full bg-teal-700 px-4 py-2 text-sm font-bold text-white hover:bg-teal-800 disabled:cursor-wait disabled:opacity-70"
+                >
+                  {ai[s.key].status === 'loading' ? (
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                  ) : (
+                    <Bot className="h-4 w-4" aria-hidden />
+                  )}
+                  {ai[s.key].status === 'loading' ? t('fw.ai.loading') : t('fw.ai')}
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  disabled
+                  title={t('fw.ai.gated')}
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-100 px-4 py-2 text-sm font-bold text-slate-500"
+                >
+                  <Lock className="h-4 w-4" aria-hidden />
+                  {t('fw.ai.locked')}
+                </button>
+              )}
             </div>
             {boostRan && (
               <div className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-950">

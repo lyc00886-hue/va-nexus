@@ -1,14 +1,17 @@
 import {
   AlertTriangle,
-  LogIn,
-  ShieldCheck,
-  Camera,
+  BookOpenCheck,
   Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ClipboardCopy,
   CloudOff,
+  Camera,
   Loader2,
   Lock,
+  LogIn,
+  ShieldCheck,
   Unlock,
   UploadCloud,
   X,
@@ -17,6 +20,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
+import { contentJson } from '../i18n/content'
 import { signInWithGoogle, useAuth } from '../lib/auth'
 import {
   fetchPrivateEvidence,
@@ -29,7 +33,58 @@ import {
 import { isSupabaseConfigured } from '../lib/supabase'
 import { t, type MessageKey } from '../i18n'
 
+
 const STEP_IDS = [1, 2, 3, 4, 5, 6] as const
+
+type SbaGuideCheckItem = { id: string; text: string }
+type SbaGuideRedFlag = { id: string; text: string }
+
+type SbaGuideStep = {
+  id: number
+  key: string
+  title?: string
+  checklist: SbaGuideCheckItem[]
+  guidingQuestions: string[]
+  sentenceFrames: string[]
+  tip?: string
+  redFlagReminders?: SbaGuideRedFlag[]
+}
+
+type SbaGuideFile = {
+  version: number
+  draft?: boolean
+  note?: string
+  steps: SbaGuideStep[]
+}
+
+const GUIDE_CHECKS_KEY = 'va-nexus:sba-guide-checks:v1'
+
+function loadGuideChecks(): Record<string, string[]> {
+  try {
+    const raw = localStorage.getItem(GUIDE_CHECKS_KEY)
+    if (!raw) return {}
+    const parsed = JSON.parse(raw) as Record<string, string[]>
+    return parsed && typeof parsed === 'object' ? parsed : {}
+  } catch {
+    return {}
+  }
+}
+
+function saveGuideChecks(map: Record<string, string[]>) {
+  try {
+    localStorage.setItem(GUIDE_CHECKS_KEY, JSON.stringify(map))
+  } catch {
+    /* ignore */
+  }
+}
+
+function getGuideForStep(step: number): { guide: SbaGuideStep | undefined; draft: boolean } {
+  const file = contentJson<SbaGuideFile>('sba-guide')
+  return {
+    guide: file.steps.find((s) => s.id === step),
+    draft: Boolean(file.draft),
+  }
+}
 
 function getSteps() {
   return STEP_IDS.map((id) => ({
@@ -47,7 +102,7 @@ function getSteps() {
 type Source = 'loading' | 'private' | 'guest' | 'local'
 
 export function SbaQuest() {
-  const { cardPadding, focusTunnel } = useSen()
+  const { cardPadding, focusTunnel, settings } = useSen()
   const { awardOnce } = useGame()
   const { ready, user } = useAuth()
   const userId = user?.id ?? null
@@ -59,6 +114,10 @@ export function SbaQuest() {
   const [pending, setPending] = useState<{ file: File; preview: string }[]>([])
   const [saving, setSaving] = useState(false)
   const [message, setMessage] = useState<{ kind: 'error' | 'ok'; text: string } | null>(null)
+  const [guideOpen, setGuideOpen] = useState(true)
+  const [guideChecks, setGuideChecks] = useState<Record<string, string[]>>(loadGuideChecks)
+  const [copiedFrame, setCopiedFrame] = useState<string | null>(null)
+  const motion = !settings.reduceMotion
 
   useEffect(() => {
     let cancelled = false
@@ -95,6 +154,30 @@ export function SbaQuest() {
   }, [userId, ready])
 
   const canUpload = source === 'private'
+
+  useEffect(() => {
+    saveGuideChecks(guideChecks)
+  }, [guideChecks])
+
+  function toggleGuideCheck(step: number, item: string) {
+    const key = String(step)
+    setGuideChecks((prev) => {
+      const cur = prev[key] ?? []
+      const next = cur.includes(item) ? cur.filter((x) => x !== item) : [...cur, item]
+      return { ...prev, [key]: next }
+    })
+  }
+
+  async function copyFrame(frame: string) {
+    try {
+      await navigator.clipboard.writeText(frame)
+      setCopiedFrame(frame)
+      window.setTimeout(() => setCopiedFrame((c) => (c === frame ? null : c)), motion ? 1500 : 0)
+    } catch {
+      /* ignore */
+    }
+  }
+
 
   function goTo(step: number) {
     if (step === active) return
@@ -321,6 +404,126 @@ export function SbaQuest() {
               {t('sba.stepHeading', { n: s.id, title: s.title })}
             </h3>
             <p className="mt-1 text-sm text-teal-800/70">{s.hint}</p>
+
+            {(() => {
+              const { guide, draft } = getGuideForStep(s.id)
+              if (!guide) return null
+              const checked = new Set(guideChecks[String(s.id)] ?? [])
+              return (
+                <section
+                  className={`mt-4 rounded-2xl border border-sky-200 bg-sky-50/70 ${motion ? 'transition-colors' : ''}`}
+                  aria-label={t('sba.guide.aria', { n: s.id })}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setGuideOpen((o) => !o)}
+                    aria-expanded={guideOpen}
+                    className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left text-sm font-semibold text-sky-950"
+                  >
+                    <span className="inline-flex items-center gap-2">
+                      <BookOpenCheck className="h-4 w-4 shrink-0" aria-hidden />
+                      {t('sba.guide.title')}
+                      {draft && (
+                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
+                          draft
+                        </span>
+                      )}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-sky-800">
+                      {guideOpen ? t('sba.guide.close') : t('sba.guide.open')}
+                      <ChevronDown
+                        className={`h-4 w-4 ${guideOpen ? 'rotate-180' : ''} ${motion ? 'transition-transform' : ''}`}
+                        aria-hidden
+                      />
+                    </span>
+                  </button>
+                  {guideOpen && (
+                    <div className="space-y-4 border-t border-sky-100 px-3 py-3">
+                      {draft && <p className="text-xs text-amber-800">{t('sba.guide.draft')}</p>}
+                      {guide.tip && (
+                        <p className="rounded-xl bg-white/80 px-2.5 py-2 text-sm text-sky-950">
+                          <span className="font-semibold text-sky-800">{t('sba.guide.tip')} </span>
+                          {guide.tip}
+                        </p>
+                      )}
+                      <fieldset>
+                        <legend className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+                          {t('sba.guide.checklist')}
+                        </legend>
+                        <ul className="mt-2 space-y-1.5">
+                          {guide.checklist.map((item) => {
+                            const on = checked.has(item.id)
+                            return (
+                              <li key={item.id}>
+                                <label className="flex cursor-pointer items-start gap-2 rounded-xl bg-white/80 px-2.5 py-2 text-sm text-sky-950 hover:bg-white">
+                                  <input
+                                    type="checkbox"
+                                    className="mt-0.5 h-4 w-4 accent-sky-700"
+                                    checked={on}
+                                    onChange={() => toggleGuideCheck(s.id, item.id)}
+                                    aria-label={t('sba.guide.checkAria', { item: item.text })}
+                                  />
+                                  <span>{item.text}</span>
+                                </label>
+                              </li>
+                            )
+                          })}
+                        </ul>
+                      </fieldset>
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+                          {t('sba.guide.questions')}
+                        </p>
+                        <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm text-sky-950">
+                          {guide.guidingQuestions.map((q) => (
+                            <li key={q}>{q}</li>
+                          ))}
+                        </ol>
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+                          {t('sba.guide.frames')}
+                        </p>
+                        <ul className="mt-2 space-y-1.5">
+                          {guide.sentenceFrames.map((frame) => (
+                            <li key={frame} className="flex items-start gap-2 rounded-xl bg-white/80 px-2.5 py-2">
+                              <p className="min-w-0 flex-1 text-sm text-sky-950">{frame}</p>
+                              <button
+                                type="button"
+                                onClick={() => void copyFrame(frame)}
+                                className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-sky-200 bg-sky-100 px-2 py-1 text-[11px] font-semibold text-sky-900 hover:bg-sky-200"
+                                aria-label={`${t('sba.guide.copy')}: ${frame}`}
+                              >
+                                <ClipboardCopy className="h-3.5 w-3.5" aria-hidden />
+                                {copiedFrame === frame ? t('sba.guide.copied') : t('sba.guide.copy')}
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      {guide.redFlagReminders && guide.redFlagReminders.length > 0 && (
+                        <div>
+                          <p className="text-xs font-semibold uppercase tracking-wide text-rose-800">
+                            {t('sba.guide.redFlags')}
+                          </p>
+                          <ul className="mt-2 space-y-1.5">
+                            {guide.redFlagReminders.map((rf) => (
+                              <li
+                                key={rf.id}
+                                className="flex items-start gap-2 rounded-xl border border-rose-100 bg-rose-50/80 px-2.5 py-2 text-sm text-rose-950"
+                              >
+                                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-600" aria-hidden />
+                                <span>{rf.text}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </section>
+              )
+            })()}
 
             <label className="mt-4 block text-sm font-medium text-teal-900">
               {t('sba.notes')}

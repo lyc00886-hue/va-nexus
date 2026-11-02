@@ -1,10 +1,13 @@
 import {
   ArrowLeftRight,
   BookOpenText,
+  Check,
   Lightbulb,
   Scale,
+  Search,
   Square,
   Volume2,
+  X,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { ARTIST_PAIRS, ARTISTS, artistById as mockArtistById } from '../data/artists'
@@ -18,6 +21,13 @@ import {
   type DbArtistPair,
 } from '../lib/artistMappers'
 import { buildCompareRows, buildSbaTips, chunkText, type CompareRow, type SbaTip } from '../lib/compareInsights'
+import {
+  cultureBucket,
+  getCompareLenses,
+  lensValues,
+  type CultureBucket,
+  type CompareLens,
+} from '../lib/compareLenses'
 import { curatedCompare, getPairCompare } from '../lib/content'
 import { joinList, t } from '../i18n'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
@@ -104,9 +114,35 @@ function ArtistCard({
 }
 
 type DataSource = 'live' | 'mock' | 'loading'
+type ViewMode = 'browse' | 'pairs' | 'free'
 
 function displayName(a: Artist) {
   return artistDisplayName(a)
+}
+
+function matchesQuery(a: Artist, q: string): boolean {
+  if (!q) return true
+  const hay = [
+    a.name_en,
+    a.name_zh ?? '',
+    a.name_zh_hans ?? '',
+    a.medium ?? '',
+    a.culture_group ?? '',
+    ...a.themes,
+    ...a.style_keywords,
+  ]
+    .join(' ')
+    .toLowerCase()
+  return q
+    .toLowerCase()
+    .split(/\s+/)
+    .filter(Boolean)
+    .every((tok) => hay.includes(tok))
+}
+
+function regionFilterOk(a: Artist, bucket: CultureBucket): boolean {
+  if (bucket === 'all') return true
+  return cultureBucket(a.culture_group) === bucket
 }
 
 export function ArtistCompare({
@@ -117,6 +153,7 @@ export function ArtistCompare({
   const { cardPadding, mode, setMode } = useSen()
   const easyRead = mode === 'spld'
   const tts = useSpeech()
+  const lensesFile = useMemo(() => getCompareLenses(), [])
   const [pairs, setPairs] = useState<ArtistPair[]>(ARTIST_PAIRS)
   const [artists, setArtists] = useState<Artist[]>(ARTISTS)
   const [source, setSource] = useState<DataSource>(
@@ -124,6 +161,12 @@ export function ArtistCompare({
   )
   const [error, setError] = useState<string | null>(null)
   const [pairId, setPairId] = useState(ARTIST_PAIRS[0]?.id ?? '')
+  const [view, setView] = useState<ViewMode>('browse')
+  const [query, setQuery] = useState('')
+  const [region, setRegion] = useState<CultureBucket>('all')
+  const [mediumFilter, setMediumFilter] = useState('all')
+  const [picked, setPicked] = useState<string[]>([])
+  const [lensId, setLensId] = useState(lensesFile.lenses[0]?.id ?? 'theme')
 
   useEffect(() => {
     let cancelled = false
@@ -189,6 +232,21 @@ export function ArtistCompare({
     return m
   }, [artists])
 
+  const mediaOptions = useMemo(() => {
+    const set = new Set<string>()
+    for (const a of artists) if (a.medium?.trim()) set.add(a.medium.trim())
+    return Array.from(set).sort((a, b) => a.localeCompare(b, 'zh-Hant'))
+  }, [artists])
+
+  const filtered = useMemo(() => {
+    return artists.filter(
+      (a) =>
+        matchesQuery(a, query.trim()) &&
+        regionFilterOk(a, region) &&
+        (mediumFilter === 'all' || a.medium === mediumFilter),
+    )
+  }, [artists, query, region, mediumFilter])
+
   const pair = useMemo(
     () => pairs.find((p) => p.id === pairId) ?? pairs[0],
     [pairId, pairs],
@@ -220,22 +278,31 @@ export function ArtistCompare({
           : t('ac.borrowN', { n: i + 1 }),
       body,
     }))
-    // Keep the generic reflection-writing tip after the curated ones
     const reflection = generated.find((x) => x.id === 'reflection')
     return reflection ? [...curatedTips, reflection] : curatedTips
   }, [pair, east, west, curated])
 
+  const selectedArtists = useMemo(
+    () => picked.map((id) => artistMap.get(id)).filter((a): a is Artist => Boolean(a)),
+    [picked, artistMap],
+  )
+  const activeLens: CompareLens | undefined = lensesFile.lenses.find((l) => l.id === lensId) ?? lensesFile.lenses[0]
+
   const { stop: stopSpeech } = tts
   useEffect(() => {
     stopSpeech()
-  }, [pairId, stopSpeech])
+  }, [pairId, view, stopSpeech])
+
+  function togglePick(id: string) {
+    setPicked((prev) => {
+      if (prev.includes(id)) return prev.filter((x) => x !== id)
+      if (prev.length >= lensesFile.maxArtists) return prev
+      return [...prev, id]
+    })
+  }
 
   if (source === 'loading') {
     return <p className="p-6 text-sm text-teal-800">{t('ac.loading')}</p>
-  }
-
-  if (!pair || !east || !west) {
-    return <p className="p-6 text-sm text-teal-800">{t('ac.empty')}</p>
   }
 
   const statusLine =
@@ -243,6 +310,402 @@ export function ArtistCompare({
       ? t('ac.status.live', { a: artists.length, p: pairs.length })
       : t('ac.status.mock', { err: error ? ` (${error})` : '', a: artists.length, p: pairs.length })
 
+  const textCls = easyRead ? 'text-base leading-loose' : 'text-sm leading-relaxed'
+
+  return (
+    <div className={`space-y-4 ${easyRead ? 'leading-loose' : ''}`}>
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-bold text-teal-950">{t('ac.title')}</h2>
+          <p className="text-sm text-teal-800/70">{statusLine}</p>
+        </div>
+        <div className="flex flex-wrap gap-2" role="tablist" aria-label={t('ac.title')}>
+          {(
+            [
+              ['browse', t('ac.browse')],
+              ['pairs', t('ac.recommended')],
+              ['free', t('ac.freeCompare')],
+            ] as const
+          ).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={view === id}
+              onClick={() => setView(id)}
+              className={
+                view === id
+                  ? 'rounded-full bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white'
+                  : 'rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-900 hover:bg-teal-50'
+              }
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label={t('ac.tools')}>
+        <button
+          type="button"
+          aria-pressed={easyRead}
+          onClick={() => setMode(easyRead ? 'standard' : 'spld')}
+          className={
+            easyRead
+              ? 'inline-flex items-center gap-1.5 rounded-full bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white shadow'
+              : 'inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-900 hover:bg-teal-50'
+          }
+        >
+          <BookOpenText className="h-3.5 w-3.5" aria-hidden />
+          {easyRead ? t('ac.easyRead.on') : t('ac.easyRead')}
+        </button>
+        {tts.supported ? (
+          tts.speaking ? (
+            <button
+              type="button"
+              onClick={tts.stop}
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white shadow hover:bg-amber-600"
+            >
+              <Square className="h-3.5 w-3.5" aria-hidden />
+              {t('tts.stopAria')}
+            </button>
+          ) : null
+        ) : (
+          <span className="text-xs text-teal-700/70">{t('tts.unsupported')}</span>
+        )}
+      </div>
+
+      {(view === 'browse' || view === 'free') && (
+        <div className="space-y-3 rounded-2xl border border-teal-100 bg-white p-3 shadow-sm">
+          <p className="text-sm text-teal-800/80">{lensesFile.intro}</p>
+          <div className="flex flex-wrap gap-2">
+            <label className="relative min-w-[12rem] flex-1 text-sm">
+              <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.search')}</span>
+              <span className="pointer-events-none absolute bottom-2.5 left-2.5 text-teal-500">
+                <Search className="h-4 w-4" aria-hidden />
+              </span>
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={t('ac.search.ph')}
+                className="w-full rounded-xl border border-teal-200 bg-white py-2 pl-8 pr-3 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+              />
+            </label>
+            <label className="text-sm">
+              <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.filter.region')}</span>
+              <select
+                className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
+                value={region}
+                onChange={(e) => setRegion(e.target.value as CultureBucket)}
+              >
+                <option value="all">{t('ac.filter.region.all')}</option>
+                <option value="hk">{t('ac.filter.region.hk')}</option>
+                <option value="china">{t('ac.filter.region.china')}</option>
+                <option value="west">{t('ac.filter.region.west')}</option>
+                <option value="mingqing">{t('ac.filter.region.mingqing')}</option>
+              </select>
+            </label>
+            <label className="text-sm">
+              <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.filter.medium')}</span>
+              <select
+                className="max-w-[14rem] rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
+                value={mediumFilter}
+                onChange={(e) => setMediumFilter(e.target.value)}
+              >
+                <option value="all">{t('ac.filter.medium.all')}</option>
+                {mediaOptions.map((m) => (
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-semibold text-teal-800">{t('ac.picked', { n: picked.length })}</span>
+            <button
+              type="button"
+              disabled={picked.length < lensesFile.minArtists}
+              onClick={() => setView('free')}
+              className="rounded-lg bg-teal-700 px-2.5 py-1 text-xs font-semibold text-white hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {t('ac.compareBtn')}
+            </button>
+            <button
+              type="button"
+              disabled={picked.length === 0}
+              onClick={() => setPicked([])}
+              className="rounded-lg border border-teal-200 bg-white px-2.5 py-1 text-xs font-semibold text-teal-900 hover:bg-teal-50 disabled:opacity-50"
+            >
+              {t('ac.compareClear')}
+            </button>
+            {picked.length > 0 && picked.length < lensesFile.minArtists && (
+              <span className="text-xs text-amber-800">{t('ac.compareNeed')}</span>
+            )}
+          </div>
+
+          <p className="text-xs text-teal-700/70">{t('ac.results', { n: filtered.length })}</p>
+          {filtered.length === 0 ? (
+            <p className="text-sm text-teal-800">{t('ac.noResults')}</p>
+          ) : (
+            <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {filtered.map((a) => {
+                const on = picked.includes(a.id)
+                const full = !on && picked.length >= lensesFile.maxArtists
+                return (
+                  <li key={a.id}>
+                    <button
+                      type="button"
+                      disabled={full}
+                      onClick={() => togglePick(a.id)}
+                      aria-pressed={on}
+                      className={
+                        on
+                          ? 'flex w-full flex-col rounded-2xl border-2 border-teal-600 bg-teal-50 p-3 text-left shadow-sm'
+                          : 'flex w-full flex-col rounded-2xl border border-teal-100 bg-white p-3 text-left shadow-sm hover:border-teal-300 disabled:cursor-not-allowed disabled:opacity-50'
+                      }
+                    >
+                      <span className="flex items-start justify-between gap-2">
+                        <span className="min-w-0">
+                          <span className="block text-sm font-bold text-teal-950">{artistDisplayName(a)}</span>
+                          {artistSecondaryName(a) && (
+                            <span className="block text-xs text-teal-800/70">{artistSecondaryName(a)}</span>
+                          )}
+                        </span>
+                        {on ? (
+                          <Check className="h-4 w-4 shrink-0 text-teal-700" aria-hidden />
+                        ) : (
+                          <span className="text-[10px] font-semibold uppercase tracking-wide text-teal-600">
+                            {t('ac.pick')}
+                          </span>
+                        )}
+                      </span>
+                      <span className="mt-1 text-[11px] text-teal-700/70">
+                        {[a.culture_group, a.medium].filter(Boolean).join(' · ')}
+                      </span>
+                      <span className="mt-2 flex flex-wrap gap-1">
+                        {a.themes.slice(0, 3).map((th) => (
+                          <span key={th} className="rounded-full bg-white/80 px-1.5 py-0.5 text-[10px] text-teal-800 ring-1 ring-teal-100">
+                            {th}
+                          </span>
+                        ))}
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+        </div>
+      )}
+
+      {view === 'free' && selectedArtists.length >= lensesFile.minArtists && activeLens && (
+        <FreeCompare
+          artists={selectedArtists}
+          lenses={lensesFile.lenses}
+          lens={activeLens}
+          onLensChange={setLensId}
+          sameLabel={lensesFile.columns.same}
+          diffLabel={lensesFile.columns.diff}
+          easyRead={easyRead}
+          padding={cardPadding}
+          textCls={textCls}
+          onBack={() => setView('browse')}
+        />
+      )}
+
+      {view === 'pairs' && pair && east && west && (
+        <PairCompareView
+          pair={pair}
+          pairs={pairs}
+          pairId={pair.id}
+          onPairId={setPairId}
+          east={east}
+          west={west}
+          rows={rows}
+          curated={curated}
+          tips={tips}
+          easyRead={easyRead}
+          cardPadding={cardPadding}
+          textCls={textCls}
+          tts={tts}
+        />
+      )}
+
+      {view === 'pairs' && (!pair || !east || !west) && (
+        <p className="text-sm text-teal-800">{t('ac.empty')}</p>
+      )}
+    </div>
+  )
+}
+
+function FreeCompare({
+  artists,
+  lenses,
+  lens,
+  onLensChange,
+  sameLabel,
+  diffLabel,
+  easyRead,
+  padding,
+  textCls,
+  onBack,
+}: {
+  artists: Artist[]
+  lenses: CompareLens[]
+  lens: CompareLens
+  onLensChange: (id: string) => void
+  sameLabel: string
+  diffLabel: string
+  easyRead: boolean
+  padding: string
+  textCls: string
+  onBack: () => void
+}) {
+  const valueLists = artists.map((a) => ({ artist: a, values: lensValues(a, lens) }))
+  const shared = valueLists
+    .map((x) => x.values)
+    .reduce<string[]>((acc, cur, i) => {
+      if (i === 0) return [...cur]
+      return acc.filter((v) => cur.includes(v))
+    }, [])
+
+  return (
+    <section className={`space-y-3 rounded-2xl border border-teal-100 bg-white shadow-sm ${padding}`}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h3 className="text-base font-bold text-teal-950">{t('ac.freeCompare')}</h3>
+        <button
+          type="button"
+          onClick={onBack}
+          className="inline-flex items-center gap-1 rounded-lg border border-teal-200 px-2 py-1 text-xs font-semibold text-teal-900 hover:bg-teal-50"
+        >
+          <X className="h-3.5 w-3.5" aria-hidden />
+          {t('ac.compareBack')}
+        </button>
+      </div>
+
+      <label className="block text-sm">
+        <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.lens')}</span>
+        <select
+          className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
+          value={lens.id}
+          onChange={(e) => onLensChange(e.target.value)}
+        >
+          {lenses.map((l) => (
+            <option key={l.id} value={l.id}>
+              {l.label}
+            </option>
+          ))}
+        </select>
+      </label>
+
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        {valueLists.map(({ artist, values }) => (
+          <article key={artist.id} className="rounded-xl border border-teal-100 bg-teal-50/40 p-3">
+            <h4 className="font-bold text-teal-950">{artistDisplayName(artist)}</h4>
+            {artistSecondaryName(artist) && (
+              <p className="text-xs text-teal-800/70">{artistSecondaryName(artist)}</p>
+            )}
+            <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-teal-700">
+              {t('ac.lens.fields')}
+            </p>
+            {values.length ? (
+              easyRead ? (
+                <ul className={`mt-1 list-disc space-y-1 pl-5 text-teal-950 ${textCls}`}>
+                  {values.flatMap((v) => chunkText(v)).map((c) => (
+                    <li key={c}>{c}</li>
+                  ))}
+                </ul>
+              ) : (
+                <ul className={`mt-1 space-y-1 text-teal-950/90 ${textCls}`}>
+                  {values.map((v) => (
+                    <li key={v}>{v}</li>
+                  ))}
+                </ul>
+              )
+            ) : (
+              <p className="mt-1 text-xs text-teal-700/60">{t('ac.lens.emptyField')}</p>
+            )}
+            <div className="mt-2">
+              <p className="text-[11px] font-semibold text-amber-800">{diffLabel}</p>
+              <ul className={`mt-1 space-y-1 text-teal-950/90 ${textCls}`}>
+                {values.filter((v) => !shared.includes(v)).map((v) => (
+                  <li key={v}>{v}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="rounded-xl bg-teal-50/70 p-3">
+        <p className="text-xs font-semibold uppercase tracking-wider text-teal-700">{sameLabel}</p>
+        {shared.length ? (
+          <ul className={`mt-1 space-y-1 text-teal-950 ${textCls}`}>
+            {shared.map((v) => (
+              <li key={v}>{v}</li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-1 text-xs text-teal-700/60">{t('ac.lens.emptyField')}</p>
+        )}
+      </div>
+
+      <div className="grid gap-3 md:grid-cols-2">
+        <div>
+          <p className="text-xs font-semibold text-teal-800">{t('ac.lens.questions')}</p>
+          <ol className={`mt-1 list-decimal space-y-1 pl-5 text-teal-950 ${textCls}`}>
+            {lens.questions.map((q) => (
+              <li key={q}>{q}</li>
+            ))}
+          </ol>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-teal-800">{t('ac.lens.frames')}</p>
+          <ul className={`mt-1 space-y-1.5 text-teal-950 ${textCls}`}>
+            {lens.frames.map((f) => (
+              <li key={f} className="rounded-lg bg-white/80 px-2 py-1.5 ring-1 ring-teal-100">
+                {f}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function PairCompareView({
+  pair,
+  pairs,
+  pairId,
+  onPairId,
+  east,
+  west,
+  rows,
+  curated,
+  tips,
+  easyRead,
+  cardPadding,
+  textCls,
+  tts,
+}: {
+  pair: ArtistPair
+  pairs: ArtistPair[]
+  pairId: string
+  onPairId: (id: string) => void
+  east: Artist
+  west: Artist
+  rows: CompareRow[]
+  curated: ReturnType<typeof curatedCompare>
+  tips: SbaTip[]
+  easyRead: boolean
+  cardPadding: string
+  textCls: string
+  tts: ReturnType<typeof useSpeech>
+}) {
   const eName = displayName(east)
   const wName = displayName(west)
   const sep = t('ac.speech.sep')
@@ -277,21 +740,15 @@ export function ArtistCompare({
       tips.map((x, i) => t('ac.speech.tip', { n: i + 1, title: x.title, body: x.body })).join(' '),
   ].join('\n')
 
-  const textCls = easyRead ? 'text-base leading-loose' : 'text-sm leading-relaxed'
-
   return (
-    <div className={`space-y-4 ${easyRead ? 'leading-loose' : ''}`}>
+    <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-xl font-bold text-teal-950">{t('ac.title')}</h2>
-          <p className="text-sm text-teal-800/70">{statusLine}</p>
-        </div>
         <label className="text-sm text-teal-900">
           <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.pairSelect')}</span>
           <select
             className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
-            value={pair.id}
-            onChange={(e) => setPairId(e.target.value)}
+            value={pairId}
+            onChange={(e) => onPairId(e.target.value)}
           >
             {pairs.map((p) => (
               <option key={p.id} value={p.id}>
@@ -300,47 +757,15 @@ export function ArtistCompare({
             ))}
           </select>
         </label>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label={t('ac.tools')}>
-        <button
-          type="button"
-          aria-pressed={easyRead}
-          onClick={() => setMode(easyRead ? 'standard' : 'spld')}
-          className={
-            easyRead
-              ? 'inline-flex items-center gap-1.5 rounded-full bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white shadow'
-              : 'inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-900 hover:bg-teal-50'
-          }
-        >
-          <BookOpenText className="h-3.5 w-3.5" aria-hidden />
-          {easyRead ? t('ac.easyRead.on') : t('ac.easyRead')}
-        </button>
-        {tts.supported ? (
-          tts.speaking ? (
-            <button
-              type="button"
-              onClick={tts.stop}
-              className="inline-flex items-center gap-1.5 rounded-full bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white shadow hover:bg-amber-600"
-            >
-              <Square className="h-3.5 w-3.5" aria-hidden />
-              {t('tts.stopAria')}
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => tts.speak(speechText)}
-              className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-900 hover:bg-teal-50"
-            >
-              <Volume2 className="h-3.5 w-3.5" aria-hidden />
-              {t('tts.read')}
-            </button>
-          )
-        ) : (
-          <span className="text-xs text-teal-700/70">{t('tts.unsupported')}</span>
-        )}
-        {tts.supported && !tts.voiceLang && (
-          <span className="text-[11px] text-teal-700/60">{t('tts.noVoice')}</span>
+        {tts.supported && !tts.speaking && (
+          <button
+            type="button"
+            onClick={() => tts.speak(speechText)}
+            className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-900 hover:bg-teal-50"
+          >
+            <Volume2 className="h-3.5 w-3.5" aria-hidden />
+            {t('tts.read')}
+          </button>
         )}
       </div>
 

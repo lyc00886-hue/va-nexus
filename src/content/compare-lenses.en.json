@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "locale": "en",
+  "minArtists": 2,
+  "maxArtists": 3,
+  "intro": "Pick 2–3 artists, then choose a lens to compare. Borrow composition, concept and material thinking, not style.",
+  "columns": {
+    "same": "Similarities",
+    "diff": "Differences"
+  },
+  "lenses": [
+    {
+      "id": "theme",
+      "dbFields": [
+        "sba_theme_tags"
+      ],
+      "label": "Theme and subject",
+      "questions": [
+        "What theme does each artist focus on?",
+        "Do they share a theme, or look at one theme from different angles?",
+        "How does the subject reflect the society each artist lived in?"
+      ],
+      "frames": [
+        "Both A and B explore ＿＿, but A approaches it through ＿＿ while B uses ＿＿.",
+        "Their attitudes to ＿＿ differ: A is more ＿＿, whereas B is more ＿＿."
+      ]
+    },
+    {
+      "id": "form",
+      "dbFields": [
+        "formal_traits"
+      ],
+      "label": "Visual elements",
+      "questions": [
+        "What stands out in their line, colour, shape and texture?",
+        "How do their composition and use of space differ?",
+        "Which formal features are most typical of each artist?"
+      ],
+      "frames": [
+        "A uses ＿＿ line/colour to create a ＿＿ effect, while B uses ＿＿.",
+        "Both compositions are ＿＿, but A's space feels more ＿＿."
+      ]
+    },
+    {
+      "id": "medium",
+      "dbFields": [
+        "medium"
+      ],
+      "label": "Medium and technique",
+      "questions": [
+        "What materials and tools does each use?",
+        "How does technique shape the effect of the work?",
+        "Would the meaning change in another medium?"
+      ],
+      "frames": [
+        "A works in ＿＿ with ＿＿ technique; B chooses ＿＿.",
+        "The difference in medium makes A feel ＿＿ and B feel ＿＿."
+      ]
+    },
+    {
+      "id": "culture",
+      "dbFields": [
+        "culture_group"
+      ],
+      "label": "Cultural background",
+      "questions": [
+        "Which cultural tradition does each come from?",
+        "Do they borrow from other cultures?",
+        "How does cultural background shape their choices?"
+      ],
+      "frames": [
+        "A builds on the ＿＿ tradition, while B is influenced by ＿＿.",
+        "Both blend ＿＿, but in different ways."
+      ]
+    },
+    {
+      "id": "context",
+      "dbFields": [
+        "spld_summary"
+      ],
+      "label": "Historical context",
+      "questions": [
+        "In what period and circumstances were the works made?",
+        "Do they respond to, resist, or record their time?",
+        "What new meaning do they have today?"
+      ],
+      "frames": [
+        "A worked during ＿＿, responding to ＿＿; B's context was ＿＿.",
+        "Different eras give them different views of ＿＿."
+      ]
+    },
+    {
+      "id": "concept",
+      "dbFields": [
+        "dse_concept"
+      ],
+      "label": "Intention and concept",
+      "questions": [
+        "What is the artist trying to express?",
+        "Do they value skill, emotion or idea most?",
+        "What does a viewer need to read the meaning?"
+      ],
+      "frames": [
+        "A uses ＿＿ to express ＿＿; B focuses on ＿＿.",
+        "Compared with A, B places more weight on ＿＿ (skill/emotion/idea)."
+      ]
+    },
+    {
+      "id": "audience",
+      "dbFields": [
+        "culture_group",
+        "medium"
+      ],
+      "label": "Audience and function",
+      "questions": [
+        "Who was the work originally made for?",
+        "Where was it shown (studio, gallery, street, online)?",
+        "Is its function appreciation, record, critique or interaction?"
+      ],
+      "frames": [
+        "A's work was made for ＿＿; B addresses ＿＿.",
+        "The different setting shifts the viewer's experience from ＿＿ to ＿＿."
+      ]
+    },
+    {
+      "id": "sba",
+      "dbFields": [
+        "sba_theme_tags",
+        "formal_traits"
+      ],
+      "label": "SBA takeaways",
+      "questions": [
+        "Whose composition, concept or material thinking could you borrow?",
+        "How could you combine both influences in your own theme?",
+        "How will you avoid copying their style?"
+      ],
+      "frames": [
+        "I will borrow A's ＿＿ and B's ＿＿ to develop my theme of ＿＿.",
+        "Instead of copying ＿＿, I will change it into ＿＿."
+      ]
+    }
+  ]
+}

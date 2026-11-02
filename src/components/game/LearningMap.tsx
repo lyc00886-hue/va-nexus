@@ -66,6 +66,8 @@ export function LearningMap() {
 
           {units.map((u) => {
             const done = u.nodes.filter((n) => state.nodes[n.id]?.completed).length
+            const total = u.nodes.length
+            const pct = total === 0 ? 0 : Math.round((done / total) * 100)
             return (
               <section key={u.id} className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
                 <div className="flex flex-wrap items-start justify-between gap-2">
@@ -75,10 +77,26 @@ export function LearningMap() {
                   </div>
                   <div className="flex items-center gap-2">
                     {u.nodes.some((n) => n.demo) && <DemoBadge />}
-                    <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600">
-                      {done} / {u.nodes.length}
+                    <span
+                      className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600"
+                      aria-label={t('map.unitProgressAria', { title: u.title, done, total, pct })}
+                    >
+                      {t('map.unitProgress', { done, total, pct })}
                     </span>
                   </div>
+                </div>
+                <div
+                  className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100"
+                  role="progressbar"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={pct}
+                  aria-label={t('map.unitProgressAria', { title: u.title, done, total, pct })}
+                >
+                  <div
+                    className={`h-full rounded-full bg-blue-600 ${motion ? 'transition-all' : ''}`}
+                    style={{ width: `${pct}%` }}
+                  />
                 </div>
 
                 <ol className="mt-5">

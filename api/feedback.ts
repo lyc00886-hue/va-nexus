@@ -28,6 +28,7 @@ const STAGE_LABEL: Record<Locale, Record<Stage, string>> = {
 type ErrKey =
   | 'noKey' | 'rate' | 'json' | 'read' | 'tooLong' | 'badJson' | 'badBody' | 'stage' | 'empty'
   | 'artwork' | 'unavailable' | 'timeout' | 'retry' | 'quota' | 'upstream' | 'blocked' | 'noContent'
+  | 'under18'
 
 const ERR: Record<Locale, Record<ErrKey, string>> = {
   'zh-Hant': {
@@ -40,6 +41,7 @@ const ERR: Record<Locale, Record<ErrKey, string>> = {
     badBody: '請求格式錯誤。',
     stage: 'stage 必須為 describe / analyze / interpret / judge。',
     empty: '請先輸入評賞文字。',
+    under18: 'AI 回饋暫時未開放畀 18 歲以下用戶（等待 Vertex AI 審核）。',
     artwork: 'artwork 必須為文字。',
     unavailable: 'AI 服務暫時未能回應。',
     timeout: 'AI 服務連線逾時，請稍後再試。',
@@ -59,6 +61,7 @@ const ERR: Record<Locale, Record<ErrKey, string>> = {
     badBody: '请求格式错误。',
     stage: 'stage 必须为 describe / analyze / interpret / judge。',
     empty: '请先输入评赏文字。',
+    under18: 'AI 反馈暂时未对 18 岁以下用户开放（等待 Vertex AI 审核）。',
     artwork: 'artwork 必须为文字。',
     unavailable: 'AI 服务暂时未能响应。',
     timeout: 'AI 服务连接超时，请稍后再试。',
@@ -78,6 +81,7 @@ const ERR: Record<Locale, Record<ErrKey, string>> = {
     badBody: 'Invalid request format.',
     stage: 'stage must be describe / analyze / interpret / judge.',
     empty: 'Please enter your appreciation text first.',
+    under18: 'AI feedback is temporarily unavailable for users under 18 (pending a Vertex AI review).',
     artwork: 'artwork must be text.',
     unavailable: 'The AI service is not responding right now.',
     timeout: 'The AI service timed out — please try again later.',
@@ -263,8 +267,18 @@ export async function POST(request: Request): Promise<Response> {
   }
   if (!body || typeof body !== 'object') return json(400, err('badBody'))
 
-  const { stage: rawStage, text: rawText, artwork: rawArtwork, locale: rawLocale } = body as Record<string, unknown>
+  const {
+    stage: rawStage,
+    text: rawText,
+    artwork: rawArtwork,
+    locale: rawLocale,
+    adultConfirmed: rawAdult,
+  } = body as Record<string, unknown>
   if (rawLocale !== undefined) locale = parseLocale(rawLocale)
+  // Client must affirm 18+ via can_use_ai flow. Never accept birth year / age here.
+  if (rawAdult !== true) {
+    return json(403, err('under18'))
+  }
   const stage = typeof rawStage === 'string' ? STAGE_ALIASES[rawStage.toLowerCase()] : undefined
   if (!stage) return json(400, err('stage'))
   if (typeof rawText !== 'string' || !rawText.trim()) {

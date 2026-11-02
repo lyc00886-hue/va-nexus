@@ -1,5 +1,6 @@
 import { XP } from '../game/rewards'
 import type { ActivityEntry, GameStateV1, NodeProgress } from '../game/types'
+import { clearCachedCanUseAi } from './aiAgeGate'
 import { clearLocalNotes } from './sbaEvidence'
 import { supabase } from './supabase'
 
@@ -194,6 +195,7 @@ export async function flushProgressSave(): Promise<void> {
  */
 export function clearPerUserLocalData() {
   setLocalOwner(null)
+  clearCachedCanUseAi()
   clearLocalNotes()
   try {
     localStorage.removeItem(GAME_STORAGE_KEY)

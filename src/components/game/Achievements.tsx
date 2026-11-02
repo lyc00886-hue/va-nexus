@@ -1,22 +1,36 @@
 import { Flame, Heart, Lock, Star, Trophy } from 'lucide-react'
 import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
+import { getAllNodes } from '../../game/curriculum'
 import { getBadges, getLevels } from '../../game/rewards'
 import { getLocale, INTL_LOCALE, t } from '../../i18n'
 import { ActivityLog } from './ActivityLog'
 
 export function Achievements() {
-  const { state, level, streak, setHearts, resetGame } = useGame()
+  const { state, level, streak, setHearts, resetGame, progressPct } = useGame()
   const { supportsOn } = useSen()
   const BADGES = getBadges()
   const LEVELS = getLevels()
   const unlocked = BADGES.filter((b) => state.badges[b.id]).length
+  const allNodes = getAllNodes()
+  const doneLessons = allNodes.filter((n) => state.nodes[n.id]?.completed).length
+  const totalLessons = allNodes.length
 
   return (
     <div className="space-y-5">
       <div>
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.achievements')}</h2>
         <p className="text-sm text-slate-500">{t('ach.unlocked', { n: unlocked, total: BADGES.length })}</p>
+      </div>
+
+      <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+        <p className="text-xs font-medium text-slate-500">{t('ach.overallProgress')}</p>
+        <p className="mt-1 text-2xl font-bold text-slate-900">
+          {t('ach.overallProgressValue', { pct: progressPct, done: doneLessons, total: totalLessons })}
+        </p>
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-valuenow={progressPct} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-full rounded-full bg-emerald-500" style={{ width: `${progressPct}%` }} />
+        </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-3">
