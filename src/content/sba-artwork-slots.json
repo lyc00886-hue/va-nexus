@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "id": "sba-artwork-slots",
+    "locale": "zh-Hant",
+    "notes": "SBA 作品集四件位短標。對齊官方：四件藝術創作／評賞研究，最少一件為藝術作品。唔係單件無限稿。"
+  },
+  "section": {
+    "title": "校本評核作品",
+    "subtitle": "共四件（藝術作品／評賞研究）",
+    "hint": "最少一件須為藝術作品；其餘可以係評賞研究。每件各自進度、上傳同自評。"
+  },
+  "slots": {
+    "1": { "short": "作品 1", "full": "作品／評賞 1", "empty": "作品 1（未開始）" },
+    "2": { "short": "作品 2", "full": "作品／評賞 2", "empty": "作品 2（未開始）" },
+    "3": { "short": "作品 3", "full": "作品／評賞 3", "empty": "作品 3（未開始）" },
+    "4": { "short": "作品 4", "full": "作品／評賞 4", "empty": "作品 4（未開始）" }
+  },
+  "switcher": {
+    "label": "選擇作品",
+    "aria": "切換至第 {n} 件作品／評賞",
+    "progressOf": "第 {n}／4 件"
+  },
+  "typeToggle": {
+    "artwork": "藝術作品",
+    "criticalStudy": "評賞研究",
+    "chooseType": "類型"
+  },
+  "abilityChart": {
+    "awFourPiecesAxisHint": "對應作品 1–4 嘅完成進度"
+  }
+}

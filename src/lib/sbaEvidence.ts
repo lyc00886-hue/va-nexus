@@ -1,5 +1,6 @@
 import { t } from '../i18n'
 import { randomId } from './deviceId'
+import { assignPieceSlot, isSlotId, type SlotId } from './sbaArtworkSlots'
 import { supabase } from './supabase'
 
 export const MAX_FILE_BYTES = 5 * 1024 * 1024
@@ -15,6 +16,8 @@ export type SbaEvidence = {
   /** Signed URL (private bucket) or object URL (local fallback) */
   url: string | null
   created_at: string
+  /** Portfolio piece 1–4. Legacy rows with no slot are treated as piece 1. */
+  slot?: SlotId
   local?: boolean
 }
 
@@ -35,13 +38,24 @@ function extOf(file: File): string {
 export const SBA_LOCAL_NOTES_KEY = 'va-nexus:sba-local-notes'
 const LOCAL_KEY = SBA_LOCAL_NOTES_KEY
 
-type LocalNote = { id: string; step: number; note: string; created_at: string }
+type LocalNote = { id: string; step: number; note: string; created_at: string; slot?: number }
 
 export function loadLocalNotes(): SbaEvidence[] {
   try {
     const raw = localStorage.getItem(LOCAL_KEY)
     const list = raw ? (JSON.parse(raw) as LocalNote[]) : []
-    return list.map((n) => ({ ...n, file_path: null, url: null, local: true }))
+    return assignPieceSlot(
+      list.map((n) => ({
+        id: n.id,
+        step: n.step,
+        note: n.note,
+        file_path: null,
+        url: null,
+        created_at: n.created_at,
+        local: true,
+        slot: n.slot,
+      })),
+    )
   } catch {
     return []
   }
@@ -56,7 +70,8 @@ export function clearLocalNotes() {
 }
 
 /** Local fallback: notes persist in localStorage, photos are session-only object URLs. */
-export function saveLocal(step: number, files: File[], note: string): SbaEvidence[] {
+export function saveLocal(step: number, files: File[], note: string, slot: SlotId = 1): SbaEvidence[] {
+  const piece = isSlotId(slot) ? slot : 1
   const now = new Date().toISOString()
   const trimmed = note.trim() || null
   const items: SbaEvidence[] = files.map((f) => ({
@@ -67,14 +82,24 @@ export function saveLocal(step: number, files: File[], note: string): SbaEvidenc
     url: URL.createObjectURL(f),
     created_at: now,
     local: true,
+    slot: piece,
   }))
   if (items.length === 0 && trimmed) {
-    items.push({ id: randomId(), step, note: trimmed, file_path: null, url: null, created_at: now, local: true })
+    items.push({
+      id: randomId(),
+      step,
+      note: trimmed,
+      file_path: null,
+      url: null,
+      created_at: now,
+      local: true,
+      slot: piece,
+    })
   }
   if (trimmed) {
     try {
       const existing = JSON.parse(localStorage.getItem(LOCAL_KEY) ?? '[]') as LocalNote[]
-      existing.push({ id: items[0].id, step, note: trimmed, created_at: now })
+      existing.push({ id: items[0].id, step, note: trimmed, created_at: now, slot: piece })
       localStorage.setItem(LOCAL_KEY, JSON.stringify(existing))
     } catch {
       /* storage full / disabled — keep in memory only */

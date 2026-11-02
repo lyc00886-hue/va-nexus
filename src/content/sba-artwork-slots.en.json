@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "id": "sba-artwork-slots",
+    "locale": "en",
+    "notes": "Short labels for four SBA portfolio slots. Aligns with HKEAA: four pieces of Artwork / Critical Studies; at least one Artwork. Not a single endless draft."
+  },
+  "section": {
+    "title": "SBA portfolio pieces",
+    "subtitle": "Four pieces (Artwork / Critical studies)",
+    "hint": "At least one must be an Artwork; the others may be Critical studies. Each piece has its own progress, upload and self-assessment."
+  },
+  "slots": {
+    "1": { "short": "Piece 1", "full": "Artwork / Critical study 1", "empty": "Piece 1 (not started)" },
+    "2": { "short": "Piece 2", "full": "Artwork / Critical study 2", "empty": "Piece 2 (not started)" },
+    "3": { "short": "Piece 3", "full": "Artwork / Critical study 3", "empty": "Piece 3 (not started)" },
+    "4": { "short": "Piece 4", "full": "Artwork / Critical study 4", "empty": "Piece 4 (not started)" }
+  },
+  "switcher": {
+    "label": "Choose piece",
+    "aria": "Switch to piece {n}",
+    "progressOf": "Piece {n} of 4"
+  },
+  "typeToggle": {
+    "artwork": "Artwork",
+    "criticalStudy": "Critical study",
+    "chooseType": "Type"
+  },
+  "abilityChart": {
+    "awFourPiecesAxisHint": "Maps to progress on pieces 1–4"
+  }
+}
