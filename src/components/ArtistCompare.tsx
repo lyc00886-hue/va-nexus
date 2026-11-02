@@ -1,7 +1,15 @@
 import { ArrowLeftRight } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import { ARTIST_PAIRS, artistById } from '../data/artists'
+import { useEffect, useMemo, useState } from 'react'
+import { ARTIST_PAIRS, ARTISTS, artistById as mockArtistById } from '../data/artists'
 import { useSen } from '../context/SenContext'
+import {
+  mapDbArtist,
+  mapDbPair,
+  type DbArtist,
+  type DbArtistPair,
+} from '../lib/artistMappers'
+import { isSupabaseConfigured, supabase } from '../lib/supabase'
+import type { Artist, ArtistPair } from '../types'
 
 function ArtistCard({
   side,
@@ -59,27 +67,116 @@ function ArtistCard({
   )
 }
 
-export function ArtistCompare() {
+type DataSource = 'live' | 'mock' | 'loading'
+
+export function ArtistCompare({
+  onSourceChange,
+}: {
+  onSourceChange?: (source: Exclude<DataSource, 'loading'>) => void
+} = {}) {
   const { cardPadding } = useSen()
+  const [pairs, setPairs] = useState<ArtistPair[]>(ARTIST_PAIRS)
+  const [artists, setArtists] = useState<Artist[]>(ARTISTS)
+  const [source, setSource] = useState<DataSource>(
+    isSupabaseConfigured ? 'loading' : 'mock',
+  )
+  const [error, setError] = useState<string | null>(null)
   const [pairId, setPairId] = useState(ARTIST_PAIRS[0]?.id ?? '')
 
+  useEffect(() => {
+    let cancelled = false
+
+    async function load() {
+      if (!supabase) {
+        setSource('mock')
+        onSourceChange?.('mock')
+        return
+      }
+
+      setSource('loading')
+      const [artistsRes, pairsRes] = await Promise.all([
+        supabase.from('artists').select('*').order('artist_id'),
+        supabase.from('artist_pairs').select('*').order('id'),
+      ])
+
+      if (cancelled) return
+
+      if (artistsRes.error || pairsRes.error) {
+        const msg = artistsRes.error?.message || pairsRes.error?.message || 'fetch failed'
+        setError(msg)
+        setPairs(ARTIST_PAIRS)
+        setArtists(ARTISTS)
+        setPairId(ARTIST_PAIRS[0]?.id ?? '')
+        setSource('mock')
+        onSourceChange?.('mock')
+        return
+      }
+
+      const dbArtists = (artistsRes.data as DbArtist[] | null) ?? []
+      const dbPairs = (pairsRes.data as DbArtistPair[] | null) ?? []
+
+      if (dbArtists.length === 0 || dbPairs.length === 0) {
+        setError('Supabase returned empty seed data')
+        setPairs(ARTIST_PAIRS)
+        setArtists(ARTISTS)
+        setPairId(ARTIST_PAIRS[0]?.id ?? '')
+        setSource('mock')
+        onSourceChange?.('mock')
+        return
+      }
+
+      const mappedArtists = dbArtists.map(mapDbArtist)
+      const mappedPairs = dbPairs.map(mapDbPair)
+      setArtists(mappedArtists)
+      setPairs(mappedPairs)
+      setPairId(mappedPairs[0]?.id ?? '')
+      setError(null)
+      setSource('live')
+      onSourceChange?.('live')
+    }
+
+    void load()
+    return () => {
+      cancelled = true
+    }
+  }, [onSourceChange])
+
+  const artistMap = useMemo(() => {
+    const m = new Map<string, Artist>()
+    for (const a of artists) m.set(a.id, a)
+    return m
+  }, [artists])
+
   const pair = useMemo(
-    () => ARTIST_PAIRS.find((p) => p.id === pairId) ?? ARTIST_PAIRS[0],
-    [pairId],
+    () => pairs.find((p) => p.id === pairId) ?? pairs[0],
+    [pairId, pairs],
   )
-  const east = pair ? artistById(pair.east_artist_id) : undefined
-  const west = pair ? artistById(pair.west_artist_id) : undefined
+  const east = pair
+    ? artistMap.get(pair.east_artist_id) ?? mockArtistById(pair.east_artist_id)
+    : undefined
+  const west = pair
+    ? artistMap.get(pair.west_artist_id) ?? mockArtistById(pair.west_artist_id)
+    : undefined
+
+  if (source === 'loading') {
+    return <p className="p-6 text-sm text-teal-800">載入藝術家種子資料…</p>
+  }
 
   if (!pair || !east || !west) {
     return <p className="p-6 text-sm text-teal-800">未有藝術家種子資料。</p>
   }
+
+  const statusLine =
+    source === 'live'
+      ? `Live Supabase · ${artists.length} 位藝術家 · ${pairs.length} 組對比`
+      : `Mock fallback${error ? `（${error}）` : ''} · ${artists.length} 位 · ${pairs.length} 組`
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-teal-950">中西藝術家對比</h2>
-          <p className="text-sm text-teal-800/70">20 位種子庫 · 10 組主題對照（mock → Supabase）</p>
+          <p className="text-sm text-teal-800/70">{statusLine}</p>
         </div>
         <label className="text-sm text-teal-900">
           <span className="mb-1 block text-xs font-medium text-teal-700">主題配對</span>
@@ -88,7 +185,7 @@ export function ArtistCompare() {
             value={pair.id}
             onChange={(e) => setPairId(e.target.value)}
           >
-            {ARTIST_PAIRS.map((p) => (
+            {pairs.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.theme}
               </option>
