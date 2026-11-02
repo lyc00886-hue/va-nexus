@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react'
+import { Bot, Loader2, Sparkles } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { boostOralText, ORAL_TO_DSE } from '../data/vocab'
 import { useSen } from '../context/SenContext'
@@ -12,6 +12,17 @@ const STEPS = [
 
 type StepKey = (typeof STEPS)[number]['key']
 
+type AiState = { status: 'idle' | 'loading' | 'done' | 'error'; text: string }
+
+const STAGE_API: Record<StepKey, 'describe' | 'analyze' | 'interpret' | 'judge'> = {
+  describe: 'describe',
+  analyse: 'analyze',
+  interpret: 'interpret',
+  judge: 'judge',
+}
+
+const AI_IDLE: AiState = { status: 'idle', text: '' }
+
 export function FeldmanWriter() {
   const { cardPadding } = useSen()
   const [texts, setTexts] = useState<Record<StepKey, string>>({
@@ -23,6 +34,13 @@ export function FeldmanWriter() {
   const [active, setActive] = useState<StepKey>('describe')
   const [boosted, setBoosted] = useState<string | null>(null)
   const [hits, setHits] = useState<string[]>([])
+  const [artwork, setArtwork] = useState('')
+  const [ai, setAi] = useState<Record<StepKey, AiState>>({
+    describe: AI_IDLE,
+    analyse: AI_IDLE,
+    interpret: AI_IDLE,
+    judge: AI_IDLE,
+  })
 
   const draft = useMemo(
     () => STEPS.map((s) => `【${s.title}】\n${texts[s.key] || '（未寫）'}`).join('\n\n'),
@@ -38,12 +56,52 @@ export function FeldmanWriter() {
     }
   }
 
+  async function requestAiFeedback(key: StepKey) {
+    const text = texts[key].trim()
+    if (!text) {
+      setAi((a) => ({ ...a, [key]: { status: 'error', text: '請先寫低你嘅評賞，再撳「AI 回饋」。' } }))
+      return
+    }
+    setAi((a) => ({ ...a, [key]: { status: 'loading', text: '' } }))
+    try {
+      const res = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          stage: STAGE_API[key],
+          text: text.slice(0, 2000),
+          artwork: artwork.trim() || undefined,
+        }),
+      })
+      const data = (await res.json().catch(() => ({}))) as { feedback?: string; error?: string }
+      if (!res.ok || !data.feedback) {
+        throw new Error(data.error || `AI 回饋暫時未能提供（${res.status}）。`)
+      }
+      setAi((a) => ({ ...a, [key]: { status: 'done', text: data.feedback ?? '' } }))
+    } catch (err) {
+      const msg = err instanceof Error && err.message !== 'Failed to fetch' ? err.message : '網絡連線出錯，請稍後再試。'
+      setAi((a) => ({ ...a, [key]: { status: 'error', text: msg } }))
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div>
         <h2 className="text-xl font-bold text-teal-950">費德曼四步寫作</h2>
-        <p className="text-sm text-teal-800/70">口語 → DSE 術語助推（客戶端詞典，稍後可接 Gemini）</p>
+        <p className="text-sm text-teal-800/70">口語 → DSE 術語助推（客戶端詞典）＋ Gemini AI 回饋</p>
       </div>
+
+      <label className="block text-sm">
+        <span className="font-medium text-teal-900">評賞作品（選填）</span>
+        <input
+          type="text"
+          value={artwork}
+          maxLength={200}
+          onChange={(e) => setArtwork(e.target.value)}
+          placeholder="例如：梵高《星夜》"
+          className="mt-1 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+        />
+      </label>
 
       <div className="flex flex-wrap gap-2">
         {STEPS.map((s) => (
@@ -79,15 +137,31 @@ export function FeldmanWriter() {
             value={texts[s.key]}
             onChange={(e) => setTexts((t) => ({ ...t, [s.key]: e.target.value }))}
             placeholder="用粵語口語都得，再撳助推轉術語…"
+            maxLength={2000}
           />
-          <button
-            type="button"
-            onClick={runBooster}
-            className="mt-3 inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600"
-          >
-            <Sparkles className="h-4 w-4" aria-hidden />
-            口語 → DSE 術語
-          </button>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={runBooster}
+              className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white hover:bg-amber-600"
+            >
+              <Sparkles className="h-4 w-4" aria-hidden />
+              口語 → DSE 術語
+            </button>
+            <button
+              type="button"
+              onClick={() => requestAiFeedback(s.key)}
+              disabled={ai[s.key].status === 'loading'}
+              className="inline-flex items-center gap-2 rounded-full bg-teal-700 px-4 py-2 text-sm font-bold text-white hover:bg-teal-800 disabled:cursor-wait disabled:opacity-70"
+            >
+              {ai[s.key].status === 'loading' ? (
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+              ) : (
+                <Bot className="h-4 w-4" aria-hidden />
+              )}
+              {ai[s.key].status === 'loading' ? 'AI 分析中…' : 'AI 回饋'}
+            </button>
+          </div>
           {boosted !== null && (
             <div className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-950">
               {hits.length === 0 ? (
@@ -98,6 +172,21 @@ export function FeldmanWriter() {
                 </p>
               )}
             </div>
+          )}
+          {ai[s.key].status === 'done' && (
+            <div
+              className="mt-3 rounded-xl border border-teal-200 bg-teal-50 px-3 py-2 text-sm text-teal-950"
+              aria-live="polite"
+            >
+              <p className="mb-1 font-semibold">AI 老師回饋</p>
+              <p className="whitespace-pre-wrap">{ai[s.key].text}</p>
+              <p className="mt-2 text-xs text-teal-800/60">由 Gemini 生成，僅供參考。</p>
+            </div>
+          )}
+          {ai[s.key].status === 'error' && (
+            <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-900" role="alert">
+              {ai[s.key].text}
+            </p>
           )}
         </section>
       ))}
