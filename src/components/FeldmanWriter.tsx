@@ -24,7 +24,7 @@ import { getLocale, joinList, t } from '../i18n'
 
 type StepKey = FeldmanStageId
 
-type AiState = { status: 'idle' | 'loading' | 'done' | 'error'; text: string }
+type AiState = { status: 'idle' | 'loading' | 'done' | 'error' | 'notice'; text: string }
 
 const STAGE_API: Record<StepKey, 'describe' | 'analyze' | 'interpret' | 'judge'> = {
   describe: 'describe',
@@ -154,7 +154,15 @@ export function FeldmanWriter() {
           locale: getLocale(),
         }),
       })
-      const data = (await res.json().catch(() => ({}))) as { feedback?: string; error?: string }
+      const data = (await res.json().catch(() => ({}))) as {
+        feedback?: string
+        error?: string
+        code?: string
+      }
+      if (data.code === 'gemini_quota') {
+        setAi((a) => ({ ...a, [key]: { status: 'notice', text: t('fw.ai.paused') } }))
+        return
+      }
       if (!res.ok || !data.feedback) {
         throw new Error(data.error || t('fw.err.status', { status: res.status }))
       }
@@ -422,6 +430,14 @@ export function FeldmanWriter() {
                 <p className="whitespace-pre-wrap">{ai[s.key].text}</p>
                 <p className="mt-2 text-xs text-teal-800/60">{t('fw.ai.disclaimer')}</p>
               </div>
+            )}
+            {ai[s.key].status === 'notice' && (
+              <p
+                className="mt-3 rounded-xl border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-950"
+                role="status"
+              >
+                {ai[s.key].text}
+              </p>
             )}
             {ai[s.key].status === 'error' && (
               <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-900" role="alert">
