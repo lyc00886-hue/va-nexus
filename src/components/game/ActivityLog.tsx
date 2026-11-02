@@ -29,7 +29,17 @@ export function ActivityLog({ limit = 6 }: { limit?: number }) {
     <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
       <h3 className="text-sm font-bold text-slate-900">{t('activity.recent')}</h3>
       {items.length === 0 ? (
-        <p className="mt-3 text-sm text-slate-500">{t('activity.empty')}</p>
+        <div className="mt-3 flex flex-col items-center gap-2 py-4 text-center">
+          <img
+            src="/mascot-otter-empty.png"
+            alt=""
+            width={96}
+            height={96}
+            className="h-24 w-24 object-contain"
+            decoding="async"
+          />
+          <p className="text-sm text-slate-500">{t('activity.empty')}</p>
+        </div>
       ) : (
         <ul className="mt-3 space-y-3">
           {items.map((a) => {

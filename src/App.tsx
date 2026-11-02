@@ -54,31 +54,33 @@ export default function App() {
         <Sidebar active={tab} onChange={setTab} />
         <main className="min-w-0 flex-1 px-4 py-5 pb-28 sm:px-6 md:pb-10 lg:px-8">
           <div className="mx-auto max-w-5xl">
-            {tab === 'map' && <LearningMap />}
-            {tab === 'research' && <ResearchLab />}
-            {tab === 'portfolio' && (
-              <div className="space-y-4">
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900">{t('tab.portfolio')}</h2>
-                  <p className="text-sm text-slate-500">{t('app.portfolio.subtitle')}</p>
+            <div key={tab} className="tab-panel-enter">
+              {tab === 'map' && <LearningMap />}
+              {tab === 'research' && <ResearchLab />}
+              {tab === 'portfolio' && (
+                <div className="space-y-4">
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-900">{t('tab.portfolio')}</h2>
+                    <p className="text-sm text-slate-500">{t('app.portfolio.subtitle')}</p>
+                  </div>
+                  <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                    <SbaQuest />
+                  </div>
                 </div>
-                <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-                  <SbaQuest />
+              )}
+              {tab === 'library' && (
+                <div className="space-y-4">
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-900">{t('tab.library')}</h2>
+                    <p className="text-sm text-slate-500">{t('app.library.subtitle')}</p>
+                  </div>
+                  <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+                    <ArtistCompare onSourceChange={onSourceChange} />
+                  </div>
                 </div>
-              </div>
-            )}
-            {tab === 'library' && (
-              <div className="space-y-4">
-                <div>
-                  <h2 className="text-2xl font-bold text-slate-900">{t('tab.library')}</h2>
-                  <p className="text-sm text-slate-500">{t('app.library.subtitle')}</p>
-                </div>
-                <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-                  <ArtistCompare onSourceChange={onSourceChange} />
-                </div>
-              </div>
-            )}
-            {tab === 'achievements' && <Achievements />}
+              )}
+              {tab === 'achievements' && <Achievements />}
+            </div>
             <p className="mt-8 text-center text-[11px] text-slate-400">
               {footer} · <PrivacyLink />
             </p>

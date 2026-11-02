@@ -535,7 +535,17 @@ export function ArtistCompare({
       )}
 
       {view === 'pairs' && (!pair || !east || !west) && (
-        <p className="text-sm text-teal-800">{t('ac.empty')}</p>
+        <div className="flex flex-col items-center gap-2 py-8 text-center">
+          <img
+            src="/mascot-otter-empty.png"
+            alt=""
+            width={112}
+            height={112}
+            className="h-28 w-28 object-contain"
+            decoding="async"
+          />
+          <p className="text-sm text-teal-800">{t('ac.empty')}</p>
+        </div>
       )}
     </div>
   )

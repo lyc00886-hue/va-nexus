@@ -1,4 +1,4 @@
-import { Accessibility, Sparkles } from 'lucide-react'
+import { Accessibility } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useSen } from '../context/SenContext'
 import { LOCALE_NAME, LOCALE_SHORT, LOCALES, useT, type MessageKey } from '../i18n'
@@ -50,22 +50,19 @@ export function Header() {
   const close = useCallback(() => setOpen(false), [])
 
   return (
-    <header className="sticky top-0 z-40 border-b border-slate-200 bg-white/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-teal-100 bg-white/90 backdrop-blur">
       <div className="relative flex flex-wrap items-center justify-between gap-3 px-4 py-3">
-        <div className="flex items-center gap-2">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm">
-            <Sparkles className="h-5 w-5" aria-hidden />
-          </span>
-          <div>
-            <p className="text-sm font-bold tracking-tight text-slate-900">VA-Nexus AI</p>
-            <p className="text-[11px] text-slate-500">{t('header.subtitle')}</p>
+        <div className="flex min-w-0 items-center gap-2.5">
+          <div className="min-w-0">
+            <p className="text-base font-extrabold tracking-tight text-teal-700 sm:text-lg">VA-Nexus</p>
+            <p className="truncate text-[11px] text-slate-500">{t('header.subtitle')}</p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <LanguageSwitcher />
           <div
-            className="inline-flex rounded-full bg-blue-50 p-1 ring-1 ring-blue-100"
+            className="inline-flex rounded-full bg-teal-50 p-1 ring-1 ring-teal-100"
             role="group"
             aria-label={t('header.senModes')}
           >
@@ -78,8 +75,8 @@ export function Header() {
                 onClick={() => setMode(m.id)}
                 className={
                   mode === m.id
-                    ? 'rounded-full bg-blue-600 px-3 py-1 text-xs font-semibold text-white shadow'
-                    : 'rounded-full px-3 py-1 text-xs font-medium text-slate-600 hover:bg-blue-100'
+                    ? 'rounded-full bg-teal-600 px-3 py-1 text-xs font-semibold text-white shadow'
+                    : 'rounded-full px-3 py-1 text-xs font-medium text-slate-600 hover:bg-teal-100'
                 }
               >
                 {t(m.label)}
@@ -95,8 +92,8 @@ export function Header() {
             onClick={() => setOpen((o) => !o)}
             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${
               open || mode === 'custom'
-                ? 'border-blue-600 bg-blue-600 text-white'
-                : 'border-blue-200 bg-white text-slate-700 hover:bg-blue-50'
+                ? 'border-teal-600 bg-teal-600 text-white'
+                : 'border-teal-200 bg-white text-slate-700 hover:bg-teal-50'
             }`}
           >
             <Accessibility className="h-3.5 w-3.5" aria-hidden />
