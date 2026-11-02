@@ -7,7 +7,8 @@
  *   quiz   = { type: 'mcq'|'match'|'fill', question, options: string[], answer, explain }
  *     mcq   → answer = the correct option text (or index)
  *     match → options = left terms, answer = { [left]: right }
- *     fill  → question contains ＿＿ ; options = word bank (may be empty → auto bank)
+ *     fill  → question contains ＿＿ ; wordBank (preferred, curated by PEANUTS) or options = word bank
+ *             (both empty → auto-generated distractors)
  */
 import type { LessonCard, Question } from './types'
 
@@ -17,6 +18,8 @@ export type ContentQuiz = {
   options: string[]
   answer: string | number | Record<string, string>
   explain?: string
+  /** Curated fill-in choices (incl. the answer). When present, used instead of auto distractors. */
+  wordBank?: string[]
 }
 
 export type ContentLesson = {
@@ -77,6 +80,15 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
     }
     const answer = String(q.answer)
     const prompt = q.question.includes('＿＿') ? q.question : `${q.question} ＿＿`
+    const curated = (q.wordBank ?? []).map((w) => String(w).trim()).filter(Boolean)
+    if (curated.length) {
+      const bank = [...new Set(curated)]
+      if (!bank.includes(answer)) {
+        console.warn(`[content] ${id}: wordBank missing answer, appended`)
+        bank.push(answer)
+      }
+      return { id, type: 'fill', prompt, bank, answer, explain }
+    }
     let bank = q.options.length ? [...q.options] : []
     if (!bank.includes(answer)) bank.push(answer)
     if (bank.length < 3) {
