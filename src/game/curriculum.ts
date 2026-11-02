@@ -5,13 +5,18 @@ import type { Lesson, Unit } from './types'
 
 /**
  * Art-history learning map — content by PEANUTS (src/content/art-history-map[.<locale>].json).
+ * Accepts either legacy `{ unit }` or multi-unit `{ units: [...] }` (v2).
  * Facts not yet source-checked → every lesson carries 「內容待老師審閱」.
- * To add a unit: append another `{ unit }` JSON and push it into contentUnits().
  */
 type ContentUnit = { id: string; title: string; intro?: string; lessons: ContentLesson[] }
 
+type ArtHistoryMapFile = { units?: ContentUnit[]; unit?: ContentUnit }
+
 function contentUnits(): ContentUnit[] {
-  return [contentJson<{ unit: ContentUnit }>('art-history-map').unit]
+  const raw = contentJson<ArtHistoryMapFile>('art-history-map')
+  if (Array.isArray(raw.units) && raw.units.length > 0) return raw.units
+  if (raw.unit) return [raw.unit]
+  throw new Error('[curriculum] art-history-map missing units[] or unit')
 }
 
 function toLesson(l: ContentLesson, pool: string[]): Lesson {
