@@ -6,7 +6,7 @@
   "mastery.mastered.hint": "你已经掌握这一课！",
   "badge.perfect-quiz.desc": "一次小测中每题第一次就答对",
   "privacy.title": "隐私说明",
-  "support.readAloud.desc": "短课卡自动朗读（粤语／中文语音）",
+  "support.readAloud.desc": "短课卡用目前语言自动朗读",
   "support.reduceMotion.desc": "关闭闪动和过场效果",
   "nudge.reason.wrong": "同一类题目试了几次都未答对，可能是题目文字太多。",
   "nudge.reason.idle": "这张卡已停留了一段时间。",

@@ -87,7 +87,7 @@
   "support.focus": "专注隧道",
   "support.focus.desc": "一次只显示一张卡，附专注计时",
   "support.readAloud": "自动朗读",
-  "support.readAloud.desc": "短课卡自动朗读（粤语／中文语音）",
+  "support.readAloud.desc": "短课卡用目前语言自动朗读",
   "support.reduceMotion": "减少动画",
   "support.reduceMotion.desc": "关闭闪动和过场效果",
   "support.contrast": "高对比",

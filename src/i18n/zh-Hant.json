@@ -87,7 +87,7 @@
   "support.focus": "專注隧道",
   "support.focus.desc": "一次只顯示一張卡，附專注計時",
   "support.readAloud": "自動朗讀",
-  "support.readAloud.desc": "短課卡自動讀出（廣東話／中文語音）",
+  "support.readAloud.desc": "短課卡用目前語言自動朗讀",
   "support.reduceMotion": "減少動畫",
   "support.reduceMotion.desc": "關閉閃動同過場效果",
   "support.contrast": "高對比",

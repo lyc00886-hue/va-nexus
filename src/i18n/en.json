@@ -87,7 +87,7 @@
   "support.focus": "Focus tunnel",
   "support.focus.desc": "Shows one card at a time, with a focus timer",
   "support.readAloud": "Auto read-aloud",
-  "support.readAloud.desc": "Reads short cards aloud automatically",
+  "support.readAloud.desc": "Reads short cards aloud in the current language",
   "support.reduceMotion": "Reduce motion",
   "support.reduceMotion.desc": "Turns off flashing and transition effects",
   "support.contrast": "High contrast",
