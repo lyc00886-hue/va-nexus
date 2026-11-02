@@ -1,10 +1,11 @@
 import type { Artist, ArtistPair } from '../types'
-import { t } from '../i18n'
+import { getLocale, t } from '../i18n'
 
 /** Raw row shapes matching Supabase public.artists / artist_pairs */
 export type DbArtist = {
   artist_id: string
   name_zh_en: string
+  name_zh_hans?: string | null
   culture_group: string | null
   sba_theme_tags: string[] | null
   formal_traits: string | null
@@ -13,6 +14,7 @@ export type DbArtist = {
   gifted_theory: string | null
   artwork_example: string | null
   origin: string | null
+  source_url?: string | null
 }
 
 export type DbArtistPair = {
@@ -54,10 +56,12 @@ function regionFromCulture(cultureGroup: string | null): 'east' | 'west' {
 
 export function mapDbArtist(row: DbArtist): Artist {
   const { nameZh, nameEn } = parseNameZhEn(row.name_zh_en)
+  const hans = row.name_zh_hans?.trim() || null
   return {
     id: row.artist_id,
     name_en: nameEn,
     name_zh: nameZh,
+    name_zh_hans: hans,
     region: regionFromCulture(row.culture_group),
     era: null,
     medium: row.origin,
@@ -65,10 +69,26 @@ export function mapDbArtist(row: DbArtist): Artist {
     style_keywords: splitTraits(row.formal_traits),
     bio_short: row.spld_summary || row.dse_concept || null,
     image_url: null,
+    source_url: row.source_url?.trim() || null,
     dse_concept: row.dse_concept,
     spld_summary: row.spld_summary,
     culture_group: row.culture_group,
   }
+}
+
+/** Locale-aware primary display name (zh-Hans uses name_zh_hans). */
+export function artistDisplayName(a: Artist): string {
+  const loc = getLocale()
+  if (loc === 'en') return a.name_en || a.name_zh || a.name_zh_hans || ''
+  if (loc === 'zh-Hans') return a.name_zh_hans || a.name_zh || a.name_en || ''
+  return a.name_zh || a.name_zh_hans || a.name_en || ''
+}
+
+/** Secondary name line: English under Chinese locales, Chinese under EN. */
+export function artistSecondaryName(a: Artist): string | null {
+  const loc = getLocale()
+  if (loc === 'en') return a.name_zh || a.name_zh_hans || null
+  return a.name_en || null
 }
 
 export function mapDbPair(row: DbArtistPair): ArtistPair {

@@ -1,186 +1,906 @@
 {
- "version": 1,
- "note": "SBA borrowing principle: borrow composition, concepts and ways of thinking about materials — never copy the style.",
- "pairs": [
-  {
-   "pair_id": "PAIR-URBAN-01",
-   "a": "WEST-HOPPER-01",
-   "b": "HK-PAK-01",
-   "theme": "Urban alienation",
-   "same": [
-    "Both focus on people's isolation in city life",
-    "Both start from everyday spaces (restaurants, homes)"
-   ],
-   "diff": [
-    "Edward Hopper (霍普) uses realist oil painting and strong light and shadow; Pak Sheung-chuen (白雙全) uses conceptual art and ready-mades",
-    "Hopper depicts scenes; Pak measures and materialises space itself"
-   ],
-   "sba": [
-    "Borrow Hopper's window-frame / glass divisions in your composition to show the distance between people",
-    "Borrow Pak's concept of 'collecting invisible things' to turn the cramped pressure of subdivided flats and classrooms into visible objects"
-   ]
-  },
-  {
-   "pair_id": "PAIR-SPIRIT-01",
-   "a": "WEST-VANGOGH-01",
-   "b": "CN-LV-01",
-   "theme": "Emotion and the inner world",
-   "same": [
-    "Both use natural scenery to carry inner states",
-    "The brushstrokes / ink marks themselves are traces of emotion"
-   ],
-   "diff": [
-    "Vincent van Gogh (梵高) uses high saturation and swirling impasto; Lui Shou-kwan (呂壽琨) uses blocks of dry, dark ink and blank space",
-    "Van Gogh's emotions burst outward; Lui leans towards Zen-like introspection"
-   ],
-   "sba": [
-    "Borrow Van Gogh's 'brushstroke direction expresses emotion', using line rhythm to record how your mood changes over a day",
-    "Borrow Lui's blank space to give the picture room to breathe, expressing calm or detachment"
-   ]
-  },
-  {
-   "pair_id": "PAIR-ABSTRACT-01",
-   "a": "WEST-ROTHKO-01",
-   "b": "CN-ZAO-01",
-   "theme": "Lyrical abstraction and colour-field contemplation",
-   "same": [
-    "Both give up recognisable images and use colour to create a spiritual space",
-    "Both aim for an immersive emotional experience for the viewer"
-   ],
-   "diff": [
-    "Mark Rothko (羅斯科) uses large soft-edged colour blocks in a still structure; Zao Wou-Ki (趙無極) brings in calligraphic brush movement, so his pictures flow",
-    "Zao is rooted in Chinese landscape painting and calligraphy; Rothko comes from Western colour field painting"
-   ],
-   "sba": [
-    "Borrow Rothko's layered colour blocks, using two or three colours to express one emotion",
-    "Borrow Zao's brush movement, turning calligraphic gestures into an abstract composition"
-   ]
-  },
-  {
-   "pair_id": "PAIR-CONSUMER-01",
-   "a": "WEST-WARHOL-01",
-   "b": "CN-WANGGY-01",
-   "theme": "Consumerism and mass imagery",
-   "same": [
-    "Both appropriate familiar popular images and commercial brands",
-    "Both use the visual language of mass production, such as flat colour and repetition"
-   ],
-   "diff": [
-    "Andy Warhol (沃荷) shows the surface of American consumer culture and celebrity worship",
-    "Wang Guangyi (王廣義) places political propaganda posters next to Western brands, with an ironic edge"
-   ],
-   "sba": [
-    "Borrow repeated arrangement (a screen-print effect) to explore the brands or social media images in students' daily lives",
-    "Borrow the idea of 'juxtaposing two image systems' to create critical meaning"
-   ]
-  },
-  {
-   "pair_id": "PAIR-IDENTITY-01",
-   "a": "WEST-KAHLO-01",
-   "b": "HK-SHIEH-01",
-   "theme": "Identity and the self",
-   "same": [
-    "Both explore identity through images of people",
-    "Both use symbolic objects to tell stories"
-   ],
-   "diff": [
-    "Frida Kahlo (卡蘿) uses self-portraits to confront bodily pain and Mexican culture",
-    "Wilson Shieh (石家豪) uses gongbi fine brushwork in rich colour and faceless figures to explore Hong Kong identity and gender roles"
-   ],
-   "sba": [
-    "Borrow Kahlo's 'self-portrait + symbolic objects', using things around you to express your own identity",
-    "Borrow Shieh's Chinese gongbi technique with contemporary subjects to create a dialogue between tradition and the present"
-   ]
-  },
-  {
-   "pair_id": "PAIR-SURREAL-01",
-   "a": "WEST-MAGRITTE-01",
-   "b": "HK-LUISCHAN-01",
-   "theme": "Surrealism and imagination",
-   "same": [
-    "Both break everyday logic to create a dreamlike feeling",
-    "Both have humour and poetry"
-   ],
-   "diff": [
-    "René Magritte (馬格利特) paints impossible scenes in a calm, realist manner",
-    "Luis Chan (陳福善) uses bright colours and naïve forms, with a sense of fantasy and folk humour"
-   ],
-   "sba": [
-    "Borrow Magritte's 'displacement', putting familiar objects into illogical scenes",
-    "Borrow Luis Chan's free use of colour to turn Hong Kong street scenes into a fantasy world"
-   ]
-  },
-  {
-   "pair_id": "PAIR-SPACE-01",
-   "a": "WEST-ELIASSON-01",
-   "b": "HK-LEEKIT-01",
-   "theme": "Space, light and perception",
-   "same": [
-    "Both make the installation / experience of space the artwork itself",
-    "Both make viewers notice perceptions they usually overlook"
-   ],
-   "diff": [
-    "Olafur Eliasson (埃利亞松) uses natural phenomena such as light, water and mist, on a grand scale",
-    "Lee Kit (李傑) uses canvas, projection and everyday objects, with a quiet, intimate mood"
-   ],
-   "sba": [
-    "Borrow Eliasson's use of light to change how a space feels, and make a small light installation",
-    "Borrow the mood of Lee Kit's 'small everyday moments' to record your home space"
-   ]
-  },
-  {
-   "pair_id": "PAIR-FAMILY-01",
-   "a": "WEST-HOCKNEY-01",
-   "b": "CN-ZHANGXG-01",
-   "theme": "Family and relationships",
-   "same": [
-    "Both explore close relationships through portraits / group portraits",
-    "Both deliberately flatten the picture"
-   ],
-   "diff": [
-    "David Hockney (霍克尼) uses bright colours to show life and friends in California",
-    "Zhang Xiaogang (張曉剛) uses grey tones and 'bloodline' threads to evoke collective memory and a sense of repression"
-   ],
-   "sba": [
-    "Borrow Hockney's double-portrait compositions to analyse distance and relationships between figures",
-    "Borrow Zhang Xiaogang's 'old photos + thin connecting lines' to show family memory"
-   ]
-  },
-  {
-   "pair_id": "PAIR-STRUCTURE-01",
-   "a": "WEST-MONDRIAN-01",
-   "b": "HK-WUCIUS-01",
-   "theme": "Structure and order",
-   "same": [
-    "Both seek order and balance in the picture",
-    "Both use lines to divide space"
-   ],
-   "diff": [
-    "Piet Mondrian (蒙德里安) uses vertical and horizontal lines and primary colours: pure geometry",
-    "Wucius Wong (王無邪) combines design principles with Chinese landscape, so geometry and ink coexist"
-   ],
-   "sba": [
-    "Borrow Mondrian's grid divisions to show city planning or a timetable",
-    "Borrow Wucius Wong's way of placing design elements in landscape to create an East–West fusion composition"
-   ]
-  },
-  {
-   "pair_id": "PAIR-FIGURE-01",
-   "a": "WEST-GIACO-01",
-   "b": "INTL-CATALANO-01",
-   "theme": "The human body and existence",
-   "same": [
-    "Both explore states of existence through sculptures of the human body",
-    "Both use 'missing' parts to spark the imagination"
-   ],
-   "diff": [
-    "Alberto Giacometti (賈柯梅蒂) stretches and thins the body to express existentialist loneliness",
-    "Bruno Catalano (卡塔拉諾) hollows out the body to express the loss felt by travellers and migrants"
-   ],
-   "sba": [
-    "Borrow Giacometti's exaggerated proportions to express a psychological state",
-    "Borrow Catalano's 'missing parts' to express diaspora or things lost while growing up"
-   ]
-  }
- ]
+  "version": 1,
+  "note": "SBA borrowing principle: borrow composition, concepts and ways of thinking about materials — never copy the style.",
+  "pairs": [
+    {
+      "pair_id": "PAIR-URBAN-01",
+      "a": "WEST-HOPPER-01",
+      "b": "HK-PAK-01",
+      "theme": "Urban alienation",
+      "same": [
+        "Both focus on people's isolation in city life",
+        "Both start from everyday spaces (restaurants, homes)"
+      ],
+      "diff": [
+        "Edward Hopper (霍普) uses realist oil painting and strong light and shadow; Pak Sheung-chuen (白雙全) uses conceptual art and ready-mades",
+        "Hopper depicts scenes; Pak measures and materialises space itself"
+      ],
+      "sba": [
+        "Borrow Hopper's window-frame / glass divisions in your composition to show the distance between people",
+        "Borrow Pak's concept of 'collecting invisible things' to turn the cramped pressure of subdivided flats and classrooms into visible objects"
+      ]
+    },
+    {
+      "pair_id": "PAIR-SPIRIT-01",
+      "a": "WEST-VANGOGH-01",
+      "b": "CN-LV-01",
+      "theme": "Emotion and the inner world",
+      "same": [
+        "Both use natural scenery to carry inner states",
+        "The brushstrokes / ink marks themselves are traces of emotion"
+      ],
+      "diff": [
+        "Vincent van Gogh (梵高) uses high saturation and swirling impasto; Lui Shou-kwan (呂壽琨) uses blocks of dry, dark ink and blank space",
+        "Van Gogh's emotions burst outward; Lui leans towards Zen-like introspection"
+      ],
+      "sba": [
+        "Borrow Van Gogh's 'brushstroke direction expresses emotion', using line rhythm to record how your mood changes over a day",
+        "Borrow Lui's blank space to give the picture room to breathe, expressing calm or detachment"
+      ]
+    },
+    {
+      "pair_id": "PAIR-ABSTRACT-01",
+      "a": "WEST-ROTHKO-01",
+      "b": "CN-ZAO-01",
+      "theme": "Lyrical abstraction and colour-field contemplation",
+      "same": [
+        "Both give up recognisable images and use colour to create a spiritual space",
+        "Both aim for an immersive emotional experience for the viewer"
+      ],
+      "diff": [
+        "Mark Rothko (羅斯科) uses large soft-edged colour blocks in a still structure; Zao Wou-Ki (趙無極) brings in calligraphic brush movement, so his pictures flow",
+        "Zao is rooted in Chinese landscape painting and calligraphy; Rothko comes from Western colour field painting"
+      ],
+      "sba": [
+        "Borrow Rothko's layered colour blocks, using two or three colours to express one emotion",
+        "Borrow Zao's brush movement, turning calligraphic gestures into an abstract composition"
+      ]
+    },
+    {
+      "pair_id": "PAIR-CONSUMER-01",
+      "a": "WEST-WARHOL-01",
+      "b": "CN-WANGGY-01",
+      "theme": "Consumerism and mass imagery",
+      "same": [
+        "Both appropriate familiar popular images and commercial brands",
+        "Both use the visual language of mass production, such as flat colour and repetition"
+      ],
+      "diff": [
+        "Andy Warhol (沃荷) shows the surface of American consumer culture and celebrity worship",
+        "Wang Guangyi (王廣義) places political propaganda posters next to Western brands, with an ironic edge"
+      ],
+      "sba": [
+        "Borrow repeated arrangement (a screen-print effect) to explore the brands or social media images in students' daily lives",
+        "Borrow the idea of 'juxtaposing two image systems' to create critical meaning"
+      ]
+    },
+    {
+      "pair_id": "PAIR-IDENTITY-01",
+      "a": "WEST-KAHLO-01",
+      "b": "HK-SHIEH-01",
+      "theme": "Identity and the self",
+      "same": [
+        "Both explore identity through images of people",
+        "Both use symbolic objects to tell stories"
+      ],
+      "diff": [
+        "Frida Kahlo (卡蘿) uses self-portraits to confront bodily pain and Mexican culture",
+        "Wilson Shieh (石家豪) uses gongbi fine brushwork in rich colour and faceless figures to explore Hong Kong identity and gender roles"
+      ],
+      "sba": [
+        "Borrow Kahlo's 'self-portrait + symbolic objects', using things around you to express your own identity",
+        "Borrow Shieh's Chinese gongbi technique with contemporary subjects to create a dialogue between tradition and the present"
+      ]
+    },
+    {
+      "pair_id": "PAIR-SURREAL-01",
+      "a": "WEST-MAGRITTE-01",
+      "b": "HK-LUISCHAN-01",
+      "theme": "Surrealism and imagination",
+      "same": [
+        "Both break everyday logic to create a dreamlike feeling",
+        "Both have humour and poetry"
+      ],
+      "diff": [
+        "René Magritte (馬格利特) paints impossible scenes in a calm, realist manner",
+        "Luis Chan (陳福善) uses bright colours and naïve forms, with a sense of fantasy and folk humour"
+      ],
+      "sba": [
+        "Borrow Magritte's 'displacement', putting familiar objects into illogical scenes",
+        "Borrow Luis Chan's free use of colour to turn Hong Kong street scenes into a fantasy world"
+      ]
+    },
+    {
+      "pair_id": "PAIR-SPACE-01",
+      "a": "WEST-ELIASSON-01",
+      "b": "HK-LEEKIT-01",
+      "theme": "Space, light and perception",
+      "same": [
+        "Both make the installation / experience of space the artwork itself",
+        "Both make viewers notice perceptions they usually overlook"
+      ],
+      "diff": [
+        "Olafur Eliasson (埃利亞松) uses natural phenomena such as light, water and mist, on a grand scale",
+        "Lee Kit (李傑) uses canvas, projection and everyday objects, with a quiet, intimate mood"
+      ],
+      "sba": [
+        "Borrow Eliasson's use of light to change how a space feels, and make a small light installation",
+        "Borrow the mood of Lee Kit's 'small everyday moments' to record your home space"
+      ]
+    },
+    {
+      "pair_id": "PAIR-FAMILY-01",
+      "a": "WEST-HOCKNEY-01",
+      "b": "CN-ZHANGXG-01",
+      "theme": "Family and relationships",
+      "same": [
+        "Both explore close relationships through portraits / group portraits",
+        "Both deliberately flatten the picture"
+      ],
+      "diff": [
+        "David Hockney (霍克尼) uses bright colours to show life and friends in California",
+        "Zhang Xiaogang (張曉剛) uses grey tones and 'bloodline' threads to evoke collective memory and a sense of repression"
+      ],
+      "sba": [
+        "Borrow Hockney's double-portrait compositions to analyse distance and relationships between figures",
+        "Borrow Zhang Xiaogang's 'old photos + thin connecting lines' to show family memory"
+      ]
+    },
+    {
+      "pair_id": "PAIR-STRUCTURE-01",
+      "a": "WEST-MONDRIAN-01",
+      "b": "HK-WUCIUS-01",
+      "theme": "Structure and order",
+      "same": [
+        "Both seek order and balance in the picture",
+        "Both use lines to divide space"
+      ],
+      "diff": [
+        "Piet Mondrian (蒙德里安) uses vertical and horizontal lines and primary colours: pure geometry",
+        "Wucius Wong (王無邪) combines design principles with Chinese landscape, so geometry and ink coexist"
+      ],
+      "sba": [
+        "Borrow Mondrian's grid divisions to show city planning or a timetable",
+        "Borrow Wucius Wong's way of placing design elements in landscape to create an East–West fusion composition"
+      ]
+    },
+    {
+      "pair_id": "PAIR-FIGURE-01",
+      "a": "WEST-GIACO-01",
+      "b": "INTL-CATALANO-01",
+      "theme": "The human body and existence",
+      "same": [
+        "Both explore states of existence through sculptures of the human body",
+        "Both use 'missing' parts to spark the imagination"
+      ],
+      "diff": [
+        "Alberto Giacometti (賈柯梅蒂) stretches and thins the body to express existentialist loneliness",
+        "Bruno Catalano (卡塔拉諾) hollows out the body to express the loss felt by travellers and migrants"
+      ],
+      "sba": [
+        "Borrow Giacometti's exaggerated proportions to express a psychological state",
+        "Borrow Catalano's 'missing parts' to express diaspora or things lost while growing up"
+      ]
+    },
+    {
+      "pair_id": "PAIR-REALISM-01",
+      "a": "WEST-LEONARDO-01",
+      "b": "CN-XUBH-01",
+      "theme": "Realist observation and anatomy",
+      "same": [
+        "Both build form on drawing and the anatomy of people or animals",
+        "Both treat careful observation as the root of art"
+      ],
+      "diff": [
+        "Leonardo da Vinci uses oil sfumato for soft volume; Xu Beihong (徐悲鴻) puts drawing structure into ink brushwork",
+        "Leonardo seeks scientific understanding; Xu's galloping horses carry national spirit"
+      ],
+      "sba": [
+        "Borrow their anatomy-sketch method: draw bones and muscles first, then add colour",
+        "Borrow Xu's idea of drawing structure in ink to try showing volume with ink"
+      ]
+    },
+    {
+      "pair_id": "PAIR-REALISM-02",
+      "a": "WEST-CARAVAGGIO-01",
+      "b": "CN-LIUXD-01",
+      "theme": "Ordinary people and on-the-spot realism",
+      "same": [
+        "Both make ordinary people the main characters",
+        "Both use realist oil painting to show real human nature"
+      ],
+      "diff": [
+        "Caravaggio uses dark backgrounds and spotlight contrast for drama; Liu Xiaodong (劉小東) paints on site in natural light",
+        "Caravaggio casts ordinary people in religious stories; Liu records present-day social life directly"
+      ],
+      "sba": [
+        "Borrow Caravaggio's single strong light: photograph people you know and study light and dark",
+        "Borrow Liu's on-site painting: draw real people at a market or station"
+      ]
+    },
+    {
+      "pair_id": "PAIR-IMPRESS-01",
+      "a": "WEST-MONET-01",
+      "b": "CN-LINFM-01",
+      "theme": "Impressionist light and East-West blending",
+      "same": [
+        "Both value the feeling of colour and light over detail",
+        "Both often take landscape and nature as subjects"
+      ],
+      "diff": [
+        "Claude Monet paints outdoors with short broken oil strokes; Lin Fengmian (林風眠) uses ink and colour on rice paper in square formats",
+        "Monet records a moment of light; Lin blends in folk art for a lyrical mood"
+      ],
+      "sba": [
+        "Borrow Monet's series: paint one place at three different times of day",
+        "Borrow Lin's square format: crop a landscape into a square and organise it with colour blocks"
+      ]
+    },
+    {
+      "pair_id": "PAIR-BREAK-01",
+      "a": "WEST-PICASSO-01",
+      "b": "CN-ZHANGDQ-01",
+      "theme": "Breaking with tradition",
+      "same": [
+        "Both mastered traditional skills before breaking away boldly",
+        "Both developed new styles in their later work"
+      ],
+      "diff": [
+        "Pablo Picasso breaks objects into geometry and many viewpoints; Zhang Daqian (張大千) breaks outlines with splashed ink and colour",
+        "Picasso moves toward Cubist space; Zhang moves toward semi-abstract landscape mood"
+      ],
+      "sba": [
+        "Borrow Picasso's many viewpoints: combine the front and side of one object in a single picture",
+        "Borrow Zhang's splashed colour: let paint flow freely first, then add a few fine details"
+      ]
+    },
+    {
+      "pair_id": "PAIR-SIMPLE-01",
+      "a": "WEST-MATISSE-01",
+      "b": "CN-QIBS-01",
+      "theme": "Simplification and childlike joy",
+      "same": [
+        "Both express life with very simple shapes and clear colours",
+        "Both have a light, childlike sense of fun"
+      ],
+      "diff": [
+        "Henri Matisse uses flat colour and paper cut-outs; Qi Baishi (齊白石) uses ink brushwork with red flowers and ink leaves",
+        "Matisse seeks harmony of colour; Qi values lively brushwork"
+      ],
+      "sba": [
+        "Borrow Matisse's cut-outs: cut your subject into simple colour shapes and arrange them",
+        "Borrow Qi's economy: paint a small animal in as few strokes as possible"
+      ]
+    },
+    {
+      "pair_id": "PAIR-DREAM-01",
+      "a": "WEST-DALI-01",
+      "b": "HK-LEUNG-01",
+      "theme": "Dreams and the surreal",
+      "same": [
+        "Both depict dream scenes that break real-world logic",
+        "Both use fine technique to make the absurd believable"
+      ],
+      "diff": [
+        "Salvador Dalí uses oil paint and melting objects; Joey Leung Ka-yin (梁嘉賢) uses fine lines and humorous text",
+        "Dalí explores unsettling subconscious; Leung shows a light, humorous personal world"
+      ],
+      "sba": [
+        "Borrow Dalí's distortion: \"melt\" an everyday object or change its texture",
+        "Borrow Leung's text plus image: add your own caption to a dream scene"
+      ]
+    },
+    {
+      "pair_id": "PAIR-FORM-01",
+      "a": "WEST-KANDINSKY-01",
+      "b": "CN-WUGZ-01",
+      "theme": "Point, line, plane and formal beauty",
+      "same": [
+        "Both make points, lines, planes and colour the stars of the picture",
+        "Both believe form itself can carry feeling and rhythm"
+      ],
+      "diff": [
+        "Wassily Kandinsky goes fully abstract; Wu Guanzhong (吳冠中) keeps scenes such as Jiangnan villages",
+        "Kandinsky uses oil and musical analogies; Wu uses ink lines and black, white and grey"
+      ],
+      "sba": [
+        "Borrow Kandinsky: turn the rhythm of a song into dots and lines",
+        "Borrow Wu: simplify a street photo into black, white and grey planes with colour dots"
+      ]
+    },
+    {
+      "pair_id": "PAIR-FLOWER-01",
+      "a": "WEST-OKEEFFE-01",
+      "b": "HK-CHAOSA-01",
+      "theme": "Ways of seeing flowers",
+      "same": [
+        "Both take flowers as a main subject",
+        "Both start from close observation of nature"
+      ],
+      "diff": [
+        "Georgia O'Keeffe enlarges a flower to fill the canvas; Chao Shao-an (趙少昂) places flowers, birds and insects in empty space",
+        "O'Keeffe uses soft gradients in oil; Chao uses lively brushwork"
+      ],
+      "sba": [
+        "Borrow O'Keeffe's close-up: enlarge a flower until you cannot see all of it",
+        "Borrow Chao's empty space: use a few strokes with lots of blank paper"
+      ]
+    },
+    {
+      "pair_id": "PAIR-CARVE-01",
+      "a": "WEST-MOORE-01",
+      "b": "CN-WANGKP-01",
+      "theme": "Organic form and carving",
+      "same": [
+        "Both make simplified, rounded human forms",
+        "Both respect the texture of the material"
+      ],
+      "diff": [
+        "Henry Moore uses stone and bronze with pierced holes; Wang Keping (王克平) carves wood and keeps the grain and knots",
+        "Moore explores form and space; Wang also responds to social oppression"
+      ],
+      "sba": [
+        "Borrow Moore's voids: cut a hole through a clay model so space becomes part of it",
+        "Borrow Wang: let the original shape of a block of wood or stone decide the pose"
+      ]
+    },
+    {
+      "pair_id": "PAIR-ANXIETY-01",
+      "a": "WEST-BACON-01",
+      "b": "CN-ZENGFZ-01",
+      "theme": "Anxiety and expressive portraits",
+      "same": [
+        "Both use distorted or exaggerated figures to show inner unease",
+        "Both use expressionist brushwork"
+      ],
+      "diff": [
+        "Francis Bacon blurs and twists faces inside cage-like frames; Zeng Fanzhi (曾梵志) hides real expressions behind white masks",
+        "Bacon expresses post-war existential anxiety; Zeng shows disguise in relationships"
+      ],
+      "sba": [
+        "Borrow Bacon's frames: use lines to \"trap\" a figure in the middle of the picture",
+        "Borrow Zeng's mask: add a mask to your self-portrait for the face you show others"
+      ]
+    },
+    {
+      "pair_id": "PAIR-GESTURE-01",
+      "a": "WEST-POLLOCK-01",
+      "b": "CN-CHUTC-01",
+      "theme": "Body movement and calligraphic gesture",
+      "same": [
+        "Both make the painter's gesture the main subject",
+        "Both are abstract painters"
+      ],
+      "diff": [
+        "Jackson Pollock drips paint on canvas on the floor in an all-over composition; Chu Teh-Chun (朱德群) builds layers of light with calligraphic strokes",
+        "Pollock stresses chance; Chu keeps a sense of landscape"
+      ],
+      "sba": [
+        "Borrow Pollock: drip paint on a large sheet using your whole body and record the rhythm",
+        "Borrow Chu: write one character with a big brush, then develop it into abstract light"
+      ]
+    },
+    {
+      "pair_id": "PAIR-CONCEPT-01",
+      "a": "WEST-DUCHAMP-01",
+      "b": "CN-XUBING-01",
+      "theme": "Concept and redefinition",
+      "same": [
+        "Both use ideas to challenge what viewers think \"art\" or \"writing\" is",
+        "Both make viewers question habits they take for granted"
+      ],
+      "diff": [
+        "Marcel Duchamp chooses ready-mades with no handcraft; Xu Bing (徐冰) spends huge effort carving fake characters",
+        "Duchamp questions the definition of art; Xu questions language and culture"
+      ],
+      "sba": [
+        "Borrow Duchamp: pick an everyday object and give it a new title that changes its meaning",
+        "Borrow Xu: invent your own script and write a sentence only you can read"
+      ]
+    },
+    {
+      "pair_id": "PAIR-PROTEST-01",
+      "a": "INTL-BANKSY-01",
+      "b": "CN-AIWW-01",
+      "theme": "Art as social critique",
+      "same": [
+        "Both respond to social and political issues",
+        "Both make clever use of media and public attention"
+      ],
+      "diff": [
+        "Banksy sprays walls anonymously; Ai Weiwei (艾未未) works openly with large installations and documentaries",
+        "Banksy uses dark humour; Ai uses masses of repeated objects"
+      ],
+      "sba": [
+        "Borrow Banksy: design a stencil image with one clear social message",
+        "Borrow Ai: build an issue out of many identical small objects"
+      ]
+    },
+    {
+      "pair_id": "PAIR-REPEAT-01",
+      "a": "INTL-KUSAMA-01",
+      "b": "CN-DINGYI-01",
+      "theme": "Repetition and pattern",
+      "same": [
+        "Both build works from one mark repeated many times",
+        "Both create strong rhythm through repetition"
+      ],
+      "diff": [
+        "Yayoi Kusama uses dots and mirror rooms tied to personal psychology; Ding Yi (丁乙) uses grids of crosses with rational order",
+        "Kusama seeks \"self-obliteration\"; Ding responds to industrial and urban rhythm"
+      ],
+      "sba": [
+        "Borrow Kusama: cover a whole object in one mark and see how it \"disappears\"",
+        "Borrow Ding: arrange two marks on grid paper to make a changing pattern"
+      ]
+    },
+    {
+      "pair_id": "PAIR-FILM-01",
+      "a": "INTL-SHERMAN-01",
+      "b": "HK-CHOWCF-01",
+      "theme": "Film images and identity",
+      "same": [
+        "Both borrow the language of film",
+        "Both explore how images shape identity"
+      ],
+      "diff": [
+        "Cindy Sherman poses as characters in made-up film stills; Chow Chun Fai (周俊輝) repaints real Hong Kong film scenes with subtitles",
+        "Sherman looks at images of women; Chow looks at Hong Kong identity"
+      ],
+      "sba": [
+        "Borrow Sherman: create a character and shoot your own \"film still\"",
+        "Borrow Chow: repaint a film frame and add your own subtitle"
+      ]
+    },
+    {
+      "pair_id": "PAIR-VIDEO-01",
+      "a": "INTL-VIOLA-01",
+      "b": "CN-YANGFD-01",
+      "theme": "Video and time",
+      "same": [
+        "Both use video to handle time and pace",
+        "Both seek cinematic, poetic images"
+      ],
+      "diff": [
+        "Bill Viola uses extreme slow motion about life, death and faith; Yang Fudong (楊福東) uses black-and-white narrative about lost youth",
+        "Viola often uses one large projection; Yang often uses multiple screens and long stories"
+      ],
+      "sba": [
+        "Borrow Viola: film one simple action in slow motion",
+        "Borrow Yang: film classmates' daily moments in black and white"
+      ]
+    },
+    {
+      "pair_id": "PAIR-ENDURE-01",
+      "a": "INTL-ABRAMOVIC-01",
+      "b": "CN-ZHANGH-01",
+      "theme": "The body and endurance",
+      "same": [
+        "Both use their own bodies as the medium",
+        "Both test limits through long or harsh actions"
+      ],
+      "diff": [
+        "Marina Abramović focuses on contact with the audience; Zhang Huan (張洹) focuses on the body in its environment",
+        "Abramović often performs in museums; Zhang's early work happened in everyday places and was documented in photos"
+      ],
+      "sba": [
+        "Borrow from both: photograph how a repeated action changes over time",
+        "Only do safe performance exercises; focus on recording the process, not on suffering"
+      ]
+    },
+    {
+      "pair_id": "PAIR-MIRROR-01",
+      "a": "INTL-KAPOOR-01",
+      "b": "CN-ZHANWANG-01",
+      "theme": "Mirror steel and reflection",
+      "same": [
+        "Both use mirror-polished stainless steel",
+        "Both make the surroundings and viewers' reflections part of the work"
+      ],
+      "diff": [
+        "Anish Kapoor uses abstract curves to explore space and void; Zhan Wang (展望) copies the shape of traditional garden rocks",
+        "Kapoor focuses on perception; Zhan reflects on tradition and modernisation"
+      ],
+      "sba": [
+        "Borrow from both: wrap an object in foil or mirror paper and photograph what it reflects",
+        "Borrow Zhan: remake a traditional object in an industrial material"
+      ]
+    },
+    {
+      "pair_id": "PAIR-RACE-01",
+      "a": "INTL-WALKER-01",
+      "b": "CN-GUWD-01",
+      "theme": "Race and history",
+      "same": [
+        "Both deal with race and history",
+        "Both surround viewers with large installations"
+      ],
+      "diff": [
+        "Kara Walker uses black silhouettes to expose violent history; Gu Wenda (谷文達) uses hair from many countries to express cultural fusion",
+        "Walker's tone is sharp; Gu leans toward an ideal of unity"
+      ],
+      "sba": [
+        "Borrow Walker: tell a story about history in silhouettes",
+        "Borrow Gu: collect one material from many people to represent a group"
+      ]
+    },
+    {
+      "pair_id": "PAIR-SUBCULTURE-01",
+      "a": "INTL-MURAKAMI-01",
+      "b": "CN-CAOFEI-01",
+      "theme": "Subculture and virtual worlds",
+      "same": [
+        "Both draw on youth subcultures such as anime and games",
+        "Both blur art and popular culture"
+      ],
+      "diff": [
+        "Takashi Murakami uses flat painting and cute characters; Cao Fei (曹斐) uses video and virtual game worlds",
+        "Murakami embraces commercial projects; Cao looks at urban youth alienation"
+      ],
+      "sba": [
+        "Borrow Murakami: design yourself as a \"Superflat\" character",
+        "Borrow Cao: use game or virtual-world screenshots to discuss a real city problem"
+      ]
+    },
+    {
+      "pair_id": "PAIR-ICON-01",
+      "a": "INTL-KOONS-01",
+      "b": "CN-SUIJG-01",
+      "theme": "Icons and sculpture",
+      "same": [
+        "Both enlarge familiar symbols into sculpture",
+        "Both change a symbol's meaning through scale and material"
+      ],
+      "diff": [
+        "Jeff Koons uses shiny steel for consumer kitsch; Sui Jianguo (隋建國) uses empty Mao suits to reflect on history",
+        "Koons feels playful and celebratory; Sui carries heavy memory"
+      ],
+      "sba": [
+        "Borrow Koons: remake a cheap toy in a \"precious\" material",
+        "Borrow Sui: choose a garment that stands for an era and make it as an empty shell"
+      ]
+    },
+    {
+      "pair_id": "PAIR-LIFEDEATH-01",
+      "a": "INTL-HIRST-01",
+      "b": "CN-SHENSM-01",
+      "theme": "Life, death and specimens",
+      "same": [
+        "Both use specimen-style display to explore life and death",
+        "Both borrow the look of science and museums"
+      ],
+      "diff": [
+        "Damien Hirst preserves real animals in formaldehyde; Shen Shaomin (沈少民) assembles imaginary creatures from bones",
+        "Hirst also raises issues of commerce and the market; Shen focuses on survival and evolution"
+      ],
+      "sba": [
+        "Borrow from both: write a museum-style label for an object you invent",
+        "Assemble an imaginary creature from leaves, shells and other natural materials"
+      ]
+    },
+    {
+      "pair_id": "PAIR-BALANCE-01",
+      "a": "INTL-CALDER-01",
+      "b": "CN-PANTS-01",
+      "theme": "Balance and tension",
+      "same": [
+        "Both care about balance in composition",
+        "Both create tension with simple shapes and colours"
+      ],
+      "diff": [
+        "Alexander Calder balances hanging metal shapes in real space; Pan Tianshou (潘天壽) balances big rocks and hard lines on a flat surface",
+        "Calder's works move; Pan freezes tension by creating then resolving visual risk"
+      ],
+      "sba": [
+        "Borrow Calder: build a balancing mobile from wire and card",
+        "Borrow Pan: put the main subject near the edge, then balance it with another element"
+      ]
+    },
+    {
+      "pair_id": "PAIR-SCALE-01",
+      "a": "INTL-MUECK-01",
+      "b": "CN-LUOZL-01",
+      "theme": "Hyper-realism and scale",
+      "same": [
+        "Both render skin and wrinkles in extreme detail",
+        "Both use huge scale for psychological impact"
+      ],
+      "diff": [
+        "Ron Mueck works in 3D and may enlarge or shrink; Luo Zhongli (羅中立) paints a giant flat portrait",
+        "Mueck looks at universal emotions; Luo looks at the hard life of farmers"
+      ],
+      "sba": [
+        "Borrow from both: draw an ordinary face much larger than life",
+        "Borrow Mueck: make a figure much smaller than life and notice how the feeling changes"
+      ]
+    },
+    {
+      "pair_id": "PAIR-NATURE-01",
+      "a": "INTL-ANDO-01",
+      "b": "HK-LAMTP-01",
+      "theme": "Nature, materials and space",
+      "same": [
+        "Both value the raw texture of materials (concrete, plywood)",
+        "Both think about people and nature"
+      ],
+      "diff": [
+        "Tadao Ando brings real light and nature into built space; Lam Tung Pang (林東鵬) paints remembered landscapes on plywood",
+        "Ando seeks calm; Lam carries the city's collective memory"
+      ],
+      "sba": [
+        "Borrow Ando: make a small card model where light enters through a slit",
+        "Borrow Lam: paint on a textured material and let its grain become part of the picture"
+      ]
+    },
+    {
+      "pair_id": "PAIR-CONSUMER-02",
+      "a": "INTL-KRUGER-01",
+      "b": "CN-WANGQS-01",
+      "theme": "Critique of consumerism",
+      "same": [
+        "Both use photography to criticise consumerism",
+        "Both borrow the visual language of advertising"
+      ],
+      "diff": [
+        "Barbara Kruger pairs black-and-white photos with white-on-red slogans; Wang Qingsong (王慶松) stages large, exaggerated scenes",
+        "Kruger speaks to the viewer directly; Wang satirises society through theatre-like scenes"
+      ],
+      "sba": [
+        "Borrow Kruger: add a slogan questioning consumption to an advert photo",
+        "Borrow Wang: stage an exaggerated shopping scene with classmates"
+      ]
+    },
+    {
+      "pair_id": "PAIR-PRIVATE-01",
+      "a": "INTL-EMIN-01",
+      "b": "CN-SONGDONG-01",
+      "theme": "Personal objects and autobiography",
+      "same": [
+        "Both use real personal belongings",
+        "Both make private stories public so others can relate"
+      ],
+      "diff": [
+        "Tracey Emin focuses on personal feelings and trauma; Song Dong (宋冬) focuses on family history and memories of scarcity",
+        "Emin adds neon and embroidery; Song lays out masses of objects in order"
+      ],
+      "sba": [
+        "Borrow Emin: pair a handwritten line with one personal object",
+        "Borrow Song: lay out one type of old household object neatly and photograph it"
+      ]
+    },
+    {
+      "pair_id": "PAIR-CREATURE-01",
+      "a": "INTL-PICCININI-01",
+      "b": "CN-HUANGYP-01",
+      "theme": "Creatures, ethics and culture",
+      "same": [
+        "Both use animals or hybrid creatures to raise ethical questions",
+        "Both make viewers feel drawn in and uneasy at once"
+      ],
+      "diff": [
+        "Patricia Piccinini makes lifelike silicone imaginary creatures; Huang Yong Ping (黃永砅) used real insects and animals",
+        "Piccinini looks at biotechnology; Huang looked at culture clashes and power"
+      ],
+      "sba": [
+        "Borrow Piccinini: design a creature mixing two animals and describe its \"purpose\"",
+        "Borrow Huang: use animals as a metaphor for two cultures meeting"
+      ]
+    },
+    {
+      "pair_id": "PAIR-LANDART-01",
+      "a": "INTL-CHRISTO-01",
+      "b": "CN-CAIGQ-01",
+      "theme": "Large temporary events",
+      "same": [
+        "Both create huge, short-lived outdoor events",
+        "Both extend the work through photos and records"
+      ],
+      "diff": [
+        "Christo and Jeanne-Claude wrap landmarks in fabric; Cai Guo-Qiang (蔡國強) uses the instant of a gunpowder explosion",
+        "Wrappings last weeks; explosions last seconds"
+      ],
+      "sba": [
+        "Borrow Christo: wrap an object on campus in cloth or paper and photograph it",
+        "Borrow Cai: safely record the trace of an instant (e.g. dripped ink, sprayed water)"
+      ]
+    },
+    {
+      "pair_id": "PAIR-ILLUSION-01",
+      "a": "INTL-ERLICH-01",
+      "b": "HK-TSANGKW-01",
+      "theme": "Illusion and looking",
+      "same": [
+        "Both play on the gap between a first glance and a closer look",
+        "Both surround viewers with immersive installations"
+      ],
+      "diff": [
+        "Leandro Erlich uses mirrors and buildings for spatial illusions; Tsang Kin-Wah (曾建華) hides sharp words in floral patterns",
+        "Erlich leans toward play and participation; Tsang toward religion and existence"
+      ],
+      "sba": [
+        "Borrow Erlich: use a mirror to take an \"impossible\" photo",
+        "Borrow Tsang: arrange words into a pattern that means something different up close"
+      ]
+    },
+    {
+      "pair_id": "PAIR-URBAN-02",
+      "a": "INTL-BICKERTON-01",
+      "b": "CN-BIGTAIL-01",
+      "theme": "People, nature and urban alienation",
+      "same": [
+        "Both respond to alienation brought by modernisation",
+        "Both use industrial or urban found materials"
+      ],
+      "diff": [
+        "Ashley Bickerton makes object-like works with logos; Big Tail Elephants (大尾象工作組) used temporary spaces and performance",
+        "Bickerton looks at people, nature and technology; Big Tail looked at rapid urbanisation in Guangdong"
+      ],
+      "sba": [
+        "Borrow Bickerton: put brand logos on natural objects and see what tension appears",
+        "Borrow Big Tail: hold a pop-up display in a non-gallery school space such as a stairwell"
+      ]
+    },
+    {
+      "pair_id": "PAIR-FUSION-01",
+      "a": "CN-LITF-01",
+      "b": "CN-GAOJF-01",
+      "theme": "Two paths of East-West fusion",
+      "same": [
+        "Both brought Western art into China in the early 20th century",
+        "Both were pioneers from Guangdong"
+      ],
+      "diff": [
+        "Li Tiefu adopted Western classical oil painting directly; Gao Jianfu (高劍父) reformed Chinese painting with Western methods",
+        "Li focused on realist portraits; Gao on modern subjects and brushwork"
+      ],
+      "sba": [
+        "Compare them: paint one subject with a Western medium, then by adapting a local medium",
+        "Borrow Gao: put a modern object into a traditional ink composition"
+      ]
+    },
+    {
+      "pair_id": "PAIR-ANIMAL-01",
+      "a": "CN-GAOQF-01",
+      "b": "HK-YANGSS-01",
+      "theme": "Lingnan birds and animals",
+      "same": [
+        "Both belong to the Lingnan School and excel at birds and animals",
+        "Both work from life sketching"
+      ],
+      "diff": [
+        "Gao Qifeng's animals are powerful; Yang Shen-sum's (楊善深) brushwork is more fluid",
+        "Gao is first-generation; Yang is second-generation and lived in Hong Kong"
+      ],
+      "sba": [
+        "Sketch an animal at a park or pet shop, then paint it once \"forceful\" and once \"flowing\"",
+        "Compare how each brush style changes the animal's character"
+      ]
+    },
+    {
+      "pair_id": "PAIR-LANDSCAPE-01",
+      "a": "CN-CHENSR-01",
+      "b": "CN-GUANSY-01",
+      "theme": "Lingnan landscape from life",
+      "same": [
+        "Both stress sketching real scenery from life",
+        "Both belong to the Lingnan School"
+      ],
+      "diff": [
+        "Chen Shuren is fresh and light; Guan Shanyue (關山月) is grand with rich colour",
+        "Chen favours small poetic scenes; Guan large mountains and rivers"
+      ],
+      "sba": [
+        "At one spot, paint a small close-up and a wide panorama",
+        "Compare how light and rich colour change the mood"
+      ]
+    },
+    {
+      "pair_id": "PAIR-INKHK-01",
+      "a": "HK-AUHN-01",
+      "b": "HK-FANGZL-01",
+      "theme": "Personal voices in Hong Kong ink",
+      "same": [
+        "Both hold important places in Hong Kong ink painting",
+        "Both turned traditional brushwork into a personal style"
+      ],
+      "diff": [
+        "Au Ho-nien works from life with strong colour; Fang Zhaoling (方召麐) uses bold calligraphic lines and childlike forms",
+        "Au continues the Lingnan tradition; Fang is closer to calligraphic expression"
+      ],
+      "sba": [
+        "Borrow Fang: paint a mountain as if writing calligraphy",
+        "Borrow Au: add strong colour after sketching from life"
+      ]
+    },
+    {
+      "pair_id": "PAIR-CYNICAL-01",
+      "a": "CN-YUEMJ-01",
+      "b": "CN-FANGLJ-01",
+      "theme": "Cynical Realism",
+      "same": [
+        "Both are leading 1990s Cynical Realists",
+        "Both repeat a figure type to express the mood of the time"
+      ],
+      "diff": [
+        "Yue Minjun uses exaggerated laughter; Fang Lijun (方力鈞) uses bald heads and yawns",
+        "Yue's colour is loud and bright; Fang often uses sky and water backgrounds"
+      ],
+      "sba": [
+        "Design one repeated expression for your generation's mood",
+        "Compare how \"laughing\" and \"bored\" can express the same loss"
+      ]
+    },
+    {
+      "pair_id": "PAIR-MEDIA-01",
+      "a": "CN-ZHANGPL-01",
+      "b": "HK-YOUNG-01",
+      "theme": "Video and sound media",
+      "same": [
+        "Both work with new media (video, sound)",
+        "Both use time-based media"
+      ],
+      "diff": [
+        "Zhang Peili uses repeated actions and a cool camera; Samson Young (楊嘉輝) uses soundscapes and performance",
+        "Zhang looks at daily life and surveillance; Young at politics and history"
+      ],
+      "sba": [
+        "Borrow Zhang: film one repeated action for ten minutes with a fixed camera",
+        "Borrow Young: record school sounds and make a \"sound map\""
+      ]
+    },
+    {
+      "pair_id": "PAIR-URBAN-03",
+      "a": "CN-CHENSX-01",
+      "b": "CN-XUTAN-01",
+      "theme": "The Pearl River Delta city",
+      "same": [
+        "Both were members of Big Tail Elephants",
+        "Both take Pearl River Delta cities such as Guangzhou as their subject"
+      ],
+      "diff": [
+        "Chen Shaoxiong uses ink animation and street collage; Xu Tan (徐坦) uses interviews and keyword research",
+        "Chen leans visual; Xu leans verbal"
+      ],
+      "sba": [
+        "Borrow Chen: trace street photos in ink and make a simple animation",
+        "Borrow Xu: interview ten people to find your neighbourhood's keywords"
+      ]
+    },
+    {
+      "pair_id": "PAIR-TEXT-01",
+      "a": "CN-WUSZ-01",
+      "b": "CN-QIUZJ-01",
+      "theme": "Text and concept",
+      "same": [
+        "Both use text as their main material",
+        "Both are Chinese conceptual artists"
+      ],
+      "diff": [
+        "Wu Shanzhuan uses slogan-like text and absurd acts to challenge institutions; Qiu Zhijie (邱志杰) uses repeated writing and concept maps to organise knowledge",
+        "Wu leans toward satire; Qiu toward thinking and systems"
+      ],
+      "sba": [
+        "Borrow Qiu: draw a concept map for your SBA theme",
+        "Borrow Wu: fill a wall with slogan-like text and watch how meaning shifts"
+      ]
+    },
+    {
+      "pair_id": "PAIR-MEMORY-01",
+      "a": "CN-YINXZ-01",
+      "b": "HK-TANGKH-01",
+      "theme": "Old things and family memory",
+      "same": [
+        "Both create with old and found objects",
+        "Both explore family and social memory"
+      ],
+      "diff": [
+        "Yin Xiuzhen sews used clothes into soft sculpture; Tang Kwok Hin (鄧國騫) collages found objects",
+        "Yin links to global identity; Tang to Hong Kong family and social space"
+      ],
+      "sba": [
+        "Borrow Yin: sew a small work from family members' old clothes",
+        "Borrow Tang: collage a \"home\" map from household objects"
+      ]
+    }
+  ]
 }

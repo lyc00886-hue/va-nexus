@@ -321,6 +321,7 @@
   "ac.prompt": "Comparison prompt",
   "ac.east": "East",
   "ac.west": "West",
+  "ac.source": "Source",
   "ac.more": "More aspects (auto-generated from the data)",
   "ac.sba": "SBA ideas",
   "ac.sameVsDiff": "Similarities vs differences",

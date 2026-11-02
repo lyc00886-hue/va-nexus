@@ -118,5 +118,6 @@
   "sba.private": "私人云端（已登录）",
   "sba.guest": "访客模式（本机）",
   "sba.photosLabel": "证据照片",
-  "sba.signInToUpload": "登录 Google 后才可以上传照片"
+  "sba.signInToUpload": "登录 Google 后才可以上传照片",
+  "ac.source": "来源链接"
 }

@@ -4,6 +4,8 @@ export type Artist = {
   id: string
   name_en: string
   name_zh: string | null
+  /** Simplified Chinese display name (artists.name_zh_hans); used when locale is zh-Hans */
+  name_zh_hans?: string | null
   region: 'east' | 'west'
   era: string | null
   medium: string | null
@@ -11,6 +13,8 @@ export type Artist = {
   style_keywords: string[]
   bio_short: string | null
   image_url: string | null
+  /** Optional reference / Wikipedia URL (artists.source_url) */
+  source_url?: string | null
   /** Optional extra Supabase fields (artists.dse_concept / spld_summary / culture_group) */
   dse_concept?: string | null
   spld_summary?: string | null

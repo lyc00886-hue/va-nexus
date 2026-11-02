@@ -10,6 +10,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { ARTIST_PAIRS, ARTISTS, artistById as mockArtistById } from '../data/artists'
 import { useSen } from '../context/SenContext'
 import {
+  artistDisplayName,
+  artistSecondaryName,
   mapDbArtist,
   mapDbPair,
   type DbArtist,
@@ -17,15 +19,15 @@ import {
 } from '../lib/artistMappers'
 import { buildCompareRows, buildSbaTips, chunkText, type CompareRow, type SbaTip } from '../lib/compareInsights'
 import { curatedCompare, getPairCompare } from '../lib/content'
-import { getLocale, joinList, t } from '../i18n'
+import { joinList, t } from '../i18n'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 import { useSpeech } from '../lib/useSpeech'
 import type { Artist, ArtistPair } from '../types'
 
 function ArtistCard({
   side,
-  nameEn,
-  nameZh,
+  namePrimary,
+  nameSecondary,
   era,
   medium,
   themes,
@@ -33,10 +35,11 @@ function ArtistCard({
   bio,
   padding,
   easyRead,
+  sourceUrl,
 }: {
   side: string
-  nameEn: string
-  nameZh: string | null
+  namePrimary: string
+  nameSecondary: string | null
   era: string | null
   medium: string | null
   themes: string[]
@@ -44,6 +47,7 @@ function ArtistCard({
   bio: string | null
   padding: string
   easyRead: boolean
+  sourceUrl?: string | null
 }) {
   const chunks = easyRead ? chunkText(bio) : []
   return (
@@ -51,8 +55,18 @@ function ArtistCard({
       className={`flex flex-1 flex-col rounded-2xl border border-teal-100 bg-white shadow-sm ${padding}`}
     >
       <p className="text-[11px] font-semibold uppercase tracking-wider text-teal-600">{side}</p>
-      <h3 className="mt-1 text-lg font-bold text-teal-950">{nameEn}</h3>
-      {nameZh && <p className="text-sm text-teal-800/80">{nameZh}</p>}
+      <h3 className="mt-1 text-lg font-bold text-teal-950">{namePrimary}</h3>
+      {nameSecondary && <p className="text-sm text-teal-800/80">{nameSecondary}</p>}
+      {sourceUrl && (
+        <a
+          href={sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-1 text-xs font-medium text-teal-700 underline-offset-2 hover:underline"
+        >
+          {t('ac.source')}
+        </a>
+      )}
       <p className="mt-2 text-xs text-teal-700/70">
         {[era, medium].filter(Boolean).join(' · ')}
       </p>
@@ -92,7 +106,7 @@ function ArtistCard({
 type DataSource = 'live' | 'mock' | 'loading'
 
 function displayName(a: Artist) {
-  return getLocale() === 'en' ? a.name_en || a.name_zh || '' : a.name_zh || a.name_en
+  return artistDisplayName(a)
 }
 
 export function ArtistCompare({
@@ -341,8 +355,8 @@ export function ArtistCompare({
       <div className="flex flex-col gap-3 md:flex-row">
         <ArtistCard
           side={t('ac.east')}
-          nameEn={east.name_en}
-          nameZh={east.name_zh}
+          namePrimary={artistDisplayName(east)}
+          nameSecondary={artistSecondaryName(east)}
           era={east.era}
           medium={east.medium}
           themes={east.themes}
@@ -350,11 +364,12 @@ export function ArtistCompare({
           bio={easyRead ? east.spld_summary || east.bio_short : east.bio_short}
           padding={cardPadding}
           easyRead={easyRead}
+          sourceUrl={east.source_url}
         />
         <ArtistCard
           side={t('ac.west')}
-          nameEn={west.name_en}
-          nameZh={west.name_zh}
+          namePrimary={artistDisplayName(west)}
+          nameSecondary={artistSecondaryName(west)}
           era={west.era}
           medium={west.medium}
           themes={west.themes}
@@ -362,6 +377,7 @@ export function ArtistCompare({
           bio={easyRead ? west.spld_summary || west.bio_short : west.bio_short}
           padding={cardPadding}
           easyRead={easyRead}
+          sourceUrl={west.source_url}
         />
       </div>
       {curated ? (

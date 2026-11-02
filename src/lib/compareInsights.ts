@@ -1,5 +1,6 @@
 import type { Artist, ArtistPair } from '../types'
-import { getLocale, t } from '../i18n'
+import { artistDisplayName } from './artistMappers'
+import { t } from '../i18n'
 
 export type CompareRow = {
   aspect: string
@@ -153,7 +154,7 @@ export function buildCompareRows(pair: ArtistPair, east: Artist, west: Artist): 
 }
 
 function displayName(a: Artist) {
-  return getLocale() === 'en' ? a.name_en || a.name_zh : a.name_zh || a.name_en
+  return artistDisplayName(a)
 }
 
 export function buildSbaTips(pair: ArtistPair, east: Artist, west: Artist): SbaTip[] {
