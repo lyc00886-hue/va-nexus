@@ -238,7 +238,7 @@
   "fw.err.empty": "請先寫低你嘅評賞，再撳「AI 回饋」。",
   "fw.err.status": "AI 回饋暫時未能提供（{status}）。",
   "fw.err.network": "網絡連線出錯，請稍後再試。",
-  "fw.ai.paused": "AI 回饋而家暫停。你寫嘅內容冇問題——可以繼續用檢查清單同術語表，唔使靠 AI。",
+  "fw.ai.paused": "AI 回饋而家暫停，服務比較忙，請稍後再試。你寫嘅內容冇問題——可以繼續用檢查清單同術語表，唔使靠 AI。",
   "fw.award": "費德曼「{title}」獲得 AI 回饋",
   "fw.title": "費德曼四步寫作",
   "fw.subtitle": "句子框架＋檢查清單＋口語 → DSE 術語助推＋ Gemini AI 回饋",

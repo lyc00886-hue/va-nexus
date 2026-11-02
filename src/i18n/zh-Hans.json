@@ -238,7 +238,7 @@
   "fw.err.empty": "请先写下你的评赏，再点击「AI 反馈」。",
   "fw.err.status": "AI 反馈暂时无法提供（{status}）。",
   "fw.err.network": "网络连接出错，请稍后再试。",
-  "fw.ai.paused": "AI 反馈暂时暂停。你写的内容没有问题——可以继续使用检查清单和术语表，不必依赖 AI。",
+  "fw.ai.paused": "AI 反馈暂时暂停，服务比较忙，请稍后再试。你写的内容没有问题——可以继续使用检查清单和术语表，不必依赖 AI。",
   "fw.award": "费德曼「{title}」获得 AI 反馈",
   "fw.title": "费德曼四步写作",
   "fw.subtitle": "句子框架＋检查清单＋口语 → DSE 术语助推＋ Gemini AI 反馈",

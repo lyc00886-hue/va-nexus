@@ -54,7 +54,14 @@ export function Header() {
       <div className="relative flex flex-wrap items-center justify-between gap-3 px-4 py-3">
         <div className="flex min-w-0 items-center gap-2.5">
           <div className="min-w-0">
-            <p className="text-base font-extrabold tracking-tight text-teal-700 sm:text-lg">VA-Nexus</p>
+            <img
+              src="/logo.png"
+              alt="VA-Nexus"
+              width={281}
+              height={82}
+              className="h-9 w-auto max-w-[11rem] object-contain object-left sm:h-11 sm:max-w-[16rem]"
+              decoding="async"
+            />
             <p className="truncate text-[11px] text-slate-500">{t('header.subtitle')}</p>
           </div>
         </div>

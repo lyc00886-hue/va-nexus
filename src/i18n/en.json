@@ -238,7 +238,7 @@
   "fw.err.empty": "Write your appreciation first, then tap “AI feedback”.",
   "fw.err.status": "AI feedback is unavailable right now ({status}).",
   "fw.err.network": "Network error — please try again later.",
-  "fw.ai.paused": "AI feedback is paused for now. Your work is fine — keep going with the non-AI checklist and terms list.",
+  "fw.ai.paused": "AI feedback is paused — the service is busy. Try again later. Your writing is fine; keep using the checklist and terms list.",
   "fw.award": "Got AI feedback on Feldman “{title}”",
   "fw.title": "Feldman four-step writing",
   "fw.subtitle": "Sentence frames + checklist + casual words → DSE terms booster + Gemini AI feedback",

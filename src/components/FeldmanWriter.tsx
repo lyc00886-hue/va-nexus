@@ -35,6 +35,15 @@ const STAGE_API: Record<StepKey, 'describe' | 'analyze' | 'interpret' | 'judge'>
 
 const AI_IDLE: AiState = { status: 'idle', text: '' }
 
+/** Quota, HTTP 503, and Google UNAVAILABLE / high-demand share one calm notice. */
+function isAiFeedbackPaused(status: number, data: { code?: string; error?: string }): boolean {
+  if (status === 503 || data.code === 'gemini_quota') return true
+  const error = data.error ?? ''
+  if (error.includes('UNAVAILABLE')) return true
+  const lower = error.toLowerCase()
+  return lower.includes('high demand') || lower.includes('overloaded')
+}
+
 function buildSteps() {
   const en = getLocale() === 'en'
   return getFeldmanStages().map((s, i) => ({
@@ -159,7 +168,7 @@ export function FeldmanWriter() {
         error?: string
         code?: string
       }
-      if (data.code === 'gemini_quota') {
+      if (isAiFeedbackPaused(res.status, data)) {
         setAi((a) => ({ ...a, [key]: { status: 'notice', text: t('fw.ai.paused') } }))
         return
       }

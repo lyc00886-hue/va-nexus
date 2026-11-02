@@ -47,7 +47,7 @@ const ERR: Record<
     tooLong: '文字太長',
     noKey: '伺服器未設定 GEMINI_API_KEY',
     gemini: 'Gemini 暫時未能回應，請稍後再試',
-    quota: 'AI 回饋暫時未能提供（配額）。請稍後再試。',
+    quota: 'AI 回饋而家暫停，服務比較忙，請稍後再試。',
     authRequired: '請先登入 Google 帳戶先可以使用 AI 回饋。',
     authDown: '暫時未能核實登入狀態，請稍後再試。',
     under18: 'AI 回饋只開放畀已核實 18 歲或以上嘅用戶。寫作框架、檢查清單同術語助推仍然可以用。',
@@ -60,7 +60,7 @@ const ERR: Record<
     tooLong: '文字太长',
     noKey: '服务器未设定 GEMINI_API_KEY',
     gemini: 'Gemini 暂时未能回应，请稍后再试',
-    quota: 'AI 反馈暂时无法提供（配额）。请稍后再试。',
+    quota: 'AI 反馈暂时暂停，服务比较忙，请稍后再试。',
     authRequired: '请先登录 Google 账户才可以使用 AI 反馈。',
     authDown: '暂时未能核实登录状态，请稍后再试。',
     under18: 'AI 反馈只对已核实 18 岁或以上的用户开放。写作框架、检查清单和术语助推仍然可用。',
@@ -73,7 +73,7 @@ const ERR: Record<
     tooLong: 'Text too long',
     noKey: 'Server missing GEMINI_API_KEY',
     gemini: 'Gemini is temporarily unavailable — try again shortly',
-    quota: 'AI feedback is temporarily unavailable (quota). Please try later.',
+    quota: 'AI feedback is paused — the service is busy. Try again later.',
     authRequired: 'Sign in with Google to use AI feedback.',
     authDown: 'Could not verify sign-in just now. Try again shortly.',
     under18: 'AI feedback is only available to verified users aged 18 or over. Writing frames, checklists and the vocab booster still work.',
@@ -236,16 +236,18 @@ async function readJsonBody(
 
 /**
  * AI Studio's current default Flash model.
- * GEMINI_MODEL, when set to a model id, is tried first; the list below is the fallback.
+ * GEMINI_MODEL, when set to a model id, is tried first.
+ * Then gemini-3.8-flash, gemini-flash-latest, and gemini-2.5-flash-lite.
+ * gemini-2.5-flash (non-lite) stays out: it is unavailable to new projects.
  */
 const GEMINI_MODEL = 'gemini-3.8-flash'
-const GEMINI_MODEL_FALLBACKS = ['gemini-flash-latest'] as const
+const GEMINI_MODEL_FALLBACKS = ['gemini-flash-latest', 'gemini-2.5-flash-lite'] as const
 
 function isGeminiModelId(value: string): boolean {
   return /^[A-Za-z0-9._-]{1,80}$/.test(value) && !value.startsWith('AIza')
 }
 
-function geminiModels(): string[] {
+export function geminiModels(): string[] {
   const override = process.env.GEMINI_MODEL?.trim() ?? ''
   const preferred = isGeminiModelId(override) ? override : GEMINI_MODEL
   const seen = new Set<string>()
@@ -300,12 +302,30 @@ function upstreamErrorMessage(payload: unknown): string {
   return bits.join(': ') || 'upstream error'
 }
 
-function isGeminiQuota(httpStatus: number, payload: unknown): boolean {
-  if (httpStatus === 402 || httpStatus === 429) return true
-  if (!payload || typeof payload !== 'object') return false
+function geminiError(payload: unknown): { status: string; message: string } {
+  if (!payload || typeof payload !== 'object') return { status: '', message: '' }
   const error = (payload as { error?: unknown }).error
-  if (!error || typeof error !== 'object') return false
-  return (error as { status?: unknown }).status === 'RESOURCE_EXHAUSTED'
+  if (!error || typeof error !== 'object') return { status: '', message: '' }
+  const status = (error as { status?: unknown }).status
+  const message = (error as { message?: unknown }).message
+  return {
+    status: typeof status === 'string' ? status.trim() : '',
+    message: typeof message === 'string' ? message.trim() : '',
+  }
+}
+
+export function isGeminiQuota(httpStatus: number, payload: unknown): boolean {
+  if (httpStatus === 402 || httpStatus === 429) return true
+  return geminiError(payload).status === 'RESOURCE_EXHAUSTED'
+}
+
+/** Model-specific overload. Try the rest of the flash chain before telling the student to wait. */
+export function isGeminiHighDemand(httpStatus: number, payload: unknown): boolean {
+  if (httpStatus === 503) return true
+  const { status, message } = geminiError(payload)
+  if (status === 'UNAVAILABLE') return true
+  const lower = message.toLowerCase()
+  return lower.includes('high demand') || lower.includes('overloaded')
 }
 
 function feedbackText(payload: unknown): string {
@@ -330,14 +350,15 @@ function feedbackText(payload: unknown): string {
 
 type GeminiResult = { ok: true; feedback: string } | { ok: false; quota: boolean }
 
-async function geminiFeedback(apiKey: string, system: string, userText: string): Promise<GeminiResult> {
+export async function geminiFeedback(apiKey: string, system: string, userText: string): Promise<GeminiResult> {
   const requestBody = {
     systemInstruction: { parts: [{ text: system }] },
     contents: [{ role: 'user', parts: [{ text: userText }] }],
   }
 
+  let sawHighDemand = false
   for (const model of geminiModels()) {
-    // Key stays in the header so a thrown URL cannot contain it. Do not log this request.
+    // Key stays in the header so a thrown URL cannot contain it. Do not log this request or the student text.
     let res: Response
     try {
       res = await fetch(
@@ -371,6 +392,8 @@ async function geminiFeedback(apiKey: string, system: string, userText: string):
       logGeminiUpstream(model, res.status, message)
       // Quota is account-wide. Another model would get the same 402/429.
       if (isGeminiQuota(res.status, parsed)) return { ok: false, quota: true }
+      // 503 / UNAVAILABLE high-demand is often one model. Keep trying the flash chain.
+      if (isGeminiHighDemand(res.status, parsed)) sawHighDemand = true
       continue
     }
 
@@ -379,7 +402,7 @@ async function geminiFeedback(apiKey: string, system: string, userText: string):
     logGeminiUpstream(model, res.status, 'empty candidates')
   }
 
-  return { ok: false, quota: false }
+  return { ok: false, quota: sawHighDemand }
 }
 
 async function handleFeedback(request: Request): Promise<Response> {

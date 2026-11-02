@@ -31,7 +31,7 @@ export function ActivityLog({ limit = 6 }: { limit?: number }) {
       {items.length === 0 ? (
         <div className="mt-3 flex flex-col items-center gap-2 py-4 text-center">
           <img
-            src="/mascot-otter-empty.png"
+            src="/o2-otter.png"
             alt=""
             width={96}
             height={96}
