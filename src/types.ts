@@ -28,7 +28,7 @@ export type ArtistPair = {
   comparison_matrix?: unknown
 }
 
-export type TabId = 'artists' | 'sba' | 'feldman'
+export type TabId = 'map' | 'research' | 'portfolio' | 'library' | 'achievements'
 
 /* ---------- Content JSON (PEANUTS, src/content/*.json) ---------- */
 

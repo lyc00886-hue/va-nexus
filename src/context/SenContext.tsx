@@ -17,6 +17,8 @@ export type SenSettings = {
   dyslexia: boolean
   reduceMotion: boolean
   focusTunnel: boolean
+  /** Auto read-aloud lesson cards (TTS) */
+  readAloud: boolean
 }
 
 export const FONT_SCALES: Record<FontSizeLevel, number> = { md: 1, lg: 1.15, xl: 1.3 }
@@ -27,6 +29,7 @@ const DEFAULTS: SenSettings = {
   dyslexia: false,
   reduceMotion: false,
   focusTunnel: false,
+  readAloud: false,
 }
 
 export const PRESETS: Record<SenMode, SenSettings> = {
@@ -45,6 +48,11 @@ type SenContextValue = {
   fontScale: number
   cardPadding: string
   focusTunnel: boolean
+  /** true when any support beyond the standard defaults is on */
+  supportsOn: boolean
+  /** Easy-read text (讀寫友善) */
+  easyRead: boolean
+  applyMany: (patch: Partial<SenSettings>) => void
 }
 
 const STORAGE_KEY = 'va-nexus:sen-settings'
@@ -87,12 +95,14 @@ export function SenProvider({ children }: { children: ReactNode }) {
     root.classList.toggle('sen-dyslexia', settings.dyslexia)
     root.classList.toggle('sen-reduce-motion', settings.reduceMotion)
     root.classList.toggle('sen-focus', settings.focusTunnel)
+    root.classList.toggle('sen-read-aloud', settings.readAloud)
   }, [settings])
 
   const update = useCallback(<K extends keyof SenSettings>(key: K, value: SenSettings[K]) => {
     setSettings((s) => ({ ...s, [key]: value }))
   }, [])
   const setMode = useCallback((m: SenMode) => setSettings(PRESETS[m]), [])
+  const applyMany = useCallback((patch: Partial<SenSettings>) => setSettings((s) => ({ ...s, ...patch })), [])
   const reset = useCallback(() => setSettings(DEFAULTS), [])
 
   const value = useMemo<SenContextValue>(() => {
@@ -107,8 +117,11 @@ export function SenProvider({ children }: { children: ReactNode }) {
       fontScale: FONT_SCALES[settings.fontSize],
       cardPadding: settings.dyslexia || settings.fontSize !== 'md' ? 'p-5' : 'p-4',
       focusTunnel: settings.focusTunnel,
+      supportsOn: !samePreset(DEFAULTS, settings),
+      easyRead: settings.dyslexia,
+      applyMany,
     }
-  }, [settings, setMode, update, reset])
+  }, [settings, setMode, update, reset, applyMany])
 
   return <SenContext.Provider value={value}>{children}</SenContext.Provider>
 }

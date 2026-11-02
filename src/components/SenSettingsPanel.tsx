@@ -1,4 +1,5 @@
-import { Contrast, Focus, RotateCcw, Type, Wind, X, BookOpenText } from 'lucide-react'
+import { Contrast, Focus, RotateCcw, Type, Wind, X, BookOpenText, Volume2, ClipboardList } from 'lucide-react'
+import { useSenSupport } from '../context/SenSupportContext'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { useSen, type FontSizeLevel } from '../context/SenContext'
 import type { SenMode } from '../types'
@@ -63,6 +64,7 @@ function Toggle({
 
 export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
   const { mode, setMode, settings, update, reset } = useSen()
+  const { openCheckIn } = useSenSupport()
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -99,6 +101,21 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
           <X className="h-4 w-4" />
         </button>
       </div>
+
+      <button
+        type="button"
+        onClick={() => {
+          openCheckIn()
+          onClose()
+        }}
+        className="mt-3 flex w-full items-center gap-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-2 text-left text-xs font-semibold text-blue-900 hover:bg-blue-100"
+      >
+        <ClipboardList className="h-4 w-4 shrink-0" aria-hidden />
+        <span>
+          唔知揀邊樣？做個 1 分鐘「自選支援問卷」
+          <span className="block font-normal text-blue-800/80">呢個唔係診斷，只係幫你揀合適工具</span>
+        </span>
+      </button>
 
       <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-teal-800/80">快速模式</p>
       <div className="mt-1 grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="快速模式">
@@ -175,6 +192,13 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
           desc="一次只顯示一個步驟，附 25 分鐘專注計時"
           checked={settings.focusTunnel}
           onChange={(v) => update('focusTunnel', v)}
+        />
+        <Toggle
+          icon={<Volume2 className="h-4 w-4" />}
+          label="自動朗讀"
+          desc="打開短課卡時自動讀出內容（可隨時停止）"
+          checked={settings.readAloud}
+          onChange={(v) => update('readAloud', v)}
         />
       </div>
 

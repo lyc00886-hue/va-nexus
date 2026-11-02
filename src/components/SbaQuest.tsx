@@ -12,7 +12,9 @@ import {
   X,
 } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
+import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
+import { XP } from '../game/rewards'
 import { getDeviceId } from '../lib/deviceId'
 import {
   fetchEvidence,
@@ -37,6 +39,7 @@ type Source = 'loading' | 'live' | 'local'
 
 export function SbaQuest() {
   const { cardPadding, focusTunnel } = useSen()
+  const { awardOnce } = useGame()
   const deviceId = useMemo(() => getDeviceId(), [])
   const [evidence, setEvidence] = useState<SbaEvidence[]>([])
   const [source, setSource] = useState<Source>(isSupabaseConfigured ? 'loading' : 'local')
@@ -135,6 +138,8 @@ export function SbaQuest() {
         setMessage({ kind: 'ok', text: '已暫存喺本機（離線模式）' })
       }
       setEvidence((prev) => [...prev, ...added])
+      const stepTitle = STEPS.find((s) => s.id === active)?.title ?? ''
+      awardOnce(`sba-step-${active}`, XP.sbaStep, `完成 SBA 第${active}步：${stepTitle}`, 'sba')
       setNote('')
       setPending([])
     } finally {

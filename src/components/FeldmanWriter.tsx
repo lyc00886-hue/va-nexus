@@ -1,6 +1,9 @@
 import { Bot, CheckSquare, Loader2, Plus, Sparkles, Square } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
+import { XP } from '../game/rewards'
+import { PrivacyLink } from './PrivacyModal'
 import {
   boostOralText,
   FELDMAN_STAGES,
@@ -35,6 +38,7 @@ function emptyRecord<T>(v: () => T): Record<StepKey, T> {
 
 export function FeldmanWriter() {
   const { cardPadding } = useSen()
+  const { awardOnce } = useGame()
   const [texts, setTexts] = useState<Record<StepKey, string>>(() => emptyRecord(() => ''))
   const [checked, setChecked] = useState<Record<StepKey, string[]>>(() => emptyRecord(() => []))
   const [active, setActive] = useState<StepKey>('describe')
@@ -93,6 +97,7 @@ export function FeldmanWriter() {
         throw new Error(data.error || `AI 回饋暫時未能提供（${res.status}）。`)
       }
       setAi((a) => ({ ...a, [key]: { status: 'done', text: data.feedback ?? '' } }))
+      awardOnce(`feldman-ai-${key}`, XP.feldmanAi, `費德曼「${STEPS.find((s) => s.key === key)?.title ?? key}」獲得 AI 回饋`, 'feldman')
     } catch (err) {
       const msg = err instanceof Error && err.message !== 'Failed to fetch' ? err.message : '網絡連線出錯，請稍後再試。'
       setAi((a) => ({ ...a, [key]: { status: 'error', text: msg } }))
@@ -104,6 +109,10 @@ export function FeldmanWriter() {
       <div>
         <h2 className="text-xl font-bold text-teal-950">費德曼四步寫作</h2>
         <p className="text-sm text-teal-800/70">句子框架＋檢查清單＋口語 → DSE 術語助推＋ Gemini AI 回饋</p>
+        <p className="mt-2 rounded-xl bg-sky-50 px-3 py-2 text-xs text-sky-900">
+          「AI 回饋」會將你寫嘅評賞文字傳去 Google Gemini 處理。請唔好寫姓名、學號或者其他個人資料。{' '}
+          <PrivacyLink />
+        </p>
       </div>
 
       <label className="block text-sm">

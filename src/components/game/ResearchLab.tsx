@@ -1,0 +1,102 @@
+import { CheckCircle2, ChevronRight, PenLine } from 'lucide-react'
+import { useState } from 'react'
+import { useGame } from '../../context/GameContext'
+import { RESEARCH_QUESTS } from '../../game/research'
+import { BADGE_BY_ID } from '../../game/rewards'
+import type { ResearchQuest } from '../../game/types'
+import { FeldmanWriter } from '../FeldmanWriter'
+import { DemoBadge } from './DemoBadge'
+import { LessonPlayer } from './LessonPlayer'
+
+export function ResearchLab() {
+  const { state } = useGame()
+  const [open, setOpen] = useState<ResearchQuest | null>(null)
+  const [writer, setWriter] = useState(false)
+
+  if (open) {
+    return (
+      <LessonPlayer
+        lesson={open}
+        kind="quest"
+        onExit={() => setOpen(null)}
+        after={
+          open.embedFeldman ? (
+            <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+              <FeldmanWriter />
+            </div>
+          ) : undefined
+        }
+      />
+    )
+  }
+
+  const done = RESEARCH_QUESTS.filter((q) => state.quests[q.id]?.completed).length
+
+  return (
+    <div className="space-y-5">
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900">研究室</h2>
+        <p className="text-sm text-slate-500">完成研究技巧任務，收集徽章 · 已完成 {done} / {RESEARCH_QUESTS.length}</p>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        {RESEARCH_QUESTS.map((q) => {
+          const completed = state.quests[q.id]?.completed
+          const badge = BADGE_BY_ID.get(q.badgeId)
+          return (
+            <button
+              key={q.id}
+              type="button"
+              onClick={() => setOpen(q)}
+              className="group flex flex-col rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm hover:border-blue-300 hover:shadow-md"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <span
+                  className={`flex h-12 w-12 items-center justify-center rounded-2xl text-2xl ${
+                    completed ? 'bg-violet-100' : 'bg-slate-100 grayscale'
+                  }`}
+                  aria-hidden
+                >
+                  {badge?.emoji}
+                </span>
+                {completed ? (
+                  <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+                    <CheckCircle2 className="h-3.5 w-3.5" aria-hidden /> 已取得徽章
+                  </span>
+                ) : (
+                  q.demo && <DemoBadge />
+                )}
+              </div>
+              <p className="mt-3 text-xs font-semibold text-blue-600">{q.skill}</p>
+              <p className="text-lg font-bold text-slate-900">{q.title}</p>
+              <p className="text-sm text-slate-500">{q.subtitle}</p>
+              <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 group-hover:underline">
+                {completed ? '再挑戰' : '開始任務'} · 約 {q.minutes} 分鐘
+                <ChevronRight className="h-4 w-4" aria-hidden />
+              </span>
+            </button>
+          )
+        })}
+      </div>
+
+      <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
+        <button
+          type="button"
+          onClick={() => setWriter((w) => !w)}
+          aria-expanded={writer}
+          className="flex w-full items-center justify-between text-left"
+        >
+          <span className="flex items-center gap-2 font-bold text-slate-900">
+            <PenLine className="h-5 w-5 text-blue-600" aria-hidden /> 費德曼寫作工作台（AI 回饋）
+          </span>
+          <ChevronRight className={`h-5 w-5 text-slate-400 ${writer ? 'rotate-90' : ''}`} aria-hidden />
+        </button>
+        {writer && (
+          <div className="mt-4">
+            <FeldmanWriter />
+          </div>
+        )}
+      </section>
+    </div>
+  )
+}
