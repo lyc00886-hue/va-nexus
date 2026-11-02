@@ -1,1441 +1,1442 @@
 {
- "units": [
-  {
-   "id": "U1-CN-MODERN",
-   "title": "Modern Chinese Art: Finding New Paths",
-   "intro": "In the early 20th century, facing the impact of Western art, Chinese painters tried different ways to 'modernise' Chinese painting.",
-   "lessons": [
+  "units": [
     {
-     "id": "U1-L1",
-     "title": "The Lingnan School's Innovations",
-     "artistIds": [
-      "CN-GAOJF-01",
-      "CN-GAOQF-01",
-      "CN-CHENSR-01",
-      "HK-CHAOSA-01"
-     ],
-     "cards": [
-      "The Lingnan School (嶺南畫派) arose in Guangdong in the early 20th century. Its founders, Gao Jianfu (高劍父), Gao Qifeng (高奇峰) and Chen Shuren (陳樹人), are known as the 'Two Gaos and One Chen'.",
-      "Gao Jianfu (高劍父) and Chen Shuren (陳樹人) first studied painting under Ju Lian (居廉); Gao Qifeng (高奇峰) learned from his elder brother Gao Jianfu. All three later studied in Japan.",
-      "They called for 'blending Chinese and Western, uniting old and new', painting new subjects such as aeroplanes, tanks and other modern things.",
-      "In technique, they valued 'water-splashing and powder-splashing' (撞水撞粉), which makes flower-and-bird colours look moist and luminous.",
-      "The Lingnan School (嶺南畫派) deeply influenced Hong Kong. Painters such as Chao Shao-an (趙少昂) brought it to Hong Kong and developed it further."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Who is NOT one of the Lingnan School's 'Two Gaos and One Chen'?",
-       "options": [
-        "Gao Jianfu",
-        "Gao Qifeng",
-        "Chen Shuren",
-        "Xu Beihong"
-       ],
-       "answer": "Xu Beihong",
-       "explain": "Xu Beihong followed the path of realism and was not a founder of the Lingnan School."
-      },
-      {
-       "type": "mcq",
-       "question": "What did the Lingnan School advocate?",
-       "options": [
-        "Total Westernisation",
-        "Blending Chinese and Western, uniting old and new",
-        "Only copying ancient paintings",
-        "Pure abstraction"
-       ],
-       "answer": "Blending Chinese and Western, uniting old and new",
-       "explain": "They wanted to keep the brush and ink of Chinese painting while taking in foreign techniques and new subjects."
-      },
-      {
-       "type": "fill",
-       "question": "The Lingnan technique that makes colours moist and luminous is called 'water-splashing and ____'.",
-       "options": [],
-       "answer": "powder-splashing",
-       "explain": "'Water-splashing and powder-splashing' was developed by Ju Lian and taken up by the Lingnan School.",
-       "wordBank": [
-        "powder-splashing",
-        "colour-splashing",
-        "ink-splashing",
-        "texture strokes"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "In which country did Lingnan School painters study and pick up new techniques?",
-       "options": [
-        "Japan",
-        "The United States",
-        "Italy",
-        "Russia"
-       ],
-       "answer": "Japan",
-       "explain": "Gao Jianfu and others studied in Japan, absorbing Japanese painting and Western realist techniques."
-      }
-     ]
+      "id": "U1-CN-MODERN",
+      "title": "Modern Chinese Art: Finding New Paths",
+      "intro": "In the early 20th century, facing the impact of Western art, Chinese painters tried different ways to 'modernise' Chinese painting.",
+      "lessons": [
+        {
+          "id": "U1-L1",
+          "title": "The Lingnan School's Innovations",
+          "cards": [
+            "The Lingnan School (嶺南畫派) arose in Guangdong in the early 20th century. Its founders, Gao Jianfu (高劍父), Gao Qifeng (高奇峰) and Chen Shuren (陳樹人), are known as the 'Two Gaos and One Chen'.",
+            "Gao Jianfu (高劍父) and Chen Shuren (陳樹人) first studied painting under Ju Lian (居廉); Gao Qifeng (高奇峰) learned from his elder brother Gao Jianfu. All three later studied in Japan.",
+            "They called for 'blending Chinese and Western, uniting old and new', painting new subjects such as aeroplanes, tanks and other modern things.",
+            "In technique, they valued 'water-splashing and powder-splashing' (撞水撞粉), which makes flower-and-bird colours look moist and luminous.",
+            "The Lingnan School (嶺南畫派) deeply influenced Hong Kong. Painters such as Chao Shao-an (趙少昂) brought it to Hong Kong and developed it further."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Who is NOT one of the Lingnan School's 'Two Gaos and One Chen'?",
+              "options": [
+                "Gao Jianfu",
+                "Gao Qifeng",
+                "Chen Shuren",
+                "Xu Beihong"
+              ],
+              "answer": "Xu Beihong",
+              "explain": "Xu Beihong followed the path of realism and was not a founder of the Lingnan School."
+            },
+            {
+              "type": "mcq",
+              "question": "What did the Lingnan School advocate?",
+              "options": [
+                "Total Westernisation",
+                "Blending Chinese and Western, uniting old and new",
+                "Only copying ancient paintings",
+                "Pure abstraction"
+              ],
+              "answer": "Blending Chinese and Western, uniting old and new",
+              "explain": "They wanted to keep the brush and ink of Chinese painting while taking in foreign techniques and new subjects."
+            },
+            {
+              "type": "fill",
+              "question": "The Lingnan technique that makes colours moist and luminous is called 'water-splashing and ____'.",
+              "options": [],
+              "answer": "powder-splashing",
+              "explain": "'Water-splashing and powder-splashing' was developed by Ju Lian and taken up by the Lingnan School.",
+              "wordBank": [
+                "powder-splashing",
+                "colour-splashing",
+                "ink-splashing",
+                "texture strokes"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "In which country did Lingnan School painters study and pick up new techniques?",
+              "options": [
+                "Japan",
+                "The United States",
+                "Italy",
+                "Russia"
+              ],
+              "answer": "Japan",
+              "explain": "Gao Jianfu and others studied in Japan, absorbing Japanese painting and Western realist techniques."
+            }
+          ],
+          "artistIds": [
+            "CN-GAOJF-01",
+            "CN-GAOQF-01",
+            "CN-CHENSR-01",
+            "HK-CHAOSA-01"
+          ]
+        },
+        {
+          "id": "U1-L2",
+          "title": "Xu Beihong and Realism",
+          "cards": [
+            "Xu Beihong (徐悲鴻, 1895–1953) studied in France at the École des Beaux-Arts in Paris, learning Western academic drawing and oil painting.",
+            "He believed Chinese painting needed 'reform', and argued that Western realist drawing should be the foundation for depicting form.",
+            "His most famous subject is galloping horses, painted in ink with accurate anatomy to show strength and speed.",
+            "Major works include the oil painting Tian Heng and His Five Hundred Followers (《田橫五百士》), which uses a historical story to express national integrity.",
+            "After 1949 he became the first president of the Central Academy of Fine Arts (中央美術學院). His realist teaching system shaped Chinese art education for many years."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What is Xu Beihong's most famous ink-painting subject?",
+              "options": [
+                "Shrimps",
+                "Galloping horses",
+                "Bamboo",
+                "Landscapes"
+              ],
+              "answer": "Galloping horses",
+              "explain": "He used realist knowledge of anatomy to paint horses, with bold brushwork and accurate structure."
+            },
+            {
+              "type": "mcq",
+              "question": "What did Xu Beihong say should be the foundation of form in Chinese painting?",
+              "options": [
+                "Calligraphy",
+                "Western realist drawing",
+                "Abstract colour blocks",
+                "Photo collage"
+              ],
+              "answer": "Western realist drawing",
+              "explain": "He believed drawing was the foundation of all visual art."
+            },
+            {
+              "type": "match",
+              "question": "Match each work to its type",
+              "options": [
+                "Tian Heng and His Five Hundred Followers",
+                "Galloping Horse paintings"
+              ],
+              "answer": {
+                "Tian Heng and His Five Hundred Followers": "Oil history painting",
+                "Galloping Horse paintings": "Ink painting"
+              },
+              "explain": "Xu Beihong worked in both oil and ink."
+            },
+            {
+              "type": "mcq",
+              "question": "After 1949, Xu Beihong became the first president of which school?",
+              "options": [
+                "Central Academy of Fine Arts",
+                "Department of Fine Arts, CUHK",
+                "Lingnan University",
+                "École des Beaux-Arts, Paris"
+              ],
+              "answer": "Central Academy of Fine Arts",
+              "explain": "His realist teaching system spread from there."
+            }
+          ],
+          "artistIds": [
+            "CN-XUBH-01"
+          ]
+        },
+        {
+          "id": "U1-L3",
+          "title": "Lin Fengmian's Fusion",
+          "cards": [
+            "Lin Fengmian (林風眠, 1900–1991) studied in France and was strongly influenced by Western modernism, such as Fauvism and Cubism.",
+            "In 1928 he founded the National Academy of Art (國立藝術院) in Hangzhou, today's China Academy of Art, promoting 'harmonising Chinese and Western art'.",
+            "He often used square compositions, combining ink, watercolour and rich colour. His subjects include ladies, still lifes, egrets and autumn scenes.",
+            "His students included Wu Guanzhong (吳冠中), Zao Wou-Ki (趙無極) and Chu Teh-Chun (朱德群), who all became important modern artists.",
+            "In his later years he settled in Hong Kong, where he kept creating art until his death."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Where did Lin Fengmian found the National Academy of Art?",
+              "options": [
+                "Beijing",
+                "Hangzhou",
+                "Guangzhou",
+                "Shanghai"
+              ],
+              "answer": "Hangzhou",
+              "explain": "Founded in 1928, it is today's China Academy of Art."
+            },
+            {
+              "type": "mcq",
+              "question": "Which of these was NOT a student of Lin Fengmian?",
+              "options": [
+                "Wu Guanzhong",
+                "Zao Wou-Ki",
+                "Chu Teh-Chun",
+                "Gao Jianfu"
+              ],
+              "answer": "Gao Jianfu",
+              "explain": "Gao Jianfu was a founder of the Lingnan School and older than Lin Fengmian."
+            },
+            {
+              "type": "mcq",
+              "question": "Which composition format is common in Lin Fengmian's work?",
+              "options": [
+                "Long handscroll",
+                "Square composition",
+                "Fan painting",
+                "Hanging scroll"
+              ],
+              "answer": "Square composition",
+              "explain": "The square format broke away from traditional Chinese scroll formats and is close to the Western idea of a framed picture."
+            },
+            {
+              "type": "fill",
+              "question": "Lin Fengmian promoted '____ Chinese and Western art'.",
+              "options": [],
+              "answer": "harmonising",
+              "explain": "He wanted to combine the spirit of Chinese art with modern Western forms.",
+              "wordBank": [
+                "harmonising",
+                "opposing",
+                "wholly adopting",
+                "copying"
+              ]
+            }
+          ],
+          "artistIds": [
+            "CN-LINFM-01"
+          ]
+        },
+        {
+          "id": "U1-L4",
+          "title": "Wu Guanzhong and Formal Beauty",
+          "cards": [
+            "Wu Guanzhong (吳冠中, 1919–2010) studied under Lin Fengmian (林風眠) at the National Hangzhou Academy of Art, then went to study in Paris.",
+            "He valued 'formal beauty' (形式美): dots, lines, planes and colours are beautiful in themselves, so a painting need not be realistic.",
+            "He often painted Jiangnan (江南) water towns: white walls, black tiles, curving lines and dots of colour, in simple, rhythmic pictures.",
+            "In 1992 he published 'Brush and Ink Equal Zero' (〈筆墨等於零〉), arguing that brush and ink must serve the picture and are worthless on their own. It caused huge debate.",
+            "He painted in both oil and ink, aiming to 'give oil painting a national character and modernise Chinese painting'."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What did Wu Guanzhong paint most often?",
+              "options": [
+                "Deserts",
+                "Jiangnan water towns",
+                "Battle scenes",
+                "Court figures"
+              ],
+              "answer": "Jiangnan water towns",
+              "explain": "White walls and black tiles provide the formal elements of dot, line and plane."
+            },
+            {
+              "type": "fill",
+              "question": "In 1992 Wu Guanzhong published an essay called 'Brush and Ink Equal ____'.",
+              "options": [],
+              "answer": "Zero",
+              "explain": "He argued that brush and ink are worthless apart from the picture, which sparked a big debate.",
+              "wordBank": [
+                "Zero",
+                "Everything",
+                "Life",
+                "Form"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What does 'formal beauty' mainly emphasise?",
+              "options": [
+                "The storyline",
+                "The beauty of dots, lines, planes and colour themselves",
+                "Realistic accuracy",
+                "Religious meaning"
+              ],
+              "answer": "The beauty of dots, lines, planes and colour themselves",
+              "explain": "Formal beauty focuses on the picture's elements and how they are organised."
+            },
+            {
+              "type": "mcq",
+              "question": "Who was Wu Guanzhong's teacher?",
+              "options": [
+                "Xu Beihong",
+                "Lin Fengmian",
+                "Qi Baishi",
+                "Gao Qifeng"
+              ],
+              "answer": "Lin Fengmian",
+              "explain": "He studied under Lin Fengmian at the National Hangzhou Academy of Art."
+            }
+          ],
+          "artistIds": [
+            "CN-WUGZ-01"
+          ]
+        },
+        {
+          "id": "U1-L5",
+          "title": "Zao Wou-Ki and Abstraction",
+          "cards": [
+            "Zao Wou-Ki (趙無極, 1920–2013) studied under Lin Fengmian (林風眠) at the National Hangzhou Academy of Art, and moved to Paris in 1948.",
+            "Early on he was inspired by Paul Klee (保羅·克利), and symbols like oracle bone script (甲骨文) appeared in his paintings.",
+            "He later developed lyrical abstraction: large fields of colour and flowing brushstrokes that evoke landscapes, light and the universe.",
+            "Many works are titled by completion date, such as June–October 1985 (《1985年6月-10月》), so viewers don't read them as specific subjects.",
+            "In 2002 he was elected to the Académie des Beaux-Arts (法蘭西藝術院) in France. He is a leading figure of abstract art fusing East and West."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Which city did Zao Wou-Ki move to in 1948?",
+              "options": [
+                "New York",
+                "Paris",
+                "London",
+                "Tokyo"
+              ],
+              "answer": "Paris",
+              "explain": "In Paris he encountered modern Western art and developed his abstract style."
+            },
+            {
+              "type": "mcq",
+              "question": "Which Western artist inspired Zao Wou-Ki early in his career?",
+              "options": [
+                "Paul Klee",
+                "Andy Warhol",
+                "Vincent van Gogh",
+                "Salvador Dalí"
+              ],
+              "answer": "Paul Klee",
+              "explain": "Klee's symbols and lines inspired him to add symbols like oracle bone script."
+            },
+            {
+              "type": "mcq",
+              "question": "How did Zao Wou-Ki title many of his works?",
+              "options": [
+                "With lines of poetry",
+                "With the completion date",
+                "With place names",
+                "With people's names"
+              ],
+              "answer": "With the completion date",
+              "explain": "Date titles make viewers focus on colour and space, not a specific subject."
+            },
+            {
+              "type": "match",
+              "question": "Match each artist to their style",
+              "options": [
+                "Zao Wou-Ki",
+                "Xu Beihong",
+                "Wu Guanzhong"
+              ],
+              "answer": {
+                "Zao Wou-Ki": "Lyrical abstraction",
+                "Xu Beihong": "Realism",
+                "Wu Guanzhong": "Formal beauty"
+              },
+              "explain": "All three wanted to modernise Chinese art, but in different ways."
+            },
+            {
+              "type": "mcq",
+              "question": "How does Zao Wou-Ki's work show a fusion of East and West?",
+              "options": [
+                "Using oil paint to express the mood of Chinese landscape",
+                "Only copying ancient paintings in ink",
+                "Painting American pop culture",
+                "Replacing painting with photography"
+              ],
+              "answer": "Using oil paint to express the mood of Chinese landscape",
+              "explain": "A Western medium combined with Eastern ideas of space and qiyun (spirit resonance)."
+            }
+          ],
+          "artistIds": [
+            "CN-ZAO-01",
+            "CN-CHUTC-01"
+          ]
+        }
+      ]
     },
     {
-     "id": "U1-L2",
-     "title": "Xu Beihong and Realism",
-     "artistIds": [
-      "CN-XUBH-01"
-     ],
-     "cards": [
-      "Xu Beihong (徐悲鴻, 1895–1953) studied in France at the École des Beaux-Arts in Paris, learning Western academic drawing and oil painting.",
-      "He believed Chinese painting needed 'reform', and argued that Western realist drawing should be the foundation for depicting form.",
-      "His most famous subject is galloping horses, painted in ink with accurate anatomy to show strength and speed.",
-      "Major works include the oil painting Tian Heng and His Five Hundred Followers (《田橫五百士》), which uses a historical story to express national integrity.",
-      "After 1949 he became the first president of the Central Academy of Fine Arts (中央美術學院). His realist teaching system shaped Chinese art education for many years."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "What is Xu Beihong's most famous ink-painting subject?",
-       "options": [
-        "Shrimps",
-        "Galloping horses",
-        "Bamboo",
-        "Landscapes"
-       ],
-       "answer": "Galloping horses",
-       "explain": "He used realist knowledge of anatomy to paint horses, with bold brushwork and accurate structure."
-      },
-      {
-       "type": "mcq",
-       "question": "What did Xu Beihong say should be the foundation of form in Chinese painting?",
-       "options": [
-        "Calligraphy",
-        "Western realist drawing",
-        "Abstract colour blocks",
-        "Photo collage"
-       ],
-       "answer": "Western realist drawing",
-       "explain": "He believed drawing was the foundation of all visual art."
-      },
-      {
-       "type": "match",
-       "question": "Match each work to its type",
-       "options": [
-        "Tian Heng and His Five Hundred Followers",
-        "Galloping Horse paintings"
-       ],
-       "answer": {
-        "Tian Heng and His Five Hundred Followers": "Oil history painting",
-        "Galloping Horse paintings": "Ink painting"
-       },
-       "explain": "Xu Beihong worked in both oil and ink."
-      },
-      {
-       "type": "mcq",
-       "question": "After 1949, Xu Beihong became the first president of which school?",
-       "options": [
-        "Central Academy of Fine Arts",
-        "Department of Fine Arts, CUHK",
-        "Lingnan University",
-        "École des Beaux-Arts, Paris"
-       ],
-       "answer": "Central Academy of Fine Arts",
-       "explain": "His realist teaching system spread from there."
-      }
-     ]
+      "id": "U2-HK-IDENTITY",
+      "title": "Hong Kong Art and Identity",
+      "intro": "From New Ink to contemporary practice, Hong Kong artists respond to the city, identity and collecting spaces—aligned with CCCKLC F.6 themes and museum visits (HK Palace Museum, Xubaizhai).",
+      "lessons": [
+        {
+          "id": "U2-L1",
+          "title": "New Ink: Lui Shou-kwan and Wucius Wong",
+          "cards": [
+            "Lui Shou-kwan (1919–1975) was a key force in Hong Kong New Ink, refining landscape into bold ink masses and voids with a Zen, abstract lean.",
+            "Rather than only copying models, he used modern composition and simplified form so ink could speak about mind-states, not just scenery.",
+            "Wucius Wong, inspired by Lui, joined design-like structure to ink, stressing order, layering and geometry.",
+            "New Ink helped post-war Hong Kong build a local modern ink language—an important chapter of artistic identity.",
+            "(Pending teacher review) Use a visual diary to note how void and ink mass can carry emotion."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Hong Kong’s modern ink movement linked to Lui is usually called?",
+              "options": [
+                "New Ink",
+                "Impressionism",
+                "Cubism",
+                "Pop art"
+              ],
+              "answer": "New Ink",
+              "explain": "Lui is a major New Ink pioneer in Hong Kong."
+            },
+            {
+              "type": "mcq",
+              "question": "A formal trait often seen in Lui’s work is?",
+              "options": [
+                "Ink masses and voids",
+                "Silkscreened soup cans",
+                "Marble portrait busts",
+                "Neon slogans"
+              ],
+              "answer": "Ink masses and voids",
+              "explain": "Abstracted landscape with breathing empty space."
+            },
+            {
+              "type": "fill",
+              "question": "Wucius Wong’s ink often stresses design-like ＿＿ and layers.",
+              "options": [],
+              "answer": "structure",
+              "explain": "He brings design thinking into ink.",
+              "wordBank": [
+                "structure",
+                "theatre lighting only",
+                "ad jingles",
+                "shutter speed"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Why does New Ink matter for HK identity?",
+              "options": [
+                "It built a local modern ink language",
+                "It banned ink forever",
+                "It only copied Song academies",
+                "It served only posters"
+              ],
+              "answer": "It built a local modern ink language",
+              "explain": "A post-war local modern path."
+            }
+          ],
+          "artistIds": [
+            "CN-LV-01",
+            "HK-WUCIUS-01"
+          ]
+        },
+        {
+          "id": "U2-L2",
+          "title": "Luis Chan’s Surreal Hong Kong",
+          "cards": [
+            "Luis Chan (1905–1995) began with more naturalistic views and portraits; from the 1960s his art turned fantastical and surreal.",
+            "Bright colour, naïve forms and dream logic turn Hong Kong hills and harbour into imagined worlds.",
+            "Humour and folk-like play challenge the idea that Hong Kong art must only document reality.",
+            "For DSE students he models surreal strategies for “everyday city + inner feeling”.",
+            "(Pending teacher review) Maps to CCCKLC’s “explore surreal life” aim."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "About when did Luis Chan shift toward surreal fantasy?",
+              "options": [
+                "The 1960s",
+                "The 1820s",
+                "Only the 2020s",
+                "The Ming court only"
+              ],
+              "answer": "The 1960s",
+              "explain": "Surreal fantasy grows from the 1960s."
+            },
+            {
+              "type": "mcq",
+              "question": "A common trait of his surreal work is?",
+              "options": [
+                "Bright colour and naïve forms",
+                "Only B&W documentary photos",
+                "Classical marble only",
+                "Text manifestos only"
+              ],
+              "answer": "Bright colour and naïve forms",
+              "explain": "Vivid, playful, dreamlike."
+            },
+            {
+              "type": "fill",
+              "question": "He often treats Hong Kong’s ＿＿ through surreal invention.",
+              "options": [],
+              "answer": "city",
+              "explain": "City and hills become dream scenes.",
+              "wordBank": [
+                "city",
+                "civil-service exams",
+                "Dunhuang copy sheets",
+                "stock charts"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Luis Chan",
+                "Lui Shou-kwan"
+              ],
+              "answer": {
+                "Luis Chan": "Surreal fantasy HK",
+                "Lui Shou-kwan": "New Ink abstraction"
+              },
+              "explain": "Two modern HK languages."
+            }
+          ],
+          "artistIds": [
+            "HK-LUISCHAN-01"
+          ]
+        },
+        {
+          "id": "U2-L3",
+          "title": "Contemporary HK identity: Pak, Lee Kit, Wilson Shieh",
+          "cards": [
+            "Pak Sheung Chuen uses conceptual gestures and everyday materials to make pressure of housing and city space thinkable.",
+            "Lee Kit builds quiet installations with painting, cloth, projection and domestic objects—private, fragile moments.",
+            "Wilson Shieh paints contemporary figures in gongbi colour; faces may be blank or role-like, probing identity and gender.",
+            "Concept, spatial sensing and figuration—all ask who we are and how we live here.",
+            "(Pending teacher review) Ties to CCCKLC “Self…society” and role-taking."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Pak’s approach is closest to?",
+              "options": [
+                "Conceptual art with everyday materials",
+                "Court flower-and-bird only",
+                "Old Master oil copies only",
+                "Fireworks only"
+              ],
+              "answer": "Conceptual art with everyday materials",
+              "explain": "Process and ready materials."
+            },
+            {
+              "type": "mcq",
+              "question": "Wilson Shieh often uses which traditional skill on contemporary subjects?",
+              "options": [
+                "Gongbi colour painting",
+                "Mandatory 3D scanning",
+                "Only wet-on-wet watercolour",
+                "Bronze casting only"
+              ],
+              "answer": "Gongbi colour painting",
+              "explain": "Fine-line colour for today’s figures."
+            },
+            {
+              "type": "fill",
+              "question": "Lee Kit’s mood is often ＿＿ and private.",
+              "options": [],
+              "answer": "quiet",
+              "explain": "Soft materials, domestic cues.",
+              "wordBank": [
+                "quiet",
+                "loud advertising",
+                "war reportage",
+                "courtroom sketch"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Shared direction of the three artists?",
+              "options": [
+                "HK identity and everyday life",
+                "Only Song glaze chemistry",
+                "Only European aristocracy",
+                "No urban topics"
+              ],
+              "answer": "HK identity and everyday life",
+              "explain": "Identity and daily pressure."
+            }
+          ],
+          "artistIds": [
+            "HK-PAK-01",
+            "HK-LEEKIT-01",
+            "HK-SHIEH-01"
+          ]
+        },
+        {
+          "id": "U2-L4",
+          "title": "Museums and local collections: HKPM & Xubaizhai",
+          "cards": [
+            "The Hong Kong Palace Museum stages exhibitions tied to Palace Museum culture—useful for material culture and aesthetics.",
+            "The Xubaizhai Collection at the Hong Kong Museum of Art centres Chinese painting and calligraphy for literati study.",
+            "A visit is observation practice: composition, colophons, seals, mounting and display narratives.",
+            "CCCKLC F.6 links these visits to self-review and portfolio; keep a visual diary of questions.",
+            "(Pending teacher review) Prompt: how do traditional symbols enter life in Hong Kong today?"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Xubaizhai is best known for?",
+              "options": [
+                "Chinese painting and calligraphy",
+                "Cars only",
+                "Rock posters only",
+                "European armour only"
+              ],
+              "answer": "Chinese painting and calligraphy",
+              "explain": "HKMoA Xubaizhai holdings."
+            },
+            {
+              "type": "mcq",
+              "question": "HK Palace Museum mainly helps students?",
+              "options": [
+                "Meet Chinese artefacts and exhibition narratives",
+                "Pass sailing exams",
+                "Code only",
+                "PE training only"
+              ],
+              "answer": "Meet Chinese artefacts and exhibition narratives",
+              "explain": "Material culture on site."
+            },
+            {
+              "type": "fill",
+              "question": "In museums, practise ＿＿ and questions—not only photos.",
+              "options": [],
+              "answer": "observation",
+              "explain": "Look hard, then write.",
+              "wordBank": [
+                "observation",
+                "copying price tags",
+                "ignoring works",
+                "gift-shop only"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "CCCKLC links museum visits to?",
+              "options": [
+                "Self-review / portfolio",
+                "Lunch seating only",
+                "Replacing all making",
+                "Cancelling diaries"
+              ],
+              "answer": "Self-review / portfolio",
+              "explain": "Stated in the scheme."
+            }
+          ]
+        }
+      ]
     },
     {
-     "id": "U1-L3",
-     "title": "Lin Fengmian's Fusion",
-     "artistIds": [
-      "CN-LINFM-01"
-     ],
-     "cards": [
-      "Lin Fengmian (林風眠, 1900–1991) studied in France and was strongly influenced by Western modernism, such as Fauvism and Cubism.",
-      "In 1928 he founded the National Academy of Art (國立藝術院) in Hangzhou, today's China Academy of Art, promoting 'harmonising Chinese and Western art'.",
-      "He often used square compositions, combining ink, watercolour and rich colour. His subjects include ladies, still lifes, egrets and autumn scenes.",
-      "His students included Wu Guanzhong (吳冠中), Zao Wou-Ki (趙無極) and Chu Teh-Chun (朱德群), who all became important modern artists.",
-      "In his later years he settled in Hong Kong, where he kept creating art until his death."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Where did Lin Fengmian found the National Academy of Art?",
-       "options": [
-        "Beijing",
-        "Hangzhou",
-        "Guangzhou",
-        "Shanghai"
-       ],
-       "answer": "Hangzhou",
-       "explain": "Founded in 1928, it is today's China Academy of Art."
-      },
-      {
-       "type": "mcq",
-       "question": "Which of these was NOT a student of Lin Fengmian?",
-       "options": [
-        "Wu Guanzhong",
-        "Zao Wou-Ki",
-        "Chu Teh-Chun",
-        "Gao Jianfu"
-       ],
-       "answer": "Gao Jianfu",
-       "explain": "Gao Jianfu was a founder of the Lingnan School and older than Lin Fengmian."
-      },
-      {
-       "type": "mcq",
-       "question": "Which composition format is common in Lin Fengmian's work?",
-       "options": [
-        "Long handscroll",
-        "Square composition",
-        "Fan painting",
-        "Hanging scroll"
-       ],
-       "answer": "Square composition",
-       "explain": "The square format broke away from traditional Chinese scroll formats and is close to the Western idea of a framed picture."
-      },
-      {
-       "type": "fill",
-       "question": "Lin Fengmian promoted '____ Chinese and Western art'.",
-       "options": [],
-       "answer": "harmonising",
-       "explain": "He wanted to combine the spirit of Chinese art with modern Western forms.",
-       "wordBank": [
-        "harmonising",
-        "opposing",
-        "wholly adopting",
-        "copying"
-       ]
-      }
-     ]
+      "id": "U3-WEST-MODERN",
+      "title": "Introduction to Western Modernism",
+      "intro": "From Impressionism to abstraction, then a bridge to postmodern identity, Cindy Sherman and the YBA—matching CCCKLC needs.",
+      "lessons": [
+        {
+          "id": "U3-L1",
+          "title": "Impressionism and Post-Impressionism: Monet and Van Gogh",
+          "cards": [
+            "Impressionists prized outdoor light, visible brushwork and fleeting colour over polished academic finish.",
+            "Claude Monet’s Impression, Sunrise (1872) and Water Lilies explore changing light and reflection.",
+            "Vincent van Gogh pushed high chroma and swirling stroke so touch itself carries feeling.",
+            "Both unsettled “likeness alone” as the only standard and opened doors to modernism.",
+            "(Pending teacher review) A light link to ink “stroke as feeling” can wait for U5."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Who painted Impression, Sunrise?",
+              "options": [
+                "Claude Monet",
+                "Picasso",
+                "Warhol",
+                "Lui Shou-kwan"
+              ],
+              "answer": "Claude Monet",
+              "explain": "Tied to the Impressionist name."
+            },
+            {
+              "type": "mcq",
+              "question": "A van Gogh hallmark is?",
+              "options": [
+                "High chroma and swirling stroke",
+                "Minimal white-cube props only",
+                "Fountain ready-made only",
+                "Gongbi hairline only"
+              ],
+              "answer": "High chroma and swirling stroke",
+              "explain": "Stroke as emotion."
+            },
+            {
+              "type": "fill",
+              "question": "Impressionism hunts ＿＿ changes of light and colour.",
+              "options": [],
+              "answer": "fleeting",
+              "explain": "Instantaneous light.",
+              "wordBank": [
+                "fleeting",
+                "temple-fixed eternity only",
+                "outline only",
+                "halftone dots only"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "A key impact was?",
+              "options": [
+                "Challenging polished academic realism",
+                "Banning colour",
+                "Forbidding shows",
+                "Portrait-only rules"
+              ],
+              "answer": "Challenging polished academic realism",
+              "explain": "New criteria for painting."
+            }
+          ],
+          "artistIds": [
+            "WEST-MONET-01",
+            "WEST-VANGOGH-01"
+          ]
+        },
+        {
+          "id": "U3-L2",
+          "title": "Fauvism and Cubism: Matisse and Picasso",
+          "cards": [
+            "Henri Matisse and the Fauves used intense, non-natural colour and simplified shape.",
+            "Pablo Picasso and Braque built Cubism by fracturing forms into multi-view planes.",
+            "Les Demoiselles d’Avignon (1907) is an early Cubist landmark breaking stable perspective.",
+            "Modernism could reinvent seeing through colour or through structural analysis.",
+            "(Pending teacher review) Pair with Tate “human figure” resources."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Fauvism emphasises?",
+              "options": [
+                "Intense non-natural colour",
+                "Ink texture strokes only",
+                "Land art only",
+                "No emotion"
+              ],
+              "answer": "Intense non-natural colour",
+              "explain": "Colour as driver."
+            },
+            {
+              "type": "mcq",
+              "question": "Cubism often?",
+              "options": [
+                "Splits forms into geometric multi-views",
+                "Seeks photo polish only",
+                "Uses one fixed perspective only",
+                "Rejects all shape"
+              ],
+              "answer": "Splits forms into geometric multi-views",
+              "explain": "Analytic planes."
+            },
+            {
+              "type": "fill",
+              "question": "Les Demoiselles d’Avignon dates to about ＿＿.",
+              "options": [],
+              "answer": "1907",
+              "explain": "Early Cubist key work.",
+              "wordBank": [
+                "1907",
+                "1500",
+                "1998",
+                "2025"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Matisse",
+                "Picasso"
+              ],
+              "answer": {
+                "Matisse": "Fauve colour",
+                "Picasso": "Cubist structure"
+              },
+              "explain": "Two breakthroughs."
+            }
+          ],
+          "artistIds": [
+            "WEST-MATISSE-01",
+            "WEST-PICASSO-01"
+          ]
+        },
+        {
+          "id": "U3-L3",
+          "title": "Paths to abstraction: Kandinsky, Mondrian, Rothko",
+          "cards": [
+            "Wassily Kandinsky argued colour and shape can free themselves from objects; Concerning the Spiritual in Art was influential.",
+            "Piet Mondrian’s Neo-Plasticism uses horizontals, verticals and primary colours for balance.",
+            "Mark Rothko’s colour-field paintings immerse viewers in soft-edged fields of feeling.",
+            "Abstraction is organised meaning—not “anything goes”.",
+            "(Pending teacher review) Cross-link Wu Guanzhong / Zao Wou-Ki later."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Kandinsky linked abstraction to?",
+              "options": [
+                "Spirit and inner feeling",
+                "Price tags only",
+                "Map scale only",
+                "Headlines only"
+              ],
+              "answer": "Spirit and inner feeling",
+              "explain": "Spiritual in form."
+            },
+            {
+              "type": "mcq",
+              "question": "Mondrian’s language is often?",
+              "options": [
+                "Horizontals, verticals, primaries",
+                "Pore-level realism",
+                "Splash as only method",
+                "Gongbi flowers"
+              ],
+              "answer": "Horizontals, verticals, primaries",
+              "explain": "Neo-Plastic traits."
+            },
+            {
+              "type": "fill",
+              "question": "Rothko often uses large ＿＿ colour fields.",
+              "options": [],
+              "answer": "soft-edged",
+              "explain": "Soft edges, immersion.",
+              "wordBank": [
+                "soft-edged",
+                "barbed wire only",
+                "graffiti type only",
+                "rubbings only"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Abstraction’s key is?",
+              "options": [
+                "Organising meaning with form",
+                "No thinking needed",
+                "Photo copying only",
+                "Forbidding feeling"
+              ],
+              "answer": "Organising meaning with form",
+              "explain": "Elements carry structure."
+            }
+          ],
+          "artistIds": [
+            "WEST-KANDINSKY-01",
+            "WEST-MONDRIAN-01",
+            "WEST-ROTHKO-01"
+          ]
+        },
+        {
+          "id": "U3-L4",
+          "title": "Postmodern identity: Sherman and the YBA",
+          "cards": [
+            "Postmodern work often questions “authentic identity” and originality via appropriation and role-play.",
+            "Cindy Sherman’s Untitled Film Stills (1977–1980) stages typed female roles to probe gaze and representation.",
+            "Pop Art paved the way for postmodernism: Andy Warhol used silkscreen printing to repeat images of celebrities and consumer goods, as in Marilyn Diptych (1962), questioning originality and the value of the handmade.",
+            "The YBA emerged in 1990s Britain; Damien Hirst and Tracey Emin became widely known for startling materials and autobiographical strategies.",
+            "This bridge lesson supports CCCKLC role-taking: “Reappear someone in Chinese context”.",
+            "(Pending teacher review) Extend with Tate “changed identity” / “human figure”."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Sherman’s key strategy is?",
+              "options": [
+                "Role-play and photographic staging",
+                "Song landscape only",
+                "Blue-and-white only",
+                "No figures ever"
+              ],
+              "answer": "Role-play and photographic staging",
+              "explain": "Identity as performance."
+            },
+            {
+              "type": "mcq",
+              "question": "YBA refers to?",
+              "options": [
+                "Young British Artists of the 1990s",
+                "Ming court academy",
+                "An old HK calligraphy club",
+                "Another name for Impressionism"
+              ],
+              "answer": "Young British Artists of the 1990s",
+              "explain": "YBA expansion."
+            },
+            {
+              "type": "fill",
+              "question": "Untitled Film Stills spans 1977 to ＿＿.",
+              "options": [],
+              "answer": "1980",
+              "explain": "Series dated 1977–1980.",
+              "wordBank": [
+                "1980",
+                "1600",
+                "1850",
+                "2019"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "How does this lesson serve CCCKLC?",
+              "options": [
+                "Supplies role-taking / identity models",
+                "Replaces Chinese art history",
+                "Bans visual diaries",
+                "Only memorises classics"
+              ],
+              "answer": "Supplies role-taking / identity models",
+              "explain": "Direct syllabus fit."
+            }
+          ],
+          "artistIds": [
+            "INTL-SHERMAN-01",
+            "INTL-HIRST-01",
+            "INTL-EMIN-01",
+            "WEST-WARHOL-01"
+          ]
+        }
+      ]
     },
     {
-     "id": "U1-L4",
-     "title": "Wu Guanzhong and Formal Beauty",
-     "artistIds": [
-      "CN-WUGZ-01"
-     ],
-     "cards": [
-      "Wu Guanzhong (吳冠中, 1919–2010) studied under Lin Fengmian (林風眠) at the National Hangzhou Academy of Art, then went to study in Paris.",
-      "He valued 'formal beauty' (形式美): dots, lines, planes and colours are beautiful in themselves, so a painting need not be realistic.",
-      "He often painted Jiangnan (江南) water towns: white walls, black tiles, curving lines and dots of colour, in simple, rhythmic pictures.",
-      "In 1992 he published 'Brush and Ink Equal Zero' (〈筆墨等於零〉), arguing that brush and ink must serve the picture and are worthless on their own. It caused huge debate.",
-      "He painted in both oil and ink, aiming to 'give oil painting a national character and modernise Chinese painting'."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "What did Wu Guanzhong paint most often?",
-       "options": [
-        "Deserts",
-        "Jiangnan water towns",
-        "Battle scenes",
-        "Court figures"
-       ],
-       "answer": "Jiangnan water towns",
-       "explain": "White walls and black tiles provide the formal elements of dot, line and plane."
-      },
-      {
-       "type": "fill",
-       "question": "In 1992 Wu Guanzhong published an essay called 'Brush and Ink Equal ____'.",
-       "options": [],
-       "answer": "Zero",
-       "explain": "He argued that brush and ink are worthless apart from the picture, which sparked a big debate.",
-       "wordBank": [
-        "Zero",
-        "Everything",
-        "Life",
-        "Form"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "What does 'formal beauty' mainly emphasise?",
-       "options": [
-        "The storyline",
-        "The beauty of dots, lines, planes and colour themselves",
-        "Realistic accuracy",
-        "Religious meaning"
-       ],
-       "answer": "The beauty of dots, lines, planes and colour themselves",
-       "explain": "Formal beauty focuses on the picture's elements and how they are organised."
-      },
-      {
-       "type": "mcq",
-       "question": "Who was Wu Guanzhong's teacher?",
-       "options": [
-        "Xu Beihong",
-        "Lin Fengmian",
-        "Qi Baishi",
-        "Gao Qifeng"
-       ],
-       "answer": "Lin Fengmian",
-       "explain": "He studied under Lin Fengmian at the National Hangzhou Academy of Art."
-      }
-     ]
+      "id": "U4-CN-CONTEMP",
+      "title": "Contemporary Chinese Art",
+      "intro": "Bridge from Xu Beihong and Qi Baishi into Xu Bing, Political Pop, installation/performance and video—aligned with F.5 Art Talk and global contemporary views.",
+      "lessons": [
+        {
+          "id": "U4-L1",
+          "title": "Bridge: Xu Beihong and Qi Baishi toward today",
+          "cards": [
+            "Xu Beihong championed academic drawing; horses and history subjects tied structure to national meaning.",
+            "Qi Baishi brought folk-flavoured birds, fish and insects into modern viewership.",
+            "Later artists inherit these “modern classics” while facing globalisation and new media.",
+            "Seeing realist pedagogy and folk wit first makes later refusals and appropriations clearer.",
+            "(Pending teacher review) Detail on Xu also sits in U1."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Xu Beihong stressed which foundation?",
+              "options": [
+                "Realist drawing",
+                "Colour-field only",
+                "Ready-mades only",
+                "No anatomy"
+              ],
+              "answer": "Realist drawing",
+              "explain": "Drawing as base."
+            },
+            {
+              "type": "mcq",
+              "question": "Qi Baishi is known for?",
+              "options": [
+                "Birds, fish, insects",
+                "Only giant steel dogs",
+                "Only neon text",
+                "Only CCTV video"
+              ],
+              "answer": "Birds, fish, insects",
+              "explain": "Signature subjects."
+            },
+            {
+              "type": "fill",
+              "question": "Before contemporary chapters, note modern ＿＿ wit and realist lines.",
+              "options": [],
+              "answer": "folk",
+              "explain": "Folk vision + realism.",
+              "wordBank": [
+                "folk",
+                "sci-fi only",
+                "car design only",
+                "orchestral only"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "This lesson’s map role is?",
+              "options": [
+                "A bridge from modern to contemporary",
+                "Replacing all Western units",
+                "Ending ink",
+                "Auction prices only"
+              ],
+              "answer": "A bridge from modern to contemporary",
+              "explain": "Marked transition."
+            }
+          ],
+          "artistIds": [
+            "CN-XUBH-01",
+            "CN-QIBS-01"
+          ]
+        },
+        {
+          "id": "U4-L2",
+          "title": "Xu Bing: writing, concept, calligraphy currents",
+          "cards": [
+            "Book from the Sky (1980s) prints invented pseudo-characters, unsettling trust in writing.",
+            "Language, reading and cultural misreading link conceptual art to calligraphic tradition.",
+            "F.5 Art Talk pairs Xu Bing with contemporary Chinese calligraphy currents and global art.",
+            "Students may translate the idea of a broken writing system into school, net or dialect barriers.",
+            "(Pending teacher review) Transform the concept—do not only copy pseudo-glyphs for marks."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Book from the Sky mainly unsettles?",
+              "options": [
+                "Authority of writing and reading",
+                "Landscape perspective only",
+                "Musical metre only",
+                "Sports rules only"
+              ],
+              "answer": "Authority of writing and reading",
+              "explain": "Legible-illegible tension."
+            },
+            {
+              "type": "mcq",
+              "question": "Xu Bing often focuses on?",
+              "options": [
+                "Language, misreading, concept",
+                "Court banquets only",
+                "Monet lilies only",
+                "Sports livestreams only"
+              ],
+              "answer": "Language, misreading, concept",
+              "explain": "Systems of signs."
+            },
+            {
+              "type": "fill",
+              "question": "F.5 Art Talk links Xu Bing to contemporary Chinese ＿＿ currents.",
+              "options": [],
+              "answer": "calligraphy",
+              "explain": "Calligraphy in contemporary keys.",
+              "wordBank": [
+                "calligraphy",
+                "skiing",
+                "sailing",
+                "cooking shows"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Safer SBA use of Xu’s ideas?",
+              "options": [
+                "Transform language/misreading into your theme",
+                "Clone his install layout wholesale",
+                "Print Wikipedia only",
+                "Skip research"
+              ],
+              "answer": "Transform language/misreading into your theme",
+              "explain": "Personal transformation."
+            }
+          ],
+          "artistIds": [
+            "CN-XUBING-01"
+          ]
+        },
+        {
+          "id": "U4-L3",
+          "title": "Political Pop and Cynical Realism",
+          "cards": [
+            "Wang Guangyi’s Great Criticism-type works juxtapose propaganda imagery with consumer logos.",
+            "Yue Minjun’s laughing figures and Fang Lijun’s bald heads are discussed in Cynical Realism contexts.",
+            "They respond to memory, consumption and mood after Reform—not “pretty painting” alone.",
+            "Compare carefully with Warhol’s mass-image tactics (U5); contexts differ.",
+            "(Pending teacher review) Follow school guidance on sensitive histories."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Wang Guangyi often?",
+              "options": [
+                "Juxtaposes political and brand images",
+                "Only copies Qi’s shrimp",
+                "Only paints harbour sunsets",
+                "Only does pointillism"
+              ],
+              "answer": "Juxtaposes political and brand images",
+              "explain": "Political Pop tactic."
+            },
+            {
+              "type": "mcq",
+              "question": "Fang Lijun is associated with?",
+              "options": [
+                "Bald figures",
+                "Auctioneers in suits only",
+                "Deities only",
+                "Totally empty fields only"
+              ],
+              "answer": "Bald figures",
+              "explain": "Signature motif."
+            },
+            {
+              "type": "fill",
+              "question": "Yue Minjun repeats ＿＿ figures.",
+              "options": [],
+              "answer": "laughing",
+              "explain": "Laughing faces.",
+              "wordBank": [
+                "laughing",
+                "stele rubbings",
+                "Song ware charts",
+                "MTR maps"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Wang Guangyi",
+                "Fang Lijun"
+              ],
+              "answer": {
+                "Wang Guangyi": "Political Pop juxtaposition",
+                "Fang Lijun": "Cynical Realism bald figures"
+              },
+              "explain": "Two social-psych lines."
+            }
+          ],
+          "artistIds": [
+            "CN-WANGGY-01",
+            "CN-YUEMJ-01",
+            "CN-FANGLJ-01"
+          ]
+        },
+        {
+          "id": "U4-L4",
+          "title": "Installation, performance and video",
+          "cards": [
+            "Cai Guo-Qiang is known for gunpowder drawings and explosion events—ephemeral mark and spectacle.",
+            "Zhang Huan and others use the body as medium under social gaze.",
+            "Zhang Peili is a key early video figure; Yang Fudong works with cinematic time; Cao Fei explores virtual worlds and subcultures.",
+            "New media lets the work be process, event or virtual space.",
+            "(Pending teacher review) Aligns with F.5 global contemporary talk."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Cai Guo-Qiang is known for?",
+              "options": [
+                "Gunpowder and explosion projects",
+                "Blue gongbi only",
+                "Marble only",
+                "Soup-can screens only"
+              ],
+              "answer": "Gunpowder and explosion projects",
+              "explain": "Signature methods."
+            },
+            {
+              "type": "mcq",
+              "question": "Zhang Peili is often linked to?",
+              "options": [
+                "Video art",
+                "Blue-green shanshui only",
+                "Seal sides only",
+                "Palace editions only"
+              ],
+              "answer": "Video art",
+              "explain": "Early video pioneer."
+            },
+            {
+              "type": "fill",
+              "question": "Cao Fei often explores virtual worlds, cities and ＿＿ cultures.",
+              "options": [],
+              "answer": "sub",
+              "explain": "Subculture + virtual.",
+              "wordBank": [
+                "sub",
+                "keju",
+                "court-only",
+                "stone-age"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "These media expand the idea that works can be?",
+              "options": [
+                "Events, processes or virtual spaces",
+                "Oil paintings only",
+                "Without time",
+                "Smaller than a phone"
+              ],
+              "answer": "Events, processes or virtual spaces",
+              "explain": "Form shifts."
+            }
+          ],
+          "artistIds": [
+            "CN-CAIGQ-01",
+            "CN-ZHANGH-01",
+            "CN-ZHANGPL-01",
+            "CN-YANGFD-01",
+            "CN-CAOFEI-01"
+          ]
+        }
+      ]
     },
     {
-     "id": "U1-L5",
-     "title": "Zao Wou-Ki and Abstraction",
-     "artistIds": [
-      "CN-ZAO-01",
-      "CN-CHUTC-01"
-     ],
-     "cards": [
-      "Zao Wou-Ki (趙無極, 1920–2013) studied under Lin Fengmian (林風眠) at the National Hangzhou Academy of Art, and moved to Paris in 1948.",
-      "Early on he was inspired by Paul Klee (保羅·克利), and symbols like oracle bone script (甲骨文) appeared in his paintings.",
-      "He later developed lyrical abstraction: large fields of colour and flowing brushstrokes that evoke landscapes, light and the universe.",
-      "Many works are titled by completion date, such as June–October 1985 (《1985年6月-10月》), so viewers don't read them as specific subjects.",
-      "In 2002 he was elected to the Académie des Beaux-Arts (法蘭西藝術院) in France. He is a leading figure of abstract art fusing East and West."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Which city did Zao Wou-Ki move to in 1948?",
-       "options": [
-        "New York",
-        "Paris",
-        "London",
-        "Tokyo"
-       ],
-       "answer": "Paris",
-       "explain": "In Paris he encountered modern Western art and developed his abstract style."
-      },
-      {
-       "type": "mcq",
-       "question": "Which Western artist inspired Zao Wou-Ki early in his career?",
-       "options": [
-        "Paul Klee",
-        "Andy Warhol",
-        "Vincent van Gogh",
-        "Salvador Dalí"
-       ],
-       "answer": "Paul Klee",
-       "explain": "Klee's symbols and lines inspired him to add symbols like oracle bone script."
-      },
-      {
-       "type": "mcq",
-       "question": "How did Zao Wou-Ki title many of his works?",
-       "options": [
-        "With lines of poetry",
-        "With the completion date",
-        "With place names",
-        "With people's names"
-       ],
-       "answer": "With the completion date",
-       "explain": "Date titles make viewers focus on colour and space, not a specific subject."
-      },
-      {
-       "type": "match",
-       "question": "Match each artist to their style",
-       "options": [
-        "Zao Wou-Ki",
-        "Xu Beihong",
-        "Wu Guanzhong"
-       ],
-       "answer": {
-        "Zao Wou-Ki": "Lyrical abstraction",
-        "Xu Beihong": "Realism",
-        "Wu Guanzhong": "Formal beauty"
-       },
-       "explain": "All three wanted to modernise Chinese art, but in different ways."
-      },
-      {
-       "type": "mcq",
-       "question": "How does Zao Wou-Ki's work show a fusion of East and West?",
-       "options": [
-        "Using oil paint to express the mood of Chinese landscape",
-        "Only copying ancient paintings in ink",
-        "Painting American pop culture",
-        "Replacing painting with photography"
-       ],
-       "answer": "Using oil paint to express the mood of Chinese landscape",
-       "explain": "A Western medium combined with Eastern ideas of space and qiyun (spirit resonance)."
-      }
-     ]
+      "id": "U5-COMPARE",
+      "title": "East–West Comparative Perspectives",
+      "intro": "Practise cross-cultural comparison: symbols, role-taking, and how YBA/American contemporary relate to Chinese art—per F.6. Full Ming–Qing survey is U6 backlog.",
+      "lessons": [
+        {
+          "id": "U5-L1",
+          "title": "Method: same, difference, borrow",
+          "cards": [
+            "Good comparison is not “who wins”; describe and analyse form before context and meaning.",
+            "Three columns: same | different | borrowable (composition, concept, material thinking).",
+            "Reuse artist-pair cards; meet SBA “at least two / cross-cultural”.",
+            "Run Feldman (describe→analyse→interpret→judge) on one pair to avoid bio-copying.",
+            "(Pending teacher review) Borrow ≠ paste a style for marks."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Safest start?",
+              "options": [
+                "Describe and analyse form before context",
+                "Crown one nation first",
+                "Copy year lists only",
+                "Skip the work"
+              ],
+              "answer": "Describe and analyse form before context",
+              "explain": "Evidence first."
+            },
+            {
+              "type": "mcq",
+              "question": "SBA research often needs?",
+              "options": [
+                "At least two artists / cross-cultural",
+                "One artist only, no compare",
+                "No sources",
+                "Western-only"
+              ],
+              "answer": "At least two artists / cross-cultural",
+              "explain": "Platform checklist."
+            },
+            {
+              "type": "fill",
+              "question": "The third column is ＿＿.",
+              "options": [],
+              "answer": "borrow",
+              "explain": "Borrow tactics, not surfaces.",
+              "wordBank": [
+                "borrow",
+                "price",
+                "sales",
+                "followers"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Feldman order?",
+              "options": [
+                "Describe→analyse→interpret→judge",
+                "Judge→skip→copy→done",
+                "Judge only",
+                "Price only"
+              ],
+              "answer": "Describe→analyse→interpret→judge",
+              "explain": "Proof before verdict."
+            }
+          ]
+        },
+        {
+          "id": "U5-L2",
+          "title": "Symbols: literati cues meet today (U6 preview)",
+          "cards": [
+            "Ming–Qing literati painting uses birds, strange rocks, colophons and brush habits as moral/feeling signs; Bada Shanren’s creatures are often read with loyalist anguish.",
+            "Wu School figures such as Shen Zhou and Wen Zhengming stress poetry–calligraphy–painting unity; Xu Wei and Chen Chun push freer xieyi ink.",
+            "Contemporaries may reuse or deliberately misalign these signs for present issues.",
+            "CCCKLC asks students to read colour/pattern/painting symbols beside postmodern practice.",
+            "(Pending teacher review) Full Ming–Qing unit = U6 backlog."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "When reading literati symbols, watch?",
+              "options": [
+                "Subject, brush, colophon, context",
+                "Mount colour vibes only",
+                "Count red only",
+                "Ignore text"
+              ],
+              "answer": "Subject, brush, colophon, context",
+              "explain": "Signs need context."
+            },
+            {
+              "type": "mcq",
+              "question": "Bada Shanren is often discussed for?",
+              "options": [
+                "Anguished bird/fish imagery",
+                "Festival nianhua only",
+                "Ad fonts only",
+                "Dance shorts only"
+              ],
+              "answer": "Anguished bird/fish imagery",
+              "explain": "Form + loyalist readings."
+            },
+            {
+              "type": "fill",
+              "question": "Wu School ideals unite poetry, calligraphy and ＿＿.",
+              "options": [],
+              "answer": "painting",
+              "explain": "Three perfections.",
+              "wordBank": [
+                "painting",
+                "stocks",
+                "cars",
+                "basketball"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Relation to U6?",
+              "options": [
+                "Preview; practise symbol reading first",
+                "Fully replaces U6",
+                "No Chinese art",
+                "Bans tradition"
+              ],
+              "answer": "Preview; practise symbol reading first",
+              "explain": "U6 for depth."
+            }
+          ]
+        },
+        {
+          "id": "U5-L3",
+          "title": "Role-taking: Sherman with HK / figure traditions",
+          "cards": [
+            "Sherman’s photo roles show identity shaped by media and gaze.",
+            "Wilson Shieh’s gongbi figures offer a HK counterpart for “re-presenting someone”.",
+            "Figure traditions such as Chen Hongshou and Wu Bin feed CCCKLC portrait/identity talk.",
+            "Studio task: role-take a real person with Chinese media and log it in a visual diary.",
+            "(Pending teacher review) F.6 title: Reappear someone in Chinese context."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Shared ground for Sherman and Shieh?",
+              "options": [
+                "Figures used to probe identity",
+                "Gunpowder only",
+                "No symbols ever",
+                "Maps only"
+              ],
+              "answer": "Figures used to probe identity",
+              "explain": "PAIR-IDENTITY logic."
+            },
+            {
+              "type": "mcq",
+              "question": "CCCKLC role-taking title stresses?",
+              "options": [
+                "Reappearing someone in a Chinese context",
+                "Only Greek copies",
+                "No interviews",
+                "English essay only"
+              ],
+              "answer": "Reappearing someone in a Chinese context",
+              "explain": "Syllabus wording."
+            },
+            {
+              "type": "fill",
+              "question": "Figure traditions help discuss story and ＿＿.",
+              "options": [],
+              "answer": "identity",
+              "explain": "Portrait as identity.",
+              "wordBank": [
+                "identity",
+                "chemistry only",
+                "referee rules",
+                "earnings"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Cindy Sherman",
+                "Wilson Shieh"
+              ],
+              "answer": {
+                "Cindy Sherman": "Photographic role-play",
+                "Wilson Shieh": "Gongbi contemporary figures"
+              },
+              "explain": "Cross strategies."
+            }
+          ],
+          "artistIds": [
+            "INTL-SHERMAN-01",
+            "HK-SHIEH-01",
+            "WEST-KAHLO-01"
+          ]
+        },
+        {
+          "id": "U5-L4",
+          "title": "YBA / American contemporary ↔ Chinese contemporary",
+          "cards": [
+            "F.6 asks how YBA and American contemporary relate to Chinese art: mass image, shock material, autobiographical object…",
+            "Examples: Warhol ↔ Wang Guangyi; Hirst’s life/death materiality beside Chinese installation—always mark context gaps.",
+            "Hopper ↔ Pak shows same theme, different media.",
+            "After each pair, write one SBA borrow line: composition / concept / material—not style cosplay.",
+            "(Pending teacher review) See artist-pair-compare.json."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Warhol and Wang Guangyi share?",
+              "options": [
+                "Appropriating familiar mass images",
+                "Recluse landscapes only",
+                "Dunhuang homework only",
+                "No repetition"
+              ],
+              "answer": "Appropriating familiar mass images",
+              "explain": "Images from circulation."
+            },
+            {
+              "type": "mcq",
+              "question": "Urban alienation pair often is?",
+              "options": [
+                "Hopper and Pak",
+                "Monet glued to Qi only",
+                "Mondrian–Cai only",
+                "Emin–Shen Zhou only"
+              ],
+              "answer": "Hopper and Pak",
+              "explain": "PAIR-URBAN-01."
+            },
+            {
+              "type": "fill",
+              "question": "Borrow focuses on composition, concept or ＿＿ thinking.",
+              "options": [],
+              "answer": "material",
+              "explain": "Material thinking transfers.",
+              "wordBank": [
+                "material",
+                "forged signatures",
+                "fake authenticity",
+                "hiding sources"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "When comparing YBA and Chinese contemporary, you must?",
+              "options": [
+                "State historical context differences",
+                "Treat them as identical",
+                "Compare prices only",
+                "Ignore viewers"
+              ],
+              "answer": "State historical context differences",
+              "explain": "Related ≠ same."
+            }
+          ],
+          "artistIds": [
+            "WEST-WARHOL-01",
+            "CN-WANGGY-01",
+            "WEST-HOPPER-01",
+            "HK-PAK-01",
+            "INTL-HIRST-01",
+            "INTL-EMIN-01"
+          ]
+        }
+      ]
     }
-   ]
-  },
-  {
-   "id": "U2-HK-IDENTITY",
-   "title": "Hong Kong Art and Identity",
-   "intro": "From New Ink to contemporary practice, Hong Kong artists respond to the city, identity and collecting spaces—aligned with CCCKLC F.6 themes and museum visits (HK Palace Museum, Xubaizhai).",
-   "lessons": [
-    {
-     "id": "U2-L1",
-     "title": "New Ink: Lui Shou-kwan and Wucius Wong",
-     "cards": [
-      "Lui Shou-kwan (1919–1975) was a key force in Hong Kong New Ink, refining landscape into bold ink masses and voids with a Zen, abstract lean.",
-      "Rather than only copying models, he used modern composition and simplified form so ink could speak about mind-states, not just scenery.",
-      "Wucius Wong, inspired by Lui, joined design-like structure to ink, stressing order, layering and geometry.",
-      "New Ink helped post-war Hong Kong build a local modern ink language—an important chapter of artistic identity.",
-      "(Pending teacher review) Use a visual diary to note how void and ink mass can carry emotion."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Hong Kong’s modern ink movement linked to Lui is usually called?",
-       "options": [
-        "New Ink",
-        "Impressionism",
-        "Cubism",
-        "Pop art"
-       ],
-       "answer": "New Ink",
-       "explain": "Lui is a major New Ink pioneer in Hong Kong."
-      },
-      {
-       "type": "mcq",
-       "question": "A formal trait often seen in Lui’s work is?",
-       "options": [
-        "Ink masses and voids",
-        "Silkscreened soup cans",
-        "Marble portrait busts",
-        "Neon slogans"
-       ],
-       "answer": "Ink masses and voids",
-       "explain": "Abstracted landscape with breathing empty space."
-      },
-      {
-       "type": "fill",
-       "question": "Wucius Wong’s ink often stresses design-like ＿＿ and layers.",
-       "options": [],
-       "answer": "structure",
-       "explain": "He brings design thinking into ink.",
-       "wordBank": [
-        "structure",
-        "theatre lighting only",
-        "ad jingles",
-        "shutter speed"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "Why does New Ink matter for HK identity?",
-       "options": [
-        "It built a local modern ink language",
-        "It banned ink forever",
-        "It only copied Song academies",
-        "It served only posters"
-       ],
-       "answer": "It built a local modern ink language",
-       "explain": "A post-war local modern path."
-      }
-     ],
-     "artistIds": [
-      "CN-LV-01",
-      "HK-WUCIUS-01"
-     ]
-    },
-    {
-     "id": "U2-L2",
-     "title": "Luis Chan’s Surreal Hong Kong",
-     "cards": [
-      "Luis Chan (1905–1995) began with more naturalistic views and portraits; from the 1960s his art turned fantastical and surreal.",
-      "Bright colour, naïve forms and dream logic turn Hong Kong hills and harbour into imagined worlds.",
-      "Humour and folk-like play challenge the idea that Hong Kong art must only document reality.",
-      "For DSE students he models surreal strategies for “everyday city + inner feeling”.",
-      "(Pending teacher review) Maps to CCCKLC’s “explore surreal life” aim."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "About when did Luis Chan shift toward surreal fantasy?",
-       "options": [
-        "The 1960s",
-        "The 1820s",
-        "Only the 2020s",
-        "The Ming court only"
-       ],
-       "answer": "The 1960s",
-       "explain": "Surreal fantasy grows from the 1960s."
-      },
-      {
-       "type": "mcq",
-       "question": "A common trait of his surreal work is?",
-       "options": [
-        "Bright colour and naïve forms",
-        "Only B&W documentary photos",
-        "Classical marble only",
-        "Text manifestos only"
-       ],
-       "answer": "Bright colour and naïve forms",
-       "explain": "Vivid, playful, dreamlike."
-      },
-      {
-       "type": "fill",
-       "question": "He often treats Hong Kong’s ＿＿ through surreal invention.",
-       "options": [],
-       "answer": "city",
-       "explain": "City and hills become dream scenes.",
-       "wordBank": [
-        "city",
-        "civil-service exams",
-        "Dunhuang copy sheets",
-        "stock charts"
-       ]
-      },
-      {
-       "type": "match",
-       "question": "Match",
-       "options": [
-        "Luis Chan",
-        "Lui Shou-kwan"
-       ],
-       "answer": {
-        "Luis Chan": "Surreal fantasy HK",
-        "Lui Shou-kwan": "New Ink abstraction"
-       },
-       "explain": "Two modern HK languages."
-      }
-     ],
-     "artistIds": [
-      "HK-LUISCHAN-01"
-     ]
-    },
-    {
-     "id": "U2-L3",
-     "title": "Contemporary HK identity: Pak, Lee Kit, Wilson Shieh",
-     "cards": [
-      "Pak Sheung Chuen uses conceptual gestures and everyday materials to make pressure of housing and city space thinkable.",
-      "Lee Kit builds quiet installations with painting, cloth, projection and domestic objects—private, fragile moments.",
-      "Wilson Shieh paints contemporary figures in gongbi colour; faces may be blank or role-like, probing identity and gender.",
-      "Concept, spatial sensing and figuration—all ask who we are and how we live here.",
-      "(Pending teacher review) Ties to CCCKLC “Self…society” and role-taking."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Pak’s approach is closest to?",
-       "options": [
-        "Conceptual art with everyday materials",
-        "Court flower-and-bird only",
-        "Old Master oil copies only",
-        "Fireworks only"
-       ],
-       "answer": "Conceptual art with everyday materials",
-       "explain": "Process and ready materials."
-      },
-      {
-       "type": "mcq",
-       "question": "Wilson Shieh often uses which traditional skill on contemporary subjects?",
-       "options": [
-        "Gongbi colour painting",
-        "Mandatory 3D scanning",
-        "Only wet-on-wet watercolour",
-        "Bronze casting only"
-       ],
-       "answer": "Gongbi colour painting",
-       "explain": "Fine-line colour for today’s figures."
-      },
-      {
-       "type": "fill",
-       "question": "Lee Kit’s mood is often ＿＿ and private.",
-       "options": [],
-       "answer": "quiet",
-       "explain": "Soft materials, domestic cues.",
-       "wordBank": [
-        "quiet",
-        "loud advertising",
-        "war reportage",
-        "courtroom sketch"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "Shared direction of the three artists?",
-       "options": [
-        "HK identity and everyday life",
-        "Only Song glaze chemistry",
-        "Only European aristocracy",
-        "No urban topics"
-       ],
-       "answer": "HK identity and everyday life",
-       "explain": "Identity and daily pressure."
-      }
-     ],
-     "artistIds": [
-      "HK-PAK-01",
-      "HK-LEEKIT-01",
-      "HK-SHIEH-01"
-     ]
-    },
-    {
-     "id": "U2-L4",
-     "title": "Museums and local collections: HKPM & Xubaizhai",
-     "cards": [
-      "The Hong Kong Palace Museum stages exhibitions tied to Palace Museum culture—useful for material culture and aesthetics.",
-      "The Xubaizhai Collection at the Hong Kong Museum of Art centres Chinese painting and calligraphy for literati study.",
-      "A visit is observation practice: composition, colophons, seals, mounting and display narratives.",
-      "CCCKLC F.6 links these visits to self-review and portfolio; keep a visual diary of questions.",
-      "(Pending teacher review) Prompt: how do traditional symbols enter life in Hong Kong today?"
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Xubaizhai is best known for?",
-       "options": [
-        "Chinese painting and calligraphy",
-        "Cars only",
-        "Rock posters only",
-        "European armour only"
-       ],
-       "answer": "Chinese painting and calligraphy",
-       "explain": "HKMoA Xubaizhai holdings."
-      },
-      {
-       "type": "mcq",
-       "question": "HK Palace Museum mainly helps students?",
-       "options": [
-        "Meet Chinese artefacts and exhibition narratives",
-        "Pass sailing exams",
-        "Code only",
-        "PE training only"
-       ],
-       "answer": "Meet Chinese artefacts and exhibition narratives",
-       "explain": "Material culture on site."
-      },
-      {
-       "type": "fill",
-       "question": "In museums, practise ＿＿ and questions—not only photos.",
-       "options": [],
-       "answer": "observation",
-       "explain": "Look hard, then write.",
-       "wordBank": [
-        "observation",
-        "copying price tags",
-        "ignoring works",
-        "gift-shop only"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "CCCKLC links museum visits to?",
-       "options": [
-        "Self-review / portfolio",
-        "Lunch seating only",
-        "Replacing all making",
-        "Cancelling diaries"
-       ],
-       "answer": "Self-review / portfolio",
-       "explain": "Stated in the scheme."
-      }
-     ]
-    }
-   ]
-  },
-  {
-   "id": "U3-WEST-MODERN",
-   "title": "Introduction to Western Modernism",
-   "intro": "From Impressionism to abstraction, then a bridge to postmodern identity, Cindy Sherman and the YBA—matching CCCKLC needs.",
-   "lessons": [
-    {
-     "id": "U3-L1",
-     "title": "Impressionism: Monet and van Gogh",
-     "cards": [
-      "Impressionists prized outdoor light, visible brushwork and fleeting colour over polished academic finish.",
-      "Claude Monet’s Impression, Sunrise (1872) and Water Lilies explore changing light and reflection.",
-      "Vincent van Gogh pushed high chroma and swirling stroke so touch itself carries feeling.",
-      "Both unsettled “likeness alone” as the only standard and opened doors to modernism.",
-      "(Pending teacher review) A light link to ink “stroke as feeling” can wait for U5."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Who painted Impression, Sunrise?",
-       "options": [
-        "Claude Monet",
-        "Picasso",
-        "Warhol",
-        "Lui Shou-kwan"
-       ],
-       "answer": "Claude Monet",
-       "explain": "Tied to the Impressionist name."
-      },
-      {
-       "type": "mcq",
-       "question": "A van Gogh hallmark is?",
-       "options": [
-        "High chroma and swirling stroke",
-        "Minimal white-cube props only",
-        "Fountain ready-made only",
-        "Gongbi hairline only"
-       ],
-       "answer": "High chroma and swirling stroke",
-       "explain": "Stroke as emotion."
-      },
-      {
-       "type": "fill",
-       "question": "Impressionism hunts ＿＿ changes of light and colour.",
-       "options": [],
-       "answer": "fleeting",
-       "explain": "Instantaneous light.",
-       "wordBank": [
-        "fleeting",
-        "temple-fixed eternity only",
-        "outline only",
-        "halftone dots only"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "A key impact was?",
-       "options": [
-        "Challenging polished academic realism",
-        "Banning colour",
-        "Forbidding shows",
-        "Portrait-only rules"
-       ],
-       "answer": "Challenging polished academic realism",
-       "explain": "New criteria for painting."
-      }
-     ],
-     "artistIds": [
-      "WEST-MONET-01",
-      "WEST-VANGOGH-01"
-     ]
-    },
-    {
-     "id": "U3-L2",
-     "title": "Fauvism and Cubism: Matisse and Picasso",
-     "cards": [
-      "Henri Matisse and the Fauves used intense, non-natural colour and simplified shape.",
-      "Pablo Picasso and Braque built Cubism by fracturing forms into multi-view planes.",
-      "Les Demoiselles d’Avignon (1907) is an early Cubist landmark breaking stable perspective.",
-      "Modernism could reinvent seeing through colour or through structural analysis.",
-      "(Pending teacher review) Pair with Tate “human figure” resources."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Fauvism emphasises?",
-       "options": [
-        "Intense non-natural colour",
-        "Ink texture strokes only",
-        "Land art only",
-        "No emotion"
-       ],
-       "answer": "Intense non-natural colour",
-       "explain": "Colour as driver."
-      },
-      {
-       "type": "mcq",
-       "question": "Cubism often?",
-       "options": [
-        "Splits forms into geometric multi-views",
-        "Seeks photo polish only",
-        "Uses one fixed perspective only",
-        "Rejects all shape"
-       ],
-       "answer": "Splits forms into geometric multi-views",
-       "explain": "Analytic planes."
-      },
-      {
-       "type": "fill",
-       "question": "Les Demoiselles d’Avignon dates to about ＿＿.",
-       "options": [],
-       "answer": "1907",
-       "explain": "Early Cubist key work.",
-       "wordBank": [
-        "1907",
-        "1500",
-        "1998",
-        "2025"
-       ]
-      },
-      {
-       "type": "match",
-       "question": "Match",
-       "options": [
-        "Matisse",
-        "Picasso"
-       ],
-       "answer": {
-        "Matisse": "Fauve colour",
-        "Picasso": "Cubist structure"
-       },
-       "explain": "Two breakthroughs."
-      }
-     ],
-     "artistIds": [
-      "WEST-MATISSE-01",
-      "WEST-PICASSO-01"
-     ]
-    },
-    {
-     "id": "U3-L3",
-     "title": "Paths to abstraction: Kandinsky, Mondrian, Rothko",
-     "cards": [
-      "Wassily Kandinsky argued colour and shape can free themselves from objects; Concerning the Spiritual in Art was influential.",
-      "Piet Mondrian’s Neo-Plasticism uses horizontals, verticals and primary colours for balance.",
-      "Mark Rothko’s colour-field paintings immerse viewers in soft-edged fields of feeling.",
-      "Abstraction is organised meaning—not “anything goes”.",
-      "(Pending teacher review) Cross-link Wu Guanzhong / Zao Wou-Ki later."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Kandinsky linked abstraction to?",
-       "options": [
-        "Spirit and inner feeling",
-        "Price tags only",
-        "Map scale only",
-        "Headlines only"
-       ],
-       "answer": "Spirit and inner feeling",
-       "explain": "Spiritual in form."
-      },
-      {
-       "type": "mcq",
-       "question": "Mondrian’s language is often?",
-       "options": [
-        "Horizontals, verticals, primaries",
-        "Pore-level realism",
-        "Splash as only method",
-        "Gongbi flowers"
-       ],
-       "answer": "Horizontals, verticals, primaries",
-       "explain": "Neo-Plastic traits."
-      },
-      {
-       "type": "fill",
-       "question": "Rothko often uses large ＿＿ colour fields.",
-       "options": [],
-       "answer": "soft-edged",
-       "explain": "Soft edges, immersion.",
-       "wordBank": [
-        "soft-edged",
-        "barbed wire only",
-        "graffiti type only",
-        "rubbings only"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "Abstraction’s key is?",
-       "options": [
-        "Organising meaning with form",
-        "No thinking needed",
-        "Photo copying only",
-        "Forbidding feeling"
-       ],
-       "answer": "Organising meaning with form",
-       "explain": "Elements carry structure."
-      }
-     ],
-     "artistIds": [
-      "WEST-KANDINSKY-01",
-      "WEST-MONDRIAN-01",
-      "WEST-ROTHKO-01"
-     ]
-    },
-    {
-     "id": "U3-L4",
-     "title": "Postmodern identity: Sherman and the YBA",
-     "cards": [
-      "Postmodern work often questions “authentic identity” and originality via appropriation and role-play.",
-      "Cindy Sherman’s Untitled Film Stills (1977–1980) stages typed female roles to probe gaze and representation.",
-      "The YBA emerged in 1990s Britain; Damien Hirst and Tracey Emin became widely known for startling materials and autobiographical strategies.",
-      "This bridge lesson supports CCCKLC role-taking: “Reappear someone in Chinese context”.",
-      "(Pending teacher review) Extend with Tate “changed identity” / “human figure”."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Sherman’s key strategy is?",
-       "options": [
-        "Role-play and photographic staging",
-        "Song landscape only",
-        "Blue-and-white only",
-        "No figures ever"
-       ],
-       "answer": "Role-play and photographic staging",
-       "explain": "Identity as performance."
-      },
-      {
-       "type": "mcq",
-       "question": "YBA refers to?",
-       "options": [
-        "Young British Artists of the 1990s",
-        "Ming court academy",
-        "An old HK calligraphy club",
-        "Another name for Impressionism"
-       ],
-       "answer": "Young British Artists of the 1990s",
-       "explain": "YBA expansion."
-      },
-      {
-       "type": "fill",
-       "question": "Untitled Film Stills spans 1977 to ＿＿.",
-       "options": [],
-       "answer": "1980",
-       "explain": "Series dated 1977–1980.",
-       "wordBank": [
-        "1980",
-        "1600",
-        "1850",
-        "2019"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "How does this lesson serve CCCKLC?",
-       "options": [
-        "Supplies role-taking / identity models",
-        "Replaces Chinese art history",
-        "Bans visual diaries",
-        "Only memorises classics"
-       ],
-       "answer": "Supplies role-taking / identity models",
-       "explain": "Direct syllabus fit."
-      }
-     ],
-     "artistIds": [
-      "INTL-SHERMAN-01",
-      "INTL-HIRST-01",
-      "INTL-EMIN-01",
-      "WEST-WARHOL-01"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "U4-CN-CONTEMP",
-   "title": "Contemporary Chinese Art",
-   "intro": "Bridge from Xu Beihong and Qi Baishi into Xu Bing, Political Pop, installation/performance and video—aligned with F.5 Art Talk and global contemporary views.",
-   "lessons": [
-    {
-     "id": "U4-L1",
-     "title": "Bridge: Xu Beihong and Qi Baishi toward today",
-     "cards": [
-      "Xu Beihong championed academic drawing; horses and history subjects tied structure to national meaning.",
-      "Qi Baishi brought folk-flavoured birds, fish and insects into modern viewership.",
-      "Later artists inherit these “modern classics” while facing globalisation and new media.",
-      "Seeing realist pedagogy and folk wit first makes later refusals and appropriations clearer.",
-      "(Pending teacher review) Detail on Xu also sits in U1."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Xu Beihong stressed which foundation?",
-       "options": [
-        "Realist drawing",
-        "Colour-field only",
-        "Ready-mades only",
-        "No anatomy"
-       ],
-       "answer": "Realist drawing",
-       "explain": "Drawing as base."
-      },
-      {
-       "type": "mcq",
-       "question": "Qi Baishi is known for?",
-       "options": [
-        "Birds, fish, insects",
-        "Only giant steel dogs",
-        "Only neon text",
-        "Only CCTV video"
-       ],
-       "answer": "Birds, fish, insects",
-       "explain": "Signature subjects."
-      },
-      {
-       "type": "fill",
-       "question": "Before contemporary chapters, note modern ＿＿ wit and realist lines.",
-       "options": [],
-       "answer": "folk",
-       "explain": "Folk vision + realism.",
-       "wordBank": [
-        "folk",
-        "sci-fi only",
-        "car design only",
-        "orchestral only"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "This lesson’s map role is?",
-       "options": [
-        "A bridge from modern to contemporary",
-        "Replacing all Western units",
-        "Ending ink",
-        "Auction prices only"
-       ],
-       "answer": "A bridge from modern to contemporary",
-       "explain": "Marked transition."
-      }
-     ],
-     "artistIds": [
-      "CN-XUBH-01",
-      "CN-QIBS-01"
-     ]
-    },
-    {
-     "id": "U4-L2",
-     "title": "Xu Bing: writing, concept, calligraphy currents",
-     "cards": [
-      "Book from the Sky (1980s) prints invented pseudo-characters, unsettling trust in writing.",
-      "Language, reading and cultural misreading link conceptual art to calligraphic tradition.",
-      "F.5 Art Talk pairs Xu Bing with contemporary Chinese calligraphy currents and global art.",
-      "Students may translate the idea of a broken writing system into school, net or dialect barriers.",
-      "(Pending teacher review) Transform the concept—do not only copy pseudo-glyphs for marks."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Book from the Sky mainly unsettles?",
-       "options": [
-        "Authority of writing and reading",
-        "Landscape perspective only",
-        "Musical metre only",
-        "Sports rules only"
-       ],
-       "answer": "Authority of writing and reading",
-       "explain": "Legible-illegible tension."
-      },
-      {
-       "type": "mcq",
-       "question": "Xu Bing often focuses on?",
-       "options": [
-        "Language, misreading, concept",
-        "Court banquets only",
-        "Monet lilies only",
-        "Sports livestreams only"
-       ],
-       "answer": "Language, misreading, concept",
-       "explain": "Systems of signs."
-      },
-      {
-       "type": "fill",
-       "question": "F.5 Art Talk links Xu Bing to contemporary Chinese ＿＿ currents.",
-       "options": [],
-       "answer": "calligraphy",
-       "explain": "Calligraphy in contemporary keys.",
-       "wordBank": [
-        "calligraphy",
-        "skiing",
-        "sailing",
-        "cooking shows"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "Safer SBA use of Xu’s ideas?",
-       "options": [
-        "Transform language/misreading into your theme",
-        "Clone his install layout wholesale",
-        "Print Wikipedia only",
-        "Skip research"
-       ],
-       "answer": "Transform language/misreading into your theme",
-       "explain": "Personal transformation."
-      }
-     ],
-     "artistIds": [
-      "CN-XUBING-01"
-     ]
-    },
-    {
-     "id": "U4-L3",
-     "title": "Political Pop and Cynical Realism",
-     "cards": [
-      "Wang Guangyi’s Great Criticism-type works juxtapose propaganda imagery with consumer logos.",
-      "Yue Minjun’s laughing figures and Fang Lijun’s bald heads are discussed in Cynical Realism contexts.",
-      "They respond to memory, consumption and mood after Reform—not “pretty painting” alone.",
-      "Compare carefully with Warhol’s mass-image tactics (U5); contexts differ.",
-      "(Pending teacher review) Follow school guidance on sensitive histories."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Wang Guangyi often?",
-       "options": [
-        "Juxtaposes political and brand images",
-        "Only copies Qi’s shrimp",
-        "Only paints harbour sunsets",
-        "Only does pointillism"
-       ],
-       "answer": "Juxtaposes political and brand images",
-       "explain": "Political Pop tactic."
-      },
-      {
-       "type": "mcq",
-       "question": "Fang Lijun is associated with?",
-       "options": [
-        "Bald figures",
-        "Auctioneers in suits only",
-        "Deities only",
-        "Totally empty fields only"
-       ],
-       "answer": "Bald figures",
-       "explain": "Signature motif."
-      },
-      {
-       "type": "fill",
-       "question": "Yue Minjun repeats ＿＿ figures.",
-       "options": [],
-       "answer": "laughing",
-       "explain": "Laughing faces.",
-       "wordBank": [
-        "laughing",
-        "stele rubbings",
-        "Song ware charts",
-        "MTR maps"
-       ]
-      },
-      {
-       "type": "match",
-       "question": "Match",
-       "options": [
-        "Wang Guangyi",
-        "Fang Lijun"
-       ],
-       "answer": {
-        "Wang Guangyi": "Political Pop juxtaposition",
-        "Fang Lijun": "Cynical Realism bald figures"
-       },
-       "explain": "Two social-psych lines."
-      }
-     ],
-     "artistIds": [
-      "CN-WANGGY-01",
-      "CN-YUEMJ-01",
-      "CN-FANGLJ-01"
-     ]
-    },
-    {
-     "id": "U4-L4",
-     "title": "Installation, performance and video",
-     "cards": [
-      "Cai Guo-Qiang is known for gunpowder drawings and explosion events—ephemeral mark and spectacle.",
-      "Zhang Huan and others use the body as medium under social gaze.",
-      "Zhang Peili is a key early video figure; Yang Fudong works with cinematic time; Cao Fei explores virtual worlds and subcultures.",
-      "New media lets the work be process, event or virtual space.",
-      "(Pending teacher review) Aligns with F.5 global contemporary talk."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Cai Guo-Qiang is known for?",
-       "options": [
-        "Gunpowder and explosion projects",
-        "Blue gongbi only",
-        "Marble only",
-        "Soup-can screens only"
-       ],
-       "answer": "Gunpowder and explosion projects",
-       "explain": "Signature methods."
-      },
-      {
-       "type": "mcq",
-       "question": "Zhang Peili is often linked to?",
-       "options": [
-        "Video art",
-        "Blue-green shanshui only",
-        "Seal sides only",
-        "Palace editions only"
-       ],
-       "answer": "Video art",
-       "explain": "Early video pioneer."
-      },
-      {
-       "type": "fill",
-       "question": "Cao Fei often explores virtual worlds, cities and ＿＿ cultures.",
-       "options": [],
-       "answer": "sub",
-       "explain": "Subculture + virtual.",
-       "wordBank": [
-        "sub",
-        "keju",
-        "court-only",
-        "stone-age"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "These media expand the idea that works can be?",
-       "options": [
-        "Events, processes or virtual spaces",
-        "Oil paintings only",
-        "Without time",
-        "Smaller than a phone"
-       ],
-       "answer": "Events, processes or virtual spaces",
-       "explain": "Form shifts."
-      }
-     ],
-     "artistIds": [
-      "CN-CAIGQ-01",
-      "CN-ZHANGH-01",
-      "CN-ZHANGPL-01",
-      "CN-YANGFD-01",
-      "CN-CAOFEI-01"
-     ]
-    }
-   ]
-  },
-  {
-   "id": "U5-COMPARE",
-   "title": "East–West Comparative Perspectives",
-   "intro": "Practise cross-cultural comparison: symbols, role-taking, and how YBA/American contemporary relate to Chinese art—per F.6. Full Ming–Qing survey is U6 backlog.",
-   "lessons": [
-    {
-     "id": "U5-L1",
-     "title": "Method: same, difference, borrow",
-     "cards": [
-      "Good comparison is not “who wins”; describe and analyse form before context and meaning.",
-      "Three columns: same | different | borrowable (composition, concept, material thinking).",
-      "Reuse artist-pair cards; meet SBA “at least two / cross-cultural”.",
-      "Run Feldman (describe→analyse→interpret→judge) on one pair to avoid bio-copying.",
-      "(Pending teacher review) Borrow ≠ paste a style for marks."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Safest start?",
-       "options": [
-        "Describe and analyse form before context",
-        "Crown one nation first",
-        "Copy year lists only",
-        "Skip the work"
-       ],
-       "answer": "Describe and analyse form before context",
-       "explain": "Evidence first."
-      },
-      {
-       "type": "mcq",
-       "question": "SBA research often needs?",
-       "options": [
-        "At least two artists / cross-cultural",
-        "One artist only, no compare",
-        "No sources",
-        "Western-only"
-       ],
-       "answer": "At least two artists / cross-cultural",
-       "explain": "Platform checklist."
-      },
-      {
-       "type": "fill",
-       "question": "The third column is ＿＿.",
-       "options": [],
-       "answer": "borrow",
-       "explain": "Borrow tactics, not surfaces.",
-       "wordBank": [
-        "borrow",
-        "price",
-        "sales",
-        "followers"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "Feldman order?",
-       "options": [
-        "Describe→analyse→interpret→judge",
-        "Judge→skip→copy→done",
-        "Judge only",
-        "Price only"
-       ],
-       "answer": "Describe→analyse→interpret→judge",
-       "explain": "Proof before verdict."
-      }
-     ]
-    },
-    {
-     "id": "U5-L2",
-     "title": "Symbols: literati cues meet today (U6 preview)",
-     "cards": [
-      "Ming–Qing literati painting uses birds, strange rocks, colophons and brush habits as moral/feeling signs; Bada Shanren’s creatures are often read with loyalist anguish.",
-      "Wu School figures such as Shen Zhou and Wen Zhengming stress poetry–calligraphy–painting unity; Xu Wei and Chen Chun push freer xieyi ink.",
-      "Contemporaries may reuse or deliberately misalign these signs for present issues.",
-      "CCCKLC asks students to read colour/pattern/painting symbols beside postmodern practice.",
-      "(Pending teacher review) Full Ming–Qing unit = U6 backlog."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "When reading literati symbols, watch?",
-       "options": [
-        "Subject, brush, colophon, context",
-        "Mount colour vibes only",
-        "Count red only",
-        "Ignore text"
-       ],
-       "answer": "Subject, brush, colophon, context",
-       "explain": "Signs need context."
-      },
-      {
-       "type": "mcq",
-       "question": "Bada Shanren is often discussed for?",
-       "options": [
-        "Anguished bird/fish imagery",
-        "Festival nianhua only",
-        "Ad fonts only",
-        "Dance shorts only"
-       ],
-       "answer": "Anguished bird/fish imagery",
-       "explain": "Form + loyalist readings."
-      },
-      {
-       "type": "fill",
-       "question": "Wu School ideals unite poetry, calligraphy and ＿＿.",
-       "options": [],
-       "answer": "painting",
-       "explain": "Three perfections.",
-       "wordBank": [
-        "painting",
-        "stocks",
-        "cars",
-        "basketball"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "Relation to U6?",
-       "options": [
-        "Preview; practise symbol reading first",
-        "Fully replaces U6",
-        "No Chinese art",
-        "Bans tradition"
-       ],
-       "answer": "Preview; practise symbol reading first",
-       "explain": "U6 for depth."
-      }
-     ]
-    },
-    {
-     "id": "U5-L3",
-     "title": "Role-taking: Sherman with HK / figure traditions",
-     "cards": [
-      "Sherman’s photo roles show identity shaped by media and gaze.",
-      "Wilson Shieh’s gongbi figures offer a HK counterpart for “re-presenting someone”.",
-      "Figure traditions such as Chen Hongshou and Wu Bin feed CCCKLC portrait/identity talk.",
-      "Studio task: role-take a real person with Chinese media and log it in a visual diary.",
-      "(Pending teacher review) F.6 title: Reappear someone in Chinese context."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Shared ground for Sherman and Shieh?",
-       "options": [
-        "Figures used to probe identity",
-        "Gunpowder only",
-        "No symbols ever",
-        "Maps only"
-       ],
-       "answer": "Figures used to probe identity",
-       "explain": "PAIR-IDENTITY logic."
-      },
-      {
-       "type": "mcq",
-       "question": "CCCKLC role-taking title stresses?",
-       "options": [
-        "Reappearing someone in a Chinese context",
-        "Only Greek copies",
-        "No interviews",
-        "English essay only"
-       ],
-       "answer": "Reappearing someone in a Chinese context",
-       "explain": "Syllabus wording."
-      },
-      {
-       "type": "fill",
-       "question": "Figure traditions help discuss story and ＿＿.",
-       "options": [],
-       "answer": "identity",
-       "explain": "Portrait as identity.",
-       "wordBank": [
-        "identity",
-        "chemistry only",
-        "referee rules",
-        "earnings"
-       ]
-      },
-      {
-       "type": "match",
-       "question": "Match",
-       "options": [
-        "Cindy Sherman",
-        "Wilson Shieh"
-       ],
-       "answer": {
-        "Cindy Sherman": "Photographic role-play",
-        "Wilson Shieh": "Gongbi contemporary figures"
-       },
-       "explain": "Cross strategies."
-      }
-     ],
-     "artistIds": [
-      "INTL-SHERMAN-01",
-      "HK-SHIEH-01",
-      "WEST-KAHLO-01"
-     ]
-    },
-    {
-     "id": "U5-L4",
-     "title": "YBA / American contemporary ↔ Chinese contemporary",
-     "cards": [
-      "F.6 asks how YBA and American contemporary relate to Chinese art: mass image, shock material, autobiographical object…",
-      "Examples: Warhol ↔ Wang Guangyi; Hirst’s life/death materiality beside Chinese installation—always mark context gaps.",
-      "Hopper ↔ Pak shows same theme, different media.",
-      "After each pair, write one SBA borrow line: composition / concept / material—not style cosplay.",
-      "(Pending teacher review) See artist-pair-compare.json."
-     ],
-     "quiz": [
-      {
-       "type": "mcq",
-       "question": "Warhol and Wang Guangyi share?",
-       "options": [
-        "Appropriating familiar mass images",
-        "Recluse landscapes only",
-        "Dunhuang homework only",
-        "No repetition"
-       ],
-       "answer": "Appropriating familiar mass images",
-       "explain": "Images from circulation."
-      },
-      {
-       "type": "mcq",
-       "question": "Urban alienation pair often is?",
-       "options": [
-        "Hopper and Pak",
-        "Monet glued to Qi only",
-        "Mondrian–Cai only",
-        "Emin–Shen Zhou only"
-       ],
-       "answer": "Hopper and Pak",
-       "explain": "PAIR-URBAN-01."
-      },
-      {
-       "type": "fill",
-       "question": "Borrow focuses on composition, concept or ＿＿ thinking.",
-       "options": [],
-       "answer": "material",
-       "explain": "Material thinking transfers.",
-       "wordBank": [
-        "material",
-        "forged signatures",
-        "fake authenticity",
-        "hiding sources"
-       ]
-      },
-      {
-       "type": "mcq",
-       "question": "When comparing YBA and Chinese contemporary, you must?",
-       "options": [
-        "State historical context differences",
-        "Treat them as identical",
-        "Compare prices only",
-        "Ignore viewers"
-       ],
-       "answer": "State historical context differences",
-       "explain": "Related ≠ same."
-      }
-     ],
-     "artistIds": [
-      "WEST-WARHOL-01",
-      "CN-WANGGY-01",
-      "WEST-HOPPER-01",
-      "HK-PAK-01",
-      "INTL-HIRST-01",
-      "INTL-EMIN-01"
-     ]
-    }
-   ]
-  }
- ]
+  ]
 }
