@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "id": "paper2-set3-q1",
+  "locale": "zh-Hans",
+  "label": "模拟练习卷",
+  "set": "Set 3",
+  "sourceQuestionId": "set3-q1",
+  "source": "CL school mock Set 3 Question 1 Part B (乙部); not HKEAA",
+  "title": "练习卷创作骨架（来自 Set 3 第1题乙部）",
+  "themeTitle": "风中的行进",
+  "themePrompt": "以《风中的行进》为主题，创作一件平面作品。把甲部评赏所得的视觉语言（压境／速度、渺小行进／蒸汽光气、虚实层次）转化到个人对旅程、风雨或时代变迁的表达。",
+  "mediaConstraints": [
+    "任何平面媒介均可（水墨、水彩、压克力、混合媒介等）",
+    "作品须为平面创作（本卷乙部要求）",
+    "鼓励可见「风／雨／气」氛围与行进动势或旅程意志"
+  ],
+  "timeBoxMinutes": 195,
+  "marks": 80,
+  "checklist": [
+    {
+      "id": "p2-c1",
+      "key": "composition",
+      "text": "构图有清晰动线或比例张力（例如对角线行进、远景压境与近景人物）。"
+    },
+    {
+      "id": "p2-c2",
+      "key": "medium",
+      "text": "媒介选择能支撑意念（例如远景密点／短皴、前景斜向水痕或飞白）。"
+    },
+    {
+      "id": "p2-c3",
+      "key": "theme",
+      "text": "主题《风中的行进》在画面中可被读出，而非只靠标题说明。"
+    },
+    {
+      "id": "p2-c4",
+      "key": "sketch_notes",
+      "text": "已附创作笔记／草图，记录构思与甲部转化要点。"
+    },
+    {
+      "id": "p2-c5",
+      "key": "artist_statement",
+      "text": "已撰约 50 字作品自述，说明创作意图及与甲部评赏之关系。"
+    },
+    {
+      "id": "p2-c6",
+      "key": "transfer",
+      "text": "能指出最少一项由甲部图（1a）或（1b）转化而来的视觉语言。"
+    }
+  ],
+  "uploadKeys": [
+    "artwork_image",
+    "sketch_notes_image",
+    "artist_statement_text"
+  ],
+  "aiPolicy": {
+    "under18": "self_guide_only",
+    "note": "未满 18 或未确认年龄：只用此 checklist 自我引导，不提供 AI 试改／试评。"
+  },
+  "referenceArtworks": [
+    {
+      "id": "set3-q1a",
+      "title": "溪山行旅图",
+      "artist": "范宽",
+      "year": "约10世纪末至11世纪初／北宋",
+      "medium": "浅设色绢本",
+      "dims": "206.3 × 103.3 cm",
+      "museum": "国立故宫博物院",
+      "image_url": "images/fan-kuan-travelers.jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Fan_Kuan_-_Travelers_Among_Mountains_and_Streams_-_Google_Art_Project.jpg",
+      "license": "Public domain (PD-Art / artist died c.1032; Google Art Project scan on Wikimedia Commons)",
+      "credit": "范宽《溪山行旅图》；Wikimedia Commons／Google Art Project；公有领域",
+      "image_status": "ok"
+    },
+    {
+      "id": "set3-q1b",
+      "title": "雨、蒸汽和速度——大西方铁路",
+      "artist": "约瑟夫·马洛德·威廉·透纳（J. M. W. Turner）",
+      "year": "1844",
+      "medium": "油彩画布",
+      "dims": "91 × 121.8 cm",
+      "museum": "伦敦国家美术馆",
+      "image_url": "images/turner-rain-steam-speed.jpg",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Turner_-_Rain,_Steam_and_Speed_-_National_Gallery_file.jpg",
+      "license": "Public domain (PD-Art / artist died 1851; National Gallery file on Wikimedia Commons)",
+      "credit": "Turner《Rain, Steam and Speed》；National Gallery, London via Wikimedia Commons；公有领域",
+      "image_status": "ok"
+    }
+  ]
+}

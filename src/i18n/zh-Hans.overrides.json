@@ -162,5 +162,12 @@
   "sba.delete.deleteBoth": "笔记和照片一起删",
   "sba.delete.cancel": "取消",
   "sba.delete.deleted": "已删除",
-  "sba.delete.err": "删除失败，请稍后再试"
+  "sba.delete.err": "删除失败，请稍后再试",
+  "practice.viewFull": "查看大图",
+  "practice.draftSaved": "草稿已保存在这台设备（不会送到 AI）",
+  "practice.partBNote": "乙部创作请到「卷二」：核对清单、撰写作品自述，并使用上传位置。",
+  "practice.uploads": "上传位置",
+  "practice.upload.statementSlot": "请使用上方的作品自述文字框，不必再上传文件。",
+  "practice.upload.note": "此骨架把清单和文字保存在这台设备。选择图片只记录文件名：照片不会上传到 SBA 私人空间，也不会送到 AI。刷新后需要再选一次。",
+  "practice.upload.chosen": "已选文件名：{name}"
 }

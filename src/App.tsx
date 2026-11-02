@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { ArtistCompare } from './components/ArtistCompare'
 import { FocusTunnel } from './components/FocusTunnel'
 import { Header } from './components/Header'
+import { PracticePapers } from './components/PracticePapers'
 import { SbaQuest } from './components/SbaQuest'
 import { PrivacyLink, PrivacyModal } from './components/PrivacyModal'
 import { MobileNav, Sidebar, TABS } from './components/Sidebar'
@@ -68,6 +69,7 @@ export default function App() {
                   </div>
                 </div>
               )}
+              {tab === 'practice' && <PracticePapers />}
               {tab === 'library' && (
                 <div className="space-y-4">
                   <div>

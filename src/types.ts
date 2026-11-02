@@ -32,7 +32,7 @@ export type ArtistPair = {
   comparison_matrix?: unknown
 }
 
-export type TabId = 'map' | 'research' | 'portfolio' | 'library' | 'achievements'
+export type TabId = 'map' | 'research' | 'portfolio' | 'library' | 'practice' | 'achievements'
 
 /* ---------- Content JSON (PEANUTS, src/content/*.json) ---------- */
 

@@ -1,4 +1,4 @@
-import { Award, FolderOpen, Library, Map, Search, type LucideIcon } from 'lucide-react'
+import { Award, FileText, FolderOpen, Library, Map, Search, type LucideIcon } from 'lucide-react'
 import { useGame } from '../context/GameContext'
 import { t as tr, useT, type MessageKey } from '../i18n'
 import type { TabId } from '../types'
@@ -9,6 +9,7 @@ export const TABS: { id: TabId; icon: LucideIcon }[] = [
   { id: 'research', icon: Search },
   { id: 'portfolio', icon: FolderOpen },
   { id: 'library', icon: Library },
+  { id: 'practice', icon: FileText },
   { id: 'achievements', icon: Award },
 ]
 
@@ -68,7 +69,7 @@ export function MobileNav({ active, onChange }: Props) {
       aria-label={t('nav.main')}
       className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
-      <ul className="grid grid-cols-5">
+      <ul className="grid grid-cols-6">
         {TABS.map((tab) => {
           const Icon = tab.icon
           const on = active === tab.id
@@ -78,7 +79,7 @@ export function MobileNav({ active, onChange }: Props) {
                 type="button"
                 aria-current={on ? 'page' : undefined}
                 onClick={() => onChange(tab.id)}
-                className={`flex w-full flex-col items-center gap-0.5 py-2 text-[11px] font-semibold ${
+                className={`flex w-full flex-col items-center gap-0.5 px-0.5 py-2 text-[10px] font-semibold leading-tight ${
                   on ? 'text-blue-700' : 'text-slate-500'
                 }`}
               >
