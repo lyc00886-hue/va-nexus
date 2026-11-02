@@ -1,0 +1,130 @@
+{
+  "version": "2026-11-03",
+  "title": "学习方式小问卷",
+  "intro": "请选择最接近你情况的答案。我们会建议开启一些支持功能，你随时可以在「设置」中自行开启或关闭。",
+  "disclaimer": "这份问卷不是诊断，也不会判断你是否有任何学习困难。它只是帮助你选择更舒适的显示与阅读方式。答案只会保存在你的设备上，不会传送给老师或学校。如果你觉得学习有困难，可以和老师、社工或学校的 SENCO（特殊教育需要统筹主任）商量。",
+  "supports": {
+    "easy_read": "简易阅读：短句、重点加粗、分段显示",
+    "read_aloud": "朗读：用目前语言朗读",
+    "focus_tunnel": "专注隧道：一次只显示一个步骤，隐藏其他内容",
+    "large_text": "大字：放大字体并加大行距",
+    "reduce_motion": "减少动画：关闭动画和闪烁效果"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": "阅读长篇文字时，你会不会很容易跳行或忘记读到哪里？",
+      "options": [
+        {
+          "label": "经常会",
+          "suggest": [
+            "easy_read",
+            "large_text"
+          ]
+        },
+        {
+          "label": "有时会",
+          "suggest": [
+            "easy_read"
+          ]
+        },
+        {
+          "label": "很少",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "你喜欢用听还是用看来学新东西？",
+      "options": [
+        {
+          "label": "听多一些",
+          "suggest": [
+            "read_aloud"
+          ]
+        },
+        {
+          "label": "两种都可以",
+          "suggest": []
+        },
+        {
+          "label": "看多一些",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "question": "一个画面上有很多内容时，你会不会很难集中？",
+      "options": [
+        {
+          "label": "经常会",
+          "suggest": [
+            "focus_tunnel",
+            "reduce_motion"
+          ]
+        },
+        {
+          "label": "有时会",
+          "suggest": [
+            "focus_tunnel"
+          ]
+        },
+        {
+          "label": "很少",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "question": "你会不会觉得屏幕上的字太小、需要眯眼看？",
+      "options": [
+        {
+          "label": "会",
+          "suggest": [
+            "large_text"
+          ]
+        },
+        {
+          "label": "不会",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "question": "移动的动画或闪光会不会让你分心或不舒服？",
+      "options": [
+        {
+          "label": "会",
+          "suggest": [
+            "reduce_motion"
+          ]
+        },
+        {
+          "label": "不会",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "question": "做 SBA 或写评赏时，你喜欢一步一步来，还是一次看完整个任务？",
+      "options": [
+        {
+          "label": "一步一步",
+          "suggest": [
+            "focus_tunnel"
+          ]
+        },
+        {
+          "label": "一次看完整个任务",
+          "suggest": []
+        }
+      ]
+    }
+  ],
+  "result_text": "根据你的答案，我们建议开启以下功能。不合适可以随时关闭。"
+}

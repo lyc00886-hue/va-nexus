@@ -1,0 +1,130 @@
+{
+  "version": "2026-11-03",
+  "title": "Learning support check-in",
+  "intro": "Pick the answers that sound most like you. We will suggest support features you can turn on. You can change them any time in Settings.",
+  "disclaimer": "This questionnaire is not a diagnosis, and it does not decide whether you have any learning difficulty. It only helps you choose display and reading options that feel more comfortable. Your answers stay on your device and are never sent to teachers or your school. If you find schoolwork hard, talk to a teacher, a social worker, or your school's SENCO.",
+  "supports": {
+    "easy_read": "Easy read: short sentences, bold key points, and content shown in sections",
+    "read_aloud": "Read aloud: read aloud in the current language",
+    "focus_tunnel": "Focus tunnel: show one step at a time and hide the rest",
+    "large_text": "Large text: bigger font size and more line spacing",
+    "reduce_motion": "Reduce motion: turn off animation and flashing effects"
+  },
+  "questions": [
+    {
+      "id": "q1",
+      "question": "When you read a long piece of text, do you often lose your place or forget where you stopped?",
+      "options": [
+        {
+          "label": "Often",
+          "suggest": [
+            "easy_read",
+            "large_text"
+          ]
+        },
+        {
+          "label": "Sometimes",
+          "suggest": [
+            "easy_read"
+          ]
+        },
+        {
+          "label": "Rarely",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q2",
+      "question": "Do you prefer to learn new things by listening or by reading?",
+      "options": [
+        {
+          "label": "Mostly listening",
+          "suggest": [
+            "read_aloud"
+          ]
+        },
+        {
+          "label": "Either is fine",
+          "suggest": []
+        },
+        {
+          "label": "Mostly reading",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q3",
+      "question": "When a screen is busy with lots of things, do you find it hard to focus?",
+      "options": [
+        {
+          "label": "Often",
+          "suggest": [
+            "focus_tunnel",
+            "reduce_motion"
+          ]
+        },
+        {
+          "label": "Sometimes",
+          "suggest": [
+            "focus_tunnel"
+          ]
+        },
+        {
+          "label": "Rarely",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q4",
+      "question": "Do the words on the screen feel too small, so you have to squint?",
+      "options": [
+        {
+          "label": "Yes",
+          "suggest": [
+            "large_text"
+          ]
+        },
+        {
+          "label": "No",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q5",
+      "question": "Do moving animations or flashing effects distract you or make you uncomfortable?",
+      "options": [
+        {
+          "label": "Yes",
+          "suggest": [
+            "reduce_motion"
+          ]
+        },
+        {
+          "label": "No",
+          "suggest": []
+        }
+      ]
+    },
+    {
+      "id": "q6",
+      "question": "When you work on SBA or write art criticism, do you prefer to go step by step, or see the whole task at once?",
+      "options": [
+        {
+          "label": "Step by step",
+          "suggest": [
+            "focus_tunnel"
+          ]
+        },
+        {
+          "label": "See everything at once",
+          "suggest": []
+        }
+      ]
+    }
+  ],
+  "result_text": "Based on your answers, we suggest turning on the features below. You can turn any of them off any time if they do not suit you."
+}

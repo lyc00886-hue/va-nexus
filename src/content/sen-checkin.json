@@ -5,7 +5,7 @@
   "disclaimer": "呢個問卷唔係診斷，亦唔會判斷你有冇任何學習困難。佢只係幫你揀用得舒服啲嘅顯示同閱讀方式。答案只會存喺你部裝置，唔會傳俾老師或者學校。如果你覺得讀書有困難，可以同老師、社工或者學校嘅 SENCO 傾。",
   "supports": {
     "easy_read": "簡易讀：短句、重點粗體、分段顯示",
-    "read_aloud": "朗讀：用粵語讀出內容",
+    "read_aloud": "朗讀：用目前語言朗讀",
     "focus_tunnel": "專注隧道：一次淨係顯示一個步驟，遮走其他內容",
     "large_text": "大字：放大字體同加大行距",
     "reduce_motion": "減少動畫：關閉動畫同閃爍效果"
@@ -15,51 +15,114 @@
       "id": "q1",
       "question": "讀長篇文字嗰陣，你會唔會好易跳行或者唔記得讀到邊？",
       "options": [
-        { "label": "經常會", "suggest": ["easy_read", "large_text"] },
-        { "label": "有時會", "suggest": ["easy_read"] },
-        { "label": "好少", "suggest": [] }
+        {
+          "label": "經常會",
+          "suggest": [
+            "easy_read",
+            "large_text"
+          ]
+        },
+        {
+          "label": "有時會",
+          "suggest": [
+            "easy_read"
+          ]
+        },
+        {
+          "label": "好少",
+          "suggest": []
+        }
       ]
     },
     {
       "id": "q2",
       "question": "你鍾意用聽定用睇去學新嘢？",
       "options": [
-        { "label": "聽多啲", "suggest": ["read_aloud"] },
-        { "label": "兩樣都得", "suggest": [] },
-        { "label": "睇多啲", "suggest": [] }
+        {
+          "label": "聽多啲",
+          "suggest": [
+            "read_aloud"
+          ]
+        },
+        {
+          "label": "兩樣都得",
+          "suggest": []
+        },
+        {
+          "label": "睇多啲",
+          "suggest": []
+        }
       ]
     },
     {
       "id": "q3",
       "question": "一個畫面有好多嘢嗰陣，你會唔會好難集中？",
       "options": [
-        { "label": "經常會", "suggest": ["focus_tunnel", "reduce_motion"] },
-        { "label": "有時會", "suggest": ["focus_tunnel"] },
-        { "label": "好少", "suggest": [] }
+        {
+          "label": "經常會",
+          "suggest": [
+            "focus_tunnel",
+            "reduce_motion"
+          ]
+        },
+        {
+          "label": "有時會",
+          "suggest": [
+            "focus_tunnel"
+          ]
+        },
+        {
+          "label": "好少",
+          "suggest": []
+        }
       ]
     },
     {
       "id": "q4",
       "question": "你會唔會覺得螢幕上啲字太細、要眯眼睇？",
       "options": [
-        { "label": "會", "suggest": ["large_text"] },
-        { "label": "唔會", "suggest": [] }
+        {
+          "label": "會",
+          "suggest": [
+            "large_text"
+          ]
+        },
+        {
+          "label": "唔會",
+          "suggest": []
+        }
       ]
     },
     {
       "id": "q5",
       "question": "郁嚟郁去嘅動畫或者閃光會唔會令你分心或者唔舒服？",
       "options": [
-        { "label": "會", "suggest": ["reduce_motion"] },
-        { "label": "唔會", "suggest": [] }
+        {
+          "label": "會",
+          "suggest": [
+            "reduce_motion"
+          ]
+        },
+        {
+          "label": "唔會",
+          "suggest": []
+        }
       ]
     },
     {
       "id": "q6",
       "question": "做 SBA 或者寫評賞嗰陣，你鍾意一步一步嚟，定一次過睇晒成個任務？",
       "options": [
-        { "label": "一步一步", "suggest": ["focus_tunnel"] },
-        { "label": "一次過睇晒", "suggest": [] }
+        {
+          "label": "一步一步",
+          "suggest": [
+            "focus_tunnel"
+          ]
+        },
+        {
+          "label": "一次過睇晒",
+          "suggest": []
+        }
       ]
     }
   ],
