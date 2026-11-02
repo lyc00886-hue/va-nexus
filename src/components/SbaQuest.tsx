@@ -1,5 +1,7 @@
 import {
   AlertTriangle,
+  LogIn,
+  ShieldCheck,
   Camera,
   Check,
   ChevronLeft,
@@ -15,11 +17,13 @@ import { useEffect, useMemo, useState } from 'react'
 import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
+import { signInWithGoogle, useAuth } from '../lib/auth'
 import { getDeviceId } from '../lib/deviceId'
 import {
   fetchEvidence,
+  fetchPrivateEvidence,
   loadLocalNotes,
-  saveEvidence,
+  savePrivateEvidence,
   saveLocal,
   validateImage,
   type SbaEvidence,
@@ -35,11 +39,19 @@ const STEPS = [
   { id: 6, title: '反思評鑑', hint: '對照評核準則寫短評' },
 ] as const
 
-type Source = 'loading' | 'live' | 'local'
+/**
+ * private = signed in → private bucket `sba-private` (owner-only RLS, signed URLs)
+ * guest   = signed out → photo upload disabled; notes stay on this device;
+ *           older device-id test uploads are shown read-only
+ * local   = Supabase unavailable → offline/local only
+ */
+type Source = 'loading' | 'private' | 'guest' | 'local'
 
 export function SbaQuest() {
   const { cardPadding, focusTunnel } = useSen()
   const { awardOnce } = useGame()
+  const { ready, user } = useAuth()
+  const userId = user?.id ?? null
   const deviceId = useMemo(() => getDeviceId(), [])
   const [evidence, setEvidence] = useState<SbaEvidence[]>([])
   const [source, setSource] = useState<Source>(isSupabaseConfigured ? 'loading' : 'local')
@@ -53,13 +65,24 @@ export function SbaQuest() {
     let cancelled = false
     if (!isSupabaseConfigured) {
       setEvidence(loadLocalNotes())
+      setSource('local')
       return
     }
-    fetchEvidence(deviceId)
-      .then((rows) => {
+    if (!ready) {
+      setSource('loading')
+      return
+    }
+    setSource('loading')
+    const load = userId
+      ? fetchPrivateEvidence(userId).then((rows) => ({ rows, src: 'private' as const }))
+      : fetchEvidence(deviceId)
+          .catch(() => [] as SbaEvidence[])
+          .then((legacy) => ({ rows: [...legacy, ...loadLocalNotes()], src: 'guest' as const }))
+    load
+      .then(({ rows, src }) => {
         if (cancelled) return
         setEvidence(rows)
-        setSource('live')
+        setSource(src)
       })
       .catch((e) => {
         if (cancelled) return
@@ -70,7 +93,9 @@ export function SbaQuest() {
     return () => {
       cancelled = true
     }
-  }, [deviceId])
+  }, [deviceId, userId, ready])
+
+  const canUpload = source === 'private'
 
   function goTo(step: number) {
     if (step === active) return
@@ -114,7 +139,7 @@ export function SbaQuest() {
   }
 
   async function onSave() {
-    const files = pending.map((p) => p.file)
+    const files = canUpload || source === 'local' ? pending.map((p) => p.file) : []
     if (files.length === 0 && !note.trim()) {
       setMessage({ kind: 'error', text: '請寫筆記或揀最少一張相片' })
       return
@@ -123,16 +148,19 @@ export function SbaQuest() {
     setMessage(null)
     try {
       let added: SbaEvidence[]
-      if (source === 'live') {
+      if (source === 'private' && userId) {
         try {
-          added = await saveEvidence(deviceId, active, files, note)
+          added = await savePrivateEvidence(userId, active, files, note)
           pending.forEach((x) => URL.revokeObjectURL(x.preview))
-          setMessage({ kind: 'ok', text: '已儲存到雲端 ✓' })
+          setMessage({ kind: 'ok', text: '已儲存到你嘅私人雲端空間 ✓' })
         } catch (e) {
           console.warn('[sba] upload failed, saving locally', e)
           added = saveLocal(active, files, note)
           setMessage({ kind: 'error', text: '上載失敗，已暫存喺本機（相片重新整理後會消失）' })
         }
+      } else if (source === 'guest') {
+        added = saveLocal(active, [], note)
+        setMessage({ kind: 'ok', text: '筆記已存喺本機。登入 Google 後先可以上載相片。' })
       } else {
         added = saveLocal(active, files, note)
         setMessage({ kind: 'ok', text: '已暫存喺本機（離線模式）' })
@@ -158,13 +186,38 @@ export function SbaQuest() {
         <p className="text-sm text-teal-800/70">完成筆記或上傳證據即可解鎖下一步</p>
       </div>
 
-      <div
-        role="alert"
-        className="flex items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900"
-      >
-        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-        <span>試用版：相片未有登入保護，請只上載測試相片，唔好上載真學生作品或樣貌。</span>
-      </div>
+      {source === 'private' ? (
+        <div
+          role="note"
+          className="flex items-start gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-900"
+        >
+          <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+          <span>
+            已登入：相片存喺你嘅私人空間，只有你登入後先睇到（相片連結 1 小時後自動失效）。試用期間仍然建議只上載測試相片。
+          </span>
+        </div>
+      ) : (
+        <div
+          role="alert"
+          className="flex flex-wrap items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900"
+        >
+          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+          <span className="flex-1">
+            {source === 'local'
+              ? '離線模式：相片只會暫存喺呢部機，重新整理後會消失。請只用測試相片。'
+              : '未登入：相片上載已停用，筆記只會存喺呢部機。用 Google 登入後，相片會存入只有你睇到嘅私人空間。'}
+          </span>
+          {source === 'guest' && (
+            <button
+              type="button"
+              onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
+              className="inline-flex items-center gap-1 rounded-lg bg-amber-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-amber-700"
+            >
+              <LogIn className="h-3.5 w-3.5" aria-hidden /> 用 Google 登入
+            </button>
+          )}
+        </div>
+      )}
 
       <div>
         <div className="flex items-center justify-between text-xs font-semibold text-teal-900">
@@ -177,7 +230,8 @@ export function SbaQuest() {
                 <Loader2 className="h-3 w-3 animate-spin" aria-hidden /> 連接雲端…
               </>
             )}
-            {source === 'live' && <>雲端同步（Supabase）</>}
+            {source === 'private' && <>私人雲端（已登入）</>}
+            {source === 'guest' && <>訪客模式（本機）</>}
             {source === 'local' && (
               <>
                 <CloudOff className="h-3 w-3" aria-hidden /> 離線／本機模式
@@ -281,6 +335,19 @@ export function SbaQuest() {
               />
             </label>
 
+            {source === 'guest' ? (
+              <div className="mt-4 flex flex-col items-start gap-2">
+                <span className="text-sm font-medium text-teal-900">證據相片</span>
+                <button
+                  type="button"
+                  onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
+                  className="inline-flex items-center gap-2 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 hover:bg-slate-100"
+                >
+                  <Lock className="h-4 w-4" aria-hidden />
+                  登入 Google 先可以上載相片
+                </button>
+              </div>
+            ) : (
             <label className="mt-4 flex cursor-pointer flex-col items-start gap-2">
               <span className="text-sm font-medium text-teal-900">證據相片（每張最多 5 MB）</span>
               <span className="inline-flex items-center gap-2 rounded-xl border border-dashed border-teal-300 bg-teal-50/60 px-4 py-3 text-sm text-teal-800">
@@ -298,6 +365,7 @@ export function SbaQuest() {
                 }}
               />
             </label>
+            )}
 
             {pending.length > 0 && (
               <ul className="mt-3 flex flex-wrap gap-3" aria-label="待上載相片">

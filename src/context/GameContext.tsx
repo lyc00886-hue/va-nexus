@@ -142,6 +142,8 @@ type GameContextValue = {
   awardOnce: (key: string, xp: number, text: string, kind: ActivityEntry['kind']) => number
   setHearts: (on: boolean) => void
   resetGame: () => void
+  /** Replace the whole state (used by per-user cloud sync after merging). */
+  replaceState: (s: GameStateV1) => void
 }
 
 const GameContext = createContext<GameContextValue | null>(null)
@@ -266,8 +268,9 @@ export function GameProvider({ children }: { children: ReactNode }) {
       awardOnce,
       setHearts,
       resetGame,
+      replaceState: commit,
     }
-  }, [state, finishLesson, awardOnce, setHearts, resetGame])
+  }, [state, finishLesson, awardOnce, setHearts, resetGame, commit])
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>
 }

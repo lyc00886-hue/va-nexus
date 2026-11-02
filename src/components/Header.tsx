@@ -1,7 +1,9 @@
-import { Accessibility, LogIn, Sparkles } from 'lucide-react'
+import { Accessibility, Sparkles } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useSen } from '../context/SenContext'
 import type { SenMode } from '../types'
+import { AuthButton } from './AuthButton'
+import { ProgressSync } from './ProgressSync'
 import { SenSettingsPanel } from './SenSettingsPanel'
 
 const MODES: { id: SenMode; label: string; hint: string }[] = [
@@ -68,18 +70,8 @@ export function Header() {
             無障礙設定
           </button>
 
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-blue-50"
-            onClick={() =>
-              alert(
-                'Google 登入稍後接 Supabase Auth。\n請在 .env 設定 VITE_SUPABASE_URL 同 VITE_SUPABASE_ANON_KEY。',
-              )
-            }
-          >
-            <LogIn className="h-3.5 w-3.5" aria-hidden />
-            Sign in with Google
-          </button>
+          <AuthButton />
+          <ProgressSync />
         </div>
 
         {open && <SenSettingsPanel onClose={close} />}

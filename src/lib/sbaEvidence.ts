@@ -139,3 +139,66 @@ export function saveLocal(step: number, files: File[], note: string): SbaEvidenc
   }
   return items
 }
+
+/* ---------- private, signed-in storage (bucket `sba-private`, owner-only RLS) ---------- */
+
+export const SBA_PRIVATE_BUCKET = 'sba-private'
+const SIGNED_URL_TTL = 60 * 60 // 1 hour
+
+type PrivateRow = { id: string; user_id: string; step: number; file_path: string | null; note: string | null; created_at: string }
+const PRIVATE_COLS = 'id, user_id, step, file_path, note, created_at'
+
+async function withSignedUrls(rows: PrivateRow[]): Promise<SbaEvidence[]> {
+  if (!supabase) throw new Error('Supabase not configured')
+  const paths = rows.map((r) => r.file_path).filter((p): p is string => Boolean(p))
+  const urls = new Map<string, string>()
+  if (paths.length) {
+    const { data, error } = await supabase.storage.from(SBA_PRIVATE_BUCKET).createSignedUrls(paths, SIGNED_URL_TTL)
+    if (error) throw error
+    for (const d of data ?? []) if (d.path && d.signedUrl) urls.set(d.path, d.signedUrl)
+  }
+  return rows.map((r) => ({
+    id: r.id,
+    step: r.step,
+    note: r.note,
+    file_path: r.file_path,
+    url: r.file_path ? (urls.get(r.file_path) ?? null) : null,
+    created_at: r.created_at,
+  }))
+}
+
+export async function fetchPrivateEvidence(userId: string): Promise<SbaEvidence[]> {
+  if (!supabase) throw new Error('Supabase not configured')
+  const { data, error } = await supabase
+    .from('sba_private_evidence')
+    .select(PRIVATE_COLS)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: true })
+  if (error) throw error
+  return withSignedUrls(data as PrivateRow[])
+}
+
+/** Signed-in upload: objects live under `${userId}/step-N/…` in the private bucket. */
+export async function savePrivateEvidence(
+  userId: string,
+  step: number,
+  files: File[],
+  note: string,
+): Promise<SbaEvidence[]> {
+  if (!supabase) throw new Error('Supabase not configured')
+  const trimmed = note.trim() || null
+  const paths: (string | null)[] = []
+  for (const file of files) {
+    const path = `${userId}/step-${step}/${randomId()}.${extOf(file)}`
+    const { error } = await supabase.storage
+      .from(SBA_PRIVATE_BUCKET)
+      .upload(path, file, { contentType: file.type, upsert: false, cacheControl: '3600' })
+    if (error) throw error
+    paths.push(path)
+  }
+  if (paths.length === 0) paths.push(null)
+  const rows = paths.map((file_path) => ({ user_id: userId, step, file_path, note: trimmed }))
+  const { data, error } = await supabase.from('sba_private_evidence').insert(rows).select(PRIVATE_COLS)
+  if (error) throw error
+  return withSignedUrls(data as PrivateRow[])
+}
