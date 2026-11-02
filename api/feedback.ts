@@ -230,6 +230,141 @@ async function readJsonBody(
   }
 }
 
+/**
+ * AI Studio's current default Flash model.
+ * GEMINI_MODEL, when set to a model id, is tried first; the list below is the fallback.
+ */
+const GEMINI_MODEL = 'gemini-3.8-flash'
+const GEMINI_MODEL_FALLBACKS = ['gemini-2.5-flash', 'gemini-flash-latest'] as const
+
+function isGeminiModelId(value: string): boolean {
+  return /^[A-Za-z0-9._-]{1,80}$/.test(value) && !value.startsWith('AIza')
+}
+
+function geminiModels(): string[] {
+  const override = process.env.GEMINI_MODEL?.trim() ?? ''
+  const preferred = isGeminiModelId(override) ? override : GEMINI_MODEL
+  const seen = new Set<string>()
+  const order: string[] = []
+  for (const id of [preferred, GEMINI_MODEL, ...GEMINI_MODEL_FALLBACKS]) {
+    if (!isGeminiModelId(id) || seen.has(id)) continue
+    seen.add(id)
+    order.push(id)
+  }
+  return order
+}
+
+function generationConfig(model: string): {
+  temperature: number
+  maxOutputTokens: number
+  thinkingConfig: { thinkingBudget: number } | { thinkingLevel: 'low'; includeThoughts: false }
+} {
+  // 2.5 Flash rejects thinkingLevel. Thoughts count against maxOutputTokens, so a
+  // 512 cap with dynamic thinking often returns an empty candidate.
+  if (model.startsWith('gemini-2.5')) {
+    return { temperature: 0.6, maxOutputTokens: 512, thinkingConfig: { thinkingBudget: 0 } }
+  }
+  // 3.8 Flash (and the flash-latest alias) cannot turn thinking off. `low` is supported;
+  // leave room so thoughts do not consume the whole answer.
+  return {
+    temperature: 0.6,
+    maxOutputTokens: 2048,
+    thinkingConfig: { thinkingLevel: 'low', includeThoughts: false },
+  }
+}
+
+/** Upstream HTTP status, model id, and a short error status/message. Never the key or bodies. */
+function logGeminiUpstream(model: string, status: number | null, message: string): void {
+  const safe = message
+    .replace(/AIza[0-9A-Za-z_-]+/g, '[redacted]')
+    .replace(/([?&]key=)[^&\s]+/gi, '$1[redacted]')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 180)
+  console.error(JSON.stringify({ model, status, message: safe || 'upstream error' }))
+}
+
+function upstreamErrorMessage(payload: unknown): string {
+  if (!payload || typeof payload !== 'object') return 'upstream error'
+  const error = (payload as { error?: unknown }).error
+  if (!error || typeof error !== 'object') return 'upstream error'
+  const status = (error as { status?: unknown }).status
+  const message = (error as { message?: unknown }).message
+  const bits: string[] = []
+  if (typeof status === 'string' && status.trim()) bits.push(status.trim())
+  if (typeof message === 'string' && message.trim()) bits.push(message.trim())
+  return bits.join(': ') || 'upstream error'
+}
+
+function feedbackText(payload: unknown): string {
+  if (!payload || typeof payload !== 'object') return ''
+  const candidates = (payload as { candidates?: unknown }).candidates
+  if (!Array.isArray(candidates)) return ''
+  const first = candidates[0]
+  if (!first || typeof first !== 'object') return ''
+  const content = (first as { content?: unknown }).content
+  if (!content || typeof content !== 'object') return ''
+  const parts = (content as { parts?: unknown }).parts
+  if (!Array.isArray(parts)) return ''
+  let text = ''
+  for (const part of parts) {
+    if (!part || typeof part !== 'object') continue
+    if ((part as { thought?: unknown }).thought === true) continue
+    const piece = (part as { text?: unknown }).text
+    if (typeof piece === 'string') text += piece
+  }
+  return text.trim()
+}
+
+async function geminiFeedback(apiKey: string, system: string, userText: string): Promise<string | null> {
+  const requestBody = {
+    systemInstruction: { parts: [{ text: system }] },
+    contents: [{ role: 'user', parts: [{ text: userText }] }],
+  }
+
+  for (const model of geminiModels()) {
+    // Key stays in the header so a thrown URL cannot contain it. Do not log this request.
+    let res: Response
+    try {
+      res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-goog-api-key': apiKey,
+          },
+          signal: AbortSignal.timeout(25_000),
+          body: JSON.stringify({ ...requestBody, generationConfig: generationConfig(model) }),
+        },
+      )
+    } catch {
+      logGeminiUpstream(model, null, 'request failed')
+      continue
+    }
+
+    if (!res.ok) {
+      const raw = await res.text().catch(() => '')
+      let parsed: unknown = null
+      if (raw) {
+        try {
+          parsed = JSON.parse(raw) as unknown
+        } catch {
+          parsed = null
+        }
+      }
+      logGeminiUpstream(model, res.status, upstreamErrorMessage(parsed))
+      continue
+    }
+
+    const feedback = feedbackText(await res.json().catch(() => null))
+    if (feedback) return feedback
+    logGeminiUpstream(model, res.status, 'empty candidates')
+  }
+
+  return null
+}
+
 async function handleFeedback(request: Request): Promise<Response> {
   if (request.method !== 'POST') {
     return json(405, { error: ERR['zh-Hant'].method })
@@ -293,36 +428,8 @@ async function handleFeedback(request: Request): Promise<Response> {
     .filter(Boolean)
     .join('\n\n')
 
-  const geminiUrl =
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' +
-    encodeURIComponent(apiKey)
-
-  let geminiRes: Response
-  try {
-    geminiRes = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      signal: AbortSignal.timeout(25_000),
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: system }] },
-        contents: [{ role: 'user', parts: [{ text: userParts }] }],
-        generationConfig: { temperature: 0.6, maxOutputTokens: 512 },
-      }),
-    })
-  } catch {
-    return json(502, { error: err.gemini })
-  }
-
-  if (!geminiRes.ok) return json(502, { error: err.gemini })
-
-  const payload = (await geminiRes.json().catch(() => null)) as {
-    candidates?: { content?: { parts?: { text?: string }[] } }[]
-  } | null
-  const feedback = payload?.candidates?.[0]?.content?.parts
-    ?.map((p) => p.text || '')
-    .join('')
-    ?.trim()
-  if (!feedback) return json(502, { error: err.gemini })
+  const feedback = await geminiFeedback(apiKey, system, userParts)
+  if (!feedback) return json(502, { error: err.gemini, code: 'gemini_upstream' })
 
   return json(200, { feedback })
 }
