@@ -22,3 +22,77 @@ body {
 #root {
   min-height: 100vh;
 }
+
+/* ---------- SEN accessibility modes (toggled on <html> by SenContext) ---------- */
+html {
+  --sen-font-scale: 1;
+  font-size: calc(100% * var(--sen-font-scale));
+}
+
+/* High contrast */
+.sen-contrast body,
+.sen-contrast #root > div {
+  background: #ffffff !important;
+}
+.sen-contrast [class*='text-teal-'],
+.sen-contrast [class*='text-slate-'] {
+  color: #001a17 !important;
+}
+.sen-contrast [class*='border-teal-'],
+.sen-contrast [class*='ring-teal-'] {
+  border-color: #0b3b36 !important;
+  --tw-ring-color: #0b3b36 !important;
+}
+.sen-contrast [class*='bg-teal-700'],
+.sen-contrast [class*='bg-teal-600'] {
+  background-color: #00211d !important;
+}
+.sen-contrast [class*='bg-teal-700'] *,
+.sen-contrast [class*='bg-teal-700'][class*='text-'] {
+  color: #ffffff !important;
+}
+.sen-contrast [class*='bg-white/'],
+.sen-contrast [class*='bg-teal-50'] {
+  background-color: #ffffff !important;
+}
+.sen-contrast :focus-visible {
+  outline: 3px solid #b45309 !important;
+  outline-offset: 2px;
+}
+.sen-contrast img {
+  outline: 1px solid #0b3b36;
+}
+
+/* Dyslexia-friendly spacing */
+.sen-dyslexia body {
+  letter-spacing: 0.04em;
+  word-spacing: 0.16em;
+  line-height: 1.85;
+}
+.sen-dyslexia p,
+.sen-dyslexia li,
+.sen-dyslexia label,
+.sen-dyslexia textarea,
+.sen-dyslexia input {
+  line-height: 1.85 !important;
+  text-align: left;
+}
+.sen-dyslexia p + p {
+  margin-top: 0.75em;
+}
+.sen-dyslexia [class*='italic'] {
+  font-style: normal !important;
+}
+
+/* Reduce motion */
+.sen-reduce-motion *,
+.sen-reduce-motion *::before,
+.sen-reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+.sen-reduce-motion [class*='backdrop-blur'] {
+  backdrop-filter: none !important;
+}

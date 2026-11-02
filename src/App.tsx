@@ -5,7 +5,6 @@ import { FocusTunnel } from './components/FocusTunnel'
 import { Header } from './components/Header'
 import { SbaQuest } from './components/SbaQuest'
 import { TabNav } from './components/TabNav'
-import { useSen } from './context/SenContext'
 import { isSupabaseConfigured } from './lib/supabase'
 import type { TabId } from './types'
 
@@ -17,7 +16,6 @@ export default function App() {
   const onSourceChange = useCallback((source: 'live' | 'mock') => {
     setArtistSource(source)
   }, [])
-  const { fontScale } = useSen()
 
   const footer =
     artistSource === 'live'
@@ -25,7 +23,7 @@ export default function App() {
       : 'VA-Nexus AI MVP · Vercel + Supabase + Gemini · mock data (live fetch unavailable)'
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white" style={{ fontSize: `${fontScale}rem` }}>
+    <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
       <Header />
       <TabNav active={tab} onChange={setTab} />
       <main className="mx-auto max-w-5xl px-4 py-5 pb-24">
