@@ -507,5 +507,11 @@
   "practice.framework": "评赏框架",
   "practice.hint": "创作提示",
   "practice.setLabel": "{set} · {label}",
-  "practice.qOpen": "可作答"
+  "practice.qOpen": "可作答",
+  "practice.guest.title": "这台设备有登录前的练习草稿",
+  "practice.guest.body": "这份草稿是登录前写在这台设备上的，不会自动并入你的账户。",
+  "practice.guest.replace": "保留会替换这个账户里已有的练习草稿。",
+  "practice.guest.keep": "保留到这个账户",
+  "practice.guest.discard": "丢弃草稿",
+  "practice.guest.later": "暂时不处理"
 }

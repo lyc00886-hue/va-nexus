@@ -1,5 +1,3 @@
-import { getLocalOwner } from './progressSync'
-
 /**
  * Practice-paper drafts.
  *
@@ -8,10 +6,13 @@ import { getLocalOwner } from './progressSync'
  * and must not carry essay text, so these drafts are not merged into it and
  * are never sent to `/api/feedback` or any AI marker.
  *
- * When a signed-in user has an empty draft and this device is not owned by a
- * different account, an unowned guest draft is adopted into their key — the
- * same ownership rule as game progress, without a network write.
+ * A guest draft is never copied onto a signed-in account unless that student
+ * explicitly chooses Keep. Discard deletes it. Doing neither leaves it in the
+ * guest key and does not attach it to the account.
  */
+
+/** Fired after an explicit keep or discard so open editors reload from storage. */
+export const PRACTICE_DRAFT_EVENT = 'va-nexus:practice-draft'
 
 export const PRACTICE_DRAFT_PREFIX = 'va-nexus:practice-draft:v1:'
 
@@ -57,7 +58,7 @@ export function practiceTextCount(text: string, locale: 'en' | 'zh-Hant' | 'zh-H
   return [...trimmed.replace(/\s+/g, '')].length
 }
 
-function isBlank(draft: PracticeDraftV1): boolean {
+export function isPracticeDraftBlank(draft: PracticeDraftV1): boolean {
   if (draft.statement.trim()) return false
   if (draft.submittedAt) return false
   if (draft.revealed) return false
@@ -99,21 +100,51 @@ export function savePracticeDraft(owner: string | null, draft: PracticeDraftV1):
   }
 }
 
-/**
- * Copy an unowned guest draft onto `uid` when that user has nothing stored
- * and the device is not stamped as a different account.
- */
-export function adoptGuestPracticeDraft(uid: string, deviceOwner: string | null = getLocalOwner()): PracticeDraftV1 {
-  const mine = loadPracticeDraft(uid)
-  if (deviceOwner && deviceOwner !== uid) return mine
-  if (!isBlank(mine)) return mine
-  const guest = loadPracticeDraft(null)
-  if (isBlank(guest)) return mine
-  savePracticeDraft(uid, guest)
+export type GuestDraftChoice = 'keep' | 'discard' | 'later'
+
+function notifyPracticeDraftChange() {
+  if (typeof window === 'undefined') return
+  window.dispatchEvent(new Event(PRACTICE_DRAFT_EVENT))
+}
+
+export function clearGuestPracticeDraft(): void {
   try {
     localStorage.removeItem(practiceDraftKey(null))
   } catch {
     /* ignore */
   }
+}
+
+/**
+ * Explicit Keep: copy the guest draft onto this account, then remove the guest copy.
+ * A non-blank account draft is replaced only because the student chose Keep.
+ */
+export function claimGuestPracticeDraft(uid: string): PracticeDraftV1 {
+  const guest = loadPracticeDraft(null)
+  if (!isPracticeDraftBlank(guest)) savePracticeDraft(uid, guest)
+  clearGuestPracticeDraft()
+  notifyPracticeDraftChange()
   return loadPracticeDraft(uid)
+}
+
+/** Explicit Discard: delete the guest draft and leave the account draft untouched. */
+export function discardGuestPracticeDraft(uid: string): PracticeDraftV1 {
+  clearGuestPracticeDraft()
+  notifyPracticeDraftChange()
+  return loadPracticeDraft(uid)
+}
+
+/**
+ * Apply the sign-in prompt. `later` does not merge and does not delete.
+ * The returned draft is always the account copy, never the guest copy.
+ */
+export function applyGuestDraftChoice(uid: string, choice: GuestDraftChoice): PracticeDraftV1 {
+  if (choice === 'keep') return claimGuestPracticeDraft(uid)
+  if (choice === 'discard') return discardGuestPracticeDraft(uid)
+  return loadPracticeDraft(uid)
+}
+
+/** True when a signed-out draft is sitting on this device and must not be auto-merged. */
+export function hasUnclaimedGuestDraft(): boolean {
+  return !isPracticeDraftBlank(loadPracticeDraft(null))
 }

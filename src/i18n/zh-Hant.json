@@ -507,5 +507,11 @@
   "practice.framework": "評賞框架",
   "practice.hint": "創作提示",
   "practice.setLabel": "{set} · {label}",
-  "practice.qOpen": "可作答"
+  "practice.qOpen": "可作答",
+  "practice.guest.title": "這部裝置有登入前的練習草稿",
+  "practice.guest.body": "這份草稿是登入前寫在這部裝置上的，不會自動併入你的帳戶。",
+  "practice.guest.replace": "保留會取代這個帳戶裡已有的練習草稿。",
+  "practice.guest.keep": "保留到這個帳戶",
+  "practice.guest.discard": "丟棄草稿",
+  "practice.guest.later": "暫時不處理"
 }

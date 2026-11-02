@@ -17,8 +17,8 @@ import {
   type PracticeSelfCheck,
 } from '../lib/practiceContent'
 import {
-  adoptGuestPracticeDraft,
   loadPracticeDraft,
+  PRACTICE_DRAFT_EVENT,
   practiceResponseKey,
   practiceTextCount,
   savePracticeDraft,
@@ -204,8 +204,7 @@ export function PracticePapers() {
     const uid = user?.id ?? null
     const current = bundleRef.current
     if (current && current.owner !== uid) savePracticeDraft(current.owner, current.draft)
-    const draft = uid ? adoptGuestPracticeDraft(uid) : loadPracticeDraft(null)
-    const next = { owner: uid, draft }
+    const next = { owner: uid, draft: loadPracticeDraft(uid) }
     bundleRef.current = next
     setBundle(next)
   }, [ready, user?.id])
@@ -221,9 +220,19 @@ export function PracticePapers() {
       const current = bundleRef.current
       if (current) savePracticeDraft(current.owner, current.draft)
     }
+    const reload = () => {
+      const uid = user?.id ?? null
+      const next = { owner: uid, draft: loadPracticeDraft(uid) }
+      bundleRef.current = next
+      setBundle(next)
+    }
     window.addEventListener('pagehide', flush)
-    return () => window.removeEventListener('pagehide', flush)
-  }, [])
+    window.addEventListener(PRACTICE_DRAFT_EVENT, reload)
+    return () => {
+      window.removeEventListener('pagehide', flush)
+      window.removeEventListener(PRACTICE_DRAFT_EVENT, reload)
+    }
+  }, [user?.id])
 
   function patch(update: (draft: PracticeDraftV1) => PracticeDraftV1) {
     const current = bundleRef.current

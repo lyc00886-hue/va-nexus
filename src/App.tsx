@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { ArtistCompare } from './components/ArtistCompare'
 import { FocusTunnel } from './components/FocusTunnel'
 import { Header } from './components/Header'
+import { PracticeGuestDraftPrompt } from './components/PracticeGuestDraftPrompt'
 import { PracticePapers } from './components/PracticePapers'
 import { SbaQuest } from './components/SbaQuest'
 import { PrivacyLink, PrivacyModal } from './components/PrivacyModal'
@@ -94,6 +95,7 @@ export default function App() {
       <NudgeToast />
       <CheckInModal />
       <PrivacyModal />
+      <PracticeGuestDraftPrompt />
     </div>
   )
 }

@@ -73,18 +73,21 @@ export function MobileNav({ active, onChange }: Props) {
         {TABS.map((tab) => {
           const Icon = tab.icon
           const on = active === tab.id
+          const full = tabLabel(tab.id)
           return (
-            <li key={tab.id}>
+            <li key={tab.id} className="min-w-0">
               <button
                 type="button"
                 aria-current={on ? 'page' : undefined}
+                aria-label={full}
+                title={full}
                 onClick={() => onChange(tab.id)}
-                className={`flex w-full flex-col items-center gap-0.5 px-0.5 py-2 text-[10px] font-semibold leading-tight ${
+                className={`flex w-full min-w-0 flex-col items-center justify-center gap-0.5 px-0.5 py-1.5 text-[11px] font-semibold leading-none ${
                   on ? 'text-blue-700' : 'text-slate-500'
                 }`}
               >
-                <Icon className="h-5 w-5" aria-hidden />
-                {tabLabel(tab.id, true)}
+                <Icon className="h-5 w-5 shrink-0" aria-hidden />
+                <span className="max-w-full truncate whitespace-nowrap">{tabLabel(tab.id, true)}</span>
               </button>
             </li>
           )
