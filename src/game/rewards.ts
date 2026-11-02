@@ -60,7 +60,7 @@ export const getBadges = perLocale<BadgeDef[]>(() => [
     id: `unit-${u.id}`,
     title: i === 0 ? t('badge.unit.first') : t('badge.unit.n', { n: i + 1 }),
     desc: t('badge.unit.desc', { title: u.title }),
-    emoji: ['🏮', '🌅', '🗺️'][i] ?? '🗺️',
+    emoji: ['🏮', '🌅', '🗺️', '🏙️', '⚖️'][i] ?? '🗺️',
   })),
   { id: 'mastery', title: t('badge.mastery'), desc: t('badge.mastery.desc'), emoji: '🏆' },
   { id: 'streak-3', title: t('badge.streak-3'), desc: t('badge.streak-3.desc'), emoji: '🔥' },
