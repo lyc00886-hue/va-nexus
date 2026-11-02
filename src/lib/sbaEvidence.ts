@@ -1,44 +1,21 @@
-import { supabase } from './supabase'
-import { randomId } from './deviceId'
 import { t } from '../i18n'
+import { randomId } from './deviceId'
+import { supabase } from './supabase'
 
-export const SBA_BUCKET = 'sba-evidence'
 export const MAX_FILE_BYTES = 5 * 1024 * 1024
+/** Private, signed-in storage only. The old public `sba-evidence` bucket was removed. */
+export const SBA_PRIVATE_BUCKET = 'sba-private'
+const SIGNED_URL_TTL = 60 * 60 // 1 hour
 
 export type SbaEvidence = {
   id: string
   step: number
   note: string | null
   file_path: string | null
-  /** Public URL (Supabase) or object URL (local fallback) */
+  /** Signed URL (private bucket) or object URL (local fallback) */
   url: string | null
   created_at: string
   local?: boolean
-}
-
-type Row = {
-  id: string
-  device_id: string
-  step: number
-  file_path: string | null
-  note: string | null
-  created_at: string
-}
-
-function publicUrl(path: string | null): string | null {
-  if (!path || !supabase) return null
-  return supabase.storage.from(SBA_BUCKET).getPublicUrl(path).data.publicUrl
-}
-
-function toEvidence(r: Row): SbaEvidence {
-  return {
-    id: r.id,
-    step: r.step,
-    note: r.note,
-    file_path: r.file_path,
-    url: publicUrl(r.file_path),
-    created_at: r.created_at,
-  }
 }
 
 export function validateImage(file: File): string | null {
@@ -47,59 +24,16 @@ export function validateImage(file: File): string | null {
   return null
 }
 
-export async function fetchEvidence(deviceId: string): Promise<SbaEvidence[]> {
-  if (!supabase) throw new Error('Supabase not configured')
-  const { data, error } = await supabase
-    .from('sba_evidence')
-    .select('id, device_id, step, file_path, note, created_at')
-    .eq('device_id', deviceId)
-    .order('created_at', { ascending: true })
-  if (error) throw error
-  return (data as Row[]).map(toEvidence)
-}
-
 function extOf(file: File): string {
   const fromName = file.name.split('.').pop()
   if (fromName && fromName.length <= 5 && fromName !== file.name) return fromName.toLowerCase()
   return file.type.split('/')[1] || 'jpg'
 }
 
-/**
- * Upload photos (if any) + note for a step. One row per photo; the note is
- * attached to every photo row. With no photos, a single note-only row is inserted.
- */
-export async function saveEvidence(
-  deviceId: string,
-  step: number,
-  files: File[],
-  note: string,
-): Promise<SbaEvidence[]> {
-  if (!supabase) throw new Error('Supabase not configured')
-  const trimmed = note.trim() || null
-  const paths: (string | null)[] = []
+/* ---------- local / offline fallback (guest notes; photos are session-only) ---------- */
 
-  for (const file of files) {
-    const path = `${deviceId}/step-${step}/${randomId()}.${extOf(file)}`
-    const { error } = await supabase.storage
-      .from(SBA_BUCKET)
-      .upload(path, file, { contentType: file.type, upsert: false, cacheControl: '3600' })
-    if (error) throw error
-    paths.push(path)
-  }
-  if (paths.length === 0) paths.push(null)
-
-  const rows = paths.map((file_path) => ({ device_id: deviceId, step, file_path, note: trimmed }))
-  const { data, error } = await supabase
-    .from('sba_evidence')
-    .insert(rows)
-    .select('id, device_id, step, file_path, note, created_at')
-  if (error) throw error
-  return (data as Row[]).map(toEvidence)
-}
-
-/* ---------- local / offline fallback ---------- */
-
-const LOCAL_KEY = 'va-nexus:sba-local-notes'
+export const SBA_LOCAL_NOTES_KEY = 'va-nexus:sba-local-notes'
+const LOCAL_KEY = SBA_LOCAL_NOTES_KEY
 
 type LocalNote = { id: string; step: number; note: string; created_at: string }
 
@@ -110,6 +44,14 @@ export function loadLocalNotes(): SbaEvidence[] {
     return list.map((n) => ({ ...n, file_path: null, url: null, local: true }))
   } catch {
     return []
+  }
+}
+
+export function clearLocalNotes() {
+  try {
+    localStorage.removeItem(LOCAL_KEY)
+  } catch {
+    /* ignore */
   }
 }
 
@@ -143,10 +85,14 @@ export function saveLocal(step: number, files: File[], note: string): SbaEvidenc
 
 /* ---------- private, signed-in storage (bucket `sba-private`, owner-only RLS) ---------- */
 
-export const SBA_PRIVATE_BUCKET = 'sba-private'
-const SIGNED_URL_TTL = 60 * 60 // 1 hour
-
-type PrivateRow = { id: string; user_id: string; step: number; file_path: string | null; note: string | null; created_at: string }
+type PrivateRow = {
+  id: string
+  user_id: string
+  step: number
+  file_path: string | null
+  note: string | null
+  created_at: string
+}
 const PRIVATE_COLS = 'id, user_id, step, file_path, note, created_at'
 
 async function withSignedUrls(rows: PrivateRow[]): Promise<SbaEvidence[]> {

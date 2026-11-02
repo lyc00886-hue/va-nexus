@@ -1,15 +1,23 @@
 import { useEffect, useRef } from 'react'
 import { useGame } from '../context/GameContext'
 import { useAuth } from '../lib/auth'
-import { fetchServerGame, getLocalOwner, mergeGame, saveServerGame, setLocalOwner } from '../lib/progressSync'
+import {
+  clearPerUserLocalData,
+  fetchServerGame,
+  flushProgressSave,
+  getLocalOwner,
+  resolveSignInState,
+  scheduleProgressSave,
+  setLocalOwner,
+} from '../lib/progressSync'
 
 /**
  * Headless: syncs game progress for the signed-in user.
- * - On sign-in: merge local guest progress with the server copy (or adopt the
- *   server copy if this device's progress belongs to a different account).
- * - Then saves on change (debounced).
- * - On sign-out: local progress is cleared so the next person on a shared
- *   device starts fresh (their copy is safe on the server).
+ * - On sign-in: merge unowned guest / same-user local progress with the server copy.
+ *   If local progress belongs to a *different* account, adopt that account's cloud
+ *   row (or a fresh empty state) — never write account A's XP into account B.
+ * - Saves on change (debounced) and flushes on tab hide / before sign-out.
+ * - On sign-out: clear per-user local keys (game, owner, SBA local notes). SEN + locale stay.
  * SEN data is never synced.
  */
 export function ProgressSync() {
@@ -29,7 +37,7 @@ export function ProgressSync() {
     if (!uid) {
       syncedFor.current = null
       if (was || getLocalOwner()) {
-        setLocalOwner(null)
+        clearPerUserLocalData()
         resetGame()
       }
       return
@@ -40,14 +48,13 @@ export function ProgressSync() {
       try {
         const server = await fetchServerGame(uid)
         if (cancelled) return
-        const owner = getLocalOwner()
-        const local = latest.current
-        let next = local
-        if (server) next = owner && owner !== uid ? server : mergeGame(local, server)
+        const next = resolveSignInState(uid, latest.current, getLocalOwner(), server)
         replaceState(next)
         setLocalOwner(uid)
         syncedFor.current = uid
-        await saveServerGame(uid, next)
+        await flushProgressSave() // drop any stale guest debounce
+        scheduleProgressSave(uid, next, 0) // persist resolved state immediately
+        await flushProgressSave()
       } catch (e) {
         console.warn('[progress] sync failed — staying local', e)
       }
@@ -60,11 +67,27 @@ export function ProgressSync() {
   // debounced save on change
   useEffect(() => {
     if (!uid || syncedFor.current !== uid) return
-    const id = window.setTimeout(() => {
-      saveServerGame(uid, state).catch((e) => console.warn('[progress] save failed', e))
-    }, 1500)
-    return () => window.clearTimeout(id)
+    scheduleProgressSave(uid, state)
   }, [state, uid])
+
+  // flush pending save when the tab hides / page unloads
+  useEffect(() => {
+    const flush = () => {
+      void flushProgressSave()
+    }
+    const onVis = () => {
+      if (document.visibilityState === 'hidden') flush()
+    }
+    document.addEventListener('visibilitychange', onVis)
+    window.addEventListener('pagehide', flush)
+    return () => {
+      document.removeEventListener('visibilitychange', onVis)
+      window.removeEventListener('pagehide', flush)
+    }
+  }, [])
 
   return null
 }
+
+/** Call from the sign-out button *before* supabase.auth.signOut(). */
+export { flushProgressSave }

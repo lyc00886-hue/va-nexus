@@ -1,6 +1,7 @@
 import { Loader2, LogIn, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { avatarUrl, displayName, signInWithGoogle, signOut, useAuth } from '../lib/auth'
+import { flushProgressSave } from '../lib/progressSync'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { t } from '../i18n'
 
@@ -61,6 +62,7 @@ export function AuthButton() {
         onClick={async () => {
           setBusy(true)
           try {
+            await flushProgressSave()
             await signOut()
           } finally {
             setBusy(false)

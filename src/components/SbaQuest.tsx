@@ -18,9 +18,7 @@ import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
 import { signInWithGoogle, useAuth } from '../lib/auth'
-import { getDeviceId } from '../lib/deviceId'
 import {
-  fetchEvidence,
   fetchPrivateEvidence,
   loadLocalNotes,
   savePrivateEvidence,
@@ -43,8 +41,7 @@ function getSteps() {
 
 /**
  * private = signed in → private bucket `sba-private` (owner-only RLS, signed URLs)
- * guest   = signed out → photo upload disabled; notes stay on this device;
- *           older device-id test uploads are shown read-only
+ * guest   = signed out → photo upload disabled; notes stay on this device
  * local   = Supabase unavailable → offline/local only
  */
 type Source = 'loading' | 'private' | 'guest' | 'local'
@@ -54,7 +51,6 @@ export function SbaQuest() {
   const { awardOnce } = useGame()
   const { ready, user } = useAuth()
   const userId = user?.id ?? null
-  const deviceId = useMemo(() => getDeviceId(), [])
   const STEPS = useMemo(getSteps, [])
   const [evidence, setEvidence] = useState<SbaEvidence[]>([])
   const [source, setSource] = useState<Source>(isSupabaseConfigured ? 'loading' : 'local')
@@ -76,16 +72,16 @@ export function SbaQuest() {
       return
     }
     setSource('loading')
-    const load = userId
-      ? fetchPrivateEvidence(userId).then((rows) => ({ rows, src: 'private' as const }))
-      : fetchEvidence(deviceId)
-          .catch(() => [] as SbaEvidence[])
-          .then((legacy) => ({ rows: [...legacy, ...loadLocalNotes()], src: 'guest' as const }))
-    load
-      .then(({ rows, src }) => {
+    if (!userId) {
+      setEvidence(loadLocalNotes())
+      setSource('guest')
+      return
+    }
+    fetchPrivateEvidence(userId)
+      .then((rows) => {
         if (cancelled) return
         setEvidence(rows)
-        setSource(src)
+        setSource('private')
       })
       .catch((e) => {
         if (cancelled) return
@@ -96,7 +92,7 @@ export function SbaQuest() {
     return () => {
       cancelled = true
     }
-  }, [deviceId, userId, ready])
+  }, [userId, ready])
 
   const canUpload = source === 'private'
 
