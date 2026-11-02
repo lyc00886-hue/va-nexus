@@ -1,0 +1,186 @@
+{
+ "version": 1,
+ "note": "SBA borrowing principle: borrow composition, concepts and ways of thinking about materials — never copy the style.",
+ "pairs": [
+  {
+   "pair_id": "PAIR-URBAN-01",
+   "a": "WEST-HOPPER-01",
+   "b": "HK-PAK-01",
+   "theme": "Urban alienation",
+   "same": [
+    "Both focus on people's isolation in city life",
+    "Both start from everyday spaces (restaurants, homes)"
+   ],
+   "diff": [
+    "Edward Hopper (霍普) uses realist oil painting and strong light and shadow; Pak Sheung-chuen (白雙全) uses conceptual art and ready-mades",
+    "Hopper depicts scenes; Pak measures and materialises space itself"
+   ],
+   "sba": [
+    "Borrow Hopper's window-frame / glass divisions in your composition to show the distance between people",
+    "Borrow Pak's concept of 'collecting invisible things' to turn the cramped pressure of subdivided flats and classrooms into visible objects"
+   ]
+  },
+  {
+   "pair_id": "PAIR-SPIRIT-01",
+   "a": "WEST-VANGOGH-01",
+   "b": "CN-LV-01",
+   "theme": "Emotion and the inner world",
+   "same": [
+    "Both use natural scenery to carry inner states",
+    "The brushstrokes / ink marks themselves are traces of emotion"
+   ],
+   "diff": [
+    "Vincent van Gogh (梵高) uses high saturation and swirling impasto; Lui Shou-kwan (呂壽琨) uses blocks of dry, dark ink and blank space",
+    "Van Gogh's emotions burst outward; Lui leans towards Zen-like introspection"
+   ],
+   "sba": [
+    "Borrow Van Gogh's 'brushstroke direction expresses emotion', using line rhythm to record how your mood changes over a day",
+    "Borrow Lui's blank space to give the picture room to breathe, expressing calm or detachment"
+   ]
+  },
+  {
+   "pair_id": "PAIR-ABSTRACT-01",
+   "a": "WEST-ROTHKO-01",
+   "b": "CN-ZAO-01",
+   "theme": "Lyrical abstraction and colour-field contemplation",
+   "same": [
+    "Both give up recognisable images and use colour to create a spiritual space",
+    "Both aim for an immersive emotional experience for the viewer"
+   ],
+   "diff": [
+    "Mark Rothko (羅斯科) uses large soft-edged colour blocks in a still structure; Zao Wou-Ki (趙無極) brings in calligraphic brush movement, so his pictures flow",
+    "Zao is rooted in Chinese landscape painting and calligraphy; Rothko comes from Western colour field painting"
+   ],
+   "sba": [
+    "Borrow Rothko's layered colour blocks, using two or three colours to express one emotion",
+    "Borrow Zao's brush movement, turning calligraphic gestures into an abstract composition"
+   ]
+  },
+  {
+   "pair_id": "PAIR-CONSUMER-01",
+   "a": "WEST-WARHOL-01",
+   "b": "CN-WANGGY-01",
+   "theme": "Consumerism and mass imagery",
+   "same": [
+    "Both appropriate familiar popular images and commercial brands",
+    "Both use the visual language of mass production, such as flat colour and repetition"
+   ],
+   "diff": [
+    "Andy Warhol (沃荷) shows the surface of American consumer culture and celebrity worship",
+    "Wang Guangyi (王廣義) places political propaganda posters next to Western brands, with an ironic edge"
+   ],
+   "sba": [
+    "Borrow repeated arrangement (a screen-print effect) to explore the brands or social media images in students' daily lives",
+    "Borrow the idea of 'juxtaposing two image systems' to create critical meaning"
+   ]
+  },
+  {
+   "pair_id": "PAIR-IDENTITY-01",
+   "a": "WEST-KAHLO-01",
+   "b": "HK-SHIEH-01",
+   "theme": "Identity and the self",
+   "same": [
+    "Both explore identity through images of people",
+    "Both use symbolic objects to tell stories"
+   ],
+   "diff": [
+    "Frida Kahlo (卡蘿) uses self-portraits to confront bodily pain and Mexican culture",
+    "Wilson Shieh (石家豪) uses gongbi fine brushwork in rich colour and faceless figures to explore Hong Kong identity and gender roles"
+   ],
+   "sba": [
+    "Borrow Kahlo's 'self-portrait + symbolic objects', using things around you to express your own identity",
+    "Borrow Shieh's Chinese gongbi technique with contemporary subjects to create a dialogue between tradition and the present"
+   ]
+  },
+  {
+   "pair_id": "PAIR-SURREAL-01",
+   "a": "WEST-MAGRITTE-01",
+   "b": "HK-LUISCHAN-01",
+   "theme": "Surrealism and imagination",
+   "same": [
+    "Both break everyday logic to create a dreamlike feeling",
+    "Both have humour and poetry"
+   ],
+   "diff": [
+    "René Magritte (馬格利特) paints impossible scenes in a calm, realist manner",
+    "Luis Chan (陳福善) uses bright colours and naïve forms, with a sense of fantasy and folk humour"
+   ],
+   "sba": [
+    "Borrow Magritte's 'displacement', putting familiar objects into illogical scenes",
+    "Borrow Luis Chan's free use of colour to turn Hong Kong street scenes into a fantasy world"
+   ]
+  },
+  {
+   "pair_id": "PAIR-SPACE-01",
+   "a": "WEST-ELIASSON-01",
+   "b": "HK-LEEKIT-01",
+   "theme": "Space, light and perception",
+   "same": [
+    "Both make the installation / experience of space the artwork itself",
+    "Both make viewers notice perceptions they usually overlook"
+   ],
+   "diff": [
+    "Olafur Eliasson (埃利亞松) uses natural phenomena such as light, water and mist, on a grand scale",
+    "Lee Kit (李傑) uses canvas, projection and everyday objects, with a quiet, intimate mood"
+   ],
+   "sba": [
+    "Borrow Eliasson's use of light to change how a space feels, and make a small light installation",
+    "Borrow the mood of Lee Kit's 'small everyday moments' to record your home space"
+   ]
+  },
+  {
+   "pair_id": "PAIR-FAMILY-01",
+   "a": "WEST-HOCKNEY-01",
+   "b": "CN-ZHANGXG-01",
+   "theme": "Family and relationships",
+   "same": [
+    "Both explore close relationships through portraits / group portraits",
+    "Both deliberately flatten the picture"
+   ],
+   "diff": [
+    "David Hockney (霍克尼) uses bright colours to show life and friends in California",
+    "Zhang Xiaogang (張曉剛) uses grey tones and 'bloodline' threads to evoke collective memory and a sense of repression"
+   ],
+   "sba": [
+    "Borrow Hockney's double-portrait compositions to analyse distance and relationships between figures",
+    "Borrow Zhang Xiaogang's 'old photos + thin connecting lines' to show family memory"
+   ]
+  },
+  {
+   "pair_id": "PAIR-STRUCTURE-01",
+   "a": "WEST-MONDRIAN-01",
+   "b": "HK-WUCIUS-01",
+   "theme": "Structure and order",
+   "same": [
+    "Both seek order and balance in the picture",
+    "Both use lines to divide space"
+   ],
+   "diff": [
+    "Piet Mondrian (蒙德里安) uses vertical and horizontal lines and primary colours: pure geometry",
+    "Wucius Wong (王無邪) combines design principles with Chinese landscape, so geometry and ink coexist"
+   ],
+   "sba": [
+    "Borrow Mondrian's grid divisions to show city planning or a timetable",
+    "Borrow Wucius Wong's way of placing design elements in landscape to create an East–West fusion composition"
+   ]
+  },
+  {
+   "pair_id": "PAIR-FIGURE-01",
+   "a": "WEST-GIACO-01",
+   "b": "INTL-CATALANO-01",
+   "theme": "The human body and existence",
+   "same": [
+    "Both explore states of existence through sculptures of the human body",
+    "Both use 'missing' parts to spark the imagination"
+   ],
+   "diff": [
+    "Alberto Giacometti (賈柯梅蒂) stretches and thins the body to express existentialist loneliness",
+    "Bruno Catalano (卡塔拉諾) hollows out the body to express the loss felt by travellers and migrants"
+   ],
+   "sba": [
+    "Borrow Giacometti's exaggerated proportions to express a psychological state",
+    "Borrow Catalano's 'missing parts' to express diaspora or things lost while growing up"
+   ]
+  }
+ ]
+}

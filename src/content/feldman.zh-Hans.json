@@ -1,0 +1,392 @@
+{
+ "version": 1,
+ "stages": [
+  {
+   "id": "describe",
+   "zh": "描述",
+   "en": "Description",
+   "goal": "客观说出看到什么，不加判断",
+   "frames": [
+    "这件作品是一幅以＿＿（媒介）创作的＿＿（类型），尺寸约＿＿。",
+    "画面主要描绘了＿＿，位于画面的＿＿（前景／中景／背景）。",
+    "艺术家运用了＿＿色调，以＿＿色为主。",
+    "画面可见＿＿的线条／笔触／肌理。"
+   ],
+   "checklist": [
+    "媒介与物料",
+    "主题／题材",
+    "色彩",
+    "线条与形状",
+    "空间位置"
+   ]
+  },
+  {
+   "id": "analyse",
+   "zh": "分析",
+   "en": "Analysis",
+   "goal": "说明元素和原理如何组织画面",
+   "frames": [
+    "艺术家以＿＿构图，使视线由＿＿引向＿＿。",
+    "＿＿与＿＿形成强烈对比，突出＿＿。",
+    "重复出现的＿＿营造出＿＿的节奏感。",
+    "大面积留白／负空间使画面产生＿＿的效果。"
+   ],
+   "checklist": [
+    "构图",
+    "对比",
+    "平衡",
+    "节奏与重复",
+    "焦点",
+    "空间与比例"
+   ]
+  },
+  {
+   "id": "interpret",
+   "zh": "诠释",
+   "en": "Interpretation",
+   "goal": "推论意义、情感和背景",
+   "frames": [
+    "我认为作品表达了＿＿，因为＿＿（引用视觉证据）。",
+    "＿＿的色彩营造出＿＿的氛围，令人联想到＿＿。",
+    "结合艺术家身处的＿＿（时代／文化背景），作品可能反映＿＿。",
+    "作品中的＿＿可视为＿＿的象征。"
+   ],
+   "checklist": [
+    "主题意念",
+    "情感氛围",
+    "象征",
+    "创作背景",
+    "必须有视觉证据支持"
+   ]
+  },
+  {
+   "id": "judge",
+   "zh": "评价",
+   "en": "Judgement",
+   "goal": "有理据地评价成效，并联系自己的创作",
+   "frames": [
+    "作品成功地／未能＿＿，因为＿＿。",
+    "与＿＿（另一艺术家）相比，此作在＿＿方面更具＿＿。",
+    "作品的价值在于＿＿，对＿＿有启发。",
+    "我会在自己的 SBA 中借鉴＿＿（构图／概念／技法），而不是模仿其画风。"
+   ],
+   "checklist": [
+    "评价准则清晰",
+    "正反理据",
+    "与其他作品比较",
+    "联系个人创作"
+   ]
+  }
+ ],
+ "vocab": [
+  {
+   "oral": [
+    "好漂亮",
+    "好棒",
+    "很好看"
+   ],
+   "term": "具视觉吸引力／和谐统一",
+   "stage": "judge",
+   "en": "visually compelling / unified"
+  },
+  {
+   "oral": [
+    "好乱",
+    "好多东西"
+   ],
+   "term": "构图繁复／元素密集",
+   "stage": "analyse",
+   "en": "complex, dense composition"
+  },
+  {
+   "oral": [
+    "好空",
+    "什么都没有"
+   ],
+   "term": "留白／负空间",
+   "stage": "analyse",
+   "en": "negative space"
+  },
+  {
+   "oral": [
+    "好鲜艳",
+    "好抢眼",
+    "亮得刺眼"
+   ],
+   "term": "高彩度／鲜明色彩",
+   "stage": "describe",
+   "en": "high saturation"
+  },
+  {
+   "oral": [
+    "灰灰的",
+    "暗暗的",
+    "好沉闷"
+   ],
+   "term": "低彩度／暗调",
+   "stage": "describe",
+   "en": "low saturation, low key"
+  },
+  {
+   "oral": [
+    "冷冰冰",
+    "蓝蓝的好冷"
+   ],
+   "term": "冷色调",
+   "stage": "describe",
+   "en": "cool palette"
+  },
+  {
+   "oral": [
+    "暖洋洋",
+    "红红黄黄的"
+   ],
+   "term": "暖色调",
+   "stage": "describe",
+   "en": "warm palette"
+  },
+  {
+   "oral": [
+    "深浅差好多",
+    "黑白好分明"
+   ],
+   "term": "明暗对比强烈",
+   "stage": "analyse",
+   "en": "strong tonal contrast"
+  },
+  {
+   "oral": [
+    "一眼就看到",
+    "最抢眼的地方"
+   ],
+   "term": "视觉焦点",
+   "stage": "analyse",
+   "en": "focal point"
+  },
+  {
+   "oral": [
+    "两边差不多",
+    "对称"
+   ],
+   "term": "对称平衡",
+   "stage": "analyse",
+   "en": "symmetrical balance"
+  },
+  {
+   "oral": [
+    "一边重一边轻"
+   ],
+   "term": "不对称平衡",
+   "stage": "analyse",
+   "en": "asymmetrical balance"
+  },
+  {
+   "oral": [
+    "重重复复",
+    "一直出现"
+   ],
+   "term": "重复与节奏",
+   "stage": "analyse",
+   "en": "repetition and rhythm"
+  },
+  {
+   "oral": [
+    "好远好深",
+    "好像能看进去"
+   ],
+   "term": "空间深度／透视",
+   "stage": "analyse",
+   "en": "depth / perspective"
+  },
+  {
+   "oral": [
+    "平平的",
+    "没有立体感"
+   ],
+   "term": "平面化处理",
+   "stage": "analyse",
+   "en": "flattened space"
+  },
+  {
+   "oral": [
+    "粗粗的",
+    "凹凸不平",
+    "摸起来会刮手"
+   ],
+   "term": "肌理／质感",
+   "stage": "describe",
+   "en": "texture"
+  },
+  {
+   "oral": [
+    "笔触好用力",
+    "扫得乱七八糟"
+   ],
+   "term": "奔放笔触",
+   "stage": "describe",
+   "en": "expressive brushwork"
+  },
+  {
+   "oral": [
+    "好细",
+    "好精细"
+   ],
+   "term": "细腻笔触／工笔",
+   "stage": "describe",
+   "en": "fine detail"
+  },
+  {
+   "oral": [
+    "线条好硬",
+    "直线好多"
+   ],
+   "term": "几何线条",
+   "stage": "describe",
+   "en": "geometric lines"
+  },
+  {
+   "oral": [
+    "弯弯曲曲",
+    "好流畅"
+   ],
+   "term": "有机线条／流动感",
+   "stage": "describe",
+   "en": "organic, flowing lines"
+  },
+  {
+   "oral": [
+    "晕开了",
+    "湿湿的"
+   ],
+   "term": "晕染／水墨渲染",
+   "stage": "describe",
+   "en": "wash / bleeding ink"
+  },
+  {
+   "oral": [
+    "朦朦胧胧",
+    "看不清"
+   ],
+   "term": "模糊／半抽象",
+   "stage": "describe",
+   "en": "blurred / semi-abstract"
+  },
+  {
+   "oral": [
+    "不知道画的什么",
+    "只有颜色"
+   ],
+   "term": "抽象表现",
+   "stage": "describe",
+   "en": "abstraction"
+  },
+  {
+   "oral": [
+    "好像真的",
+    "好像照片"
+   ],
+   "term": "写实手法",
+   "stage": "describe",
+   "en": "realism"
+  },
+  {
+   "oral": [
+    "好孤独",
+    "只有他一个"
+   ],
+   "term": "疏离感／孤寂氛围",
+   "stage": "interpret",
+   "en": "alienation / solitude"
+  },
+  {
+   "oral": [
+    "好恐怖",
+    "好诡异"
+   ],
+   "term": "超现实／不安感",
+   "stage": "interpret",
+   "en": "uncanny, surreal unease"
+  },
+  {
+   "oral": [
+    "好平静",
+    "好舒服"
+   ],
+   "term": "宁静氛围／沉思性",
+   "stage": "interpret",
+   "en": "tranquil, contemplative"
+  },
+  {
+   "oral": [
+    "好生气",
+    "好激动"
+   ],
+   "term": "强烈情感张力",
+   "stage": "interpret",
+   "en": "emotional intensity"
+  },
+  {
+   "oral": [
+    "讽刺",
+    "在恶搞"
+   ],
+   "term": "反讽／批判意味",
+   "stage": "interpret",
+   "en": "irony / critique"
+  },
+  {
+   "oral": [
+    "在代表什么",
+    "有意思"
+   ],
+   "term": "象征意义",
+   "stage": "interpret",
+   "en": "symbolism"
+  },
+  {
+   "oral": [
+    "中西混在一起",
+    "又中又西"
+   ],
+   "term": "中西融合",
+   "stage": "interpret",
+   "en": "East–West synthesis"
+  },
+  {
+   "oral": [
+    "好多人都在用",
+    "好商业"
+   ],
+   "term": "大众文化／消费主义",
+   "stage": "interpret",
+   "en": "popular culture / consumerism"
+  },
+  {
+   "oral": [
+    "抄他的",
+    "学他那样画"
+   ],
+   "term": "借鉴其构图或概念（非模仿画风）",
+   "stage": "judge",
+   "en": "appropriate concept, not style"
+  },
+  {
+   "oral": [
+    "好用心",
+    "好新颖"
+   ],
+   "term": "具原创性及创意",
+   "stage": "judge",
+   "en": "original, innovative"
+  },
+  {
+   "oral": [
+    "做得不够",
+    "差一点"
+   ],
+   "term": "未能充分表达／尚有发展空间",
+   "stage": "judge",
+   "en": "underdeveloped"
+  }
+ ]
+}

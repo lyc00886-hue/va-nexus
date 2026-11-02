@@ -1,0 +1,333 @@
+{
+ "unit": {
+  "id": "U1-CN-MODERN",
+  "title": "Modern Chinese Art: Finding New Paths",
+  "intro": "In the early 20th century, facing the impact of Western art, Chinese painters tried different ways to 'modernise' Chinese painting.",
+  "lessons": [
+   {
+    "id": "U1-L1",
+    "title": "The Lingnan School's Innovations",
+    "cards": [
+     "The Lingnan School (嶺南畫派) arose in Guangdong in the early 20th century. Its founders, Gao Jianfu (高劍父), Gao Qifeng (高奇峰) and Chen Shuren (陳樹人), are known as the 'Two Gaos and One Chen'.",
+     "Gao Jianfu (高劍父) and Chen Shuren (陳樹人) first studied painting under Ju Lian (居廉); Gao Qifeng (高奇峰) learned from his elder brother Gao Jianfu. All three later studied in Japan.",
+     "They called for 'blending Chinese and Western, uniting old and new', painting new subjects such as aeroplanes, tanks and other modern things.",
+     "In technique, they valued 'water-splashing and powder-splashing' (撞水撞粉), which makes flower-and-bird colours look moist and luminous.",
+     "The Lingnan School (嶺南畫派) deeply influenced Hong Kong. Painters such as Chao Shao-an (趙少昂) brought it to Hong Kong and developed it further."
+    ],
+    "quiz": [
+     {
+      "type": "mcq",
+      "question": "Who is NOT one of the Lingnan School's 'Two Gaos and One Chen'?",
+      "options": [
+       "Gao Jianfu",
+       "Gao Qifeng",
+       "Chen Shuren",
+       "Xu Beihong"
+      ],
+      "answer": "Xu Beihong",
+      "explain": "Xu Beihong followed the path of realism and was not a founder of the Lingnan School."
+     },
+     {
+      "type": "mcq",
+      "question": "What did the Lingnan School advocate?",
+      "options": [
+       "Total Westernisation",
+       "Blending Chinese and Western, uniting old and new",
+       "Only copying ancient paintings",
+       "Pure abstraction"
+      ],
+      "answer": "Blending Chinese and Western, uniting old and new",
+      "explain": "They wanted to keep the brush and ink of Chinese painting while taking in foreign techniques and new subjects."
+     },
+     {
+      "type": "fill",
+      "question": "The Lingnan technique that makes colours moist and luminous is called 'water-splashing and ____'.",
+      "options": [],
+      "answer": "powder-splashing",
+      "explain": "'Water-splashing and powder-splashing' was developed by Ju Lian and taken up by the Lingnan School.",
+      "wordBank": [
+       "powder-splashing",
+       "colour-splashing",
+       "ink-splashing",
+       "texture strokes"
+      ]
+     },
+     {
+      "type": "mcq",
+      "question": "In which country did Lingnan School painters study and pick up new techniques?",
+      "options": [
+       "Japan",
+       "The United States",
+       "Italy",
+       "Russia"
+      ],
+      "answer": "Japan",
+      "explain": "Gao Jianfu and others studied in Japan, absorbing Japanese painting and Western realist techniques."
+     }
+    ]
+   },
+   {
+    "id": "U1-L2",
+    "title": "Xu Beihong and Realism",
+    "cards": [
+     "Xu Beihong (徐悲鴻, 1895–1953) studied in France at the École des Beaux-Arts in Paris, learning Western academic drawing and oil painting.",
+     "He believed Chinese painting needed 'reform', and argued that Western realist drawing should be the foundation for depicting form.",
+     "His most famous subject is galloping horses, painted in ink with accurate anatomy to show strength and speed.",
+     "Major works include the oil painting Tian Heng and His Five Hundred Followers (《田橫五百士》), which uses a historical story to express national integrity.",
+     "After 1949 he became the first president of the Central Academy of Fine Arts (中央美術學院). His realist teaching system shaped Chinese art education for many years."
+    ],
+    "quiz": [
+     {
+      "type": "mcq",
+      "question": "What is Xu Beihong's most famous ink-painting subject?",
+      "options": [
+       "Shrimps",
+       "Galloping horses",
+       "Bamboo",
+       "Landscapes"
+      ],
+      "answer": "Galloping horses",
+      "explain": "He used realist knowledge of anatomy to paint horses, with bold brushwork and accurate structure."
+     },
+     {
+      "type": "mcq",
+      "question": "What did Xu Beihong say should be the foundation of form in Chinese painting?",
+      "options": [
+       "Calligraphy",
+       "Western realist drawing",
+       "Abstract colour blocks",
+       "Photo collage"
+      ],
+      "answer": "Western realist drawing",
+      "explain": "He believed drawing was the foundation of all visual art."
+     },
+     {
+      "type": "match",
+      "question": "Match each work to its type",
+      "options": [
+       "Tian Heng and His Five Hundred Followers",
+       "Galloping Horse paintings"
+      ],
+      "answer": {
+       "Tian Heng and His Five Hundred Followers": "Oil history painting",
+       "Galloping Horse paintings": "Ink painting"
+      },
+      "explain": "Xu Beihong worked in both oil and ink."
+     },
+     {
+      "type": "mcq",
+      "question": "After 1949, Xu Beihong became the first president of which school?",
+      "options": [
+       "Central Academy of Fine Arts",
+       "Department of Fine Arts, CUHK",
+       "Lingnan University",
+       "École des Beaux-Arts, Paris"
+      ],
+      "answer": "Central Academy of Fine Arts",
+      "explain": "His realist teaching system spread from there."
+     }
+    ]
+   },
+   {
+    "id": "U1-L3",
+    "title": "Lin Fengmian's Fusion",
+    "cards": [
+     "Lin Fengmian (林風眠, 1900–1991) studied in France and was strongly influenced by Western modernism, such as Fauvism and Cubism.",
+     "In 1928 he founded the National Academy of Art (國立藝術院) in Hangzhou, today's China Academy of Art, promoting 'harmonising Chinese and Western art'.",
+     "He often used square compositions, combining ink, watercolour and rich colour. His subjects include ladies, still lifes, egrets and autumn scenes.",
+     "His students included Wu Guanzhong (吳冠中), Zao Wou-Ki (趙無極) and Chu Teh-Chun (朱德群), who all became important modern artists.",
+     "In his later years he settled in Hong Kong, where he kept creating art until his death."
+    ],
+    "quiz": [
+     {
+      "type": "mcq",
+      "question": "Where did Lin Fengmian found the National Academy of Art?",
+      "options": [
+       "Beijing",
+       "Hangzhou",
+       "Guangzhou",
+       "Shanghai"
+      ],
+      "answer": "Hangzhou",
+      "explain": "Founded in 1928, it is today's China Academy of Art."
+     },
+     {
+      "type": "mcq",
+      "question": "Which of these was NOT a student of Lin Fengmian?",
+      "options": [
+       "Wu Guanzhong",
+       "Zao Wou-Ki",
+       "Chu Teh-Chun",
+       "Gao Jianfu"
+      ],
+      "answer": "Gao Jianfu",
+      "explain": "Gao Jianfu was a founder of the Lingnan School and older than Lin Fengmian."
+     },
+     {
+      "type": "mcq",
+      "question": "Which composition format is common in Lin Fengmian's work?",
+      "options": [
+       "Long handscroll",
+       "Square composition",
+       "Fan painting",
+       "Hanging scroll"
+      ],
+      "answer": "Square composition",
+      "explain": "The square format broke away from traditional Chinese scroll formats and is close to the Western idea of a framed picture."
+     },
+     {
+      "type": "fill",
+      "question": "Lin Fengmian promoted '____ Chinese and Western art'.",
+      "options": [],
+      "answer": "harmonising",
+      "explain": "He wanted to combine the spirit of Chinese art with modern Western forms.",
+      "wordBank": [
+       "harmonising",
+       "opposing",
+       "wholly adopting",
+       "copying"
+      ]
+     }
+    ]
+   },
+   {
+    "id": "U1-L4",
+    "title": "Wu Guanzhong and Formal Beauty",
+    "cards": [
+     "Wu Guanzhong (吳冠中, 1919–2010) studied under Lin Fengmian (林風眠) at the National Hangzhou Academy of Art, then went to study in Paris.",
+     "He valued 'formal beauty' (形式美): dots, lines, planes and colours are beautiful in themselves, so a painting need not be realistic.",
+     "He often painted Jiangnan (江南) water towns: white walls, black tiles, curving lines and dots of colour, in simple, rhythmic pictures.",
+     "In 1992 he published 'Brush and Ink Equal Zero' (〈筆墨等於零〉), arguing that brush and ink must serve the picture and are worthless on their own. It caused huge debate.",
+     "He painted in both oil and ink, aiming to 'give oil painting a national character and modernise Chinese painting'."
+    ],
+    "quiz": [
+     {
+      "type": "mcq",
+      "question": "What did Wu Guanzhong paint most often?",
+      "options": [
+       "Deserts",
+       "Jiangnan water towns",
+       "Battle scenes",
+       "Court figures"
+      ],
+      "answer": "Jiangnan water towns",
+      "explain": "White walls and black tiles provide the formal elements of dot, line and plane."
+     },
+     {
+      "type": "fill",
+      "question": "In 1992 Wu Guanzhong published an essay called 'Brush and Ink Equal ____'.",
+      "options": [],
+      "answer": "Zero",
+      "explain": "He argued that brush and ink are worthless apart from the picture, which sparked a big debate.",
+      "wordBank": [
+       "Zero",
+       "Everything",
+       "Life",
+       "Form"
+      ]
+     },
+     {
+      "type": "mcq",
+      "question": "What does 'formal beauty' mainly emphasise?",
+      "options": [
+       "The storyline",
+       "The beauty of dots, lines, planes and colour themselves",
+       "Realistic accuracy",
+       "Religious meaning"
+      ],
+      "answer": "The beauty of dots, lines, planes and colour themselves",
+      "explain": "Formal beauty focuses on the picture's elements and how they are organised."
+     },
+     {
+      "type": "mcq",
+      "question": "Who was Wu Guanzhong's teacher?",
+      "options": [
+       "Xu Beihong",
+       "Lin Fengmian",
+       "Qi Baishi",
+       "Gao Qifeng"
+      ],
+      "answer": "Lin Fengmian",
+      "explain": "He studied under Lin Fengmian at the National Hangzhou Academy of Art."
+     }
+    ]
+   },
+   {
+    "id": "U1-L5",
+    "title": "Zao Wou-Ki and Abstraction",
+    "cards": [
+     "Zao Wou-Ki (趙無極, 1920–2013) studied under Lin Fengmian (林風眠) at the National Hangzhou Academy of Art, and moved to Paris in 1948.",
+     "Early on he was inspired by Paul Klee (保羅·克利), and symbols like oracle bone script (甲骨文) appeared in his paintings.",
+     "He later developed lyrical abstraction: large fields of colour and flowing brushstrokes that evoke landscapes, light and the universe.",
+     "Many works are titled by completion date, such as June–October 1985 (《1985年6月-10月》), so viewers don't read them as specific subjects.",
+     "In 2002 he was elected to the Académie des Beaux-Arts (法蘭西藝術院) in France. He is a leading figure of abstract art fusing East and West."
+    ],
+    "quiz": [
+     {
+      "type": "mcq",
+      "question": "Which city did Zao Wou-Ki move to in 1948?",
+      "options": [
+       "New York",
+       "Paris",
+       "London",
+       "Tokyo"
+      ],
+      "answer": "Paris",
+      "explain": "In Paris he encountered modern Western art and developed his abstract style."
+     },
+     {
+      "type": "mcq",
+      "question": "Which Western artist inspired Zao Wou-Ki early in his career?",
+      "options": [
+       "Paul Klee",
+       "Andy Warhol",
+       "Vincent van Gogh",
+       "Salvador Dalí"
+      ],
+      "answer": "Paul Klee",
+      "explain": "Klee's symbols and lines inspired him to add symbols like oracle bone script."
+     },
+     {
+      "type": "mcq",
+      "question": "How did Zao Wou-Ki title many of his works?",
+      "options": [
+       "With lines of poetry",
+       "With the completion date",
+       "With place names",
+       "With people's names"
+      ],
+      "answer": "With the completion date",
+      "explain": "Date titles make viewers focus on colour and space, not a specific subject."
+     },
+     {
+      "type": "match",
+      "question": "Match each artist to their style",
+      "options": [
+       "Zao Wou-Ki",
+       "Xu Beihong",
+       "Wu Guanzhong"
+      ],
+      "answer": {
+       "Zao Wou-Ki": "Lyrical abstraction",
+       "Xu Beihong": "Realism",
+       "Wu Guanzhong": "Formal beauty"
+      },
+      "explain": "All three wanted to modernise Chinese art, but in different ways."
+     },
+     {
+      "type": "mcq",
+      "question": "How does Zao Wou-Ki's work show a fusion of East and West?",
+      "options": [
+       "Using oil paint to express the mood of Chinese landscape",
+       "Only copying ancient paintings in ink",
+       "Painting American pop culture",
+       "Replacing painting with photography"
+      ],
+      "answer": "Using oil paint to express the mood of Chinese landscape",
+      "explain": "A Western medium combined with Eastern ideas of space and qiyun (spirit resonance)."
+     }
+    ]
+   }
+  ]
+ }
+}

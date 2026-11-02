@@ -1,0 +1,223 @@
+{
+ "quests": [
+  {
+   "id": "Q1",
+   "title": "Evaluating Source Reliability",
+   "cards": [
+    "Not everything online can be trusted. Before writing your SBA, ask: Who wrote it? When? Is there evidence?",
+    "More reliable: museum websites, university publications, artists' official websites, academic journals and official exhibition catalogues.",
+    "Be careful with: blogs with no author, social media posts, content farms and unverified AI-generated content.",
+    "Use at least two reliable sources to cross-check dates, titles and dimensions."
+   ],
+   "quiz": [
+    {
+     "type": "mcq",
+     "question": "Which source is the most reliable?",
+     "options": [
+      "Blog with no author",
+      "Official museum website",
+      "Social media post",
+      "Forum comment"
+     ],
+     "answer": "Official museum website",
+     "explain": "Museums do professional research and fact-checking."
+    },
+    {
+     "type": "mcq",
+     "question": "Two websites give different years for a work. What should you do?",
+     "options": [
+      "Just pick one",
+      "Check with more reliable sources",
+      "Leave the year out",
+      "Ask AI to guess"
+     ],
+     "answer": "Check with more reliable sources",
+     "explain": "Cross-checking is a basic research skill."
+    },
+    {
+     "type": "fill",
+     "question": "When evaluating a source, ask: who wrote it, when, and is there ____?",
+     "options": [],
+     "answer": "evidence",
+     "explain": "Only information backed by evidence can be trusted.",
+     "wordBank": [
+      "evidence",
+      "illustration",
+      "advertising",
+      "likes"
+     ]
+    }
+   ],
+   "badge": "Source Detective"
+  },
+  {
+   "id": "Q2",
+   "title": "Citation Formats",
+   "cards": [
+    "Citing respects the original author and shows your arguments are well-founded. It is part of SBA integrity.",
+    "A common format is APA: Author (Year). Title. Publisher or URL.",
+    "When citing an artwork image, write: artist, title, year, medium, dimensions, collection.",
+    "If you copy someone's sentence word for word, add quotation marks and give the source. Otherwise it is plagiarism."
+   ],
+   "quiz": [
+    {
+     "type": "mcq",
+     "question": "Why should you cite sources?",
+     "options": [
+      "To make the essay longer",
+      "To respect the original author and support your arguments",
+      "Because teachers like it",
+      "No reason"
+     ],
+     "answer": "To respect the original author and support your arguments",
+     "explain": "Citing is a basic requirement of academic integrity."
+    },
+    {
+     "type": "mcq",
+     "question": "If you copy someone's sentence word for word, you should:",
+     "options": [
+      "Just use it",
+      "Add quotation marks and give the source",
+      "Change a word or two",
+      "Don't worry about it"
+     ],
+     "answer": "Add quotation marks and give the source",
+     "explain": "Changing a few words without giving the source is still plagiarism."
+    },
+    {
+     "type": "match",
+     "question": "Match the artwork information fields",
+     "options": [
+      "Zao Wou-Ki",
+      "June–October 1985",
+      "Oil on canvas"
+     ],
+     "answer": {
+      "Zao Wou-Ki": "Artist",
+      "June–October 1985": "Title",
+      "Oil on canvas": "Medium"
+     },
+     "explain": "Complete artwork information helps readers check the facts."
+    }
+   ],
+   "badge": "Integrity Guardian"
+  },
+  {
+   "id": "Q3",
+   "title": "Forming a Research Question",
+   "cards": [
+    "A good research question is specific, researchable and related to the theme of your art-making.",
+    "Too broad: 'What is Chinese art like?' Better: 'How does Lin Fengmian (林風眠) use square compositions to fuse Chinese and Western art?'",
+    "Start with 'How', 'Why' or 'What is the difference' to guide analysis, rather than just finding information.",
+    "Link your research question back to your own work: how do your findings shape your composition, materials or concept?"
+   ],
+   "quiz": [
+    {
+     "type": "mcq",
+     "question": "Which is the better research question?",
+     "options": [
+      "What is art?",
+      "How does Zao Wou-Ki use colour to express the mood of landscape?",
+      "How many painters are there in China?",
+      "Which painting is the most expensive?"
+     ],
+     "answer": "How does Zao Wou-Ki use colour to express the mood of landscape?",
+     "explain": "It is specific, can be analysed and links to visual elements."
+    },
+    {
+     "type": "mcq",
+     "question": "What is the best way to start a research question?",
+     "options": [
+      "Is it…",
+      "How / Why",
+      "How many",
+      "Which is the most"
+     ],
+     "answer": "How / Why",
+     "explain": "Open-ended questions lead to deeper analysis."
+    },
+    {
+     "type": "fill",
+     "question": "Your research question should relate to the theme of your ____.",
+     "options": [],
+     "answer": "art-making",
+     "explain": "SBA research should serve your art-making; it is not a standalone report.",
+     "wordBank": [
+      "art-making",
+      "exams",
+      "hobby class",
+      "history"
+     ]
+    }
+   ],
+   "badge": "Question Designer"
+  },
+  {
+   "id": "Q4",
+   "title": "Visual Analysis with Feldman's Method",
+   "cards": [
+    "Feldman's method (費德曼評賞法) has four steps: Description, Analysis, Interpretation and Judgement.",
+    "Description: say objectively what you see. Analysis: explain how elements and principles organise the picture.",
+    "Interpretation: infer meaning and emotion, supported by visual evidence.",
+    "Judgement: decide how successful the work is, with reasons, and link it to your own art-making."
+   ],
+   "quiz": [
+    {
+     "type": "match",
+     "question": "Match the Feldman steps",
+     "options": [
+      "Description",
+      "Analysis",
+      "Interpretation",
+      "Judgement"
+     ],
+     "answer": {
+      "Description": "What do I see?",
+      "Analysis": "How is it organised?",
+      "Interpretation": "What does it mean?",
+      "Judgement": "Does it work, and why?"
+     },
+     "explain": "The four steps move from objective to subjective, going deeper each time."
+    },
+    {
+     "type": "mcq",
+     "question": "Which step does 'The picture is mainly blue' belong to?",
+     "options": [
+      "Description",
+      "Analysis",
+      "Interpretation",
+      "Judgement"
+     ],
+     "answer": "Description",
+     "explain": "It states the colour objectively, without judgement."
+    },
+    {
+     "type": "mcq",
+     "question": "Which step does 'The cool palette creates loneliness, reflecting urban alienation' belong to?",
+     "options": [
+      "Description",
+      "Analysis",
+      "Interpretation",
+      "Judgement"
+     ],
+     "answer": "Interpretation",
+     "explain": "It infers emotion and meaning, using colour as evidence."
+    },
+    {
+     "type": "fill",
+     "question": "The first of Feldman's four steps is ____.",
+     "options": [],
+     "answer": "Description",
+     "explain": "Observe first, judge later.",
+     "wordBank": [
+      "Description",
+      "Analysis",
+      "Interpretation",
+      "Judgement"
+     ]
+    }
+   ],
+   "badge": "Art Critique Master"
+  }
+ ]
+}

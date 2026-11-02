@@ -1,7 +1,8 @@
 import { ShieldCheck, X } from 'lucide-react'
-import { Fragment, useEffect, type ReactNode } from 'react'
-import privacyMd from '../content/privacy-notice.md?raw'
+import { Fragment, useEffect, useMemo, type ReactNode } from 'react'
 import { useSenSupport } from '../context/SenSupportContext'
+import { useT } from '../i18n'
+import { contentMarkdown, contentMarkdownLocale } from '../i18n/content'
 
 /** Minimal renderer for the privacy notice: # heading, **bold** lines, - bullets, paragraphs. */
 function inline(text: string): ReactNode[] {
@@ -46,11 +47,18 @@ function renderMarkdown(md: string): ReactNode[] {
   return out
 }
 
-const TITLE = privacyMd.match(/^#\s+(.+)$/m)?.[1] ?? '私隱說明'
-const BODY = renderMarkdown(privacyMd)
 
 export function PrivacyModal() {
   const { privacyOpen, closePrivacy } = useSenSupport()
+  const { t, locale } = useT()
+  const { title, body, fallback } = useMemo(() => {
+    const md = contentMarkdown('privacy-notice', locale)
+    return {
+      title: md.match(/^#\s+(.+)$/m)?.[1] ?? t('privacy.title'),
+      body: renderMarkdown(md),
+      fallback: contentMarkdownLocale('privacy-notice', locale) !== locale,
+    }
+  }, [locale, t])
   useEffect(() => {
     if (!privacyOpen) return
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && closePrivacy()
@@ -70,13 +78,20 @@ export function PrivacyModal() {
         <div className="flex items-start justify-between gap-3">
           <h2 id="privacy-title" className="flex items-center gap-2 text-lg font-bold text-slate-900">
             <ShieldCheck className="h-5 w-5 text-emerald-600" aria-hidden />
-            {TITLE}
+            {title}
           </h2>
-          <button type="button" onClick={closePrivacy} aria-label="關閉" className="rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
+          <button type="button" onClick={closePrivacy} aria-label={t('common.close')} className="rounded-full p-1.5 text-slate-500 hover:bg-slate-100">
             <X className="h-5 w-5" />
           </button>
         </div>
-        <div className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700">{BODY}</div>
+        {fallback && (
+          <p className="mt-2 rounded-lg bg-amber-50 px-3 py-1.5 text-xs text-amber-900 ring-1 ring-amber-100">
+            {t('content.zhHantOnly')}
+          </p>
+        )}
+        <div lang={fallback ? 'zh-Hant-HK' : undefined} className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700">
+          {body}
+        </div>
       </div>
     </div>
   )
@@ -84,9 +99,10 @@ export function PrivacyModal() {
 
 export function PrivacyLink({ className = '' }: { className?: string }) {
   const { openPrivacy } = useSenSupport()
+  const { t } = useT()
   return (
     <button type="button" onClick={openPrivacy} className={`font-semibold text-blue-700 hover:underline ${className}`}>
-      私隱說明
+      {t('privacy.title')}
     </button>
   )
 }

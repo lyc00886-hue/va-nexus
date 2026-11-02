@@ -16,7 +16,8 @@ import {
   type DbArtistPair,
 } from '../lib/artistMappers'
 import { buildCompareRows, buildSbaTips, chunkText, type CompareRow, type SbaTip } from '../lib/compareInsights'
-import { curatedCompare, PAIR_COMPARE } from '../lib/content'
+import { curatedCompare, getPairCompare } from '../lib/content'
+import { getLocale, joinList, t } from '../i18n'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
 import { useSpeech } from '../lib/useSpeech'
 import type { Artist, ArtistPair } from '../types'
@@ -65,22 +66,22 @@ function ArtistCard({
         <p className="mt-3 text-sm leading-relaxed text-teal-950/90">{bio}</p>
       )}
       <div className="mt-3 flex flex-wrap gap-1.5">
-        {themes.map((t) => (
+        {themes.map((x) => (
           <span
-            key={t}
+            key={x}
             className="rounded-full bg-teal-50 px-2 py-0.5 text-[11px] font-medium text-teal-800"
           >
-            {t}
+            {x}
           </span>
         ))}
       </div>
       <div className="mt-2 flex flex-wrap gap-1.5">
-        {styleKeywords.map((t) => (
+        {styleKeywords.map((x) => (
           <span
-            key={t}
+            key={x}
             className="rounded-full bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-900"
           >
-            {t}
+            {x}
           </span>
         ))}
       </div>
@@ -89,6 +90,10 @@ function ArtistCard({
 }
 
 type DataSource = 'live' | 'mock' | 'loading'
+
+function displayName(a: Artist) {
+  return getLocale() === 'en' ? a.name_en || a.name_zh || '' : a.name_zh || a.name_en
+}
 
 export function ArtistCompare({
   onSourceChange,
@@ -194,11 +199,15 @@ export function ArtistCompare({
     const generated = buildSbaTips(pair, east, west)
     if (!curated) return generated
     const curatedTips: SbaTip[] = curated.sba.map((body, i) => ({
-      title: curated.sba.length === 2 ? `借鑑${i === 0 ? west.name_zh || west.name_en : east.name_zh || east.name_en}` : `借鑑建議 ${i + 1}`,
+      id: 'composition' as const,
+      title:
+        curated.sba.length === 2
+          ? t('ac.borrowFrom', { name: displayName(i === 0 ? west : east) })
+          : t('ac.borrowN', { n: i + 1 }),
       body,
     }))
     // Keep the generic reflection-writing tip after the curated ones
-    const reflection = generated.find((t) => t.title === '反思寫作')
+    const reflection = generated.find((x) => x.id === 'reflection')
     return reflection ? [...curatedTips, reflection] : curatedTips
   }, [pair, east, west, curated])
 
@@ -208,33 +217,50 @@ export function ArtistCompare({
   }, [pairId, stopSpeech])
 
   if (source === 'loading') {
-    return <p className="p-6 text-sm text-teal-800">載入藝術家種子資料…</p>
+    return <p className="p-6 text-sm text-teal-800">{t('ac.loading')}</p>
   }
 
   if (!pair || !east || !west) {
-    return <p className="p-6 text-sm text-teal-800">未有藝術家種子資料。</p>
+    return <p className="p-6 text-sm text-teal-800">{t('ac.empty')}</p>
   }
 
   const statusLine =
     source === 'live'
-      ? `Live Supabase · ${artists.length} 位藝術家 · ${pairs.length} 組對比`
-      : `Mock fallback${error ? `（${error}）` : ''} · ${artists.length} 位 · ${pairs.length} 組`
+      ? t('ac.status.live', { a: artists.length, p: pairs.length })
+      : t('ac.status.mock', { err: error ? ` (${error})` : '', a: artists.length, p: pairs.length })
 
-  const eName = east.name_zh || east.name_en
-  const wName = west.name_zh || west.name_en
+  const eName = displayName(east)
+  const wName = displayName(west)
+  const sep = t('ac.speech.sep')
+  const none = t('ac.speech.none')
+  const sbaNote = curated ? getPairCompare().note : t('ac.sbaNote.default')
   const speechText = [
-    `主題：${pair.theme}。`,
-    `東方：${eName}。${east.spld_summary || east.bio_short || ''}`,
-    `西方：${wName}。${west.spld_summary || west.bio_short || ''}`,
+    t('ac.speech.theme', { x: curated?.theme ?? pair.theme }),
+    t('ac.speech.east', { name: eName, text: east.spld_summary || east.bio_short || '' }),
+    t('ac.speech.west', { name: wName, text: west.spld_summary || west.bio_short || '' }),
+    t('ac.speech.same', {
+      x: (curated
+        ? curated.same
+        : rows.flatMap((r) => r.shared).filter((x) => x !== t('ci.shared.none'))
+      ).join(sep),
+    }),
     curated
-      ? `共同之處：${curated.same.join('；')}。`
-      : `共同之處：${rows.flatMap((r) => r.shared).filter((x) => !x.startsWith('（')).join('；')}。`,
-    curated
-      ? `相異之處：${curated.diff.join('；')}。`
-      : `相異之處：${rows
-          .map((r) => `${r.aspect}，${eName}：${r.east.join('、') || '無'}；${wName}：${r.west.join('、') || '無'}`)
-          .join('。')}。`,
-    `SBA 轉化建議：${curated ? PAIR_COMPARE.note : '借鑑構圖或概念，唔係抄畫風。'}${tips.map((t, i) => `第${i + 1}，${t.title}：${t.body}`).join(' ')}`,
+      ? t('ac.speech.diff', { x: curated.diff.join(sep) })
+      : t('ac.speech.diff', {
+          x: rows
+            .map((r) =>
+              t('ac.speech.diffRow', {
+                aspect: r.aspect,
+                e: eName,
+                ev: joinList(r.east) || none,
+                w: wName,
+                wv: joinList(r.west) || none,
+              }),
+            )
+            .join(t('ac.speech.rowSep')),
+        }),
+    t('ac.speech.sba', { note: sbaNote }) +
+      tips.map((x, i) => t('ac.speech.tip', { n: i + 1, title: x.title, body: x.body })).join(' '),
   ].join('\n')
 
   const textCls = easyRead ? 'text-base leading-loose' : 'text-sm leading-relaxed'
@@ -243,11 +269,11 @@ export function ArtistCompare({
     <div className={`space-y-4 ${easyRead ? 'leading-loose' : ''}`}>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-xl font-bold text-teal-950">中西藝術家對比</h2>
+          <h2 className="text-xl font-bold text-teal-950">{t('ac.title')}</h2>
           <p className="text-sm text-teal-800/70">{statusLine}</p>
         </div>
         <label className="text-sm text-teal-900">
-          <span className="mb-1 block text-xs font-medium text-teal-700">主題配對</span>
+          <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.pairSelect')}</span>
           <select
             className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
             value={pair.id}
@@ -255,14 +281,14 @@ export function ArtistCompare({
           >
             {pairs.map((p) => (
               <option key={p.id} value={p.id}>
-                {p.theme}
+                {curatedCompare(p.id, p.west_artist_id, p.east_artist_id)?.theme ?? p.theme}
               </option>
             ))}
           </select>
         </label>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label="閱讀工具">
+      <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label={t('ac.tools')}>
         <button
           type="button"
           aria-pressed={easyRead}
@@ -274,7 +300,7 @@ export function ArtistCompare({
           }
         >
           <BookOpenText className="h-3.5 w-3.5" aria-hidden />
-          簡易讀模式{easyRead ? '：開' : ''}
+          {easyRead ? t('ac.easyRead.on') : t('ac.easyRead')}
         </button>
         {tts.supported ? (
           tts.speaking ? (
@@ -284,7 +310,7 @@ export function ArtistCompare({
               className="inline-flex items-center gap-1.5 rounded-full bg-amber-500 px-3 py-1.5 text-xs font-semibold text-white shadow hover:bg-amber-600"
             >
               <Square className="h-3.5 w-3.5" aria-hidden />
-              停止朗讀
+              {t('tts.stopAria')}
             </button>
           ) : (
             <button
@@ -293,28 +319,28 @@ export function ArtistCompare({
               className="inline-flex items-center gap-1.5 rounded-full border border-teal-200 bg-white px-3 py-1.5 text-xs font-semibold text-teal-900 hover:bg-teal-50"
             >
               <Volume2 className="h-3.5 w-3.5" aria-hidden />
-              朗讀
+              {t('tts.read')}
             </button>
           )
         ) : (
-          <span className="text-xs text-teal-700/70">此瀏覽器不支援朗讀</span>
+          <span className="text-xs text-teal-700/70">{t('tts.unsupported')}</span>
         )}
         {tts.supported && !tts.voiceLang && (
-          <span className="text-[11px] text-teal-700/60">未搵到中文語音，會用系統預設</span>
+          <span className="text-[11px] text-teal-700/60">{t('tts.noVoice')}</span>
         )}
       </div>
 
       <div className="rounded-2xl border border-dashed border-teal-200 bg-teal-50/50 px-4 py-3 text-sm text-teal-900">
         <span className="inline-flex items-center gap-1.5 font-semibold">
           <ArrowLeftRight className="h-4 w-4" aria-hidden />
-          比較提示
+          {t('ac.prompt')}
         </span>
         <p className={`mt-1 ${easyRead ? 'text-base leading-loose' : ''}`}>{pair.compare_prompt}</p>
       </div>
 
       <div className="flex flex-col gap-3 md:flex-row">
         <ArtistCard
-          side="East"
+          side={t('ac.east')}
           nameEn={east.name_en}
           nameZh={east.name_zh}
           era={east.era}
@@ -326,7 +352,7 @@ export function ArtistCompare({
           easyRead={easyRead}
         />
         <ArtistCard
-          side="West"
+          side={t('ac.west')}
           nameEn={west.name_en}
           nameZh={west.name_zh}
           era={west.era}
@@ -348,7 +374,7 @@ export function ArtistCompare({
             padding={cardPadding}
           />
           <details className="rounded-2xl border border-dashed border-teal-200 bg-white/60 px-4 py-3 text-sm">
-            <summary className="cursor-pointer font-medium text-teal-900">更多範疇（按資料自動整理）</summary>
+            <summary className="cursor-pointer font-medium text-teal-900">{t('ac.more')}</summary>
             <div className="mt-3">
               <CompareTable rows={rows} eastName={eName} westName={wName} easyRead={easyRead} padding={cardPadding} />
             </div>
@@ -361,25 +387,25 @@ export function ArtistCompare({
       <section className={`rounded-2xl border border-amber-100 bg-amber-50/40 shadow-sm ${cardPadding}`}>
         <h3 className="inline-flex items-center gap-1.5 text-base font-bold text-teal-950">
           <Lightbulb className="h-4 w-4 text-amber-600" aria-hidden />
-          SBA 轉化建議
+          {t('ac.sba')}
         </h3>
         <p className="mt-1 rounded-lg bg-white/70 px-3 py-1.5 text-xs font-semibold text-amber-900 ring-1 ring-amber-100">
-          {curated ? PAIR_COMPARE.note : '借鑑構圖／概念，唔係抄畫風。'}
+          {sbaNote}
         </p>
         <ol className="mt-3 grid gap-3 sm:grid-cols-2">
-          {tips.map((t, i) => (
-            <li key={t.title} className="rounded-xl border border-amber-100 bg-white p-3">
+          {tips.map((tip, i) => (
+            <li key={tip.title} className="rounded-xl border border-amber-100 bg-white p-3">
               <p className="text-xs font-semibold text-amber-800">
-                {i + 1}. {t.title}
+                {i + 1}. {tip.title}
               </p>
               {easyRead ? (
                 <ul className={`mt-1 list-disc space-y-1 pl-5 text-teal-950 ${textCls}`}>
-                  {chunkText(t.body).map((c) => (
+                  {chunkText(tip.body).map((c) => (
                     <li key={c}>{c}</li>
                   ))}
                 </ul>
               ) : (
-                <p className={`mt-1 text-teal-950/90 ${textCls}`}>{t.body}</p>
+                <p className={`mt-1 text-teal-950/90 ${textCls}`}>{tip.body}</p>
               )}
             </li>
           ))}
@@ -434,7 +460,7 @@ function CompareTable({
     <section className={`rounded-2xl border border-teal-100 bg-white shadow-sm ${padding}`}>
       <h3 className="inline-flex items-center gap-1.5 text-base font-bold text-teal-950">
         <Scale className="h-4 w-4 text-teal-600" aria-hidden />
-        共同之處 vs 相異之處
+        {t('ac.sameVsDiff')}
       </h3>
 
       {/* Mobile-first: stacked cards; table from md up (cards always in easy-read) */}
@@ -442,15 +468,15 @@ function CompareTable({
         {rows.map((r) => (
           <div key={r.aspect} className="rounded-xl border border-teal-100 p-3">
             <p className="text-xs font-semibold uppercase tracking-wider text-teal-600">{r.aspect}</p>
-            <p className="mt-2 text-[11px] font-semibold text-teal-700">共同之處</p>
+            <p className="mt-2 text-[11px] font-semibold text-teal-700">{t('ac.same')}</p>
             <Chips items={r.shared} tone="teal" easyRead={easyRead} />
             <div className="mt-2 grid gap-2 sm:grid-cols-2">
               <div>
-                <p className="text-[11px] font-semibold text-amber-800">相異 · {eastName}</p>
+                <p className="text-[11px] font-semibold text-amber-800">{t('ac.diffOf', { name: eastName })}</p>
                 <Chips items={r.east} tone="amber" easyRead={easyRead} />
               </div>
               <div>
-                <p className="text-[11px] font-semibold text-slate-700">相異 · {westName}</p>
+                <p className="text-[11px] font-semibold text-slate-700">{t('ac.diffOf', { name: westName })}</p>
                 <Chips items={r.west} tone="slate" easyRead={easyRead} />
               </div>
             </div>
@@ -463,10 +489,10 @@ function CompareTable({
           <table className="w-full border-separate border-spacing-0 text-left text-sm">
             <thead>
               <tr className="text-xs text-teal-700">
-                <th className="w-24 border-b border-teal-100 px-2 py-2 font-semibold">範疇</th>
-                <th className="border-b border-teal-100 px-2 py-2 font-semibold">共同之處</th>
-                <th className="border-b border-teal-100 px-2 py-2 font-semibold">相異 · {eastName}</th>
-                <th className="border-b border-teal-100 px-2 py-2 font-semibold">相異 · {westName}</th>
+                <th className="w-24 border-b border-teal-100 px-2 py-2 font-semibold">{t('ac.aspect')}</th>
+                <th className="border-b border-teal-100 px-2 py-2 font-semibold">{t('ac.same')}</th>
+                <th className="border-b border-teal-100 px-2 py-2 font-semibold">{t('ac.diffOf', { name: eastName })}</th>
+                <th className="border-b border-teal-100 px-2 py-2 font-semibold">{t('ac.diffOf', { name: westName })}</th>
               </tr>
             </thead>
             <tbody>
@@ -529,16 +555,16 @@ function CuratedCompare({
     <section className={`rounded-2xl border border-teal-100 bg-white shadow-sm ${padding}`}>
       <h3 className="inline-flex items-center gap-1.5 text-base font-bold text-teal-950">
         <Scale className="h-4 w-4 text-teal-600" aria-hidden />
-        共同之處 vs 相異之處
+        {t('ac.sameVsDiff')}
       </h3>
-      <p className="mt-0.5 text-xs text-teal-700/70">對比主題：{theme}</p>
+      <p className="mt-0.5 text-xs text-teal-700/70">{t('ac.theme', { theme })}</p>
       <div className="mt-3 grid gap-3 md:grid-cols-2">
         <div className="rounded-xl bg-teal-50/60 p-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-teal-700">共同之處</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-teal-700">{t('ac.same')}</p>
           {list(same, 'bg-teal-500')}
         </div>
         <div className="rounded-xl bg-amber-50/60 p-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-amber-800">相異之處</p>
+          <p className="text-xs font-semibold uppercase tracking-wider text-amber-800">{t('ac.diff')}</p>
           {list(diff, 'bg-amber-500')}
         </div>
       </div>

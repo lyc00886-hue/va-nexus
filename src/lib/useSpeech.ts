@@ -1,20 +1,27 @@
 import { useCallback, useEffect, useState } from 'react'
+import { getLocale, SPEECH_LANG, type Locale } from '../i18n'
 
-const LANG_PREFS = ['zh-HK', 'yue-HK', 'zh-TW', 'zh-CN', 'zh']
+/** Voice language preferences per UI locale (first match wins). */
+const LANG_PREFS: Record<Locale, string[]> = {
+  'zh-Hant': ['zh-HK', 'yue-HK', 'yue', 'zh-TW'],
+  'zh-Hans': ['zh-CN', 'cmn-CN', 'zh-SG', 'zh'],
+  en: ['en-US', 'en-GB', 'en-HK', 'en'],
+}
 
-function pickVoice(voices: SpeechSynthesisVoice[]) {
-  for (const pref of LANG_PREFS) {
+function pickVoice(voices: SpeechSynthesisVoice[], locale: Locale) {
+  for (const pref of LANG_PREFS[locale]) {
     const v = voices.find((x) => x.lang.replace('_', '-').toLowerCase().startsWith(pref.toLowerCase()))
     if (v) return v
   }
   return undefined
 }
 
-/** Minimal Web Speech API wrapper (zh-HK, fallback zh-TW). */
+/** Minimal Web Speech API wrapper; voice language follows the UI locale (zh-HK / zh-CN / en-US). */
 export function useSpeech() {
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
   const [speaking, setSpeaking] = useState(false)
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
+  const locale = getLocale()
 
   useEffect(() => {
     if (!supported) return
@@ -39,9 +46,9 @@ export function useSpeech() {
       if (!supported || !text.trim()) return
       const synth = window.speechSynthesis
       synth.cancel()
-      const voice = pickVoice(voices.length ? voices : synth.getVoices())
+      const voice = pickVoice(voices.length ? voices : synth.getVoices(), locale)
       const u = new SpeechSynthesisUtterance(text)
-      u.lang = voice?.lang ?? 'zh-HK'
+      u.lang = voice?.lang ?? SPEECH_LANG[locale]
       if (voice) u.voice = voice
       u.rate = 0.9
       u.onend = () => setSpeaking(false)
@@ -49,10 +56,10 @@ export function useSpeech() {
       setSpeaking(true)
       synth.speak(u)
     },
-    [supported, voices],
+    [supported, voices, locale],
   )
 
-  const voiceLang = pickVoice(voices)?.lang ?? null
+  const voiceLang = pickVoice(voices, locale)?.lang ?? null
 
   return { supported, speaking, speak, stop, voiceLang }
 }

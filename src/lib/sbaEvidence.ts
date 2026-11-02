@@ -1,5 +1,6 @@
 import { supabase } from './supabase'
 import { randomId } from './deviceId'
+import { t } from '../i18n'
 
 export const SBA_BUCKET = 'sba-evidence'
 export const MAX_FILE_BYTES = 5 * 1024 * 1024
@@ -41,8 +42,8 @@ function toEvidence(r: Row): SbaEvidence {
 }
 
 export function validateImage(file: File): string | null {
-  if (!file.type.startsWith('image/')) return `「${file.name}」唔係圖片檔（只接受 image/*）`
-  if (file.size > MAX_FILE_BYTES) return `「${file.name}」超過 5 MB`
+  if (!file.type.startsWith('image/')) return t('sba.err.notImage', { name: file.name })
+  if (file.size > MAX_FILE_BYTES) return t('sba.err.tooBig', { name: file.name })
   return null
 }
 

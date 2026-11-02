@@ -1,6 +1,7 @@
 import { Award, BookOpen, Flame, FolderOpen, PenLine, Search, TrendingUp } from 'lucide-react'
 import { useGame } from '../../context/GameContext'
 import type { ActivityEntry } from '../../game/types'
+import { t } from '../../i18n'
 
 const ICONS: Record<ActivityEntry['kind'], typeof Award> = {
   lesson: BookOpen,
@@ -14,11 +15,11 @@ const ICONS: Record<ActivityEntry['kind'], typeof Award> = {
 
 function ago(ts: number) {
   const m = Math.round((Date.now() - ts) / 60000)
-  if (m < 1) return '啱啱'
-  if (m < 60) return `${m} 分鐘前`
+  if (m < 1) return t('ago.now')
+  if (m < 60) return t('ago.min', { n: m })
   const h = Math.round(m / 60)
-  if (h < 24) return `${h} 小時前`
-  return `${Math.round(h / 24)} 日前`
+  if (h < 24) return t('ago.hour', { n: h })
+  return t('ago.day', { n: Math.round(h / 24) })
 }
 
 export function ActivityLog({ limit = 6 }: { limit?: number }) {
@@ -26,9 +27,9 @@ export function ActivityLog({ limit = 6 }: { limit?: number }) {
   const items = state.activity.slice(0, limit)
   return (
     <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-      <h3 className="text-sm font-bold text-slate-900">最近活動</h3>
+      <h3 className="text-sm font-bold text-slate-900">{t('activity.recent')}</h3>
       {items.length === 0 ? (
-        <p className="mt-3 text-sm text-slate-500">完成第一課，你嘅活動就會喺度出現。</p>
+        <p className="mt-3 text-sm text-slate-500">{t('activity.empty')}</p>
       ) : (
         <ul className="mt-3 space-y-3">
           {items.map((a) => {

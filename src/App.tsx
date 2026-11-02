@@ -10,6 +10,7 @@ import { CheckInModal } from './components/game/CheckInModal'
 import { LearningMap } from './components/game/LearningMap'
 import { NudgeToast } from './components/game/NudgeToast'
 import { ResearchLab } from './components/game/ResearchLab'
+import { useT } from './i18n'
 import { isSupabaseConfigured } from './lib/supabase'
 import type { TabId } from './types'
 
@@ -17,8 +18,8 @@ const TAB_KEY = 'va-nexus:tab'
 
 function initialTab(): TabId {
   try {
-    const t = localStorage.getItem(TAB_KEY) as TabId | null
-    if (t && TABS.some((x) => x.id === t)) return t
+    const saved = localStorage.getItem(TAB_KEY) as TabId | null
+    if (saved && TABS.some((x) => x.id === saved)) return saved
   } catch {
     /* ignore */
   }
@@ -26,6 +27,7 @@ function initialTab(): TabId {
 }
 
 export default function App() {
+  const { t } = useT()
   const [tab, setTab] = useState<TabId>(initialTab)
   const [artistSource, setArtistSource] = useState<'live' | 'mock'>(
     isSupabaseConfigured ? 'live' : 'mock',
@@ -43,10 +45,7 @@ export default function App() {
     window.scrollTo({ top: 0 })
   }, [tab])
 
-  const footer =
-    artistSource === 'live'
-      ? 'VA-Nexus AI · live Supabase (artists + pairs) · 學習進度暫存本機'
-      : 'VA-Nexus AI · mock data (live fetch unavailable) · 學習進度暫存本機'
+  const footer = t(artistSource === 'live' ? 'app.footer.live' : 'app.footer.mock')
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -60,8 +59,8 @@ export default function App() {
             {tab === 'portfolio' && (
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900">我的作品集</h2>
-                  <p className="text-sm text-slate-500">SBA 六步任務 · 每完成一步 +50 XP</p>
+                  <h2 className="text-2xl font-bold text-slate-900">{t('tab.portfolio')}</h2>
+                  <p className="text-sm text-slate-500">{t('app.portfolio.subtitle')}</p>
                 </div>
                 <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
                   <SbaQuest />
@@ -71,8 +70,8 @@ export default function App() {
             {tab === 'library' && (
               <div className="space-y-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900">藝術圖書館</h2>
-                  <p className="text-sm text-slate-500">藝術家資料庫 · 比較兩位藝術家</p>
+                  <h2 className="text-2xl font-bold text-slate-900">{t('tab.library')}</h2>
+                  <p className="text-sm text-slate-500">{t('app.library.subtitle')}</p>
                 </div>
                 <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
                   <ArtistCompare onSourceChange={onSourceChange} />

@@ -1,0 +1,428 @@
+[
+ {
+  "colloquial": "looks nice",
+  "term": "visually appealing / harmonious and unified",
+  "stage": "judge",
+  "example": "Casual: \"This painting looks nice\" → Art term: \"The work is visually appealing\""
+ },
+ {
+  "colloquial": "it's awesome",
+  "term": "visually appealing / harmonious and unified",
+  "stage": "judge",
+  "example": "Casual: \"This painting is awesome\" → Art term: \"The work is visually appealing\""
+ },
+ {
+  "colloquial": "nice to look at",
+  "term": "visually appealing / harmonious and unified",
+  "stage": "judge",
+  "example": "Casual: \"This painting is nice to look at\" → Art term: \"The work is visually appealing\""
+ },
+ {
+  "colloquial": "so messy",
+  "term": "complex composition / dense elements",
+  "stage": "analyse",
+  "example": "Casual: \"This painting is so messy\" → Art term: \"The work has a complex composition\""
+ },
+ {
+  "colloquial": "so much stuff",
+  "term": "complex composition / dense elements",
+  "stage": "analyse",
+  "example": "Casual: \"There's so much stuff in this painting\" → Art term: \"The work has a complex composition\""
+ },
+ {
+  "colloquial": "so empty",
+  "term": "blank space / negative space",
+  "stage": "analyse",
+  "example": "Casual: \"This painting looks so empty\" → Art term: \"The work uses blank space\""
+ },
+ {
+  "colloquial": "there's nothing there",
+  "term": "blank space / negative space",
+  "stage": "analyse",
+  "example": "Casual: \"There's nothing in this painting\" → Art term: \"The work uses blank space\""
+ },
+ {
+  "colloquial": "super bright",
+  "term": "high saturation / vivid colour",
+  "stage": "describe",
+  "example": "Casual: \"This painting is super bright\" → Art term: \"The work shows high saturation\""
+ },
+ {
+  "colloquial": "really eye-catching",
+  "term": "high saturation / vivid colour",
+  "stage": "describe",
+  "example": "Casual: \"This painting is really eye-catching\" → Art term: \"The work shows high saturation\""
+ },
+ {
+  "colloquial": "crazy bright",
+  "term": "high saturation / vivid colour",
+  "stage": "describe",
+  "example": "Casual: \"This painting is crazy bright\" → Art term: \"The work shows high saturation\""
+ },
+ {
+  "colloquial": "kinda grey",
+  "term": "low saturation / low-key tones",
+  "stage": "describe",
+  "example": "Casual: \"This painting looks kinda grey\" → Art term: \"The work shows low saturation\""
+ },
+ {
+  "colloquial": "kinda dark",
+  "term": "low saturation / low-key tones",
+  "stage": "describe",
+  "example": "Casual: \"This painting looks kinda dark\" → Art term: \"The work shows low saturation\""
+ },
+ {
+  "colloquial": "so gloomy",
+  "term": "low saturation / low-key tones",
+  "stage": "describe",
+  "example": "Casual: \"This painting looks so gloomy\" → Art term: \"The work shows low saturation\""
+ },
+ {
+  "colloquial": "ice-cold",
+  "term": "cool palette",
+  "stage": "describe",
+  "example": "Casual: \"This painting feels ice-cold\" → Art term: \"The work uses a cool palette\""
+ },
+ {
+  "colloquial": "bluish and chilly",
+  "term": "cool palette",
+  "stage": "describe",
+  "example": "Casual: \"This painting is bluish and feels chilly\" → Art term: \"The work uses a cool palette\""
+ },
+ {
+  "colloquial": "nice and warm",
+  "term": "warm palette",
+  "stage": "describe",
+  "example": "Casual: \"This painting feels nice and warm\" → Art term: \"The work uses a warm palette\""
+ },
+ {
+  "colloquial": "all reds and yellows",
+  "term": "warm palette",
+  "stage": "describe",
+  "example": "Casual: \"This painting is all reds and yellows\" → Art term: \"The work uses a warm palette\""
+ },
+ {
+  "colloquial": "the darks and lights are way different",
+  "term": "strong tonal contrast",
+  "stage": "analyse",
+  "example": "Casual: \"In this painting the darks and lights are way different\" → Art term: \"The work shows strong tonal contrast\""
+ },
+ {
+  "colloquial": "the black and white really stand out",
+  "term": "strong tonal contrast",
+  "stage": "analyse",
+  "example": "Casual: \"In this painting the black and white really stand out\" → Art term: \"The work shows strong tonal contrast\""
+ },
+ {
+  "colloquial": "you spot it straight away",
+  "term": "focal point",
+  "stage": "analyse",
+  "example": "Casual: \"In this painting you spot it straight away\" → Art term: \"The work has a clear focal point\""
+ },
+ {
+  "colloquial": "the most eye-catching bit",
+  "term": "focal point",
+  "stage": "analyse",
+  "example": "Casual: \"This is the most eye-catching bit of the painting\" → Art term: \"The work has a clear focal point\""
+ },
+ {
+  "colloquial": "both sides look about the same",
+  "term": "symmetrical balance",
+  "stage": "analyse",
+  "example": "Casual: \"Both sides of this painting look about the same\" → Art term: \"The work shows symmetrical balance\""
+ },
+ {
+  "colloquial": "it's symmetrical",
+  "term": "symmetrical balance",
+  "stage": "analyse",
+  "example": "Casual: \"This painting is symmetrical\" → Art term: \"The work shows symmetrical balance\""
+ },
+ {
+  "colloquial": "one side's heavy, the other's light",
+  "term": "asymmetrical balance",
+  "stage": "analyse",
+  "example": "Casual: \"In this painting one side's heavy and the other's light\" → Art term: \"The work shows asymmetrical balance\""
+ },
+ {
+  "colloquial": "the same thing over and over",
+  "term": "repetition and rhythm",
+  "stage": "analyse",
+  "example": "Casual: \"This painting has the same thing over and over\" → Art term: \"The work shows repetition and rhythm\""
+ },
+ {
+  "colloquial": "it keeps showing up",
+  "term": "repetition and rhythm",
+  "stage": "analyse",
+  "example": "Casual: \"In this painting something keeps showing up\" → Art term: \"The work shows repetition and rhythm\""
+ },
+ {
+  "colloquial": "it goes really far back",
+  "term": "spatial depth / perspective",
+  "stage": "analyse",
+  "example": "Casual: \"This painting goes really far back\" → Art term: \"The work shows spatial depth\""
+ },
+ {
+  "colloquial": "like you can look right into it",
+  "term": "spatial depth / perspective",
+  "stage": "analyse",
+  "example": "Casual: \"It's like you can look right into this painting\" → Art term: \"The work shows spatial depth\""
+ },
+ {
+  "colloquial": "kinda flat",
+  "term": "flattened space",
+  "stage": "analyse",
+  "example": "Casual: \"This painting looks kinda flat\" → Art term: \"The work uses a flattened treatment of space\""
+ },
+ {
+  "colloquial": "doesn't look 3D",
+  "term": "flattened space",
+  "stage": "analyse",
+  "example": "Casual: \"This painting doesn't look 3D\" → Art term: \"The work uses a flattened treatment of space\""
+ },
+ {
+  "colloquial": "kinda rough",
+  "term": "texture / tactile quality",
+  "stage": "describe",
+  "example": "Casual: \"This painting looks kinda rough\" → Art term: \"The work shows texture\""
+ },
+ {
+  "colloquial": "bumpy",
+  "term": "texture / tactile quality",
+  "stage": "describe",
+  "example": "Casual: \"This painting is bumpy\" → Art term: \"The work shows texture\""
+ },
+ {
+  "colloquial": "feels scratchy to touch",
+  "term": "texture / tactile quality",
+  "stage": "describe",
+  "example": "Casual: \"This painting would feel scratchy to touch\" → Art term: \"The work shows texture\""
+ },
+ {
+  "colloquial": "painted really hard",
+  "term": "expressive brushwork",
+  "stage": "describe",
+  "example": "Casual: \"This painting looks painted really hard\" → Art term: \"The work shows expressive brushwork\""
+ },
+ {
+  "colloquial": "brushed all over the place",
+  "term": "expressive brushwork",
+  "stage": "describe",
+  "example": "Casual: \"This painting is brushed all over the place\" → Art term: \"The work shows expressive brushwork\""
+ },
+ {
+  "colloquial": "really delicate",
+  "term": "fine brushwork / gongbi (meticulous style)",
+  "stage": "describe",
+  "example": "Casual: \"This painting is really delicate\" → Art term: \"The work shows fine brushwork\""
+ },
+ {
+  "colloquial": "super detailed",
+  "term": "fine brushwork / gongbi (meticulous style)",
+  "stage": "describe",
+  "example": "Casual: \"This painting is super detailed\" → Art term: \"The work shows fine brushwork\""
+ },
+ {
+  "colloquial": "the lines are really stiff",
+  "term": "geometric lines",
+  "stage": "describe",
+  "example": "Casual: \"The lines in this painting are really stiff\" → Art term: \"The work uses geometric lines\""
+ },
+ {
+  "colloquial": "lots of straight lines",
+  "term": "geometric lines",
+  "stage": "describe",
+  "example": "Casual: \"This painting has lots of straight lines\" → Art term: \"The work uses geometric lines\""
+ },
+ {
+  "colloquial": "all wiggly",
+  "term": "organic lines / sense of flow",
+  "stage": "describe",
+  "example": "Casual: \"This painting is all wiggly\" → Art term: \"The work uses organic lines\""
+ },
+ {
+  "colloquial": "really flowy",
+  "term": "organic lines / sense of flow",
+  "stage": "describe",
+  "example": "Casual: \"This painting is really flowy\" → Art term: \"The work uses organic lines\""
+ },
+ {
+  "colloquial": "it's all bled out",
+  "term": "wash / ink diffusion",
+  "stage": "describe",
+  "example": "Casual: \"The ink in this painting has all bled out\" → Art term: \"The work shows ink wash effects\""
+ },
+ {
+  "colloquial": "looks kinda wet",
+  "term": "wash / ink diffusion",
+  "stage": "describe",
+  "example": "Casual: \"This painting looks kinda wet\" → Art term: \"The work shows ink wash effects\""
+ },
+ {
+  "colloquial": "all hazy",
+  "term": "blurred / semi-abstract",
+  "stage": "describe",
+  "example": "Casual: \"This painting is all hazy\" → Art term: \"The work shows blurred forms\""
+ },
+ {
+  "colloquial": "can't see it clearly",
+  "term": "blurred / semi-abstract",
+  "stage": "describe",
+  "example": "Casual: \"I can't see this painting clearly\" → Art term: \"The work shows blurred forms\""
+ },
+ {
+  "colloquial": "no idea what it is",
+  "term": "abstract expression",
+  "stage": "describe",
+  "example": "Casual: \"No idea what this painting is\" → Art term: \"The work uses abstract expression\""
+ },
+ {
+  "colloquial": "just a bunch of colours",
+  "term": "abstract expression",
+  "stage": "describe",
+  "example": "Casual: \"This painting is just a bunch of colours\" → Art term: \"The work uses abstract expression\""
+ },
+ {
+  "colloquial": "looks real",
+  "term": "realism / realistic technique",
+  "stage": "describe",
+  "example": "Casual: \"This painting looks real\" → Art term: \"The work uses a realistic technique\""
+ },
+ {
+  "colloquial": "looks like a photo",
+  "term": "realism / realistic technique",
+  "stage": "describe",
+  "example": "Casual: \"This painting looks like a photo\" → Art term: \"The work uses a realistic technique\""
+ },
+ {
+  "colloquial": "so lonely",
+  "term": "alienation / solitary mood",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is so lonely\" → Art term: \"The work conveys a sense of alienation\""
+ },
+ {
+  "colloquial": "just one person all alone",
+  "term": "alienation / solitary mood",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is just one person all alone\" → Art term: \"The work conveys a sense of alienation\""
+ },
+ {
+  "colloquial": "so scary",
+  "term": "surreal / sense of unease",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is so scary\" → Art term: \"The work has a surreal quality\""
+ },
+ {
+  "colloquial": "so creepy",
+  "term": "surreal / sense of unease",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is so creepy\" → Art term: \"The work has a surreal quality\""
+ },
+ {
+  "colloquial": "so calm",
+  "term": "tranquil mood / contemplative quality",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is so calm\" → Art term: \"The work has a tranquil mood\""
+ },
+ {
+  "colloquial": "so relaxing",
+  "term": "tranquil mood / contemplative quality",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is so relaxing\" → Art term: \"The work has a tranquil mood\""
+ },
+ {
+  "colloquial": "so angry",
+  "term": "intense emotional tension",
+  "stage": "interpret",
+  "example": "Casual: \"This painting feels so angry\" → Art term: \"The work shows intense emotional tension\""
+ },
+ {
+  "colloquial": "so intense",
+  "term": "intense emotional tension",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is so intense\" → Art term: \"The work shows intense emotional tension\""
+ },
+ {
+  "colloquial": "sarcastic",
+  "term": "irony / critical intent",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is sarcastic\" → Art term: \"The work uses irony\""
+ },
+ {
+  "colloquial": "it's trolling",
+  "term": "irony / critical intent",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is trolling\" → Art term: \"The work uses irony\""
+ },
+ {
+  "colloquial": "it stands for something",
+  "term": "symbolism",
+  "stage": "interpret",
+  "example": "Casual: \"This painting stands for something\" → Art term: \"The work carries symbolic meaning\""
+ },
+ {
+  "colloquial": "it's deep",
+  "term": "symbolism",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is deep\" → Art term: \"The work carries symbolic meaning\""
+ },
+ {
+  "colloquial": "Chinese and Western mixed together",
+  "term": "East–West synthesis",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is Chinese and Western mixed together\" → Art term: \"The work shows an East–West synthesis\""
+ },
+ {
+  "colloquial": "kinda Chinese, kinda Western",
+  "term": "East–West synthesis",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is kinda Chinese, kinda Western\" → Art term: \"The work shows an East–West synthesis\""
+ },
+ {
+  "colloquial": "everyone uses it",
+  "term": "popular culture / consumerism",
+  "stage": "interpret",
+  "example": "Casual: \"Everyone uses the stuff in this painting\" → Art term: \"The work draws on popular culture\""
+ },
+ {
+  "colloquial": "so commercial",
+  "term": "popular culture / consumerism",
+  "stage": "interpret",
+  "example": "Casual: \"This painting is so commercial\" → Art term: \"The work draws on popular culture\""
+ },
+ {
+  "colloquial": "copy them",
+  "term": "borrowing composition or concept (not copying the style)",
+  "stage": "judge",
+  "example": "Casual: \"I'll copy this painting\" → Art term: \"The work borrows composition or concept (not copying the style)\""
+ },
+ {
+  "colloquial": "paint like them",
+  "term": "borrowing composition or concept (not copying the style)",
+  "stage": "judge",
+  "example": "Casual: \"I'll paint like this painting\" → Art term: \"The work borrows composition or concept (not copying the style)\""
+ },
+ {
+  "colloquial": "really thoughtful",
+  "term": "originality and creativity",
+  "stage": "judge",
+  "example": "Casual: \"This painting is really thoughtful\" → Art term: \"The work shows originality and creativity\""
+ },
+ {
+  "colloquial": "so fresh",
+  "term": "originality and creativity",
+  "stage": "judge",
+  "example": "Casual: \"This painting is so fresh\" → Art term: \"The work shows originality and creativity\""
+ },
+ {
+  "colloquial": "not done enough",
+  "term": "underdeveloped / room for development",
+  "stage": "judge",
+  "example": "Casual: \"This painting isn't done enough\" → Art term: \"The work does not fully express its idea\""
+ },
+ {
+  "colloquial": "almost there",
+  "term": "underdeveloped / room for development",
+  "stage": "judge",
+  "example": "Casual: \"This painting is almost there\" → Art term: \"The work does not fully express its idea\""
+ }
+]

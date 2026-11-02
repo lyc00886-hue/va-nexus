@@ -3,8 +3,9 @@ import { useState } from 'react'
 import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { useSenSupport } from '../../context/SenSupportContext'
-import { NODE_BY_ID, UNITS } from '../../game/curriculum'
-import { MASTERY_LABEL, masteryFor } from '../../game/rewards'
+import { getNodeById, getUnits } from '../../game/curriculum'
+import { masteryFor, masteryLabel } from '../../game/rewards'
+import { t } from '../../i18n'
 import type { Lesson, Mastery } from '../../game/types'
 import { ActivityLog } from './ActivityLog'
 import { DemoBadge } from './DemoBadge'
@@ -30,15 +31,16 @@ export function LearningMap() {
 
   if (open) return <LessonPlayer lesson={open} kind="lesson" onExit={() => setOpen(null)} />
 
-  const current = currentNodeId ? NODE_BY_ID.get(currentNodeId) : undefined
+  const UNITS = getUnits()
+  const current = currentNodeId ? getNodeById().get(currentNodeId) : undefined
   // focus tunnel: show only the unit containing the current node
   const units = focusTunnel && current ? UNITS.filter((u) => u.nodes.some((n) => n.id === current.id)) : UNITS
 
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">學習地圖</h2>
-        <p className="text-sm text-slate-500">每課 3–5 分鐘：短課卡 → 小測 → 拎 XP 解鎖下一課</p>
+        <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
+        <p className="text-sm text-slate-500">{t('map.subtitle')}</p>
       </div>
 
       {!focusTunnel && <StatCards />}
@@ -55,9 +57,9 @@ export function LearningMap() {
                 <Play className="h-6 w-6 fill-white" aria-hidden />
               </span>
               <span className="flex-1">
-                <span className="block text-xs font-semibold uppercase tracking-wide text-blue-100">繼續學習</span>
+                <span className="block text-xs font-semibold uppercase tracking-wide text-blue-100">{t('map.continue')}</span>
                 <span className="block text-lg font-bold">{current.title}</span>
-                <span className="block text-sm text-blue-100">{current.subtitle} · 約 {current.minutes} 分鐘</span>
+                <span className="block text-sm text-blue-100">{current.subtitle} · {t('common.aboutMin', { n: current.minutes })}</span>
               </span>
             </button>
           )}
@@ -94,7 +96,7 @@ export function LearningMap() {
                           disabled={!unlocked}
                           onClick={() => setOpen(n)}
                           className="group flex w-full items-center gap-4 rounded-2xl p-1 text-left disabled:cursor-not-allowed"
-                          aria-label={`${n.title}，${completed ? '已完成' : unlocked ? '可以開始' : '未解鎖'}`}
+                          aria-label={t('map.nodeAria', { title: n.title, status: t(completed ? 'map.status.done' : unlocked ? 'map.status.open' : 'map.status.locked') })}
                         >
                           <span className="relative flex h-16 w-16 shrink-0 items-center justify-center">
                             {isCurrent && motion && (
@@ -139,7 +141,7 @@ export function LearningMap() {
                               <span
                                 className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ${MASTERY_CHIP[m]}`}
                               >
-                                {MASTERY_LABEL[m]}
+                                {masteryLabel(m)}
                               </span>
                             )}
                           </span>
@@ -159,7 +161,7 @@ export function LearningMap() {
           })}
           {!current && (
             <p className="rounded-3xl bg-emerald-50 p-4 text-sm font-medium text-emerald-800">
-              全部課堂完成！可以返去重溫，將每一課提升到「掌握」。
+              {t('map.allDone')}
             </p>
           )}
         </div>
@@ -168,18 +170,18 @@ export function LearningMap() {
           <div className="space-y-5">
             <ActivityLog />
             <section className="rounded-3xl border border-slate-200 bg-white p-4 text-sm shadow-sm">
-              <h3 className="font-bold text-slate-900">精熟度階梯</h3>
-              <p className="mt-1 text-xs text-slate-500">嘗試過 → 熟悉（≥60%）→ 精通（≥90%）→ 掌握（兩次全對）</p>
-              <h3 className="mt-4 font-bold text-slate-900">學習支援</h3>
+              <h3 className="font-bold text-slate-900">{t('map.ladder')}</h3>
+              <p className="mt-1 text-xs text-slate-500">{t('map.ladder.text')}</p>
+              <h3 className="mt-4 font-bold text-slate-900">{t('map.support')}</h3>
               <p className="mt-1 text-xs text-slate-500">
-                想要大字、朗讀或專注模式？做個 1 分鐘問卷，揀最啱你嘅工具（唔係診斷）。
+                {t('map.support.text')}
               </p>
               <button
                 type="button"
                 onClick={openCheckIn}
                 className="mt-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-800 hover:bg-blue-100"
               >
-                {stored.checkIn ? '重新做自選支援問卷' : '開始自選支援問卷'}
+                {stored.checkIn ? t('map.checkin.redo') : t('map.checkin.start')}
               </button>
             </section>
           </div>

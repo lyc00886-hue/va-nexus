@@ -2,6 +2,7 @@ import { Loader2, LogIn, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { avatarUrl, displayName, signInWithGoogle, signOut, useAuth } from '../lib/auth'
 import { isSupabaseConfigured } from '../lib/supabase'
+import { t } from '../i18n'
 
 export function AuthButton() {
   const { ready, user } = useAuth()
@@ -29,13 +30,13 @@ export function AuthButton() {
             await signInWithGoogle()
           } catch (e) {
             console.warn('[auth] sign-in failed', e)
-            alert('Google 登入暫時用唔到，請稍後再試。')
+            alert(t('auth.unavailable'))
             setBusy(false)
           }
         }}
       >
         {busy ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden /> : <LogIn className="h-3.5 w-3.5" aria-hidden />}
-        用 Google 登入
+        {t('auth.signIn')}
       </button>
     )
   }
@@ -66,10 +67,10 @@ export function AuthButton() {
           }
         }}
         className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium text-slate-600 hover:bg-slate-100"
-        title="登出"
+        title={t('auth.signOut')}
       >
         <LogOut className="h-3 w-3" aria-hidden />
-        登出
+        {t('auth.signOut')}
       </button>
     </div>
   )

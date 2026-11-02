@@ -3,17 +3,18 @@ import { useSenSupport } from '../context/SenSupportContext'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { useSen, type FontSizeLevel } from '../context/SenContext'
 import type { SenMode } from '../types'
+import { t, type MessageKey } from '../i18n'
 
-const PRESET_LABELS: { id: SenMode; label: string; hint: string }[] = [
-  { id: 'standard', label: '標準', hint: '預設設定' },
-  { id: 'spld', label: '讀寫支援', hint: 'SpLD：大字＋易讀間距' },
-  { id: 'adhd', label: '專注支援', hint: 'ADHD：減少動畫＋專注隧道' },
+const PRESET_LABELS: { id: SenMode; label: MessageKey; hint: MessageKey }[] = [
+  { id: 'standard', label: 'mode.standard', hint: 'sen.preset.standard.hint' },
+  { id: 'spld', label: 'sen.preset.spld', hint: 'sen.preset.spld.hint' },
+  { id: 'adhd', label: 'sen.preset.adhd', hint: 'sen.preset.adhd.hint' },
 ]
 
-const FONT_LEVELS: { id: FontSizeLevel; label: string }[] = [
-  { id: 'md', label: '標準' },
-  { id: 'lg', label: '大' },
-  { id: 'xl', label: '特大' },
+const FONT_LEVELS: { id: FontSizeLevel; label: MessageKey }[] = [
+  { id: 'md', label: 'sen.font.md' },
+  { id: 'lg', label: 'sen.font.lg' },
+  { id: 'xl', label: 'sen.font.xl' },
 ]
 
 function Toggle({
@@ -71,8 +72,8 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
     ref.current?.focus()
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose()
     const onDown = (e: MouseEvent) => {
-      const t = e.target as HTMLElement
-      if (ref.current && !ref.current.contains(t) && !t.closest('[data-sen-trigger]')) onClose()
+      const el = e.target as HTMLElement
+      if (ref.current && !ref.current.contains(el) && !el.closest('[data-sen-trigger]')) onClose()
     }
     window.addEventListener('keydown', onKey)
     window.addEventListener('mousedown', onDown)
@@ -87,16 +88,16 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
       ref={ref}
       tabIndex={-1}
       role="dialog"
-      aria-label="無障礙設定"
+      aria-label={t('header.a11y')}
       className="absolute right-4 top-full z-50 mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-teal-100 bg-white p-4 text-left shadow-xl outline-none"
     >
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-bold text-teal-950">無障礙設定（SEN）</h2>
+        <h2 className="text-base font-bold text-teal-950">{t('sen.title')}</h2>
         <button
           type="button"
           onClick={onClose}
           className="rounded-full p-1 text-teal-800 hover:bg-teal-50"
-          aria-label="關閉"
+          aria-label={t('common.close')}
         >
           <X className="h-4 w-4" />
         </button>
@@ -112,20 +113,20 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
       >
         <ClipboardList className="h-4 w-4 shrink-0" aria-hidden />
         <span>
-          唔知揀邊樣？做個 1 分鐘「自選支援問卷」
-          <span className="block font-normal text-blue-800/80">呢個唔係診斷，只係幫你揀合適工具</span>
+          {t('sen.checkin.cta')}
+          <span className="block font-normal text-blue-800/80">{t('sen.checkin.note')}</span>
         </span>
       </button>
 
-      <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-teal-800/80">快速模式</p>
-      <div className="mt-1 grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="快速模式">
+      <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-teal-800/80">{t('sen.quick')}</p>
+      <div className="mt-1 grid grid-cols-3 gap-1.5" role="radiogroup" aria-label={t('sen.quick')}>
         {PRESET_LABELS.map((p) => (
           <button
             key={p.id}
             type="button"
             role="radio"
             aria-checked={mode === p.id}
-            title={p.hint}
+            title={t(p.hint)}
             onClick={() => setMode(p.id)}
             className={`rounded-xl border px-2 py-2 text-xs font-semibold ${
               mode === p.id
@@ -133,17 +134,17 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
                 : 'border-teal-200 bg-white text-teal-900 hover:bg-teal-50'
             }`}
           >
-            {p.label}
+            {t(p.label)}
           </button>
         ))}
       </div>
-      {mode === 'custom' && <p className="mt-1 text-[11px] text-teal-800/80">已自訂設定</p>}
+      {mode === 'custom' && <p className="mt-1 text-[11px] text-teal-800/80">{t('sen.custom')}</p>}
 
       <div className="mt-4">
         <p className="flex items-center gap-1.5 text-sm font-semibold text-teal-950">
-          <Type className="h-4 w-4 text-teal-700" aria-hidden /> 字體大小
+          <Type className="h-4 w-4 text-teal-700" aria-hidden /> {t('sen.font')}
         </p>
-        <div className="mt-1.5 grid grid-cols-3 gap-1.5" role="radiogroup" aria-label="字體大小">
+        <div className="mt-1.5 grid grid-cols-3 gap-1.5" role="radiogroup" aria-label={t('sen.font')}>
           {FONT_LEVELS.map((f, i) => (
             <button
               key={f.id}
@@ -158,7 +159,7 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
               }`}
               style={{ fontSize: `${0.8 + i * 0.15}rem` }}
             >
-              {f.label}
+              {t(f.label)}
             </button>
           ))}
         </div>
@@ -167,36 +168,36 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
       <div className="mt-3 space-y-0.5">
         <Toggle
           icon={<Contrast className="h-4 w-4" />}
-          label="高對比"
-          desc="深色文字、清晰邊框，方便弱視或強光下閱讀"
+          label={t('support.contrast')}
+          desc={t('sen.toggle.contrast.desc')}
           checked={settings.highContrast}
           onChange={(v) => update('highContrast', v)}
         />
         <Toggle
           icon={<BookOpenText className="h-4 w-4" />}
-          label="讀寫障礙友善間距"
-          desc="加大字距、行距同段落間距"
+          label={t('sen.toggle.dyslexia')}
+          desc={t('sen.toggle.dyslexia.desc')}
           checked={settings.dyslexia}
           onChange={(v) => update('dyslexia', v)}
         />
         <Toggle
           icon={<Wind className="h-4 w-4" />}
-          label="減少動畫"
-          desc="關閉過場同動態效果"
+          label={t('support.reduceMotion')}
+          desc={t('sen.toggle.motion.desc')}
           checked={settings.reduceMotion}
           onChange={(v) => update('reduceMotion', v)}
         />
         <Toggle
           icon={<Focus className="h-4 w-4" />}
-          label="專注隧道"
-          desc="一次只顯示一個步驟，附 25 分鐘專注計時"
+          label={t('support.focus')}
+          desc={t('sen.toggle.focus.desc')}
           checked={settings.focusTunnel}
           onChange={(v) => update('focusTunnel', v)}
         />
         <Toggle
           icon={<Volume2 className="h-4 w-4" />}
-          label="自動朗讀"
-          desc="打開短課卡時自動讀出內容（可隨時停止）"
+          label={t('support.readAloud')}
+          desc={t('sen.toggle.read.desc')}
           checked={settings.readAloud}
           onChange={(v) => update('readAloud', v)}
         />
@@ -207,9 +208,9 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
         onClick={reset}
         className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-teal-800 hover:underline"
       >
-        <RotateCcw className="h-3.5 w-3.5" aria-hidden /> 還原預設
+        <RotateCcw className="h-3.5 w-3.5" aria-hidden /> {t('sen.reset')}
       </button>
-      <p className="mt-2 text-[11px] text-teal-800/70">設定會儲存喺呢部裝置，所有分頁通用。</p>
+      <p className="mt-2 text-[11px] text-teal-800/70">{t('sen.savedNote')}</p>
     </div>
   )
 }

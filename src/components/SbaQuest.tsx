@@ -29,15 +29,17 @@ import {
   type SbaEvidence,
 } from '../lib/sbaEvidence'
 import { isSupabaseConfigured } from '../lib/supabase'
+import { t, type MessageKey } from '../i18n'
 
-const STEPS = [
-  { id: 1, title: '主題探索', hint: '寫下主題關鍵字與靈感來源' },
-  { id: 2, title: '參考研究', hint: '揀最少一位藝術家作參照' },
-  { id: 3, title: '草圖發展', hint: '上傳草圖／過程照' },
-  { id: 4, title: '媒材試驗', hint: '記錄試驗結果與取捨' },
-  { id: 5, title: '作品製作', hint: '過程證據（至少 2 張）' },
-  { id: 6, title: '反思評鑑', hint: '對照評核準則寫短評' },
-] as const
+const STEP_IDS = [1, 2, 3, 4, 5, 6] as const
+
+function getSteps() {
+  return STEP_IDS.map((id) => ({
+    id,
+    title: t(`sba.step.${id}` as MessageKey),
+    hint: t(`sba.step.${id}.hint` as MessageKey),
+  }))
+}
 
 /**
  * private = signed in → private bucket `sba-private` (owner-only RLS, signed URLs)
@@ -53,6 +55,7 @@ export function SbaQuest() {
   const { ready, user } = useAuth()
   const userId = user?.id ?? null
   const deviceId = useMemo(() => getDeviceId(), [])
+  const STEPS = useMemo(getSteps, [])
   const [evidence, setEvidence] = useState<SbaEvidence[]>([])
   const [source, setSource] = useState<Source>(isSupabaseConfigured ? 'loading' : 'local')
   const [active, setActive] = useState(1)
@@ -141,7 +144,7 @@ export function SbaQuest() {
   async function onSave() {
     const files = canUpload || source === 'local' ? pending.map((p) => p.file) : []
     if (files.length === 0 && !note.trim()) {
-      setMessage({ kind: 'error', text: '請寫筆記或揀最少一張相片' })
+      setMessage({ kind: 'error', text: t('sba.msg.empty') })
       return
     }
     setSaving(true)
@@ -152,22 +155,22 @@ export function SbaQuest() {
         try {
           added = await savePrivateEvidence(userId, active, files, note)
           pending.forEach((x) => URL.revokeObjectURL(x.preview))
-          setMessage({ kind: 'ok', text: '已儲存到你嘅私人雲端空間 ✓' })
+          setMessage({ kind: 'ok', text: t('sba.msg.private') })
         } catch (e) {
           console.warn('[sba] upload failed, saving locally', e)
           added = saveLocal(active, files, note)
-          setMessage({ kind: 'error', text: '上載失敗，已暫存喺本機（相片重新整理後會消失）' })
+          setMessage({ kind: 'error', text: t('sba.msg.uploadFail') })
         }
       } else if (source === 'guest') {
         added = saveLocal(active, [], note)
-        setMessage({ kind: 'ok', text: '筆記已存喺本機。登入 Google 後先可以上載相片。' })
+        setMessage({ kind: 'ok', text: t('sba.msg.guest') })
       } else {
         added = saveLocal(active, files, note)
-        setMessage({ kind: 'ok', text: '已暫存喺本機（離線模式）' })
+        setMessage({ kind: 'ok', text: t('sba.msg.local') })
       }
       setEvidence((prev) => [...prev, ...added])
       const stepTitle = STEPS.find((s) => s.id === active)?.title ?? ''
-      awardOnce(`sba-step-${active}`, XP.sbaStep, `完成 SBA 第${active}步：${stepTitle}`, 'sba')
+      awardOnce(`sba-step-${active}`, XP.sbaStep, t('sba.award', { n: active, title: stepTitle }), 'sba')
       setNote('')
       setPending([])
     } finally {
@@ -182,8 +185,8 @@ export function SbaQuest() {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-teal-950">SBA 六步闖關</h2>
-        <p className="text-sm text-teal-800/70">完成筆記或上傳證據即可解鎖下一步</p>
+        <h2 className="text-xl font-bold text-teal-950">{t('sba.title')}</h2>
+        <p className="text-sm text-teal-800/70">{t('sba.subtitle')}</p>
       </div>
 
       {source === 'private' ? (
@@ -193,7 +196,7 @@ export function SbaQuest() {
         >
           <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <span>
-            已登入：相片存喺你嘅私人空間，只有你登入後先睇到（相片連結 1 小時後自動失效）。試用期間仍然建議只上載測試相片。
+            {t('sba.banner.private')}
           </span>
         </div>
       ) : (
@@ -204,8 +207,8 @@ export function SbaQuest() {
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
           <span className="flex-1">
             {source === 'local'
-              ? '離線模式：相片只會暫存喺呢部機，重新整理後會消失。請只用測試相片。'
-              : '未登入：相片上載已停用，筆記只會存喺呢部機。用 Google 登入後，相片會存入只有你睇到嘅私人空間。'}
+              ? t('sba.banner.local')
+              : t('sba.banner.guest')}
           </span>
           {source === 'guest' && (
             <button
@@ -213,7 +216,7 @@ export function SbaQuest() {
               onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
               className="inline-flex items-center gap-1 rounded-lg bg-amber-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-amber-700"
             >
-              <LogIn className="h-3.5 w-3.5" aria-hidden /> 用 Google 登入
+              <LogIn className="h-3.5 w-3.5" aria-hidden /> {t('auth.signIn')}
             </button>
           )}
         </div>
@@ -222,19 +225,19 @@ export function SbaQuest() {
       <div>
         <div className="flex items-center justify-between text-xs font-semibold text-teal-900">
           <span>
-            進度 {completed} / {STEPS.length} 步
+            {t('sba.progress', { n: completed, total: STEPS.length })}
           </span>
           <span className="inline-flex items-center gap-1 font-normal text-teal-800/70">
             {source === 'loading' && (
               <>
-                <Loader2 className="h-3 w-3 animate-spin" aria-hidden /> 連接雲端…
+                <Loader2 className="h-3 w-3 animate-spin" aria-hidden /> {t('sba.connecting')}
               </>
             )}
-            {source === 'private' && <>私人雲端（已登入）</>}
-            {source === 'guest' && <>訪客模式（本機）</>}
+            {source === 'private' && <>{t('sba.private')}</>}
+            {source === 'guest' && <>{t('sba.guest')}</>}
             {source === 'local' && (
               <>
-                <CloudOff className="h-3 w-3" aria-hidden /> 離線／本機模式
+                <CloudOff className="h-3 w-3" aria-hidden /> {t('sba.offline')}
               </>
             )}
           </span>
@@ -245,7 +248,7 @@ export function SbaQuest() {
           aria-valuemin={0}
           aria-valuemax={100}
           aria-valuenow={pct}
-          aria-label="SBA 進度"
+          aria-label={t('sba.progressAria')}
         >
           <div className="h-full rounded-full bg-teal-600 transition-all" style={{ width: `${pct}%` }} />
         </div>
@@ -259,10 +262,10 @@ export function SbaQuest() {
             onClick={() => prev && goTo(prev.id)}
             className="inline-flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-teal-900 hover:bg-white disabled:opacity-40"
           >
-            <ChevronLeft className="h-4 w-4" aria-hidden /> 上一步
+            <ChevronLeft className="h-4 w-4" aria-hidden /> {t('sba.prev')}
           </button>
           <span className="font-semibold text-amber-900">
-            專注模式 · 第 {active} / {STEPS.length} 步
+            {t('sba.focus', { n: active, total: STEPS.length })}
           </span>
           <button
             type="button"
@@ -270,7 +273,7 @@ export function SbaQuest() {
             onClick={() => next && goTo(next.id)}
             className="inline-flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-teal-900 hover:bg-white disabled:opacity-40"
           >
-            下一步 <ChevronRight className="h-4 w-4" aria-hidden />
+            {t('sba.next')} <ChevronRight className="h-4 w-4" aria-hidden />
           </button>
         </div>
       ) : (
@@ -319,40 +322,40 @@ export function SbaQuest() {
             className={`rounded-2xl border border-teal-100 bg-white shadow-sm ${cardPadding}`}
           >
             <h3 className="text-lg font-bold text-teal-950">
-              第 {s.id} 步 · {s.title}
+              {t('sba.stepHeading', { n: s.id, title: s.title })}
             </h3>
             <p className="mt-1 text-sm text-teal-800/70">{s.hint}</p>
 
             <label className="mt-4 block text-sm font-medium text-teal-900">
-              過程筆記
+              {t('sba.notes')}
               <textarea
                 className="mt-1 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
                 rows={3}
                 maxLength={500}
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="用自己嘅說話記錄…"
+                placeholder={t('sba.notes.ph')}
               />
             </label>
 
             {source === 'guest' ? (
               <div className="mt-4 flex flex-col items-start gap-2">
-                <span className="text-sm font-medium text-teal-900">證據相片</span>
+                <span className="text-sm font-medium text-teal-900">{t('sba.photosLabel')}</span>
                 <button
                   type="button"
                   onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
                   className="inline-flex items-center gap-2 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 hover:bg-slate-100"
                 >
                   <Lock className="h-4 w-4" aria-hidden />
-                  登入 Google 先可以上載相片
+                  {t('sba.signInToUpload')}
                 </button>
               </div>
             ) : (
             <label className="mt-4 flex cursor-pointer flex-col items-start gap-2">
-              <span className="text-sm font-medium text-teal-900">證據相片（每張最多 5 MB）</span>
+              <span className="text-sm font-medium text-teal-900">{t('sba.photos')}</span>
               <span className="inline-flex items-center gap-2 rounded-xl border border-dashed border-teal-300 bg-teal-50/60 px-4 py-3 text-sm text-teal-800">
                 <Camera className="h-4 w-4" aria-hidden />
-                選擇相片
+                {t('sba.pick')}
               </span>
               <input
                 type="file"
@@ -368,7 +371,7 @@ export function SbaQuest() {
             )}
 
             {pending.length > 0 && (
-              <ul className="mt-3 flex flex-wrap gap-3" aria-label="待上載相片">
+              <ul className="mt-3 flex flex-wrap gap-3" aria-label={t('sba.pending')}>
                 {pending.map((p) => (
                   <li
                     key={p.preview}
@@ -379,7 +382,7 @@ export function SbaQuest() {
                       type="button"
                       onClick={() => removePending(p.preview)}
                       className="absolute right-1 top-1 rounded-full bg-black/60 p-0.5 text-white"
-                      aria-label={`移除 ${p.file.name}`}
+                      aria-label={t('sba.remove', { name: p.file.name })}
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -400,7 +403,7 @@ export function SbaQuest() {
                 ) : (
                   <UploadCloud className="h-4 w-4" aria-hidden />
                 )}
-                {saving ? '儲存中…' : '儲存證據'}
+                {saving ? t('sba.saving') : t('sba.save')}
               </button>
               {message && (
                 <p
@@ -414,7 +417,7 @@ export function SbaQuest() {
 
             {items.length > 0 && (
               <div className="mt-5 border-t border-teal-100 pt-4">
-                <h4 className="text-sm font-semibold text-teal-900">已儲存（{items.length}）</h4>
+                <h4 className="text-sm font-semibold text-teal-900">{t('sba.saved', { n: items.length })}</h4>
                 <ul className="mt-2 flex flex-wrap gap-3">
                   {items.map((e) => (
                     <li key={e.id} className="w-32 overflow-hidden rounded-xl border border-teal-100 bg-teal-50">
@@ -422,18 +425,18 @@ export function SbaQuest() {
                         <a href={e.url} target="_blank" rel="noreferrer">
                           <img
                             src={e.url}
-                            alt={e.note ?? `Step ${e.step} 證據`}
+                            alt={e.note ?? t('sba.evidenceAlt', { n: e.step })}
                             loading="lazy"
                             className="h-24 w-full object-cover"
                           />
                         </a>
                       ) : (
                         <div className="flex h-24 items-center justify-center p-2 text-center text-[11px] text-teal-800">
-                          {e.file_path ? '相片（本機，已失效）' : '筆記'}
+                          {e.file_path ? t('sba.photoExpired') : t('sba.note')}
                         </div>
                       )}
                       {e.note && <p className="line-clamp-3 px-2 py-1 text-[11px] text-teal-900">{e.note}</p>}
-                      {e.local && <p className="px-2 pb-1 text-[10px] text-amber-700">本機暫存</p>}
+                      {e.local && <p className="px-2 pb-1 text-[10px] text-amber-700">{t('sba.localCache')}</p>}
                     </li>
                   ))}
                 </ul>

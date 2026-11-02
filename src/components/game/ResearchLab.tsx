@@ -1,8 +1,9 @@
 import { CheckCircle2, ChevronRight, PenLine } from 'lucide-react'
 import { useState } from 'react'
 import { useGame } from '../../context/GameContext'
-import { RESEARCH_QUESTS } from '../../game/research'
-import { BADGE_BY_ID } from '../../game/rewards'
+import { getResearchQuests } from '../../game/research'
+import { getBadgeById } from '../../game/rewards'
+import { t } from '../../i18n'
 import type { ResearchQuest } from '../../game/types'
 import { FeldmanWriter } from '../FeldmanWriter'
 import { DemoBadge } from './DemoBadge'
@@ -30,19 +31,20 @@ export function ResearchLab() {
     )
   }
 
+  const RESEARCH_QUESTS = getResearchQuests()
   const done = RESEARCH_QUESTS.filter((q) => state.quests[q.id]?.completed).length
 
   return (
     <div className="space-y-5">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900">研究室</h2>
-        <p className="text-sm text-slate-500">完成研究技巧任務，收集徽章 · 已完成 {done} / {RESEARCH_QUESTS.length}</p>
+        <h2 className="text-2xl font-bold text-slate-900">{t('tab.research')}</h2>
+        <p className="text-sm text-slate-500">{t('research.subtitle', { done, total: RESEARCH_QUESTS.length })}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         {RESEARCH_QUESTS.map((q) => {
           const completed = state.quests[q.id]?.completed
-          const badge = BADGE_BY_ID.get(q.badgeId)
+          const badge = getBadgeById().get(q.badgeId)
           return (
             <button
               key={q.id}
@@ -61,7 +63,7 @@ export function ResearchLab() {
                 </span>
                 {completed ? (
                   <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-semibold text-emerald-700">
-                    <CheckCircle2 className="h-3.5 w-3.5" aria-hidden /> 已取得徽章
+                    <CheckCircle2 className="h-3.5 w-3.5" aria-hidden /> {t('research.earned')}
                   </span>
                 ) : (
                   q.demo && <DemoBadge />
@@ -71,7 +73,7 @@ export function ResearchLab() {
               <p className="text-lg font-bold text-slate-900">{q.title}</p>
               <p className="text-sm text-slate-500">{q.subtitle}</p>
               <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 group-hover:underline">
-                {completed ? '再挑戰' : '開始任務'} · 約 {q.minutes} 分鐘
+                {completed ? t('research.retry') : t('research.start')} · {t('common.aboutMin', { n: q.minutes })}
                 <ChevronRight className="h-4 w-4" aria-hidden />
               </span>
             </button>
@@ -87,7 +89,7 @@ export function ResearchLab() {
           className="flex w-full items-center justify-between text-left"
         >
           <span className="flex items-center gap-2 font-bold text-slate-900">
-            <PenLine className="h-5 w-5 text-blue-600" aria-hidden /> 費德曼寫作工作台（AI 回饋）
+            <PenLine className="h-5 w-5 text-blue-600" aria-hidden /> {t('research.feldmanBench')}
           </span>
           <ChevronRight className={`h-5 w-5 text-slate-400 ${writer ? 'rotate-90' : ''}`} aria-hidden />
         </button>

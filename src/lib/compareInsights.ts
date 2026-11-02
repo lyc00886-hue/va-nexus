@@ -1,4 +1,5 @@
 import type { Artist, ArtistPair } from '../types'
+import { getLocale, t } from '../i18n'
 
 export type CompareRow = {
   aspect: string
@@ -8,6 +9,8 @@ export type CompareRow = {
 }
 
 export type SbaTip = {
+  /** stable id (composition / concept / medium / reflection) */
+  id: 'composition' | 'concept' | 'medium' | 'reflection'
   title: string
   body: string
 }
@@ -72,21 +75,21 @@ function concept(a: Artist) {
 function cultureLabel(a: Artist) {
   const g = a.culture_group ?? ''
   const map: Record<string, string> = {
-    Western: '西方藝術脈絡',
-    HK_Local: '香港本地脈絡',
-    CN_HK: '中港水墨／現代脈絡',
-    Chinese_Contemporary: '華人當代脈絡',
+    Western: t('ci.culture.western'),
+    HK_Local: t('ci.culture.hk'),
+    CN_HK: t('ci.culture.cnhk'),
+    Chinese_Contemporary: t('ci.culture.chinese'),
   }
   if (map[g]) return map[g]
   if (g) return g
-  return a.region === 'west' ? '西方藝術脈絡' : '東方／華人藝術脈絡'
+  return a.region === 'west' ? t('ci.culture.western') : t('ci.culture.east')
 }
 
 export function buildCompareRows(pair: ArtistPair, east: Artist, west: Artist): CompareRow[] {
   const sharedTags = exactOverlap(east.themes, west.themes)
   const sharedTraits = exactOverlap(east.style_keywords, west.style_keywords)
   const kw = keywordOverlap(east, west).filter(
-    (k) => !sharedTags.some((t) => norm(t) === norm(k)) && !sharedTraits.some((t) => norm(t) === norm(k)),
+    (k) => !sharedTags.some((x) => norm(x) === norm(k)) && !sharedTraits.some((x) => norm(x) === norm(k)),
   )
   const matrix = matrixLists(pair.comparison_matrix)
 
@@ -97,38 +100,42 @@ export function buildCompareRows(pair: ArtistPair, east: Artist, west: Artist): 
 
   const rows: CompareRow[] = [
     {
-      aspect: '主題',
-      shared: uniq([`同樣回應「${pair.theme}」`, ...sharedTags.map((t) => `都關注「${t}」`), ...matrix.shared]),
+      aspect: t('ci.aspect.theme'),
+      shared: uniq([
+        t('ci.shared.theme', { theme: pair.theme }),
+        ...sharedTags.map((x) => t('ci.shared.tag', { x })),
+        ...matrix.shared,
+      ]),
       east: uniqueOf(east.themes, sharedTags),
       west: uniqueOf(west.themes, sharedTags),
     },
     {
-      aspect: '形式／技法',
+      aspect: t('ci.aspect.form'),
       shared: uniq([
-        ...sharedTraits.map((t) => `都用「${t}」`),
-        ...kw.map((k) => `都涉及「${k}」`),
+        ...sharedTraits.map((x) => t('ci.shared.trait', { x })),
+        ...kw.map((x) => t('ci.shared.keyword', { x })),
       ]),
       east: uniqueOf(east.style_keywords, sharedTraits),
       west: uniqueOf(west.style_keywords, sharedTraits),
     },
     {
-      aspect: '媒介',
+      aspect: t('ci.aspect.medium'),
       shared: sameMedium
-        ? [`同樣用「${east.medium}」`]
+        ? [t('ci.shared.medium', { x: east.medium })]
         : pair.medium
-          ? [`配對媒介：${pair.medium}`]
+          ? [t('ci.pairMedium', { x: pair.medium })]
           : [],
       east: east.medium && !sameMedium ? [east.medium] : [],
       west: west.medium && !sameMedium ? [west.medium] : [],
     },
     {
-      aspect: '觀念',
-      shared: ['都以視覺形式表達內在感受／對生活嘅觀察'],
+      aspect: t('ci.aspect.concept'),
+      shared: [t('ci.shared.concept')],
       east: concept(east) ? [concept(east)] : [],
       west: concept(west) ? [concept(west)] : [],
     },
     {
-      aspect: '文化背景',
+      aspect: t('ci.aspect.culture'),
       shared: [],
       east: [cultureLabel(east)],
       west: [cultureLabel(west)],
@@ -136,17 +143,17 @@ export function buildCompareRows(pair: ArtistPair, east: Artist, west: Artist): 
   ]
 
   if (matrix.diff.length) {
-    rows.push({ aspect: '對比重點', shared: [], east: matrix.diff, west: [] })
+    rows.push({ aspect: t('ci.aspect.focus'), shared: [], east: matrix.diff, west: [] })
   }
 
   return rows.map((r) => ({
     ...r,
-    shared: r.shared.length ? r.shared : ['（未有明顯共同點，可作對比切入）'],
+    shared: r.shared.length ? r.shared : [t('ci.shared.none')],
   }))
 }
 
 function displayName(a: Artist) {
-  return a.name_zh || a.name_en
+  return getLocale() === 'en' ? a.name_en || a.name_zh : a.name_zh || a.name_en
 }
 
 export function buildSbaTips(pair: ArtistPair, east: Artist, west: Artist): SbaTip[] {
@@ -161,24 +168,31 @@ export function buildSbaTips(pair: ArtistPair, east: Artist, west: Artist): SbaT
 
   const tips: SbaTip[] = [
     {
-      title: '構圖借鑑',
-      body: et && wt
-        ? `參考${W}嘅「${wt}」去安排畫面結構，再加入${E}嘅「${et}」，用喺你自己嘅香港日常場景。先畫 3 張細稿比較。`
-        : `比較${W}同${E}點樣安排主體同空間，揀一種構圖方法畫 3 張細稿。`,
+      id: 'composition',
+      title: t('ci.tip.composition'),
+      body: et && wt ? t('ci.tip.composition.body', { W, E, wt, et }) : t('ci.tip.composition.alt', { W, E }),
     },
     {
-      title: '概念轉化',
-      body: `由「${pair.theme}」出發，揀一個你身邊真實嘅經驗（例如屋企、返學路、社區）。${E}關注「${eTag}」，${W}關注「${wTag}」——你會點講你自己嘅版本？`,
+      id: 'concept',
+      title: t('ci.tip.concept'),
+      body: t('ci.tip.concept.body', { theme: pair.theme, E, W, eTag, wTag }),
     },
     {
-      title: '技法／媒介實驗',
-      body: et2 && wt2
-        ? `做一張物料實驗：試「${wt2}」同「${et2}」，記錄效果同感覺${pair.medium ? `（配對媒介：${pair.medium}）` : ''}，貼入 SBA 過程紀錄。`
-        : `用兩種唔同媒介試同一個構圖，記錄效果，貼入 SBA 過程紀錄。`,
+      id: 'medium',
+      title: t('ci.tip.medium'),
+      body:
+        et2 && wt2
+          ? t('ci.tip.medium.body', {
+              wt2,
+              et2,
+              medium: pair.medium ? t('ci.tip.medium.pair', { x: pair.medium }) : '',
+            })
+          : t('ci.tip.medium.alt'),
     },
     {
-      title: '反思寫作',
-      body: `喺 SBA 寫明：我由${E}／${W}借咗乜（構圖、概念或技法），改咗乜，點解適合我嘅主題。避免直接模仿佢哋嘅畫風或代表作。`,
+      id: 'reflection',
+      title: t('ci.tip.reflection'),
+      body: t('ci.tip.reflection.body', { E, W }),
     },
   ]
   return tips

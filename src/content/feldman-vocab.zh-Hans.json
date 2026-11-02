@@ -1,0 +1,428 @@
+[
+ {
+  "colloquial": "好漂亮",
+  "term": "具视觉吸引力／和谐统一",
+  "stage": "judge",
+  "example": "口语：“这幅画好漂亮”→ 术语：“作品呈现具视觉吸引力”"
+ },
+ {
+  "colloquial": "好棒",
+  "term": "具视觉吸引力／和谐统一",
+  "stage": "judge",
+  "example": "口语：“这幅画好棒”→ 术语：“作品呈现具视觉吸引力”"
+ },
+ {
+  "colloquial": "很好看",
+  "term": "具视觉吸引力／和谐统一",
+  "stage": "judge",
+  "example": "口语：“这幅画很好看”→ 术语：“作品呈现具视觉吸引力”"
+ },
+ {
+  "colloquial": "好乱",
+  "term": "构图繁复／元素密集",
+  "stage": "analyse",
+  "example": "口语：“这幅画好乱”→ 术语：“作品呈现构图繁复”"
+ },
+ {
+  "colloquial": "好多东西",
+  "term": "构图繁复／元素密集",
+  "stage": "analyse",
+  "example": "口语：“这幅画好多东西”→ 术语：“作品呈现构图繁复”"
+ },
+ {
+  "colloquial": "好空",
+  "term": "留白／负空间",
+  "stage": "analyse",
+  "example": "口语：“这幅画好空”→ 术语：“作品呈现留白”"
+ },
+ {
+  "colloquial": "什么都没有",
+  "term": "留白／负空间",
+  "stage": "analyse",
+  "example": "口语：“这幅画什么都没有”→ 术语：“作品呈现留白”"
+ },
+ {
+  "colloquial": "好鲜艳",
+  "term": "高彩度／鲜明色彩",
+  "stage": "describe",
+  "example": "口语：“这幅画好鲜艳”→ 术语：“作品呈现高彩度”"
+ },
+ {
+  "colloquial": "好抢眼",
+  "term": "高彩度／鲜明色彩",
+  "stage": "describe",
+  "example": "口语：“这幅画好抢眼”→ 术语：“作品呈现高彩度”"
+ },
+ {
+  "colloquial": "亮得刺眼",
+  "term": "高彩度／鲜明色彩",
+  "stage": "describe",
+  "example": "口语：“这幅画亮得刺眼”→ 术语：“作品呈现高彩度”"
+ },
+ {
+  "colloquial": "灰灰的",
+  "term": "低彩度／暗调",
+  "stage": "describe",
+  "example": "口语：“这幅画灰灰的”→ 术语：“作品呈现低彩度”"
+ },
+ {
+  "colloquial": "暗暗的",
+  "term": "低彩度／暗调",
+  "stage": "describe",
+  "example": "口语：“这幅画暗暗的”→ 术语：“作品呈现低彩度”"
+ },
+ {
+  "colloquial": "好沉闷",
+  "term": "低彩度／暗调",
+  "stage": "describe",
+  "example": "口语：“这幅画好沉闷”→ 术语：“作品呈现低彩度”"
+ },
+ {
+  "colloquial": "冷冰冰",
+  "term": "冷色调",
+  "stage": "describe",
+  "example": "口语：“这幅画冷冰冰”→ 术语：“作品呈现冷色调”"
+ },
+ {
+  "colloquial": "蓝蓝的好冷",
+  "term": "冷色调",
+  "stage": "describe",
+  "example": "口语：“这幅画蓝蓝的好冷”→ 术语：“作品呈现冷色调”"
+ },
+ {
+  "colloquial": "暖洋洋",
+  "term": "暖色调",
+  "stage": "describe",
+  "example": "口语：“这幅画暖洋洋”→ 术语：“作品呈现暖色调”"
+ },
+ {
+  "colloquial": "红红黄黄的",
+  "term": "暖色调",
+  "stage": "describe",
+  "example": "口语：“这幅画红红黄黄的”→ 术语：“作品呈现暖色调”"
+ },
+ {
+  "colloquial": "深浅差好多",
+  "term": "明暗对比强烈",
+  "stage": "analyse",
+  "example": "口语：“这幅画深浅差好多”→ 术语：“作品呈现明暗对比强烈”"
+ },
+ {
+  "colloquial": "黑白好分明",
+  "term": "明暗对比强烈",
+  "stage": "analyse",
+  "example": "口语：“这幅画黑白好分明”→ 术语：“作品呈现明暗对比强烈”"
+ },
+ {
+  "colloquial": "一眼就看到",
+  "term": "视觉焦点",
+  "stage": "analyse",
+  "example": "口语：“这幅画一眼就看到”→ 术语：“作品呈现视觉焦点”"
+ },
+ {
+  "colloquial": "最抢眼的地方",
+  "term": "视觉焦点",
+  "stage": "analyse",
+  "example": "口语：“这幅画最抢眼的地方”→ 术语：“作品呈现视觉焦点”"
+ },
+ {
+  "colloquial": "两边差不多",
+  "term": "对称平衡",
+  "stage": "analyse",
+  "example": "口语：“这幅画两边差不多”→ 术语：“作品呈现对称平衡”"
+ },
+ {
+  "colloquial": "对称",
+  "term": "对称平衡",
+  "stage": "analyse",
+  "example": "口语：“这幅画对称”→ 术语：“作品呈现对称平衡”"
+ },
+ {
+  "colloquial": "一边重一边轻",
+  "term": "不对称平衡",
+  "stage": "analyse",
+  "example": "口语：“这幅画一边重一边轻”→ 术语：“作品呈现不对称平衡”"
+ },
+ {
+  "colloquial": "重重复复",
+  "term": "重复与节奏",
+  "stage": "analyse",
+  "example": "口语：“这幅画重重复复”→ 术语：“作品呈现重复与节奏”"
+ },
+ {
+  "colloquial": "一直出现",
+  "term": "重复与节奏",
+  "stage": "analyse",
+  "example": "口语：“这幅画一直出现”→ 术语：“作品呈现重复与节奏”"
+ },
+ {
+  "colloquial": "好远好深",
+  "term": "空间深度／透视",
+  "stage": "analyse",
+  "example": "口语：“这幅画好远好深”→ 术语：“作品呈现空间深度”"
+ },
+ {
+  "colloquial": "好像能看进去",
+  "term": "空间深度／透视",
+  "stage": "analyse",
+  "example": "口语：“这幅画好像能看进去”→ 术语：“作品呈现空间深度”"
+ },
+ {
+  "colloquial": "平平的",
+  "term": "平面化处理",
+  "stage": "analyse",
+  "example": "口语：“这幅画平平的”→ 术语：“作品呈现平面化处理”"
+ },
+ {
+  "colloquial": "没有立体感",
+  "term": "平面化处理",
+  "stage": "analyse",
+  "example": "口语：“这幅画没有立体感”→ 术语：“作品呈现平面化处理”"
+ },
+ {
+  "colloquial": "粗粗的",
+  "term": "肌理／质感",
+  "stage": "describe",
+  "example": "口语：“这幅画粗粗的”→ 术语：“作品呈现肌理”"
+ },
+ {
+  "colloquial": "凹凸不平",
+  "term": "肌理／质感",
+  "stage": "describe",
+  "example": "口语：“这幅画凹凸不平”→ 术语：“作品呈现肌理”"
+ },
+ {
+  "colloquial": "摸起来会刮手",
+  "term": "肌理／质感",
+  "stage": "describe",
+  "example": "口语：“这幅画摸起来会刮手”→ 术语：“作品呈现肌理”"
+ },
+ {
+  "colloquial": "笔触好用力",
+  "term": "奔放笔触",
+  "stage": "describe",
+  "example": "口语：“这幅画笔触好用力”→ 术语：“作品呈现奔放笔触”"
+ },
+ {
+  "colloquial": "扫得乱七八糟",
+  "term": "奔放笔触",
+  "stage": "describe",
+  "example": "口语：“这幅画扫得乱七八糟”→ 术语：“作品呈现奔放笔触”"
+ },
+ {
+  "colloquial": "好细",
+  "term": "细腻笔触／工笔",
+  "stage": "describe",
+  "example": "口语：“这幅画好细”→ 术语：“作品呈现细腻笔触”"
+ },
+ {
+  "colloquial": "好精细",
+  "term": "细腻笔触／工笔",
+  "stage": "describe",
+  "example": "口语：“这幅画好精细”→ 术语：“作品呈现细腻笔触”"
+ },
+ {
+  "colloquial": "线条好硬",
+  "term": "几何线条",
+  "stage": "describe",
+  "example": "口语：“这幅画线条好硬”→ 术语：“作品呈现几何线条”"
+ },
+ {
+  "colloquial": "直线好多",
+  "term": "几何线条",
+  "stage": "describe",
+  "example": "口语：“这幅画直线好多”→ 术语：“作品呈现几何线条”"
+ },
+ {
+  "colloquial": "弯弯曲曲",
+  "term": "有机线条／流动感",
+  "stage": "describe",
+  "example": "口语：“这幅画弯弯曲曲”→ 术语：“作品呈现有机线条”"
+ },
+ {
+  "colloquial": "好流畅",
+  "term": "有机线条／流动感",
+  "stage": "describe",
+  "example": "口语：“这幅画好流畅”→ 术语：“作品呈现有机线条”"
+ },
+ {
+  "colloquial": "晕开了",
+  "term": "晕染／水墨渲染",
+  "stage": "describe",
+  "example": "口语：“这幅画晕开了”→ 术语：“作品呈现晕染”"
+ },
+ {
+  "colloquial": "湿湿的",
+  "term": "晕染／水墨渲染",
+  "stage": "describe",
+  "example": "口语：“这幅画湿湿的”→ 术语：“作品呈现晕染”"
+ },
+ {
+  "colloquial": "朦朦胧胧",
+  "term": "模糊／半抽象",
+  "stage": "describe",
+  "example": "口语：“这幅画朦朦胧胧”→ 术语：“作品呈现模糊”"
+ },
+ {
+  "colloquial": "看不清",
+  "term": "模糊／半抽象",
+  "stage": "describe",
+  "example": "口语：“这幅画看不清”→ 术语：“作品呈现模糊”"
+ },
+ {
+  "colloquial": "不知道画的什么",
+  "term": "抽象表现",
+  "stage": "describe",
+  "example": "口语：“这幅画不知道画的什么”→ 术语：“作品呈现抽象表现”"
+ },
+ {
+  "colloquial": "只有颜色",
+  "term": "抽象表现",
+  "stage": "describe",
+  "example": "口语：“这幅画只有颜色”→ 术语：“作品呈现抽象表现”"
+ },
+ {
+  "colloquial": "好像真的",
+  "term": "写实手法",
+  "stage": "describe",
+  "example": "口语：“这幅画好像真的”→ 术语：“作品呈现写实手法”"
+ },
+ {
+  "colloquial": "好像照片",
+  "term": "写实手法",
+  "stage": "describe",
+  "example": "口语：“这幅画好像照片”→ 术语：“作品呈现写实手法”"
+ },
+ {
+  "colloquial": "好孤独",
+  "term": "疏离感／孤寂氛围",
+  "stage": "interpret",
+  "example": "口语：“这幅画好孤独”→ 术语：“作品呈现疏离感”"
+ },
+ {
+  "colloquial": "只有他一个",
+  "term": "疏离感／孤寂氛围",
+  "stage": "interpret",
+  "example": "口语：“这幅画只有他一个”→ 术语：“作品呈现疏离感”"
+ },
+ {
+  "colloquial": "好恐怖",
+  "term": "超现实／不安感",
+  "stage": "interpret",
+  "example": "口语：“这幅画好恐怖”→ 术语：“作品呈现超现实”"
+ },
+ {
+  "colloquial": "好诡异",
+  "term": "超现实／不安感",
+  "stage": "interpret",
+  "example": "口语：“这幅画好诡异”→ 术语：“作品呈现超现实”"
+ },
+ {
+  "colloquial": "好平静",
+  "term": "宁静氛围／沉思性",
+  "stage": "interpret",
+  "example": "口语：“这幅画好平静”→ 术语：“作品呈现宁静氛围”"
+ },
+ {
+  "colloquial": "好舒服",
+  "term": "宁静氛围／沉思性",
+  "stage": "interpret",
+  "example": "口语：“这幅画好舒服”→ 术语：“作品呈现宁静氛围”"
+ },
+ {
+  "colloquial": "好生气",
+  "term": "强烈情感张力",
+  "stage": "interpret",
+  "example": "口语：“这幅画好生气”→ 术语：“作品呈现强烈情感张力”"
+ },
+ {
+  "colloquial": "好激动",
+  "term": "强烈情感张力",
+  "stage": "interpret",
+  "example": "口语：“这幅画好激动”→ 术语：“作品呈现强烈情感张力”"
+ },
+ {
+  "colloquial": "讽刺",
+  "term": "反讽／批判意味",
+  "stage": "interpret",
+  "example": "口语：“这幅画讽刺”→ 术语：“作品呈现反讽”"
+ },
+ {
+  "colloquial": "在恶搞",
+  "term": "反讽／批判意味",
+  "stage": "interpret",
+  "example": "口语：“这幅画在恶搞”→ 术语：“作品呈现反讽”"
+ },
+ {
+  "colloquial": "在代表什么",
+  "term": "象征意义",
+  "stage": "interpret",
+  "example": "口语：“这幅画在代表什么”→ 术语：“作品呈现象征意义”"
+ },
+ {
+  "colloquial": "有意思",
+  "term": "象征意义",
+  "stage": "interpret",
+  "example": "口语：“这幅画有意思”→ 术语：“作品呈现象征意义”"
+ },
+ {
+  "colloquial": "中西混在一起",
+  "term": "中西融合",
+  "stage": "interpret",
+  "example": "口语：“这幅画中西混在一起”→ 术语：“作品呈现中西融合”"
+ },
+ {
+  "colloquial": "又中又西",
+  "term": "中西融合",
+  "stage": "interpret",
+  "example": "口语：“这幅画又中又西”→ 术语：“作品呈现中西融合”"
+ },
+ {
+  "colloquial": "好多人都在用",
+  "term": "大众文化／消费主义",
+  "stage": "interpret",
+  "example": "口语：“这幅画好多人都在用”→ 术语：“作品呈现大众文化”"
+ },
+ {
+  "colloquial": "好商业",
+  "term": "大众文化／消费主义",
+  "stage": "interpret",
+  "example": "口语：“这幅画好商业”→ 术语：“作品呈现大众文化”"
+ },
+ {
+  "colloquial": "抄他的",
+  "term": "借鉴其构图或概念（非模仿画风）",
+  "stage": "judge",
+  "example": "口语：“这幅画抄他的”→ 术语：“作品呈现借鉴其构图或概念（非模仿画风）”"
+ },
+ {
+  "colloquial": "学他那样画",
+  "term": "借鉴其构图或概念（非模仿画风）",
+  "stage": "judge",
+  "example": "口语：“这幅画学他那样画”→ 术语：“作品呈现借鉴其构图或概念（非模仿画风）”"
+ },
+ {
+  "colloquial": "好用心",
+  "term": "具原创性及创意",
+  "stage": "judge",
+  "example": "口语：“这幅画好用心”→ 术语：“作品呈现具原创性及创意”"
+ },
+ {
+  "colloquial": "好新颖",
+  "term": "具原创性及创意",
+  "stage": "judge",
+  "example": "口语：“这幅画好新颖”→ 术语：“作品呈现具原创性及创意”"
+ },
+ {
+  "colloquial": "做得不够",
+  "term": "未能充分表达／尚有发展空间",
+  "stage": "judge",
+  "example": "口语：“这幅画做得不够”→ 术语：“作品呈现未能充分表达”"
+ },
+ {
+  "colloquial": "差一点",
+  "term": "未能充分表达／尚有发展空间",
+  "stage": "judge",
+  "example": "口语：“这幅画差一点”→ 术语：“作品呈现未能充分表达”"
+ }
+]

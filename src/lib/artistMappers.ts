@@ -1,4 +1,5 @@
 import type { Artist, ArtistPair } from '../types'
+import { t } from '../i18n'
 
 /** Raw row shapes matching Supabase public.artists / artist_pairs */
 export type DbArtist = {
@@ -78,8 +79,8 @@ export function mapDbPair(row: DbArtistPair): ArtistPair {
   const compare_prompt =
     matrixHint ||
     (row.medium
-      ? `比較兩者如何以「${row.medium}」回應主題「${row.theme}」。`
-      : `比較兩位藝術家如何處理主題「${row.theme}」。`)
+      ? t('am.prompt.medium', { medium: row.medium, theme: row.theme })
+      : t('am.prompt', { theme: row.theme }))
 
   return {
     id: row.id,

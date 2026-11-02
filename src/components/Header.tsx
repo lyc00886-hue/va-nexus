@@ -1,19 +1,51 @@
 import { Accessibility, Sparkles } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { useSen } from '../context/SenContext'
+import { LOCALE_NAME, LOCALE_SHORT, LOCALES, useT, type MessageKey } from '../i18n'
 import type { SenMode } from '../types'
 import { AuthButton } from './AuthButton'
 import { ProgressSync } from './ProgressSync'
 import { SenSettingsPanel } from './SenSettingsPanel'
 
-const MODES: { id: SenMode; label: string; hint: string }[] = [
-  { id: 'standard', label: '標準', hint: '標準顯示' },
-  { id: 'spld', label: '讀寫', hint: '讀寫支援：大字、行距、簡易版文字' },
-  { id: 'adhd', label: '專注', hint: '專注支援：專注模式、減少動畫' },
+const MODES: { id: SenMode; label: MessageKey; hint: MessageKey }[] = [
+  { id: 'standard', label: 'mode.standard', hint: 'mode.standard.hint' },
+  { id: 'spld', label: 'mode.spld', hint: 'mode.spld.hint' },
+  { id: 'adhd', label: 'mode.adhd', hint: 'mode.adhd.hint' },
 ]
+
+function LanguageSwitcher() {
+  const { locale, setLocale, t } = useT()
+  return (
+    <div
+      className="inline-flex rounded-full bg-slate-100 p-1 ring-1 ring-slate-200"
+      role="group"
+      aria-label={t('lang.switch')}
+    >
+      {LOCALES.map((l) => (
+        <button
+          key={l}
+          type="button"
+          lang={l === 'en' ? 'en' : l}
+          title={LOCALE_NAME[l]}
+          aria-label={LOCALE_NAME[l]}
+          aria-pressed={locale === l}
+          onClick={() => setLocale(l)}
+          className={
+            locale === l
+              ? 'rounded-full bg-slate-900 px-2.5 py-1 text-xs font-semibold text-white shadow'
+              : 'rounded-full px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-200'
+          }
+        >
+          {LOCALE_SHORT[l]}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export function Header() {
   const { mode, setMode } = useSen()
+  const { t } = useT()
   const [open, setOpen] = useState(false)
   const close = useCallback(() => setOpen(false), [])
 
@@ -26,21 +58,22 @@ export function Header() {
           </span>
           <div>
             <p className="text-sm font-bold tracking-tight text-slate-900">VA-Nexus AI</p>
-            <p className="text-[11px] text-slate-500">HKDSE 視覺藝術 · 藝術史 · 研究 · SBA</p>
+            <p className="text-[11px] text-slate-500">{t('header.subtitle')}</p>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
+          <LanguageSwitcher />
           <div
             className="inline-flex rounded-full bg-blue-50 p-1 ring-1 ring-blue-100"
             role="group"
-            aria-label="SEN 快速模式"
+            aria-label={t('header.senModes')}
           >
             {MODES.map((m) => (
               <button
                 key={m.id}
                 type="button"
-                title={m.hint}
+                title={t(m.hint)}
                 aria-pressed={mode === m.id}
                 onClick={() => setMode(m.id)}
                 className={
@@ -49,7 +82,7 @@ export function Header() {
                     : 'rounded-full px-3 py-1 text-xs font-medium text-slate-600 hover:bg-blue-100'
                 }
               >
-                {m.label}
+                {t(m.label)}
               </button>
             ))}
           </div>
@@ -67,7 +100,7 @@ export function Header() {
             }`}
           >
             <Accessibility className="h-3.5 w-3.5" aria-hidden />
-            無障礙設定
+            {t('header.a11y')}
           </button>
 
           <AuthButton />

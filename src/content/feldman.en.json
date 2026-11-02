@@ -1,0 +1,392 @@
+{
+ "version": 1,
+ "stages": [
+  {
+   "id": "describe",
+   "zh": "描述",
+   "en": "Description",
+   "goal": "Say objectively what you see, without judging.",
+   "frames": [
+    "This work is a ____ (type) made in ____ (medium), about ____ in size.",
+    "The picture mainly depicts ____, placed in the ____ (foreground / middle ground / background).",
+    "The artist uses a ____ colour scheme, mainly ____.",
+    "____ lines / brushstrokes / textures can be seen in the picture."
+   ],
+   "checklist": [
+    "Medium and materials",
+    "Theme / subject matter",
+    "Colour",
+    "Line and shape",
+    "Position in space"
+   ]
+  },
+  {
+   "id": "analyse",
+   "zh": "分析",
+   "en": "Analysis",
+   "goal": "Explain how the elements and principles organise the picture.",
+   "frames": [
+    "The artist uses a ____ composition to lead the eye from ____ to ____.",
+    "____ and ____ form a strong contrast, emphasising ____.",
+    "The repeated ____ creates a ____ sense of rhythm.",
+    "Large areas of blank / negative space give the picture a ____ effect."
+   ],
+   "checklist": [
+    "Composition",
+    "Contrast",
+    "Balance",
+    "Rhythm and repetition",
+    "Focal point",
+    "Space and proportion"
+   ]
+  },
+  {
+   "id": "interpret",
+   "zh": "詮釋",
+   "en": "Interpretation",
+   "goal": "Infer meaning, emotion and context.",
+   "frames": [
+    "I think the work expresses ____, because ____ (cite visual evidence).",
+    "The ____ colours create a ____ mood, which reminds us of ____.",
+    "Considering the artist's ____ (era / cultural context), the work may reflect ____.",
+    "The ____ in the work can be seen as a symbol of ____."
+   ],
+   "checklist": [
+    "Theme and ideas",
+    "Emotional mood",
+    "Symbolism",
+    "Context of creation",
+    "Must be supported by visual evidence"
+   ]
+  },
+  {
+   "id": "judge",
+   "zh": "評價",
+   "en": "Judgement",
+   "goal": "Judge how successful the work is, with reasons, and link it to your own art-making.",
+   "frames": [
+    "The work succeeds / fails in ____, because ____.",
+    "Compared with ____ (another artist), this work is more ____ in terms of ____.",
+    "The value of the work lies in ____, and it inspires ____.",
+    "In my own SBA I will borrow ____ (composition / concept / technique), rather than imitating the artist's style."
+   ],
+   "checklist": [
+    "Clear criteria for judgement",
+    "Arguments for and against",
+    "Comparison with other works",
+    "Link to your own art-making"
+   ]
+  }
+ ],
+ "vocab": [
+  {
+   "oral": [
+    "looks nice",
+    "it's awesome",
+    "nice to look at"
+   ],
+   "term": "visually appealing / harmonious and unified",
+   "stage": "judge",
+   "en": "visually compelling / unified"
+  },
+  {
+   "oral": [
+    "so messy",
+    "so much stuff"
+   ],
+   "term": "complex composition / dense elements",
+   "stage": "analyse",
+   "en": "complex, dense composition"
+  },
+  {
+   "oral": [
+    "so empty",
+    "there's nothing there"
+   ],
+   "term": "blank space / negative space",
+   "stage": "analyse",
+   "en": "negative space"
+  },
+  {
+   "oral": [
+    "super bright",
+    "really eye-catching",
+    "crazy bright"
+   ],
+   "term": "high saturation / vivid colour",
+   "stage": "describe",
+   "en": "high saturation"
+  },
+  {
+   "oral": [
+    "kinda grey",
+    "kinda dark",
+    "so gloomy"
+   ],
+   "term": "low saturation / low-key tones",
+   "stage": "describe",
+   "en": "low saturation, low key"
+  },
+  {
+   "oral": [
+    "ice-cold",
+    "bluish and chilly"
+   ],
+   "term": "cool palette",
+   "stage": "describe",
+   "en": "cool palette"
+  },
+  {
+   "oral": [
+    "nice and warm",
+    "all reds and yellows"
+   ],
+   "term": "warm palette",
+   "stage": "describe",
+   "en": "warm palette"
+  },
+  {
+   "oral": [
+    "the darks and lights are way different",
+    "the black and white really stand out"
+   ],
+   "term": "strong tonal contrast",
+   "stage": "analyse",
+   "en": "strong tonal contrast"
+  },
+  {
+   "oral": [
+    "you spot it straight away",
+    "the most eye-catching bit"
+   ],
+   "term": "focal point",
+   "stage": "analyse",
+   "en": "focal point"
+  },
+  {
+   "oral": [
+    "both sides look about the same",
+    "it's symmetrical"
+   ],
+   "term": "symmetrical balance",
+   "stage": "analyse",
+   "en": "symmetrical balance"
+  },
+  {
+   "oral": [
+    "one side's heavy, the other's light"
+   ],
+   "term": "asymmetrical balance",
+   "stage": "analyse",
+   "en": "asymmetrical balance"
+  },
+  {
+   "oral": [
+    "the same thing over and over",
+    "it keeps showing up"
+   ],
+   "term": "repetition and rhythm",
+   "stage": "analyse",
+   "en": "repetition and rhythm"
+  },
+  {
+   "oral": [
+    "it goes really far back",
+    "like you can look right into it"
+   ],
+   "term": "spatial depth / perspective",
+   "stage": "analyse",
+   "en": "depth / perspective"
+  },
+  {
+   "oral": [
+    "kinda flat",
+    "doesn't look 3D"
+   ],
+   "term": "flattened space",
+   "stage": "analyse",
+   "en": "flattened space"
+  },
+  {
+   "oral": [
+    "kinda rough",
+    "bumpy",
+    "feels scratchy to touch"
+   ],
+   "term": "texture / tactile quality",
+   "stage": "describe",
+   "en": "texture"
+  },
+  {
+   "oral": [
+    "painted really hard",
+    "brushed all over the place"
+   ],
+   "term": "expressive brushwork",
+   "stage": "describe",
+   "en": "expressive brushwork"
+  },
+  {
+   "oral": [
+    "really delicate",
+    "super detailed"
+   ],
+   "term": "fine brushwork / gongbi (meticulous style)",
+   "stage": "describe",
+   "en": "fine detail"
+  },
+  {
+   "oral": [
+    "the lines are really stiff",
+    "lots of straight lines"
+   ],
+   "term": "geometric lines",
+   "stage": "describe",
+   "en": "geometric lines"
+  },
+  {
+   "oral": [
+    "all wiggly",
+    "really flowy"
+   ],
+   "term": "organic lines / sense of flow",
+   "stage": "describe",
+   "en": "organic, flowing lines"
+  },
+  {
+   "oral": [
+    "it's all bled out",
+    "looks kinda wet"
+   ],
+   "term": "wash / ink diffusion",
+   "stage": "describe",
+   "en": "wash / bleeding ink"
+  },
+  {
+   "oral": [
+    "all hazy",
+    "can't see it clearly"
+   ],
+   "term": "blurred / semi-abstract",
+   "stage": "describe",
+   "en": "blurred / semi-abstract"
+  },
+  {
+   "oral": [
+    "no idea what it is",
+    "just a bunch of colours"
+   ],
+   "term": "abstract expression",
+   "stage": "describe",
+   "en": "abstraction"
+  },
+  {
+   "oral": [
+    "looks real",
+    "looks like a photo"
+   ],
+   "term": "realism / realistic technique",
+   "stage": "describe",
+   "en": "realism"
+  },
+  {
+   "oral": [
+    "so lonely",
+    "just one person all alone"
+   ],
+   "term": "alienation / solitary mood",
+   "stage": "interpret",
+   "en": "alienation / solitude"
+  },
+  {
+   "oral": [
+    "so scary",
+    "so creepy"
+   ],
+   "term": "surreal / sense of unease",
+   "stage": "interpret",
+   "en": "uncanny, surreal unease"
+  },
+  {
+   "oral": [
+    "so calm",
+    "so relaxing"
+   ],
+   "term": "tranquil mood / contemplative quality",
+   "stage": "interpret",
+   "en": "tranquil, contemplative"
+  },
+  {
+   "oral": [
+    "so angry",
+    "so intense"
+   ],
+   "term": "intense emotional tension",
+   "stage": "interpret",
+   "en": "emotional intensity"
+  },
+  {
+   "oral": [
+    "sarcastic",
+    "it's trolling"
+   ],
+   "term": "irony / critical intent",
+   "stage": "interpret",
+   "en": "irony / critique"
+  },
+  {
+   "oral": [
+    "it stands for something",
+    "it's deep"
+   ],
+   "term": "symbolism",
+   "stage": "interpret",
+   "en": "symbolism"
+  },
+  {
+   "oral": [
+    "Chinese and Western mixed together",
+    "kinda Chinese, kinda Western"
+   ],
+   "term": "East–West synthesis",
+   "stage": "interpret",
+   "en": "East–West synthesis"
+  },
+  {
+   "oral": [
+    "everyone uses it",
+    "so commercial"
+   ],
+   "term": "popular culture / consumerism",
+   "stage": "interpret",
+   "en": "popular culture / consumerism"
+  },
+  {
+   "oral": [
+    "copy them",
+    "paint like them"
+   ],
+   "term": "borrowing composition or concept (not copying the style)",
+   "stage": "judge",
+   "en": "appropriate concept, not style"
+  },
+  {
+   "oral": [
+    "really thoughtful",
+    "so fresh"
+   ],
+   "term": "originality and creativity",
+   "stage": "judge",
+   "en": "original, innovative"
+  },
+  {
+   "oral": [
+    "not done enough",
+    "almost there"
+   ],
+   "term": "underdeveloped / room for development",
+   "stage": "judge",
+   "en": "underdeveloped"
+  }
+ ]
+}

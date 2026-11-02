@@ -8,10 +8,11 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import { ALL_NODES, UNITS } from '../game/curriculum'
-import { RESEARCH_QUESTS } from '../game/research'
+import { getAllNodes, getUnits } from '../game/curriculum'
+import { getResearchQuests } from '../game/research'
+import { t } from '../i18n'
 import {
-  BADGE_BY_ID,
+  getBadgeById,
   levelFor,
   masteryFor,
   PASS_ACCURACY,
@@ -83,7 +84,7 @@ function touchStreak(s: GameStateV1): GameStateV1 {
   const yesterday = hktDate(Date.now() - 24 * 3600 * 1000)
   const count = s.streak.lastDate === yesterday ? s.streak.count + 1 : 1
   const next = { ...s, streak: { count, best: Math.max(s.streak.best, count), lastDate: today } }
-  return count > 1 ? pushActivity(next, entry('streak', `連續學習 ${count} 天`)) : next
+  return count > 1 ? pushActivity(next, entry('streak', t('activity.streak', { n: count }))) : next
 }
 
 function addXp(s: GameStateV1, amount: number): GameStateV1 {
@@ -92,30 +93,30 @@ function addXp(s: GameStateV1, amount: number): GameStateV1 {
   let next: GameStateV1 = { ...s, xp: s.xp + amount }
   next = touchStreak(next)
   const after = levelFor(next.xp)
-  if (after.level > before) next = pushActivity(next, entry('level', `升級！Lv.${after.level} ${after.title}`))
+  if (after.level > before) next = pushActivity(next, entry('level', t('activity.levelUp', { n: after.level, title: after.title })))
   return next
 }
 
 function grantBadge(s: GameStateV1, id: string, out: string[]): GameStateV1 {
   if (s.badges[id]) return s
-  const def = BADGE_BY_ID.get(id)
+  const def = getBadgeById().get(id)
   out.push(id)
   return pushActivity(
     { ...s, badges: { ...s.badges, [id]: Date.now() } },
-    entry('badge', `解鎖新成就：${def?.title ?? id}`),
+    entry('badge', t('activity.badge', { title: def?.title ?? id })),
   )
 }
 
 function checkBadges(s: GameStateV1, out: string[]): GameStateV1 {
   let n = s
   const done = (id: string) => n.nodes[id]?.completed
-  if (ALL_NODES.some((x) => done(x.id))) n = grantBadge(n, 'first-lesson', out)
-  for (const u of UNITS) if (u.nodes.every((x) => done(x.id))) n = grantBadge(n, `unit-${u.id}`, out)
+  if (getAllNodes().some((x) => done(x.id))) n = grantBadge(n, 'first-lesson', out)
+  for (const u of getUnits()) if (u.nodes.every((x) => done(x.id))) n = grantBadge(n, `unit-${u.id}`, out)
   if (Object.values(n.nodes).some((p) => masteryFor(p) === 'mastered')) n = grantBadge(n, 'mastery', out)
   if (n.streak.count >= 3) n = grantBadge(n, 'streak-3', out)
   if (n.streak.count >= 7) n = grantBadge(n, 'streak-7', out)
   if (n.xp >= 500) n = grantBadge(n, 'xp-500', out)
-  for (const q of RESEARCH_QUESTS) if (n.quests[q.id]?.completed) n = grantBadge(n, q.badgeId, out)
+  for (const q of getResearchQuests()) if (n.quests[q.id]?.completed) n = grantBadge(n, q.badgeId, out)
   const sbaSteps = Object.keys(n.awarded).filter((k) => k.startsWith('sba-step-')).length
   if (sbaSteps >= 1) n = grantBadge(n, 'sba-starter', out)
   if (sbaSteps >= 6) n = grantBadge(n, 'sba-complete', out)
@@ -207,7 +208,11 @@ export function GameProvider({ children }: { children: ReactNode }) {
       if (perfect) s = grantBadge(s, 'perfect-quiz', newBadges)
       s = pushActivity(
         s,
-        entry(kind, `${passed ? '完成' : '練習'}「${title}」（${Math.round(result.accuracy * 100)}%）`, xp),
+        entry(
+          kind,
+          t(passed ? 'activity.completed' : 'activity.practised', { title, pct: Math.round(result.accuracy * 100) }),
+          xp,
+        ),
       )
       s = addXp(s, xp)
       s = checkBadges(s, newBadges)
@@ -247,7 +252,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
     const yesterday = hktDate(Date.now() - 24 * 3600 * 1000)
     const alive = state.streak.lastDate === today || state.streak.lastDate === yesterday
     const isUnlocked = (nodeId: string) => {
-      for (const u of UNITS) {
+      for (const u of getUnits()) {
         const i = u.nodes.findIndex((n) => n.id === nodeId)
         if (i === -1) continue
         if (i === 0) return true
@@ -255,6 +260,7 @@ export function GameProvider({ children }: { children: ReactNode }) {
       }
       return false
     }
+    const ALL_NODES = getAllNodes()
     const completedCount = ALL_NODES.filter((n) => state.nodes[n.id]?.completed).length
     const current = ALL_NODES.find((n) => isUnlocked(n.id) && !state.nodes[n.id]?.completed)
     return {

@@ -14,7 +14,8 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { useGame, type FinishOutcome } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { useSenSupport } from '../../context/SenSupportContext'
-import { BADGE_BY_ID, MASTERY_HINT, MASTERY_LABEL } from '../../game/rewards'
+import { getBadgeById, masteryHint, masteryLabel } from '../../game/rewards'
+import { getLocale, joinList, t } from '../../i18n'
 import type {
   FillQuestion,
   Lesson,
@@ -139,7 +140,8 @@ export function LessonPlayer({
     reportSignal({ kind: 'session-reset' })
   }
 
-  const cardText = card ? `${card.title}。${easyRead ? card.easy.join('。') : card.body}` : ''
+  const sep = getLocale() === 'en' ? '. ' : '。'
+  const cardText = card ? `${card.title}${sep}${easyRead ? card.easy.join(sep) : card.body}` : ''
 
   return (
     <div className={`mx-auto max-w-2xl space-y-4 ${easyRead ? 'leading-loose' : ''}`}>
@@ -149,7 +151,7 @@ export function LessonPlayer({
           type="button"
           onClick={onExit}
           className="rounded-full p-2 text-slate-500 hover:bg-slate-100"
-          aria-label="離開課堂"
+          aria-label={t('lp.exit')}
         >
           <X className="h-5 w-5" />
         </button>
@@ -159,7 +161,7 @@ export function LessonPlayer({
           aria-valuenow={Math.round(progress)}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label="課堂進度"
+          aria-label={t('lp.progress')}
         >
           <div
             className={`h-full rounded-full bg-emerald-500 ${motion ? 'transition-all duration-500' : ''}`}
@@ -167,15 +169,15 @@ export function LessonPlayer({
           />
         </div>
         {heartsOn ? (
-          <span className="inline-flex items-center gap-1 text-sm font-bold text-rose-500" aria-label={`心心 ${hearts}`}>
+          <span className="inline-flex items-center gap-1 text-sm font-bold text-rose-500" aria-label={t('lp.hearts', { n: hearts })}>
             <Heart className="h-5 w-5 fill-rose-500" aria-hidden /> {hearts}
           </span>
         ) : (
           <span
             className="inline-flex items-center gap-1 text-xs text-slate-400"
-            title={supportsOn ? '支援模式已開：唔計心心' : '心心已關閉'}
+            title={supportsOn ? t('lp.heartsOffSupport') : t('lp.heartsOff')}
           >
-            <HeartOff className="h-4 w-4" aria-hidden /> 無限
+            <HeartOff className="h-4 w-4" aria-hidden /> {t('lp.unlimited')}
           </span>
         )}
       </div>
@@ -183,7 +185,7 @@ export function LessonPlayer({
       <div className="flex flex-wrap items-center gap-2">
         <h2 className="text-lg font-bold text-slate-900">{lesson.title}</h2>
         {lesson.demo && <DemoBadge />}
-        <span className="text-xs text-slate-500">約 {lesson.minutes} 分鐘</span>
+        <span className="text-xs text-slate-500">{t('common.aboutMin', { n: lesson.minutes })}</span>
       </div>
 
       {phase === 'cards' && card && (
@@ -194,7 +196,7 @@ export function LessonPlayer({
           >
             <div className="flex items-start justify-between gap-3">
               <p className="text-xs font-semibold text-blue-600">
-                短課 {cardIdx + 1} / {lesson.cards.length}
+                {t('lp.card', { i: cardIdx + 1, n: lesson.cards.length })}
               </p>
               <ReadAloudButton text={cardText} auto={settings.readAloud} autoKey={`${lesson.id}-${cardIdx}`} small />
             </div>
@@ -219,14 +221,14 @@ export function LessonPlayer({
               onClick={() => setCardIdx((i) => i - 1)}
               className="inline-flex items-center gap-1.5 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 disabled:opacity-40"
             >
-              <ArrowLeft className="h-4 w-4" aria-hidden /> 上一張
+              <ArrowLeft className="h-4 w-4" aria-hidden /> {t('lp.prev')}
             </button>
             <button
               type="button"
               onClick={() => (cardIdx < lesson.cards.length - 1 ? setCardIdx((i) => i + 1) : setPhase('quiz'))}
               className="inline-flex items-center gap-1.5 rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_#1d4ed8] hover:bg-blue-500 active:translate-y-0.5 active:shadow-none"
             >
-              {cardIdx < lesson.cards.length - 1 ? '下一張' : '開始小測'}
+              {cardIdx < lesson.cards.length - 1 ? t('lp.next') : t('lp.startQuiz')}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </button>
           </div>
@@ -238,8 +240,8 @@ export function LessonPlayer({
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
             <div className="flex items-start justify-between gap-3">
               <p className="text-xs font-semibold text-violet-600">
-                小測 · {question.type === 'mcq' ? '選擇題' : question.type === 'fill' ? '填充題' : '配對題'}
-                {question.id in firstTry && !feedback ? '（再試一次）' : ''}
+                {t('lp.quiz')} · {t(question.type === 'mcq' ? 'lp.mcq' : question.type === 'fill' ? 'lp.fill' : 'lp.match')}
+                {question.id in firstTry && !feedback ? t('lp.retry') : ''}
               </p>
               <ReadAloudButton text={questionSpeech(question)} small />
             </div>
@@ -266,7 +268,7 @@ export function LessonPlayer({
                   <RotateCcw className="mt-0.5 h-5 w-5 shrink-0 text-rose-600" aria-hidden />
                 )}
                 <div>
-                  <p className="font-bold">{feedback.correct ? '答啱！' : '未啱，呢題稍後會再出現'}</p>
+                  <p className="font-bold">{feedback.correct ? t('lp.correct') : t('lp.wrong')}</p>
                   <p className="text-sm">{feedback.explain}</p>
                 </div>
               </div>
@@ -278,7 +280,7 @@ export function LessonPlayer({
                   feedback.correct ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-rose-600 hover:bg-rose-500'
                 }`}
               >
-                繼續
+                {t('lp.continue')}
               </button>
             </div>
           )}
@@ -288,9 +290,9 @@ export function LessonPlayer({
       {phase === 'rest' && (
         <div className="rounded-3xl border border-rose-100 bg-white p-6 text-center shadow-sm">
           <Heart className="mx-auto h-10 w-10 text-rose-400" aria-hidden />
-          <h3 className="mt-2 text-lg font-bold text-slate-900">休息一下都得 🙂</h3>
+          <h3 className="mt-2 text-lg font-bold text-slate-900">{t('lp.rest.title')}</h3>
           <p className="mt-1 text-sm text-slate-600">
-            心心用晒唔代表失敗。你可以返去溫習短課卡（心心會補返），或者直接繼續練習。
+            {t('lp.rest.text')}
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             <button
@@ -302,7 +304,7 @@ export function LessonPlayer({
               }}
               className="rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500"
             >
-              溫習短課卡
+              {t('lp.rest.review')}
             </button>
             <button
               type="button"
@@ -312,7 +314,7 @@ export function LessonPlayer({
               }}
               className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
-              繼續練習
+              {t('lp.rest.continue')}
             </button>
           </div>
         </div>
@@ -323,7 +325,7 @@ export function LessonPlayer({
           <div className="rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
             <Trophy className={`mx-auto h-12 w-12 text-amber-500 ${motion ? 'animate-bounce' : ''}`} aria-hidden />
             <h3 className="mt-2 text-xl font-bold text-slate-900">
-              {outcome.passed ? (kind === 'lesson' ? '完成課堂！' : '任務完成！') : '練習完成'}
+              {outcome.passed ? (kind === 'lesson' ? t('lp.res.lesson') : t('lp.res.quest')) : t('lp.res.practice')}
             </h3>
             <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
               <div className="rounded-2xl bg-amber-50 p-3">
@@ -332,24 +334,24 @@ export function LessonPlayer({
               </div>
               <div className="rounded-2xl bg-emerald-50 p-3">
                 <Check className="mx-auto h-5 w-5 text-emerald-600" aria-hidden />
-                <p className="mt-1 font-bold text-emerald-700">{Math.round(result.accuracy * 100)}% 一次答啱</p>
+                <p className="mt-1 font-bold text-emerald-700">{t('lp.res.firstTry', { n: Math.round(result.accuracy * 100) })}</p>
               </div>
               <div className="rounded-2xl bg-blue-50 p-3">
                 <Sparkles className="mx-auto h-5 w-5 text-blue-600" aria-hidden />
-                <p className="mt-1 font-bold text-blue-700">{MASTERY_LABEL[outcome.mastery]}</p>
+                <p className="mt-1 font-bold text-blue-700">{masteryLabel(outcome.mastery)}</p>
               </div>
             </div>
-            {kind === 'lesson' && <p className="mt-3 text-xs text-slate-500">{MASTERY_HINT[outcome.mastery]}</p>}
+            {kind === 'lesson' && <p className="mt-3 text-xs text-slate-500">{masteryHint(outcome.mastery)}</p>}
             {!outcome.passed && (
-              <p className="mt-2 text-sm text-slate-600">一次答啱六成或以上就會解鎖下一課，慢慢嚟。</p>
+              <p className="mt-2 text-sm text-slate-600">{t('lp.res.unlockHint')}</p>
             )}
             {outcome.newBadges.length > 0 && (
               <div className="mt-4 rounded-2xl bg-violet-50 p-3 text-sm text-violet-900">
-                <p className="font-bold">解鎖新成就！</p>
+                <p className="font-bold">{t('lp.res.newBadge')}</p>
                 <p>
-                  {outcome.newBadges
-                    .map((b) => `${BADGE_BY_ID.get(b)?.emoji ?? ''} ${BADGE_BY_ID.get(b)?.title ?? b}`)
-                    .join('、')}
+                  {joinList(
+                    outcome.newBadges.map((b) => `${getBadgeById().get(b)?.emoji ?? ''} ${getBadgeById().get(b)?.title ?? b}`),
+                  )}
                 </p>
               </div>
             )}
@@ -359,14 +361,14 @@ export function LessonPlayer({
                 onClick={onExit}
                 className="rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-500"
               >
-                {kind === 'lesson' ? '返回學習地圖' : '返回研究室'}
+                {kind === 'lesson' ? t('lp.backMap') : t('lp.backResearch')}
               </button>
               <button
                 type="button"
                 onClick={restart}
                 className="inline-flex items-center gap-1.5 rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
               >
-                <RotateCcw className="h-4 w-4" aria-hidden /> 再練一次
+                <RotateCcw className="h-4 w-4" aria-hidden /> {t('lp.again')}
               </button>
             </div>
           </div>
@@ -378,9 +380,12 @@ export function LessonPlayer({
 }
 
 function questionSpeech(q: Question) {
-  if (q.type === 'mcq') return `${q.prompt} ${q.options.map((o, i) => `選項${i + 1}：${o}`).join('。')}`
-  if (q.type === 'fill') return `${q.prompt.replace('＿＿', '空格')} 可選：${q.bank.join('、')}`
-  return `${q.prompt} ${q.pairs.map((p) => p.left).join('、')}`
+  const sep = getLocale() === 'en' ? '. ' : '。'
+  if (q.type === 'mcq')
+    return `${q.prompt} ${q.options.map((o, i) => t('lp.speech.option', { n: i + 1, text: o })).join(sep)}`
+  if (q.type === 'fill')
+    return `${q.prompt.replace('＿＿', t('lp.speech.blank'))} ${t('lp.speech.choices', { list: joinList(q.bank) })}`
+  return `${q.prompt} ${joinList(q.pairs.map((p) => p.left))}`
 }
 
 type QProps<T> = {
@@ -414,7 +419,7 @@ function CheckButton({ disabled, onClick }: { disabled: boolean; onClick: () => 
       onClick={onClick}
       className="mt-4 w-full rounded-2xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-[0_4px_0_#047857] hover:bg-emerald-500 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
     >
-      檢查答案
+      {t('lp.check')}
     </button>
   )
 }
@@ -520,7 +525,7 @@ function Match({ q, seed, locked, easyRead, onAnswer }: QProps<MatchQuestion>) {
   return (
     <div>
       <p className={`mt-2 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
-      <p className="text-xs text-slate-500">先撳左邊，再撳右邊配對</p>
+      <p className="text-xs text-slate-500">{t('lp.matchHint')}</p>
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="grid gap-2">
           {lefts.map((l) => (

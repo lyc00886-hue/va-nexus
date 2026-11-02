@@ -10,6 +10,7 @@
  *     fill  → question contains ＿＿ ; wordBank (preferred, curated by PEANUTS) or options = word bank
  *             (both empty → auto-generated distractors)
  */
+import { t } from '../i18n'
 import type { LessonCard, Question } from './types'
 
 export type ContentQuiz = {
@@ -33,7 +34,7 @@ export type ContentLesson = {
 
 function easyBullets(text: string): string[] {
   const parts = text
-    .split(/[，。；：]/)
+    .split(/[，。；：]|(?<=[.;:])\s+/)
     .map((s) => s.trim())
     .filter(Boolean)
   return parts.length ? parts : [text]
@@ -41,8 +42,8 @@ function easyBullets(text: string): string[] {
 
 export function adaptCards(cards: ContentLesson['cards']): LessonCard[] {
   return cards.map((c, i) => {
-    if (typeof c === 'string') return { title: `重點 ${i + 1}`, body: c, easy: easyBullets(c) }
-    return { title: c.title ?? `重點 ${i + 1}`, body: c.body, easy: c.easy?.length ? c.easy : easyBullets(c.body) }
+    if (typeof c === 'string') return { title: t('card.point', { n: i + 1 }), body: c, easy: easyBullets(c) }
+    return { title: c.title ?? t('card.point', { n: i + 1 }), body: c.body, easy: c.easy?.length ? c.easy : easyBullets(c.body) }
   })
 }
 
@@ -56,7 +57,7 @@ function pickDistractors(answer: string, pool: string[], n: number): string[] {
   return [...new Set(out)]
 }
 
-const FALLBACK_BANK = ['線條', '色彩', '構圖', '質感', '空間', '筆墨', '透視', '光影']
+const fallbackBank = () => t('quiz.fallbackBank').split('|')
 
 export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: string[]): Question[] {
   return quiz.map((q, i): Question => {
@@ -92,7 +93,7 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
     let bank = q.options.length ? [...q.options] : []
     if (!bank.includes(answer)) bank.push(answer)
     if (bank.length < 3) {
-      bank = [...bank, ...pickDistractors(answer, [...fillPool, ...FALLBACK_BANK], 3 - bank.length + 0)]
+      bank = [...bank, ...pickDistractors(answer, [...fillPool, ...fallbackBank()], 3 - bank.length + 0)]
       bank = [...new Set(bank)].slice(0, 4)
     }
     return { id, type: 'fill', prompt, bank, answer, explain }

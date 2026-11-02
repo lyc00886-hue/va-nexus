@@ -8,7 +8,8 @@ import {
   useState,
   type ReactNode,
 } from 'react'
-import senCheckIn from '../content/sen-checkin.json'
+import { getLocale, perLocale, t, type MessageKey } from '../i18n'
+import { contentJson, contentLocale } from '../i18n/content'
 import type { QuestionType } from '../game/types'
 import { useSen, type SenSettings } from './SenContext'
 
@@ -20,58 +21,27 @@ const STORAGE_KEY = 'va-nexus:sen-support:v1'
 
 export type SupportKey = 'easyRead' | 'largeText' | 'focus' | 'readAloud' | 'reduceMotion' | 'contrast'
 
-export const SUPPORTS: Record<
-  SupportKey,
-  { label: string; desc: string; patch: Partial<SenSettings>; isOn: (s: SenSettings) => boolean }
-> = {
-  easyRead: {
-    label: '易讀模式',
-    desc: '短句重點、加大字距行距',
-    patch: { dyslexia: true, fontSize: 'lg' },
-    isOn: (s) => s.dyslexia,
-  },
-  largeText: {
-    label: '大字',
-    desc: '全站字體放大',
-    patch: { fontSize: 'lg' },
-    isOn: (s) => s.fontSize !== 'md',
-  },
-  focus: {
-    label: '專注隧道',
-    desc: '一次只顯示一張卡，附專注計時',
-    patch: { focusTunnel: true },
-    isOn: (s) => s.focusTunnel,
-  },
-  readAloud: {
-    label: '自動朗讀',
-    desc: '短課卡自動讀出（廣東話／中文語音）',
-    patch: { readAloud: true },
-    isOn: (s) => s.readAloud,
-  },
-  reduceMotion: {
-    label: '減少動畫',
-    desc: '關閉閃動同過場效果',
-    patch: { reduceMotion: true },
-    isOn: (s) => s.reduceMotion,
-  },
-  contrast: {
-    label: '高對比',
-    desc: '深色文字、清晰邊框',
-    patch: { highContrast: true },
-    isOn: (s) => s.highContrast,
-  },
+type SupportDef = { label: string; desc: string; patch: Partial<SenSettings>; isOn: (s: SenSettings) => boolean }
+
+const SUPPORT_BASE: Record<SupportKey, Pick<SupportDef, 'patch' | 'isOn'>> = {
+  easyRead: { patch: { dyslexia: true, fontSize: 'lg' }, isOn: (s) => s.dyslexia },
+  largeText: { patch: { fontSize: 'lg' }, isOn: (s) => s.fontSize !== 'md' },
+  focus: { patch: { focusTunnel: true }, isOn: (s) => s.focusTunnel },
+  readAloud: { patch: { readAloud: true }, isOn: (s) => s.readAloud },
+  reduceMotion: { patch: { reduceMotion: true }, isOn: (s) => s.reduceMotion },
+  contrast: { patch: { highContrast: true }, isOn: (s) => s.highContrast },
 }
 
-// Use DICK's wording for support descriptions where provided
-for (const [k, desc] of Object.entries(senCheckIn.supports as Record<string, string>)) {
-  const key = ({ easy_read: 'easyRead', read_aloud: 'readAloud', focus_tunnel: 'focus', large_text: 'largeText', reduce_motion: 'reduceMotion' } as Record<string, SupportKey>)[k]
-  if (key) {
-    const [label, rest] = desc.split('：')
-    SUPPORTS[key] = { ...SUPPORTS[key], label: label || SUPPORTS[key].label, desc: rest ?? desc }
-  }
-}
+/* ---------- 自選支援問卷 — content from src/content/sen-checkin[.<locale>].json (DICK) ---------- */
 
-/* ---------- 自選支援問卷 — content from src/content/sen-checkin.json (DICK) ---------- */
+type SenCheckInJson = {
+  title: string
+  intro: string
+  disclaimer: string
+  result_text: string
+  supports: Record<string, string>
+  questions: { id: string; question: string; options: { label: string; suggest: string[] }[] }[]
+}
 
 /** Keys used in the content JSON → our SupportKey */
 const CONTENT_SUPPORT_MAP: Record<string, SupportKey> = {
@@ -83,33 +53,57 @@ const CONTENT_SUPPORT_MAP: Record<string, SupportKey> = {
   contrast: 'contrast',
 }
 
+/** Support labels / descriptions for the active locale. */
+export const getSupports = perLocale<Record<SupportKey, SupportDef>>((locale) => {
+  const out = {} as Record<SupportKey, SupportDef>
+  for (const k of Object.keys(SUPPORT_BASE) as SupportKey[]) {
+    out[k] = { ...SUPPORT_BASE[k], label: t(`support.${k}` as MessageKey), desc: t(`support.${k}.desc` as MessageKey) }
+  }
+  // Use DICK's wording where the check-in content exists in this locale (not the zh-Hant fallback)
+  if (contentLocale('sen-checkin', locale) === locale) {
+    const json = contentJson<SenCheckInJson>('sen-checkin', locale)
+    for (const [k, desc] of Object.entries(json.supports ?? {})) {
+      const key = CONTENT_SUPPORT_MAP[k]
+      if (!key) continue
+      const m = desc.match(/^([^：:]+)[：:]\s*(.*)$/)
+      out[key] = { ...out[key], label: m?.[1] || out[key].label, desc: m ? m[2] : desc }
+    }
+  }
+  return out
+})
+
 export type CheckInQuestion = {
   id: string
   question: string
   options: { label: string; suggest: SupportKey[] }[]
 }
 
-export const CHECK_IN = {
-  title: senCheckIn.title,
-  intro: senCheckIn.intro,
-  disclaimer: senCheckIn.disclaimer,
-  resultText: senCheckIn.result_text,
-  questions: senCheckIn.questions.map((q) => ({
-    id: q.id,
-    question: q.question,
-    options: q.options.map((o) => ({
-      label: o.label,
-      suggest: o.suggest.map((k) => CONTENT_SUPPORT_MAP[k]).filter((k): k is SupportKey => Boolean(k)),
-    })),
-  })) as CheckInQuestion[],
-}
+export const getCheckIn = perLocale(() => {
+  const json = contentJson<SenCheckInJson>('sen-checkin')
+  return {
+    title: json.title,
+    intro: json.intro,
+    disclaimer: json.disclaimer,
+    resultText: json.result_text,
+    /** true when this locale has no translated check-in yet (showing zh-Hant original) */
+    fallback: contentLocale('sen-checkin') !== getLocale(),
+    questions: json.questions.map((q) => ({
+      id: q.id,
+      question: q.question,
+      options: q.options.map((o) => ({
+        label: o.label,
+        suggest: o.suggest.map((k) => CONTENT_SUPPORT_MAP[k]).filter((k): k is SupportKey => Boolean(k)),
+      })),
+    })) as CheckInQuestion[],
+  }
+})
 
 /** Answers = chosen option index per question id */
 export type CheckInAnswers = Record<string, number>
 
 export function recommendFromAnswers(answers: CheckInAnswers): SupportKey[] {
   const out: SupportKey[] = []
-  for (const q of CHECK_IN.questions) {
+  for (const q of getCheckIn().questions) {
     const idx = answers[q.id]
     const opt = idx === undefined ? undefined : q.options[idx]
     for (const k of opt?.suggest ?? []) if (!out.includes(k)) out.push(k)
@@ -201,7 +195,7 @@ export function SenSupportProvider({ children }: { children: ReactNode }) {
     if (now - st.nudges.lastShown < NUDGE_GAP_MS) return
     const pick = candidates.find(
       (k) =>
-        !SUPPORTS[k].isOn(settingsRef.current) &&
+        !SUPPORT_BASE[k].isOn(settingsRef.current) &&
         now - (st.nudges.dismissed[k] ?? 0) > DISMISS_COOLDOWN_MS,
     )
     if (!pick) return
@@ -221,15 +215,15 @@ export function SenSupportProvider({ children }: { children: ReactNode }) {
         c.wrong[sig.qtype] = n
         if (n >= WRONG_SAME_TYPE) {
           c.wrong[sig.qtype] = 0
-          tryNudge(['easyRead', 'readAloud', 'focus'], '同一類題目試咗幾次都未中，可能係題目字太多。')
+          tryNudge(['easyRead', 'readAloud', 'focus'], t('nudge.reason.wrong'))
         }
       } else if (sig.kind === 'idle') {
-        tryNudge(['focus', 'readAloud', 'easyRead'], '呢張卡停留咗一段時間。')
+        tryNudge(['focus', 'readAloud', 'easyRead'], t('nudge.reason.idle'))
       } else if (sig.kind === 'tts') {
         c.tts += 1
         if (c.tts >= TTS_REPEAT) {
           c.tts = 0
-          tryNudge(['readAloud'], '你經常用朗讀功能。')
+          tryNudge(['readAloud'], t('nudge.reason.tts'))
         }
       }
     },
@@ -238,7 +232,7 @@ export function SenSupportProvider({ children }: { children: ReactNode }) {
 
   const acceptNudge = useCallback(() => {
     const n = nudgeRef.current
-    if (n) applyMany(SUPPORTS[n.support].patch)
+    if (n) applyMany(SUPPORT_BASE[n.support].patch)
     setNudge(null)
   }, [applyMany])
 
