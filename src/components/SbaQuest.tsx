@@ -17,7 +17,8 @@ import {
   UploadCloud,
   X,
 } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { SbaArtworkSlotSwitcher } from './SbaArtworkSlotSwitcher'
 import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
@@ -34,6 +35,13 @@ import {
   type DeleteEvidenceMode,
   type SbaEvidence,
 } from '../lib/sbaEvidence'
+import {
+  assignPieceSlot,
+  migrateGuideChecks,
+  type GuideChecksBySlot,
+  type SlotId,
+} from '../lib/sbaArtworkSlots'
+import { useSbaArtworkSlots } from '../lib/useSbaArtworkSlots'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { t, type MessageKey } from '../i18n'
 
@@ -63,18 +71,17 @@ type SbaGuideFile = {
 
 const GUIDE_CHECKS_KEY = 'va-nexus:sba-guide-checks:v1'
 
-function loadGuideChecks(): Record<string, string[]> {
+function loadGuideChecks(): GuideChecksBySlot {
   try {
     const raw = localStorage.getItem(GUIDE_CHECKS_KEY)
     if (!raw) return {}
-    const parsed = JSON.parse(raw) as Record<string, string[]>
-    return parsed && typeof parsed === 'object' ? parsed : {}
+    return migrateGuideChecks(JSON.parse(raw))
   } catch {
     return {}
   }
 }
 
-function saveGuideChecks(map: Record<string, string[]>) {
+function saveGuideChecks(map: GuideChecksBySlot) {
   try {
     localStorage.setItem(GUIDE_CHECKS_KEY, JSON.stringify(map))
   } catch {
@@ -105,19 +112,39 @@ function getSteps() {
  */
 type Source = 'loading' | 'private' | 'guest' | 'local'
 
+type PendingPhoto = { file: File; preview: string }
+type SlotDraft = {
+  step: number
+  note: string
+  pending: PendingPhoto[]
+  message: { kind: 'error' | 'ok'; text: string } | null
+}
+
+function blankDraft(): SlotDraft {
+  return { step: 1, note: '', pending: [], message: null }
+}
+
+function blankDrafts(): Record<SlotId, SlotDraft> {
+  return { 1: blankDraft(), 2: blankDraft(), 3: blankDraft(), 4: blankDraft() }
+}
+
 export function SbaQuest() {
   const { cardPadding, focusTunnel, settings } = useSen()
   const { awardOnce } = useGame()
   const { ready, user } = useAuth()
   const userId = user?.id ?? null
   const STEPS = useMemo(getSteps, [])
+  const pieces = useSbaArtworkSlots()
+  const activeSlot = pieces.active
   const [evidence, setEvidence] = useState<SbaEvidence[]>([])
   const [source, setSource] = useState<Source>(isSupabaseConfigured ? 'loading' : 'local')
-  const [active, setActive] = useState(1)
-  const [note, setNote] = useState('')
-  const [pending, setPending] = useState<{ file: File; preview: string }[]>([])
+  const [drafts, setDrafts] = useState<Record<SlotId, SlotDraft>>(blankDrafts)
+  const draft = drafts[activeSlot]
+  const active = draft.step
+  const note = draft.note
+  const pending = draft.pending
+  const message = draft.message
   const [saving, setSaving] = useState(false)
-  const [message, setMessage] = useState<{ kind: 'error' | 'ok'; text: string } | null>(null)
   type DeleteConfirm =
     | null
     | {
@@ -128,9 +155,30 @@ export function SbaQuest() {
   const [deleteBusy, setDeleteBusy] = useState(false)
 
   const [guideOpen, setGuideOpen] = useState(true)
-  const [guideChecks, setGuideChecks] = useState<Record<string, string[]>>(loadGuideChecks)
+  const [guideChecks, setGuideChecks] = useState<GuideChecksBySlot>(loadGuideChecks)
   const [copiedFrame, setCopiedFrame] = useState<string | null>(null)
   const motion = !settings.reduceMotion
+  const draftsRef = useRef(drafts)
+
+  function updateDraft(slot: SlotId, patch: Partial<SlotDraft> | ((current: SlotDraft) => SlotDraft)) {
+    setDrafts((prev) => {
+      const current = prev[slot]
+      const next = typeof patch === 'function' ? patch(current) : { ...current, ...patch }
+      return { ...prev, [slot]: next }
+    })
+  }
+
+  useEffect(() => {
+    draftsRef.current = drafts
+  }, [drafts])
+
+  useEffect(() => {
+    return () => {
+      for (const piece of Object.values(draftsRef.current)) {
+        for (const photo of piece.pending) URL.revokeObjectURL(photo.preview)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -152,7 +200,7 @@ export function SbaQuest() {
     fetchPrivateEvidence(userId)
       .then((rows) => {
         if (cancelled) return
-        setEvidence(rows)
+        setEvidence(assignPieceSlot(rows))
         setSource('private')
       })
       .catch((e) => {
@@ -173,11 +221,13 @@ export function SbaQuest() {
   }, [guideChecks])
 
   function toggleGuideCheck(step: number, item: string) {
+    const slotKey = String(activeSlot)
     const key = String(step)
     setGuideChecks((prev) => {
-      const cur = prev[key] ?? []
+      const slotMap = prev[slotKey] ?? {}
+      const cur = slotMap[key] ?? []
       const next = cur.includes(item) ? cur.filter((x) => x !== item) : [...cur, item]
-      return { ...prev, [key]: next }
+      return { ...prev, [slotKey]: { ...slotMap, [key]: next } }
     })
   }
 
@@ -195,13 +245,30 @@ export function SbaQuest() {
   function goTo(step: number) {
     if (step === active) return
     pending.forEach((x) => URL.revokeObjectURL(x.preview))
-    setPending([])
-    setNote('')
-    setMessage(null)
-    setActive(step)
+    updateDraft(activeSlot, { step, note: '', pending: [], message: null })
   }
 
-  const doneSteps = useMemo(() => new Set(evidence.map((e) => e.step)), [evidence])
+  const slotEvidence = useMemo(
+    () => evidence.filter((item) => (item.slot ?? 1) === activeSlot),
+    [evidence, activeSlot],
+  )
+
+  const startedSlots = useMemo(() => {
+    const started = new Set<SlotId>()
+    for (const id of [1, 2, 3, 4] as const) {
+      if (pieces.types[id]) started.add(id)
+      const pieceDraft = drafts[id]
+      if (pieceDraft.note.trim() || pieceDraft.pending.length > 0) started.add(id)
+      const checks = guideChecks[String(id)]
+      if (checks && Object.values(checks).some((ids) => ids.length > 0)) started.add(id)
+    }
+    for (const item of evidence) {
+      started.add(item.slot ?? 1)
+    }
+    return started
+  }, [pieces.types, drafts, guideChecks, evidence])
+
+  const doneSteps = useMemo(() => new Set(slotEvidence.map((e) => e.step)), [slotEvidence])
 
   const unlocked = useMemo(() => {
     const set = new Set<number>([1])
@@ -224,13 +291,19 @@ export function SbaQuest() {
       if (err) errors.push(err)
       else ok.push({ file: f, preview: URL.createObjectURL(f) })
     })
-    setPending((p) => [...p, ...ok])
-    setMessage(errors.length ? { kind: 'error', text: errors.join('；') } : null)
+    updateDraft(activeSlot, (current) => ({
+      ...current,
+      pending: [...current.pending, ...ok],
+      message: errors.length ? { kind: 'error', text: errors.join('；') } : null,
+    }))
   }
 
   function removePending(preview: string) {
     URL.revokeObjectURL(preview)
-    setPending((p) => p.filter((x) => x.preview !== preview))
+    updateDraft(activeSlot, (current) => ({
+      ...current,
+      pending: current.pending.filter((item) => item.preview !== preview),
+    }))
   }
 
   async function applyDelete(mode: DeleteEvidenceMode) {
@@ -265,11 +338,12 @@ export function SbaQuest() {
           return list.filter((e) => e.id !== item.id)
         })
       }
-      setMessage({ kind: 'ok', text: t('sba.delete.deleted') })
+      if (mode === 'full') pieces.untagEvidence(item.id)
+      updateDraft(activeSlot, { message: { kind: 'ok', text: t('sba.delete.deleted') } })
       setDeleteConfirm(null)
     } catch (e) {
       console.warn('[sba] delete failed', e)
-      setMessage({ kind: 'error', text: t('sba.delete.err') })
+      updateDraft(activeSlot, { message: { kind: 'error', text: t('sba.delete.err') } })
     } finally {
       setDeleteBusy(false)
     }
@@ -289,37 +363,46 @@ export function SbaQuest() {
 
 
   async function onSave() {
-    const files = canUpload || source === 'local' ? pending.map((p) => p.file) : []
-    if (files.length === 0 && !note.trim()) {
-      setMessage({ kind: 'error', text: t('sba.msg.empty') })
+    const slot = activeSlot
+    const step = active
+    const draftNote = note
+    const photos = pending
+    const files = canUpload || source === 'local' ? photos.map((p) => p.file) : []
+    if (files.length === 0 && !draftNote.trim()) {
+      updateDraft(slot, { message: { kind: 'error', text: t('sba.msg.empty') } })
       return
     }
     setSaving(true)
-    setMessage(null)
+    updateDraft(slot, { message: null })
     try {
       let added: SbaEvidence[]
+      let savedMessage: SlotDraft['message']
       if (source === 'private' && userId) {
         try {
-          added = await savePrivateEvidence(userId, active, files, note)
-          pending.forEach((x) => URL.revokeObjectURL(x.preview))
-          setMessage({ kind: 'ok', text: t('sba.msg.private') })
+          added = await savePrivateEvidence(userId, step, files, draftNote)
+          savedMessage = { kind: 'ok', text: t('sba.msg.private') }
         } catch (e) {
           console.warn('[sba] upload failed, saving locally', e)
-          added = saveLocal(active, files, note)
-          setMessage({ kind: 'error', text: t('sba.msg.uploadFail') })
+          added = saveLocal(step, files, draftNote, slot)
+          savedMessage = { kind: 'error', text: t('sba.msg.uploadFail') }
         }
       } else if (source === 'guest') {
-        added = saveLocal(active, [], note)
-        setMessage({ kind: 'ok', text: t('sba.msg.guest') })
+        added = saveLocal(step, [], draftNote, slot)
+        savedMessage = { kind: 'ok', text: t('sba.msg.guest') }
       } else {
-        added = saveLocal(active, files, note)
-        setMessage({ kind: 'ok', text: t('sba.msg.local') })
+        added = saveLocal(step, files, draftNote, slot)
+        savedMessage = { kind: 'ok', text: t('sba.msg.local') }
       }
-      setEvidence((prev) => [...prev, ...added])
-      const stepTitle = STEPS.find((s) => s.id === active)?.title ?? ''
-      awardOnce(`sba-step-${active}`, XP.sbaStep, t('sba.award', { n: active, title: stepTitle }), 'sba')
-      setNote('')
-      setPending([])
+      photos.forEach((item) => URL.revokeObjectURL(item.preview))
+      const stamped = added.map((item) => ({ ...item, slot }))
+      pieces.tagEvidence(
+        stamped.map((item) => item.id),
+        slot,
+      )
+      setEvidence((prev) => [...prev, ...stamped])
+      const stepTitle = STEPS.find((s) => s.id === step)?.title ?? ''
+      awardOnce(`sba-step-${step}`, XP.sbaStep, t('sba.award', { n: step, title: stepTitle }), 'sba')
+      updateDraft(slot, { note: '', pending: [], message: savedMessage })
     } finally {
       setSaving(false)
     }
@@ -331,6 +414,13 @@ export function SbaQuest() {
 
   return (
     <div className="space-y-4">
+      <SbaArtworkSlotSwitcher
+        active={activeSlot}
+        types={pieces.types}
+        started={startedSlots}
+        onSelect={pieces.setActive}
+        onType={pieces.setType}
+      />
       <div>
         <h2 className="text-xl font-bold text-teal-950">{t('sba.title')}</h2>
         <p className="text-sm text-teal-800/70">{t('sba.subtitle')}</p>
@@ -462,7 +552,7 @@ export function SbaQuest() {
       )}
 
       {STEPS.filter((s) => s.id === active).map((s) => {
-        const items = evidence.filter((e) => e.step === s.id)
+        const items = slotEvidence.filter((e) => e.step === s.id)
         return (
           <section
             key={s.id}
@@ -476,7 +566,7 @@ export function SbaQuest() {
             {(() => {
               const { guide, draft } = getGuideForStep(s.id)
               if (!guide) return null
-              const checked = new Set(guideChecks[String(s.id)] ?? [])
+              const checked = new Set(guideChecks[String(activeSlot)]?.[String(s.id)] ?? [])
               return (
                 <section
                   className={`mt-4 rounded-2xl border border-sky-200 bg-sky-50/70 ${motion ? 'transition-colors' : ''}`}
@@ -600,7 +690,7 @@ export function SbaQuest() {
                 rows={3}
                 maxLength={500}
                 value={note}
-                onChange={(e) => setNote(e.target.value)}
+                onChange={(e) => updateDraft(activeSlot, { note: e.target.value })}
                 placeholder={t('sba.notes.ph')}
               />
             </label>
