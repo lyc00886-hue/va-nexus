@@ -80,7 +80,8 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
       }
     }
     const answer = String(q.answer)
-    const prompt = q.question.includes('＿＿') ? q.question : `${q.question} ＿＿`
+    const qText = q.question.replace(/_{2,}/g, '＿＿')
+    const prompt = qText.includes('＿＿') ? qText : `${qText} ＿＿`
     const curated = (q.wordBank ?? []).map((w) => String(w).trim()).filter(Boolean)
     if (curated.length) {
       const bank = [...new Set(curated)]
