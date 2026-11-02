@@ -12,6 +12,8 @@ import {
   X,
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react'
+import { ArtistAvatar } from './ArtistAvatar'
+import { ArtistDetail } from './ArtistDetail'
 import { ARTIST_PAIRS, ARTISTS, artistById as mockArtistById } from '../data/artists'
 import { useSen } from '../context/SenContext'
 import {
@@ -32,7 +34,9 @@ import {
 } from '../lib/compareLenses'
 import { curatedCompare, getPairCompare } from '../lib/content'
 import { joinList, t } from '../i18n'
+import { EMPTY_ARTIST_MEDIA } from '../lib/artistMedia'
 import { isSupabaseConfigured, supabase } from '../lib/supabase'
+import { useArtistMedia } from '../lib/useArtistMedia'
 import { useSpeech } from '../lib/useSpeech'
 import type { Artist, ArtistPair } from '../types'
 
@@ -48,6 +52,7 @@ function ArtistCard({
   padding,
   easyRead,
   sourceUrl,
+  portraitUrl,
 }: {
   side: string
   namePrimary: string
@@ -60,15 +65,21 @@ function ArtistCard({
   padding: string
   easyRead: boolean
   sourceUrl?: string | null
+  portraitUrl: string | null
 }) {
   const chunks = easyRead ? chunkText(bio) : []
   return (
     <article
       className={`flex flex-1 flex-col rounded-2xl border border-teal-100 bg-white shadow-sm ${padding}`}
     >
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-teal-600">{side}</p>
-      <h3 className="mt-1 text-lg font-bold text-teal-950">{namePrimary}</h3>
-      {nameSecondary && <p className="text-sm text-teal-800/80">{nameSecondary}</p>}
+      <div className="flex items-start gap-3">
+        <ArtistAvatar name={namePrimary} imageUrl={portraitUrl} size="md" />
+        <div className="min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-teal-600">{side}</p>
+          <h3 className="mt-1 text-lg font-bold text-teal-950">{namePrimary}</h3>
+          {nameSecondary ? <p className="text-sm text-teal-800/80">{nameSecondary}</p> : null}
+        </div>
+      </div>
       {sourceUrl && (
         <a
           href={sourceUrl}
@@ -287,6 +298,21 @@ export function ArtistCompare({
   const [mediumFilter, setMediumFilter] = useState('all')
   const [picked, setPicked] = useState<string[]>([])
   const [lensId, setLensId] = useState(lensesFile.lenses[0]?.id ?? 'theme')
+  const [detailId, setDetailId] = useState<string | null>(null)
+  const mediaByArtist = useArtistMedia()
+  const closeDetail = useCallback(() => setDetailId(null), [])
+  const selectView = useCallback((next: ViewMode) => {
+    setDetailId(null)
+    setView(next)
+  }, [])
+  const detailIdRef = useRef(detailId)
+  useEffect(() => {
+    const prev = detailIdRef.current
+    detailIdRef.current = detailId
+    if (prev && !detailId) {
+      document.querySelector<HTMLElement>(`[data-artist-open="${CSS.escape(prev)}"]`)?.focus()
+    }
+  }, [detailId])
 
   useEffect(() => {
     let cancelled = false
@@ -407,6 +433,10 @@ export function ArtistCompare({
     [picked, artistMap],
   )
   const activeLens: CompareLens | undefined = lensesFile.lenses.find((l) => l.id === lensId) ?? lensesFile.lenses[0]
+  const detailArtist = detailId ? (artists.find((a) => a.id === detailId) ?? null) : null
+  const detailBundle = detailArtist
+    ? (mediaByArtist.get(detailArtist.id) ?? EMPTY_ARTIST_MEDIA)
+    : EMPTY_ARTIST_MEDIA
 
   const { stop: stopSpeech } = tts
   useEffect(() => {
@@ -529,7 +559,7 @@ export function ArtistCompare({
               type="button"
               role="tab"
               aria-selected={view === id}
-              onClick={() => setView(id)}
+              onClick={() => selectView(id)}
               className={
                 view === id
                   ? 'rounded-full bg-teal-700 px-3 py-1.5 text-xs font-semibold text-white'
@@ -694,7 +724,7 @@ export function ArtistCompare({
                 <button
                   type="button"
                   disabled={picked.length < lensesFile.minArtists}
-                  onClick={() => setView('free')}
+                  onClick={() => selectView('free')}
                   className="rounded-lg bg-teal-700 px-2.5 py-1 text-xs font-semibold text-white hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {t('ac.compareBtn')}
@@ -731,45 +761,63 @@ export function ArtistCompare({
                     {filtered.map((a) => {
                       const on = picked.includes(a.id)
                       const full = !on && picked.length >= lensesFile.maxArtists
+                      const name = artistDisplayName(a)
+                      const secondary = artistSecondaryName(a)
                       return (
                         <li key={a.id}>
-                          <button
-                            type="button"
-                            disabled={full}
-                            onClick={() => togglePick(a.id)}
-                            aria-pressed={on}
+                          <div
                             className={
                               on
                                 ? 'flex w-full flex-col rounded-2xl border-2 border-teal-600 bg-teal-50 p-3 text-left shadow-sm'
-                                : 'flex w-full flex-col rounded-2xl border border-teal-100 bg-white p-3 text-left shadow-sm hover:border-teal-300 disabled:cursor-not-allowed disabled:opacity-50'
+                                : 'flex w-full flex-col rounded-2xl border border-teal-100 bg-white p-3 text-left shadow-sm hover:border-teal-300'
                             }
                           >
-                            <span className="flex items-start justify-between gap-2">
-                              <span className="min-w-0">
-                                <span className="block text-sm font-bold text-teal-950">{artistDisplayName(a)}</span>
-                                {artistSecondaryName(a) && (
-                                  <span className="block text-xs text-teal-800/70">{artistSecondaryName(a)}</span>
-                                )}
-                              </span>
-                              {on ? (
-                                <Check className="h-4 w-4 shrink-0 text-teal-700" aria-hidden />
-                              ) : (
-                                <span className="text-[10px] font-semibold uppercase tracking-wide text-teal-600">
-                                  {t('ac.pick')}
+                            <div className="flex items-start gap-2">
+                              <button
+                                type="button"
+                                data-artist-open={a.id}
+                                onClick={() => setDetailId(a.id)}
+                                className="flex min-w-0 flex-1 items-start gap-2.5 rounded-xl text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-700"
+                              >
+                                <ArtistAvatar
+                                  name={name}
+                                  imageUrl={mediaByArtist.get(a.id)?.portraitUrl ?? null}
+                                  size="sm"
+                                />
+                                <span className="min-w-0">
+                                  <span className="block text-sm font-bold text-teal-950">{name}</span>
+                                  {secondary ? (
+                                    <span className="block text-xs text-teal-800/70">{secondary}</span>
+                                  ) : null}
+                                  <span className="mt-1 block text-[11px] text-teal-700/70">
+                                    {[a.culture_group, a.medium].filter(Boolean).join(' · ')}
+                                  </span>
+                                  <span className="mt-2 flex flex-wrap gap-1">
+                                    {a.themes.slice(0, 3).map((th) => (
+                                      <span key={th} className="rounded-full bg-white/80 px-1.5 py-0.5 text-[10px] text-teal-800 ring-1 ring-teal-100">
+                                        {th}
+                                      </span>
+                                    ))}
+                                  </span>
+                                  <span className="sr-only">{t('ac.media.view')}</span>
                                 </span>
-                              )}
-                            </span>
-                            <span className="mt-1 text-[11px] text-teal-700/70">
-                              {[a.culture_group, a.medium].filter(Boolean).join(' · ')}
-                            </span>
-                            <span className="mt-2 flex flex-wrap gap-1">
-                              {a.themes.slice(0, 3).map((th) => (
-                                <span key={th} className="rounded-full bg-white/80 px-1.5 py-0.5 text-[10px] text-teal-800 ring-1 ring-teal-100">
-                                  {th}
-                                </span>
-                              ))}
-                            </span>
-                          </button>
+                              </button>
+                              <button
+                                type="button"
+                                disabled={full}
+                                onClick={() => togglePick(a.id)}
+                                aria-pressed={on}
+                                aria-label={t('ac.pick')}
+                                className={
+                                  on
+                                    ? 'inline-flex min-h-11 shrink-0 items-center justify-center rounded-full bg-teal-700 px-2.5 text-white'
+                                    : 'inline-flex min-h-11 max-w-[7.5rem] shrink-0 items-center rounded-full border border-teal-200 bg-white px-2.5 text-center text-[10px] font-semibold leading-tight text-teal-700 hover:bg-teal-50 disabled:cursor-not-allowed disabled:opacity-50'
+                                }
+                              >
+                                {on ? <Check className="h-4 w-4" aria-hidden /> : t('ac.pick')}
+                              </button>
+                            </div>
+                          </div>
                         </li>
                       )
                     })}
@@ -791,7 +839,8 @@ export function ArtistCompare({
                 easyRead={easyRead}
                 padding={cardPadding}
                 textCls={textCls}
-                onBack={() => setView('browse')}
+                portraitFor={(id) => mediaByArtist.get(id)?.portraitUrl ?? null}
+                onBack={() => selectView('browse')}
               />
             </div>
           )}
@@ -813,6 +862,8 @@ export function ArtistCompare({
           cardPadding={cardPadding}
           textCls={textCls}
           tts={tts}
+          eastPortrait={mediaByArtist.get(east.id)?.portraitUrl ?? null}
+          westPortrait={mediaByArtist.get(west.id)?.portraitUrl ?? null}
         />
       )}
 
@@ -829,6 +880,24 @@ export function ArtistCompare({
           <p className="text-sm text-teal-800">{t('ac.empty')}</p>
         </div>
       )}
+
+      {detailArtist ? (
+        <ArtistDetail
+          artist={detailArtist}
+          name={artistDisplayName(detailArtist)}
+          secondaryName={artistSecondaryName(detailArtist)}
+          bundle={detailBundle}
+          paragraphs={
+            easyRead
+              ? chunkText(detailArtist.spld_summary || detailArtist.bio_short)
+              : detailArtist.bio_short
+                ? [detailArtist.bio_short]
+                : []
+          }
+          easyRead={easyRead}
+          onClose={closeDetail}
+        />
+      ) : null}
     </div>
   )
 }
@@ -843,6 +912,7 @@ function FreeCompare({
   easyRead,
   padding,
   textCls,
+  portraitFor,
   onBack,
 }: {
   artists: Artist[]
@@ -854,6 +924,7 @@ function FreeCompare({
   easyRead: boolean
   padding: string
   textCls: string
+  portraitFor: (id: string) => string | null
   onBack: () => void
 }) {
   const valueLists = artists.map((a) => ({ artist: a, values: lensValues(a, lens) }))
@@ -896,10 +967,19 @@ function FreeCompare({
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {valueLists.map(({ artist, values }) => (
           <article key={artist.id} className="rounded-xl border border-teal-100 bg-teal-50/40 p-3">
-            <h4 className="font-bold text-teal-950">{artistDisplayName(artist)}</h4>
-            {artistSecondaryName(artist) && (
-              <p className="text-xs text-teal-800/70">{artistSecondaryName(artist)}</p>
-            )}
+            <div className="flex items-start gap-2">
+              <ArtistAvatar
+                name={artistDisplayName(artist)}
+                imageUrl={portraitFor(artist.id)}
+                size="sm"
+              />
+              <div className="min-w-0">
+                <h4 className="font-bold text-teal-950">{artistDisplayName(artist)}</h4>
+                {artistSecondaryName(artist) ? (
+                  <p className="text-xs text-teal-800/70">{artistSecondaryName(artist)}</p>
+                ) : null}
+              </div>
+            </div>
             <p className="mt-2 text-[11px] font-semibold uppercase tracking-wide text-teal-700">
               {t('ac.lens.fields')}
             </p>
@@ -983,6 +1063,8 @@ function PairCompareView({
   cardPadding,
   textCls,
   tts,
+  eastPortrait,
+  westPortrait,
 }: {
   pair: ArtistPair
   pairs: ArtistPair[]
@@ -997,6 +1079,8 @@ function PairCompareView({
   cardPadding: string
   textCls: string
   tts: ReturnType<typeof useSpeech>
+  eastPortrait: string | null
+  westPortrait: string | null
 }) {
   const eName = displayName(east)
   const wName = displayName(west)
@@ -1082,6 +1166,7 @@ function PairCompareView({
           padding={cardPadding}
           easyRead={easyRead}
           sourceUrl={east.source_url}
+          portraitUrl={eastPortrait}
         />
         <ArtistCard
           side={t('ac.west')}
@@ -1095,6 +1180,7 @@ function PairCompareView({
           padding={cardPadding}
           easyRead={easyRead}
           sourceUrl={west.source_url}
+          portraitUrl={westPortrait}
         />
       </div>
       {curated ? (
