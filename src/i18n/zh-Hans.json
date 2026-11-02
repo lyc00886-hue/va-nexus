@@ -430,6 +430,8 @@
   "ac.recommended": "推荐比较（配对）",
   "ac.freeCompare": "自由比较",
   "ac.noResults": "找不到符合条件的艺术家。",
+  "ac.list.show": "显示艺术家（{n}）",
+  "ac.list.hide": "收起艺术家",
   "sba.guide.tip": "小贴士：",
   "sba.guide.redFlags": "小心事项",
   "fw.ai.signIn": "登录后才可开 AI（仅限 18+）",

@@ -430,6 +430,8 @@
   "ac.recommended": "Recommended comparisons (pairs)",
   "ac.freeCompare": "Free compare",
   "ac.noResults": "No artists match these filters.",
+  "ac.list.show": "Show artists ({n})",
+  "ac.list.hide": "Hide artists",
   "sba.guide.tip": "Tip:",
   "sba.guide.redFlags": "Watch outs",
   "fw.ai.signIn": "Sign in to unlock AI (18+)",

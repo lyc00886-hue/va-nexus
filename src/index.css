@@ -117,3 +117,21 @@ html {
     animation: none;
   }
 }
+
+/* Library browser: sticky search chip while the list is collapsed.
+   Desktop side list sticks under the measured header (--library-sticky-top). */
+.library-browser-sticky {
+  position: sticky;
+  z-index: 20;
+  top: var(--library-sticky-top, 4.5rem);
+}
+@media (min-width: 1024px) {
+  .library-browser-side {
+    position: sticky;
+    z-index: 20;
+    top: var(--library-sticky-top, 4.5rem);
+    max-height: calc(100vh - var(--library-sticky-top, 4.5rem) - 0.75rem);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+}

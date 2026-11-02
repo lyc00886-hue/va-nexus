@@ -430,6 +430,8 @@
   "ac.recommended": "推薦比較（配對）",
   "ac.freeCompare": "自由比較",
   "ac.noResults": "搵唔到符合條件嘅藝術家。",
+  "ac.list.show": "顯示藝術家（{n}）",
+  "ac.list.hide": "收起藝術家",
   "sba.guide.tip": "小貼士：",
   "sba.guide.redFlags": "小心事項",
   "fw.ai.signIn": "登入後先可開 AI（僅限 18+）",

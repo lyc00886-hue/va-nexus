@@ -2,6 +2,8 @@ import {
   ArrowLeftRight,
   BookOpenText,
   Check,
+  ChevronDown,
+  ChevronUp,
   Lightbulb,
   Scale,
   Search,
@@ -9,7 +11,7 @@ import {
   Volume2,
   X,
 } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type RefObject } from 'react'
 import { ARTIST_PAIRS, ARTISTS, artistById as mockArtistById } from '../data/artists'
 import { useSen } from '../context/SenContext'
 import {
@@ -145,12 +147,130 @@ function regionFilterOk(a: Artist, bucket: CultureBucket): boolean {
   return cultureBucket(a.culture_group) === bucket
 }
 
+/**
+ * Hide the artist list on a downward page scroll and show it again on an upward one.
+ * The lock swallows the scroll jump that happens when the list collapses — without it,
+ * the shorter page looks like a scroll-up and the list flickers open.
+ */
+function useLibraryScrollCollapse(
+  enabled: boolean,
+  setOpen: (open: boolean) => void,
+  sectionRef: RefObject<HTMLElement | null>,
+) {
+  const setOpenRef = useRef(setOpen)
+  const lockUntil = useRef(0)
+
+  useEffect(() => {
+    setOpenRef.current = setOpen
+  }, [setOpen])
+
+  const lock = useCallback((ms = 600) => {
+    lockUntil.current = performance.now() + ms
+  }, [])
+
+  useEffect(() => {
+    if (!enabled) return
+    let lastY = window.scrollY
+    let acc = 0
+    let lastTouchY = 0
+
+    const collapse = () => {
+      const section = sectionRef.current
+      if (!section || section.dataset.listOpen !== 'true') return
+      const shrink = Math.max(0, section.getBoundingClientRect().height - 88)
+      setOpenRef.current(false)
+      acc = 0
+      lockUntil.current = performance.now() + 700
+      requestAnimationFrame(() => {
+        lockUntil.current = performance.now() + 400
+        window.scrollTo(0, Math.max(0, window.scrollY - shrink))
+      })
+    }
+
+    const expand = () => {
+      if (sectionRef.current?.dataset.listOpen === 'true') return
+      setOpenRef.current(true)
+      acc = 0
+      lockUntil.current = performance.now() + 280
+    }
+
+    const pageAtBottom = () =>
+      window.scrollY >= document.documentElement.scrollHeight - window.innerHeight - 12
+
+    const stillBrowsingList = (target: EventTarget | null) => {
+      const section = sectionRef.current
+      if (!section || !(target instanceof Node)) return false
+      const ul = section.querySelector('ul')
+      if (!ul || !ul.contains(target)) return false
+      return ul.scrollTop + ul.clientHeight < ul.scrollHeight - 8
+    }
+
+    const onScroll = () => {
+      const y = window.scrollY
+      const now = performance.now()
+      const delta = y - lastY
+      lastY = y
+      if (now < lockUntil.current) {
+        acc = 0
+        return
+      }
+      if (Math.abs(delta) < 1) return
+      acc = acc === 0 || Math.sign(delta) === Math.sign(acc) ? acc + delta : delta
+      if (acc > 56 && y > 48) {
+        const section = sectionRef.current
+        if (!section || section.dataset.listOpen !== 'true') return
+        const sticky = getComputedStyle(section).position === 'sticky'
+        const passedList = section.getBoundingClientRect().bottom < window.innerHeight * 0.42
+        // Sticky side list: the page scroll is the comparison. Stacked list: hide once it has
+        // scrolled mostly off, so picking artists does not tuck the list away.
+        if ((sticky && acc > 80) || passedList) collapse()
+      } else if (acc < -40) {
+        expand()
+      }
+    }
+
+    const onWheel = (event: WheelEvent) => {
+      if (performance.now() < lockUntil.current) return
+      if (stillBrowsingList(event.target)) return
+      if (event.deltaY > 16 && pageAtBottom()) collapse()
+      else if (event.deltaY < -16 && window.scrollY <= 8) expand()
+    }
+
+    const onTouchStart = (event: TouchEvent) => {
+      lastTouchY = event.touches[0]?.clientY ?? 0
+    }
+
+    const onTouchMove = (event: TouchEvent) => {
+      const y = event.touches[0]?.clientY ?? 0
+      const dy = lastTouchY - y
+      lastTouchY = y
+      if (performance.now() < lockUntil.current || Math.abs(dy) < 14) return
+      if (stillBrowsingList(event.target)) return
+      if (dy > 0 && pageAtBottom()) collapse()
+      else if (dy < 0 && window.scrollY <= 8) expand()
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('wheel', onWheel, { passive: true })
+    window.addEventListener('touchstart', onTouchStart, { passive: true })
+    window.addEventListener('touchmove', onTouchMove, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('wheel', onWheel)
+      window.removeEventListener('touchstart', onTouchStart)
+      window.removeEventListener('touchmove', onTouchMove)
+    }
+  }, [enabled, sectionRef])
+
+  return lock
+}
+
 export function ArtistCompare({
   onSourceChange,
 }: {
   onSourceChange?: (source: Exclude<DataSource, 'loading'>) => void
 } = {}) {
-  const { cardPadding, mode, setMode } = useSen()
+  const { cardPadding, mode, setMode, settings } = useSen()
   const easyRead = mode === 'spld'
   const tts = useSpeech()
   const lensesFile = useMemo(() => getCompareLenses(), [])
@@ -293,6 +413,51 @@ export function ArtistCompare({
     stopSpeech()
   }, [pairId, view, stopSpeech])
 
+  const browserRef = useRef<HTMLElement>(null)
+  const listPanelRef = useRef<HTMLDivElement>(null)
+  const listToggleRef = useRef<HTMLButtonElement>(null)
+  const [listOpen, setListOpen] = useState(true)
+  const listOpenRef = useRef(listOpen)
+  const [stickyTop, setStickyTop] = useState(72)
+
+  const setListOpenSafe = useCallback((next: boolean) => {
+    if (listOpenRef.current === next) return
+    if (listOpenRef.current && !next) {
+      const active = document.activeElement
+      if (active instanceof HTMLElement && listPanelRef.current?.contains(active)) {
+        listToggleRef.current?.focus()
+      }
+    }
+    listOpenRef.current = next
+    setListOpen(next)
+  }, [])
+
+  const lockLibraryScroll = useLibraryScrollCollapse(
+    source !== 'loading' && (view === 'browse' || view === 'free'),
+    setListOpenSafe,
+    browserRef,
+  )
+
+  useEffect(() => {
+    listOpenRef.current = listOpen
+  }, [listOpen])
+
+  useEffect(() => {
+    if (view !== 'browse') return
+    lockLibraryScroll(400)
+    setListOpenSafe(true)
+  }, [view, lockLibraryScroll, setListOpenSafe])
+
+  useEffect(() => {
+    const header = document.querySelector('header')
+    if (!header) return
+    const apply = () => setStickyTop(Math.ceil(header.getBoundingClientRect().height) + 8)
+    apply()
+    const observer = new ResizeObserver(apply)
+    observer.observe(header)
+    return () => observer.disconnect()
+  }, [])
+
   function togglePick(id: string) {
     setPicked((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id)
@@ -311,6 +476,38 @@ export function ArtistCompare({
       : t('ac.status.mock', { err: error ? ` (${error})` : '', a: artists.length, p: pairs.length })
 
   const textCls = easyRead ? 'text-base leading-loose' : 'text-sm leading-relaxed'
+  const reduceMotion = settings.reduceMotion
+  const compareReady =
+    view === 'free' && selectedArtists.length >= lensesFile.minArtists && Boolean(activeLens)
+  const sideLayout = compareReady && listOpen
+  const browserStyle = {
+    '--library-sticky-top': `${stickyTop}px`,
+    scrollMarginTop: stickyTop,
+  } as CSSProperties
+  const listClass = [
+    'mt-2 grid gap-2 overscroll-y-contain p-px sm:grid-cols-2',
+    sideLayout
+      ? 'max-h-[min(22rem,42svh)] overflow-y-auto lg:max-h-none lg:overflow-visible lg:grid-cols-1'
+      : 'max-h-[min(22rem,42svh)] overflow-y-auto lg:max-h-[min(34rem,58vh)] lg:grid-cols-3',
+  ].join(' ')
+
+  function toggleList() {
+    lockLibraryScroll(700)
+    if (listOpen) {
+      const shrink = Math.max(0, (browserRef.current?.getBoundingClientRect().height ?? 0) - 88)
+      setListOpenSafe(false)
+      requestAnimationFrame(() => {
+        lockLibraryScroll(400)
+        window.scrollTo(0, Math.max(0, window.scrollY - shrink))
+      })
+      return
+    }
+    setListOpenSafe(true)
+    requestAnimationFrame(() => {
+      lockLibraryScroll(400)
+      browserRef.current?.scrollIntoView({ block: 'start', behavior: 'auto' })
+    })
+  }
 
   return (
     <div className={`space-y-4 ${easyRead ? 'leading-loose' : ''}`}>
@@ -376,144 +573,229 @@ export function ArtistCompare({
       </div>
 
       {(view === 'browse' || view === 'free') && (
-        <div className="space-y-3 rounded-2xl border border-teal-100 bg-white p-3 shadow-sm">
-          <p className="text-sm text-teal-800/80">{lensesFile.intro}</p>
-          <div className="flex flex-wrap gap-2">
-            <label className="relative min-w-[12rem] flex-1 text-sm">
-              <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.search')}</span>
-              <span className="pointer-events-none absolute bottom-2.5 left-2.5 text-teal-500">
-                <Search className="h-4 w-4" aria-hidden />
-              </span>
-              <input
-                type="search"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder={t('ac.search.ph')}
-                className="w-full rounded-xl border border-teal-200 bg-white py-2 pl-8 pr-3 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
-              />
-            </label>
-            <label className="text-sm">
-              <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.filter.region')}</span>
-              <select
-                className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
-                value={region}
-                onChange={(e) => setRegion(e.target.value as CultureBucket)}
-              >
-                <option value="all">{t('ac.filter.region.all')}</option>
-                <option value="hk">{t('ac.filter.region.hk')}</option>
-                <option value="china">{t('ac.filter.region.china')}</option>
-                <option value="west">{t('ac.filter.region.west')}</option>
-                <option value="mingqing">{t('ac.filter.region.mingqing')}</option>
-              </select>
-            </label>
-            <label className="text-sm">
-              <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.filter.medium')}</span>
-              <select
-                className="max-w-[14rem] rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
-                value={mediumFilter}
-                onChange={(e) => setMediumFilter(e.target.value)}
-              >
-                <option value="all">{t('ac.filter.medium.all')}</option>
-                {mediaOptions.map((m) => (
-                  <option key={m} value={m}>
-                    {m}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-xs font-semibold text-teal-800">{t('ac.picked', { n: picked.length })}</span>
-            <button
-              type="button"
-              disabled={picked.length < lensesFile.minArtists}
-              onClick={() => setView('free')}
-              className="rounded-lg bg-teal-700 px-2.5 py-1 text-xs font-semibold text-white hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50"
+        <div
+          className={
+            sideLayout
+              ? 'lg:grid lg:grid-cols-[minmax(16.5rem,21rem)_minmax(0,1fr)] lg:items-start lg:gap-4'
+              : 'space-y-4'
+          }
+        >
+          <section
+            ref={browserRef}
+            data-list-open={listOpen ? 'true' : 'false'}
+            style={browserStyle}
+            className={[
+              'min-w-0 rounded-2xl border border-teal-100 bg-white shadow-sm',
+              listOpen
+                ? 'space-y-3 p-3'
+                : 'library-browser-sticky space-y-2 border-teal-200 bg-white/95 p-2 shadow-md backdrop-blur-sm',
+              sideLayout ? 'library-browser-side' : '',
+            ].join(' ')}
+          >
+            <div
+              className={
+                sideLayout
+                  ? 'space-y-3 lg:sticky lg:top-0 lg:z-10 lg:-mx-3 lg:-mt-3 lg:bg-white lg:px-3 lg:pb-3 lg:pt-3'
+                  : 'contents'
+              }
             >
-              {t('ac.compareBtn')}
-            </button>
-            <button
-              type="button"
-              disabled={picked.length === 0}
-              onClick={() => setPicked([])}
-              className="rounded-lg border border-teal-200 bg-white px-2.5 py-1 text-xs font-semibold text-teal-900 hover:bg-teal-50 disabled:opacity-50"
-            >
-              {t('ac.compareClear')}
-            </button>
-            {picked.length > 0 && picked.length < lensesFile.minArtists && (
-              <span className="text-xs text-amber-800">{t('ac.compareNeed')}</span>
-            )}
-          </div>
-
-          <p className="text-xs text-teal-700/70">{t('ac.results', { n: filtered.length })}</p>
-          {filtered.length === 0 ? (
-            <p className="text-sm text-teal-800">{t('ac.noResults')}</p>
-          ) : (
-            <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((a) => {
-                const on = picked.includes(a.id)
-                const full = !on && picked.length >= lensesFile.maxArtists
-                return (
-                  <li key={a.id}>
-                    <button
-                      type="button"
-                      disabled={full}
-                      onClick={() => togglePick(a.id)}
-                      aria-pressed={on}
-                      className={
-                        on
-                          ? 'flex w-full flex-col rounded-2xl border-2 border-teal-600 bg-teal-50 p-3 text-left shadow-sm'
-                          : 'flex w-full flex-col rounded-2xl border border-teal-100 bg-white p-3 text-left shadow-sm hover:border-teal-300 disabled:cursor-not-allowed disabled:opacity-50'
+            <div className="flex flex-wrap items-end gap-2">
+              {listOpen && <p className="w-full text-sm text-teal-800/80">{lensesFile.intro}</p>}
+              <label
+                className={`min-w-0 flex-1 text-sm ${listOpen ? 'sm:min-w-[12rem]' : 'sm:max-w-sm'}`}
+              >
+                {listOpen && (
+                  <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.search')}</span>
+                )}
+                <span className="relative block">
+                  <span className="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 text-teal-500">
+                    <Search className="h-4 w-4" aria-hidden />
+                  </span>
+                  <input
+                    type="search"
+                    value={query}
+                    aria-label={t('ac.search')}
+                    onChange={(e) => {
+                      const value = e.target.value
+                      setQuery(value)
+                      if (!listOpen && value.trim()) {
+                        lockLibraryScroll(700)
+                        setListOpenSafe(true)
                       }
+                    }}
+                    onFocus={() => lockLibraryScroll(800)}
+                    placeholder={t('ac.search.ph')}
+                    className="w-full rounded-xl border border-teal-200 bg-white py-2 pl-8 pr-3 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+                  />
+                </span>
+              </label>
+              {listOpen && (
+                <>
+                  <label className="text-sm">
+                    <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.filter.region')}</span>
+                    <select
+                      className="rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
+                      value={region}
+                      onChange={(e) => setRegion(e.target.value as CultureBucket)}
                     >
-                      <span className="flex items-start justify-between gap-2">
-                        <span className="min-w-0">
-                          <span className="block text-sm font-bold text-teal-950">{artistDisplayName(a)}</span>
-                          {artistSecondaryName(a) && (
-                            <span className="block text-xs text-teal-800/70">{artistSecondaryName(a)}</span>
-                          )}
-                        </span>
-                        {on ? (
-                          <Check className="h-4 w-4 shrink-0 text-teal-700" aria-hidden />
-                        ) : (
-                          <span className="text-[10px] font-semibold uppercase tracking-wide text-teal-600">
-                            {t('ac.pick')}
-                          </span>
-                        )}
-                      </span>
-                      <span className="mt-1 text-[11px] text-teal-700/70">
-                        {[a.culture_group, a.medium].filter(Boolean).join(' · ')}
-                      </span>
-                      <span className="mt-2 flex flex-wrap gap-1">
-                        {a.themes.slice(0, 3).map((th) => (
-                          <span key={th} className="rounded-full bg-white/80 px-1.5 py-0.5 text-[10px] text-teal-800 ring-1 ring-teal-100">
-                            {th}
-                          </span>
-                        ))}
-                      </span>
-                    </button>
-                  </li>
-                )
-              })}
-            </ul>
+                      <option value="all">{t('ac.filter.region.all')}</option>
+                      <option value="hk">{t('ac.filter.region.hk')}</option>
+                      <option value="china">{t('ac.filter.region.china')}</option>
+                      <option value="west">{t('ac.filter.region.west')}</option>
+                      <option value="mingqing">{t('ac.filter.region.mingqing')}</option>
+                    </select>
+                  </label>
+                  <label className="text-sm">
+                    <span className="mb-1 block text-xs font-medium text-teal-700">{t('ac.filter.medium')}</span>
+                    <select
+                      className="max-w-[14rem] rounded-xl border border-teal-200 bg-white px-3 py-2 text-sm shadow-sm"
+                      value={mediumFilter}
+                      onChange={(e) => setMediumFilter(e.target.value)}
+                    >
+                      <option value="all">{t('ac.filter.medium.all')}</option>
+                      {mediaOptions.map((m) => (
+                        <option key={m} value={m}>
+                          {m}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </>
+              )}
+              <button
+                ref={listToggleRef}
+                type="button"
+                aria-expanded={listOpen}
+                aria-controls="artist-list-panel"
+                onClick={toggleList}
+                className={
+                  listOpen
+                    ? 'inline-flex w-full shrink-0 items-center justify-center gap-1 rounded-full border border-teal-200 bg-white px-3 py-2 text-xs font-semibold text-teal-900 hover:bg-teal-50 sm:w-auto'
+                    : 'inline-flex shrink-0 items-center gap-1 rounded-full bg-teal-700 px-3 py-2 text-xs font-semibold text-white shadow hover:bg-teal-800'
+                }
+              >
+                {listOpen ? (
+                  <>
+                    <ChevronUp className="h-3.5 w-3.5" aria-hidden />
+                    {t('ac.list.hide')}
+                  </>
+                ) : (
+                  <>
+                    <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+                    {t('ac.list.show', { n: filtered.length })}
+                  </>
+                )}
+              </button>
+            </div>
+
+            {(listOpen || picked.length > 0) && (
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs font-semibold text-teal-800">{t('ac.picked', { n: picked.length })}</span>
+                <button
+                  type="button"
+                  disabled={picked.length < lensesFile.minArtists}
+                  onClick={() => setView('free')}
+                  className="rounded-lg bg-teal-700 px-2.5 py-1 text-xs font-semibold text-white hover:bg-teal-800 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {t('ac.compareBtn')}
+                </button>
+                <button
+                  type="button"
+                  disabled={picked.length === 0}
+                  onClick={() => setPicked([])}
+                  className="rounded-lg border border-teal-200 bg-white px-2.5 py-1 text-xs font-semibold text-teal-900 hover:bg-teal-50 disabled:opacity-50"
+                >
+                  {t('ac.compareClear')}
+                </button>
+                {picked.length > 0 && picked.length < lensesFile.minArtists && (
+                  <span className="text-xs text-amber-800">{t('ac.compareNeed')}</span>
+                )}
+              </div>
+            )}
+            </div>
+
+            <div
+              id="artist-list-panel"
+              ref={listPanelRef}
+              inert={!listOpen}
+              aria-hidden={listOpen ? undefined : true}
+              className={`grid ${reduceMotion ? '' : 'transition-[grid-template-rows] duration-200 ease-out'}`}
+              style={{ gridTemplateRows: listOpen ? '1fr' : '0fr', overflowAnchor: 'none' }}
+            >
+              <div className="min-h-0 overflow-hidden">
+                <p className="text-xs text-teal-700/70">{t('ac.results', { n: filtered.length })}</p>
+                {filtered.length === 0 ? (
+                  <p className="mt-2 text-sm text-teal-800">{t('ac.noResults')}</p>
+                ) : (
+                  <ul className={listClass}>
+                    {filtered.map((a) => {
+                      const on = picked.includes(a.id)
+                      const full = !on && picked.length >= lensesFile.maxArtists
+                      return (
+                        <li key={a.id}>
+                          <button
+                            type="button"
+                            disabled={full}
+                            onClick={() => togglePick(a.id)}
+                            aria-pressed={on}
+                            className={
+                              on
+                                ? 'flex w-full flex-col rounded-2xl border-2 border-teal-600 bg-teal-50 p-3 text-left shadow-sm'
+                                : 'flex w-full flex-col rounded-2xl border border-teal-100 bg-white p-3 text-left shadow-sm hover:border-teal-300 disabled:cursor-not-allowed disabled:opacity-50'
+                            }
+                          >
+                            <span className="flex items-start justify-between gap-2">
+                              <span className="min-w-0">
+                                <span className="block text-sm font-bold text-teal-950">{artistDisplayName(a)}</span>
+                                {artistSecondaryName(a) && (
+                                  <span className="block text-xs text-teal-800/70">{artistSecondaryName(a)}</span>
+                                )}
+                              </span>
+                              {on ? (
+                                <Check className="h-4 w-4 shrink-0 text-teal-700" aria-hidden />
+                              ) : (
+                                <span className="text-[10px] font-semibold uppercase tracking-wide text-teal-600">
+                                  {t('ac.pick')}
+                                </span>
+                              )}
+                            </span>
+                            <span className="mt-1 text-[11px] text-teal-700/70">
+                              {[a.culture_group, a.medium].filter(Boolean).join(' · ')}
+                            </span>
+                            <span className="mt-2 flex flex-wrap gap-1">
+                              {a.themes.slice(0, 3).map((th) => (
+                                <span key={th} className="rounded-full bg-white/80 px-1.5 py-0.5 text-[10px] text-teal-800 ring-1 ring-teal-100">
+                                  {th}
+                                </span>
+                              ))}
+                            </span>
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {compareReady && activeLens && (
+            <div className="min-w-0">
+              <FreeCompare
+                artists={selectedArtists}
+                lenses={lensesFile.lenses}
+                lens={activeLens}
+                onLensChange={setLensId}
+                sameLabel={lensesFile.columns.same}
+                diffLabel={lensesFile.columns.diff}
+                easyRead={easyRead}
+                padding={cardPadding}
+                textCls={textCls}
+                onBack={() => setView('browse')}
+              />
+            </div>
           )}
         </div>
-      )}
-
-      {view === 'free' && selectedArtists.length >= lensesFile.minArtists && activeLens && (
-        <FreeCompare
-          artists={selectedArtists}
-          lenses={lensesFile.lenses}
-          lens={activeLens}
-          onLensChange={setLensId}
-          sameLabel={lensesFile.columns.same}
-          diffLabel={lensesFile.columns.diff}
-          easyRead={easyRead}
-          padding={cardPadding}
-          textCls={textCls}
-          onBack={() => setView('browse')}
-        />
       )}
 
       {view === 'pairs' && pair && east && west && (
