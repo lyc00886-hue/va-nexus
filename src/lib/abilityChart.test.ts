@@ -199,7 +199,14 @@ describe('ability-chart content', () => {
       'self-aw-6',
     ])
     assert.equal(ids.includes('self-aw-5'), false)
+    const privacy = {
+      'zh-Hant': '數據只儲存在學生自己的裝置╱帳戶；圖表不顯示任何診斷標籤。',
+      en: "Data stays on the student's own device / account; the chart never shows any diagnostic label.",
+      'zh-Hans': '数据只储存在学生自己的设备╱账户；图表不显示任何诊断标签。',
+    } as const
     for (const file of files) {
+      assert.equal(file.chart.meta.privacy, privacy[file.locale])
+      assert.equal(/SEN|學習需要|学习需要|special educational needs/i.test(file.chart.meta.privacy), false)
       assert.ok(file.chart.meta.disclaimer.length > 0)
       assert.equal(file.chart.meta.ai_marks, false)
       assert.equal(file.chart.meta.no_ranking, true)

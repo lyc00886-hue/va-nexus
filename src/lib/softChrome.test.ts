@@ -115,6 +115,78 @@ describe('soft leftover display chrome', () => {
     assert.match(feedback, /AI 回饋/)
   })
 
+  it('clears student-facing SENCO, SEN chart labels, and dyslexia spacing names', () => {
+    const privacy = {
+      'ability-chart.json': '數據只儲存在學生自己的裝置╱帳戶；圖表不顯示任何診斷標籤。',
+      'ability-chart.zh-Hans.json': '数据只储存在学生自己的设备╱账户；图表不显示任何诊断标签。',
+      'ability-chart.en.json':
+        "Data stays on the student's own device / account; the chart never shows any diagnostic label.",
+    } as const
+    for (const [file, expected] of Object.entries(privacy)) {
+      const chart = JSON.parse(read(`src/content/${file}`)) as { meta: { privacy: string; no_sen_labels: boolean } }
+      assert.equal(chart.meta.privacy, expected)
+      assert.equal(chart.meta.no_sen_labels, true)
+    }
+
+    const disclaimer = {
+      'sen-checkin.json':
+        '呢個問卷唔係診斷，亦唔會判斷你有冇任何學習困難。佢只係幫你揀用得舒服啲嘅顯示同閱讀方式。答案只會存喺你部裝置，唔會傳俾老師或者學校。如果你覺得讀書有困難，可以同老師、社工或者學校嘅支援老師傾。',
+      'sen-checkin.zh-Hans.json':
+        '这份问卷不是诊断，也不会判断你是否有任何学习困难。它只是帮助你选择更舒适的显示与阅读方式。答案只会保存在你的设备上，不会传送给老师或学校。如果你觉得学习有困难，可以和老师、社工或学校的支援老师商量。',
+      'sen-checkin.en.json':
+        "This questionnaire is not a diagnosis, and it does not decide whether you have any learning difficulty. It only helps you choose display and reading options that feel more comfortable. Your answers stay on your device and are never sent to teachers or your school. If you find schoolwork hard, talk to a teacher, a social worker, or your school's support teacher.",
+    } as const
+    for (const [file, expected] of Object.entries(disclaimer)) {
+      const pack = JSON.parse(read(`src/content/${file}`)) as { disclaimer: string }
+      assert.equal(pack.disclaimer, expected)
+      assert.equal(pack.disclaimer.includes('SENCO'), false)
+    }
+
+    const labels = {
+      'zh-Hant': '寬鬆間距',
+      'zh-Hans': '宽松间距',
+      en: 'Wider spacing',
+    } as const
+    const desc = {
+      'zh-Hant': '加大字距、行距同段落間距',
+      'zh-Hans': '加大字距、行距和段落间距',
+      en: 'Wider letter, line and paragraph spacing',
+    } as const
+    for (const locale of Object.keys(FILES) as (keyof typeof FILES)[]) {
+      const bag = messages(FILES[locale])
+      assert.equal(bag['sen.toggle.dyslexia'], labels[locale])
+      assert.equal(bag['sen.toggle.dyslexia.desc'], desc[locale])
+    }
+
+    const studentCopy = [
+      'src/i18n/zh-Hant.json',
+      'src/i18n/zh-Hans.json',
+      'src/i18n/en.json',
+      'src/content/ability-chart.json',
+      'src/content/ability-chart.zh-Hans.json',
+      'src/content/ability-chart.en.json',
+      'src/content/sen-checkin.json',
+      'src/content/sen-checkin.zh-Hans.json',
+      'src/content/sen-checkin.en.json',
+    ]
+      .map(read)
+      .join('\n')
+    assert.equal(studentCopy.includes('SENCO'), false)
+    assert.equal(studentCopy.includes('學習需要（SEN）'), false)
+    assert.equal(studentCopy.includes('学习需要（SEN）'), false)
+    assert.equal(studentCopy.includes('Dyslexia-friendly'), false)
+    assert.equal(studentCopy.includes('讀寫障礙'), false)
+    assert.equal(studentCopy.includes('读写障碍'), false)
+
+    const panel = read('src/components/SenSettingsPanel.tsx')
+    const css = read('src/index.css')
+    const sen = read('src/context/SenContext.tsx')
+    assert.match(panel, /settings\.dyslexia/)
+    assert.match(css, /\.sen-dyslexia/)
+    assert.match(sen, /settings\.dyslexia/)
+    assert.equal(css.includes('Dyslexia-friendly'), false)
+  })
+
   it('does not wire sound-effect playback', () => {
     const header = read('src/components/Header.tsx')
     const app = read('src/App.tsx')

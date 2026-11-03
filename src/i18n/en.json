@@ -208,7 +208,7 @@
   "sen.custom": "Custom settings",
   "sen.font": "Text size",
   "sen.toggle.contrast.desc": "Darker text and clearer borders for low vision or bright light",
-  "sen.toggle.dyslexia": "Dyslexia-friendly spacing",
+  "sen.toggle.dyslexia": "Wider spacing",
   "sen.toggle.dyslexia.desc": "Wider letter, line and paragraph spacing",
   "sen.toggle.motion.desc": "Turns off transitions and animated effects",
   "sen.toggle.focus.desc": "Shows one step at a time, with a 25-minute focus timer",
