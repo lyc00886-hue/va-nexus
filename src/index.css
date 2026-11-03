@@ -121,6 +121,9 @@ html {
     animation: none !important;
     transition: none !important;
   }
+  .portfolio-section-chevron {
+    transition: none !important;
+  }
 }
 
 /* Library browser: sticky search chip while the list is collapsed.

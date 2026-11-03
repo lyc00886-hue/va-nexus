@@ -18,6 +18,8 @@ import {
   X,
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { AbilityChart } from './AbilityChart'
+import { PortfolioAccordion } from './PortfolioAccordion'
 import { SbaArtworkSlotSwitcher } from './SbaArtworkSlotSwitcher'
 import { SbaSeriesOutline } from './SbaSeriesOutline'
 import { useGame } from '../context/GameContext'
@@ -444,6 +446,8 @@ export function SbaQuest() {
   const activeIdx = STEPS.findIndex((s) => s.id === active)
   const prev = STEPS[activeIdx - 1]
   const next = STEPS[activeIdx + 1]
+  const activeStep = STEPS.find((s) => s.id === active)
+  const activeItems = activeStep ? slotEvidence.filter((e) => e.step === activeStep.id) : []
 
   function onSlotType(slot: SlotId, type: 'artwork' | 'criticalStudy') {
     pieces.setType(slot, type)
@@ -455,97 +459,22 @@ export function SbaQuest() {
     pieces.setType(slot, type === 'unset' ? null : type)
   }
 
-  return (
-    <div className="space-y-4">
-      <SbaSeriesOutline
+  function renderSlotSwitcher(domPrefix: string) {
+    return (
+      <SbaArtworkSlotSwitcher
+        domPrefix={domPrefix}
         active={activeSlot}
-        state={outline.state}
-        onPortfolio={outline.setPortfolio}
-        onPieceText={outline.setPieceText}
-        onPieceType={onOutlineType}
-        onPieceStatus={outline.setPieceStatus}
-        onRwb={outline.setRwb}
-        onToggleCheck={outline.toggleCheck}
-      >
-        <SbaArtworkSlotSwitcher
-          active={activeSlot}
-          types={pieces.types}
-          started={startedSlots}
-          onSelect={pieces.setActive}
-          onType={onSlotType}
-        />
-      </SbaSeriesOutline>
-      <div>
-        <h2 className="text-xl font-bold text-teal-950">{t('sba.title')}</h2>
-        <p className="text-sm text-teal-800/70">{t('sba.subtitle')}</p>
-      </div>
+        types={pieces.types}
+        started={startedSlots}
+        onSelect={pieces.setActive}
+        onType={onSlotType}
+      />
+    )
+  }
 
-      {source === 'private' ? (
-        <div
-          role="note"
-          className="flex items-start gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-900"
-        >
-          <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-          <span>
-            {t('sba.banner.private')}
-          </span>
-        </div>
-      ) : (
-        <div
-          role="alert"
-          className="flex flex-wrap items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900"
-        >
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-          <span className="flex-1">
-            {source === 'local'
-              ? t('sba.banner.local')
-              : t('sba.banner.guest')}
-          </span>
-          {source === 'guest' && (
-            <button
-              type="button"
-              onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
-              className="inline-flex items-center gap-1 rounded-lg bg-amber-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-amber-700"
-            >
-              <LogIn className="h-3.5 w-3.5" aria-hidden /> {t('auth.signIn')}
-            </button>
-          )}
-        </div>
-      )}
-
-      <div>
-        <div className="flex items-center justify-between text-xs font-semibold text-teal-900">
-          <span>
-            {t('sba.progress', { n: completed, total: STEPS.length })}
-          </span>
-          <span className="inline-flex items-center gap-1 font-normal text-teal-800/70">
-            {source === 'loading' && (
-              <>
-                <Loader2 className="h-3 w-3 animate-spin" aria-hidden /> {t('sba.connecting')}
-              </>
-            )}
-            {source === 'private' && <>{t('sba.private')}</>}
-            {source === 'guest' && <>{t('sba.guest')}</>}
-            {source === 'local' && (
-              <>
-                <CloudOff className="h-3 w-3" aria-hidden /> {t('sba.offline')}
-              </>
-            )}
-          </span>
-        </div>
-        <div
-          className="mt-1 h-2.5 w-full overflow-hidden rounded-full bg-teal-100"
-          role="progressbar"
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-valuenow={pct}
-          aria-label={t('sba.progressAria')}
-        >
-          <div className="h-full rounded-full bg-teal-600 transition-all" style={{ width: `${pct}%` }} />
-        </div>
-      </div>
-
-      {focusTunnel ? (
+  function renderStepNav() {
+    if (focusTunnel) {
+      return (
         <div className="flex items-center justify-between gap-2 rounded-2xl border border-amber-200 bg-amber-50/60 px-3 py-2 text-sm">
           <button
             type="button"
@@ -567,341 +496,453 @@ export function SbaQuest() {
             {t('sba.next')} <ChevronRight className="h-4 w-4" aria-hidden />
           </button>
         </div>
-      ) : (
-        <ol className="grid gap-2 sm:grid-cols-3 lg:grid-cols-6">
-          {STEPS.map((s) => {
-            const isOpen = unlocked.has(s.id)
-            const done = doneSteps.has(s.id)
-            return (
-              <li key={s.id}>
-                <button
-                  type="button"
-                  disabled={!isOpen}
-                  onClick={() => goTo(s.id)}
-                  aria-current={active === s.id ? 'step' : undefined}
-                  className={`flex w-full flex-col items-start rounded-2xl border px-3 py-3 text-left text-sm transition ${
-                    active === s.id
-                      ? 'border-teal-600 bg-teal-700 text-white shadow'
-                      : isOpen
-                        ? 'border-teal-200 bg-white text-teal-950 hover:border-teal-400'
-                        : 'cursor-not-allowed border-slate-200 bg-slate-50 text-slate-400'
-                  }`}
-                >
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide opacity-80">
-                    {done ? (
-                      <Check className="h-3.5 w-3.5" />
-                    ) : isOpen ? (
-                      <Unlock className="h-3.5 w-3.5" />
-                    ) : (
-                      <Lock className="h-3.5 w-3.5" />
-                    )}
-                    Step {s.id}
-                  </span>
-                  <span className="mt-1 font-semibold">{s.title}</span>
-                </button>
-              </li>
-            )
-          })}
-        </ol>
-      )}
-
-      {STEPS.filter((s) => s.id === active).map((s) => {
-        const items = slotEvidence.filter((e) => e.step === s.id)
-        return (
-          <section
-            key={s.id}
-            className={`rounded-2xl border border-teal-100 bg-white shadow-sm ${cardPadding}`}
-          >
-            <h3 className="text-lg font-bold text-teal-950">
-              {t('sba.stepHeading', { n: s.id, title: s.title })}
-            </h3>
-            <p className="mt-1 text-sm text-teal-800/70">{s.hint}</p>
-
-            {(() => {
-              const { guide, draft } = getGuideForStep(s.id)
-              if (!guide) return null
-              const checked = new Set(guideChecks[String(activeSlot)]?.[String(s.id)] ?? [])
-              return (
-                <section
-                  className={`mt-4 rounded-2xl border border-sky-200 bg-sky-50/70 ${motion ? 'transition-colors' : ''}`}
-                  aria-label={t('sba.guide.aria', { n: s.id })}
-                >
-                  <button
-                    type="button"
-                    onClick={() => setGuideOpen((o) => !o)}
-                    aria-expanded={guideOpen}
-                    className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left text-sm font-semibold text-sky-950"
-                  >
-                    <span className="inline-flex items-center gap-2">
-                      <BookOpenCheck className="h-4 w-4 shrink-0" aria-hidden />
-                      {t('sba.guide.title')}
-                      {draft && (
-                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
-                          draft
-                        </span>
-                      )}
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-sky-800">
-                      {guideOpen ? t('sba.guide.close') : t('sba.guide.open')}
-                      <ChevronDown
-                        className={`h-4 w-4 ${guideOpen ? 'rotate-180' : ''} ${motion ? 'transition-transform' : ''}`}
-                        aria-hidden
-                      />
-                    </span>
-                  </button>
-                  {guideOpen && (
-                    <div className="space-y-4 border-t border-sky-100 px-3 py-3">
-                      {draft && <p className="text-xs text-amber-800">{t('sba.guide.draft')}</p>}
-                      {guide.tip && (
-                        <p className="rounded-xl bg-white/80 px-2.5 py-2 text-sm text-sky-950">
-                          <span className="font-semibold text-sky-800">{t('sba.guide.tip')} </span>
-                          {guide.tip}
-                        </p>
-                      )}
-                      <fieldset>
-                        <legend className="text-xs font-semibold uppercase tracking-wide text-sky-800">
-                          {t('sba.guide.checklist')}
-                        </legend>
-                        <ul className="mt-2 space-y-1.5">
-                          {guide.checklist.map((item) => {
-                            const on = checked.has(item.id)
-                            return (
-                              <li key={item.id}>
-                                <label className="flex cursor-pointer items-start gap-2 rounded-xl bg-white/80 px-2.5 py-2 text-sm text-sky-950 hover:bg-white">
-                                  <input
-                                    type="checkbox"
-                                    className="mt-0.5 h-4 w-4 accent-sky-700"
-                                    checked={on}
-                                    onChange={() => toggleGuideCheck(s.id, item.id)}
-                                    aria-label={t('sba.guide.checkAria', { item: item.text })}
-                                  />
-                                  <span>{item.text}</span>
-                                </label>
-                              </li>
-                            )
-                          })}
-                        </ul>
-                      </fieldset>
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
-                          {t('sba.guide.questions')}
-                        </p>
-                        <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm text-sky-950">
-                          {guide.guidingQuestions.map((q) => (
-                            <li key={q}>{q}</li>
-                          ))}
-                        </ol>
-                      </div>
-                      <div>
-                        <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
-                          {t('sba.guide.frames')}
-                        </p>
-                        <ul className="mt-2 space-y-1.5">
-                          {guide.sentenceFrames.map((frame) => (
-                            <li key={frame} className="flex items-start gap-2 rounded-xl bg-white/80 px-2.5 py-2">
-                              <p className="min-w-0 flex-1 text-sm text-sky-950">{frame}</p>
-                              <button
-                                type="button"
-                                onClick={() => void copyFrame(frame)}
-                                className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-sky-200 bg-sky-100 px-2 py-1 text-[11px] font-semibold text-sky-900 hover:bg-sky-200"
-                                aria-label={`${t('sba.guide.copy')}: ${frame}`}
-                              >
-                                <ClipboardCopy className="h-3.5 w-3.5" aria-hidden />
-                                {copiedFrame === frame ? t('sba.guide.copied') : t('sba.guide.copy')}
-                              </button>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      {guide.redFlagReminders && guide.redFlagReminders.length > 0 && (
-                        <div>
-                          <p className="text-xs font-semibold uppercase tracking-wide text-rose-800">
-                            {t('sba.guide.redFlags')}
-                          </p>
-                          <ul className="mt-2 space-y-1.5">
-                            {guide.redFlagReminders.map((rf) => (
-                              <li
-                                key={rf.id}
-                                className="flex items-start gap-2 rounded-xl border border-rose-100 bg-rose-50/80 px-2.5 py-2 text-sm text-rose-950"
-                              >
-                                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-600" aria-hidden />
-                                <span>{rf.text}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </section>
-              )
-            })()}
-
-            {(() => {
-              const { guide } = getGuideForStep(s.id)
-              const fields = (guide?.fields ?? []).filter(
-                (field) => field.type === 'select' && field.id !== 'self-aw-5' && field.options && field.options.length > 0,
-              )
-              if (fields.length === 0) return null
-              return (
-                <fieldset className="mt-4 space-y-3">
-                  <legend className="text-sm font-semibold text-teal-950">{s.title}</legend>
-                  {fields.map((field) => (
-                    <SelfLevelSelect
-                      key={field.id}
-                      fieldId={field.id}
-                      label={field.label}
-                      placeholder={field.placeholder ?? ''}
-                      options={field.options ?? []}
-                      value={selects[field.id] ?? ''}
-                      onChange={(value) => setSelfSelect(field.id, value)}
-                    />
-                  ))}
-                </fieldset>
-              )
-            })()}
-
-            <label className="mt-4 block text-sm font-medium text-teal-900">
-              {t('sba.notes')}
-              <textarea
-                className="mt-1 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
-                rows={3}
-                maxLength={500}
-                value={note}
-                onChange={(e) => updateDraft(activeSlot, { note: e.target.value })}
-                placeholder={t('sba.notes.ph')}
-              />
-            </label>
-
-            {source === 'guest' ? (
-              <div className="mt-4 flex flex-col items-start gap-2">
-                <span className="text-sm font-medium text-teal-900">{t('sba.photosLabel')}</span>
-                <button
-                  type="button"
-                  onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
-                  className="inline-flex items-center gap-2 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 hover:bg-slate-100"
-                >
-                  <Lock className="h-4 w-4" aria-hidden />
-                  {t('sba.signInToUpload')}
-                </button>
-              </div>
-            ) : (
-            <label className="mt-4 flex cursor-pointer flex-col items-start gap-2">
-              <span className="text-sm font-medium text-teal-900">{t('sba.photos')}</span>
-              <span className="inline-flex items-center gap-2 rounded-xl border border-dashed border-teal-300 bg-teal-50/60 px-4 py-3 text-sm text-teal-800">
-                <Camera className="h-4 w-4" aria-hidden />
-                {t('sba.pick')}
-              </span>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                className="sr-only"
-                onChange={(e) => {
-                  onPick(e.target.files)
-                  e.target.value = ''
-                }}
-              />
-            </label>
-            )}
-
-            {pending.length > 0 && (
-              <ul className="mt-3 flex flex-wrap gap-3" aria-label={t('sba.pending')}>
-                {pending.map((p) => (
-                  <li
-                    key={p.preview}
-                    className="relative w-24 overflow-hidden rounded-xl border border-amber-200 bg-amber-50"
-                  >
-                    <img src={p.preview} alt={p.file.name} className="h-20 w-full object-cover" />
-                    <button
-                      type="button"
-                      onClick={() => removePending(p.preview)}
-                      className="absolute right-1 top-1 rounded-full bg-black/60 p-0.5 text-white"
-                      aria-label={t('sba.remove', { name: p.file.name })}
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <div className="mt-4 flex flex-wrap items-center gap-3">
+      )
+    }
+    return (
+      <ol className="grid gap-2 sm:grid-cols-3 lg:grid-cols-6">
+        {STEPS.map((s) => {
+          const isOpen = unlocked.has(s.id)
+          const done = doneSteps.has(s.id)
+          return (
+            <li key={s.id}>
               <button
                 type="button"
-                onClick={onSave}
-                disabled={saving || source === 'loading'}
-                className="inline-flex items-center gap-2 rounded-xl bg-teal-700 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-teal-800 disabled:opacity-60"
+                disabled={!isOpen}
+                onClick={() => goTo(s.id)}
+                aria-current={active === s.id ? 'step' : undefined}
+                className={`flex w-full flex-col items-start rounded-2xl border px-3 py-3 text-left text-sm transition ${
+                  active === s.id
+                    ? 'border-teal-600 bg-teal-700 text-white shadow'
+                    : isOpen
+                      ? 'border-teal-200 bg-white text-teal-950 hover:border-teal-400'
+                      : 'cursor-not-allowed border-slate-200 bg-slate-50 text-slate-400'
+                }`}
               >
-                {saving ? (
-                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                ) : (
-                  <UploadCloud className="h-4 w-4" aria-hidden />
-                )}
-                {saving ? t('sba.saving') : t('sba.save')}
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold uppercase tracking-wide opacity-80">
+                  {done ? (
+                    <Check className="h-3.5 w-3.5" />
+                  ) : isOpen ? (
+                    <Unlock className="h-3.5 w-3.5" />
+                  ) : (
+                    <Lock className="h-3.5 w-3.5" />
+                  )}
+                  Step {s.id}
+                </span>
+                <span className="mt-1 font-semibold">{s.title}</span>
               </button>
-              {message && (
-                <p
-                  role="status"
-                  className={`text-sm ${message.kind === 'error' ? 'text-rose-700' : 'text-teal-700'}`}
-                >
-                  {message.text}
-                </p>
-              )}
-            </div>
+            </li>
+          )
+        })}
+      </ol>
+    )
+  }
 
-            {items.length > 0 && (
-              <div className="mt-5 border-t border-teal-100 pt-4">
-                <h4 className="text-sm font-semibold text-teal-900">{t('sba.saved', { n: items.length })}</h4>
-                <ul className="mt-2 flex flex-wrap gap-3">
-                  {items.map((e) => (
-                    <li key={e.id} className="relative w-32 overflow-hidden rounded-xl border border-teal-100 bg-teal-50">
-                      {e.url ? (
-                        <a href={e.url} target="_blank" rel="noreferrer">
-                          <img
-                            src={e.url}
-                            alt={e.note ?? t('sba.evidenceAlt', { n: e.step })}
-                            loading="lazy"
-                            className="h-24 w-full object-cover"
-                          />
-                        </a>
-                      ) : (
-                        <div className="flex h-24 items-center justify-center p-2 text-center text-[11px] text-teal-800">
-                          {e.file_path ? t('sba.photoExpired') : t('sba.note')}
-                        </div>
-                      )}
-                      {e.note && <p className="line-clamp-3 px-2 py-1 text-[11px] text-teal-900">{e.note}</p>}
-                      {e.local && <p className="px-2 pb-1 text-[10px] text-amber-700">{t('sba.localCache')}</p>}
-                      <div className="flex flex-wrap gap-1 px-1.5 pb-1.5">
-                        {e.note ? (
-                          <button
-                            type="button"
-                            onClick={() => requestDeleteNote(e)}
-                            className="inline-flex items-center gap-0.5 rounded-md border border-rose-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
-                          >
-                            <Trash2 className="h-3 w-3" aria-hidden />
-                            {t('sba.delete.note')}
-                          </button>
-                        ) : null}
-                        {e.file_path || e.url ? (
-                          <button
-                            type="button"
-                            onClick={() => requestDeletePhoto(e)}
-                            className="inline-flex items-center gap-0.5 rounded-md border border-rose-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
-                          >
-                            <Trash2 className="h-3 w-3" aria-hidden />
-                            {t('sba.delete.photo')}
-                          </button>
-                        ) : null}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+  const storageBanner =
+    source === 'private' ? (
+      <div
+        role="note"
+        className="flex items-start gap-2 rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-900"
+      >
+        <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+        <span>{t('sba.banner.private')}</span>
+      </div>
+    ) : (
+      <div
+        role="alert"
+        className="flex flex-wrap items-start gap-2 rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-900"
+      >
+        <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
+        <span className="flex-1">{source === 'local' ? t('sba.banner.local') : t('sba.banner.guest')}</span>
+        {source === 'guest' && (
+          <button
+            type="button"
+            onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
+            className="inline-flex items-center gap-1 rounded-lg bg-amber-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-amber-700"
+          >
+            <LogIn className="h-3.5 w-3.5" aria-hidden /> {t('auth.signIn')}
+          </button>
+        )}
+      </div>
+    )
+
+  const stepProgress = (
+    <div>
+      <div className="flex items-center justify-between text-xs font-semibold text-teal-900">
+        <span>{t('sba.progress', { n: completed, total: STEPS.length })}</span>
+        <span className="inline-flex items-center gap-1 font-normal text-teal-800/70">
+          {source === 'loading' && (
+            <>
+              <Loader2 className="h-3 w-3 animate-spin" aria-hidden /> {t('sba.connecting')}
+            </>
+          )}
+          {source === 'private' && <>{t('sba.private')}</>}
+          {source === 'guest' && <>{t('sba.guest')}</>}
+          {source === 'local' && (
+            <>
+              <CloudOff className="h-3 w-3" aria-hidden /> {t('sba.offline')}
+            </>
+          )}
+        </span>
+      </div>
+      <div
+        className="mt-1 h-2.5 w-full overflow-hidden rounded-full bg-teal-100"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={pct}
+        aria-label={t('sba.progressAria')}
+      >
+        <div
+          className={`h-full rounded-full bg-teal-600 ${motion ? 'transition-all' : ''}`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+    </div>
+  )
+
+  const guidePanel = activeStep
+    ? (() => {
+        const { guide, draft } = getGuideForStep(activeStep.id)
+        if (!guide) return null
+        const checked = new Set(guideChecks[String(activeSlot)]?.[String(activeStep.id)] ?? [])
+        return (
+          <section
+            className={`rounded-2xl border border-sky-200 bg-sky-50/70 ${motion ? 'transition-colors' : ''}`}
+            aria-label={t('sba.guide.aria', { n: activeStep.id })}
+          >
+            <button
+              type="button"
+              onClick={() => setGuideOpen((o) => !o)}
+              aria-expanded={guideOpen}
+              className="flex w-full items-center justify-between gap-2 px-3 py-2.5 text-left text-sm font-semibold text-sky-950"
+            >
+              <span className="inline-flex items-center gap-2">
+                <BookOpenCheck className="h-4 w-4 shrink-0" aria-hidden />
+                {t('sba.guide.title')}
+                {draft && (
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-800">
+                    draft
+                  </span>
+                )}
+              </span>
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-sky-800">
+                {guideOpen ? t('sba.guide.close') : t('sba.guide.open')}
+                <ChevronDown
+                  className={`h-4 w-4 ${guideOpen ? 'rotate-180' : ''} ${motion ? 'transition-transform' : ''}`}
+                  aria-hidden
+                />
+              </span>
+            </button>
+            {guideOpen && (
+              <div className="space-y-4 border-t border-sky-100 px-3 py-3">
+                {draft && <p className="text-xs text-amber-800">{t('sba.guide.draft')}</p>}
+                {guide.tip && (
+                  <p className="rounded-xl bg-white/80 px-2.5 py-2 text-sm text-sky-950">
+                    <span className="font-semibold text-sky-800">{t('sba.guide.tip')} </span>
+                    {guide.tip}
+                  </p>
+                )}
+                <fieldset>
+                  <legend className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+                    {t('sba.guide.checklist')}
+                  </legend>
+                  <ul className="mt-2 space-y-1.5">
+                    {guide.checklist.map((item) => {
+                      const on = checked.has(item.id)
+                      return (
+                        <li key={item.id}>
+                          <label className="flex cursor-pointer items-start gap-2 rounded-xl bg-white/80 px-2.5 py-2 text-sm text-sky-950 hover:bg-white">
+                            <input
+                              type="checkbox"
+                              className="mt-0.5 h-4 w-4 accent-sky-700"
+                              checked={on}
+                              onChange={() => toggleGuideCheck(activeStep.id, item.id)}
+                              aria-label={t('sba.guide.checkAria', { item: item.text })}
+                            />
+                            <span>{item.text}</span>
+                          </label>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </fieldset>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+                    {t('sba.guide.questions')}
+                  </p>
+                  <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm text-sky-950">
+                    {guide.guidingQuestions.map((q) => (
+                      <li key={q}>{q}</li>
+                    ))}
+                  </ol>
+                </div>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-sky-800">
+                    {t('sba.guide.frames')}
+                  </p>
+                  <ul className="mt-2 space-y-1.5">
+                    {guide.sentenceFrames.map((frame) => (
+                      <li key={frame} className="flex items-start gap-2 rounded-xl bg-white/80 px-2.5 py-2">
+                        <p className="min-w-0 flex-1 text-sm text-sky-950">{frame}</p>
+                        <button
+                          type="button"
+                          onClick={() => void copyFrame(frame)}
+                          className="inline-flex shrink-0 items-center gap-1 rounded-lg border border-sky-200 bg-sky-100 px-2 py-1 text-[11px] font-semibold text-sky-900 hover:bg-sky-200"
+                          aria-label={`${t('sba.guide.copy')}: ${frame}`}
+                        >
+                          <ClipboardCopy className="h-3.5 w-3.5" aria-hidden />
+                          {copiedFrame === frame ? t('sba.guide.copied') : t('sba.guide.copy')}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                {guide.redFlagReminders && guide.redFlagReminders.length > 0 && (
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-rose-800">
+                      {t('sba.guide.redFlags')}
+                    </p>
+                    <ul className="mt-2 space-y-1.5">
+                      {guide.redFlagReminders.map((rf) => (
+                        <li
+                          key={rf.id}
+                          className="flex items-start gap-2 rounded-xl border border-rose-100 bg-rose-50/80 px-2.5 py-2 text-sm text-rose-950"
+                        >
+                          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-rose-600" aria-hidden />
+                          <span>{rf.text}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             )}
           </section>
         )
-      })}
+      })()
+    : null
+
+  const selfFields = activeStep
+    ? (() => {
+        const { guide } = getGuideForStep(activeStep.id)
+        const fields = (guide?.fields ?? []).filter(
+          (field) => field.type === 'select' && field.id !== 'self-aw-5' && field.options && field.options.length > 0,
+        )
+        if (fields.length === 0) return null
+        return (
+          <fieldset className="space-y-3">
+            <legend className="text-sm font-semibold text-teal-950">{activeStep.title}</legend>
+            {fields.map((field) => (
+              <SelfLevelSelect
+                key={field.id}
+                fieldId={field.id}
+                label={field.label}
+                placeholder={field.placeholder ?? ''}
+                options={field.options ?? []}
+                value={selects[field.id] ?? ''}
+                onChange={(value) => setSelfSelect(field.id, value)}
+              />
+            ))}
+          </fieldset>
+        )
+      })()
+    : null
+
+  return (
+    <>
+      <PortfolioAccordion
+        evidence={
+          <div className="space-y-4">
+            {renderSlotSwitcher('sba-evidence')}
+            {storageBanner}
+            {stepProgress}
+            {renderStepNav()}
+            {activeStep && (
+              <section className={`rounded-2xl border border-teal-100 bg-white shadow-sm ${cardPadding}`}>
+                <h3 className="text-lg font-bold text-teal-950">
+                  {t('sba.stepHeading', { n: activeStep.id, title: activeStep.title })}
+                </h3>
+                <p className="mt-1 text-sm text-teal-800/70">{activeStep.hint}</p>
+
+                <label className="mt-4 block text-sm font-medium text-teal-900">
+                  {t('sba.notes')}
+                  <textarea
+                    className="mt-1 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
+                    rows={3}
+                    maxLength={500}
+                    value={note}
+                    onChange={(e) => updateDraft(activeSlot, { note: e.target.value })}
+                    placeholder={t('sba.notes.ph')}
+                  />
+                </label>
+
+                {source === 'guest' ? (
+                  <div className="mt-4 flex flex-col items-start gap-2">
+                    <span className="text-sm font-medium text-teal-900">{t('sba.photosLabel')}</span>
+                    <button
+                      type="button"
+                      onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
+                      className="inline-flex items-center gap-2 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 hover:bg-slate-100"
+                    >
+                      <Lock className="h-4 w-4" aria-hidden />
+                      {t('sba.signInToUpload')}
+                    </button>
+                  </div>
+                ) : (
+                  <label className="mt-4 flex cursor-pointer flex-col items-start gap-2">
+                    <span className="text-sm font-medium text-teal-900">{t('sba.photos')}</span>
+                    <span className="inline-flex items-center gap-2 rounded-xl border border-dashed border-teal-300 bg-teal-50/60 px-4 py-3 text-sm text-teal-800">
+                      <Camera className="h-4 w-4" aria-hidden />
+                      {t('sba.pick')}
+                    </span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="sr-only"
+                      onChange={(e) => {
+                        onPick(e.target.files)
+                        e.target.value = ''
+                      }}
+                    />
+                  </label>
+                )}
+
+                {pending.length > 0 && (
+                  <ul className="mt-3 flex flex-wrap gap-3" aria-label={t('sba.pending')}>
+                    {pending.map((p) => (
+                      <li
+                        key={p.preview}
+                        className="relative w-24 overflow-hidden rounded-xl border border-amber-200 bg-amber-50"
+                      >
+                        <img src={p.preview} alt={p.file.name} className="h-20 w-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => removePending(p.preview)}
+                          className="absolute right-1 top-1 rounded-full bg-black/60 p-0.5 text-white"
+                          aria-label={t('sba.remove', { name: p.file.name })}
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={onSave}
+                    disabled={saving || source === 'loading'}
+                    className="inline-flex items-center gap-2 rounded-xl bg-teal-700 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-teal-800 disabled:opacity-60"
+                  >
+                    {saving ? (
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                    ) : (
+                      <UploadCloud className="h-4 w-4" aria-hidden />
+                    )}
+                    {saving ? t('sba.saving') : t('sba.save')}
+                  </button>
+                  {message && (
+                    <p
+                      role="status"
+                      className={`text-sm ${message.kind === 'error' ? 'text-rose-700' : 'text-teal-700'}`}
+                    >
+                      {message.text}
+                    </p>
+                  )}
+                </div>
+
+                {activeItems.length > 0 && (
+                  <div className="mt-5 border-t border-teal-100 pt-4">
+                    <h4 className="text-sm font-semibold text-teal-900">{t('sba.saved', { n: activeItems.length })}</h4>
+                    <ul className="mt-2 flex flex-wrap gap-3">
+                      {activeItems.map((e) => (
+                        <li key={e.id} className="relative w-32 overflow-hidden rounded-xl border border-teal-100 bg-teal-50">
+                          {e.url ? (
+                            <a href={e.url} target="_blank" rel="noreferrer">
+                              <img
+                                src={e.url}
+                                alt={e.note ?? t('sba.evidenceAlt', { n: e.step })}
+                                loading="lazy"
+                                className="h-24 w-full object-cover"
+                              />
+                            </a>
+                          ) : (
+                            <div className="flex h-24 items-center justify-center p-2 text-center text-[11px] text-teal-800">
+                              {e.file_path ? t('sba.photoExpired') : t('sba.note')}
+                            </div>
+                          )}
+                          {e.note && <p className="line-clamp-3 px-2 py-1 text-[11px] text-teal-900">{e.note}</p>}
+                          {e.local && <p className="px-2 pb-1 text-[10px] text-amber-700">{t('sba.localCache')}</p>}
+                          <div className="flex flex-wrap gap-1 px-1.5 pb-1.5">
+                            {e.note ? (
+                              <button
+                                type="button"
+                                onClick={() => requestDeleteNote(e)}
+                                className="inline-flex items-center gap-0.5 rounded-md border border-rose-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
+                              >
+                                <Trash2 className="h-3 w-3" aria-hidden />
+                                {t('sba.delete.note')}
+                              </button>
+                            ) : null}
+                            {e.file_path || e.url ? (
+                              <button
+                                type="button"
+                                onClick={() => requestDeletePhoto(e)}
+                                className="inline-flex items-center gap-0.5 rounded-md border border-rose-200 bg-white px-1.5 py-0.5 text-[10px] font-semibold text-rose-800 hover:bg-rose-50"
+                              >
+                                <Trash2 className="h-3 w-3" aria-hidden />
+                                {t('sba.delete.photo')}
+                              </button>
+                            ) : null}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </section>
+            )}
+          </div>
+        }
+        outline={
+          <SbaSeriesOutline
+            active={activeSlot}
+            state={outline.state}
+            onPortfolio={outline.setPortfolio}
+            onPieceText={outline.setPieceText}
+            onPieceType={onOutlineType}
+            onPieceStatus={outline.setPieceStatus}
+            onRwb={outline.setRwb}
+            onToggleCheck={outline.toggleCheck}
+          >
+            {renderSlotSwitcher('sba-artwork')}
+          </SbaSeriesOutline>
+        }
+        ability={
+          <div className="space-y-4">
+            <div>
+              <h2 className="text-xl font-bold text-teal-950">{t('sba.title')}</h2>
+              <p className="text-sm text-teal-800/70">{t('sba.subtitle')}</p>
+            </div>
+            {renderStepNav()}
+            {activeStep && (
+              <section className={`space-y-4 rounded-2xl border border-teal-100 bg-white shadow-sm ${cardPadding}`}>
+                <div>
+                  <h3 className="text-lg font-bold text-teal-950">
+                    {t('sba.stepHeading', { n: activeStep.id, title: activeStep.title })}
+                  </h3>
+                  <p className="mt-1 text-sm text-teal-800/70">{activeStep.hint}</p>
+                </div>
+                {guidePanel}
+                {selfFields}
+              </section>
+            )}
+            <AbilityChart />
+          </div>
+        }
+      />
 
       {deleteConfirm && (
         <div
@@ -916,9 +957,7 @@ export function SbaQuest() {
             onClick={(ev) => ev.stopPropagation()}
           >
             <h3 id="sba-delete-title" className="text-sm font-bold text-teal-950">
-              {deleteConfirm.kind === 'photo'
-                ? t('sba.delete.photo')
-                : t('sba.delete.note')}
+              {deleteConfirm.kind === 'photo' ? t('sba.delete.photo') : t('sba.delete.note')}
             </h3>
             <p className="mt-2 text-sm text-teal-900">
               {deleteConfirm.kind === 'photo'
@@ -971,6 +1010,6 @@ export function SbaQuest() {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }
