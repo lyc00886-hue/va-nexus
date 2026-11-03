@@ -17,6 +17,7 @@ import {
   type LessonFoldId,
 } from '../../lib/learningMapSections'
 import type { Lesson, Mastery, Unit } from '../../game/types'
+import { CommitmentBanner } from '../CommitmentBadges'
 import { ActivityLog } from './ActivityLog'
 import { DemoBadge } from './DemoBadge'
 import { artistCreditSummary } from '../../game/lessonArtistLabels'
@@ -180,6 +181,7 @@ export function LearningMap() {
 
   return (
     <div className="space-y-5">
+      <CommitmentBanner />
       <div>
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
         <p className="text-sm text-slate-500">{subtitle}</p>

@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "id": "trust-badges",
+    "version": "2026-11-03",
+    "status": "soft-copy",
+    "issue": "#34",
+    "locale": "en",
+    "claimType": "commitment-labels-only",
+    "hang": "thu-pilot-soft-after-wed-28-ai",
+    "outOfScope": [
+      "hkeaa-compliance-mode",
+      "edb-lsg-hkeaa-endorsement",
+      "official-certification-seals",
+      "sen-list-or-label-chrome",
+      "clinical-diagnosis"
+    ]
+  },
+  "bannerIntro": "Our commitments (not official certification)",
+  "badges": [
+    {
+      "id": "academic-integrity",
+      "shortTitle": "Academic integrity",
+      "body": "Learning support uses Socratic questions and vocabulary scaffolds. No one-click full-essay ghostwriting."
+    },
+    {
+      "id": "privacy-deidentify",
+      "shortTitle": "Privacy & de-identification",
+      "body": "Data is de-identified before it is sent to AI. The ability chart is a classroom self-assessment reference, not a clinical diagnosis. No SEN lists or SEN labels in product chrome."
+    },
+    {
+      "id": "support-direction",
+      "shortTitle": "Learning-support direction",
+      "body": "Designed to align with learning-support and smart-teaching directions. Not an EDB, Learning Support Grant (LSG), or HKEAA endorsement or certification."
+    }
+  ],
+  "footerDisclaimer": "These are product commitment labels — not HKEAA, EDB, or any official seal or approval."
+}

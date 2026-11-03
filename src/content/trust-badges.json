@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "id": "trust-badges",
+    "version": "2026-11-03",
+    "status": "soft-copy",
+    "issue": "#34",
+    "locale": "zh-Hant",
+    "claimType": "commitment-labels-only",
+    "hang": "thu-pilot-soft-after-wed-28-ai",
+    "outOfScope": [
+      "hkeaa-compliance-mode",
+      "edb-lsg-hkeaa-endorsement",
+      "official-certification-seals",
+      "sen-list-or-label-chrome",
+      "clinical-diagnosis"
+    ]
+  },
+  "bannerIntro": "產品承諾（非官方認證）",
+  "badges": [
+    {
+      "id": "academic-integrity",
+      "shortTitle": "學術誠信",
+      "body": "以蘇格拉底式提問與詞彙鷹架協助學習；不提供一鍵代寫全文。"
+    },
+    {
+      "id": "privacy-deidentify",
+      "shortTitle": "私隱與去識別",
+      "body": "傳送至 AI 前會去除可辨識姓名。能力圖只供課堂自我檢視參考，非臨床診斷。本站不設 SEN 名單或 SEN 標籤顯示。"
+    },
+    {
+      "id": "support-direction",
+      "shortTitle": "學習支援方向",
+      "body": "設計對齊學習支援與智教方向；並非教育局、學習支援津貼（LSG）或考評局批核／認證。"
+    }
+  ],
+  "footerDisclaimer": "以上為產品承諾標籤，非考評局、教育局或任何官方認證／批核。"
+}
