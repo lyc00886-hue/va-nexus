@@ -172,6 +172,65 @@ describe('artistFields Chinese locales', () => {
     assert.equal(row.bio_short, ZH.dse_concept)
     assert.equal(artistReadText(row, true), ZH.dse_concept)
   })
+
+  it('prefers zh-Hans body fields and does not let them replace zh-Hant or EN', () => {
+    const row: ArtistBodySource = {
+      ...ZH,
+      sba_theme_tags_zh_hans: ['私密空间', '日常物', '情绪'],
+      formal_traits_zh_hans: '手绘布、家居现成物、低调装置',
+      dse_concept_zh_hans: '将日常布料和家居物转化为情感和私密空间装置',
+      spld_summary_zh_hans: '香港艺术家。用手绘布和家居物件表达私人情绪空间',
+      origin_zh_hans: '装置／混合',
+      sba_theme_tags_en: ['intimate space'],
+      formal_traits_en: 'Hand-drawn cloth',
+      dse_concept_en: 'English concept',
+      spld_summary_en: 'English summary',
+      origin_en: 'Installation',
+    }
+    const hans = artistFields(row, 'zh-Hans')
+    assert.deepEqual(hans.themes, ['私密空间', '日常物', '情绪'])
+    assert.deepEqual(hans.style_keywords, ['手绘布', '家居现成物', '低调装置'])
+    assert.equal(hans.medium, '装置／混合')
+    assert.equal(hans.dse_concept, '将日常布料和家居物转化为情感和私密空间装置')
+    assert.equal(hans.spld_summary, '香港艺术家。用手绘布和家居物件表达私人情绪空间')
+    assert.equal(hans.bio_short, hans.spld_summary)
+    assert.equal(artistReadText(hans, true), hans.spld_summary)
+    assert.equal(artistReadText(hans, false), hans.bio_short)
+    const shown = [hans.medium, hans.bio_short, hans.dse_concept, hans.spld_summary, ...hans.themes, ...hans.style_keywords].join('\n')
+    assert.equal(/SPLD|SEN|spld_summary|诊断|診斷/.test(shown), false)
+    assert.equal(shown.includes('油畫'), false)
+    assert.equal(shown.includes('都市疏離'), false)
+
+    const hant = artistFields(row, 'zh-Hant')
+    assert.deepEqual(hant.themes, ZH.sba_theme_tags)
+    assert.equal(hant.medium, '油畫')
+    assert.equal(hant.bio_short, ZH.spld_summary)
+    assert.equal(hant.dse_concept, ZH.dse_concept)
+
+    const en = artistFields(row, 'en')
+    assert.deepEqual(en.themes, ['intimate space'])
+    assert.equal(en.medium, 'Installation')
+    assert.equal(en.bio_short, 'English summary')
+    assert.equal(en.dse_concept, 'English concept')
+    assert.equal(HAN.test([en.medium, en.bio_short, ...en.themes].join(' ')), false)
+  })
+
+  it('falls back to the Traditional columns when a zh-Hans field is blank', () => {
+    const row = artistFields(
+      {
+        ...ZH,
+        spld_summary_zh_hans: '  ',
+        origin_zh_hans: '',
+        sba_theme_tags_zh_hans: [],
+        formal_traits_zh_hans: null,
+      },
+      'zh-Hans',
+    )
+    assert.equal(row.bio_short, ZH.spld_summary)
+    assert.equal(row.medium, '油畫')
+    assert.deepEqual(row.themes, ZH.sba_theme_tags)
+    assert.deepEqual(row.style_keywords, ['幾何窗框', '冷暖對比', '簡化寫實'])
+  })
 })
 
 describe('pairFields', () => {

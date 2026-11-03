@@ -1,6 +1,7 @@
 import type { Artist, ArtistPair } from '../types'
 import { getLocale, t } from '../i18n'
 import { artistFields, pairFields } from './artistBody'
+import { artistRowForLocale } from './artistHansOverlay'
 
 export { artistReadText } from './artistBody'
 
@@ -60,20 +61,23 @@ function regionFromCulture(cultureGroup: string | null): 'east' | 'west' {
 }
 
 export function mapDbArtist(row: DbArtist): Artist {
-  const { nameZh, nameEn } = parseNameZhEn(row.name_zh_en)
-  const hans = row.name_zh_hans?.trim() || null
+  const locale = getLocale()
+  const source = artistRowForLocale(row, locale)
+  const { nameZh, nameEn } = parseNameZhEn(source.name_zh_en)
+  const hans = source.name_zh_hans?.trim() || null
   // Names stay on name_zh_en / name_zh_hans. Do not read an English-name column.
+  // Hans display name may come from the overlay; it does not rewrite name_zh_en.
   return {
-    id: row.artist_id,
+    id: source.artist_id,
     name_en: nameEn,
     name_zh: nameZh,
     name_zh_hans: hans,
-    region: regionFromCulture(row.culture_group),
+    region: regionFromCulture(source.culture_group),
     era: null,
     image_url: null,
-    source_url: row.source_url?.trim() || null,
-    culture_group: row.culture_group,
-    ...artistFields(row, getLocale()),
+    source_url: source.source_url?.trim() || null,
+    culture_group: source.culture_group,
+    ...artistFields(source, locale),
   }
 }
 

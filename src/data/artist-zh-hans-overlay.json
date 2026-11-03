@@ -1,0 +1,954 @@
+{
+  "CN-AIWW-01": {
+    "sba_theme_tags": "社会介入;政治批判;大量重复",
+    "formal_traits": "大量手工复制物、现成物改造、纪录影像",
+    "dse_concept": "以艺术作为社会介入与政治批判的工具",
+    "spld_summary": "中国艺术家。用艺术关注社会、批评政治",
+    "medium": "装置／观念"
+  },
+  "CN-BADASHANREN-01": {
+    "sba_theme_tags": "四僧;遗民;符号花鸟",
+    "formal_traits": "简笔鱼鸟、白眼造型、大片留白",
+    "dse_concept": "明遗民僧人画家；鱼鸟眼神常被读作孤愤与象征",
+    "spld_summary": "明末清初僧人画家。鱼鸟极简，眼神特别，常谈心境。"
+  },
+  "CN-BIGTAIL-01": {
+    "name_zh_hans": "大尾象工作组",
+    "sba_theme_tags": "城市化;另类空间;珠三角",
+    "formal_traits": "临时空间展览、行为介入、即场装置",
+    "dse_concept": "1990年代广州艺术团体，回应广东急速城市化",
+    "spld_summary": "九十年代广州艺术家团体。在酒吧、地下室办展，回应城市急速变化",
+    "medium": "装置／行为／录像"
+  },
+  "CN-CAIGQ-01": {
+    "name_zh_hans": "蔡国强",
+    "sba_theme_tags": "火药;爆破;宇宙",
+    "formal_traits": "火药爆破烧痕、大型户外爆破事件、偶然效果",
+    "dse_concept": "以火药为媒材，探讨能量、爆炸与宇宙",
+    "spld_summary": "中国艺术家。用火药爆炸作画，也做大型烟火作品",
+    "medium": "火药／装置"
+  },
+  "CN-CAOFEI-01": {
+    "sba_theme_tags": "虚拟世界;都市青年;异化",
+    "formal_traits": "虚拟游戏世界、角色扮演、纪实录像",
+    "dse_concept": "以《人民城寨》等虚拟世界探讨都市青年的异化",
+    "spld_summary": "中国艺术家。在网络虚拟世界建城市，探讨年轻人",
+    "medium": "录像／数码媒体"
+  },
+  "CN-CHENCHUN-01": {
+    "name_zh_hans": "陈淳",
+    "sba_theme_tags": "写意花鸟;吴门支脉",
+    "formal_traits": "写意花卉、水墨淋漓、简洁造形",
+    "dse_concept": "写意花鸟名家，连系吴门与后世纵放写意传统",
+    "spld_summary": "明代画家。写意花卉出名，墨色淋漓。",
+    "medium": "水墨花鸟"
+  },
+  "CN-CHENHS-01": {
+    "name_zh_hans": "陈洪绶",
+    "sba_theme_tags": "人物画;奇幻;身份",
+    "formal_traits": "古拙人物、夸张造形、版画插图影响",
+    "dse_concept": "人物奇古，适合讨论故事、角色与身份再现",
+    "spld_summary": "明末清初画家。人物造形古拙夸张，适合讲故事与角色。",
+    "medium": "人物／版画相关"
+  },
+  "CN-CHENSR-01": {
+    "name_zh_hans": "陈树人",
+    "sba_theme_tags": "写生;诗意;岭南风景",
+    "formal_traits": "清新淡雅设色、写生构图、简洁笔墨",
+    "dse_concept": "「岭南三杰」之一，以清新自然的写生营造诗意",
+    "spld_summary": "「岭南三杰」之一。画风清新自然，富有诗意",
+    "medium": "水墨设色"
+  },
+  "CN-CHENSX-01": {
+    "name_zh_hans": "陈劭雄",
+    "sba_theme_tags": "都市;荒诞;水墨动画",
+    "formal_traits": "水墨逐格动画、街头摄影拼贴、录像",
+    "dse_concept": "以录像和水墨探讨都市生活的荒诞",
+    "spld_summary": "中国艺术家。用水墨动画表现城市生活的荒诞",
+    "medium": "录像／水墨动画"
+  },
+  "CN-CHUTC-01": {
+    "sba_theme_tags": "抒情抽象;书法;光",
+    "formal_traits": "书法式笔触、光影层次、浓淡色彩",
+    "dse_concept": "融合书法笔势与西方光影，发展抒情抽象",
+    "spld_summary": "华裔抽象画家。笔触像书法，又有光影变化",
+    "medium": "油画（抽象）"
+  },
+  "CN-DINGYI-01": {
+    "sba_theme_tags": "极简;十字;重复",
+    "formal_traits": "「十」字与「×」重复网格、理性秩序、密集色点",
+    "dse_concept": "数十年以「十示」系列表现工业节奏与理性",
+    "spld_summary": "中国画家。几十年来都画「十」字，很有规律",
+    "medium": "绘画（抽象）"
+  },
+  "CN-DONGQC-01": {
+    "sba_theme_tags": "松江;南北宗论;文人画;书法",
+    "formal_traits": "仿古山水、笔墨抽象化、淡墨干笔",
+    "dse_concept": "提出「南北宗」论，重笔墨与仿古，深刻影响清初四王正统派",
+    "spld_summary": "明末书画家，曾任高官。他把画家分为「南宗」和「北宗」，重视笔墨和学习古人。",
+    "medium": "水墨／书法"
+  },
+  "CN-FANGLJ-01": {
+    "name_zh_hans": "方力钧",
+    "sba_theme_tags": "玩世现实主义;光头;时代失落",
+    "formal_traits": "光头人物、打呵欠表情、蓝天水面背景",
+    "dse_concept": "以光头人物表现一个时代的无聊与失落",
+    "spld_summary": "中国画家。画光头人物，表现一代人的无聊和迷失",
+    "medium": "油画"
+  },
+  "CN-GAOJF-01": {
+    "name_zh_hans": "高剑父",
+    "sba_theme_tags": "折衷中西;新国画;时代题材",
+    "formal_traits": "日本画渲染、西方透视光影、水墨笔法",
+    "dse_concept": "岭南画派创始人之一，主张折衷中西，把现代事物引入国画",
+    "spld_summary": "岭南画派创始人之一。把中西画法结合，也画现代事物",
+    "medium": "水墨设色"
+  },
+  "CN-GAOQF-01": {
+    "sba_theme_tags": "翎毛走兽;写实;气势",
+    "formal_traits": "写实动物造型、撞水撞粉、强烈动势",
+    "dse_concept": "「岭南三杰」之一，以写实而有力的禽鸟走兽见称",
+    "spld_summary": "「岭南三杰」之一。擅画鹰、狮等动物，很有气势",
+    "medium": "水墨设色"
+  },
+  "CN-GAOXIANG-01": {
+    "sba_theme_tags": "扬州八怪;山水;疏淡",
+    "formal_traits": "疏淡山水、墨色简净、文人小品",
+    "dse_concept": "扬州八怪中偏山水疏淡一路",
+    "spld_summary": "清代扬州八怪之一。山水较疏淡简单。"
+  },
+  "CN-GUANSY-01": {
+    "name_zh_hans": "关山月",
+    "sba_theme_tags": "山水;写生;梅花",
+    "formal_traits": "写生山水、宏大构图、浓重设色",
+    "dse_concept": "高剑父弟子、岭南第二代代表，与傅抱石合绘《江山如此多娇》",
+    "spld_summary": "高剑父的学生。画气势宏大的山水，也擅长画梅花",
+    "medium": "水墨设色"
+  },
+  "CN-GUWD-01": {
+    "name_zh_hans": "谷文达",
+    "sba_theme_tags": "人发;种族;文化融合",
+    "formal_traits": "收集各国人发、发帘与伪文字、巨型装置",
+    "dse_concept": "以人发制作巨型装置，探讨种族与文化融合",
+    "spld_summary": "中国艺术家。收集世界各地人的头发，做成巨型装置",
+    "medium": "装置（人发）"
+  },
+  "CN-HONGREN-01": {
+    "sba_theme_tags": "四僧;新安画派;黄山;山水",
+    "formal_traits": "几何化山石、线条瘦硬、大片留白",
+    "dse_concept": "新安画派开创者，学倪瓒，以简洁清冷的线条描写黄山",
+    "spld_summary": "明末清初僧人画家，安徽人。常画黄山，线条简洁硬朗，大量留白，意境清冷。"
+  },
+  "CN-HUANGSHEN-01": {
+    "name_zh_hans": "黄慎",
+    "sba_theme_tags": "扬州八怪;人物;狂草笔意",
+    "formal_traits": "人物写意、草书入画、市井题材",
+    "dse_concept": "以狂放人物写意连接书法动作与民间人物",
+    "spld_summary": "清代扬州八怪之一。人物写意，笔法像草书。",
+    "medium": "人物写意"
+  },
+  "CN-HUANGYP-01": {
+    "name_zh_hans": "黄永砅",
+    "sba_theme_tags": "前卫;动物;文化批判",
+    "formal_traits": "活昆虫与动物、宗教符号、大型装置",
+    "dse_concept": "厦门达达创办人，以昆虫动物与宗教符号作文化批判",
+    "spld_summary": "中国前卫艺术家。用真实昆虫和动物做装置，批判文化冲突",
+    "medium": "装置"
+  },
+  "CN-HUAYAN-01": {
+    "name_zh_hans": "华嵒",
+    "sba_theme_tags": "扬州相关;小写意;人物走兽",
+    "formal_traits": "小写意人物走兽、灵动线描、雅俗共赏",
+    "dse_concept": "常与扬州画坛并读；小写意人物走兽影响清中叶趣味（按 seed 名单纳入）",
+    "spld_summary": "清代画家。小写意人物走兽出名，常与扬州画风一起讨论。",
+    "medium": "小写意"
+  },
+  "CN-JINNONG-01": {
+    "name_zh_hans": "金农",
+    "sba_theme_tags": "扬州八怪;隶书;梅花",
+    "formal_traits": "漆书味楷隶、墨梅、金石气",
+    "dse_concept": "扬州八怪核心人物之一，书风独特，梅作成为标记",
+    "spld_summary": "清代扬州八怪之一。字体特别，画梅花很出名。",
+    "medium": "书画"
+  },
+  "CN-KUNCAN-01": {
+    "name_zh_hans": "髡残",
+    "sba_theme_tags": "四僧;遗民;山水;禅意",
+    "formal_traits": "干笔皴擦、浑厚繁密、苍茫粗犷",
+    "dse_concept": "号石谿，与石涛并称「二石」，以苍茫浑厚的山水寄托隐逸与禅心",
+    "spld_summary": "明末清初僧人画家，湖南人，在南京出家。山水多用干笔，画面繁密厚重。",
+    "medium": "水墨设色"
+  },
+  "CN-LIFY-01": {
+    "sba_theme_tags": "扬州八怪;梅花;写意",
+    "formal_traits": "写意墨梅、风竹劲挺、题跋抒怀",
+    "dse_concept": "曾任知县被罢官，后在扬州一带卖画，以梅、竹、松、兰寄托风骨",
+    "spld_summary": "清代扬州八怪之一，曾任知县。以画梅花和风竹最为著名，笔力劲挺。"
+  },
+  "CN-LINFM-01": {
+    "name_zh_hans": "林风眠",
+    "sba_theme_tags": "中西调和;方形构图;民间",
+    "formal_traits": "方形构图、印象派色光、民间艺术造型",
+    "dse_concept": "以方形构图融合印象派与民间艺术，推动中西调和",
+    "spld_summary": "中国画家。用正方形画面，融合印象派和民间艺术"
+  },
+  "CN-LISHAN-01": {
+    "sba_theme_tags": "扬州八怪;写意花鸟",
+    "formal_traits": "大写意花鸟、水墨淋漓、题跋丰富",
+    "dse_concept": "扬州写意花鸟健将，笔墨奔放",
+    "spld_summary": "清代扬州八怪之一。写意花鸟，水墨奔放。",
+    "medium": "水墨花鸟"
+  },
+  "CN-LITF-01": {
+    "name_zh_hans": "李铁夫",
+    "sba_theme_tags": "油画先驱;古典写实;人物",
+    "formal_traits": "古典写实油画、厚实笔触、深色调肖像",
+    "dse_concept": "中国油画先驱，深得古典写实油画技法",
+    "spld_summary": "中国油画先驱。很早到外国学油画，画风写实",
+    "medium": "油画"
+  },
+  "CN-LIUXD-01": {
+    "name_zh_hans": "刘小东",
+    "sba_theme_tags": "新生代写实;小人物;现场写生",
+    "formal_traits": "现场写生、大幅群像、率直笔触",
+    "dse_concept": "新生代写实代表，关注社会底层与普通生活的真实",
+    "spld_summary": "中国画家。到现场画普通人，表现他们的真实生活",
+    "medium": "油画"
+  },
+  "CN-LUOPIN-01": {
+    "name_zh_hans": "罗聘",
+    "sba_theme_tags": "扬州八怪;鬼趣;人物",
+    "formal_traits": "鬼趣图、人物肖像、想象题材",
+    "dse_concept": "金农弟子；以鬼趣等想象题材扩展文人画边界",
+    "spld_summary": "清代扬州八怪之一。金农学生，画过「鬼趣」等题材。",
+    "medium": "人物／想象题材"
+  },
+  "CN-LUOZL-01": {
+    "name_zh_hans": "罗中立",
+    "sba_theme_tags": "农民;超写实;尺度",
+    "formal_traits": "巨幅头像、细致皱纹皮肤、照相式写实",
+    "dse_concept": "《父亲》以巨幅超写实描绘农民，开创乡土写实",
+    "spld_summary": "中国画家。《父亲》把一位农民画得巨大而逼真",
+    "medium": "油画"
+  },
+  "CN-LV-01": {
+    "name_zh_hans": "吕寿琨",
+    "sba_theme_tags": "水墨;抽象;灵性;禅",
+    "formal_traits": "焦墨块面、留白呼吸、抽象化山水",
+    "dse_concept": "新水墨将山水提炼为精神抽象，对应内省和生命力",
+    "spld_summary": "香港新水墨先驱。山水变成抽象墨块，重心灵多于实景"
+  },
+  "CN-PANTS-01": {
+    "name_zh_hans": "潘天寿",
+    "sba_theme_tags": "构图;霸悍笔力;平衡",
+    "formal_traits": "方硬笔线、大块奇石、造险破险构图",
+    "dse_concept": "强调雄强笔力和大胆构图，以「造险破险」取得平衡",
+    "spld_summary": "中国画家。构图大胆，先制造险势，再取得平衡",
+    "medium": "水墨设色（指墨）"
+  },
+  "CN-QIBS-01": {
+    "name_zh_hans": "齐白石",
+    "sba_theme_tags": "稚拙;草虫;生活趣味",
+    "formal_traits": "简练笔墨、红花墨叶、大写意配工笔草虫",
+    "dse_concept": "以童趣把虾、虫等卑微题材提升为高雅艺术",
+    "spld_summary": "中国画家。以画虾和草虫闻名，简洁而生动",
+    "medium": "水墨设色"
+  },
+  "CN-QIUYING-01": {
+    "sba_theme_tags": "吴门;明四家;青绿山水;人物",
+    "formal_traits": "工笔细线、青绿重彩、人物精细",
+    "dse_concept": "职业画家出身，与沈周、文征明、唐寅并称明四家，以精工技法进入文人圈",
+    "spld_summary": "明代画家。工匠出身，以卖画为生。画工非常精细，青绿设色鲜丽。",
+    "medium": "绢本设色／工笔"
+  },
+  "CN-QIUZJ-01": {
+    "sba_theme_tags": "书写;地图;历史",
+    "formal_traits": "重复书写、手绘观念地图、文字与图像结合",
+    "dse_concept": "以「观念地图」把复杂的历史与哲学视觉化",
+    "spld_summary": "中国艺术家。绘制「观念地图」，把历史和哲学画成地图",
+    "medium": "书法／装置／地图"
+  },
+  "CN-SHENSM-01": {
+    "sba_theme_tags": "骨骼;生存;进化",
+    "formal_traits": "动物骨头组合虚构生物、标本式陈列、科技模拟",
+    "dse_concept": "以骨头或科技模拟探讨生存与进化",
+    "spld_summary": "中国艺术家。用骨头拼出不存在的动物",
+    "medium": "装置／雕塑"
+  },
+  "CN-SHENZHOU-01": {
+    "sba_theme_tags": "吴门;文人画;山水",
+    "formal_traits": "沉稳笔墨、层层积墨、诗书画一体",
+    "dse_concept": "吴门画派奠基者，以文人山水与题跋展现修养与自然观",
+    "spld_summary": "明代画家。吴门画派重要人物，画山水并常题诗。",
+    "medium": "水墨／书画"
+  },
+  "CN-SHITAO-01": {
+    "name_zh_hans": "石涛",
+    "sba_theme_tags": "四僧;遗民;山水;画论",
+    "formal_traits": "构图多变、笔墨自由、干湿浓淡并用",
+    "dse_concept": "明宗室后人出家为僧，主张「搜尽奇峰打草稿」及「一画」，强调师法自然与创新",
+    "spld_summary": "明末清初僧人画家，是明朝皇族后代。他主张画画要亲自观察真山水，不要只临摹古人。",
+    "medium": "水墨设色"
+  },
+  "CN-SONGDONG-01": {
+    "sba_theme_tags": "物质;家族历史;日常物",
+    "formal_traits": "大量家用旧物排列、生活痕迹、纪录性装置",
+    "dse_concept": "《物尽其用》展示母亲数十年保存的旧物，探讨物质与家族历史",
+    "spld_summary": "中国艺术家。把母亲保存了几十年的旧物陈列出来",
+    "medium": "装置"
+  },
+  "CN-SUIJG-01": {
+    "name_zh_hans": "隋建国",
+    "sba_theme_tags": "符号;中山装;历史",
+    "formal_traits": "巨型中山装、空壳形体、金属铸造",
+    "dse_concept": "把中山装等传统符号重新组合成雕塑，反思历史",
+    "spld_summary": "中国雕塑家。制作巨大而空无一人的中山装雕塑"
+  },
+  "CN-TANGYIN-01": {
+    "sba_theme_tags": "吴门;人物;才子",
+    "formal_traits": "人物仕女、山水兼擅、诗文题咏",
+    "dse_concept": "以才子形象传世，作品连接文人趣味与通俗题材",
+    "spld_summary": "明代画家。画人物与山水，民间熟知「唐伯虎」形象。"
+  },
+  "CN-WANGGY-01": {
+    "name_zh_hans": "王广义",
+    "sba_theme_tags": "政治波普;消费符号;并置",
+    "formal_traits": "红卫兵图像×西方品牌、高对比平面色块",
+    "dse_concept": "将政治图像和商品标志并置，讽刺意识形态和消费合流",
+    "spld_summary": "中国政治波普。红卫兵图像结合外国品牌",
+    "medium": "油画／平面"
+  },
+  "CN-WANGHUI-01": {
+    "name_zh_hans": "王翚",
+    "sba_theme_tags": "四王;虞山派;宫廷;山水",
+    "formal_traits": "集古大成、构图细密、长卷叙事",
+    "dse_concept": "师从王鉴、王时敏，集宋元各家之长，主持绘制《康熙南巡图》",
+    "spld_summary": "清代画家，「四王」之一。带领画家团队绘制《康熙南巡图》，长卷细节丰富。",
+    "medium": "水墨设色"
+  },
+  "CN-WANGJIAN-01": {
+    "name_zh_hans": "王鉴",
+    "sba_theme_tags": "四王;正统派;仿古山水",
+    "formal_traits": "仿古兼工、青绿与水墨并用、笔墨沉稳",
+    "dse_concept": "四王之一，与王时敏同乡同道，临仿宋元名家，兼擅青绿",
+    "spld_summary": "明末清初画家，「四王」之一。与王时敏一同学习古人山水，有时也用青绿设色。",
+    "medium": "水墨设色"
+  },
+  "CN-WANGKP-01": {
+    "sba_theme_tags": "人体;木材;社会压抑",
+    "formal_traits": "简化人体、保留木纹木结、圆润有机形体",
+    "dse_concept": "「星星画会」成员，以木雕表达人体与社会压抑",
+    "spld_summary": "中国雕塑家。用木头雕人体，保留木纹，造型简洁"
+  },
+  "CN-WANGQS-01": {
+    "name_zh_hans": "王庆松",
+    "sba_theme_tags": "消费主义;摆拍;讽刺",
+    "formal_traits": "大型布景摆拍、群众演员、鲜艳夸张画面",
+    "dse_concept": "以大型摆拍摄影批判当代消费主义",
+    "spld_summary": "中国摄影师。搭建大型场景拍摄，讽刺消费主义",
+    "medium": "摄影（摆拍）"
+  },
+  "CN-WANGSM-01": {
+    "name_zh_hans": "王时敏",
+    "sba_theme_tags": "四王;正统派;仿古山水",
+    "formal_traits": "学黄公望、披麻皴、构图平稳",
+    "dse_concept": "四王之首，追随董其昌，以临仿元代大家为创作方法，奠定清初正统派",
+    "spld_summary": "明末清初画家，「四王」中年纪最长。喜爱学习元代黄公望，山水画风稳重。"
+  },
+  "CN-WANGSS-01": {
+    "sba_theme_tags": "扬州八怪;梅花;清苦意境",
+    "formal_traits": "密梅、清瘦笔线、清苦诗意",
+    "dse_concept": "以梅花与清苦意境见称，属扬州八怪书写性一路",
+    "spld_summary": "清代扬州八怪之一。画梅花，意境清苦。",
+    "medium": "书画"
+  },
+  "CN-WANGYQ-01": {
+    "sba_theme_tags": "四王;娄东派;宫廷;仿古山水",
+    "formal_traits": "层层积墨、色墨交融、几何化结构",
+    "dse_concept": "王时敏之孙，供职宫廷，主编《佩文斋书画谱》，以「龙脉」讲山水构图",
+    "spld_summary": "清代画家，王时敏之孙，在宫廷任职。山水层层堆叠，结构感强，像搭积木一样。",
+    "medium": "水墨设色"
+  },
+  "CN-WENZM-01": {
+    "name_zh_hans": "文征明",
+    "sba_theme_tags": "吴门;书法;文人",
+    "formal_traits": "细笔文秀、书法名家、诗书画结合",
+    "dse_concept": "吴门代表，书画并重，体现文人理想中的雅正与修养",
+    "spld_summary": "明代书画家。字与画都很有名，属吴门传统。",
+    "medium": "水墨／书法"
+  },
+  "CN-WUBIN-01": {
+    "name_zh_hans": "吴彬",
+    "sba_theme_tags": "奇幻山水;人物;变形",
+    "formal_traits": "奇峭山石、变形空间、宗教／奇幻人物",
+    "dse_concept": "以奇幻视觉语言打开「非常态」人物与空间想象",
+    "spld_summary": "明代画家。山石人物奇幻，空间特别。",
+    "medium": "水墨／设色"
+  },
+  "CN-WUGZ-01": {
+    "name_zh_hans": "吴冠中",
+    "sba_theme_tags": "形式美;点线面;江南",
+    "formal_traits": "水墨线条、彩点、黑白灰块面",
+    "dse_concept": "结合水墨线条与西方抽象色块，提倡形式美",
+    "spld_summary": "中国画家。用线、点和黑白灰画江南，强调形式美",
+    "medium": "水墨／油画"
+  },
+  "CN-WUSZ-01": {
+    "name_zh_hans": "吴山专",
+    "sba_theme_tags": "文字;荒诞;体制",
+    "formal_traits": "大字标语式文字、荒诞行为、商业符号挪用",
+    "dse_concept": "以文字和荒诞行动挑战体制与逻辑",
+    "spld_summary": "中国艺术家。用大量文字和荒诞行为挑战规则",
+    "medium": "文字装置／行为"
+  },
+  "CN-XUBH-01": {
+    "name_zh_hans": "徐悲鸿",
+    "sba_theme_tags": "写实;解剖;民族精神",
+    "formal_traits": "素描造型、准确解剖、奔马墨韵",
+    "dse_concept": "把西方解剖与素描引入国画，以奔马象征民族精神",
+    "spld_summary": "中国画家。用西方素描方法画马，象征民族精神",
+    "medium": "水墨／油画／素描"
+  },
+  "CN-XUBING-01": {
+    "sba_theme_tags": "语言;文字;文化",
+    "formal_traits": "自创伪汉字、木刻活字、英文方块字",
+    "dse_concept": "《天书》等作品以造字质疑语言与文化的意义",
+    "spld_summary": "中国艺术家。《天书》的字全是自创的，没有人能读懂",
+    "medium": "版画／装置"
+  },
+  "CN-XUTAN-01": {
+    "sba_theme_tags": "关键词;社会调查;语言",
+    "formal_traits": "访谈录像、关键词文字、调查档案",
+    "dse_concept": "以社会调查探索关键词与公众心理",
+    "spld_summary": "中国艺术家。访问大量民众，找出社会常用的关键词",
+    "medium": "社会调查／录像／文字"
+  },
+  "CN-XUWEI-01": {
+    "sba_theme_tags": "大写意;花鸟;纵放笔墨",
+    "formal_traits": "泼辣水墨、大写意花鸟、书法性线条",
+    "dse_concept": "大写意一路代表，笔墨纵放影响后来八大、扬州及现代写意",
+    "spld_summary": "明代画家。水墨奔放，大写意花鸟很有力量。",
+    "medium": "水墨花鸟"
+  },
+  "CN-YANGFD-01": {
+    "name_zh_hans": "杨福东",
+    "sba_theme_tags": "电影感;都市青年;迷惘",
+    "formal_traits": "黑白菲林、缓慢叙事、多屏放映",
+    "dse_concept": "以电影质感和颓废美学描绘知识青年的迷惘",
+    "spld_summary": "中国录像艺术家。黑白影片像老电影，表现年轻人的迷惘",
+    "medium": "录像／电影"
+  },
+  "CN-YINXZ-01": {
+    "sba_theme_tags": "旧衣;记忆;全球身份",
+    "formal_traits": "旧衣物缝制、行李箱城市、软雕塑",
+    "dse_concept": "以旧衣物制作装置，探讨记忆与全球化身份",
+    "spld_summary": "中国艺术家。用穿过的旧衣服做装置，表现记忆",
+    "medium": "装置（旧衣物）"
+  },
+  "CN-YUEMJ-01": {
+    "sba_theme_tags": "玩世现实主义;笑脸;讽刺",
+    "formal_traits": "重复大笑自我形象、鲜艳平涂、夸张表情",
+    "dse_concept": "以标志性大笑脸讽刺现代精神状态",
+    "spld_summary": "中国画家。画许多大笑的自己，笑容显得空洞",
+    "medium": "油画"
+  },
+  "CN-ZAO-01": {
+    "name_zh_hans": "赵无极",
+    "sba_theme_tags": "抒情抽象;风景意象;书写性",
+    "formal_traits": "书法式笔势、油彩风景抽象、光色流动",
+    "dse_concept": "将中国山水意境转为西方油彩抽象，情多于形",
+    "spld_summary": "华裔抽象画家。用油彩表现山水感觉，既像书法又像风景",
+    "medium": "油画"
+  },
+  "CN-ZENGFZ-01": {
+    "sba_theme_tags": "面具;伪装;疏离",
+    "formal_traits": "白色面具人物、夸张大手、表现主义笔触",
+    "dse_concept": "《面具》系列表现现代人际关系中的伪装与疏离",
+    "spld_summary": "中国画家。画戴白色面具的人，表现人际间的伪装",
+    "medium": "油画"
+  },
+  "CN-ZHANGDQ-01": {
+    "name_zh_hans": "张大千",
+    "sba_theme_tags": "泼墨泼彩;传统;抽象",
+    "formal_traits": "大面积泼墨泼彩、石青石绿、局部细笔",
+    "dse_concept": "泼墨泼彩的高峰，由传统跨向现代抽象",
+    "spld_summary": "中国画家。把墨和颜色泼在纸上，近似抽象画",
+    "medium": "水墨设色（泼墨泼彩）"
+  },
+  "CN-ZHANGH-01": {
+    "name_zh_hans": "张洹",
+    "sba_theme_tags": "身体;忍耐;生命",
+    "formal_traits": "裸身承受极端环境、摄影记录、香灰材料",
+    "dse_concept": "以挑战身体极限的行为探讨生命本质",
+    "spld_summary": "中国行为艺术家。让身体承受极端艰苦的环境",
+    "medium": "行为／摄影"
+  },
+  "CN-ZHANGPL-01": {
+    "name_zh_hans": "张培力",
+    "sba_theme_tags": "录像;重复;监视",
+    "formal_traits": "长镜头、单一动作重复、冷静观察",
+    "dse_concept": "被誉为中国录像艺术之父，以重复与监视探讨日常",
+    "spld_summary": "中国录像艺术之父。反复拍摄同一个动作，像监视一样",
+    "medium": "录像／装置"
+  },
+  "CN-ZHANGXG-01": {
+    "name_zh_hans": "张晓刚",
+    "sba_theme_tags": "家庭;集体记忆;血缘",
+    "formal_traits": "灰调血缘肖像、单一光源、面部印记",
+    "dse_concept": "《血缘：大家庭》将个人面容纳入集体历史创伤",
+    "spld_summary": "中国当代画家。灰色调的全家福，讲述个人和集体记忆",
+    "medium": "油画"
+  },
+  "CN-ZHANWANG-01": {
+    "sba_theme_tags": "假山石;倒影;现代山水",
+    "formal_traits": "不锈钢复制太湖石、镜面反射、工业质感",
+    "dse_concept": "以不锈钢「假山石」讽刺现代化下的山水观",
+    "spld_summary": "中国雕塑家。用不锈钢制作假山石，闪亮反光",
+    "medium": "雕塑（不锈钢）"
+  },
+  "CN-ZHENGXIE-01": {
+    "name_zh_hans": "郑燮",
+    "sba_theme_tags": "扬州八怪;竹兰;个性书风",
+    "formal_traits": "兰竹、六分半书、题跋尖新",
+    "dse_concept": "以竹兰与个性书风表达文人风骨与民间关怀",
+    "spld_summary": "清代扬州八怪之一。画竹与兰，字体称「六分半书」。",
+    "medium": "书画"
+  },
+  "HK-AUHN-01": {
+    "name_zh_hans": "欧豪年",
+    "sba_theme_tags": "写生;山水;动物",
+    "formal_traits": "写生为本、浓烈色彩、笔墨结合抽象感",
+    "dse_concept": "赵少昂弟子，重视写生，结合现代抽象感，影响台湾水墨",
+    "spld_summary": "赵少昂的学生。重视写生，画山水和动物，色彩浓烈",
+    "medium": "水墨设色"
+  },
+  "HK-CHAOSA-01": {
+    "name_zh_hans": "赵少昂",
+    "sba_theme_tags": "花鸟;草虫;笔墨",
+    "formal_traits": "精炼笔墨、光影与透视、灵动花鸟草虫",
+    "dse_concept": "岭南画派第二代大师，在香港授徒，以花鸟画著称",
+    "spld_summary": "岭南画派第二代大师，在香港教画。最擅长画花鸟草虫",
+    "medium": "水墨设色"
+  },
+  "HK-CHOWCF-01": {
+    "name_zh_hans": "周俊辉",
+    "sba_theme_tags": "电影;香港身份;社会现实",
+    "formal_traits": "重画电影定格、保留字幕、写实油彩",
+    "dse_concept": "重绘港产片画面与字幕，探讨香港身份和社会现实",
+    "spld_summary": "香港画家。把港产片画面连同字幕画出来，探讨香港身份",
+    "medium": "油画"
+  },
+  "HK-FANGZL-01": {
+    "sba_theme_tags": "书法性;稚拙;山水",
+    "formal_traits": "粗犷书法线条、稚拙造型、大气构图",
+    "dse_concept": "香港女性水墨画家，以书法笔势融合稚拙趣味，气势磅礴",
+    "spld_summary": "香港女画家。线条像书法一样粗壮，又带童真",
+    "medium": "水墨／书法"
+  },
+  "HK-LAMTP-01": {
+    "name_zh_hans": "林东鹏",
+    "sba_theme_tags": "集体记忆;自然;物料",
+    "formal_traits": "夹板作画、炭笔与塑胶彩、传统山水构图",
+    "dse_concept": "在木夹板上作画，探讨集体记忆与自然的关系",
+    "spld_summary": "香港艺术家。在木夹板上作画，表现集体记忆和大自然",
+    "medium": "混合媒介（夹板）"
+  },
+  "HK-LEEKIT-01": {
+    "name_zh_hans": "李杰",
+    "sba_theme_tags": "私密空间;日常物;情绪",
+    "formal_traits": "手绘布、家居现成物、低调装置",
+    "dse_concept": "将日常布料和家居物转化为情感和私密空间装置",
+    "spld_summary": "香港艺术家。用手绘布和家居物件表达私人情绪空间",
+    "medium": "装置／混合"
+  },
+  "HK-LEUNG-01": {
+    "name_zh_hans": "梁嘉贤",
+    "sba_theme_tags": "超现实;个人世界;幽默",
+    "formal_traits": "细致线条、配合幽默文字、超现实场景",
+    "dse_concept": "以细腻线条和幽默文字勾勒超现实的个人世界",
+    "spld_summary": "香港艺术家。用纤细线条和幽默文字，画出奇幻世界",
+    "medium": "绘画（细线／设色）"
+  },
+  "HK-LUISCHAN-01": {
+    "name_zh_hans": "陈福善",
+    "sba_theme_tags": "超现实;幻想城市;本土现代",
+    "formal_traits": "鲜艳幻想风景、拼贴式空间、怪诞生物",
+    "dse_concept": "被称香港当代艺术之父，以超现实想像重构城市记忆",
+    "spld_summary": "香港画家。画梦幻的城市和奇异生物",
+    "medium": "油画／混合"
+  },
+  "HK-PAK-01": {
+    "name_zh_hans": "白双全",
+    "sba_theme_tags": "城市空间;日常现成物;压迫感",
+    "formal_traits": "日常透明胶袋、身体空间量度、极简过程纪录",
+    "dse_concept": "收集一屋空气，将狭小住屋压迫感物质化",
+    "spld_summary": "香港艺术家。用透明胶袋装起整间屋的空气，表现住屋挤迫"
+  },
+  "HK-SHIEH-01": {
+    "sba_theme_tags": "身份;工笔;当代人物",
+    "formal_traits": "传统工笔线描、当代衣着角色、戏谑改编",
+    "dse_concept": "用工笔古法画当代人，探讨香港身份和性别角色",
+    "spld_summary": "香港画家。用工笔画现代人和戏服角色",
+    "medium": "工笔"
+  },
+  "HK-TANGKH-01": {
+    "name_zh_hans": "邓国骞",
+    "sba_theme_tags": "家庭;社会空间;现成物",
+    "formal_traits": "现成物拼贴、日常物料、空间装置",
+    "dse_concept": "以现成物拼贴反思家庭与社会空间的连系",
+    "spld_summary": "香港艺术家。用现成物拼贴，探讨家庭和社会的关系",
+    "medium": "拼贴／混合媒介"
+  },
+  "HK-TSANGKW-01": {
+    "name_zh_hans": "曾建华",
+    "formal_traits": "文字组成花纹、沉浸式投影、动态文字",
+    "dse_concept": "把文字化成装饰花纹，远看美丽、近看内容尖锐，讨论宗教与存在",
+    "spld_summary": "香港艺术家。用文字组成花纹，远看漂亮，近看才知内容",
+    "medium": "装置／录像投影"
+  },
+  "HK-WUCIUS-01": {
+    "name_zh_hans": "王无邪",
+    "sba_theme_tags": "设计结构;水墨几何;山水",
+    "formal_traits": "几何分割、设计式构图、传统山水语汇",
+    "dse_concept": "以设计原则重组水墨山水，连接现代视觉和传统",
+    "spld_summary": "香港艺术家。用水墨加上几何设计结构画山水",
+    "medium": "水墨／设计"
+  },
+  "HK-YANGSS-01": {
+    "name_zh_hans": "杨善深",
+    "sba_theme_tags": "动物;花鸟;笔墨",
+    "formal_traits": "流畅自然笔墨、细腻渲染设色",
+    "dse_concept": "岭南第二代画家，长居香港，笔墨流畅、设色细腻",
+    "spld_summary": "岭南第二代画家，长居香港。笔法流畅，用色细腻",
+    "medium": "水墨设色"
+  },
+  "HK-YOUNG-01": {
+    "name_zh_hans": "杨嘉辉",
+    "sba_theme_tags": "声音;历史;政治",
+    "formal_traits": "声音景观、表演录像、图像乐谱",
+    "dse_concept": "声音艺术家，透过声音景观探讨政治和历史",
+    "spld_summary": "香港声音艺术家。用声音探讨历史和政治",
+    "medium": "声音／装置／表演"
+  },
+  "INTL-ABRAMOVIC-01": {
+    "name_zh_hans": "玛丽娜·阿布拉莫维奇",
+    "sba_theme_tags": "身体;忍耐;观众",
+    "formal_traits": "长时间行为、身体极限、与观众直接互动",
+    "dse_concept": "行为艺术先驱，探索人体极限与忍耐",
+    "spld_summary": "塞尔维亚行为艺术家。用身体挑战极限",
+    "medium": "行为艺术"
+  },
+  "INTL-ANDO-01": {
+    "formal_traits": "清水混凝土、几何空间、引入自然光",
+    "dse_concept": "以清水混凝土和光营造禅意空间，如「光之教堂」",
+    "spld_summary": "日本建筑师。用清水混凝土和光，营造宁静空间",
+    "medium": "建筑"
+  },
+  "INTL-BANKSY-01": {
+    "sba_theme_tags": "街头;讽刺;政治",
+    "formal_traits": "模板喷漆、黑色幽默、公共墙面",
+    "dse_concept": "匿名街头艺术家，以涂鸦作社会与政治讽刺",
+    "spld_summary": "英国匿名街头艺术家。在墙上喷画，讽刺社会",
+    "medium": "街头艺术（模板喷漆）"
+  },
+  "INTL-BICKERTON-01": {
+    "name_zh_hans": "阿什利·比克顿",
+    "sba_theme_tags": "异化;自然;科技",
+    "formal_traits": "工业物料组合、商标符号、摄影与绘画结合",
+    "dse_concept": "探讨人、自然与科技之间的异化",
+    "spld_summary": "美国艺术家。用工业材料和商标，表现人与自然的疏离"
+  },
+  "INTL-CALDER-01": {
+    "name_zh_hans": "亚历山大·考尔德",
+    "sba_theme_tags": "动态;平衡;重力",
+    "formal_traits": "悬吊金属片、空气推动、原色平面",
+    "dse_concept": "「动态雕塑」发明者，探讨重力与平衡",
+    "spld_summary": "美国雕塑家。制作会动的悬吊雕塑，表现平衡",
+    "medium": "动态雕塑"
+  },
+  "INTL-CATALANO-01": {
+    "name_zh_hans": "布鲁诺·卡塔拉诺",
+    "sba_theme_tags": "旅人;缺席;身体雕塑",
+    "formal_traits": "局部掏空人体、青铜、行李道具",
+    "dse_concept": "《旅人》系列以身体缺块表现迁移、失去和在途状态",
+    "spld_summary": "当代雕塑家。铜像中间是空洞，手提行李，讲述旅行和缺失"
+  },
+  "INTL-CHRISTO-01": {
+    "name_zh_hans": "克里斯托与珍妮-克劳德",
+    "sba_theme_tags": "包裹;地景;短暂",
+    "formal_traits": "巨型布料包裹建筑与地景、临时展示",
+    "dse_concept": "以布料「包裹」地标作大地艺术，如包裹德国国会大厦",
+    "spld_summary": "艺术家夫妇。用巨大布料包裹整座建筑",
+    "medium": "大地艺术／装置"
+  },
+  "INTL-EMIN-01": {
+    "sba_theme_tags": "自传;私密;创伤",
+    "formal_traits": "真实私人物品、手写霓虹字、缝缀布料",
+    "dse_concept": "以自传式作品展示私隐与创伤，如《我的床》",
+    "spld_summary": "英国艺术家。把自己的床和私人物品展出，诉说心事",
+    "medium": "装置／霓虹／刺绣"
+  },
+  "INTL-ERLICH-01": {
+    "name_zh_hans": "莱安德罗·埃利希",
+    "sba_theme_tags": "错觉;感知;建筑",
+    "formal_traits": "镜面反射错觉、日常建筑场景、观众参与",
+    "dse_concept": "以视觉错觉装置挑战感知",
+    "spld_summary": "阿根廷艺术家。用镜子和建筑制造错觉，观众可以参与",
+    "medium": "错觉装置"
+  },
+  "INTL-HIRST-01": {
+    "name_zh_hans": "达米恩·赫斯特",
+    "sba_theme_tags": "生死;标本;商业",
+    "formal_traits": "甲醛浸泡动物、药柜陈列、整齐点画",
+    "dse_concept": "以生物标本挑战生命、死亡与商业的关系",
+    "spld_summary": "英国艺术家。把动物浸泡在药水中展出，探讨生死",
+    "medium": "装置／雕塑"
+  },
+  "INTL-KAPOOR-01": {
+    "name_zh_hans": "安尼什·卡普尔",
+    "sba_theme_tags": "反射;空间;虚空",
+    "formal_traits": "镜面不锈钢、深色虚空凹面、巨大尺度",
+    "dse_concept": "以巨型雕塑探索反射、空间与虚空，如芝加哥《云门》",
+    "spld_summary": "英国印度裔雕塑家。制作巨型镜面雕塑，映照四周",
+    "medium": "雕塑／装置"
+  },
+  "INTL-KOONS-01": {
+    "name_zh_hans": "杰夫·昆斯",
+    "sba_theme_tags": "消费;媚俗;放大",
+    "formal_traits": "镜面不锈钢、放大日常物件、工厂式制作",
+    "dse_concept": "把大众消费品化为昂贵雕塑，如不锈钢气球狗",
+    "spld_summary": "美国艺术家。把气球狗做成巨大闪亮的雕塑"
+  },
+  "INTL-KRUGER-01": {
+    "name_zh_hans": "芭芭拉·克鲁格",
+    "sba_theme_tags": "标语;权力;消费主义",
+    "formal_traits": "黑白照片、红底白字标语、直接称呼观众",
+    "dse_concept": "以图像与标语批判权力与消费主义",
+    "spld_summary": "美国艺术家。以黑白照片加红底白字标语批评消费",
+    "medium": "摄影拼贴／文字"
+  },
+  "INTL-KUSAMA-01": {
+    "name_zh_hans": "草间弥生",
+    "sba_theme_tags": "圆点;重复;自我消融",
+    "formal_traits": "无限圆点、镜屋无限反射、网纹重复",
+    "dse_concept": "「圆点女王」，以重复探索自我消融",
+    "spld_summary": "日本艺术家。到处都是圆点，也做无限镜屋",
+    "medium": "装置／绘画"
+  },
+  "INTL-MUECK-01": {
+    "sba_theme_tags": "超写实;尺度;心理",
+    "formal_traits": "矽胶树脂逼真皮肤毛发、刻意放大或缩小",
+    "dse_concept": "以超写实人像和尺度变化制造心理张力",
+    "spld_summary": "澳洲雕塑家。人像栩栩如生，但刻意做得巨大或微小",
+    "medium": "雕塑（超写实）"
+  },
+  "INTL-MURAKAMI-01": {
+    "sba_theme_tags": "超扁平;次文化;高低艺术",
+    "formal_traits": "动漫式平面色彩、可爱角色、商业合作",
+    "dse_concept": "提出「超扁平」，模糊高雅艺术与次文化的界线",
+    "spld_summary": "日本艺术家。风格像动漫一样平面可爱，也与品牌合作",
+    "medium": "绘画／雕塑／商品"
+  },
+  "INTL-PICCININI-01": {
+    "name_zh_hans": "帕特丽夏·皮奇尼尼",
+    "sba_theme_tags": "生物科技;混种;伦理",
+    "formal_traits": "逼真矽胶混种生物、人类毛发、温柔姿态",
+    "dse_concept": "以混种生物模型探讨生物工程与伦理",
+    "spld_summary": "澳洲艺术家。制作半人半兽的生物，探讨科技伦理",
+    "medium": "雕塑（矽胶）"
+  },
+  "INTL-SHERMAN-01": {
+    "sba_theme_tags": "角色扮演;女性形象;媒体",
+    "formal_traits": "自拍扮演、电影剧照风格、化妆布景",
+    "dse_concept": "以角色扮演批判媒体中的女性定型，如《无题电影剧照》",
+    "spld_summary": "美国摄影师。自己扮演不同角色拍照，探讨媒体中的女性形象",
+    "medium": "摄影"
+  },
+  "INTL-VIOLA-01": {
+    "name_zh_hans": "比尔·维奥拉",
+    "sba_theme_tags": "生死;信仰;慢镜",
+    "formal_traits": "极慢镜头、水与火元素、大型投影",
+    "dse_concept": "录像艺术大师，探索生死与信仰",
+    "spld_summary": "美国录像艺术家。用极慢的镜头表现生与死",
+    "medium": "录像装置"
+  },
+  "INTL-WALKER-01": {
+    "sba_theme_tags": "种族;历史;暴力",
+    "formal_traits": "黑色剪纸剪影、整室环绕叙事、强烈黑白对比",
+    "dse_concept": "以剪影探讨种族暴力与历史",
+    "spld_summary": "美国艺术家。用黑色剪纸剪影讲述种族历史",
+    "medium": "剪影／装置"
+  },
+  "WEST-BACON-01": {
+    "name_zh_hans": "弗朗西斯·培根",
+    "sba_theme_tags": "扭曲人像;焦虑;存在",
+    "formal_traits": "扭曲模糊人像、笼状空间框架、强烈色面背景",
+    "dse_concept": "以扭曲人像表现战后存在焦虑",
+    "spld_summary": "英国画家。人像扭曲变形，显得痛苦",
+    "medium": "油画"
+  },
+  "WEST-CARAVAGGIO-01": {
+    "name_zh_hans": "卡拉瓦乔",
+    "sba_theme_tags": "明暗对照;戏剧性;平民",
+    "formal_traits": "强烈明暗对比、暗背景、以平民作模特儿",
+    "dse_concept": "明暗对照法先驱，以戏剧光影和平民形象描绘宗教题材",
+    "spld_summary": "意大利巴洛克画家。光暗对比强烈，像舞台灯光",
+    "medium": "油画"
+  },
+  "WEST-DALI-01": {
+    "name_zh_hans": "萨尔瓦多·达利",
+    "sba_theme_tags": "超现实;梦境;潜意识",
+    "formal_traits": "精细写实技法、溶化变形物件、荒漠梦境空间",
+    "dse_concept": "超现实主义代表，把梦境与潜意识视觉化",
+    "spld_summary": "西班牙超现实画家。画融化的时钟，像梦境一样",
+    "medium": "油画"
+  },
+  "WEST-DUCHAMP-01": {
+    "name_zh_hans": "马塞尔·杜尚",
+    "sba_theme_tags": "现成物;观念;重新定义艺术",
+    "formal_traits": "选取日常制品、签名改题、去手工化",
+    "dse_concept": "「现成物」创始人，以《喷泉》重新定义艺术",
+    "spld_summary": "法国艺术家。把一个小便池签名作为艺术品，改变了艺术的定义",
+    "medium": "现成物／观念"
+  },
+  "WEST-ELIASSON-01": {
+    "name_zh_hans": "奥拉维尔·埃利亚松",
+    "sba_theme_tags": "感知;光;环境;观众身体",
+    "formal_traits": "人造光雾、镜面、沉浸装置",
+    "dse_concept": "用光和水让观众意识自己的感知过程",
+    "spld_summary": "冰岛／丹麦艺术家。用光、雾、水做装置，让人留意感知",
+    "medium": "装置"
+  },
+  "WEST-GIACO-01": {
+    "name_zh_hans": "阿尔贝托·贾科梅蒂",
+    "sba_theme_tags": "孤独;身体脆弱;雕塑空间",
+    "formal_traits": "极瘦铜像、粗糙表面、孤独站立姿态",
+    "dse_concept": "以纤细铜像象征现代人的脆弱和存在焦虑",
+    "spld_summary": "瑞士雕塑家。非常瘦削的铜人像，表现孤独和脆弱"
+  },
+  "WEST-HOCKNEY-01": {
+    "name_zh_hans": "大卫·霍克尼",
+    "sba_theme_tags": "家庭;凝视;平面色彩",
+    "formal_traits": "鲜明平涂、多点透视、亲密室内场景",
+    "dse_concept": "《我的父母》等作品以冷静构图审视亲密关系和观看",
+    "spld_summary": "英国画家。用鲜明平涂色彩画家人和泳池，构图清晰",
+    "medium": "油画"
+  },
+  "WEST-HOPPER-01": {
+    "name_zh_hans": "爱德华·霍普",
+    "sba_theme_tags": "都市疏离;现代孤独;室内光影",
+    "formal_traits": "几何窗框切割、强烈冷暖对比、简化写实",
+    "dse_concept": "藉深夜餐厅玻璃屏障呈现现代人疏离与无法沟通",
+    "spld_summary": "美国画家。画深夜餐厅，用大玻璃和光暗对比表现孤独",
+    "medium": "油画"
+  },
+  "WEST-KAHLO-01": {
+    "name_zh_hans": "弗里达·卡罗",
+    "sba_theme_tags": "身份;身体;痛苦;性别",
+    "formal_traits": "自传符号、对称构图、鲜明本土色彩",
+    "dse_concept": "以自画像将个人伤痛和文化身份视觉化",
+    "spld_summary": "墨西哥画家。以自画像讲述自己身体的痛苦和身份",
+    "medium": "油画"
+  },
+  "WEST-KANDINSKY-01": {
+    "name_zh_hans": "瓦西里·康定斯基",
+    "sba_theme_tags": "抽象;色彩音乐;点线面",
+    "formal_traits": "点、线、面组合、色彩韵律、非具象构图",
+    "dse_concept": "抽象艺术先驱，视色彩如音乐共鸣",
+    "spld_summary": "俄国抽象画家。认为色彩像音乐，用点线面作画",
+    "medium": "油画"
+  },
+  "WEST-LEONARDO-01": {
+    "name_zh_hans": "列奥纳多·达·芬奇",
+    "sba_theme_tags": "观察;解剖;文艺复兴",
+    "formal_traits": "晕涂法、精准解剖素描、金字塔式构图",
+    "dse_concept": "文艺复兴巨匠，以理性观察和解剖研究达致写实高峰",
+    "spld_summary": "意大利文艺复兴大师。画了《蒙娜丽莎》，精通解剖",
+    "medium": "油画／素描"
+  },
+  "WEST-MAGRITTE-01": {
+    "name_zh_hans": "勒内·马格利特",
+    "sba_theme_tags": "超现实;图像vs现实;哲学",
+    "formal_traits": "并置错位、平坦笔触、文字／图像悖论",
+    "dse_concept": "用日常物错置追问「看见」和「命名」的关系",
+    "spld_summary": "比利时超现实画家。把日常物件放错位置，挑战现实",
+    "medium": "油画"
+  },
+  "WEST-MATISSE-01": {
+    "name_zh_hans": "亨利·马蒂斯",
+    "sba_theme_tags": "野兽派;色彩;简化",
+    "formal_traits": "大胆平涂色彩、简化轮廓、晚年剪纸",
+    "dse_concept": "野兽派领袖，以大胆色彩和简化剪纸表达",
+    "spld_summary": "法国画家。用色大胆，晚年以剪纸创作",
+    "medium": "油画／剪纸"
+  },
+  "WEST-MONDRIAN-01": {
+    "sba_theme_tags": "结构;原色;抽象秩序",
+    "formal_traits": "垂直水平线、红黄蓝原色、去叙事网格",
+    "dse_concept": "以冷抽象追求宇宙秩序和视觉平衡",
+    "spld_summary": "荷兰抽象画家。以直线和红黄蓝格子追求秩序",
+    "medium": "油画"
+  },
+  "WEST-MONET-01": {
+    "name_zh_hans": "克劳德·莫奈",
+    "sba_theme_tags": "印象派;光;户外写生",
+    "formal_traits": "短碎笔触、户外写生、同一景物系列",
+    "dse_concept": "印象派代表，捕捉瞬间光色变化",
+    "spld_summary": "法国印象派画家。在户外反复画同一景物，捕捉光的变化",
+    "medium": "油画"
+  },
+  "WEST-MOORE-01": {
+    "name_zh_hans": "亨利·摩尔",
+    "sba_theme_tags": "有机形体;镂空;斜卧人像",
+    "formal_traits": "圆润有机形体、穿孔镂空、斜卧人像",
+    "dse_concept": "以有机形体和镂空空间发展抽象雕塑",
+    "spld_summary": "英国雕塑家。雕刻圆润的人形，中间有孔洞"
+  },
+  "WEST-OKEEFFE-01": {
+    "name_zh_hans": "乔治亚·奥基芙",
+    "formal_traits": "巨大特写花卉、柔和渐变、简化形体",
+    "dse_concept": "以放大花卉和沙漠风景探索女性意识",
+    "spld_summary": "美国女画家。把花画得巨大而贴近，也画沙漠",
+    "medium": "油画"
+  },
+  "WEST-PICASSO-01": {
+    "name_zh_hans": "巴勃罗·毕加索",
+    "sba_theme_tags": "立体主义;多视点;变形",
+    "formal_traits": "几何拆解、多角度同时呈现、拼贴",
+    "dse_concept": "立体主义创始人之一，解构空间与透视",
+    "spld_summary": "西班牙画家。立体主义，把物件从几个角度同时画出来",
+    "medium": "油画／雕塑／拼贴"
+  },
+  "WEST-POLLOCK-01": {
+    "name_zh_hans": "杰克逊·波洛克",
+    "sba_theme_tags": "行动绘画;偶然;身体动作",
+    "formal_traits": "地上画布滴洒颜料、满幅构图、线条交织",
+    "dse_concept": "行动绘画代表，以身体动作留下偶然之美",
+    "spld_summary": "美国画家。把画布放在地上，滴洒颜料",
+    "medium": "油彩／瓷漆（滴画）"
+  },
+  "WEST-ROTHKO-01": {
+    "name_zh_hans": "马克·罗斯科",
+    "sba_theme_tags": "色域;沉思;情感空间",
+    "formal_traits": "大色块悬浮、柔边晕染、近距离沉浸",
+    "dse_concept": "以色域营造近乎宗教的沉思空间，让观众被情绪包围",
+    "spld_summary": "美国色域画家。大块柔边颜色，令人安静沉思",
+    "medium": "油画"
+  },
+  "WEST-VANGOGH-01": {
+    "name_zh_hans": "文森特·梵高",
+    "sba_theme_tags": "情感外化;笔触;色彩张力",
+    "formal_traits": "旋涡笔触、高彩度对比、厚涂肌理",
+    "dse_concept": "以强烈笔触和色彩外化内心焦虑和对自然的狂热",
+    "spld_summary": "荷兰画家。笔触扭动、色彩强烈，用绘画表达情绪",
+    "medium": "油画"
+  },
+  "WEST-WARHOL-01": {
+    "name_zh_hans": "安迪·沃霍尔",
+    "sba_theme_tags": "消费;复制;大众媒介",
+    "formal_traits": "丝网重复、扁平色面、名人／商品图像",
+    "dse_concept": "用机械复制消解「原创」，批判／拥抱消费和媒体",
+    "spld_summary": "波普艺术。重复印制汤罐和明星，探讨大众媒体和消费",
+    "medium": "丝网／印刷"
+  }
+}
