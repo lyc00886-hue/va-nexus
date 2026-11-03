@@ -1,4 +1,6 @@
 import { Contrast, Focus, RotateCcw, Type, Wind, X, BookOpenText, Volume2, ClipboardList } from 'lucide-react'
+import { useEasyRead } from '../context/EasyReadContext'
+import { EasyReadBar } from './easy-read/EasyReadBar'
 import { useSenSupport } from '../context/SenSupportContext'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { useSen, type FontSizeLevel } from '../context/SenContext'
@@ -66,6 +68,7 @@ function Toggle({
 export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
   const { mode, setMode, settings, update, reset } = useSen()
   const { openCheckIn } = useSenSupport()
+  const easy = useEasyRead()
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -102,6 +105,12 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
           <X className="h-4 w-4" />
         </button>
       </div>
+
+      {easy.preview ? (
+        <div className="mt-3">
+          <EasyReadBar />
+        </div>
+      ) : null}
 
       <button
         type="button"

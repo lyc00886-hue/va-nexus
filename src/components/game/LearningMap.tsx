@@ -16,6 +16,9 @@ import {
   type LearningMapSections,
   type LessonFoldId,
 } from '../../lib/learningMapSections'
+import { useEasyRead } from '../../context/EasyReadContext'
+import { EasyReadBar } from '../easy-read/EasyReadBar'
+import { StepMap } from '../easy-read/StepPath'
 import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
@@ -75,6 +78,7 @@ export function LearningMap() {
   const { settings, focusTunnel } = useSen()
   const { openCheckIn, stored } = useSenSupport()
   const mapOne = useMapOneShell()
+  const easy = useEasyRead()
   const [mapLessonId, setMapLessonId] = useState<string | null>(null)
   const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
@@ -183,6 +187,10 @@ export function LearningMap() {
     remember('media', null)
   }
 
+  if (easy.on) {
+    return <StepMap />
+  }
+
   if (mapOne) {
     const openLesson = mapLessonId ? getNodeById().get(mapLessonId) : undefined
     return (
@@ -196,6 +204,7 @@ export function LearningMap() {
           />
         ) : (
           <>
+            {easy.preview ? <EasyReadBar /> : null}
             <CommitmentBanner />
             <MapOneCard onOpen={setMapLessonId} />
           </>
@@ -206,6 +215,7 @@ export function LearningMap() {
 
   return (
     <div className="space-y-5">
+      {easy.preview ? <EasyReadBar /> : null}
       <CommitmentBanner />
       <div>
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>

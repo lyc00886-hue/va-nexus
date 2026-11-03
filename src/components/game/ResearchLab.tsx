@@ -6,16 +6,21 @@ import { getBadgeById } from '../../game/rewards'
 import { getLocale, t } from '../../i18n'
 import type { ResearchQuest } from '../../game/types'
 import { FeldmanWriter } from '../FeldmanWriter'
+import { useEasyRead } from '../../context/EasyReadContext'
 import { useResearchStepsShell } from '../../lib/useResearchStepsShell'
+import { EasyReadBar } from '../easy-read/EasyReadBar'
+import { StepResearch } from '../easy-read/StepPath'
 import { DemoBadge } from './DemoBadge'
 import { LessonPlayer } from './LessonPlayer'
 
 export function ResearchLab() {
   const { state } = useGame()
   const steps = useResearchStepsShell()
+  const easy = useEasyRead()
   const [open, setOpen] = useState<ResearchQuest | null>(null)
   const [writer, setWriter] = useState(false)
   const [hideEmbed, setHideEmbed] = useState(false)
+  if (easy.on) return <StepResearch />
 
   if (open) {
     return (
@@ -56,6 +61,7 @@ export function ResearchLab() {
 
   return (
     <div className="space-y-5">
+      {easy.preview ? <EasyReadBar /> : null}
       <div>
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.research')}</h2>
         <p className="text-sm text-slate-500">{t('research.subtitle', { done, total: RESEARCH_QUESTS.length })}</p>
