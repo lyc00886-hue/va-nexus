@@ -3,7 +3,14 @@
  *
  * English reads `*_en` columns (same idea as artist_media.title_en). A missing
  * or blank English value becomes EN_BODY_PENDING — never the Chinese source.
- * zh-Hant and zh-Hans keep the original columns, including nulls.
+ * zh-Hant keeps the original columns, including nulls.
+ * zh-Hans prefers parallel `*_zh_hans` fields when they are non-blank (client
+ * overlay keyed by artist_id; Hant and EN columns are not rewritten) and
+ * otherwise falls back to those original columns.
+ *
+ * `spld_summary` is an internal column id. It is copied onto `bio_short` /
+ * the easy-read summary only. Student UI must not render the id or the
+ * letters SPLD / SEN.
  */
 
 export const EN_BODY_PENDING = 'Translation pending／暫未翻譯'
@@ -21,6 +28,14 @@ export type ArtistBodySource = {
   spld_summary_en?: string | null
   origin: string | null
   origin_en?: string | null
+  /** Simplified themes. Semicolon tags already split. Absent → Hant tags. */
+  sba_theme_tags_zh_hans?: string[] | null
+  formal_traits_zh_hans?: string | null
+  dse_concept_zh_hans?: string | null
+  /** Internal easy-read summary source. Never a student-facing label. */
+  spld_summary_zh_hans?: string | null
+  /** Maps to Artist.medium. Overlay key is `medium` (origin column). */
+  origin_zh_hans?: string | null
 }
 
 export type ArtistBody = {
@@ -75,17 +90,38 @@ function enKeywords(formalTraits: string | null | undefined): string[] {
   return parts.length > 0 ? parts : [EN_BODY_PENDING]
 }
 
-export function artistFields(row: ArtistBodySource, locale: BodyLocale): ArtistBody {
-  if (locale !== 'en') {
-    return {
-      medium: row.origin,
-      themes: row.sba_theme_tags ?? [],
-      style_keywords: splitTraits(row.formal_traits),
-      bio_short: row.spld_summary || row.dse_concept || null,
-      dse_concept: row.dse_concept,
-      spld_summary: row.spld_summary,
-    }
+function preferText(hans: string | null | undefined, hant: string | null): string | null {
+  const text = hans?.trim()
+  if (text) return text
+  return hant
+}
+
+function preferThemes(hans: string[] | null | undefined, hant: string[] | null): string[] {
+  const items = (hans ?? []).map((tag) => tag.trim()).filter(Boolean)
+  if (items.length > 0) return items
+  return hant ?? []
+}
+
+/** Shared Chinese mapping. Hans reads `*_zh_hans` first; Hant ignores those fields. */
+function chineseFields(row: ArtistBodySource, hans: boolean): ArtistBody {
+  const themes = hans ? preferThemes(row.sba_theme_tags_zh_hans, row.sba_theme_tags) : (row.sba_theme_tags ?? [])
+  const traits = hans ? preferText(row.formal_traits_zh_hans, row.formal_traits) : row.formal_traits
+  const concept = hans ? preferText(row.dse_concept_zh_hans, row.dse_concept) : row.dse_concept
+  const summary = hans ? preferText(row.spld_summary_zh_hans, row.spld_summary) : row.spld_summary
+  const medium = hans ? preferText(row.origin_zh_hans, row.origin) : row.origin
+  return {
+    medium,
+    themes,
+    style_keywords: splitTraits(traits),
+    bio_short: summary || concept || null,
+    dse_concept: concept,
+    spld_summary: summary,
   }
+}
+
+export function artistFields(row: ArtistBodySource, locale: BodyLocale): ArtistBody {
+  if (locale === 'zh-Hant') return chineseFields(row, false)
+  if (locale === 'zh-Hans') return chineseFields(row, true)
 
   const summary = trimmed(row.spld_summary_en)
   const concept = trimmed(row.dse_concept_en)

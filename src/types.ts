@@ -15,8 +15,12 @@ export type Artist = {
   image_url: string | null
   /** Optional reference / Wikipedia URL (artists.source_url) */
   source_url?: string | null
-  /** Optional extra Supabase fields (artists.dse_concept / spld_summary / culture_group) */
+  /** Optional extra Supabase fields (artists.dse_concept / culture_group). */
   dse_concept?: string | null
+  /**
+   * Internal easy-read summary (artists column id). Student UI shows this text
+   * as bio_short only — never the column id or the letters SPLD / SEN.
+   */
   spld_summary?: string | null
   culture_group?: string | null
 }

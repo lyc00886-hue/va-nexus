@@ -338,6 +338,8 @@ export function ArtistCompare({
         // once 20261105_artists_en_columns.sql is applied. Naming a column that
         // is not there yet would fail the whole fetch, so missing *_en stays
         // undefined and the English mapper shows the pending placeholder.
+        // zh-Hans body text is a client overlay (src/data/artist-zh-hans-overlay.json),
+        // not extra DB columns, so this select stays the same.
         supabase.from('artists').select('*').order('artist_id'),
         supabase.from('artist_pairs').select('*').order('id'),
       ])
