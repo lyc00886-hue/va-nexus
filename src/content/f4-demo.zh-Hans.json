@@ -4,6 +4,8 @@
       "id": "F4-U1-ORIENT",
       "title": "中四视艺入门：课程与 SBA 作品集",
       "intro": "中四入门单元。认识视艺两条学习线（评赏与创作）、正面价值，以及 SBA 作品集（研究工作簿＋作品／评赏）的基本结构。对齐 CCCKLC F.4 Orientation 与 SBA 准则说明。不包括真实考评局试卷或高分学生示例。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U1-ORIENT.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U1-L1",
@@ -139,6 +141,8 @@
       "id": "F4-U2-DRAW-DESIGN",
       "title": "写生、美感与设计思维",
       "intro": "对齐 F.4 Scheme「Creative Practice 2」：Drawing skills、Aesthetic／Design thinking、Material exploration、Presentation skills。建立观察、构图与物料探索基础，为之后主题创作铺路。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-DRAW-DESIGN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U2-L1",
@@ -264,6 +268,8 @@
       "id": "F4-U3-COMMUNITY",
       "title": "社区观察、视觉日记与主题种子",
       "intro": "对齐 F.4 社区导赏／tour presentation、Weekly visual diary，以及「与社区相关的设计／创作」。学习由日常环境收集材料，变成主题种子；连结香港艺术家对日常空间的关注。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-COMMUNITY.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U3-L1",
@@ -388,6 +394,8 @@
       "id": "F4-U4-SELF-RESEARCH",
       "title": "自画像、艺术家研究与主题发展",
       "intro": "对齐 F.4「Theme and Artist research and Presentation I (Self-Portrait)」与 Discovery 线索：Self／Relationship／Story。学习用自画像探索身份，并用正当方法做艺术家研究（引用来源、比较观点），启动 SBA 主题发展。不放高分学生示例。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-SELF-RESEARCH.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U4-L1",
@@ -457,7 +465,15 @@
             "WEST-KAHLO-01",
             "HK-SHIEH-01",
             "WEST-HOCKNEY-01"
-          ]
+          ],
+          "artistMedia": {
+            "WEST-KAHLO-01": {
+              "thumb": "/content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-artwork.png",
+              "license": "Public domain",
+              "credit": "Frida Kahlo — Self-Portrait Dedicated to Leon Trotsky (1937)",
+              "sourceUrl": "https://commons.wikimedia.org/wiki/File:Frida_Kahlo_-_Autoportrait_d%C3%A9di%C3%A9_%C3%A0_L%C3%A9on_Trotsky.png"
+            }
+          }
         },
         {
           "id": "F4-U4-L2",

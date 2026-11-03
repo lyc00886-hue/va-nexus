@@ -26,6 +26,7 @@ import type {
   SessionResult,
 } from '../../game/types'
 import { DemoBadge } from './DemoBadge'
+import { LessonArtistPanel } from './LessonArtists'
 import { ReadAloudButton } from './ReadAloudButton'
 
 const IDLE_MS = 90_000
@@ -187,6 +188,8 @@ export function LessonPlayer({
         {lesson.demo && <DemoBadge />}
         <span className="text-xs text-slate-500">{t('common.aboutMin', { n: lesson.minutes })}</span>
       </div>
+
+      {lesson.artists?.length ? <LessonArtistPanel artists={lesson.artists} /> : null}
 
       {phase === 'cards' && card && (
         <div className="space-y-4">

@@ -40,6 +40,15 @@ export type FillQuestion = {
 
 export type Question = McqQuestion | MatchQuestion | FillQuestion
 
+/** Cleared lesson artwork. No `thumb` means the card keeps the empty-image placeholder. */
+export type LessonArtistRef = {
+  artistId: string
+  thumb?: string
+  license?: string
+  credit?: string
+  sourceUrl?: string
+}
+
 export type Lesson = {
   id: string
   title: string
@@ -49,6 +58,8 @@ export type Lesson = {
   demo: boolean
   cards: LessonCard[]
   questions: Question[]
+  /** Present when the content lesson lists artistIds. Thumbs only for cleared media. */
+  artists?: LessonArtistRef[]
 }
 
 export type Unit = {
@@ -56,6 +67,9 @@ export type Unit = {
   title: string
   subtitle: string
   nodes: Lesson[]
+  /** Optional unit-card illustration. Omitted on packs that have no cover yet. */
+  coverImage?: string
+  coverCredit?: string
 }
 
 export type ResearchQuest = Lesson & {
