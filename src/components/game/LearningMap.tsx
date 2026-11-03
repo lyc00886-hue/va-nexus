@@ -718,7 +718,13 @@ function UnitSection({
             >
               {node.coverImage ? (
                 <div className="mb-2 overflow-hidden rounded-2xl ring-1 ring-slate-200">
-                  <UnitCover src={node.coverImage} credit={node.coverCredit} lesson />
+                  <UnitCover
+                    src={node.coverImage}
+                    credit={node.coverCredit}
+                    lesson
+                    title={node.title}
+                    lessonId={node.id}
+                  />
                 </div>
               ) : null}
               <h4 className="m-0 text-base">
@@ -807,21 +813,58 @@ function UnitSection({
   )
 }
 
-function UnitCover({ src, credit, lesson = false }: { src: string; credit?: string; lesson?: boolean }) {
+/**
+ * Blank title plates on the November lesson covers (1280×720).
+ * The overlay is the lesson title for the active locale, never the short goal or one-liner.
+ */
+const COVER_TITLE_PLATE: Record<string, string> = {
+  'F4-U2-L3': 'inset-x-[6%] top-[7%] h-[27%]',
+  'F4-U3-L3': 'inset-x-[7%] top-[5%] h-[26%]',
+  'F4-U3-L4': 'inset-x-[6%] top-[3%] h-[19%]',
+}
+
+const COVER_TITLE_PLATE_FALLBACK = 'inset-x-[7%] top-[6%] h-[16%]'
+
+function UnitCover({
+  src,
+  credit,
+  lesson = false,
+  title,
+  lessonId,
+}: {
+  src: string
+  credit?: string
+  lesson?: boolean
+  title?: string
+  lessonId?: string
+}) {
   const [failed, setFailed] = useState(false)
   if (failed) return null
+  const plate = (lessonId && COVER_TITLE_PLATE[lessonId]) || COVER_TITLE_PLATE_FALLBACK
   return (
     <figure>
-      <img
-        src={src}
-        alt=""
-        width={lesson ? 1280 : 1152}
-        height={lesson ? 720 : 864}
-        loading="lazy"
-        decoding="async"
-        className={lesson ? 'aspect-video h-auto w-full object-cover object-center' : 'h-44 w-full object-cover object-center sm:h-52'}
-        onError={() => setFailed(true)}
-      />
+      <div className="relative">
+        <img
+          src={src}
+          alt=""
+          width={lesson ? 1280 : 1152}
+          height={lesson ? 720 : 864}
+          loading="lazy"
+          decoding="async"
+          className={lesson ? 'aspect-video h-auto w-full object-cover object-center' : 'h-44 w-full object-cover object-center sm:h-52'}
+          onError={() => setFailed(true)}
+        />
+        {lesson && title ? (
+          <p
+            data-cover-title={title}
+            data-testid={lessonId ? `cover-title-${lessonId}` : 'cover-title'}
+            className={`pointer-events-none absolute ${plate} flex items-center justify-center overflow-hidden text-balance px-1 text-center text-[clamp(0.72rem,2.1vw,1.35rem)] font-bold leading-[1.15] text-[#164e4c]`}
+            aria-hidden="true"
+          >
+            {title}
+          </p>
+        ) : null}
+      </div>
       {credit ? (
         <figcaption className="border-b border-slate-100 bg-slate-50 px-5 py-1.5 text-[11px] leading-snug text-slate-500">
           {credit}
