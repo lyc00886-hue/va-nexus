@@ -4,6 +4,7 @@ import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { useSenSupport } from '../../context/SenSupportContext'
 import { getNodeById, getUnits } from '../../game/curriculum'
+import { getF4Units } from '../../game/f4Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
 import { masteryFor, masteryLabel } from '../../game/rewards'
@@ -26,11 +27,13 @@ const OFFSETS = ['ml-0', 'ml-10', 'ml-20', 'ml-10']
 const TRACK_KEY = 'va-nexus:map-track'
 const MEDIA_KEY = 'va-nexus:map-media'
 
-type Track = 'history' | 'media'
+type Track = 'history' | 'media' | 'f4'
 
 function readTrack(): Track {
   try {
-    return sessionStorage.getItem(TRACK_KEY) === 'media' ? 'media' : 'history'
+    const saved = sessionStorage.getItem(TRACK_KEY)
+    if (saved === 'media' || saved === 'f4') return saved
+    return 'history'
   } catch {
     return 'history'
   }
@@ -67,9 +70,27 @@ export function LearningMap() {
 
   const history = getUnits()
   const media = getMediaUnits()
+  const f4All = getF4Units()
+  const completed = (id: string) => Boolean(state.nodes[id]?.completed)
   const selected = media.find((unit) => unit.id === mediaId && !unit.pending) ?? null
   const current = currentNodeId ? getNodeById().get(currentNodeId) : undefined
   const historyUnits = focusTunnel && current ? history.filter((u) => u.nodes.some((n) => n.id === current.id)) : history
+  const f4Unlocked = (id: string) => {
+    for (const unit of f4All) {
+      const ids = unit.nodes.map((node) => node.id)
+      if (ids.includes(id)) return isSequentialUnlocked(ids, id, completed)
+    }
+    return false
+  }
+  const f4Current = f4All.flatMap((unit) => unit.nodes).find((node) => f4Unlocked(node.id) && !completed(node.id))
+  const f4Units =
+    focusTunnel && f4Current ? f4All.filter((unit) => unit.nodes.some((node) => node.id === f4Current.id)) : f4All
+  const subtitle =
+    track === 'media'
+      ? t('map.media.subtitle', { n: media.length })
+      : track === 'f4'
+        ? t('map.f4.subtitle')
+        : t('map.subtitle')
 
   function chooseTrack(next: Track) {
     setTrack(next)
@@ -91,15 +112,18 @@ export function LearningMap() {
     <div className="space-y-5">
       <div>
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
-        <p className="text-sm text-slate-500">{track === 'media' ? t('map.media.subtitle', { n: media.length }) : t('map.subtitle')}</p>
+        <p className="text-sm text-slate-500">{subtitle}</p>
       </div>
 
-      <div className="inline-flex rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
+      <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
         <TrackTab active={track === 'history'} onClick={() => chooseTrack('history')}>
           {t('map.track.history')}
         </TrackTab>
         <TrackTab active={track === 'media'} onClick={() => chooseTrack('media')}>
           {t('map.track.media')}
+        </TrackTab>
+        <TrackTab active={track === 'f4'} onClick={() => chooseTrack('f4')}>
+          {t('map.track.f4')}
         </TrackTab>
       </div>
 
@@ -115,7 +139,19 @@ export function LearningMap() {
               motion={motion}
               indent={!focusTunnel}
               isUnlocked={isUnlocked}
-              completed={(id) => Boolean(state.nodes[id]?.completed)}
+              completed={completed}
+              masteryOf={(id) => masteryFor(state.nodes[id])}
+              onOpen={setOpen}
+            />
+          ) : track === 'f4' ? (
+            <HistoryTrack
+              units={f4Units}
+              current={f4Current}
+              currentNodeId={f4Current?.id ?? null}
+              motion={motion}
+              indent={!focusTunnel}
+              isUnlocked={f4Unlocked}
+              completed={completed}
               masteryOf={(id) => masteryFor(state.nodes[id])}
               onOpen={setOpen}
             />
@@ -123,13 +159,13 @@ export function LearningMap() {
             <MediaDetail
               unit={selected}
               motion={motion}
-              completed={(id) => Boolean(state.nodes[id]?.completed)}
+              completed={completed}
               masteryOf={(id) => masteryFor(state.nodes[id])}
               onOpen={setOpen}
               onBack={closeMedia}
             />
           ) : (
-            <MediaPicker units={media} completed={(id) => Boolean(state.nodes[id]?.completed)} onOpen={openMedia} />
+            <MediaPicker units={media} completed={completed} onOpen={openMedia} />
           )}
         </div>
 
