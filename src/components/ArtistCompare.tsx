@@ -18,6 +18,7 @@ import { ARTIST_PAIRS, ARTISTS, artistById as mockArtistById } from '../data/art
 import { useSen } from '../context/SenContext'
 import {
   artistDisplayName,
+  artistReadText,
   artistSecondaryName,
   mapDbArtist,
   mapDbPair,
@@ -131,6 +132,12 @@ type ViewMode = 'browse' | 'pairs' | 'free'
 
 function displayName(a: Artist) {
   return artistDisplayName(a)
+}
+
+function detailParagraphs(artist: Artist, easyRead: boolean): string[] {
+  const text = artistReadText(artist, easyRead)
+  if (!text) return []
+  return easyRead ? chunkText(text) : [text]
 }
 
 function matchesQuery(a: Artist, q: string): boolean {
@@ -326,6 +333,11 @@ export function ArtistCompare({
 
       setSource('loading')
       const [artistsRes, pairsRes] = await Promise.all([
+        // '*' includes sba_theme_tags_en, formal_traits_en, dse_concept_en,
+        // spld_summary_en, origin_en, and artist_pairs theme_en / medium_en
+        // once 20261105_artists_en_columns.sql is applied. Naming a column that
+        // is not there yet would fail the whole fetch, so missing *_en stays
+        // undefined and the English mapper shows the pending placeholder.
         supabase.from('artists').select('*').order('artist_id'),
         supabase.from('artist_pairs').select('*').order('id'),
       ])
@@ -887,13 +899,7 @@ export function ArtistCompare({
           name={artistDisplayName(detailArtist)}
           secondaryName={artistSecondaryName(detailArtist)}
           bundle={detailBundle}
-          paragraphs={
-            easyRead
-              ? chunkText(detailArtist.spld_summary || detailArtist.bio_short)
-              : detailArtist.bio_short
-                ? [detailArtist.bio_short]
-                : []
-          }
+          paragraphs={detailParagraphs(detailArtist, easyRead)}
           easyRead={easyRead}
           onClose={closeDetail}
         />
@@ -1089,8 +1095,8 @@ function PairCompareView({
   const sbaNote = curated ? getPairCompare().note : t('ac.sbaNote.default')
   const speechText = [
     t('ac.speech.theme', { x: curated?.theme ?? pair.theme }),
-    t('ac.speech.east', { name: eName, text: east.spld_summary || east.bio_short || '' }),
-    t('ac.speech.west', { name: wName, text: west.spld_summary || west.bio_short || '' }),
+    t('ac.speech.east', { name: eName, text: artistReadText(east, true) ?? '' }),
+    t('ac.speech.west', { name: wName, text: artistReadText(west, true) ?? '' }),
     t('ac.speech.same', {
       x: (curated
         ? curated.same
@@ -1162,7 +1168,7 @@ function PairCompareView({
           medium={east.medium}
           themes={east.themes}
           styleKeywords={east.style_keywords}
-          bio={easyRead ? east.spld_summary || east.bio_short : east.bio_short}
+          bio={artistReadText(east, easyRead)}
           padding={cardPadding}
           easyRead={easyRead}
           sourceUrl={east.source_url}
@@ -1176,7 +1182,7 @@ function PairCompareView({
           medium={west.medium}
           themes={west.themes}
           styleKeywords={west.style_keywords}
-          bio={easyRead ? west.spld_summary || west.bio_short : west.bio_short}
+          bio={artistReadText(west, easyRead)}
           padding={cardPadding}
           easyRead={easyRead}
           sourceUrl={west.source_url}
