@@ -16,6 +16,7 @@ import {
   type LearningMapSections,
   type LessonFoldId,
 } from '../../lib/learningMapSections'
+import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
 import { ActivityLog } from './ActivityLog'
@@ -23,6 +24,7 @@ import { DemoBadge } from './DemoBadge'
 import { artistCreditSummary } from '../../game/lessonArtistLabels'
 import { LessonArtistChips } from './LessonArtists'
 import { LessonPlayer } from './LessonPlayer'
+import { MapOneCard, MapOneLesson } from './MapOneLesson'
 import { MapFold } from './MapFold'
 import { StatCards } from './StatCards'
 
@@ -72,6 +74,8 @@ export function LearningMap() {
   const { state, isUnlocked, currentNodeId } = useGame()
   const { settings, focusTunnel } = useSen()
   const { openCheckIn, stored } = useSenSupport()
+  const mapOne = useMapOneShell()
+  const [mapLessonId, setMapLessonId] = useState<string | null>(null)
   const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
   const [mediaId, setMediaId] = useState<string | null>(readMediaId)
@@ -177,6 +181,27 @@ export function LearningMap() {
   function closeMedia() {
     setMediaId(null)
     remember('media', null)
+  }
+
+  if (mapOne) {
+    const openLesson = mapLessonId ? getNodeById().get(mapLessonId) : undefined
+    return (
+      <div data-map-shell="one" className="space-y-5">
+        {openLesson ? (
+          <MapOneLesson
+            key={openLesson.id}
+            lesson={openLesson}
+            onExit={() => setMapLessonId(null)}
+            onOpenLesson={setMapLessonId}
+          />
+        ) : (
+          <>
+            <CommitmentBanner />
+            <MapOneCard onOpen={setMapLessonId} />
+          </>
+        )}
+      </div>
+    )
   }
 
   return (

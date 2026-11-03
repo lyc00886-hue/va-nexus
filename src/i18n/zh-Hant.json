@@ -536,5 +536,19 @@
   "mascot.chest": "開箱！",
   "mascot.chest.reward": "＋10 學習點",
   "mascot.chest.cta": "開箱",
-  "mascot.chest.skip": "稍後"
+  "mascot.chest.skip": "稍後",
+  "empty.nextLesson": "下一課稍後開放",
+  "empty.noContent": "未有內容",
+  "empty.nextLesson.cta": "返地圖",
+  "empty.noContent.cta": "去研究室",
+  "celebrate.soft": "做得好！",
+  "celebrate.soft.sub": "這一課完成",
+  "celebrate.soft.cta": "下一課",
+  "map.chunk.cta": "繼續",
+  "map.chunk.done": "完成本段",
+  "ai.title": "AI 學習建議",
+  "ai.busy": "想緊建議…",
+  "ai.busy.fallback": "用清單繼續",
+  "ai.fold.more": "更多",
+  "ai.fold.less": "收起"
 }

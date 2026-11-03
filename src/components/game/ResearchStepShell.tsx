@@ -1,17 +1,14 @@
-import { ChevronLeft, Loader2, LogIn } from 'lucide-react'
+import { ChevronLeft } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { t } from '../../i18n'
-import { PrivacyLink } from '../PrivacyModal'
 import {
   advanceChecklist,
   RESEARCH_STEP_COPY,
   RESEARCH_STEP_PHASES,
-  splitLearningTip,
   type ResearchStepPhase,
 } from '../../lib/researchUx'
 import type { FeldmanStageId } from '../../types'
-
-const BIRTH_YEAR_MAX = new Date().getFullYear()
+import { AiLearningTipScreen } from './AiLearningTipScreen'
 
 type AiStatus = 'idle' | 'loading' | 'done' | 'error' | 'notice'
 
@@ -76,8 +73,6 @@ export function ResearchStepShell({
 }: Props) {
   const [phase, setPhase] = useState<ResearchStepPhase>('write')
   const [listIndex, setListIndex] = useState(0)
-  const [tipOpen, setTipOpen] = useState(false)
-  const [noteOpen, setNoteOpen] = useState(false)
 
   const stage = stages.find((s) => s.key === active) ?? stages[0]
   const items = stage?.checklist ?? []
@@ -85,14 +80,11 @@ export function ResearchStepShell({
   const itemOn = item ? checked.includes(item) : false
   const allDone = items.length > 0 && items.every((entry) => checked.includes(entry))
   const phaseIndex = RESEARCH_STEP_PHASES.indexOf(phase)
-  const heading = phase === 'ai' ? t('rs.ai.title') : t(RESEARCH_STEP_COPY[phase].title)
-  const tip = splitLearningTip(ai.status === 'done' ? ai.text : '')
 
   function chooseStage(key: FeldmanStageId) {
     if (key === active) return
     setPhase('write')
     setListIndex(0)
-    setTipOpen(false)
     onActive(key)
   }
 
@@ -111,7 +103,6 @@ export function ResearchStepShell({
   }
 
   function back() {
-    setTipOpen(false)
     if (phase === 'list' && listIndex > 0) {
       setListIndex((i) => i - 1)
       return
@@ -123,6 +114,34 @@ export function ResearchStepShell({
     }
     setPhase('write')
   }
+
+  if (phase === 'ai') {
+    return (
+      <AiLearningTipScreen
+        ai={ai}
+        checklist={items}
+        onRequestAi={onRequestAi}
+        onBack={back}
+        onContinue={() => {
+          if (onLater) onLater()
+          else back()
+        }}
+        onFallback={back}
+        canUseAi={canUseAi}
+        userId={userId}
+        gateReady={gateReady}
+        gateBusy={gateBusy}
+        gateMsg={gateMsg}
+        birthYearInput={birthYearInput}
+        onBirthYear={onBirthYear}
+        onEnableAi={onEnableAi}
+        onDisableAi={onDisableAi}
+        onSignIn={onSignIn}
+      />
+    )
+  }
+
+  const heading = t(RESEARCH_STEP_COPY[phase].title)
 
   return (
     <div data-research-shell="steps" data-research-phase={phase} className="space-y-4">
@@ -221,93 +240,8 @@ export function ResearchStepShell({
         </p>
       )}
 
-      {phase === 'ai' && (
-        <div className="space-y-3">
-          {ai.status === 'done' && (
-            <div className="rounded-2xl border border-teal-200 bg-teal-50 px-4 py-3" aria-live="polite">
-              <p className="text-xs font-semibold text-teal-800">{t('rs.ai.summary')}</p>
-              <p className="mt-1 whitespace-pre-wrap text-sm text-teal-950">{tip.lead}</p>
-              {tip.rest && tipOpen && (
-                <p className="mt-2 whitespace-pre-wrap text-sm text-teal-950">{tip.rest}</p>
-              )}
-              {tip.rest && (
-                <button
-                  type="button"
-                  onClick={() => setTipOpen((open) => !open)}
-                  className="mt-2 text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
-                >
-                  {tipOpen ? t('rs.ai.less') : t('rs.ai.more')}
-                </button>
-              )}
-            </div>
-          )}
-          {ai.status === 'notice' && (
-            <p className="rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-sm text-sky-950" role="status">
-              {t('rs.ai.busy')}
-            </p>
-          )}
-          {ai.status === 'error' && (
-            <p className="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-900" role="alert">
-              {ai.text}
-            </p>
-          )}
-          {!canUseAi && (
-            <AgeGate
-              userId={userId}
-              gateReady={gateReady}
-              gateBusy={gateBusy}
-              gateMsg={gateMsg}
-              birthYearInput={birthYearInput}
-              onBirthYear={onBirthYear}
-              onEnableAi={onEnableAi}
-              onSignIn={onSignIn}
-            />
-          )}
-          <p className="text-xs text-teal-800/70">{t('rs.ai.footer')}</p>
-          <div>
-            <button
-              type="button"
-              onClick={() => setNoteOpen((open) => !open)}
-              className="text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
-              aria-expanded={noteOpen}
-            >
-              {noteOpen ? t('rs.ai.less') : t('rs.ai.more')}
-            </button>
-            {noteOpen && (
-              <div className="mt-2 space-y-2 text-xs leading-relaxed text-teal-900/80">
-                <p>
-                  {t('fw.geminiNote')} <PrivacyLink />
-                </p>
-                <p>{t('fw.ai.gated')}</p>
-                {canUseAi && (
-                  <button
-                    type="button"
-                    onClick={onDisableAi}
-                    className="font-semibold text-teal-900 underline-offset-2 hover:underline"
-                  >
-                    {t('fw.ai.disable')}
-                  </button>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
       {phase === 'write' && <Primary onClick={continueWrite}>{t('rs.cta.continue')}</Primary>}
       {phase === 'list' && <Primary onClick={advanceList}>{t('rs.cta.next')}</Primary>}
-      {phase === 'ai' && canUseAi && (
-        <Primary onClick={onRequestAi} disabled={ai.status === 'loading'}>
-          {ai.status === 'loading' ? (
-            <span className="inline-flex items-center justify-center gap-2">
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-              {t('fw.ai.loading')}
-            </span>
-          ) : (
-            t('rs.cta.tip')
-          )}
-        </Primary>
-      )}
 
       {phase === 'list' && (
         <TextLink onClick={advanceList}>{t('rs.list.skip')}</TextLink>
@@ -317,22 +251,13 @@ export function ResearchStepShell({
   )
 }
 
-function Primary({
-  children,
-  onClick,
-  disabled,
-}: {
-  children: ReactNode
-  onClick: () => void
-  disabled?: boolean
-}) {
+function Primary({ children, onClick }: { children: ReactNode; onClick: () => void }) {
   return (
     <button
       type="button"
       data-research-cta="primary"
       onClick={onClick}
-      disabled={disabled}
-      className="w-full rounded-2xl bg-teal-700 py-3.5 text-base font-bold text-white shadow-[0_4px_0_#115e59] hover:bg-teal-600 disabled:cursor-wait disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
+      className="w-full rounded-2xl bg-teal-700 py-3.5 text-base font-bold text-white shadow-[0_4px_0_#115e59] hover:bg-teal-600"
     >
       {children}
     </button>
@@ -349,67 +274,5 @@ function TextLink({ children, onClick }: { children: string; onClick: () => void
     >
       {children}
     </button>
-  )
-}
-
-function AgeGate({
-  userId,
-  gateReady,
-  gateBusy,
-  gateMsg,
-  birthYearInput,
-  onBirthYear,
-  onEnableAi,
-  onSignIn,
-}: {
-  userId: string | null
-  gateReady: boolean
-  gateBusy: boolean
-  gateMsg: string | null
-  birthYearInput: string
-  onBirthYear: (value: string) => void
-  onEnableAi: () => void
-  onSignIn: () => void
-}) {
-  return (
-    <div className="space-y-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950">
-      <p className="text-base font-bold">{t('rs.ai.age')}</p>
-      {!userId ? (
-        <Primary onClick={onSignIn}>
-          <span className="inline-flex items-center justify-center gap-2">
-            <LogIn className="h-4 w-4" aria-hidden />
-            {t('fw.ai.signIn')}
-          </span>
-        </Primary>
-      ) : (
-        <>
-          <label className="block text-sm">
-            <span className="font-medium">{t('fw.ai.birthYear')}</span>
-            <input
-              type="number"
-              inputMode="numeric"
-              min={1900}
-              max={BIRTH_YEAR_MAX}
-              autoComplete="bday-year"
-              value={birthYearInput}
-              onChange={(e) => onBirthYear(e.target.value)}
-              placeholder={t('fw.ai.birthYear.ph')}
-              className="mt-1 w-28 rounded-lg border border-amber-300 bg-white px-2 py-1 text-sm text-amber-950"
-            />
-          </label>
-          <Primary onClick={onEnableAi} disabled={gateBusy || birthYearInput.length !== 4 || !gateReady}>
-            {gateBusy ? (
-              <span className="inline-flex items-center justify-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                {t('fw.ai.enable')}
-              </span>
-            ) : (
-              t('fw.ai.enable')
-            )}
-          </Primary>
-          {gateMsg && <p className="text-xs font-medium">{gateMsg}</p>}
-        </>
-      )}
-    </div>
   )
 }

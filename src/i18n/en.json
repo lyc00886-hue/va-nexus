@@ -536,5 +536,19 @@
   "mascot.chest": "Open it!",
   "mascot.chest.reward": "+10 learning points",
   "mascot.chest.cta": "Open",
-  "mascot.chest.skip": "Later"
+  "mascot.chest.skip": "Later",
+  "empty.nextLesson": "Next lesson soon",
+  "empty.noContent": "Nothing here yet",
+  "empty.nextLesson.cta": "Back to map",
+  "empty.noContent.cta": "Go research",
+  "celebrate.soft": "Nice work!",
+  "celebrate.soft.sub": "Lesson done",
+  "celebrate.soft.cta": "Next lesson",
+  "map.chunk.cta": "Continue",
+  "map.chunk.done": "Section done",
+  "ai.title": "AI learning tip",
+  "ai.busy": "Thinking…",
+  "ai.busy.fallback": "Use checklist",
+  "ai.fold.more": "More",
+  "ai.fold.less": "Less"
 }

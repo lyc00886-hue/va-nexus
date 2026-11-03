@@ -15,6 +15,7 @@ import { useT } from './i18n'
 import { contentJson } from './i18n/content'
 import type { AbilityChartFile } from './lib/abilityChart'
 import { requestOpenAbilityChart } from './lib/portfolioSections'
+import { isStudentTab, OPEN_TAB_EVENT } from './lib/openTab'
 import { isSupabaseConfigured } from './lib/supabase'
 import { useStaffGate } from './lib/useStaffRole'
 import type { TabId } from './types'
@@ -63,6 +64,15 @@ export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0 })
   }, [activeTab])
+
+  useEffect(() => {
+    const onOpen = (event: Event) => {
+      const id = (event as CustomEvent<unknown>).detail
+      if (isStudentTab(id)) setTab(id)
+    }
+    window.addEventListener(OPEN_TAB_EVENT, onOpen)
+    return () => window.removeEventListener(OPEN_TAB_EVENT, onOpen)
+  }, [])
 
   const footer = t(artistSource === 'live' ? 'app.footer.live' : 'app.footer.mock')
 
