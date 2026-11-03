@@ -502,7 +502,7 @@
   "ac.media.lightbox": "作品放大",
   "sba.guide.tip": "小贴士：",
   "sba.guide.redFlags": "小心事项",
-  "fw.ai.signIn": "登录后才可开 AI（仅限 18+）",
+  "fw.ai.signIn": "登录后才可开 AI 学习建议（仅限 18+）",
   "fw.ai.birthYear": "出生年份",
   "fw.ai.birthYear.ph": "YYYY",
   "fw.ai.birthYear.help": "请输入出生年份，用于核对 18+ AI 规则。年份只会私密存在你的账户，界面只用 can_use_ai 旗标——之后不会再显示年份，也不会传到 Gemini。",
