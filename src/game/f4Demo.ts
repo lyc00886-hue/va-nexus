@@ -4,7 +4,8 @@
  * Same Learning Map v3 shape as art-history: { units: [{ id, title, intro, lessons }] }.
  * Optional coverImage / coverCredit and per-lesson artistMedia are additive.
  * U1–U6 each ship a local 自制 cover. A unit with no coverImage still renders without one.
- * The map chrome and unit cards do not show a syllabus year.
+ * November lessons F4-U2-L3, F4-U3-L3, and F4-U3-L4 also ship a lesson-tile cover
+ * on that same path. The map chrome and unit cards do not show a syllabus year.
  */
 import { contentJson } from '../i18n/content'
 import { perLocale } from '../i18n'
@@ -22,7 +23,12 @@ export const F4_UNIT_IDS = [
   'F4-U6-THEME-SEEDS',
 ] as const
 
-type F4LessonSource = ContentLesson & { artistIds?: unknown; artistMedia?: unknown }
+type F4LessonSource = ContentLesson & {
+  artistIds?: unknown
+  artistMedia?: unknown
+  coverImage?: unknown
+  coverCredit?: unknown
+}
 
 type F4UnitSource = {
   id?: string
@@ -60,7 +66,7 @@ export function unitsFromF4File(raw: F4File | null | undefined): Unit[] {
       nodes: lessons.map((lesson) => {
         const node = lessonFromContent(lesson, pool)
         const artists = artistsFromLesson(lesson)
-        return artists ? { ...node, artists } : node
+        return { ...node, ...coverFromUnit(lesson), ...(artists ? { artists } : {}) }
       }),
     }
   })
