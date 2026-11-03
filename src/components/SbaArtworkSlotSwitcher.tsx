@@ -15,29 +15,46 @@ type Props = {
   started: ReadonlySet<SlotId>
   onSelect: (slot: SlotId) => void
   onType: (slot: SlotId, type: PieceType) => void
+  /**
+   * Evidence and the series outline each mount a switcher.
+   * The default prefix keeps the original outline ids; pass another prefix for the second copy.
+   */
+  domPrefix?: string
 }
 
-export function SbaArtworkSlotSwitcher({ active, types, started, onSelect, onType }: Props) {
+export function SbaArtworkSlotSwitcher({
+  active,
+  types,
+  started,
+  onSelect,
+  onType,
+  domPrefix = 'sba-artwork',
+}: Props) {
   const copy = contentJson<SbaArtworkSlotsCopy>('sba-artwork-slots')
   const hintId = useId()
+  const preserveIds = domPrefix === 'sba-artwork'
+  const titleId = preserveIds ? 'sba-artwork-slots-title' : `${domPrefix}-slots-title`
+  const rootTestId = preserveIds ? 'sba-artwork-slots' : `${domPrefix}-slots`
+  const progressTestId = preserveIds ? 'sba-artwork-progress' : `${domPrefix}-progress`
+  const activeTestId = preserveIds ? 'sba-active-piece' : `${domPrefix}-active-piece`
   const activeCopy = copy.slots[String(active)]
   const activeType = types[active]
 
   return (
     <section
-      data-testid="sba-artwork-slots"
-      aria-labelledby="sba-artwork-slots-title"
+      data-testid={rootTestId}
+      aria-labelledby={titleId}
       className="rounded-2xl border border-teal-200 bg-teal-50/70 p-3 sm:p-4"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h3 id="sba-artwork-slots-title" className="text-base font-bold text-teal-950">
+          <h3 id={titleId} className="text-base font-bold text-teal-950">
             {copy.section.title}
           </h3>
           <p className="text-sm text-teal-800/80">{copy.section.subtitle}</p>
         </div>
         <p
-          data-testid="sba-artwork-progress"
+          data-testid={progressTestId}
           aria-live="polite"
           className="shrink-0 rounded-full bg-teal-700 px-2.5 py-1 text-xs font-semibold text-white"
         >
@@ -60,7 +77,7 @@ export function SbaArtworkSlotSwitcher({ active, types, started, onSelect, onTyp
             return (
               <label
                 key={id}
-                data-testid={`sba-artwork-slot-${id}`}
+                data-testid={preserveIds ? `sba-artwork-slot-${id}` : `${domPrefix}-slot-${id}`}
                 data-selected={selected ? 'true' : 'false'}
                 data-empty={used ? 'false' : 'true'}
                 className={`relative flex min-h-[4.75rem] cursor-pointer flex-col rounded-2xl border px-3 py-2.5 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-teal-900 ${
@@ -73,7 +90,7 @@ export function SbaArtworkSlotSwitcher({ active, types, started, onSelect, onTyp
               >
                 <input
                   type="radio"
-                  name="sba-artwork-slot"
+                  name={`${domPrefix}-slot`}
                   value={id}
                   checked={selected}
                   onChange={() => onSelect(id)}
@@ -95,7 +112,7 @@ export function SbaArtworkSlotSwitcher({ active, types, started, onSelect, onTyp
         </div>
       </fieldset>
 
-      <p className="mt-3 text-sm font-semibold text-teal-950" data-testid="sba-active-piece">
+      <p className="mt-3 text-sm font-semibold text-teal-950" data-testid={activeTestId}>
         {activeCopy.full}
       </p>
 
@@ -107,7 +124,7 @@ export function SbaArtworkSlotSwitcher({ active, types, started, onSelect, onTyp
             return (
               <label
                 key={kind}
-                data-testid={`sba-piece-type-${kind}`}
+                data-testid={preserveIds ? `sba-piece-type-${kind}` : `${domPrefix}-type-${kind}`}
                 data-selected={on ? 'true' : 'false'}
                 className={`cursor-pointer rounded-xl border px-3 py-2 text-sm font-semibold focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-teal-900 ${
                   on
@@ -117,7 +134,7 @@ export function SbaArtworkSlotSwitcher({ active, types, started, onSelect, onTyp
               >
                 <input
                   type="radio"
-                  name="sba-artwork-piece-type"
+                  name={`${domPrefix}-piece-type`}
                   className="sr-only"
                   checked={on}
                   onChange={() => onType(active, kind)}

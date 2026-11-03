@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import { AbilityChart } from './components/AbilityChart'
 import { ArtistCompare } from './components/ArtistCompare'
 import { FocusTunnel } from './components/FocusTunnel'
 import { Header } from './components/Header'
@@ -14,6 +13,7 @@ import { ResearchLab } from './components/game/ResearchLab'
 import { useT } from './i18n'
 import { contentJson } from './i18n/content'
 import type { AbilityChartFile } from './lib/abilityChart'
+import { requestOpenAbilityChart } from './lib/portfolioSections'
 import { isSupabaseConfigured } from './lib/supabase'
 import type { TabId } from './types'
 
@@ -65,19 +65,15 @@ export default function App() {
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900">{t('tab.portfolio')}</h2>
                     <p className="text-sm text-slate-500">{t('app.portfolio.subtitle')}</p>
-                    <a
-                      href="#ability-chart"
-                      className="mt-2 inline-block text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
+                    <button
+                      type="button"
+                      onClick={requestOpenAbilityChart}
+                      className="mt-2 inline-block text-left text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
                     >
                       {contentJson<AbilityChartFile>('ability-chart').meta.title}
-                    </a>
+                    </button>
                   </div>
-                  <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-                    <SbaQuest />
-                  </div>
-                  <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-                    <AbilityChart />
-                  </div>
+                  <SbaQuest />
                 </div>
               )}
               {tab === 'library' && (
