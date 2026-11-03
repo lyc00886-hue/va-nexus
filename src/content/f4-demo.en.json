@@ -541,6 +541,284 @@
           ]
         }
       ]
+    },
+    {
+      "id": "F4-U5-ART-HIST",
+      "title": "Art History Intro: Ancient West and Chinese Art",
+      "intro": "Aligned to F.4 Orientation / early weeks: ancient cave art, Egypt, Greek and Roman art, plus a Chinese art introduction. Build a compact timeline and keyword sense for form, function and cultural context; briefly introduce calligraphy/painting as visual language (pictographs / oracle bone / silk painting)—not a full-year ink course. No real exam papers. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U5-ART-HIST.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F4-U5-L1",
+          "title": "Ancient West: Cave, Egypt, Greek, Roman",
+          "cards": [
+            "Start art history by asking what images solved for people: record, belief, power, beauty or commemoration.",
+            "Prehistoric cave images often show animals and handprints; notice space, repetition and ritual feel—not photo-likeness.",
+            "Egyptian art often stresses order, proportional rules and afterlife / sacred hierarchy; profile figures and scale hierarchy are common visual codes.",
+            "Greek art often seeks balanced, idealised human proportion; Roman art often emphasises realistic portraiture, public architecture and imperial narrative.",
+            "Task: for each of the four periods, write one keyword + one sentence on function; later turn this into a group Art Dictionary / personal Timeline. [No cleared image yet] Museum open images may be added later with sources."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A good starting question for ancient art is?",
+              "options": [
+                "Only memorise dates",
+                "What function and context did the work serve?",
+                "Only count colours",
+                "Demand a real HKEAA paper"
+              ],
+              "answer": "What function and context did the work serve?",
+              "explain": "Form should connect to function, belief and social context."
+            },
+            {
+              "type": "fill",
+              "question": "Egyptian art often uses proportion and pose to show ____ and sacred order.",
+              "options": [],
+              "answer": "hierarchy",
+              "explain": "Hierarchical scale and fixed poses are common visual rules.",
+              "wordBank": [
+                "hierarchy",
+                "Wi‑Fi",
+                "bus route",
+                "password"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match period to a common focus",
+              "options": [
+                "Cave images",
+                "Greek",
+                "Roman"
+              ],
+              "answer": {
+                "Cave images": "Ritual / recording animals and handprints",
+                "Greek": "Ideal human proportion and balance",
+                "Roman": "Realistic portraiture and public narrative"
+              },
+              "explain": "Each period has different functions and aesthetic priorities."
+            },
+            {
+              "type": "mcq",
+              "question": "An Art Dictionary / Timeline mainly trains you to?",
+              "options": [
+                "Only copy answer keys",
+                "Organise keywords, period traits and simple presentation",
+                "Replace all making",
+                "Upload high-score exemplars"
+              ],
+              "answer": "Organise keywords, period traits and simple presentation",
+              "explain": "Dictionary and timeline are starter organising tools."
+            }
+          ]
+        },
+        {
+          "id": "F4-U5-L2",
+          "title": "Chinese Art Intro and Calligraphy–Painting Visual Language",
+          "cards": [
+            "A gentle Chinese art entry point: writing and image telling stories together—pictographs, oracle-bone script and bronze motifs are visual communication.",
+            "Early images such as Warring States silk paintings often link ritual, afterlife and identity—look at line, symbol and spatial layout.",
+            "Calligraphy and painting often share language: brush energy, empty space and rhythm structure a surface, not only ‘correct characters’.",
+            "Intro goal: recognise a few visual codes (line, symbol, void) and describe one work’s form plus a possible context in short sentences.",
+            "Task: choose one pictograph or vessel motif, copy/draw it once, and write two lines: lines you see + possible meaning. [No cleared image yet] Add museum open images later with credit."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "In VA class, pictographs / oracle-bone script are best treated as?",
+              "options": [
+                "Dictation only",
+                "Early visual signs and communication",
+                "Irrelevant to art",
+                "English-only explanations"
+              ],
+              "answer": "Early visual signs and communication",
+              "explain": "Writing and image form a shared visual-language tradition."
+            },
+            {
+              "type": "fill",
+              "question": "Beyond character shape, calligraphy–painting intro also watches brush energy, rhythm and ____.",
+              "options": [],
+              "answer": "empty space",
+              "explain": "Empty space (void) is part of pictorial structure.",
+              "wordBank": [
+                "empty space",
+                "school idol",
+                "detention",
+                "ad copy"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "When describing an early Chinese image, include?",
+              "options": [
+                "Only ‘pretty’",
+                "Formal looking (line/symbol/space) plus possible context",
+                "A real exam stem copied whole",
+                "Hide all sources"
+              ],
+              "answer": "Formal looking (line/symbol/space) plus possible context",
+              "explain": "Criticism needs visible evidence and contextual hypotheses."
+            },
+            {
+              "type": "match",
+              "question": "Match intro focus",
+              "options": [
+                "Oracle bone / pictograph",
+                "Silk painting",
+                "Brush energy"
+              ],
+              "answer": {
+                "Oracle bone / pictograph": "How signs hold meaning",
+                "Silk painting": "Ritual / identity imagery",
+                "Brush energy": "Line and rhythm organise the surface"
+              },
+              "explain": "Three doors into reading visual language."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F4-U6-THEME-SEEDS",
+      "title": "Theme Seeds: Self, Relationship, Story",
+      "intro": "Aligned to F.4 Discovery / Creative Assignments prompts: Self (curiosity collection), Relationship (family object), Story (conflict or tension). Before self-portrait research (U4), practise turning everyday objects and experiences into developable theme questions; link to the visual diary (U3). No high-score exemplars; no real exam papers. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-THEME-SEEDS.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F4-U6-L1",
+          "title": "Three Doors: Collection, Family Object, Conflict",
+          "cards": [
+            "Theme seeds work best when they are small and real—start from something you care about, not a vague mega-topic.",
+            "Self: gather a small ‘curiosity collection’ (tickets, stones, packaging, old things). Ask: why keep this? which side of me does it show?",
+            "Relationship: choose one family object; note who uses it, when, and any rules or memories—objects can narrate relationships.",
+            "Story: use a ‘little person’ viewpoint to spot conflict or tension in an environment (crowding, waiting, rules, misunderstanding); sketch scene and feeling.",
+            "[No cleared image yet] Later: a three-door worksheet template (self-made)."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Self / Relationship / Story doors mainly help you?",
+              "options": [
+                "Replace all art history",
+                "Pull theme seeds from lived experience",
+                "Only memorise birthdays",
+                "Submit a real exam paper"
+              ],
+              "answer": "Pull theme seeds from lived experience",
+              "explain": "The three doors are discovery tools for themes."
+            },
+            {
+              "type": "fill",
+              "question": "The Relationship door often uses a ____ object to tell a story.",
+              "options": [],
+              "answer": "family",
+              "explain": "Family objects carry relations and memory.",
+              "wordBank": [
+                "family",
+                "Mars",
+                "password",
+                "school bus"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match door to practice",
+              "options": [
+                "Self",
+                "Relationship",
+                "Story"
+              ],
+              "answer": {
+                "Self": "Curiosity collection and facets of self",
+                "Relationship": "Family object and who uses it",
+                "Story": "Conflict / tension scene narrative"
+              },
+              "explain": "Doors can later merge into one theme."
+            },
+            {
+              "type": "mcq",
+              "question": "A better theme seed is usually?",
+              "options": [
+                "As huge and empty as possible",
+                "Small, real, and worth sustained exploring",
+                "Copied from a classmate only",
+                "Identical to an exam paper"
+              ],
+              "answer": "Small, real, and worth sustained exploring",
+              "explain": "Sustainable inquiry fits portfolio development."
+            }
+          ]
+        },
+        {
+          "id": "F4-U6-L2",
+          "title": "From Seed to Theme Question",
+          "cards": [
+            "Rewrite the seed as a theme question—e.g. ‘How does this family object define care?’ ‘What tension sits in bodies and space while waiting?’",
+            "A strong question opens research and making: observe, interview, test media—not a one-word answer.",
+            "Next links: keep recording in the visual diary (U3), artist comparison and self-portrait trials (U4), material tests (U2).",
+            "Mini presentation shape: my seed → theme question → materials already gathered → media I will try next.",
+            "Reminder: demos teach structure and method only—no real HKEAA papers and no high-score student works."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A strong theme question usually?",
+              "options": [
+                "Ends after a yes/no answer",
+                "Drives observation, research and media experiments",
+                "Must be a copied web headline",
+                "Must be a real exam stem"
+              ],
+              "answer": "Drives observation, research and media experiments",
+              "explain": "The question is the portfolio engine."
+            },
+            {
+              "type": "fill",
+              "question": "A mini presentation includes seed, question, materials gathered and next ____.",
+              "options": [],
+              "answer": "media",
+              "explain": "Media trials turn the question into making.",
+              "wordBank": [
+                "media",
+                "dictation",
+                "idol",
+                "ad"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "After finding a seed, the natural next step is?",
+              "options": [
+                "Throw it away",
+                "Carry it into the research workbook and develop it",
+                "Only post memes",
+                "Demand high-score exemplars"
+              ],
+              "answer": "Carry it into the research workbook and develop it",
+              "explain": "Seeds become trackable progression."
+            },
+            {
+              "type": "match",
+              "question": "Match next tool",
+              "options": [
+                "Visual diary",
+                "Artist research",
+                "Material trial"
+              ],
+              "answer": {
+                "Visual diary": "Keep collecting observations",
+                "Artist research": "Compare methods and symbols",
+                "Material trial": "Test which medium fits"
+              },
+              "explain": "Three tracks advance the theme together."
+            }
+          ]
+        }
+      ]
     }
   ]
 }
