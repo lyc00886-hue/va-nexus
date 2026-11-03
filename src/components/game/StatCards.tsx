@@ -14,12 +14,12 @@ export function StatCards() {
         </span>
         <div className="min-w-0 flex-1">
           <p className="text-xs font-medium text-slate-500">{t('stats.xp')}</p>
-          <p className="text-lg font-bold text-slate-900">{state.xp.toLocaleString()} XP</p>
+          <p className="text-lg font-bold text-slate-900">{t('chrome.xp', { n: state.xp.toLocaleString() })}</p>
           <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-slate-100">
             <div className="h-full rounded-full bg-amber-400" style={{ width: `${level.pct}%` }} />
           </div>
           <p className="mt-0.5 text-[11px] text-slate-500">
-            Lv.{level.level} {level.title}
+            {t('chrome.levelTitle', { n: level.level, title: level.title })}
             {level.next !== null ? ` · ${t('stats.toNext', { n: level.next - state.xp })}` : ''}
           </p>
         </div>

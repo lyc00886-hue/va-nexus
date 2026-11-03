@@ -1,17 +1,49 @@
 import { Accessibility } from 'lucide-react'
 import { useCallback, useState } from 'react'
+import { useEasyRead } from '../context/EasyReadContext'
 import { useSen } from '../context/SenContext'
-import { LOCALE_NAME, LOCALE_SHORT, LOCALES, useT, type MessageKey } from '../i18n'
-import type { SenMode } from '../types'
+import { LOCALE_NAME, LOCALE_SHORT, LOCALES, useT } from '../i18n'
 import { AuthButton } from './AuthButton'
 import { ProgressSync } from './ProgressSync'
 import { SenSettingsPanel } from './SenSettingsPanel'
 
-const MODES: { id: SenMode; label: MessageKey; hint: MessageKey }[] = [
-  { id: 'standard', label: 'mode.standard', hint: 'mode.standard.hint' },
-  { id: 'spld', label: 'mode.spld', hint: 'mode.spld.hint' },
-  { id: 'adhd', label: 'mode.adhd', hint: 'mode.adhd.hint' },
-]
+/** Two-segment display control. Reading help and focus stay under the display bar, not in this row. */
+function DisplayModeSwitch() {
+  const easy = useEasyRead()
+  const { t } = useT()
+  const choices = [
+    { id: 'standard' as const, pressed: !easy.on, label: t('er.mode.standard'), choose: () => easy.setOn(false) },
+    { id: 'step' as const, pressed: easy.on, label: t('er.mode.step'), choose: () => easy.setOn(true) },
+  ]
+  return (
+    <div
+      role="radiogroup"
+      aria-label={t('header.displayMode')}
+      data-testid="header-display-mode"
+      className="inline-flex rounded-full bg-teal-50 p-1 ring-1 ring-teal-100"
+    >
+      {choices.map((choice) => (
+        <button
+          key={choice.id}
+          type="button"
+          role="radio"
+          aria-checked={choice.pressed}
+          data-testid={`header-display-${choice.id}`}
+          onClick={() => {
+            if (!choice.pressed) choice.choose()
+          }}
+          className={
+            choice.pressed
+              ? 'rounded-full bg-[#0D9488] px-3 py-1 text-xs font-semibold text-white shadow'
+              : 'rounded-full bg-white px-3 py-1 text-xs font-medium text-[#0D9488] ring-1 ring-[#0D9488]/30'
+          }
+        >
+          {choice.label}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 function LanguageSwitcher() {
   const { locale, setLocale, t } = useT()
@@ -44,7 +76,7 @@ function LanguageSwitcher() {
 }
 
 export function Header() {
-  const { mode, setMode } = useSen()
+  const { mode } = useSen()
   const { t } = useT()
   const [open, setOpen] = useState(false)
   const close = useCallback(() => setOpen(false), [])
@@ -68,28 +100,7 @@ export function Header() {
 
         <div className="flex flex-wrap items-center gap-2">
           <LanguageSwitcher />
-          <div
-            className="inline-flex rounded-full bg-teal-50 p-1 ring-1 ring-teal-100"
-            role="group"
-            aria-label={t('header.senModes')}
-          >
-            {MODES.map((m) => (
-              <button
-                key={m.id}
-                type="button"
-                title={t(m.hint)}
-                aria-pressed={mode === m.id}
-                onClick={() => setMode(m.id)}
-                className={
-                  mode === m.id
-                    ? 'rounded-full bg-teal-600 px-3 py-1 text-xs font-semibold text-white shadow'
-                    : 'rounded-full px-3 py-1 text-xs font-medium text-slate-600 hover:bg-teal-100'
-                }
-              >
-                {t(m.label)}
-              </button>
-            ))}
-          </div>
+          <DisplayModeSwitch />
 
           <button
             type="button"

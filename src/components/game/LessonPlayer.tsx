@@ -684,7 +684,7 @@ function ResultStage({
         <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
           <div className="rounded-2xl bg-amber-50 p-3">
             <Star className="mx-auto h-5 w-5 fill-amber-400 text-amber-400" aria-hidden />
-            <p className="mt-1 font-bold text-amber-700">+{outcome.xpGained} XP</p>
+            <p className="mt-1 font-bold text-amber-700">{t('chrome.xpGain', { n: outcome.xpGained })}</p>
           </div>
           <div className="rounded-2xl bg-emerald-50 p-3">
             <Check className="mx-auto h-5 w-5 text-emerald-600" aria-hidden />

@@ -38,7 +38,7 @@ export function Achievements() {
           <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
             <Trophy className="h-4 w-4 text-blue-600" aria-hidden /> {t('ach.level')}
           </p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">Lv.{level.level}</p>
+          <p className="mt-1 text-2xl font-bold text-slate-900">{t('chrome.level', { n: level.level })}</p>
           <p className="text-sm text-slate-600">{level.title}</p>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
             <div className="h-full rounded-full bg-blue-600" style={{ width: `${level.pct}%` }} />
@@ -51,7 +51,7 @@ export function Achievements() {
           <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
             <Star className="h-4 w-4 fill-amber-400 text-amber-400" aria-hidden /> {t('ach.totalXp')}
           </p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">{state.xp.toLocaleString()} XP</p>
+          <p className="mt-1 text-2xl font-bold text-slate-900">{t('chrome.xp', { n: state.xp.toLocaleString() })}</p>
         </div>
         <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
           <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
@@ -100,7 +100,7 @@ export function Achievements() {
           <ul className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-slate-600">
             {LEVELS.map((l, i) => (
               <li key={l.min} className={i + 1 === level.level ? 'font-bold text-blue-700' : ''}>
-                Lv.{i + 1} {l.title} · {l.min} XP
+                {t('chrome.levelXpRow', { n: i + 1, title: l.title, xp: l.min.toLocaleString() })}
               </li>
             ))}
           </ul>

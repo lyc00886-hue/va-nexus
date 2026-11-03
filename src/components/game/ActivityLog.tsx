@@ -57,7 +57,7 @@ export function ActivityLog({ limit = 6 }: { limit?: number }) {
                   <p className="text-sm font-medium text-slate-800">{a.text}</p>
                   <p className="text-[11px] text-slate-400">{ago(a.ts)}</p>
                 </div>
-                {a.xp ? <span className="text-xs font-bold text-amber-600">+{a.xp} XP</span> : null}
+                {a.xp ? <span className="text-xs font-bold text-amber-600">{t('chrome.xpGain', { n: a.xp })}</span> : null}
               </li>
             )
           })}

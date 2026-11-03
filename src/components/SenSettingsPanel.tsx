@@ -1,17 +1,9 @@
 import { Contrast, Focus, RotateCcw, Type, Wind, X, BookOpenText, Volume2, ClipboardList } from 'lucide-react'
-import { useEasyRead } from '../context/EasyReadContext'
 import { EasyReadBar } from './easy-read/EasyReadBar'
 import { useSenSupport } from '../context/SenSupportContext'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { useSen, type FontSizeLevel } from '../context/SenContext'
-import type { SenMode } from '../types'
 import { t, type MessageKey } from '../i18n'
-
-const PRESET_LABELS: { id: SenMode; label: MessageKey; hint: MessageKey }[] = [
-  { id: 'standard', label: 'mode.standard', hint: 'sen.preset.standard.hint' },
-  { id: 'spld', label: 'sen.preset.spld', hint: 'sen.preset.spld.hint' },
-  { id: 'adhd', label: 'sen.preset.adhd', hint: 'sen.preset.adhd.hint' },
-]
 
 const FONT_LEVELS: { id: FontSizeLevel; label: MessageKey }[] = [
   { id: 'md', label: 'sen.font.md' },
@@ -66,9 +58,8 @@ function Toggle({
 }
 
 export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
-  const { mode, setMode, settings, update, reset } = useSen()
+  const { settings, update, reset } = useSen()
   const { openCheckIn } = useSenSupport()
-  const easy = useEasyRead()
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -106,11 +97,9 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
         </button>
       </div>
 
-      {easy.preview ? (
-        <div className="mt-3">
-          <EasyReadBar />
-        </div>
-      ) : null}
+      <div className="mt-3">
+        <EasyReadBar />
+      </div>
 
       <button
         type="button"
@@ -126,28 +115,6 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
           <span className="block font-normal text-blue-800/80">{t('sen.checkin.note')}</span>
         </span>
       </button>
-
-      <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-teal-800/80">{t('sen.quick')}</p>
-      <div className="mt-1 grid grid-cols-3 gap-1.5" role="radiogroup" aria-label={t('sen.quick')}>
-        {PRESET_LABELS.map((p) => (
-          <button
-            key={p.id}
-            type="button"
-            role="radio"
-            aria-checked={mode === p.id}
-            title={t(p.hint)}
-            onClick={() => setMode(p.id)}
-            className={`rounded-xl border px-2 py-2 text-xs font-semibold ${
-              mode === p.id
-                ? 'border-teal-700 bg-teal-700 text-white'
-                : 'border-teal-200 bg-white text-teal-900 hover:bg-teal-50'
-            }`}
-          >
-            {t(p.label)}
-          </button>
-        ))}
-      </div>
-      {mode === 'custom' && <p className="mt-1 text-[11px] text-teal-800/80">{t('sen.custom')}</p>}
 
       <div className="mt-4">
         <p className="flex items-center gap-1.5 text-sm font-semibold text-teal-950">
