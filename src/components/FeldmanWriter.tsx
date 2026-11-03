@@ -1,17 +1,11 @@
 import { Bot, CheckSquare, Loader2, Lock, LogIn, Plus, Sparkles, Square } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
 import { PrivacyLink } from './PrivacyModal'
-import { signInWithGoogle, useAuth } from '../lib/auth'
-import { supabase } from '../lib/supabase'
-import {
-  fetchAiAgeGate,
-  loadCachedCanUseAi,
-  revokeCanUseAi,
-  saveBirthYearForAiGate,
-} from '../lib/aiAgeGate'
+import { postFeldmanFeedback } from '../lib/feldmanAiRequest'
+import { useAiAgeGate } from '../lib/useAiAgeGate'
 import {
   boostOralText,
   getFeldmanStages,
@@ -40,15 +34,6 @@ const STAGE_API: Record<StepKey, 'describe' | 'analyze' | 'interpret' | 'judge'>
 
 const AI_IDLE: AiState = { status: 'idle', text: '' }
 
-/** Quota, HTTP 503, and Google UNAVAILABLE / high-demand share one calm notice. */
-function isAiFeedbackPaused(status: number, data: { code?: string; error?: string }): boolean {
-  if (status === 503 || data.code === 'gemini_quota') return true
-  const error = data.error ?? ''
-  if (error.includes('UNAVAILABLE')) return true
-  const lower = error.toLowerCase()
-  return lower.includes('high demand') || lower.includes('overloaded')
-}
-
 function buildSteps() {
   const en = getLocale() === 'en'
   return getFeldmanStages().map((s, i) => ({
@@ -67,9 +52,19 @@ function emptyRecord<T>(v: () => T): Record<StepKey, T> {
 export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: () => void }) {
   const { cardPadding } = useSen()
   const { awardOnce } = useGame()
-  const { ready, user } = useAuth()
   const { selects } = useSelfAssessment()
-  const userId = user?.id ?? null
+  const {
+    canUseAi,
+    userId,
+    gateReady,
+    gateBusy,
+    gateMsg,
+    birthYearInput,
+    onBirthYear,
+    onEnableAi,
+    onDisableAi,
+    onSignIn,
+  } = useAiAgeGate()
   const STEPS = useMemo(buildSteps, [])
   const [texts, setTexts] = useState<Record<StepKey, string>>(() => emptyRecord(() => ''))
   const [checked, setChecked] = useState<Record<StepKey, string[]>>(() => emptyRecord(() => []))
@@ -78,38 +73,6 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
   const [hits, setHits] = useState<FeldmanVocabEntry[]>([])
   const [artwork, setArtwork] = useState('')
   const [ai, setAi] = useState<Record<StepKey, AiState>>(() => emptyRecord(() => AI_IDLE))
-  /** Derived permission flag only — never store/show birth year in UI. */
-  const [canUseAi, setCanUseAi] = useState(false)
-  const [gateReady, setGateReady] = useState(false)
-  const [birthYearInput, setBirthYearInput] = useState('')
-  const [gateBusy, setGateBusy] = useState(false)
-  const [gateMsg, setGateMsg] = useState<string | null>(null)
-
-  useEffect(() => {
-    let cancelled = false
-    setCanUseAi(loadCachedCanUseAi())
-    if (!ready) return
-    if (!userId) {
-      setCanUseAi(false)
-      setGateReady(true)
-      return
-    }
-    setGateReady(false)
-    fetchAiAgeGate(userId)
-      .then((g) => {
-        if (cancelled) return
-        setCanUseAi(g.canUseAi)
-        setGateReady(true)
-      })
-      .catch(() => {
-        if (cancelled) return
-        setCanUseAi(loadCachedCanUseAi())
-        setGateReady(true)
-      })
-    return () => {
-      cancelled = true
-    }
-  }, [ready, userId])
 
   const draft = useMemo(
     () => STEPS.map((s) => `【${s.title}】\n${texts[s.key] || t('fw.unwritten')}`).join('\n\n'),
@@ -150,43 +113,22 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
       return
     }
     setAi((a) => ({ ...a, [key]: { status: 'loading', text: '' } }))
-    try {
-      const { data: sess } = await supabase!.auth.getSession()
-      const accessToken = sess.session?.access_token
-      if (!accessToken) {
-        throw new Error(t('fw.ai.signIn'))
-      }
-      const res = await fetch('/api/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          stage: STAGE_API[key],
-          text: text.slice(0, 2000),
-          artwork: artwork.trim() || undefined,
-          locale: getLocale(),
-        }),
-      })
-      const data = (await res.json().catch(() => ({}))) as {
-        feedback?: string
-        error?: string
-        code?: string
-      }
-      if (isAiFeedbackPaused(res.status, data)) {
-        setAi((a) => ({ ...a, [key]: { status: 'notice', text: t('fw.ai.paused') } }))
-        return
-      }
-      if (!res.ok || !data.feedback) {
-        throw new Error(data.error || t('fw.err.status', { status: res.status }))
-      }
-      setAi((a) => ({ ...a, [key]: { status: 'done', text: data.feedback ?? '' } }))
-      awardOnce(`feldman-ai-${key}`, XP.feldmanAi, t('fw.award', { title: STEPS.find((s) => s.key === key)?.title ?? key }), 'feldman')
-    } catch (err) {
-      const msg = err instanceof Error && err.message !== 'Failed to fetch' ? err.message : t('fw.err.network')
-      setAi((a) => ({ ...a, [key]: { status: 'error', text: msg } }))
+    const outcome = await postFeldmanFeedback({
+      stage: STAGE_API[key],
+      text,
+      artwork: artwork.trim() || undefined,
+      locale: getLocale(),
+    })
+    if (outcome.status === 'notice') {
+      setAi((a) => ({ ...a, [key]: { status: 'notice', text: t('fw.ai.paused') } }))
+      return
     }
+    if (outcome.status === 'error') {
+      setAi((a) => ({ ...a, [key]: { status: 'error', text: outcome.text } }))
+      return
+    }
+    setAi((a) => ({ ...a, [key]: { status: 'done', text: outcome.text } }))
+    awardOnce(`feldman-ai-${key}`, XP.feldmanAi, t('fw.award', { title: STEPS.find((s) => s.key === key)?.title ?? key }), 'feldman')
   }
 
   if (shell === 'steps') {
@@ -213,27 +155,10 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
         gateBusy={gateBusy}
         gateMsg={gateMsg}
         birthYearInput={birthYearInput}
-        onBirthYear={(value) => setBirthYearInput(value.replace(/\D/g, '').slice(0, 4))}
-        onEnableAi={() => {
-          if (!userId) return
-          const y = Number(birthYearInput)
-          setGateBusy(true)
-          setGateMsg(null)
-          setBirthYearInput('')
-          void saveBirthYearForAiGate(userId, y)
-            .then((g) => {
-              setCanUseAi(g.canUseAi)
-              setGateMsg(g.canUseAi ? null : t('fw.ai.under18Saved'))
-            })
-            .catch(() => setGateMsg(t('fw.ai.birthYear.err')))
-            .finally(() => setGateBusy(false))
-        }}
-        onDisableAi={() => {
-          void revokeCanUseAi(userId).then(() => setCanUseAi(false))
-        }}
-        onSignIn={() => {
-          signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))
-        }}
+        onBirthYear={onBirthYear}
+        onEnableAi={onEnableAi}
+        onDisableAi={onDisableAi}
+        onSignIn={onSignIn}
         onLater={onLater}
       />
     )
@@ -250,7 +175,7 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
             {!userId ? (
               <button
                 type="button"
-                onClick={() => signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))}
+                onClick={onSignIn}
                 className="inline-flex items-center gap-1.5 rounded-lg bg-amber-700 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-amber-800"
               >
                 <LogIn className="h-3.5 w-3.5" aria-hidden />
@@ -268,7 +193,7 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
                     max={new Date().getFullYear()}
                     autoComplete="bday-year"
                     value={birthYearInput}
-                    onChange={(e) => setBirthYearInput(e.target.value.replace(/\D/g, '').slice(0, 4))}
+                    onChange={(e) => onBirthYear(e.target.value)}
                     placeholder={t('fw.ai.birthYear.ph')}
                     className="mt-1 w-28 rounded-lg border border-amber-300 bg-white px-2 py-1 text-sm text-amber-950"
                     aria-describedby="fw-ai-birth-year-note"
@@ -280,20 +205,7 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
                 <button
                   type="button"
                   disabled={gateBusy || birthYearInput.length !== 4 || !gateReady}
-                  onClick={() => {
-                    const y = Number(birthYearInput)
-                    setGateBusy(true)
-                    setGateMsg(null)
-                    // Clear input immediately so the year is never left visible after submit.
-                    setBirthYearInput('')
-                    void saveBirthYearForAiGate(userId, y)
-                      .then((g) => {
-                        setCanUseAi(g.canUseAi)
-                        setGateMsg(g.canUseAi ? null : t('fw.ai.under18Saved'))
-                      })
-                      .catch(() => setGateMsg(t('fw.ai.birthYear.err')))
-                      .finally(() => setGateBusy(false))
-                  }}
+                  onClick={onEnableAi}
                   className="inline-flex items-center gap-1 rounded-lg bg-amber-700 px-2.5 py-1 text-xs font-semibold text-white hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {gateBusy ? <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden /> : null}
@@ -313,9 +225,7 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
             </span>
             <button
               type="button"
-              onClick={() => {
-                void revokeCanUseAi(userId).then(() => setCanUseAi(false))
-              }}
+              onClick={onDisableAi}
               className="rounded-lg border border-sky-200 bg-white px-2 py-1 text-[11px] font-semibold text-sky-900 hover:bg-sky-100"
             >
               {t('fw.ai.disable')}

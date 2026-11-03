@@ -188,5 +188,8 @@
   "mascot.chest": "开箱！",
   "mascot.chest.reward": "＋10 学习点",
   "mascot.chest.cta": "开箱",
-  "mascot.chest.skip": "稍后"
+  "mascot.chest.skip": "稍后",
+  "empty.noContent": "暂无内容",
+  "empty.nextLesson.cta": "回地图",
+  "ai.busy": "正在想建议…"
 }

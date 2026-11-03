@@ -35,7 +35,7 @@ export function Sidebar({ active, onChange, extraTabs }: Props) {
   return (
     <nav
       aria-label={t('nav.main')}
-      className="sticky top-[64px] hidden h-[calc(100vh-64px)] w-60 shrink-0 flex-col border-r border-slate-200 bg-white px-3 py-5 md:flex"
+      className="map-one-chrome sticky top-[64px] hidden h-[calc(100vh-64px)] w-60 shrink-0 flex-col border-r border-slate-200 bg-white px-3 py-5 md:flex"
     >
       <ul className="space-y-1">
         {tabs.map((tab) => {
@@ -80,7 +80,7 @@ export function MobileNav({ active, onChange, extraTabs }: Props) {
   return (
     <nav
       aria-label={t('nav.main')}
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+      className="map-one-chrome fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
       <ul
         className={studentGrid ? 'grid grid-cols-5' : 'grid'}

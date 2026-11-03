@@ -180,6 +180,36 @@ html {
   z-index: 20;
   top: var(--library-sticky-top, 4.5rem);
 }
+/* Preview lesson / AI screen: hide side and bottom nav. Header stays for language and sign-in. */
+html[data-soft-screen='focus'] .map-one-chrome {
+  display: none;
+}
+/* Keep the page under the preview surface out of the tab order. */
+html[data-soft-screen='focus'] main {
+  visibility: hidden;
+}
+html[data-soft-screen='focus'] main [data-soft-screen],
+html[data-soft-screen='focus'] main [data-ai-screen] {
+  visibility: visible;
+}
+
+@keyframes map-one-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.map-one-in {
+  animation: map-one-in 160ms ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-one-in {
+    animation: none;
+  }
+}
+
 @media (min-width: 1024px) {
   .library-browser-side {
     position: sticky;
