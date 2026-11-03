@@ -142,7 +142,8 @@ html {
     animation: none !important;
     transition: none !important;
   }
-  .portfolio-section-chevron {
+  .portfolio-section-chevron,
+  .map-section-chevron {
     transition: none !important;
   }
 }

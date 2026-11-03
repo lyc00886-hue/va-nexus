@@ -1,5 +1,5 @@
-import { Check, ChevronLeft, Crown, Lock, Play, Sparkles } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { Check, ChevronDown, ChevronLeft, Crown, Lock, Play, Sparkles } from 'lucide-react'
+import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { useSenSupport } from '../../context/SenSupportContext'
@@ -9,12 +9,20 @@ import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
 import { masteryFor, masteryLabel } from '../../game/rewards'
 import { t } from '../../i18n'
+import {
+  loadLearningMapSections,
+  saveLearningMapSections,
+  sectionOpen,
+  type LearningMapSections,
+  type LessonFoldId,
+} from '../../lib/learningMapSections'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { ActivityLog } from './ActivityLog'
 import { DemoBadge } from './DemoBadge'
 import { artistCreditSummary } from '../../game/lessonArtistLabels'
 import { LessonArtistChips } from './LessonArtists'
 import { LessonPlayer } from './LessonPlayer'
+import { MapFold } from './MapFold'
 import { StatCards } from './StatCards'
 
 const MASTERY_CHIP: Record<Mastery, string> = {
@@ -63,12 +71,68 @@ export function LearningMap() {
   const { state, isUnlocked, currentNodeId } = useGame()
   const { settings, focusTunnel } = useSen()
   const { openCheckIn, stored } = useSenSupport()
-  const [open, setOpen] = useState<Lesson | null>(null)
+  const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
   const [mediaId, setMediaId] = useState<string | null>(readMediaId)
+  const unitButtonRefs = useRef<Partial<Record<string, HTMLButtonElement | null>>>({})
   const motion = !settings.reduceMotion
 
-  if (open) return <LessonPlayer lesson={open} kind="lesson" onExit={() => setOpen(null)} />
+  function commitSections(next: LearningMapSections) {
+    saveLearningMapSections(next)
+    return next
+  }
+
+  function toggleUnit(id: string) {
+    setSections((prev) => commitSections({ ...prev, units: { ...prev.units, [id]: !sectionOpen(prev.units, id) } }))
+  }
+
+  function setLesson(id: string, open: boolean) {
+    setSections((prev) => {
+      if (sectionOpen(prev.lessons, id) === open) return prev
+      return commitSections({ ...prev, lessons: { ...prev.lessons, [id]: open } })
+    })
+  }
+
+  function toggleLesson(id: string) {
+    setSections((prev) =>
+      commitSections({ ...prev, lessons: { ...prev.lessons, [id]: !sectionOpen(prev.lessons, id) } }),
+    )
+  }
+
+  function setFold(id: LessonFoldId, open: boolean) {
+    setSections((prev) => {
+      if (prev.folds[id] === open) return prev
+      return commitSections({ ...prev, folds: { ...prev.folds, [id]: open } })
+    })
+  }
+
+  function revealLesson(lesson: Lesson, unitId: string) {
+    setSections((prev) =>
+      commitSections({
+        ...prev,
+        units: { ...prev.units, [unitId]: true },
+        lessons: { ...prev.lessons, [lesson.id]: true },
+      }),
+    )
+    window.requestAnimationFrame(() => {
+      document.getElementById(`map-lesson-${lesson.id}`)?.scrollIntoView({
+        behavior: settings.reduceMotion ? 'auto' : 'smooth',
+        block: 'start',
+      })
+    })
+  }
+
+  function onUnitKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number, ids: string[]) {
+    const last = ids.length - 1
+    let next = index
+    if (event.key === 'ArrowDown') next = index === last ? 0 : index + 1
+    else if (event.key === 'ArrowUp') next = index === 0 ? last : index - 1
+    else if (event.key === 'Home') next = 0
+    else if (event.key === 'End') next = last
+    else return
+    event.preventDefault()
+    unitButtonRefs.current[ids[next]]?.focus()
+  }
 
   const history = getUnits()
   const media = getMediaUnits()
@@ -102,6 +166,10 @@ export function LearningMap() {
   function openMedia(id: string) {
     setMediaId(id)
     remember('media', id)
+    setSections((prev) => {
+      if (sectionOpen(prev.units, id)) return prev
+      return commitSections({ ...prev, units: { ...prev.units, [id]: true } })
+    })
     window.scrollTo({ top: 0 })
   }
 
@@ -115,6 +183,9 @@ export function LearningMap() {
       <div>
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
         <p className="text-sm text-slate-500">{subtitle}</p>
+        <p className="mt-1 text-sm text-slate-600" data-testid="map-page-intro">
+          {t('map.pageIntro')}
+        </p>
       </div>
 
       <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
@@ -143,7 +214,16 @@ export function LearningMap() {
               isUnlocked={isUnlocked}
               completed={completed}
               masteryOf={(id) => masteryFor(state.nodes[id])}
-              onOpen={setOpen}
+              sections={sections}
+              onToggleUnit={toggleUnit}
+              onToggleLesson={toggleLesson}
+              onCloseLesson={(id) => setLesson(id, false)}
+              onSetFold={setFold}
+              onReveal={revealLesson}
+              onUnitKeyDown={onUnitKeyDown}
+              unitButtonRef={(id, node) => {
+                unitButtonRefs.current[id] = node
+              }}
             />
           ) : track === 'f4' ? (
             <HistoryTrack
@@ -155,7 +235,16 @@ export function LearningMap() {
               isUnlocked={f4Unlocked}
               completed={completed}
               masteryOf={(id) => masteryFor(state.nodes[id])}
-              onOpen={setOpen}
+              sections={sections}
+              onToggleUnit={toggleUnit}
+              onToggleLesson={toggleLesson}
+              onCloseLesson={(id) => setLesson(id, false)}
+              onSetFold={setFold}
+              onReveal={revealLesson}
+              onUnitKeyDown={onUnitKeyDown}
+              unitButtonRef={(id, node) => {
+                unitButtonRefs.current[id] = node
+              }}
             />
           ) : selected ? (
             <MediaDetail
@@ -163,7 +252,16 @@ export function LearningMap() {
               motion={motion}
               completed={completed}
               masteryOf={(id) => masteryFor(state.nodes[id])}
-              onOpen={setOpen}
+              sections={sections}
+              onToggleUnit={toggleUnit}
+              onToggleLesson={toggleLesson}
+              onCloseLesson={(id) => setLesson(id, false)}
+              onSetFold={setFold}
+              onReveal={revealLesson}
+              onUnitKeyDown={onUnitKeyDown}
+              unitButtonRef={(id, node) => {
+                unitButtonRefs.current[id] = node
+              }}
               onBack={closeMedia}
             />
           ) : (
@@ -212,6 +310,17 @@ function TrackTab({ active, onClick, children }: { active: boolean; onClick: () 
   )
 }
 
+type FoldControls = {
+  sections: LearningMapSections
+  onToggleUnit: (id: string) => void
+  onToggleLesson: (id: string) => void
+  onCloseLesson: (id: string) => void
+  onSetFold: (id: LessonFoldId, open: boolean) => void
+  onReveal: (lesson: Lesson, unitId: string) => void
+  onUnitKeyDown: (event: KeyboardEvent<HTMLButtonElement>, index: number, ids: string[]) => void
+  unitButtonRef: (id: string, node: HTMLButtonElement | null) => void
+}
+
 function HistoryTrack({
   units,
   current,
@@ -221,7 +330,14 @@ function HistoryTrack({
   isUnlocked,
   completed,
   masteryOf,
-  onOpen,
+  sections,
+  onToggleUnit,
+  onToggleLesson,
+  onCloseLesson,
+  onSetFold,
+  onReveal,
+  onUnitKeyDown,
+  unitButtonRef,
 }: {
   units: Unit[]
   current: Lesson | undefined
@@ -231,14 +347,20 @@ function HistoryTrack({
   isUnlocked: (id: string) => boolean
   completed: (id: string) => boolean
   masteryOf: (id: string) => Mastery
-  onOpen: (lesson: Lesson) => void
-}) {
+} & FoldControls) {
+  const ids = units.map((unit) => unit.id)
   return (
     <>
       {current && (
-        <ContinueButton lesson={current} onOpen={onOpen} />
+        <ContinueButton
+          lesson={current}
+          onContinue={() => {
+            const unit = units.find((item) => item.nodes.some((node) => node.id === current.id))
+            if (unit) onReveal(current, unit.id)
+          }}
+        />
       )}
-      {units.map((unit) => (
+      {units.map((unit, index) => (
         <UnitSection
           key={unit.id}
           unit={unit}
@@ -248,7 +370,13 @@ function HistoryTrack({
           isUnlocked={isUnlocked}
           completed={completed}
           masteryOf={masteryOf}
-          onOpen={onOpen}
+          sections={sections}
+          onToggleUnit={onToggleUnit}
+          onToggleLesson={onToggleLesson}
+          onCloseLesson={onCloseLesson}
+          onSetFold={onSetFold}
+          onUnitKeyDown={(event) => onUnitKeyDown(event, index, ids)}
+          unitButtonRef={unitButtonRef}
         />
       ))}
       {!current && <p className="rounded-3xl bg-emerald-50 p-4 text-sm font-medium text-emerald-800">{t('map.allDone')}</p>}
@@ -340,16 +468,22 @@ function MediaDetail({
   motion,
   completed,
   masteryOf,
-  onOpen,
+  sections,
+  onToggleUnit,
+  onToggleLesson,
+  onCloseLesson,
+  onSetFold,
+  onReveal,
+  onUnitKeyDown,
+  unitButtonRef,
   onBack,
 }: {
   unit: MediaUnit
   motion: boolean
   completed: (id: string) => boolean
   masteryOf: (id: string) => Mastery
-  onOpen: (lesson: Lesson) => void
   onBack: () => void
-}) {
+} & FoldControls) {
   const ids = unit.nodes.map((node) => node.id)
   const unlocked = (id: string) => isSequentialUnlocked(ids, id, completed)
   const current = unit.nodes.find((node) => unlocked(node.id) && !completed(node.id))
@@ -363,7 +497,7 @@ function MediaDetail({
         <ChevronLeft className="h-4 w-4" aria-hidden />
         {t('map.media.back')}
       </button>
-      {current && <ContinueButton lesson={current} onOpen={onOpen} />}
+      {current && <ContinueButton lesson={current} onContinue={() => onReveal(current, unit.id)} />}
       <UnitSection
         unit={unit}
         motion={motion}
@@ -371,7 +505,13 @@ function MediaDetail({
         isUnlocked={unlocked}
         completed={completed}
         masteryOf={masteryOf}
-        onOpen={onOpen}
+        sections={sections}
+        onToggleUnit={onToggleUnit}
+        onToggleLesson={onToggleLesson}
+        onCloseLesson={onCloseLesson}
+        onSetFold={onSetFold}
+        onUnitKeyDown={(event) => onUnitKeyDown(event, 0, [unit.id])}
+        unitButtonRef={unitButtonRef}
         banner={<MediaNotes unit={unit} />}
       />
       {!current && (
@@ -424,11 +564,11 @@ function MediaNotes({ unit }: { unit: MediaUnit }) {
   )
 }
 
-function ContinueButton({ lesson, onOpen }: { lesson: Lesson; onOpen: (lesson: Lesson) => void }) {
+function ContinueButton({ lesson, onContinue }: { lesson: Lesson; onContinue: () => void }) {
   return (
     <button
       type="button"
-      onClick={() => onOpen(lesson)}
+      onClick={onContinue}
       className="flex w-full items-center gap-4 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-left text-white shadow-md hover:from-blue-500 hover:to-indigo-500"
     >
       <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/20">
@@ -453,7 +593,13 @@ function UnitSection({
   isUnlocked,
   completed,
   masteryOf,
-  onOpen,
+  sections,
+  onToggleUnit,
+  onToggleLesson,
+  onCloseLesson,
+  onSetFold,
+  onUnitKeyDown,
+  unitButtonRef,
   banner,
 }: {
   unit: Unit
@@ -463,22 +609,29 @@ function UnitSection({
   isUnlocked: (id: string) => boolean
   completed: (id: string) => boolean
   masteryOf: (id: string) => Mastery
-  onOpen: (lesson: Lesson) => void
   banner?: ReactNode
+} & Omit<FoldControls, 'onReveal' | 'onUnitKeyDown' | 'unitButtonRef'> & {
+  onUnitKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void
+  unitButtonRef: FoldControls['unitButtonRef']
 }) {
   const done = unit.nodes.filter((node) => completed(node.id)).length
   const total = unit.nodes.length
   const pct = total === 0 ? 0 : Math.round((done / total) * 100)
+  const unitOpen = sectionOpen(sections.units, unit.id)
   return (
-    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
-      {unit.coverImage ? <UnitCover src={unit.coverImage} credit={unit.coverCredit} /> : null}
-      <div className="p-5">
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div>
-          <h3 className="text-lg font-bold text-slate-900">{unit.title}</h3>
-          {unit.subtitle && <p className="text-sm text-slate-500">{unit.subtitle}</p>}
-        </div>
-        <div className="flex items-center gap-2">
+    <MapFold
+      testId={`map-unit-${unit.id}`}
+      eyebrow={t('map.fold.gradeOrUnit')}
+      title={unit.title}
+      hint={t('map.fold.gradeOrUnitHint')}
+      titleClassName="block text-lg font-bold text-slate-900"
+      open={unitOpen}
+      onToggle={() => onToggleUnit(unit.id)}
+      onKeyDown={onUnitKeyDown}
+      buttonRef={(node) => unitButtonRef(unit.id, node)}
+      panelClassName="border-t border-slate-200"
+      trailing={
+        <>
           {unit.nodes.some((node) => node.demo) && <DemoBadge />}
           <span
             className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600"
@@ -486,8 +639,12 @@ function UnitSection({
           >
             {t('map.unitProgress', { done, total, pct })}
           </span>
-        </div>
-      </div>
+        </>
+      }
+    >
+      {unit.coverImage ? <UnitCover src={unit.coverImage} credit={unit.coverCredit} /> : null}
+      <div className="p-5">
+      {unit.subtitle ? <p className="text-sm text-slate-600">{unit.subtitle}</p> : null}
       {banner}
       <div
         className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100"
@@ -499,21 +656,36 @@ function UnitSection({
       >
         <div className={`h-full rounded-full bg-blue-600 ${motion ? 'transition-all' : ''}`} style={{ width: `${pct}%` }} />
       </div>
-      <ol className="mt-5">
+      <div className="mt-5">
+        <p className="text-sm font-bold text-slate-900">{t('map.fold.lessons')}</p>
+        <p className="text-sm text-slate-500">{t('map.fold.lessonsHint')}</p>
+      </div>
+      <ol className="mt-3">
         {unit.nodes.map((node, i) => {
           const unlocked = isUnlocked(node.id)
           const isDone = completed(node.id)
           const isCurrent = node.id === currentId
           const mastery = masteryOf(node.id)
           const last = i === unit.nodes.length - 1
+          const lessonOpen = unlocked && sectionOpen(sections.lessons, node.id)
+          const panelId = `map-lesson-panel-${node.id}`
           const status = t(isDone ? 'map.status.done' : unlocked ? 'map.status.open' : 'map.status.locked')
           const artistNote = node.artists?.length ? artistCreditSummary(node.artists) : ''
           return (
-            <li key={node.id} className={`relative ${indent ? OFFSETS[i % OFFSETS.length] : ''}`}>
+            <li
+              key={node.id}
+              id={`map-lesson-${node.id}`}
+              data-testid={`map-lesson-${node.id}`}
+              data-open={lessonOpen ? 'true' : 'false'}
+              className={`relative scroll-mt-24 ${indent ? OFFSETS[i % OFFSETS.length] : ''}`}
+            >
+              <h4 className="m-0 text-base">
               <button
                 type="button"
                 disabled={!unlocked}
-                onClick={() => onOpen(node)}
+                aria-expanded={unlocked ? lessonOpen : undefined}
+                aria-controls={unlocked ? panelId : undefined}
+                onClick={() => unlocked && onToggleLesson(node.id)}
                 className="group flex w-full items-center gap-4 rounded-2xl p-1 text-left disabled:cursor-not-allowed"
                 aria-label={
                   artistNote
@@ -561,14 +733,35 @@ function UnitSection({
                     </span>
                   )}
                 </span>
+                {unlocked ? (
+                  <ChevronDown
+                    className={`map-section-chevron h-5 w-5 shrink-0 text-slate-500 ${lessonOpen ? 'rotate-180' : ''} ${
+                      motion ? 'transition-transform' : ''
+                    }`}
+                    aria-hidden
+                  />
+                ) : null}
               </button>
+              </h4>
+              {lessonOpen ? (
+                <div id={panelId} role="region" className="mb-3 ml-2 mt-2 sm:ml-20">
+                  <LessonPlayer
+                    lesson={node}
+                    kind="lesson"
+                    presentation="folds"
+                    folds={sections.folds}
+                    onSetFold={onSetFold}
+                    onExit={() => onCloseLesson(node.id)}
+                  />
+                </div>
+              ) : null}
               {!last && <span className="ml-[2.2rem] block h-8 border-l-4 border-dotted border-slate-300" aria-hidden />}
             </li>
           )
         })}
       </ol>
       </div>
-    </section>
+    </MapFold>
   )
 }
 

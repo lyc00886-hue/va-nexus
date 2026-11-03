@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { artistName } from '../../game/lessonArtistLabels'
 import type { LessonArtistRef } from '../../game/types'
 import { t } from '../../i18n'
@@ -45,6 +45,8 @@ function ArtistChip({ artist }: { artist: LessonArtistRef }) {
 
 /** Lesson-player strip: cleared thumbs can enlarge; everyone else stays a placeholder. */
 export function LessonArtistPanel({ artists }: { artists: LessonArtistRef[] }) {
+  const uid = useId()
+  const headingId = `${uid}-artists`
   const [openId, setOpenId] = useState<string | null>(null)
   const openIdRef = useRef<string | null>(null)
   const close = useCallback(() => {
@@ -53,13 +55,13 @@ export function LessonArtistPanel({ artists }: { artists: LessonArtistRef[] }) {
     setOpenId(null)
     if (!id) return
     requestAnimationFrame(() => {
-      document.querySelector<HTMLElement>(`[data-artist-open="${CSS.escape(id)}"]`)?.focus()
+      document.querySelector<HTMLElement>(`[data-artist-open="${CSS.escape(`${uid}:${id}`)}"]`)?.focus()
     })
-  }, [])
+  }, [uid])
   const open = artists.find((artist) => artist.artistId === openId && artist.thumb)
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm" aria-labelledby="lesson-artists-heading">
-      <h3 id="lesson-artists-heading" className="text-sm font-bold text-slate-900">
+    <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm" aria-labelledby={headingId}>
+      <h3 id={headingId} className="text-sm font-bold text-slate-900">
         {t('map.artists.heading')}
       </h3>
       <ul className="mt-3 grid gap-3 sm:grid-cols-3">
@@ -67,6 +69,7 @@ export function LessonArtistPanel({ artists }: { artists: LessonArtistRef[] }) {
           <li key={artist.artistId}>
             <ArtistCard
               artist={artist}
+              openToken={`${uid}:${artist.artistId}`}
               onOpen={
                 artist.thumb
                   ? () => {
@@ -84,7 +87,15 @@ export function LessonArtistPanel({ artists }: { artists: LessonArtistRef[] }) {
   )
 }
 
-function ArtistCard({ artist, onOpen }: { artist: LessonArtistRef; onOpen?: () => void }) {
+function ArtistCard({
+  artist,
+  openToken,
+  onOpen,
+}: {
+  artist: LessonArtistRef
+  openToken: string
+  onOpen?: () => void
+}) {
   const name = artistName(artist.artistId)
   const [failed, setFailed] = useState(false)
   const show = Boolean(artist.thumb) && !failed
@@ -94,7 +105,7 @@ function ArtistCard({ artist, onOpen }: { artist: LessonArtistRef; onOpen?: () =
       {show && artist.thumb ? (
         <button
           type="button"
-          data-artist-open={artist.artistId}
+          data-artist-open={openToken}
           onClick={onOpen}
           className="flex min-h-28 items-center justify-center overflow-hidden rounded-xl bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
         >

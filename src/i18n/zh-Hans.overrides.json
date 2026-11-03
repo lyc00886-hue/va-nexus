@@ -171,5 +171,16 @@
   "sba.delete.deleteBoth": "笔记和照片一起删",
   "sba.delete.cancel": "取消",
   "sba.delete.deleted": "已删除",
-  "sba.delete.err": "删除失败，请稍后再试"
+  "sba.delete.err": "删除失败，请稍后再试",
+  "map.pageIntro": "点开你要看的年级／单元或课；不必一次看完。",
+  "map.fold.gradeOrUnit": "年级／单元",
+  "map.fold.gradeOrUnitHint": "点开才见课列表",
+  "map.fold.lessons": "课列表",
+  "map.fold.lessonsHint": "选一课继续",
+  "map.lesson.goal": "目标",
+  "map.lesson.goalHint": "这课要学什么",
+  "map.lesson.steps": "步骤",
+  "map.lesson.stepsHint": "跟着做",
+  "map.lesson.practice": "练习",
+  "map.lesson.practiceHint": "小测与练习"
 }
