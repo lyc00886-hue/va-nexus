@@ -3,27 +3,47 @@ import { useState } from 'react'
 import { useGame } from '../../context/GameContext'
 import { getResearchQuests } from '../../game/research'
 import { getBadgeById } from '../../game/rewards'
-import { t } from '../../i18n'
+import { getLocale, t } from '../../i18n'
 import type { ResearchQuest } from '../../game/types'
 import { FeldmanWriter } from '../FeldmanWriter'
+import { useResearchStepsShell } from '../../lib/useResearchStepsShell'
 import { DemoBadge } from './DemoBadge'
 import { LessonPlayer } from './LessonPlayer'
 
 export function ResearchLab() {
   const { state } = useGame()
+  const steps = useResearchStepsShell()
   const [open, setOpen] = useState<ResearchQuest | null>(null)
   const [writer, setWriter] = useState(false)
+  const [hideEmbed, setHideEmbed] = useState(false)
 
   if (open) {
     return (
       <LessonPlayer
         lesson={open}
         kind="quest"
-        onExit={() => setOpen(null)}
+        exitLabel={steps && getLocale() === 'en' ? t('lp.exit') : undefined}
+        onExit={() => {
+          setHideEmbed(false)
+          setOpen(null)
+        }}
         after={
           open.embedFeldman ? (
             <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6">
-              <FeldmanWriter />
+              {steps && hideEmbed ? (
+                <button
+                  type="button"
+                  onClick={() => setHideEmbed(false)}
+                  className="text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
+                >
+                  {t('rs.step.write')}
+                </button>
+              ) : (
+                <FeldmanWriter
+                  shell={steps ? 'steps' : undefined}
+                  onLater={steps ? () => setHideEmbed(true) : undefined}
+                />
+              )}
             </div>
           ) : undefined
         }
@@ -49,7 +69,10 @@ export function ResearchLab() {
             <button
               key={q.id}
               type="button"
-              onClick={() => setOpen(q)}
+              onClick={() => {
+                setHideEmbed(false)
+                setOpen(q)
+              }}
               className="group flex flex-col rounded-3xl border border-slate-200 bg-white p-5 text-left shadow-sm hover:border-blue-300 hover:shadow-md"
             >
               <div className="flex items-start justify-between gap-2">
@@ -95,7 +118,10 @@ export function ResearchLab() {
         </button>
         {writer && (
           <div className="mt-4">
-            <FeldmanWriter />
+            <FeldmanWriter
+              shell={steps ? 'steps' : undefined}
+              onLater={steps ? () => setWriter(false) : undefined}
+            />
           </div>
         )}
       </section>

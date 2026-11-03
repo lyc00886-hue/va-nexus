@@ -25,6 +25,7 @@ import { contentJson } from '../i18n/content'
 import { selfFieldId, type AbilityChartFile } from '../lib/abilityChart'
 import { setSelfSelect, useSelfAssessment } from '../lib/selfAssessment'
 import { SelfLevelSelect } from './SelfLevelSelect'
+import { ResearchStepShell } from './game/ResearchStepShell'
 
 type StepKey = FeldmanStageId
 
@@ -63,7 +64,7 @@ function emptyRecord<T>(v: () => T): Record<StepKey, T> {
   return { describe: v(), analyse: v(), interpret: v(), judge: v() }
 }
 
-export function FeldmanWriter() {
+export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: () => void }) {
   const { cardPadding } = useSen()
   const { awardOnce } = useGame()
   const { ready, user } = useAuth()
@@ -186,6 +187,56 @@ export function FeldmanWriter() {
       const msg = err instanceof Error && err.message !== 'Failed to fetch' ? err.message : t('fw.err.network')
       setAi((a) => ({ ...a, [key]: { status: 'error', text: msg } }))
     }
+  }
+
+  if (shell === 'steps') {
+    return (
+      <ResearchStepShell
+        stages={STEPS}
+        active={active}
+        onActive={(key) => {
+          setActive(key)
+          setBoostRan(false)
+          setHits([])
+        }}
+        text={texts[active]}
+        onText={(value) => setTexts((prev) => ({ ...prev, [active]: value }))}
+        artwork={artwork}
+        onArtwork={setArtwork}
+        checked={checked[active]}
+        onToggle={(item) => toggleCheck(active, item)}
+        ai={ai[active]}
+        onRequestAi={() => void requestAiFeedback(active)}
+        canUseAi={canUseAi}
+        userId={userId}
+        gateReady={gateReady}
+        gateBusy={gateBusy}
+        gateMsg={gateMsg}
+        birthYearInput={birthYearInput}
+        onBirthYear={(value) => setBirthYearInput(value.replace(/\D/g, '').slice(0, 4))}
+        onEnableAi={() => {
+          if (!userId) return
+          const y = Number(birthYearInput)
+          setGateBusy(true)
+          setGateMsg(null)
+          setBirthYearInput('')
+          void saveBirthYearForAiGate(userId, y)
+            .then((g) => {
+              setCanUseAi(g.canUseAi)
+              setGateMsg(g.canUseAi ? null : t('fw.ai.under18Saved'))
+            })
+            .catch(() => setGateMsg(t('fw.ai.birthYear.err')))
+            .finally(() => setGateBusy(false))
+        }}
+        onDisableAi={() => {
+          void revokeCanUseAi(userId).then(() => setCanUseAi(false))
+        }}
+        onSignIn={() => {
+          signInWithGoogle().catch((e) => console.warn('[auth] sign-in failed', e))
+        }}
+        onLater={onLater}
+      />
+    )
   }
 
   return (
