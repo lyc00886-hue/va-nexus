@@ -1,0 +1,1760 @@
+{
+  "meta": {
+    "id": "media-intro",
+    "version": "draft-1",
+    "locale": "en",
+    "status": "Content pending teacher review",
+    "notes": "Media-intro draft. Schema aligned with learning-map-v3. Public exam only: Paper 1 (visual presentation of a theme) requires work in two dimensions; Paper 2 (Design) allows any media/style/technique for design problems—exam-hall presentation is usually flat. SBA has no paper split—3D media are valid for SBA artwork and the process/research workbook. `paper2Applicable: false` means not a typical portable exam-hall 2D Paper 1 submission; for Paper 2 Design follow the brief (usually flat presentation)—not “excluded from SBA”. No real HKEAA papers. No embedded images.",
+    "schema": "learning-map-v3 units + materials/safetyNotes/paper2Applicable/paper2Note/mediaKey",
+    "mascot": "O2 otter only if mentioned; no other mascots",
+    "images": "none embedded; prefer no image refs in this draft"
+  },
+  "units": [
+    {
+      "id": "M1-PAINTING",
+      "mediaKey": "painting",
+      "title": "Media intro: Painting (acrylic / oil)",
+      "intro": "Short unit on paint, brushwork, layers and composition. Suitable for exam Paper 1 (2D required), Paper 2 Design presentation (usually flat), and SBA media trials. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Suitable for Paper 1 (2D required) and Paper 2 Design presentation (usually flat). Submit dry, portable 2D pieces.",
+      "materials": [
+        "Paper or canvas",
+        "Acrylic or oil paint",
+        "Brushes (flat/round)",
+        "Palette",
+        "Water / solvent (by paint type)",
+        "Apron or old shirt"
+      ],
+      "safetyNotes": [
+        "Ventilate oil solvents; keep away from flames.",
+        "Do not blow-dry paint with your mouth.",
+        "Wash hands after; never pour solvent down the sink."
+      ],
+      "lessons": [
+        {
+          "id": "M1-L1",
+          "title": "Paints and tools: getting started",
+          "cards": [
+            "Painting builds shape, colour and texture on a flat surface.",
+            "Acrylic thins with water and dries fast; oil thins with oil and dries slowly for layering.",
+            "Prepare the ground: paper, card or canvas. Dark or light grounds change how colours feel.",
+            "Task: paint three small swatches—dots, short strokes, long sweeps—and note which suits which subjects."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What usually thins acrylic paint?",
+              "options": [
+                "Cooking oil",
+                "Water",
+                "Salt water",
+                "Bleach"
+              ],
+              "answer": "Water",
+              "explain": "Acrylic uses water; oil paint uses oil."
+            },
+            {
+              "type": "fill",
+              "question": "Oil paint dries ____, which helps slow layering.",
+              "options": [],
+              "answer": "slowly",
+              "explain": "Oil dries more slowly.",
+              "wordBank": [
+                "fast",
+                "slowly",
+                "never",
+                "wet"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M1-L2",
+          "title": "Colour, layers and composition",
+          "cards": [
+            "Thin then thick: keep underlayers thin; thicker paint can sit in front.",
+            "Placing complementary colours side by side can make the subject pop.",
+            "Empty space (negative space) is part of the composition—you need not fill every gap.",
+            "Task: paint a still life with only three colours plus white to practise mixing."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Why paint 'thin then thick'?",
+              "options": [
+                "To save money",
+                "For stable layering",
+                "To dry faster",
+                "To peel it off"
+              ],
+              "answer": "For stable layering",
+              "explain": "Thin grounds support thicker top layers."
+            },
+            {
+              "type": "match",
+              "question": "Match medium to trait",
+              "options": [
+                "Acrylic",
+                "Oil"
+              ],
+              "answer": {
+                "Acrylic": "Dries fast; water-based",
+                "Oil": "Dries slowly; oil-based"
+              },
+              "explain": "Both are painting media with different drying speeds."
+            }
+          ]
+        },
+        {
+          "id": "M1-L3",
+          "title": "Reading a painting with DAIE",
+          "cards": [
+            "Describe: what shapes, colours and marks do you see? (Hold meaning for later.)",
+            "Analyse: which lines or blocks guide the eye? How is depth built?",
+            "Interpret: what mood or story might it suggest? Use visual evidence.",
+            "Evaluate: which idea will you borrow for Paper 2 / SBA, and why?",
+            "Task: write four DAIE sentences about one demo or peer work."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "In DAIE, 'Describe' should first…",
+              "options": [
+                "Rank the work",
+                "Retell the artist's life",
+                "State visual facts you see",
+                "Copy online reviews"
+              ],
+              "answer": "State visual facts you see",
+              "explain": "Description lists what is visible before judgement."
+            },
+            {
+              "type": "fill",
+              "question": "Evaluation needs visual ____ to support your judgement.",
+              "options": [],
+              "answer": "evidence",
+              "explain": "Judgement needs visual evidence.",
+              "wordBank": [
+                "rumour",
+                "evidence",
+                "price",
+                "signature"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M2-DRAWING",
+      "mediaKey": "drawing",
+      "title": "Media intro: Drawing / sketching",
+      "intro": "Short unit on line, tone, proportion and looking. Common in Paper 1, Paper 2 Design presentation, and the research workbook. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Suitable for Paper 1 (2D required) and Paper 2 Design presentation. Fix charcoal with spray or cover sheets to avoid smudging.",
+      "materials": [
+        "Drawing paper",
+        "Pencils (HB–6B)",
+        "Charcoal (optional)",
+        "Eraser",
+        "Fixative (for charcoal)",
+        "Drawing board"
+      ],
+      "safetyNotes": [
+        "Spray fixative in a ventilated spot; never toward faces.",
+        "Do not blow charcoal dust at classmates."
+      ],
+      "lessons": [
+        {
+          "id": "M2-L1",
+          "title": "Line and shape: from seeing to drawing",
+          "cards": [
+            "Drawing records form with line and tone.",
+            "Check overall proportion before details; do not start with eyes and mouth.",
+            "Light construction lines first; darker lines for edges and shade.",
+            "Task: three 2-minute sketches—fix proportion only; do not erase everything and restart."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What should come first when starting?",
+              "options": [
+                "Tiny details",
+                "Overall proportion",
+                "Fill everything black",
+                "Decorate the title"
+              ],
+              "answer": "Overall proportion",
+              "explain": "Proportion before detail."
+            },
+            {
+              "type": "fill",
+              "question": "Quick sketches focus on ____ and big shapes.",
+              "options": [],
+              "answer": "proportion",
+              "explain": "Sketches capture proportion.",
+              "wordBank": [
+                "price",
+                "proportion",
+                "signature",
+                "frame"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M2-L2",
+          "title": "Tone and texture",
+          "cards": [
+            "Light direction sets highlight, shade and cast shadow.",
+            "Hatching, cross-hatching or blending can build tone without solid fills.",
+            "Smooth surfaces reflect more; rough surfaces break the tone into fragments.",
+            "Task: draw the same apple twice—hatching once, blending once—and compare texture."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Where do cast shadows usually fall?",
+              "options": [
+                "On the lit side",
+                "Near the side away from the light",
+                "Always in the exact centre",
+                "Only in the sky"
+              ],
+              "answer": "Near the side away from the light",
+              "explain": "Cast shadows sit on the unlit side."
+            },
+            {
+              "type": "match",
+              "question": "Match techniques",
+              "options": [
+                "Hatching",
+                "Cross-hatching"
+              ],
+              "answer": {
+                "Hatching": "Parallel lines for tone",
+                "Cross-hatching": "Two directions to darken"
+              },
+              "explain": "Both are common tonal methods."
+            }
+          ]
+        },
+        {
+          "id": "M2-L3",
+          "title": "Drawing in research: DAIE one-liners",
+          "cards": [
+            "Describe: which lines are thickest or densest?",
+            "Analyse: how does tone separate front and back?",
+            "Interpret: what feeling does this sketch keep?",
+            "Evaluate: which proportion or tone will you change next?",
+            "Task: paste one sketch in the visual diary with four DAIE lines."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Sketches in the workbook mainly…",
+              "options": [
+                "Decorate the cover",
+                "Record looking and trials",
+                "Replace the exam paper",
+                "Collect signatures"
+              ],
+              "answer": "Record looking and trials",
+              "explain": "Sketches serve observation and media trials."
+            },
+            {
+              "type": "fill",
+              "question": "DAIE 'Analyse' talks about ____ relationships such as tone and structure.",
+              "options": [],
+              "answer": "formal",
+              "explain": "Analysis covers formal relationships.",
+              "wordBank": [
+                "price",
+                "formal",
+                "weather",
+                "school name"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M3-SCULPTURE",
+      "mediaKey": "sculpture",
+      "title": "Media intro: Sculpture (3D)",
+      "intro": "Short unit on form, mass, space and support. Exam Paper 1 requires 2D work—a 3D object is not a typical portable exam-hall Paper 1 submission. Paper 2 (Design) follows the design brief; presentation is usually flat boards/drawings—do not hand in a large 3D object as the exam-hall piece. SBA has no Paper 1/Paper 2 split, so sculpture is valid for SBA artwork and the process/research workbook. Photos and sketches document the work and can feed a flat Paper 1 or Design presentation. (Content pending teacher review)",
+      "paper2Applicable": false,
+      "paper2Note": "Exam Paper 1 requires 2D work—a 3D object is not a typical portable exam-hall Paper 1 submission. Paper 2 (Design) follows the design brief; presentation is usually flat boards/drawings—do not hand in a large 3D object as the exam-hall piece. SBA has no Paper 1/Paper 2 split, so sculpture is valid for SBA artwork and the process/research workbook. Photos and sketches document the work and can feed a flat Paper 1 or Design presentation.",
+      "materials": [
+        "Clay or assigned plastic material",
+        "Modelling tools",
+        "Armature wire / sticks",
+        "Newspaper / plastic sheet",
+        "Water spray",
+        "Gloves (optional)"
+      ],
+      "safetyNotes": [
+        "Point sharp tools down; count them in after class.",
+        "Heavy pieces need a stable base.",
+        "Use a mask and ventilation for dusty materials."
+      ],
+      "lessons": [
+        {
+          "id": "M3-L1",
+          "title": "Volume and space: look all round",
+          "cards": [
+            "Sculpture is three-dimensional—view front, back, sides and top.",
+            "Mass: big blocks feel heavy; voids or thin posts feel light.",
+            "Negative space (holes and gaps) matters as much as solid form.",
+            "Task: crumple foil into a 'heavy' form and a 'light' form; turn and compare."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "When viewing sculpture you should…",
+              "options": [
+                "Only use the front photo",
+                "Observe from several angles",
+                "Only measure height",
+                "Only read the label"
+              ],
+              "answer": "Observe from several angles",
+              "explain": "3D needs multiple viewpoints."
+            },
+            {
+              "type": "fill",
+              "question": "Gaps inside a work are called ____ space.",
+              "options": [],
+              "answer": "negative",
+              "explain": "Negative space is the void.",
+              "wordBank": [
+                "positive",
+                "negative",
+                "cold",
+                "hot"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M3-L2",
+          "title": "Structure and safe support",
+          "cards": [
+            "An armature supports long arms or thin necks.",
+            "Bases must be wide enough; keep the centre of gravity over the base.",
+            "Block out big forms before detail.",
+            "Task: sketch an armature for a standing figure and mark weak points."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "An armature mainly…",
+              "options": [
+                "Adds colour",
+                "Supports weak parts",
+                "Writes the title",
+                "Waterproofs"
+              ],
+              "answer": "Supports weak parts",
+              "explain": "Armatures brace structure."
+            },
+            {
+              "type": "match",
+              "question": "Match ideas",
+              "options": [
+                "Mass",
+                "Negative space"
+              ],
+              "answer": {
+                "Mass": "Feeling of weight",
+                "Negative space": "Holes and gaps"
+              },
+              "explain": "Both are key 3D ideas."
+            }
+          ]
+        },
+        {
+          "id": "M3-L3",
+          "title": "Recording 3D: photo + drawing + DAIE",
+          "cards": [
+            "Photograph against a plain backdrop with a scale marker.",
+            "Orthographic sketches (front/side/top) help plan a flat Paper 1 or Design presentation.",
+            "Describe the widest face; analyse balance; interpret pose; evaluate the strongest angle.",
+            "Task: three photos + four DAIE lines in the workbook for one class sculpture."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Can a 3D sculpture be a typical exam-hall Paper 1 submission?",
+              "options": [
+                "Yes, any 3D is fine",
+                "No—Paper 1 requires 2D work",
+                "Only metal",
+                "Only over 1 m"
+              ],
+              "answer": "No—Paper 1 requires 2D work",
+              "explain": "Paper 1 requires 2D; Paper 2 Design follows the brief (usually flat). SBA has no paper split—3D OK for SBA."
+            },
+            {
+              "type": "fill",
+              "question": "Record 3D trials with ____ and sketches in the workbook.",
+              "options": [],
+              "answer": "photos",
+              "explain": "Photos and sketches document 3D.",
+              "wordBank": [
+                "the real 3D object as the paper",
+                "photos",
+                "solvent",
+                "passwords"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M4-PRINTMAKING",
+      "mediaKey": "printmaking",
+      "title": "Media intro: Printmaking",
+      "intro": "Short unit on relief/intaglio ideas, transfer and editions. Suitable for Paper 1 (2D required) and Paper 2 Design presentation. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Prints are flat and suit Paper 1 and Paper 2 Design presentation. Follow teacher rules for knives and ink.",
+      "materials": [
+        "Plate (lino/wood/etc. as assigned)",
+        "Cutting tools",
+        "Ink",
+        "Brayer",
+        "Printing paper",
+        "Baren or press if available"
+      ],
+      "safetyNotes": [
+        "Cut away from your body; keep the other hand behind the blade path.",
+        "Use gloves/apron; dispose of solvents safely."
+      ],
+      "lessons": [
+        {
+          "id": "M4-L1",
+          "title": "How a print is made",
+          "cards": [
+            "Printmaking builds an image on a plate, then transfers it to paper under pressure.",
+            "Relief: ink sits on raised areas. Intaglio: ink sits in recesses.",
+            "One plate can make many impressions.",
+            "Task: carve a simple stamp (eraser/potato) and pull three prints comparing pressure."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Where does relief ink mainly sit?",
+              "options": [
+                "In the grooves",
+                "On raised surfaces",
+                "On the paper back",
+                "On the knife handle"
+              ],
+              "answer": "On raised surfaces",
+              "explain": "Relief inks the high parts."
+            },
+            {
+              "type": "fill",
+              "question": "Multiple pulls from one plate are called ____.",
+              "options": [],
+              "answer": "impressions",
+              "explain": "Each pull is an impression.",
+              "wordBank": [
+                "sculptures",
+                "impressions",
+                "solvents",
+                "frames"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M4-L2",
+          "title": "Design and transfer tips",
+          "cards": [
+            "Text on the plate prints mirrored—plan a reverse design.",
+            "Even ink: too thick smudges; too thin breaks lines.",
+            "Cleaning and re-cutting are valid trials—photograph them for the workbook.",
+            "Task: design a symbol—draw the forward sketch, then the mirrored plate plan."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Text on a plate will print…",
+              "options": [
+                "Upside down",
+                "Left–right reversed",
+                "Unchanged",
+                "Auto-enlarged"
+              ],
+              "answer": "Left–right reversed",
+              "explain": "Transfer flips left and right."
+            },
+            {
+              "type": "match",
+              "question": "Match ink problems",
+              "options": [
+                "Ink too thick",
+                "Ink too thin"
+              ],
+              "answer": {
+                "Ink too thick": "Lines smear",
+                "Ink too thin": "Lines break"
+              },
+              "explain": "Thickness affects print quality."
+            }
+          ]
+        },
+        {
+          "id": "M4-L3",
+          "title": "DAIE: reading a print",
+          "cards": [
+            "Describe cut marks versus roller traces.",
+            "Analyse how black/white contrast makes rhythm.",
+            "Interpret whether repeats strengthen or change meaning.",
+            "Evaluate which impression is final and why.",
+            "Task: compare best and weakest pulls with DAIE."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Best workbook evidence for print trials is…",
+              "options": [
+                "Only writing 'nice'",
+                "Photos plus ink/pressure notes",
+                "Hiding failed pulls",
+                "Only the final print"
+              ],
+              "answer": "Photos plus ink/pressure notes",
+              "explain": "Process evidence matters."
+            },
+            {
+              "type": "fill",
+              "question": "DAIE 'Interpret' links the image to possible ____.",
+              "options": [],
+              "answer": "meaning",
+              "explain": "Interpretation needs evidenced meaning.",
+              "wordBank": [
+                "price",
+                "meaning",
+                "bus",
+                "lock"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M5-FASHION",
+      "mediaKey": "fashion_design",
+      "title": "Media intro: Fashion design",
+      "intro": "Short unit from theme and silhouette to materials and flats. Flat fashion drawings / boards suit Paper 1 (2D required) and Paper 2 (Design) presentation. Constructed garments are not typical portable exam-hall pieces (follow the brief; usually flat); they may be used in SBA if the school’s SBA brief allows 3D. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Flat fashion drawings / boards suit Paper 1 (2D required) and Paper 2 (Design) presentation. Constructed garments are not typical portable exam-hall pieces (follow the brief; usually flat); they may be used in SBA if the school’s SBA brief allows 3D.",
+      "materials": [
+        "Drawing paper",
+        "Colour pencils / markers",
+        "Fabric swatches",
+        "Scissors",
+        "Glue / double-sided tape",
+        "Measuring tape"
+      ],
+      "safetyNotes": [
+        "Pass scissors closed.",
+        "Store pins in a box—never leave them on desks."
+      ],
+      "lessons": [
+        {
+          "id": "M5-L1",
+          "title": "Theme and silhouette",
+          "cards": [
+            "Decide wearer and occasion before silhouette.",
+            "Silhouette is the outer outline from afar: A-line, straight, fitted, etc.",
+            "Mood boards gather colour and texture; do not copy finished-garment photos as answers.",
+            "Task: three silhouette thumbnails for 'rainy school day'."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Silhouette mainly means…",
+              "options": [
+                "Fabric price",
+                "Outer outline from afar",
+                "Sewing brand",
+                "Care label"
+              ],
+              "answer": "Outer outline from afar",
+              "explain": "Silhouette is the outline."
+            },
+            {
+              "type": "fill",
+              "question": "An inspiration image board is a ____ board.",
+              "options": [],
+              "answer": "mood",
+              "explain": "Mood board.",
+              "wordBank": [
+                "food",
+                "mood",
+                "password",
+                "exam"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M5-L2",
+          "title": "Materials and flat illustrations",
+          "cards": [
+            "The same silhouette feels different in denim vs chiffon.",
+            "Flats need body proportion plus material and detail call-outs.",
+            "Swatch tests beside the drawing count as media experiments.",
+            "Task: one flat + two annotated swatches (absorbency / drape)."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What suits the exam hall better?",
+              "options": [
+                "A finished 3D garment",
+                "Flat drawings / boards",
+                "A live model on the spot",
+                "A sewing machine"
+              ],
+              "answer": "Flat drawings / boards",
+              "explain": "Paper 1 requires 2D; Paper 2 Design is usually flat presentation. Garments may suit SBA if the school brief allows 3D."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Chiffon",
+                "Denim"
+              ],
+              "answer": {
+                "Chiffon": "Light, strong drape",
+                "Denim": "Thick, stiff"
+              },
+              "explain": "Materials change form."
+            }
+          ]
+        },
+        {
+          "id": "M5-L3",
+          "title": "DAIE: reviewing a design board",
+          "cards": [
+            "Describe colours, lines and accessories.",
+            "Analyse how silhouette fits the occasion.",
+            "Interpret identity or mood suggested.",
+            "Evaluate which detail best strengthens the theme.",
+            "Task: peer DAIE on a classmate's board—stay respectful."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "In peer review you should…",
+              "options": [
+                "Mock cheap fabric",
+                "Comment with visual evidence",
+                "Replace official SBA marks",
+                "Delete failed drafts"
+              ],
+              "answer": "Comment with visual evidence",
+              "explain": "Respect + evidence."
+            },
+            {
+              "type": "fill",
+              "question": "Evaluation should offer workable ____ suggestions.",
+              "options": [],
+              "answer": "improvement",
+              "explain": "Link judgement to improvement.",
+              "wordBank": [
+                "deletion",
+                "improvement",
+                "fines",
+                "blocks"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M6-PAPER-SCULPTURE",
+      "mediaKey": "paper_sculpture",
+      "title": "Media intro: Paper sculpture",
+      "intro": "Short unit on folding, cutting, layering and support. Exam Paper 1 requires 2D—paper sculpture is not a typical portable exam-hall Paper 1 submission. Paper 2 (Design) follows the brief; presentation is usually flat—do not hand in large paper sculpture as the exam-hall piece. SBA has no paper split, so paper sculpture is valid for SBA artwork and the process/research workbook; record with nets/photos, which can also feed a flat Paper 1 or Design presentation. (Content pending teacher review)",
+      "paper2Applicable": false,
+      "paper2Note": "Exam Paper 1 requires 2D—paper sculpture is not a typical portable exam-hall Paper 1 submission. Paper 2 (Design) follows the brief; presentation is usually flat—do not hand in large paper sculpture as the exam-hall piece. SBA has no paper split, so paper sculpture is valid for SBA artwork and the process/research workbook; record with nets/photos, which can also feed a flat Paper 1 or Design presentation.",
+      "materials": [
+        "Card / coloured paper",
+        "Scissors / craft knife",
+        "Ruler and pencil",
+        "Glue / tape",
+        "Cutting mat",
+        "Bone folder or spoon"
+      ],
+      "safetyNotes": [
+        "Use knife with ruler and mat; fingers clear of the blade.",
+        "Clear scraps to prevent slips."
+      ],
+      "lessons": [
+        {
+          "id": "M6-L1",
+          "title": "Paper can become 3D",
+          "cards": [
+            "Creases make edges; cuts open space.",
+            "Layered card can feel like relief (still semi-3D).",
+            "Grain direction affects strength.",
+            "Task: one A4 sheet—only three cuts and five folds—must stand on the table."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What most often makes paper stand?",
+              "options": [
+                "Boiling it",
+                "Creases and a support face",
+                "Blowing on it",
+                "Electricity"
+              ],
+              "answer": "Creases and a support face",
+              "explain": "Folds + support."
+            },
+            {
+              "type": "fill",
+              "question": "Layered work stuck to a backboard gives a ____ effect.",
+              "options": [],
+              "answer": "relief",
+              "explain": "Relief feel.",
+              "wordBank": [
+                "watercolour",
+                "relief",
+                "firing",
+                "audio"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M6-L2",
+          "title": "Structure: slots and glue",
+          "cards": [
+            "Slot joints need less glue and rebuild easily.",
+            "Thin glue; thick glue wrinkles paper.",
+            "Hide supports inside (triangle folds or inner posts).",
+            "Task: a slot-joint animal head with no glue."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A benefit of slot joints is…",
+              "options": [
+                "Always waterproof",
+                "Less glue, easy to revise",
+                "Auto colour",
+                "Turns to metal"
+              ],
+              "answer": "Less glue, easy to revise",
+              "explain": "Slots stay flexible."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "With-grain fold",
+                "Against-grain fold"
+              ],
+              "answer": {
+                "With-grain fold": "Neater, easier",
+                "Against-grain fold": "More likely to crack"
+              },
+              "explain": "Grain affects making."
+            }
+          ]
+        },
+        {
+          "id": "M6-L3",
+          "title": "Recording and DAIE",
+          "cards": [
+            "Photo front/side/top; also draw a net.",
+            "Describe layers; analyse supports; interpret theme; evaluate stability.",
+            "For Paper 1 or Design presentation, turn nets or tonal drawings into flat work.",
+            "Task: one net + four stability DAIE lines."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Can paper sculpture be a typical exam-hall Paper 1 piece?",
+              "options": [
+                "Yes",
+                "No—Paper 1 requires 2D",
+                "Only if huge",
+                "Only if all white"
+              ],
+              "answer": "No—Paper 1 requires 2D",
+              "explain": "Paper 1 requires 2D; Paper 2 Design follows the brief (usually flat). SBA has no paper split—3D OK for SBA."
+            },
+            {
+              "type": "fill",
+              "question": "A flat pattern that folds into 3D is often called a ____.",
+              "options": [],
+              "answer": "net",
+              "explain": "Net / development.",
+              "wordBank": [
+                "net",
+                "oil",
+                "clay",
+                "song"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M7-CLAY",
+      "mediaKey": "clay",
+      "title": "Media intro: Clay / ceramic clay (陶泥)",
+      "intro": "Short unit on clay / ceramic clay (陶泥): wedging, joining, moisture and surface. Exam Paper 1 requires 2D—a clay / ceramic-clay (陶泥) object is not a typical portable exam-hall Paper 1 submission. Paper 2 (Design) follows the brief; presentation is usually flat—do not hand in a large clay or ceramic piece as the exam-hall work. SBA has no paper split, so clay / ceramic clay is valid for SBA artwork and the process/research workbook; record with photos, sections and texture rubbings, which can also feed a flat Paper 1 or Design presentation. (Content pending teacher review)",
+      "paper2Applicable": false,
+      "paper2Note": "Exam Paper 1 requires 2D—a clay / ceramic-clay (陶泥) object is not a typical portable exam-hall Paper 1 submission. Paper 2 (Design) follows the brief; presentation is usually flat—do not hand in a large clay or ceramic piece as the exam-hall work. SBA has no paper split, so clay / ceramic clay is valid for SBA artwork and the process/research workbook; record with photos, sections and texture rubbings, which can also feed a flat Paper 1 or Design presentation.",
+      "materials": [
+        "Clay / ceramic clay 陶泥 (as assigned)",
+        "Modelling tools",
+        "Water and sponge",
+        "Plastic bag",
+        "Board",
+        "Rolling pin"
+      ],
+      "safetyNotes": [
+        "Wipe clay dust damp—do not dry-sweep; mask if needed.",
+        "Do not wash large clay scraps down the sink.",
+        "Only teachers fire the kiln."
+      ],
+      "lessons": [
+        {
+          "id": "M7-L1",
+          "title": "Clay basics: wedge and air",
+          "cards": [
+            "Wedging removes air pockets that cause cracks or kiln blow-ups.",
+            "Too dry cracks; too wet collapses—control with spray and bags.",
+            "Solid blocks or coils both work if joins are strong.",
+            "Task: ten even coils into a small cup form—stable over pretty."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Wedging mainly…",
+              "options": [
+                "Adds colour",
+                "Reduces air bubbles",
+                "Dries instantly",
+                "Turns to glass"
+              ],
+              "answer": "Reduces air bubbles",
+              "explain": "Push air out."
+            },
+            {
+              "type": "fill",
+              "question": "Clay that is too dry tends to ____.",
+              "options": [],
+              "answer": "crack",
+              "explain": "Dry clay cracks.",
+              "wordBank": [
+                "crack",
+                "fly",
+                "sing",
+                "glow"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M7-L2",
+          "title": "Joins and texture",
+          "cards": [
+            "Score and slip before joining.",
+            "Stamps, fabric and carving create texture trials.",
+            "Keep wall thickness even for even drying.",
+            "Task: two texture tiles with tool labels."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Score and slip means…",
+              "options": [
+                "Only washing with water",
+                "Scratch then join with slurry",
+                "A kiln programme",
+                "A glaze brand"
+              ],
+              "answer": "Scratch then join with slurry",
+              "explain": "Standard join."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Too wet",
+                "Too dry"
+              ],
+              "answer": {
+                "Too wet": "Collapses",
+                "Too dry": "Cracks"
+              },
+              "explain": "Balance moisture."
+            }
+          ]
+        },
+        {
+          "id": "M7-L3",
+          "title": "Recording clay + DAIE",
+          "cards": [
+            "Photo wedge, join, texture and finish.",
+            "Texture rubbings on paper can feed flat Paper 1 or Design presentation work.",
+            "Describe thickness; analyse joins; interpret form; evaluate next changes.",
+            "Task: four process photos + four DAIE lines."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Can a clay object be a typical exam-hall Paper 1 piece?",
+              "options": [
+                "Yes as 3D",
+                "No—Paper 1 requires 2D (use records/translations)",
+                "Only wet clay",
+                "Only the kiln"
+              ],
+              "answer": "No—Paper 1 requires 2D (use records/translations)",
+              "explain": "Paper 1 requires 2D; Paper 2 Design follows the brief (usually flat). SBA has no paper split—3D OK for SBA."
+            },
+            {
+              "type": "fill",
+              "question": "Before joining, ____ the contact faces, then add slip.",
+              "options": [],
+              "answer": "score",
+              "explain": "Score first.",
+              "wordBank": [
+                "paint",
+                "score",
+                "sign",
+                "oil"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M8-COLLAGE",
+      "mediaKey": "collage",
+      "title": "Media intro: Collage",
+      "intro": "Short unit on layering, cutting/tearing, contrast and composition. Suitable for Paper 1 (2D required) and Paper 2 Design presentation. Use only self-made, cleared or teacher-provided materials. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Flat collage suits Paper 1 and Paper 2 Design presentation. Avoid uncleared magazine photos; prefer your photos, text-only newsprint, coloured paper.",
+      "materials": [
+        "Card base",
+        "Coloured / cleared paper",
+        "Scissors",
+        "Glue",
+        "Optional acrylic/ink",
+        "Optional tweezers"
+      ],
+      "safetyNotes": [
+        "Wipe glue spills at once.",
+        "Pass scissors closed."
+      ],
+      "lessons": [
+        {
+          "id": "M8-L1",
+          "title": "Collage = choose and juxtapose",
+          "cards": [
+            "Collage cuts and sticks materials into a new image.",
+            "Material history and texture are part of the content.",
+            "Torn edges feel softer; cut edges feel sharper.",
+            "Task: one small composition from only three pieces."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "The core of collage is…",
+              "options": [
+                "Only flat colour",
+                "Choosing and juxtaposing materials",
+                "Always firing clay",
+                "Always using a kiln"
+              ],
+              "answer": "Choosing and juxtaposing materials",
+              "explain": "Choose + place."
+            },
+            {
+              "type": "fill",
+              "question": "Torn edges usually feel more ____ than cut edges.",
+              "options": [],
+              "answer": "soft",
+              "explain": "Tear = softer.",
+              "wordBank": [
+                "soft",
+                "electric",
+                "expensive",
+                "salty"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M8-L2",
+          "title": "Layers, space and copyright",
+          "cards": [
+            "Large pieces ground the design; small pieces make focal points.",
+            "Empty space lets the work breathe.",
+            "Do not submit uncleared celebrity photos or copyrighted illustrations.",
+            "Task: list the source of every piece you used."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "For exam-hall flat collage you should…",
+              "options": [
+                "Cut any star poster",
+                "Use cleared or self-made materials",
+                "Copy a peer's whole board",
+                "Hand in soaking wet"
+              ],
+              "answer": "Use cleared or self-made materials",
+              "explain": "Mind copyright."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Large base layer",
+                "Small top pieces"
+              ],
+              "answer": {
+                "Large base layer": "Stabilises the design",
+                "Small top pieces": "Pull the eye"
+              },
+              "explain": "Layer roles."
+            }
+          ]
+        },
+        {
+          "id": "M8-L3",
+          "title": "DAIE: reading a collage",
+          "cards": [
+            "Describe materials and edge types.",
+            "Analyse how overlap builds depth.",
+            "Interpret new meanings from juxtaposition.",
+            "Evaluate the strongest contrast.",
+            "Task: DAIE on your work; change only one variable next."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Interpretation in collage especially watches…",
+              "options": [
+                "Glue brand",
+                "New meaning from juxtaposition",
+                "Scissor length",
+                "Room temperature"
+              ],
+              "answer": "New meaning from juxtaposition",
+              "explain": "Juxtaposition makes meaning."
+            },
+            {
+              "type": "fill",
+              "question": "Next trial should change ____ main variable at a time.",
+              "options": [],
+              "answer": "one",
+              "explain": "Control variables.",
+              "wordBank": [
+                "one",
+                "a hundred",
+                "zero",
+                "minus"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M9-COLOUR-PENCIL-PASTEL",
+      "mediaKey": "colour_pencil_pastel",
+      "title": "Media intro: Colour pencil / pastel",
+      "intro": "Short unit on dry-media layering, mixing and surface care. Suitable for Paper 1 (2D required) and Paper 2 Design presentation. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Dry-media flat work suits Paper 1 and Paper 2 Design presentation. Fix or cover pastels.",
+      "materials": [
+        "Colour pencils",
+        "Pastels (as assigned)",
+        "Toothed paper",
+        "Eraser / cloth",
+        "Fixative",
+        "Cover sheets"
+      ],
+      "safetyNotes": [
+        "Spray fixative with ventilation.",
+        "Do not blow pastel dust at people; wash hands."
+      ],
+      "lessons": [
+        {
+          "id": "M9-L1",
+          "title": "Colour pencil: layers and direction",
+          "cards": [
+            "Mix by layering, usually light to dark.",
+            "Stroke direction can follow form for volume.",
+            "Reserve highlights; do not fill everything at once.",
+            "Task: one sphere with two stroke-direction approaches."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Colour-pencil mixing mainly uses…",
+              "options": [
+                "Boiling the pencil",
+                "Layering colours",
+                "Electricity",
+                "A kiln"
+              ],
+              "answer": "Layering colours",
+              "explain": "Layer to mix."
+            },
+            {
+              "type": "fill",
+              "question": "Strokes can follow the ____ of the form.",
+              "options": [],
+              "answer": "direction",
+              "explain": "Follow form.",
+              "wordBank": [
+                "bus",
+                "direction",
+                "password",
+                "mark"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M9-L2",
+          "title": "Pastel: body and blend",
+          "cards": [
+            "Pastel is powdery; blend lightly with care for hygiene.",
+            "Dark grounds make pastels glow; light grounds control layers.",
+            "Fix or cover finished work.",
+            "Task: gradients on dark and light grounds."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Before handing in pastel work…",
+              "options": [
+                "Rinse with water",
+                "Fix or add a cover sheet",
+                "Fold into a bag",
+                "Melt in the sun"
+              ],
+              "answer": "Fix or add a cover sheet",
+              "explain": "Stop smudges."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Colour pencil",
+                "Pastel"
+              ],
+              "answer": {
+                "Colour pencil": "Easier fine lines",
+                "Pastel": "Powdery, broad blends"
+              },
+              "explain": "Different traits."
+            }
+          ]
+        },
+        {
+          "id": "M9-L3",
+          "title": "DAIE: dry-media surfaces",
+          "cards": [
+            "Describe strokes versus powder.",
+            "Analyse layer order.",
+            "Interpret how texture fits mood.",
+            "Evaluate which dry medium fits your exam / SBA topic.",
+            "Task: same subject, both media; DAIE compare."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "When comparing dry media, best practice is…",
+              "options": [
+                "Only check price",
+                "Same subject, change only the medium",
+                "Submit clay",
+                "Delete one piece"
+              ],
+              "answer": "Same subject, change only the medium",
+              "explain": "One variable."
+            },
+            {
+              "type": "fill",
+              "question": "Do not ____ pastel dust toward classmates.",
+              "options": [],
+              "answer": "blow",
+              "explain": "Do not blow dust.",
+              "wordBank": [
+                "blow",
+                "lend",
+                "draw",
+                "write"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M10-WATERCOLOUR",
+      "mediaKey": "watercolour",
+      "title": "Media intro: Watercolour",
+      "intro": "Short unit on water control, transparent layers and reserved whites. Suitable for Paper 1 (2D required) and Paper 2 Design presentation. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Flat watercolour suits Paper 1 and Paper 2 Design presentation. Fully dry before submission; use interleaving sheets.",
+      "materials": [
+        "Watercolour paper",
+        "Watercolour paints",
+        "Round and flat brushes",
+        "Two water jars",
+        "Sponge or tissue",
+        "Board and tape (optional)"
+      ],
+      "safetyNotes": [
+        "Paints are usually low-toxicity but not for eating.",
+        "Do not splash rinse water at people."
+      ],
+      "lessons": [
+        {
+          "id": "M10-L1",
+          "title": "Water-to-paint ratio",
+          "cards": [
+            "Water carries pigment: more water = lighter; less = stronger.",
+            "Wet-on-wet: damp paper lets colour bloom.",
+            "Wet-on-dry: sharper edges on dry paper.",
+            "Task: five swatches of one colour from strong to pale."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Wet-on-wet often gives…",
+              "options": [
+                "Hard edges",
+                "Soft blooms",
+                "Instant oil paint",
+                "Auto relief"
+              ],
+              "answer": "Soft blooms",
+              "explain": "Damp grounds bloom."
+            },
+            {
+              "type": "fill",
+              "question": "More water usually makes colour more ____.",
+              "options": [],
+              "answer": "pale",
+              "explain": "More water, lighter colour.",
+              "wordBank": [
+                "pale",
+                "expensive",
+                "loud",
+                "spicy"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M10-L2",
+          "title": "Glazing and reserved whites",
+          "cards": [
+            "Watercolour is mostly transparent—underlayers show through.",
+            "Highlights are often reserved paper white.",
+            "Let a layer dry before the next to avoid lifting.",
+            "Task: a simple glass with reserved highlights."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A common way to make highlights is…",
+              "options": [
+                "Always thick white paint",
+                "Reserve white paper",
+                "Burn the colour off",
+                "Use a kiln"
+              ],
+              "answer": "Reserve white paper",
+              "explain": "Save the white."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Wet-on-wet",
+                "Wet-on-dry"
+              ],
+              "answer": {
+                "Wet-on-wet": "Soft bled edges",
+                "Wet-on-dry": "Clearer edges"
+              },
+              "explain": "Water sets the edge."
+            }
+          ]
+        },
+        {
+          "id": "M10-L3",
+          "title": "DAIE: reading watercolour layers",
+          "cards": [
+            "Describe lightest and darkest areas.",
+            "Analyse new colours from transparent overlays.",
+            "Interpret how water traces become mood.",
+            "Evaluate your best water control; plan one change.",
+            "Task: photo the dry work with DAIE and wet/dry labels."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Before another glaze you should…",
+              "options": [
+                "Scrub hard at once",
+                "Let the underlayer dry",
+                "Soak overnight",
+                "Bake until warped"
+              ],
+              "answer": "Let the underlayer dry",
+              "explain": "Dry then glaze."
+            },
+            {
+              "type": "fill",
+              "question": "Watercolours for the exam hall must be fully ____.",
+              "options": [],
+              "answer": "dry",
+              "explain": "Must be dry.",
+              "wordBank": [
+                "dry",
+                "soaked",
+                "frozen",
+                "oiled"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M11-INK",
+      "mediaKey": "ink",
+      "title": "Media intro: Ink / ink wash",
+      "intro": "Short unit on value, brush methods, line and wash. Suitable for Paper 1 (2D required) and Paper 2 Design presentation; may connect to Chinese painting traditions without copying famous works as submissions. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Flat ink work suits Paper 1 and Paper 2 Design presentation. Dry xuan paper fully and protect from tearing.",
+      "materials": [
+        "Ink",
+        "Brushes (large and small)",
+        "Xuan or drawing paper",
+        "Ink stone / dish",
+        "Clean water and scrap paper",
+        "Felt or under-cloth"
+      ],
+      "safetyNotes": [
+        "Do not drink ink; wear an apron.",
+        "Dispose of rinse water properly."
+      ],
+      "lessons": [
+        {
+          "id": "M11-L1",
+          "title": "Value and water",
+          "cards": [
+            "Ink can move through dark-to-light steps (use a classroom-simplified scale).",
+            "Water in the brush changes wetness and flying-white textures.",
+            "Test on scrap before the final sheet.",
+            "Task: one stroke graded across five boxes dark to light."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Before the final sheet you should…",
+              "options": [
+                "Flood the page at once",
+                "Test ink on scrap paper",
+                "Hose the xuan paper",
+                "Blow ink away with a dryer"
+              ],
+              "answer": "Test ink on scrap paper",
+              "explain": "Test first."
+            },
+            {
+              "type": "fill",
+              "question": "A dry brush with little ink often shows ____ (white threads in the stroke).",
+              "options": [],
+              "answer": "flying white",
+              "explain": "Feibai / flying white.",
+              "wordBank": [
+                "flying white",
+                "kiln change",
+                "collage",
+                "embroidery"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M11-L2",
+          "title": "Line, dots and wash",
+          "cards": [
+            "Centre-brush lines feel rounder; side-brush lines feel flatter and wider.",
+            "Washes can suggest mist or distant hills.",
+            "Inscriptions and seals are optional classroom extras.",
+            "Task: bamboo leaves with centre-brush vs side-brush."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Side-brush lines usually feel…",
+              "options": [
+                "Round and thin",
+                "Flatter and wider",
+                "Always multicolour",
+                "Auto-relief"
+              ],
+              "answer": "Flatter and wider",
+              "explain": "Side brush flattens."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Centre brush",
+                "Wash"
+              ],
+              "answer": {
+                "Centre brush": "Rounder stable lines",
+                "Wash": "Water spreads ink"
+              },
+              "explain": "Brush + water."
+            }
+          ]
+        },
+        {
+          "id": "M11-L3",
+          "title": "DAIE: reading an ink study",
+          "cards": [
+            "Describe darkest lines and flying white.",
+            "Analyse how value separates space.",
+            "Interpret how empty paper breathes.",
+            "Evaluate the strongest stroke to borrow for your theme.",
+            "Task: DAIE on your study; AI feedback stays 18+ paid flow—teachers lead in class."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Empty paper in ink work often…",
+              "options": [
+                "Fills ad space",
+                "Lets the image breathe and imply space",
+                "Hides a password",
+                "Replaces safety goggles"
+              ],
+              "answer": "Lets the image breathe and imply space",
+              "explain": "Emptiness works."
+            },
+            {
+              "type": "fill",
+              "question": "Exam Paper 1 ink pieces must be ____ works (not 3D installs).",
+              "options": [],
+              "answer": "flat",
+              "explain": "Paper 1 requires flat/2D work.",
+              "wordBank": [
+                "flat",
+                "must-be-3D",
+                "sound",
+                "smell"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M12-PEN",
+      "mediaKey": "technical_pen",
+      "title": "Media intro: Technical pen (針筆)",
+      "intro": "Short unit on technical / fineliner / rapidograph-style pens: line weight, hatching and stippling. Dry flat medium—suitable for Paper 1 (2D required) and Paper 2 Design presentation. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Flat technical-pen work suits Paper 1 and Paper 2 Design presentation. Protect line drawings from scratches and moisture.",
+      "materials": [
+        "Technical / fineliner pens (several nib sizes)",
+        "Smooth or semi-smooth drawing paper",
+        "Pencil (underdrawing)",
+        "Eraser",
+        "Ruler / French curve (optional)",
+        "Cover sheet or sleeve"
+      ],
+      "safetyNotes": [
+        "Fine nibs—cap when passing; never point at people.",
+        "Ink is not for eating; blot clothing stains promptly.",
+        "Recap after use to avoid clogging."
+      ],
+      "lessons": [
+        {
+          "id": "M12-L1",
+          "title": "Nib size and steady stroke",
+          "cards": [
+            "Steady speed and angle make even lines; stopping mid-stroke leaves blobs.",
+            "Light pencil underdrawing first; ink when ready; erase pencil only when dry.",
+            "Learn labelled nib widths before forcing variety with pressure alone.",
+            "Task: ten parallel lines with each of three nib sizes; compare evenness."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Technical-pen work usually starts with…",
+              "options": [
+                "Thick oil paint",
+                "Light pencil lines",
+                "A kiln",
+                "Fixative as a ground"
+              ],
+              "answer": "Light pencil lines",
+              "explain": "Pencil first, then ink."
+            },
+            {
+              "type": "fill",
+              "question": "After use, ____ the pen to stop clogging.",
+              "options": [],
+              "answer": "recap",
+              "explain": "Recap the pen.",
+              "wordBank": [
+                "recap",
+                "soak overnight",
+                "break the nib",
+                "bake in the sun"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M12-L2",
+          "title": "Hatching, cross-hatching, stippling",
+          "cards": [
+            "Hatching builds tone with parallel lines; cross-hatching darkens.",
+            "Stippling uses dot density for smooth value changes.",
+            "Reserve whites; build light to dark.",
+            "Task: one circle—hatching on the left, stippling on the right."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Stippling mainly controls tone by…",
+              "options": [
+                "Only adding water washes",
+                "Dot density",
+                "Kiln temperature",
+                "Paper fold count"
+              ],
+              "answer": "Dot density",
+              "explain": "Density = value."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Hatching",
+                "Stippling"
+              ],
+              "answer": {
+                "Hatching": "Parallel lines for tone",
+                "Stippling": "Dots denser in shadow"
+              },
+              "explain": "Both are common pen methods."
+            }
+          ]
+        },
+        {
+          "id": "M12-L3",
+          "title": "DAIE: reading a pen drawing",
+          "cards": [
+            "Describe: where are lines densest or thickest?",
+            "Analyse: how does hatch direction follow form?",
+            "Interpret: what mood do clean fine lines suggest?",
+            "Evaluate: which technique fits your Paper 1 / Design / SBA topic?",
+            "Task: finish a small inked study, write four DAIE lines; add a cover sheet."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "For exam Paper 1, technical-pen work must be…",
+              "options": [
+                "A 3D installation",
+                "A flat / 2D piece",
+                "A camera hand-in",
+                "Kiln-fired"
+              ],
+              "answer": "A flat / 2D piece",
+              "explain": "Paper 1 requires 2D."
+            },
+            {
+              "type": "fill",
+              "question": "Before submitting pen drawings, add a ____ to avoid scratches.",
+              "options": [],
+              "answer": "cover sheet",
+              "explain": "Protect the surface.",
+              "wordBank": [
+                "cover sheet",
+                "wet cloth on top",
+                "clay slip",
+                "only fixative spray"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "M13-PHOTO",
+      "mediaKey": "photography",
+      "title": "Media intro: Photography",
+      "intro": "Short unit on composition, light, selection and flat presentation. Public exams usually submit prints or flat presentation boards—not cameras. Suitable for Paper 1 (2D required) and Paper 2 Design presentation; SBA may also use photographic work and process records. (Content pending teacher review)",
+      "paper2Applicable": true,
+      "paper2Note": "Photo prints / flat presentation boards suit Paper 1 and Paper 2 Design presentation. Exam hall usually takes flat work, not camera bodies. SBA may include photographic pieces and contact/selection records.",
+      "materials": [
+        "Camera or school-approved phone (as assigned)",
+        "Tripod (optional)",
+        "Notebook (settings / light notes)",
+        "Photo paper or print service (school)",
+        "Mount board",
+        "Scissors / craft knife and glue (with teacher)"
+      ],
+      "safetyNotes": [
+        "Do not photograph people without consent (especially classmates’ faces).",
+        "Do not submit unlicensed / infringing found images as your own work.",
+        "Follow school phone / camera policy; do not disrupt other classes.",
+        "Pass craft knives closed; cut only on a mat."
+      ],
+      "lessons": [
+        {
+          "id": "M13-L1",
+          "title": "Composition and light",
+          "cards": [
+            "Photography is choosing what enters the frame and what is cut away.",
+            "Rule of thirds, contrast and leading lines are starting points—not the only answers.",
+            "Light direction changes mood: front light flattens; side light models; backlight silhouettes.",
+            "Task: three shots of one object—front, side and back light—with time and place notes."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Side light usually makes forms…",
+              "options": [
+                "Have no shadow",
+                "Read more three-dimensionally",
+                "Always turn black-and-white",
+                "Become oil paintings"
+              ],
+              "answer": "Read more three-dimensionally",
+              "explain": "Side light shows volume."
+            },
+            {
+              "type": "fill",
+              "question": "Exams usually take photo ____ or flat boards, not the camera body.",
+              "options": [],
+              "answer": "prints",
+              "explain": "Submit prints / boards.",
+              "wordBank": [
+                "prints",
+                "bodies",
+                "memory cards only",
+                "live stream links"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "M13-L2",
+          "title": "Selection, series and flat presentation",
+          "cards": [
+            "Shooting more is not enough—select a set that serves the theme.",
+            "Contact sheets / thumbnail walls help compare composition and light before final prints.",
+            "Presentation: consistent size, margins, title and short caption for readers.",
+            "Task: from nine thumbnails pick three as a mini-series; write one theme sentence."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "When selecting photos, the priority is…",
+              "options": [
+                "Only the most expensive camera",
+                "Theme and series coherence",
+                "Max filters always",
+                "Submit every raw file unedited"
+              ],
+              "answer": "Theme and series coherence",
+              "explain": "Selection serves the theme."
+            },
+            {
+              "type": "match",
+              "question": "Match",
+              "options": [
+                "Contact / thumbnails",
+                "Final print"
+              ],
+              "answer": {
+                "Contact / thumbnails": "Compare and choose",
+                "Final print": "Common flat exam submission"
+              },
+              "explain": "Select, then print."
+            }
+          ]
+        },
+        {
+          "id": "M13-L3",
+          "title": "DAIE + ethics",
+          "cards": [
+            "Describe subject, foreground, background and light direction.",
+            "Analyse how composition guides the eye.",
+            "Interpret the relationship or mood claimed.",
+            "Evaluate which frame best states the theme; plan the next change.",
+            "Ethics: consent for portraits; credit sources; do not pass off found images as yours.",
+            "Task: four DAIE lines on the final print + one consent / copyright self-check line."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Before photographing a classmate’s face you should…",
+              "options": [
+                "Shoot secretly",
+                "Get informed consent (follow school rules)",
+                "Post online first",
+                "Disable all safety settings"
+              ],
+              "answer": "Get informed consent (follow school rules)",
+              "explain": "Portraits need consent."
+            },
+            {
+              "type": "fill",
+              "question": "Do not submit online images without ____ as if they were your original work.",
+              "options": [],
+              "answer": "licence / clearance",
+              "explain": "Need clearance.",
+              "wordBank": [
+                "licence / clearance",
+                "enlarging",
+                "cropping square",
+                "adding a filter only"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
