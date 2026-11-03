@@ -40,7 +40,7 @@ const COPY = {
     'er.mode.on': 'On: one step',
     'er.mode.off': 'Off: full view',
     'er.mode.badge': 'Steps',
-    'er.settings.label': 'Display',
+    'er.settings.label': 'Display & reading',
     'er.settings.oneLine': 'One step at a time',
     'er.tts.listen': 'Read aloud',
     'er.tts.stop': 'Stop',
