@@ -26,7 +26,7 @@ export function useSbaArtworkSlots() {
   )
 
   const setType = useCallback(
-    (slot: SlotId, type: PieceType) => {
+    (slot: SlotId, type: PieceType | null) => {
       if (ref.current.types[slot] === type) return
       commit({ ...ref.current, types: { ...ref.current.types, [slot]: type } })
     },

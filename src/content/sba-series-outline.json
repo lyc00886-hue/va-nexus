@@ -1,0 +1,240 @@
+{
+  "meta": {
+    "id": "sba-series-outline",
+    "locale": "zh-Hant",
+    "version": "1.0.0",
+    "alignsWith": [
+      "sba-artwork-slots",
+      "sba-guide Steps 1–6 (theme, research, sketch, media, making, reflection)",
+      "HKEAA SBA: one portfolio = research workbook + four pieces (Artwork / Critical studies; ≥1 Artwork)"
+    ],
+    "notes": "空白 SBA 系列大綱：老師／學生自行填寫。一個作品集＝研究工作簿＋四件（藝術作品／評賞研究），最少一件藝術作品。唔係完整 guide 欄位重寫。",
+    "exemplarsPolicy": "禁止放入或改寫任何高分學生示例／SBA 示例卷內容。只提供空白結構同提示句。",
+    "fillInHint": "所有 value／空白欄留空，由使用者填寫。"
+  },
+  "labels": {
+    "portfolio": "作品集主題",
+    "researchWorkbook": "研究工作簿大綱",
+    "pieces": "四件作品／評賞",
+    "typeArtwork": "藝術作品",
+    "typeCriticalStudy": "評賞研究",
+    "typeUnset": "未選類型",
+    "statusNotStarted": "未開始",
+    "statusInProgress": "進行中",
+    "statusDraftDone": "草稿完成",
+    "statusFinal": "定稿",
+    "pieceShort": {
+      "1": "作品 1",
+      "2": "作品 2",
+      "3": "作品 3",
+      "4": "作品 4"
+    }
+  },
+  "portfolio": {
+    "themeTitle": {
+      "label": "主題名稱（空白）",
+      "value": ""
+    },
+    "themeWhy": {
+      "label": "為甚麼選這個主題？（空白）",
+      "value": ""
+    },
+    "keywords": {
+      "label": "關鍵字（空白）",
+      "value": ""
+    },
+    "plannedArc": {
+      "label": "四件作品推進計劃（空白）",
+      "hint": "簡述作品 1→4 如何層層發展；每格一句即可。",
+      "arc1": "",
+      "arc2": "",
+      "arc3": "",
+      "arc4": ""
+    },
+    "atLeastOneArtworkReminder": "提醒：四件之中最少一件須為藝術作品。"
+  },
+  "pieces": [
+    {
+      "pieceNo": 1,
+      "type": "unset",
+      "workingTitle": "",
+      "media": "",
+      "size": "",
+      "linkToTheme": "",
+      "status": "notStarted",
+      "progressionFromPrev": ""
+    },
+    {
+      "pieceNo": 2,
+      "type": "unset",
+      "workingTitle": "",
+      "media": "",
+      "size": "",
+      "linkToTheme": "",
+      "status": "notStarted",
+      "progressionFromPrev": ""
+    },
+    {
+      "pieceNo": 3,
+      "type": "unset",
+      "workingTitle": "",
+      "media": "",
+      "size": "",
+      "linkToTheme": "",
+      "status": "notStarted",
+      "progressionFromPrev": ""
+    },
+    {
+      "pieceNo": 4,
+      "type": "unset",
+      "workingTitle": "",
+      "media": "",
+      "size": "",
+      "linkToTheme": "",
+      "status": "notStarted",
+      "progressionFromPrev": ""
+    }
+  ],
+  "pieceFieldLabels": {
+    "type": "類型",
+    "workingTitle": "暫定題目",
+    "media": "媒介／物料",
+    "size": "尺寸／規格",
+    "linkToTheme": "與主題的關係",
+    "status": "狀態",
+    "progressionFromPrev": "相對上一件的改進"
+  },
+  "rwbOutline": {
+    "intro": "研究工作簿各段提示（只列大綱；詳細欄位見 sba-guide）。每段自行填寫，唔抄示例。",
+    "sections": [
+      {
+        "stepKey": "theme",
+        "stepRef": 1,
+        "title": "主題探索",
+        "prompts": [
+          "主題同關鍵字（空白）",
+          "為甚麼同我有關？（空白）",
+          "5W1H／心智圖要點（空白）",
+          "四件作品弧線 arc-1…4 一句（空白）",
+          "可能參考嘅藝術家／媒介（空白）"
+        ]
+      },
+      {
+        "stepKey": "research",
+        "stepRef": 2,
+        "title": "參考研究",
+        "prompts": [
+          "研究對象／藝術家（空白）",
+          "背景同作品（空白）",
+          "Feldman 四步筆記要點（空白）",
+          "學到／唔跟／想自己試（空白）",
+          "一手觀察同來源（空白）"
+        ]
+      },
+      {
+        "stepKey": "sketch",
+        "stepRef": 3,
+        "title": "草圖發展",
+        "prompts": [
+          "概念圖／引導問題答案（空白）",
+          "方案 A／B／C 同筆記（空白）",
+          "選咗邊個、點解；唔選嘅原因（空白）"
+        ]
+      },
+      {
+        "stepKey": "media",
+        "stepRef": 4,
+        "title": "媒材試驗",
+        "prompts": [
+          "試驗問題同變項（空白）",
+          "物料、效果、結果（空白）",
+          "下一步改動同點連主題（空白）",
+          "小結（空白）"
+        ]
+      },
+      {
+        "stepKey": "making",
+        "stepRef": 5,
+        "title": "作品製作",
+        "prompts": [
+          "題目、件號、媒介尺寸（空白）",
+          "意念同視覺意義（空白）",
+          "點解用呢種媒介；同藝術家連結（空白）",
+          "過程／問題／前後對比／成品相（空白）",
+          "AI 使用聲明（如有）（空白）"
+        ]
+      },
+      {
+        "stepKey": "reflection",
+        "stepRef": 6,
+        "title": "反思評鑑",
+        "prompts": [
+          "起初想法 vs 而家發現（空白）",
+          "做得好／要改進（空白）",
+          "自評（RWB／AW 相關）（空白）",
+          "證據、回饋、下一步（空白）",
+          "系列推進筆記（空白）"
+        ]
+      }
+    ]
+  },
+  "perPieceChecklist": {
+    "intro": "每件作品／評賞開做前可勾選（短清單；詳細跟 sba-guide）。",
+    "items": [
+      {
+        "id": "theme-link",
+        "stepKey": "theme",
+        "label": "講清楚呢件點連主題"
+      },
+      {
+        "id": "research-note",
+        "stepKey": "research",
+        "label": "有相關研究／參考筆記"
+      },
+      {
+        "id": "sketch-choice",
+        "stepKey": "sketch",
+        "label": "草圖／方案已選定方向"
+      },
+      {
+        "id": "media-trial",
+        "stepKey": "media",
+        "label": "做過媒材試驗（或說明點解跳過）"
+      },
+      {
+        "id": "making-evidence",
+        "stepKey": "making",
+        "label": "過程同成品證據齊"
+      },
+      {
+        "id": "type-set",
+        "stepKey": "making",
+        "label": "已標類型：藝術作品或評賞研究"
+      },
+      {
+        "id": "reflect",
+        "stepKey": "reflection",
+        "label": "完成自評同改進計劃"
+      }
+    ]
+  },
+  "progressionNote": {
+    "label": "系列推進筆記",
+    "hint": "由作品 2 起，寫低呢件點樣改進上一件（技巧、意念、媒介、評賞深度等）。",
+    "promptTemplate": "作品 {n} 相對作品 {prev}：________________",
+    "piece1Note": "作品 1 開局：寫你起點同目標即可（無可對比上一件）。"
+  },
+  "teacherUse": {
+    "howTo": [
+      "印出或喺 app 開空白大綱，學生按主題填四件位。",
+      "先定主題同四件弧線，再逐件選類型（藝術作品／評賞研究）。",
+      "研究工作簿跟 Steps 1–6 提示填；詳細欄位用 sba-guide。",
+      "檢查：最少一件藝術作品；四件有推進，唔好四件重複同一稿。"
+    ],
+    "doNot": [
+      "唔好貼上或改寫高分學生卷／示例 PDF 內容。",
+      "唔好標 SEN／診斷標籤。",
+      "唔好當呢份係完整 guide 欄位重寫。"
+    ]
+  }
+}

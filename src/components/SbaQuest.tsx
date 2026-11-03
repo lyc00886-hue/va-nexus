@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { SbaArtworkSlotSwitcher } from './SbaArtworkSlotSwitcher'
+import { SbaSeriesOutline } from './SbaSeriesOutline'
 import { useGame } from '../context/GameContext'
 import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
@@ -38,10 +39,13 @@ import {
 import {
   assignPieceSlot,
   migrateGuideChecks,
+  SLOT_IDS,
   type GuideChecksBySlot,
   type SlotId,
 } from '../lib/sbaArtworkSlots'
+import { pieceHasOutlineWork, reconcilePieceTypes, type OutlinePieceType } from '../lib/sbaSeriesOutline'
 import { useSbaArtworkSlots } from '../lib/useSbaArtworkSlots'
+import { useSbaSeriesOutline } from '../lib/useSbaSeriesOutline'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { t, type MessageKey } from '../i18n'
 
@@ -135,7 +139,9 @@ export function SbaQuest() {
   const userId = user?.id ?? null
   const STEPS = useMemo(getSteps, [])
   const pieces = useSbaArtworkSlots()
+  const outline = useSbaSeriesOutline()
   const activeSlot = pieces.active
+  const typesHydrated = useRef(false)
   const [evidence, setEvidence] = useState<SbaEvidence[]>([])
   const [source, setSource] = useState<Source>(isSupabaseConfigured ? 'loading' : 'local')
   const [drafts, setDrafts] = useState<Record<SlotId, SlotDraft>>(blankDrafts)
@@ -171,6 +177,18 @@ export function SbaQuest() {
   useEffect(() => {
     draftsRef.current = drafts
   }, [drafts])
+
+  useEffect(() => {
+    if (typesHydrated.current) return
+    typesHydrated.current = true
+    const result = reconcilePieceTypes(outline.state, pieces.types)
+    if (result.outlineChanged) outline.replace(result.state)
+    if (result.slotsChanged) {
+      for (const id of SLOT_IDS) {
+        if (result.slotTypes[id] !== pieces.types[id]) pieces.setType(id, result.slotTypes[id])
+      }
+    }
+  }, [outline, pieces])
 
   useEffect(() => {
     return () => {
@@ -255,8 +273,9 @@ export function SbaQuest() {
 
   const startedSlots = useMemo(() => {
     const started = new Set<SlotId>()
-    for (const id of [1, 2, 3, 4] as const) {
+    for (const id of SLOT_IDS) {
       if (pieces.types[id]) started.add(id)
+      if (pieceHasOutlineWork(outline.state, id)) started.add(id)
       const pieceDraft = drafts[id]
       if (pieceDraft.note.trim() || pieceDraft.pending.length > 0) started.add(id)
       const checks = guideChecks[String(id)]
@@ -266,7 +285,7 @@ export function SbaQuest() {
       started.add(item.slot ?? 1)
     }
     return started
-  }, [pieces.types, drafts, guideChecks, evidence])
+  }, [pieces.types, outline.state, drafts, guideChecks, evidence])
 
   const doneSteps = useMemo(() => new Set(slotEvidence.map((e) => e.step)), [slotEvidence])
 
@@ -412,15 +431,36 @@ export function SbaQuest() {
   const prev = STEPS[activeIdx - 1]
   const next = STEPS[activeIdx + 1]
 
+  function onSlotType(slot: SlotId, type: 'artwork' | 'criticalStudy') {
+    pieces.setType(slot, type)
+    outline.setPieceType(slot, type)
+  }
+
+  function onOutlineType(slot: SlotId, type: OutlinePieceType) {
+    outline.setPieceType(slot, type)
+    pieces.setType(slot, type === 'unset' ? null : type)
+  }
+
   return (
     <div className="space-y-4">
-      <SbaArtworkSlotSwitcher
+      <SbaSeriesOutline
         active={activeSlot}
-        types={pieces.types}
-        started={startedSlots}
-        onSelect={pieces.setActive}
-        onType={pieces.setType}
-      />
+        state={outline.state}
+        onPortfolio={outline.setPortfolio}
+        onPieceText={outline.setPieceText}
+        onPieceType={onOutlineType}
+        onPieceStatus={outline.setPieceStatus}
+        onRwb={outline.setRwb}
+        onToggleCheck={outline.toggleCheck}
+      >
+        <SbaArtworkSlotSwitcher
+          active={activeSlot}
+          types={pieces.types}
+          started={startedSlots}
+          onSelect={pieces.setActive}
+          onType={onSlotType}
+        />
+      </SbaSeriesOutline>
       <div>
         <h2 className="text-xl font-bold text-teal-950">{t('sba.title')}</h2>
         <p className="text-sm text-teal-800/70">{t('sba.subtitle')}</p>
