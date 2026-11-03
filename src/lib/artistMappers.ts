@@ -1,26 +1,39 @@
 import type { Artist, ArtistPair } from '../types'
 import { getLocale, t } from '../i18n'
+import { artistFields, pairFields } from './artistBody'
 
-/** Raw row shapes matching Supabase public.artists / artist_pairs */
+export { artistReadText } from './artistBody'
+
+/** Raw row shapes matching Supabase public.artists / artist_pairs.
+ *  *_en columns arrive via select('*') after 20261105_artists_en_columns.sql.
+ *  They stay optional so a row fetched before that migration still type-checks.
+ */
 export type DbArtist = {
   artist_id: string
   name_zh_en: string
   name_zh_hans?: string | null
   culture_group: string | null
   sba_theme_tags: string[] | null
+  sba_theme_tags_en?: string[] | null
   formal_traits: string | null
+  formal_traits_en?: string | null
   dse_concept: string | null
+  dse_concept_en?: string | null
   spld_summary: string | null
+  spld_summary_en?: string | null
   gifted_theory: string | null
   artwork_example: string | null
   origin: string | null
+  origin_en?: string | null
   source_url?: string | null
 }
 
 export type DbArtistPair = {
   id: string
   theme: string
+  theme_en?: string | null
   medium: string | null
+  medium_en?: string | null
   west_artist_id: string
   east_artist_id: string
   comparison_matrix: unknown
@@ -40,14 +53,6 @@ export function parseNameZhEn(nameZhEn: string): { nameZh: string | null; nameEn
   return { nameZh: text, nameEn: text }
 }
 
-function splitTraits(formalTraits: string | null): string[] {
-  if (!formalTraits?.trim()) return []
-  return formalTraits
-    .split(/[、,，;/|]+/)
-    .map((s) => s.trim())
-    .filter(Boolean)
-}
-
 function regionFromCulture(cultureGroup: string | null): 'east' | 'west' {
   const g = (cultureGroup ?? '').toLowerCase()
   if (g.includes('west')) return 'west'
@@ -57,6 +62,7 @@ function regionFromCulture(cultureGroup: string | null): 'east' | 'west' {
 export function mapDbArtist(row: DbArtist): Artist {
   const { nameZh, nameEn } = parseNameZhEn(row.name_zh_en)
   const hans = row.name_zh_hans?.trim() || null
+  // Names stay on name_zh_en / name_zh_hans. Do not read an English-name column.
   return {
     id: row.artist_id,
     name_en: nameEn,
@@ -64,15 +70,10 @@ export function mapDbArtist(row: DbArtist): Artist {
     name_zh_hans: hans,
     region: regionFromCulture(row.culture_group),
     era: null,
-    medium: row.origin,
-    themes: row.sba_theme_tags ?? [],
-    style_keywords: splitTraits(row.formal_traits),
-    bio_short: row.spld_summary || row.dse_concept || null,
     image_url: null,
     source_url: row.source_url?.trim() || null,
-    dse_concept: row.dse_concept,
-    spld_summary: row.spld_summary,
     culture_group: row.culture_group,
+    ...artistFields(row, getLocale()),
   }
 }
 
@@ -92,23 +93,24 @@ export function artistSecondaryName(a: Artist): string | null {
 }
 
 export function mapDbPair(row: DbArtistPair): ArtistPair {
+  const { theme, medium } = pairFields(row, getLocale())
   const matrixHint =
     Array.isArray(row.comparison_matrix) && row.comparison_matrix.length > 0
       ? String(row.comparison_matrix[0])
       : null
   const compare_prompt =
     matrixHint ||
-    (row.medium
-      ? t('am.prompt.medium', { medium: row.medium, theme: row.theme })
-      : t('am.prompt', { theme: row.theme }))
+    (medium
+      ? t('am.prompt.medium', { medium, theme })
+      : t('am.prompt', { theme }))
 
   return {
     id: row.id,
     east_artist_id: row.east_artist_id,
     west_artist_id: row.west_artist_id,
-    theme: row.theme,
+    theme,
     compare_prompt,
-    medium: row.medium,
+    medium,
     comparison_matrix: row.comparison_matrix ?? null,
   }
 }

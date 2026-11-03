@@ -1,4 +1,5 @@
 import type { Artist, ArtistPair } from '../types'
+import { isTranslationPending } from './artistBody'
 import { artistDisplayName } from './artistMappers'
 import { t } from '../i18n'
 
@@ -40,8 +41,8 @@ function textOf(a: Artist) {
 }
 
 function exactOverlap(a: string[], b: string[]) {
-  const bs = new Set(b.map(norm))
-  return a.filter((x) => bs.has(norm(x)))
+  const bs = new Set(b.filter((x) => !isTranslationPending(x)).map(norm))
+  return a.filter((x) => !isTranslationPending(x) && bs.has(norm(x)))
 }
 
 function keywordOverlap(a: Artist, b: Artist) {
@@ -97,7 +98,11 @@ export function buildCompareRows(pair: ArtistPair, east: Artist, west: Artist): 
   const uniqueOf = (mine: string[], shared: string[]) =>
     mine.filter((x) => !shared.some((s) => norm(s) === norm(x)))
 
-  const sameMedium = east.medium && west.medium && norm(east.medium) === norm(west.medium)
+  const sameMedium =
+    Boolean(east.medium && west.medium) &&
+    !isTranslationPending(east.medium) &&
+    !isTranslationPending(west.medium) &&
+    norm(east.medium ?? '') === norm(west.medium ?? '')
 
   const rows: CompareRow[] = [
     {
