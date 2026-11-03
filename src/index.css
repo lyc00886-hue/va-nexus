@@ -29,6 +29,27 @@ html {
   font-size: calc(100% * var(--sen-font-scale));
 }
 
+/*
+ * Accessibility dropdown is position:absolute inside the sticky header, so it
+ * does not grow the page and scrolling the page does not move it. Cap the
+ * panel to the viewport below its offset parent (100% = that header row).
+ * 100dvh stays tied to the viewport when --sen-font-scale changes; a rem-only
+ * max-height would grow with the font and push the lower controls off-screen.
+ */
+.sen-settings-panel {
+  max-height: calc(100dvh - 100% - 0.75rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+@media (max-width: 767px) {
+  .sen-settings-panel {
+    /* Clear the fixed bottom tab bar (md:hidden). 4.5rem tracks the font scale. */
+    max-height: calc(100dvh - 100% - 4.5rem - env(safe-area-inset-bottom, 0px));
+  }
+}
+
 /* High contrast */
 .sen-contrast body,
 .sen-contrast #root > div {
