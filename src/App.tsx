@@ -65,6 +65,7 @@ export default function App() {
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900">{t('tab.portfolio')}</h2>
                     <p className="text-sm text-slate-500">{t('app.portfolio.subtitle')}</p>
+                    <p className="mt-1 text-sm text-slate-600">{t('portfolio.sections.tip')}</p>
                     <button
                       type="button"
                       onClick={requestOpenAbilityChart}

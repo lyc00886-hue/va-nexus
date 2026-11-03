@@ -152,6 +152,7 @@
   "ach.overallProgressValue": "{pct}%（{done} / {total} 课）",
   "portfolio.section.evidence.hint": "上传与笔记",
   "portfolio.section.ability.hint": "自评雷达与学习步骤",
+  "portfolio.sections.tip": "点开要填／要看的部分。",
   "sba.guide.tip": "小贴士：",
   "sba.guide.redFlags": "小心事项",
   "fw.ai.signIn": "登录后才可开 AI（仅限 18+）",

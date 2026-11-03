@@ -13,7 +13,7 @@ export type PortfolioSectionId = (typeof PORTFOLIO_SECTION_IDS)[number]
 export type PortfolioSectionOpen = Record<PortfolioSectionId, boolean>
 
 export const DEFAULT_PORTFOLIO_SECTIONS: PortfolioSectionOpen = {
-  evidence: true,
+  evidence: false,
   outline: false,
   ability: false,
 }

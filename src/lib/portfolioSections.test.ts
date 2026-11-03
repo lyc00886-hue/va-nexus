@@ -19,9 +19,9 @@ function memoryStorage(initial: Record<string, string> = {}): PortfolioSectionSt
 }
 
 describe('portfolio accordion sections', () => {
-  it('opens artwork evidence only on the first visit', () => {
+  it('starts with all three sections collapsed on the first visit', () => {
     assert.deepEqual(loadPortfolioSections(memoryStorage()), DEFAULT_PORTFOLIO_SECTIONS)
-    assert.equal(DEFAULT_PORTFOLIO_SECTIONS.evidence, true)
+    assert.equal(DEFAULT_PORTFOLIO_SECTIONS.evidence, false)
     assert.equal(DEFAULT_PORTFOLIO_SECTIONS.outline, false)
     assert.equal(DEFAULT_PORTFOLIO_SECTIONS.ability, false)
   })
@@ -39,7 +39,7 @@ describe('portfolio accordion sections', () => {
       [PORTFOLIO_SECTIONS_KEY]: JSON.stringify({ outline: true }),
     })
     assert.deepEqual(loadPortfolioSections(storage), {
-      evidence: true,
+      evidence: false,
       outline: true,
       ability: false,
     })
