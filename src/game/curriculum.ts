@@ -19,7 +19,7 @@ function contentUnits(): ContentUnit[] {
   throw new Error('[curriculum] art-history-map missing units[] or unit')
 }
 
-function toLesson(l: ContentLesson, pool: string[]): Lesson {
+export function lessonFromContent(l: ContentLesson, pool: string[]): Lesson {
   return {
     id: l.id,
     title: l.title,
@@ -35,7 +35,7 @@ function toLesson(l: ContentLesson, pool: string[]): Lesson {
 export const getUnits = perLocale<Unit[]>(() =>
   contentUnits().map((u) => {
     const pool = fillAnswersOf(u.lessons)
-    return { id: u.id, title: u.title, subtitle: u.intro ?? '', nodes: u.lessons.map((l) => toLesson(l, pool)) }
+    return { id: u.id, title: u.title, subtitle: u.intro ?? '', nodes: u.lessons.map((l) => lessonFromContent(l, pool)) }
   }),
 )
 
