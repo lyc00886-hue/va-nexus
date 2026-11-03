@@ -89,7 +89,7 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
       tabIndex={-1}
       role="dialog"
       aria-label={t('header.a11y')}
-      className="absolute right-4 top-full z-50 mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-teal-100 bg-white p-4 text-left shadow-xl outline-none"
+      className="sen-settings-panel absolute right-4 top-full z-50 mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-teal-100 bg-white p-4 text-left shadow-xl outline-none"
     >
       <div className="flex items-center justify-between">
         <h2 className="text-base font-bold text-teal-950">{t('sen.title')}</h2>
