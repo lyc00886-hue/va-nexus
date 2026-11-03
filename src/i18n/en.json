@@ -502,7 +502,7 @@
   "ac.media.lightbox": "Enlarged artwork",
   "sba.guide.tip": "Tip:",
   "sba.guide.redFlags": "Watch outs",
-  "fw.ai.signIn": "Sign in to unlock AI (18+)",
+  "fw.ai.signIn": "Sign in to unlock AI learning tip (18+)",
   "fw.ai.birthYear": "Birth year",
   "fw.ai.birthYear.ph": "YYYY",
   "fw.ai.birthYear.help": "Enter your birth year so we can check the 18+ AI rule. We store the year privately on your account and only use a can_use_ai flag in the app — we never show your birth year again or send it to Gemini.",
