@@ -37,6 +37,7 @@
   "sen.checkin.note": "这不是诊断，只是帮你选择合适的工具",
   "sen.custom": "已自定义设置",
   "sen.toggle.dyslexia.desc": "加大字距、行距和段落间距",
+  "sen.toggle.motion.desc": "关闭过场和动态效果",
   "sen.reset": "恢复默认",
   "sen.savedNote": "设置会保存在这台设备上，所有页面通用。",
   "header.a11y": "无障碍设置",

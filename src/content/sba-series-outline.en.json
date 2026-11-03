@@ -105,7 +105,7 @@
     "progressionFromPrev": "Improvement on previous piece"
   },
   "rwbOutline": {
-    "intro": "Section prompts for the research workbook (outline only; full fields in sba-guide). Fill in yourself — do not copy exemplars.",
+    "intro": "Section prompts for the research workbook (outline only). Field details are in the guide. Fill in yourself — do not copy exemplars.",
     "sections": [
       {
         "stepKey": "theme",
@@ -115,7 +115,7 @@
           "Theme and keywords (blank)",
           "Why it matters to me (blank)",
           "5W1H / mind-map points (blank)",
-          "One line each for arc-1…4 (blank)",
+          "Write one line on how each of the four works develops (blank)",
           "Possible artists / media (blank)"
         ]
       },
@@ -171,7 +171,7 @@
         "prompts": [
           "First idea vs what I found (blank)",
           "What worked / what to improve (blank)",
-          "Self-assessment (RWB / AW related) (blank)",
+          "Self-assessment (workbook / artwork) (blank)",
           "Evidence, feedback, next plan (blank)",
           "Series progression note (blank)"
         ]
@@ -179,7 +179,7 @@
     ]
   },
   "perPieceChecklist": {
-    "intro": "Short checklist before or while working on each piece (details in sba-guide).",
+    "intro": "Short checklist before or while working on each piece. See the detailed guide for more.",
     "items": [
       {
         "id": "theme-link",
@@ -228,7 +228,7 @@
     "howTo": [
       "Print or open the blank outline in the app; students fill four slots under one theme.",
       "Lock theme and four-piece arc first, then set each type (Artwork / Critical study).",
-      "Research workbook follows Steps 1–6 prompts; use sba-guide for full fields.",
+      "Research workbook follows Steps 1–6 prompts. Field details are in the guide.",
       "Check: ≥1 Artwork; clear progression across four pieces — not four copies of one draft."
     ],
     "doNot": [
