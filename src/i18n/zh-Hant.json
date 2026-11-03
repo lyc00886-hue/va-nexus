@@ -208,7 +208,7 @@
   "sen.custom": "已自訂設定",
   "sen.font": "字體大小",
   "sen.toggle.contrast.desc": "深色文字、清晰邊框，方便弱視或強光下閱讀",
-  "sen.toggle.dyslexia": "讀寫障礙友善間距",
+  "sen.toggle.dyslexia": "寬鬆間距",
   "sen.toggle.dyslexia.desc": "加大字距、行距同段落間距",
   "sen.toggle.motion.desc": "關閉過場同動態效果",
   "sen.toggle.focus.desc": "一次只顯示一個步驟，附 25 分鐘專注計時",

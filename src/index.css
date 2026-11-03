@@ -84,7 +84,7 @@ html {
   outline: 1px solid #0b3b36;
 }
 
-/* Dyslexia-friendly spacing */
+/* Wider spacing */
 .sen-dyslexia body {
   letter-spacing: 0.04em;
   word-spacing: 0.16em;

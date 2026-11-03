@@ -7,7 +7,7 @@
     "title": "我的能力圖",
     "subtitle": "只看自己的進步：按考評局評核準則自評，不排名、不與同學比較。",
     "disclaimer": "只供自我檢視，並非正式 SBA 分數；正式分數由任課老師按考評局準則評定；AI 不會評分。",
-    "privacy": "數據只儲存在學生自己的裝置╱帳戶；圖表不顯示任何學習需要（SEN）標籤或診斷。",
+    "privacy": "數據只儲存在學生自己的裝置╱帳戶；圖表不顯示任何診斷標籤。",
     "no_ranking": true,
     "no_peer_comparison": true,
     "no_sen_labels": true,
