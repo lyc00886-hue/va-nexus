@@ -2,17 +2,13 @@
  * F.4 Learning Map demo slice (PEANUTS) — not a full Form 4 year.
  * Files: src/content/f4-demo.json (zh-Hant), f4-demo.en.json, f4-demo.zh-Hans.json.
  * Same Learning Map v3 shape as art-history: { units: [{ id, title, intro, lessons }] }.
- *
- * Syllabus cover year on the map chrome. Change this one constant if CL picks
- * another year (for example "2024-25").
+ * The map chrome does not show a syllabus year.
  */
 import { contentJson } from '../i18n/content'
 import { perLocale } from '../i18n'
 import { fillAnswersOf, type ContentLesson } from './content'
 import { lessonFromContent } from './curriculum'
 import type { Unit } from './types'
-
-export const F4_SYLLABUS_YEAR = '2025/26'
 
 export const F4_UNIT_IDS = [
   'F4-U1-ORIENT',

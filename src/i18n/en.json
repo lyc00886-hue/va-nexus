@@ -402,7 +402,6 @@
   "map.track.f4": "F.4",
   "map.track.aria": "Choose a learning map",
   "map.f4.subtitle": "Demo slice: four units. Short cards, then a quiz. Not the full year.",
-  "map.f4.yearLabel": "Form 4 Visual Arts · {year}",
   "map.media.subtitle": "{n} media: pick a card for a short lesson and quiz. Submission notes come from each medium.",
   "map.media.legend": "Paper 1 must be flat work. Paper 2 (Design) follows the question. SBA can use any medium, including 3D.",
   "map.media.back": "Back to media",

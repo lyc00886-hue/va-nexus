@@ -4,7 +4,7 @@ import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { useSenSupport } from '../../context/SenSupportContext'
 import { getNodeById, getUnits } from '../../game/curriculum'
-import { F4_SYLLABUS_YEAR, getF4Units } from '../../game/f4Demo'
+import { getF4Units } from '../../game/f4Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
 import { masteryFor, masteryLabel } from '../../game/rewards'
@@ -110,16 +110,9 @@ export function LearningMap() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
-          <p className="text-sm text-slate-500">{subtitle}</p>
-        </div>
-        {track === 'f4' && (
-          <p className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-800 ring-1 ring-blue-100">
-            {t('map.f4.yearLabel', { year: F4_SYLLABUS_YEAR })}
-          </p>
-        )}
+      <div>
+        <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
+        <p className="text-sm text-slate-500">{subtitle}</p>
       </div>
 
       <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
