@@ -12,6 +12,8 @@ import { t } from '../../i18n'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { ActivityLog } from './ActivityLog'
 import { DemoBadge } from './DemoBadge'
+import { artistCreditSummary } from '../../game/lessonArtistLabels'
+import { LessonArtistChips } from './LessonArtists'
 import { LessonPlayer } from './LessonPlayer'
 import { StatCards } from './StatCards'
 
@@ -468,7 +470,9 @@ function UnitSection({
   const total = unit.nodes.length
   const pct = total === 0 ? 0 : Math.round((done / total) * 100)
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm">
+    <section className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+      {unit.coverImage ? <UnitCover src={unit.coverImage} credit={unit.coverCredit} /> : null}
+      <div className="p-5">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <h3 className="text-lg font-bold text-slate-900">{unit.title}</h3>
@@ -502,6 +506,8 @@ function UnitSection({
           const isCurrent = node.id === currentId
           const mastery = masteryOf(node.id)
           const last = i === unit.nodes.length - 1
+          const status = t(isDone ? 'map.status.done' : unlocked ? 'map.status.open' : 'map.status.locked')
+          const artistNote = node.artists?.length ? artistCreditSummary(node.artists) : ''
           return (
             <li key={node.id} className={`relative ${indent ? OFFSETS[i % OFFSETS.length] : ''}`}>
               <button
@@ -509,10 +515,11 @@ function UnitSection({
                 disabled={!unlocked}
                 onClick={() => onOpen(node)}
                 className="group flex w-full items-center gap-4 rounded-2xl p-1 text-left disabled:cursor-not-allowed"
-                aria-label={t('map.nodeAria', {
-                  title: node.title,
-                  status: t(isDone ? 'map.status.done' : unlocked ? 'map.status.open' : 'map.status.locked'),
-                })}
+                aria-label={
+                  artistNote
+                    ? t('map.nodeAriaCredit', { title: node.title, status, credit: artistNote })
+                    : t('map.nodeAria', { title: node.title, status })
+                }
               >
                 <span className="relative flex h-16 w-16 shrink-0 items-center justify-center">
                   {isCurrent && motion && <span className="absolute inset-0 animate-ping rounded-full bg-blue-400 opacity-40" aria-hidden />}
@@ -547,6 +554,7 @@ function UnitSection({
                     {node.title}
                   </span>
                   <span className={`block text-xs ${unlocked ? 'text-slate-500' : 'text-slate-400'}`}>{node.subtitle}</span>
+                  {node.artists?.length ? <LessonArtistChips artists={node.artists} /> : null}
                   {mastery !== 'none' && (
                     <span className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ${MASTERY_CHIP[mastery]}`}>
                       {masteryLabel(mastery)}
@@ -559,6 +567,31 @@ function UnitSection({
           )
         })}
       </ol>
+      </div>
     </section>
+  )
+}
+
+function UnitCover({ src, credit }: { src: string; credit?: string }) {
+  const [failed, setFailed] = useState(false)
+  if (failed) return null
+  return (
+    <figure>
+      <img
+        src={src}
+        alt=""
+        width={1152}
+        height={864}
+        loading="lazy"
+        decoding="async"
+        className="h-44 w-full object-cover object-center sm:h-52"
+        onError={() => setFailed(true)}
+      />
+      {credit ? (
+        <figcaption className="border-b border-slate-100 bg-slate-50 px-5 py-1.5 text-[11px] leading-snug text-slate-500">
+          {credit}
+        </figcaption>
+      ) : null}
+    </figure>
   )
 }

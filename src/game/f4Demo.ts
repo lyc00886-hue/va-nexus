@@ -2,12 +2,14 @@
  * F.4 Learning Map demo slice (PEANUTS) — not a full Form 4 year.
  * Files: src/content/f4-demo.json (zh-Hant), f4-demo.en.json, f4-demo.zh-Hans.json.
  * Same Learning Map v3 shape as art-history: { units: [{ id, title, intro, lessons }] }.
+ * Optional coverImage / coverCredit and per-lesson artistMedia are additive.
  * The map chrome does not show a syllabus year.
  */
 import { contentJson } from '../i18n/content'
 import { perLocale } from '../i18n'
 import { fillAnswersOf, type ContentLesson } from './content'
 import { lessonFromContent } from './curriculum'
+import { artistsFromLesson, coverFromUnit } from './f4Media'
 import type { Unit } from './types'
 
 export const F4_UNIT_IDS = [
@@ -17,18 +19,22 @@ export const F4_UNIT_IDS = [
   'F4-U4-SELF-RESEARCH',
 ] as const
 
+type F4LessonSource = ContentLesson & { artistIds?: unknown; artistMedia?: unknown }
+
 type F4UnitSource = {
   id?: string
   title?: string
   intro?: string
-  lessons?: ContentLesson[]
+  coverImage?: unknown
+  coverCredit?: unknown
+  lessons?: F4LessonSource[]
 }
 
 type F4File = { units?: F4UnitSource[] }
 
-function playableLessons(lessons: ContentLesson[] | undefined): ContentLesson[] {
+function playableLessons(lessons: F4LessonSource[] | undefined): F4LessonSource[] {
   return (lessons ?? []).filter(
-    (lesson) =>
+    (lesson): lesson is F4LessonSource =>
       Boolean(lesson) &&
       typeof lesson.id === 'string' &&
       lesson.id.length > 0 &&
@@ -47,7 +53,12 @@ export function unitsFromF4File(raw: F4File | null | undefined): Unit[] {
       id: unit.id ?? '',
       title: unit.title ?? '',
       subtitle: unit.intro ?? '',
-      nodes: lessons.map((lesson) => lessonFromContent(lesson, pool)),
+      ...coverFromUnit(unit),
+      nodes: lessons.map((lesson) => {
+        const node = lessonFromContent(lesson, pool)
+        const artists = artistsFromLesson(lesson)
+        return artists ? { ...node, artists } : node
+      }),
     }
   })
   const ids = built.map((unit) => unit.id).join(',')

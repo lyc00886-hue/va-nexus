@@ -4,6 +4,8 @@
       "id": "F4-U1-ORIENT",
       "title": "Form 4 VA Intro: Course and SBA Portfolio",
       "intro": "Form 4 starter unit. Learn the two learning strands (appreciation and making), positive values, and the basic SBA portfolio structure (research workbook + artwork/critical studies). Aligned to CCCKLC F.4 Orientation and SBA criteria notes. No real HKEAA papers or high-score student exemplars. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U1-ORIENT.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U1-L1",
@@ -139,6 +141,8 @@
       "id": "F4-U2-DRAW-DESIGN",
       "title": "Drawing, Aesthetics and Design Thinking",
       "intro": "Aligned to F.4 Scheme “Creative Practice 2”: drawing skills, aesthetic/design thinking, material exploration and presentation skills. Builds observation, composition and material foundations for later theme work. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-DRAW-DESIGN.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U2-L1",
@@ -264,6 +268,8 @@
       "id": "F4-U3-COMMUNITY",
       "title": "Community Looking, Visual Diary and Theme Seeds",
       "intro": "Aligned to F.4 community tour/presentation, weekly visual diary, and community-related design/making. Learn to gather materials from everyday environments as theme seeds; connect to Hong Kong artists who attend to daily space. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-COMMUNITY.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U3-L1",
@@ -388,6 +394,8 @@
       "id": "F4-U4-SELF-RESEARCH",
       "title": "Self-Portrait, Artist Research and Theme Development",
       "intro": "Aligned to F.4 “Theme and Artist research and Presentation I (Self-Portrait)” and discovery prompts Self / Relationship / Story. Use self-portrait to explore identity and practise proper artist research (cite sources, compare views) to start SBA theme development. No high-score student exemplars. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-SELF-RESEARCH.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U4-L1",
@@ -457,7 +465,15 @@
             "WEST-KAHLO-01",
             "HK-SHIEH-01",
             "WEST-HOCKNEY-01"
-          ]
+          ],
+          "artistMedia": {
+            "WEST-KAHLO-01": {
+              "thumb": "/content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-artwork.png",
+              "license": "Public domain",
+              "credit": "Frida Kahlo — Self-Portrait Dedicated to Leon Trotsky (1937)",
+              "sourceUrl": "https://commons.wikimedia.org/wiki/File:Frida_Kahlo_-_Autoportrait_d%C3%A9di%C3%A9_%C3%A0_L%C3%A9on_Trotsky.png"
+            }
+          }
         },
         {
           "id": "F4-U4-L2",
