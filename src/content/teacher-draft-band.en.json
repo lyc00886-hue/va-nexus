@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "id": "teacher-draft-band",
+    "version": "2026-11-03",
+    "status": "wed-soft-copy",
+    "issue": "#16",
+    "audience": "teacher-only",
+    "hang": "wed-soft",
+    "alignsWith": "sba-reference-rubric-research/dimensions-draft.md (RWB×4 + Artwork×6)",
+    "outOfScope": [
+      "student-chrome",
+      "hkeaa-official-marks",
+      "public-5star-exemplars",
+      "ai-numeric-student-sba",
+      "pilot-blocker"
+    ],
+    "locale": "en"
+  },
+  "pageTitle": "Teacher draft band (school-internal)",
+  "pageIntro": "Pick a formative practice band for a portfolio using your school rubric. Teacher / coordinator coaching only — never presented as an HKEAA result.",
+  "disclaimer": "Not official. Not an HKEAA / public-exam result. These “practice / performance-reference” bands are for school-internal formative discussion only. Formal SBA marks follow the HKEAA Teachers’ Handbook and moderation. Do not upload student 5** exemplars to the public app.",
+  "bandPicker": {
+    "title": "Practice band (performance reference)",
+    "help": "Soft four-step scale for in-school coaching. Do not label options as official “5** / public-exam grades”.",
+    "schoolMappingNote": "Coordinators may map these practice bands to school house bands / descriptors. Mapping is school-owned; the app does not preset official grades.",
+    "saveCta": "Save draft band",
+    "clearCta": "Clear draft",
+    "bands": [
+      {
+        "id": "practice-emerging",
+        "label": "Practice band · Emerging",
+        "hint": "Early / uneven — lock theme and evidence first"
+      },
+      {
+        "id": "practice-developing",
+        "label": "Practice band · Developing",
+        "hint": "Direction present; needs depth or coherence"
+      },
+      {
+        "id": "practice-secure",
+        "label": "Practice band · Secure",
+        "hint": "School formative band: solid baseline"
+      },
+      {
+        "id": "practice-strong",
+        "label": "Practice band · Strong",
+        "hint": "School formative high band — not an official 5** / public exam grade"
+      }
+    ]
+  },
+  "criteria": {
+    "sectionRwbTitle": "Research workbook (4 criteria)",
+    "sectionArtworkTitle": "Artwork / critical studies (6 criteria)",
+    "rowsHelp": "Aligned to public criterion names (1 workbook + 4 pieces / 4 + 6 criteria). Labels are placeholders — fill level text from your school rubric.",
+    "rows": [
+      {
+        "id": "rwb-1",
+        "component": "rwb",
+        "label": "Exploration and development of theme or ideas",
+        "focusHint": "Sources, selection/transform, personal ideas"
+      },
+      {
+        "id": "rwb-2",
+        "component": "rwb",
+        "label": "Interpretation of artworks and articulation with artmaking / critical studies",
+        "focusHint": "Evidence-based views linked to own work"
+      },
+      {
+        "id": "rwb-3",
+        "component": "rwb",
+        "label": "Experimentation of media and skills; ways of expression",
+        "focusHint": "Depth of trials; keep failed attempts"
+      },
+      {
+        "id": "rwb-4",
+        "component": "rwb",
+        "label": "Reflection and progression in learning",
+        "focusHint": "Depth of reflection; visible progress"
+      },
+      {
+        "id": "aw-1",
+        "component": "artwork",
+        "label": "Media, skills and techniques / writing skills",
+        "focusHint": "Control of medium; writing for critical studies"
+      },
+      {
+        "id": "aw-2",
+        "component": "artwork",
+        "label": "Visual presentation / analysis",
+        "focusHint": "Elements/organisation fit the theme"
+      },
+      {
+        "id": "aw-3",
+        "component": "artwork",
+        "label": "Relationship with context",
+        "focusHint": "Personal / aesthetic / cultural link to theme"
+      },
+      {
+        "id": "aw-4",
+        "component": "artwork",
+        "label": "Creativity and imagination / critical thinking",
+        "focusHint": "Coherent ideas; evidenced personal view"
+      },
+      {
+        "id": "aw-5",
+        "component": "artwork",
+        "label": "Overall presentation and communication of theme",
+        "focusHint": "Clear, complete, coherent message"
+      },
+      {
+        "id": "aw-6",
+        "component": "artwork",
+        "label": "Progression of all 4 pieces of work",
+        "focusHint": "Visible improvement across the set"
+      }
+    ]
+  },
+  "empty": {
+    "noStudent": "No student / portfolio selected. Choose one before setting a practice band.",
+    "noBand": "No practice band yet. Review criteria rows, then pick a performance reference.",
+    "noCriteriaNote": "Criteria rows are placeholders; you can save a band first and add school descriptors later."
+  },
+  "teacherTips": [
+    {
+      "id": "use_school_rubric",
+      "text": "Fill against your school / panel rubric first; this page is only a practice-band skeleton."
+    },
+    {
+      "id": "not_hkeaa",
+      "text": "Do not present these bands to students or parents as HKEAA / official SBA marks."
+    },
+    {
+      "id": "no_public_exemplars",
+      "text": "Do not publish student 5** or high-score work in the public app; keep samples school-permission only."
+    },
+    {
+      "id": "formative_only",
+      "text": "Bands are school formative / coaching reference — mappable to house bands, not a submitted mark."
+    },
+    {
+      "id": "student_path_separate",
+      "text": "Student path stays self-rating 1–4 / text feedback; do not sync teacher draft bands as student “scores”."
+    }
+  ]
+}

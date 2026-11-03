@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "id": "teacher-draft-band",
+    "version": "2026-11-03",
+    "status": "wed-soft-copy",
+    "issue": "#16",
+    "audience": "teacher-only",
+    "hang": "wed-soft",
+    "alignsWith": "sba-reference-rubric-research/dimensions-draft.md (RWB×4 + Artwork×6)",
+    "outOfScope": [
+      "student-chrome",
+      "hkeaa-official-marks",
+      "public-5star-exemplars",
+      "ai-numeric-student-sba",
+      "pilot-blocker"
+    ],
+    "locale": "zh-Hant"
+  },
+  "pageTitle": "教師草稿 band（校內參考）",
+  "pageIntro": "用校本準則為作品集揀一個練習用表現參考 band。只供教師／科主任內部教練，不會當成考評局結果。",
+  "disclaimer": "非官方、非考評局／HKEAA 結果。此處「表現參考／練習 band」只供校內 formative 討論；正式 SBA 分數由任課老師按考評局手冊評核並經調整。請勿把學生 5** 樣本公開上載至本 app。",
+  "bandPicker": {
+    "title": "練習 band（表現參考）",
+    "help": "軟性四級，方便校內對齊討論。避免用官方「5**／公開試等級」作產品標籤。",
+    "schoolMappingNote": "科主任可把下列練習 band 對照本校 house bands／校本描述；對照表由學校自訂，本 app 不預設官方等級。",
+    "saveCta": "儲存草稿 band",
+    "clearCta": "清除草稿",
+    "bands": [
+      {
+        "id": "practice-emerging",
+        "label": "表現參考・尚待加強",
+        "hint": "起步／未穩；先對準主題與證據"
+      },
+      {
+        "id": "practice-developing",
+        "label": "表現參考・發展中",
+        "hint": "有方向，仍欠深度或連貫"
+      },
+      {
+        "id": "practice-secure",
+        "label": "表現參考・穩健",
+        "hint": "校內練習帶認為達基本穩妥"
+      },
+      {
+        "id": "practice-strong",
+        "label": "表現參考・出色",
+        "hint": "校內練習帶高位；≠ 官方 5**／公開試等級"
+      }
+    ]
+  },
+  "criteria": {
+    "sectionRwbTitle": "研究工作簿（4 準則）",
+    "sectionArtworkTitle": "藝術作品／評賞研究（6 準則）",
+    "rowsHelp": "對齊公開準則名稱（1＋4 件／4＋6 準則）。下列為標籤佔位；等級描述請用校本 rubric 填寫。",
+    "rows": [
+      {
+        "id": "rwb-1",
+        "component": "rwb",
+        "label": "主題或意念的探索及發展",
+        "focusHint": "素材廣度、選擇／轉化、個人意念"
+      },
+      {
+        "id": "rwb-2",
+        "component": "rwb",
+        "label": "藝術品的詮釋及其與創作╱評賞研究的運用",
+        "focusHint": "有憑據觀點，能轉到自己創作／評賞"
+      },
+      {
+        "id": "rwb-3",
+        "component": "rwb",
+        "label": "媒介及技巧的實驗，以及表達形式的探索",
+        "focusHint": "試驗深度；失敗紀錄亦保留"
+      },
+      {
+        "id": "rwb-4",
+        "component": "rwb",
+        "label": "反思及學習進程",
+        "focusHint": "反思頻率與深度；進程可見"
+      },
+      {
+        "id": "aw-1",
+        "component": "artwork",
+        "label": "媒介、技巧及技法╱寫作技巧",
+        "focusHint": "操控媒介／技法；評賞含寫作"
+      },
+      {
+        "id": "aw-2",
+        "component": "artwork",
+        "label": "視覺表達形式╱分析",
+        "focusHint": "視覺元素／組織是否切合主題"
+      },
+      {
+        "id": "aw-3",
+        "component": "artwork",
+        "label": "與情境的關係",
+        "focusHint": "個人／美學／文化情境與主題"
+      },
+      {
+        "id": "aw-4",
+        "component": "artwork",
+        "label": "創意及想像力╱批判思維",
+        "focusHint": "意念完整；有憑據個人觀點"
+      },
+      {
+        "id": "aw-5",
+        "component": "artwork",
+        "label": "整體表現及主題的傳意",
+        "focusHint": "訊息是否清晰、完整、連貫"
+      },
+      {
+        "id": "aw-6",
+        "component": "artwork",
+        "label": "四件作品的改進",
+        "focusHint": "四件之間有否可見進程"
+      }
+    ]
+  },
+  "empty": {
+    "noStudent": "尚未選學生／作品集。選取後才可填練習 band。",
+    "noBand": "尚未揀練習 band。可先瀏覽準則列，再選表現參考。",
+    "noCriteriaNote": "準則列為佔位；未接校本 pack 前可只記 band，稍後再補描述。"
+  },
+  "teacherTips": [
+    {
+      "id": "use_school_rubric",
+      "text": "先用本校／科組自訂準則填寫；此頁只提供練習 band 骨架。"
+    },
+    {
+      "id": "not_hkeaa",
+      "text": "勿向學生或家長呈示為考評局／官方 SBA 分數或等級。"
+    },
+    {
+      "id": "no_public_exemplars",
+      "text": "勿把學生 5** 或高分作品放上公開 app；樣本只留校內權限。"
+    },
+    {
+      "id": "formative_only",
+      "text": "此 band 屬校內 formative／教練參考，可與校本等級對照，但非提交分。"
+    },
+    {
+      "id": "student_path_separate",
+      "text": "學生端維持自評 1–4／文字回饋；勿把教師 draft band 同步成學生「分數」。"
+    }
+  ]
+}
