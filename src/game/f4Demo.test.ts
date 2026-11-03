@@ -211,6 +211,19 @@ describe('F.4 demo slice', () => {
     }
   })
 
+  it('overlays the lesson title on November covers, not the short goal', () => {
+    const map = readFileSync(new URL('../components/game/LearningMap.tsx', import.meta.url), 'utf8')
+    assert.match(map, /title=\{node\.title\}/)
+    assert.equal(map.includes('title={node.subtitle}'), false)
+    assert.match(map, /data-cover-title=\{title\}/)
+    for (const id of NOVEMBER_LESSONS) {
+      assert.match(map, new RegExp(`'${id}'`))
+    }
+    assert.equal(/\bLv\./.test(map), false)
+    assert.equal(/ XP/.test(map), false)
+    assert.equal(map.includes('SEN'), false)
+  })
+
   it('wires November lesson tiles with对照表 titles, goals, and local covers', () => {
     for (const name of FILES) {
       const lessons = pack(name).units.flatMap((unit) => unit.lessons)

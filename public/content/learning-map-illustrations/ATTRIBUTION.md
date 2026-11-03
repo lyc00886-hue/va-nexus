@@ -21,7 +21,7 @@ Suggested on-screen credit (optional footer / about): 「單元封面插圖 © V
 
 ## F4 November lesson-tile covers (`f4-covers/`)
 
-Three formative classroom lessons ship their own tile illustration. Same rule as the unit covers: **自制 for VA-Nexus**, abstract classroom scenes, no third-party artwork.
+Three formative classroom lessons ship their own tile illustration. Same rule as the unit covers: **自制 for VA-Nexus**, abstract classroom scenes, no third-party artwork. The rounded title plate is left blank so the Learning Map can overlay the lesson title for the active locale (zh-Hant / zh-Hans / EN). Do not bake one language, a short goal, or an optional one-liner into the PNG.
 
 | File | Lesson | License | Source |
 |---|---|---|---|

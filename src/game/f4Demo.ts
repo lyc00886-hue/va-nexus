@@ -5,7 +5,9 @@
  * Optional coverImage / coverCredit and per-lesson artistMedia are additive.
  * U1–U6 each ship a local 自制 cover. A unit with no coverImage still renders without one.
  * November lessons F4-U2-L3, F4-U3-L3, and F4-U3-L4 also ship a lesson-tile cover
- * on that same path. The map chrome and unit cards do not show a syllabus year.
+ * on that same path. The map overlays that lesson's title for the active locale
+ * on the blank plate — not the short goal or optional one-liner.
+ * The map chrome and unit cards do not show a syllabus year.
  */
 import { contentJson } from '../i18n/content'
 import { perLocale } from '../i18n'
