@@ -5,7 +5,7 @@ import type { Lesson, Unit } from './types'
 
 /**
  * Art-history learning map — content by PEANUTS (src/content/art-history-map[.<locale>].json).
- * Accepts either legacy `{ unit }` or multi-unit `{ units: [...] }` (v2).
+ * Accepts either legacy `{ unit }` or multi-unit `{ units: [...] }` (v2/v3; U6–U11 electives unlock per unit).
  * Facts not yet source-checked → every lesson carries 「內容待老師審閱」.
  */
 type ContentUnit = { id: string; title: string; intro?: string; lessons: ContentLesson[] }

@@ -42,7 +42,7 @@
             },
             {
               "type": "fill",
-              "question": "The Lingnan technique that makes colours moist and luminous is called 'water-splashing and ＿＿'.",
+              "question": "The Lingnan technique that makes colours moist and luminous is called 'water-splashing and ____'.",
               "options": [],
               "answer": "powder-splashing",
               "explain": "'Water-splashing and powder-splashing' was developed by Ju Lian and taken up by the Lingnan School.",
@@ -187,7 +187,7 @@
             },
             {
               "type": "fill",
-              "question": "Lin Fengmian promoted '＿＿ Chinese and Western art'.",
+              "question": "Lin Fengmian promoted '____ Chinese and Western art'.",
               "options": [],
               "answer": "harmonising",
               "explain": "He wanted to combine the spirit of Chinese art with modern Western forms.",
@@ -228,7 +228,7 @@
             },
             {
               "type": "fill",
-              "question": "In 1992 Wu Guanzhong published an essay called 'Brush and Ink Equal ＿＿'.",
+              "question": "In 1992 Wu Guanzhong published an essay called 'Brush and Ink Equal ____'.",
               "options": [],
               "answer": "Zero",
               "explain": "He argued that brush and ink are worthless apart from the picture, which sparked a big debate.",
@@ -1434,6 +1434,1927 @@
             "HK-PAK-01",
             "INTL-HIRST-01",
             "INTL-EMIN-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U6-MQ-WUMEN",
+      "title": "Ming–Qing Art (1): The Wu School",
+      "intro": "Elective unit. Meet the Ming literati painters of Suzhou, Shen Zhou and Wen Zhengming, and learn to read handscrolls, inscriptions and seals. Matches F.6 Contextual Studies 'Ming–Qing art 1: Shen Zhou, Wen Zhengming'. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "U6-L1",
+          "title": "Intro to Ming–Qing Art: What Is Literati Painting?",
+          "cards": [
+            "The Ming dynasty (1368–1644) and Qing dynasty (1644–1912) together last almost 550 years — a key period for Chinese painting.",
+            "Literati painting (文人畫) is painting by scholars. They did not paint to make a living; they painted to show their feelings and learning.",
+            "Literati painting combines four things in one work: poetry, calligraphy, painting and seals (詩書畫印).",
+            "Early Ming court painters and the Zhe School (浙派, e.g. Dai Jin 戴進) used bold, showy brushwork; the Wu School (吳門) literati preferred a quiet, refined style.",
+            "Class task: in your visual diary, note three 'literati' features you notice, e.g. empty space, inscriptions, pale ink."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Who mainly made literati paintings?",
+              "options": [
+                "Palace cooks",
+                "Foreign merchants",
+                "Factory workers",
+                "Scholars (literati)"
+              ],
+              "answer": "Scholars (literati)",
+              "explain": "Literati painting was made by scholars to show their learning and feelings."
+            },
+            {
+              "type": "fill",
+              "question": "Literati painting combines poetry, calligraphy, painting and ____.",
+              "options": [],
+              "answer": "seals",
+              "explain": "Poetry, calligraphy, painting and seals.",
+              "wordBank": [
+                "money",
+                "lamps",
+                "seals",
+                "cars"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "In about which year did the Ming dynasty begin?",
+              "options": [
+                "1997",
+                "1368",
+                "1911",
+                "618"
+              ],
+              "answer": "1368",
+              "explain": "The Ming began in 1368 and ended in 1644."
+            },
+            {
+              "type": "match",
+              "question": "Match each school to its style",
+              "options": [
+                "Zhe School",
+                "Wu School"
+              ],
+              "answer": {
+                "Zhe School": "Bold, showy brushwork",
+                "Wu School": "Quiet, refined, poetry-calligraphy-painting"
+              },
+              "explain": "Both are Ming schools, but their styles differ."
+            }
+          ]
+        },
+        {
+          "id": "U6-L2",
+          "title": "Shen Zhou: Founder of the Wu School",
+          "cards": [
+            "Shen Zhou (沈周, 1427–1509) came from Suzhou. He never took an official post; he stayed home to read, write poems and paint.",
+            "He is seen as the founder of the Wu School. He learned from the great Yuan painters (the Four Yuan Masters 元四家) and then built his own brush style.",
+            "In 1467 he painted Lofty Mount Lu (《廬山高》) for the birthday of his teacher Chen Kuan (陳寬). The tall, layered mountain honours his teacher's character. (National Palace Museum, Taipei)",
+            "His early brushwork was fine and careful ('fine Shen' 細沈); after middle age it became broad and bold ('broad Shen' 粗沈).",
+            "Class task: copy a small rock in pencil twice — once with 'fine' lines, once with 'broad' lines — and feel the difference."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Did Shen Zhou ever hold an official post?",
+              "options": [
+                "No, he painted and studied at home all his life",
+                "Yes, he was prime minister",
+                "Yes, he was a general",
+                "He was the emperor"
+              ],
+              "answer": "No, he painted and studied at home all his life",
+              "explain": "Shen Zhou never served as an official — a typical literati painter."
+            },
+            {
+              "type": "mcq",
+              "question": "Who did Shen Zhou paint Lofty Mount Lu for?",
+              "options": [
+                "His student Tang Yin",
+                "His teacher Chen Kuan",
+                "The emperor",
+                "A foreign envoy"
+              ],
+              "answer": "His teacher Chen Kuan",
+              "explain": "Painted in 1467 for his teacher Chen Kuan's birthday."
+            },
+            {
+              "type": "fill",
+              "question": "Shen Zhou's later bold brushwork is called '____ Shen'.",
+              "options": [],
+              "answer": "broad",
+              "explain": "Early 'fine Shen', later 'broad Shen'.",
+              "wordBank": [
+                "small",
+                "new",
+                "broad",
+                "fine"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which painters did Shen Zhou mainly learn from?",
+              "options": [
+                "French Impressionists",
+                "Japanese ukiyo-e",
+                "Modern street graffiti",
+                "The Four Yuan Masters"
+              ],
+              "answer": "The Four Yuan Masters",
+              "explain": "He carried on the Yuan literati landscape tradition."
+            }
+          ],
+          "artistIds": [
+            "CN-SHENZHOU-01"
+          ]
+        },
+        {
+          "id": "U6-L3",
+          "title": "Wen Zhengming and the 'Four Masters of the Ming'",
+          "cards": [
+            "Wen Zhengming (文徵明, 1470–1559) was Shen Zhou's student and became famous for both calligraphy and painting.",
+            "He failed the civil-service exams many times. In 1523 he went to Beijing as an attendant (待詔) at the Hanlin Academy, but resigned about three years later and returned to Suzhou.",
+            "In 1533 he made an album of a friend's garden, the Humble Administrator's Garden (拙政園), with one painting and one poem for each scene. The garden still exists in Suzhou.",
+            "The 'Four Masters of the Ming' (明四家) are Shen Zhou, Wen Zhengming, Tang Yin and Qiu Ying (仇英). The first three were scholars; Qiu Ying was a professional painter known for fine detail and blue-green landscapes.",
+            "Class task: like Wen Zhengming's 'one scene, one picture, one poem', sketch a small corner near school or home and add one line of text."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How were Wen Zhengming and Shen Zhou related?",
+              "options": [
+                "Shen was Wen's student",
+                "Wen was Shen's student",
+                "Wen was Shen's father",
+                "They never met"
+              ],
+              "answer": "Wen was Shen's student",
+              "explain": "Wen learned from Shen and led the next generation of the Wu School."
+            },
+            {
+              "type": "match",
+              "question": "Match each painter to a feature",
+              "options": [
+                "Wen Zhengming",
+                "Qiu Ying",
+                "Shen Zhou"
+              ],
+              "answer": {
+                "Wen Zhengming": "Calligrapher-painter; Humble Administrator's Garden",
+                "Qiu Ying": "Professional painter; fine blue-green style",
+                "Shen Zhou": "Founder of the Wu School"
+              },
+              "explain": "Each of the Four Masters has a distinct feature."
+            },
+            {
+              "type": "fill",
+              "question": "Wen Zhengming painted an album of the Humble ____'s Garden.",
+              "options": [],
+              "answer": "Administrator",
+              "explain": "The Humble Administrator's Garden album, 1533.",
+              "wordBank": [
+                "Disney",
+                "Ocean",
+                "Zoo",
+                "Administrator"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Who is NOT one of the Four Masters of the Ming?",
+              "options": [
+                "Qi Baishi",
+                "Shen Zhou",
+                "Tang Yin",
+                "Qiu Ying"
+              ],
+              "answer": "Qi Baishi",
+              "explain": "Qi Baishi is a modern painter, not one of the Four Masters."
+            }
+          ],
+          "artistIds": [
+            "CN-WENZM-01",
+            "CN-SHENZHOU-01",
+            "CN-TANGYIN-01",
+            "CN-QIUYING-01"
+          ]
+        },
+        {
+          "id": "U6-L4",
+          "title": "How to Read a Literati Painting: Formats, Inscriptions, Seals",
+          "cards": [
+            "Common Chinese painting formats: handscroll (手卷 — horizontal, unrolled right to left), hanging scroll (立軸), album leaf (冊頁) and fan (扇面).",
+            "Inscriptions and colophons (題跋) are words written on or beside the painting — the painter's own poem, or later viewers' comments.",
+            "Seals come in two kinds: red characters (朱文, 'red-text') and white characters on a red ground (白文, 'white-text'). Collectors stamp seals too, so one painting can carry many.",
+            "Landscapes often use the 'three distances' (三遠): high distance (looking up), deep distance (looking in), level distance (looking far across). Empty space (留白) can mean sky, water or mist.",
+            "Class task: make a mini handscroll from an A4 sheet — three scenes right to left, one line of inscription, and your own seal design."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How do you view a handscroll?",
+              "options": [
+                "Hang it all at once",
+                "Tear it open left to right",
+                "Unroll it slowly from right to left",
+                "From bottom to top"
+              ],
+              "answer": "Unroll it slowly from right to left",
+              "explain": "A handscroll is horizontal and viewed right to left."
+            },
+            {
+              "type": "match",
+              "question": "Match each seal type",
+              "options": [
+                "Red-text seal (朱文)",
+                "White-text seal (白文)"
+              ],
+              "answer": {
+                "Red-text seal (朱文)": "Red characters",
+                "White-text seal (白文)": "White characters on red"
+              },
+              "explain": "Red-text: red characters; white-text: white characters."
+            },
+            {
+              "type": "fill",
+              "question": "The 'three distances' are high, deep and ____ distance.",
+              "options": [],
+              "answer": "level",
+              "explain": "High, deep and level distance.",
+              "wordBank": [
+                "level",
+                "fast",
+                "big",
+                "long"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What does empty space in a landscape often stand for?",
+              "options": [
+                "A price tag",
+                "Sky, water or mist",
+                "The painter forgot",
+                "Damaged paper"
+              ],
+              "answer": "Sky, water or mist",
+              "explain": "Empty space is deliberate, not unfinished."
+            }
+          ],
+          "artistIds": [
+            "CN-SHENZHOU-01",
+            "CN-WENZM-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U7-SELF-HERITAGE",
+      "title": "Self, Chinese Tradition and Society",
+      "intro": "Elective unit. Through Tang Yin, Chen Chun, Xu Wei, Bada Shanren, Chen Hongshou and Wu Bin, see how artists used painting to express the self and respond to society. Links to DSE work 1 (ink + mixed media, life-size 2D). F.6 theme: How Society and traditional Chinese Heritage influence ordinary life. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "U7-L1",
+          "title": "Tang Yin: A Talented Scholar's Setback and Self-Image",
+          "cards": [
+            "Tang Yin (唐寅, 1470–1524), also called Tang Bohu (唐伯虎), came from Suzhou. He is the 'Tang Bohu' of popular stories and films.",
+            "In 1499 he took the exams in Beijing and was caught up in a cheating scandal. He was barred from office for life — this changed everything.",
+            "Afterwards he lived by selling paintings. He even carved a seal reading 'The Most Romantic Talent South of the River' (江南第一風流才子), mocking himself to express who he was.",
+            "Autumn Wind and Silk Fan (《秋風紈扇圖》, Shanghai Museum) shows a woman holding a fan in the autumn wind. A fan is useless in autumn, so it is read as being cast aside — and as Tang Yin's own disappointment.",
+            "Think: how is the real Tang Yin different from the film 'Tang Bohu'? How can society rewrite an artist's image?"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What happened to Tang Yin in 1499?",
+              "options": [
+                "He was caught in an exam-cheating scandal and barred from office",
+                "He became emperor",
+                "He studied in Europe",
+                "He opened a restaurant"
+              ],
+              "answer": "He was caught in an exam-cheating scandal and barred from office",
+              "explain": "The exam scandal ended his official career."
+            },
+            {
+              "type": "fill",
+              "question": "Tang Yin's seal reads 'The Most ____ Talent South of the River'.",
+              "options": [],
+              "answer": "Romantic",
+              "explain": "He expressed himself through self-mockery.",
+              "wordBank": [
+                "Mathematical",
+                "Sporty",
+                "Digital",
+                "Romantic"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "How is Autumn Wind and Silk Fan often read?",
+              "options": [
+                "As a fan advertisement",
+                "As a weather report",
+                "As feeling cast aside and disappointed",
+                "As a wedding celebration"
+              ],
+              "answer": "As feeling cast aside and disappointed",
+              "explain": "A fan in autumn is unwanted — a metaphor for being neglected."
+            },
+            {
+              "type": "mcq",
+              "question": "After losing his chance of office, how did Tang Yin mainly live?",
+              "options": [
+                "By fighting wars",
+                "By exporting rice",
+                "As a ship captain",
+                "By selling paintings"
+              ],
+              "answer": "By selling paintings",
+              "explain": "He made a living from painting and calligraphy."
+            }
+          ],
+          "artistIds": [
+            "CN-TANGYIN-01"
+          ]
+        },
+        {
+          "id": "U7-L2",
+          "title": "Chen Chun and Xu Wei: The Freedom of Expressive Ink",
+          "cards": [
+            "Chen Chun (陳淳, 1484–1544), art name Baiyang (白陽), studied with Wen Zhengming. His flowers use quick brushwork and wet ink, moving towards free 'xieyi' (寫意) painting.",
+            "Xu Wei (徐渭, 1521–1593), art name Qingteng (青藤), had a hard life: he failed the exams many times and was once imprisoned. He poured his frustration into brush and ink.",
+            "Xu Wei's Ink Grapes (《墨葡萄圖》, Palace Museum, Beijing) dots grapes with broad, wet ink. His poem says his talent, like 'bright pearls', was left unwanted among wild vines.",
+            "Xu Wei ranked himself 'calligraphy first, poetry second, prose third, painting fourth' — his painting cannot be separated from his writing.",
+            "Later critics paired them as 'Qingteng and Baiyang' (青藤白陽). Their bold expressive ink (大寫意) influenced Bada Shanren, the Yangzhou Eccentrics and even Qi Baishi."
+          ],
+          "quiz": [
+            {
+              "type": "match",
+              "question": "Match each painter to his art name",
+              "options": [
+                "Xu Wei",
+                "Chen Chun"
+              ],
+              "answer": {
+                "Xu Wei": "Qingteng",
+                "Chen Chun": "Baiyang"
+              },
+              "explain": "Together they are called 'Qingteng and Baiyang'."
+            },
+            {
+              "type": "mcq",
+              "question": "What does the poem on Ink Grapes express?",
+              "options": [
+                "Grape nutrition facts",
+                "A travel advert",
+                "Frustration that his talent was unrecognised",
+                "Joy at a profitable harvest"
+              ],
+              "answer": "Frustration that his talent was unrecognised",
+              "explain": "'Pearls' thrown among wild vines — talent left unused."
+            },
+            {
+              "type": "fill",
+              "question": "Chen Chun and Xu Wei painted in a bold, free style called da-____ (大寫意).",
+              "options": [],
+              "answer": "xieyi",
+              "explain": "Da-xieyi: free brushwork that expresses feeling.",
+              "wordBank": [
+                "gongbi",
+                "realism",
+                "sketch",
+                "xieyi"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which later painter was directly influenced by bold xieyi ink?",
+              "options": [
+                "Bada Shanren",
+                "Leonardo da Vinci",
+                "Picasso",
+                "Andy Warhol"
+              ],
+              "answer": "Bada Shanren",
+              "explain": "Bada Shanren, the Yangzhou Eccentrics and Qi Baishi all built on it."
+            }
+          ],
+          "artistIds": [
+            "CN-CHENCHUN-01",
+            "CN-XUWEI-01"
+          ]
+        },
+        {
+          "id": "U7-L3",
+          "title": "Bada Shanren: Rolling Eyes, Strange Rocks and Symbols",
+          "cards": [
+            "Bada Shanren (八大山人, Zhu Da 朱耷, c.1626–1705) was a descendant of the Ming royal family. After the Ming fell he became a Buddhist monk, and later returned to lay life.",
+            "His signature 'Bada Shanren' was often written so that it looks like both 'crying over it' (哭之) and 'laughing at it' (笑之) — mixed, complicated feelings.",
+            "His birds and fish often roll their eyes upward and hunch their bodies. This is read as defiance towards the new Qing rulers, and loneliness.",
+            "His rocks are often top-heavy, as if about to topple, on a nearly empty page with only one or two things — an uneasy feeling.",
+            "Class task: choose an animal or object to stand for your mood today. Draw it with very few marks and write one line on what it means."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Who was Bada Shanren?",
+              "options": [
+                "A Japanese general",
+                "An Italian merchant",
+                "A descendant of the Ming royal family",
+                "A Qing emperor"
+              ],
+              "answer": "A descendant of the Ming royal family",
+              "explain": "He was of Ming royal descent and became a monk after the Ming fell."
+            },
+            {
+              "type": "fill",
+              "question": "Bada Shanren's signature looks like 'crying over it' and '____ at it'.",
+              "options": [],
+              "answer": "laughing",
+              "explain": "Crying and laughing — complex feelings.",
+              "wordBank": [
+                "sleeping",
+                "laughing",
+                "eating",
+                "running"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What is typical of Bada Shanren's birds and fish?",
+              "options": [
+                "Eyes rolled upward, hunched bodies",
+                "Wearing hats",
+                "Bright cartoon colours",
+                "All of them smiling"
+              ],
+              "answer": "Eyes rolled upward, hunched bodies",
+              "explain": "The rolled eyes are read as defiance and loneliness."
+            },
+            {
+              "type": "mcq",
+              "question": "What are his compositions usually like?",
+              "options": [
+                "Photo collage",
+                "Empty, with only one or two things",
+                "Crowded with many people",
+                "All in gold"
+              ],
+              "answer": "Empty, with only one or two things",
+              "explain": "Large empty space makes the loneliness stronger."
+            }
+          ],
+          "artistIds": [
+            "CN-BADASHANREN-01"
+          ]
+        },
+        {
+          "id": "U7-L4",
+          "title": "Chen Hongshou and Wu Bin: Figures, Distortion and Strange Stones",
+          "cards": [
+            "Chen Hongshou (陳洪綬, 1598–1652) was a figure painter. His people have big heads, thin bodies and strong drapery lines — deliberately distorted, odd and full of character.",
+            "He designed the Water Margin playing cards (《水滸葉子》), turning the heroes of the novel into cards. Figure painting can express identity and character, not just likeness.",
+            "He was as famous as Cui Zizhong (崔子忠) in the north: 'Chen of the South, Cui of the North' (南陳北崔).",
+            "Wu Bin (吳彬, active c.1583–1626) painted exaggerated, fantastic figures and landscapes. In 1610 he painted Ten Views of a Lingbi Stone (《十面靈璧圖》) for the collector Mi Wanzhong (米萬鍾), showing one rock from ten angles.",
+            "Link to DSE work 1: try distortion and exaggeration in a life-size drawing of yourself or a family member, and add one object that stands for their identity (as the stone did for Mi Wanzhong)."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What is special about Chen Hongshou's figures?",
+              "options": [
+                "Exactly like photographs",
+                "Landscapes with no people",
+                "Oil paint only",
+                "Deliberately distorted, odd and full of character"
+              ],
+              "answer": "Deliberately distorted, odd and full of character",
+              "explain": "Distortion makes character stand out."
+            },
+            {
+              "type": "fill",
+              "question": "Chen Hongshou and Cui Zizhong: 'Chen of the South, ____ of the North'.",
+              "options": [],
+              "answer": "Cui",
+              "explain": "Chen of the South, Cui of the North.",
+              "wordBank": [
+                "Li",
+                "Zhang",
+                "Cui",
+                "Wang"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What does Wu Bin's Ten Views of a Lingbi Stone show?",
+              "options": [
+                "Ten cities",
+                "One strange rock from ten angles",
+                "Ten emperors",
+                "Ten horses"
+              ],
+              "answer": "One strange rock from ten angles",
+              "explain": "Painted in 1610 for Mi Wanzhong."
+            },
+            {
+              "type": "match",
+              "question": "Match each painter to a work",
+              "options": [
+                "Chen Hongshou",
+                "Wu Bin"
+              ],
+              "answer": {
+                "Chen Hongshou": "Water Margin playing cards",
+                "Wu Bin": "Ten Views of a Lingbi Stone"
+              },
+              "explain": "One drew heroes as cards; the other a strange stone."
+            }
+          ],
+          "artistIds": [
+            "CN-CHENHS-01",
+            "CN-WUBIN-01"
+          ]
+        },
+        {
+          "id": "U7-L5",
+          "title": "DSE Work 1: From Research to Life-size Mixed Media",
+          "cards": [
+            "Step 1: Make a mind map on 'Self, Chinese tradition and society' — keywords such as family, community, festivals, traditional objects.",
+            "Step 2: Research. Interview family or friends, take photos or sketch; compare at least two artists from this unit (e.g. Xu Wei's ink, Bada's symbols, Chen Hongshou's distortion).",
+            "Step 3: Ink experiments. Try dark ink, pale ink, broken ink (破墨) and dry brush, then add collage, paper, fabric and other mixed media.",
+            "Step 4: Finish a life-size 2D work, then present it in the 6 sections your teacher sets (e.g. theme, research, experiments, development, final work, reflection).",
+            "Reminder: study artists to learn methods, not to copy their style. Record every idea and change in your visual diary."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What is the best first step for DSE work 1?",
+              "options": [
+                "Make a mind map on the theme",
+                "Paint the final piece at once",
+                "Copy a picture online",
+                "Write nothing"
+              ],
+              "answer": "Make a mind map on the theme",
+              "explain": "Organise ideas with a mind map first."
+            },
+            {
+              "type": "fill",
+              "question": "DSE work 1 should be a 2D work at life ____.",
+              "options": [],
+              "answer": "size",
+              "explain": "Life-size.",
+              "wordBank": [
+                "finger",
+                "stamp",
+                "ant",
+                "size"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What is the right way to use reference artists?",
+              "options": [
+                "Only write their birthdays",
+                "Never look at any artist",
+                "Learn their methods, then develop your own idea",
+                "Copy their style and hand it in"
+              ],
+              "answer": "Learn their methods, then develop your own idea",
+              "explain": "Borrow methods; don't copy."
+            },
+            {
+              "type": "match",
+              "question": "Match each step to its content",
+              "options": [
+                "Research",
+                "Experiment",
+                "Reflection"
+              ],
+              "answer": {
+                "Research": "Interview, sketch, compare artists",
+                "Experiment": "Try ink and mixed media",
+                "Reflection": "Note changes and what you learned"
+              },
+              "explain": "Record every step in your visual diary."
+            }
+          ],
+          "artistIds": [
+            "CN-XUWEI-01",
+            "CN-BADASHANREN-01",
+            "CN-CHENHS-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U8-CN-SYMBOLS",
+      "title": "Traditional Chinese Symbols: Colour, Pattern and Painting",
+      "intro": "Elective unit. Learn traditional Chinese colours, auspicious patterns, the Four Monks and the Four Wangs, then see how contemporary artists borrow these symbols. Matches F.6 'Sign and symbol in traditional Chinese Heritage' and 'Ming–Qing art 2: literati painting, Four Monks, Four Wangs'. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "U8-L1",
+          "title": "What Colours Mean: Five Colours and Status",
+          "cards": [
+            "Ancient China explained the world with the Five Phases (五行): wood, fire, earth, metal, water. Each matches a colour: blue-green, red, yellow, white, black — the 'Five Colours' (五色).",
+            "Yellow stands for the centre and earth. In the Qing dynasty, bright yellow (明黃) was reserved for the emperor; ordinary people could not use it freely.",
+            "Red means celebration and good luck, so it is used at New Year and weddings; white was traditionally used at funerals.",
+            "Colour meanings change with time and place — for example, Western brides wear white. Always read colour together with its context.",
+            "Class task: find three things with traditional colours at home or on the street (e.g. New Year couplets, red packets, temples). Photograph or sketch them and note their meaning."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "In the Qing dynasty, who was bright yellow reserved for?",
+              "options": [
+                "Students",
+                "The emperor",
+                "Farmers",
+                "Merchants"
+              ],
+              "answer": "The emperor",
+              "explain": "Bright yellow was the emperor's colour."
+            },
+            {
+              "type": "match",
+              "question": "Match each phase to its colour",
+              "options": [
+                "Fire",
+                "Wood",
+                "Earth"
+              ],
+              "answer": {
+                "Fire": "Red",
+                "Wood": "Blue-green",
+                "Earth": "Yellow"
+              },
+              "explain": "Each of the Five Phases has a colour."
+            },
+            {
+              "type": "fill",
+              "question": "Chinese New Year and weddings often use ____ for celebration.",
+              "options": [],
+              "answer": "red",
+              "explain": "Red means celebration and good luck.",
+              "wordBank": [
+                "grey",
+                "brown",
+                "purple",
+                "red"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What should you consider when reading colour symbols?",
+              "options": [
+                "The context of time and place",
+                "Only whether you like it",
+                "The price of the colour",
+                "The paint brand"
+              ],
+              "answer": "The context of time and place",
+              "explain": "The same colour can mean different things in different cultures."
+            }
+          ]
+        },
+        {
+          "id": "U8-L2",
+          "title": "Auspicious Patterns: Sound-alikes and Meanings",
+          "cards": [
+            "Many Chinese patterns use sound-alike words (諧音) for good luck: 'bat' (蝠 fu) sounds like 'blessing' (福 fu); 'fish' (魚 yu) sounds like 'surplus' (餘 yu), as in 'surplus every year'.",
+            "'Deer' (鹿 lu) sounds like 'official salary' (祿 lu); 'vase' (瓶 ping) sounds like 'peace' (平 ping).",
+            "Plants have meanings too: plum, orchid, bamboo and chrysanthemum are the 'Four Gentlemen' (四君子), standing for noble character; pine, bamboo and plum are the 'Three Friends of Winter' (歲寒三友), standing for endurance in hard times.",
+            "These patterns appear on porcelain, clothing, buildings, New Year prints — and today's designs and brands.",
+            "Class task: design an 'auspicious pattern' that represents you, using a sound-alike or a symbolic meaning, and write down your design idea."
+          ],
+          "quiz": [
+            {
+              "type": "match",
+              "question": "Match each image to its meaning",
+              "options": [
+                "Bat",
+                "Fish",
+                "Deer"
+              ],
+              "answer": {
+                "Bat": "Blessing",
+                "Fish": "Surplus",
+                "Deer": "Official salary"
+              },
+              "explain": "Sound-alike words bring good wishes."
+            },
+            {
+              "type": "mcq",
+              "question": "Which plants are the 'Four Gentlemen'?",
+              "options": [
+                "Pine, cypress, poplar, willow",
+                "Peach, plum, apricot, pear",
+                "Rose, lily, sunflower, tulip",
+                "Plum, orchid, bamboo, chrysanthemum"
+              ],
+              "answer": "Plum, orchid, bamboo, chrysanthemum",
+              "explain": "The Four Gentlemen stand for noble character."
+            },
+            {
+              "type": "fill",
+              "question": "Pine, bamboo and plum are the '____ Friends of Winter'.",
+              "options": [],
+              "answer": "Three",
+              "explain": "Endurance in hard times.",
+              "wordBank": [
+                "Three",
+                "Five",
+                "Seven",
+                "Ten"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What does a vase pattern often mean?",
+              "options": [
+                "Failing an exam",
+                "Peace",
+                "War",
+                "Rain"
+              ],
+              "answer": "Peace",
+              "explain": "'Vase' (ping) sounds like 'peace' (ping)."
+            }
+          ]
+        },
+        {
+          "id": "U8-L3",
+          "title": "The Four Monks of the Early Qing: Individuality and Innovation",
+          "cards": [
+            "After the Ming fell, four painters who had been Buddhist monks became known as the 'Four Monks' (清初四僧): Hongren, Kuncan, Bada Shanren and Shitao.",
+            "Hongren (弘仁, 1610–1664) often painted Mount Huang with clean lines and simple structure; Kuncan (髡殘, born 1612) painted dense, heavy landscapes.",
+            "Shitao (石濤, 1642–1707) was also born into the Ming royal clan. He said 'search out all the strange peaks to make sketches' (搜盡奇峰打草稿) — observe nature yourself.",
+            "Shitao also said 'brush and ink should follow the times' (筆墨當隨時代): methods should change with the age, not just copy the ancients. This still inspires artists today.",
+            "The Four Monks valued personal feeling and innovation — a contrast with the Four Wangs in the next lesson, who valued learning from the old masters."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Who is NOT one of the Four Monks?",
+              "options": [
+                "Shitao",
+                "Bada Shanren",
+                "Hongren",
+                "Wang Hui"
+              ],
+              "answer": "Wang Hui",
+              "explain": "Wang Hui is one of the Four Wangs."
+            },
+            {
+              "type": "fill",
+              "question": "Shitao said 'brush and ink should follow the ____'.",
+              "options": [],
+              "answer": "times",
+              "explain": "Methods should change with the age.",
+              "wordBank": [
+                "weather",
+                "teacher",
+                "times",
+                "market"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What does 'search out all the strange peaks to make sketches' mean?",
+              "options": [
+                "Paint only one mountain",
+                "Observe many real landscapes yourself before creating",
+                "Only copy albums at home",
+                "No sketches are needed"
+              ],
+              "answer": "Observe many real landscapes yourself before creating",
+              "explain": "It values direct observation."
+            },
+            {
+              "type": "match",
+              "question": "Match each painter to a feature",
+              "options": [
+                "Hongren",
+                "Shitao",
+                "Bada Shanren"
+              ],
+              "answer": {
+                "Hongren": "Mount Huang, simple lines",
+                "Shitao": "Brush and ink follow the times",
+                "Bada Shanren": "Birds and fish with rolled eyes"
+              },
+              "explain": "Each monk had a strong personal style."
+            }
+          ],
+          "artistIds": [
+            "CN-BADASHANREN-01",
+            "CN-HONGREN-01",
+            "CN-KUNCAN-01",
+            "CN-SHITAO-01"
+          ]
+        },
+        {
+          "id": "U8-L4",
+          "title": "The Four Wangs of the Early Qing: Learning from the Past",
+          "cards": [
+            "The 'Four Wangs' (四王) — Wang Shimin (王時敏), Wang Jian (王鑑), Wang Hui (王翬) and Wang Yuanqi (王原祁) — were seen as the 'orthodox' school of early Qing painting.",
+            "They followed the late-Ming critic Dong Qichang (董其昌, 1555–1636), who divided landscape painting into 'Southern' and 'Northern' schools and praised the literati Southern School.",
+            "The Four Wangs valued 'imitating the ancients' (仿古): studying old masters' brushwork closely and recombining it. Many works are inscribed 'after the brush manner of …'.",
+            "Wang Hui led the painting of the Kangxi Emperor's Southern Inspection Tour scrolls (《康熙南巡圖》). With court support, their style was hugely influential.",
+            "Compare: the Four Monks valued individuality; the Four Wangs valued learning from the past. Both can inspire you — do you want to learn tradition, or express yourself, or both?"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Who belongs to the Four Wangs?",
+              "options": [
+                "Wang Shimin",
+                "Shitao",
+                "Hongren",
+                "Kuncan"
+              ],
+              "answer": "Wang Shimin",
+              "explain": "Wang Shimin was the senior of the Four Wangs."
+            },
+            {
+              "type": "fill",
+              "question": "Dong Qichang divided landscape painting into Southern and ____ schools.",
+              "options": [],
+              "answer": "Northern",
+              "explain": "The Southern and Northern schools theory.",
+              "wordBank": [
+                "Eastern",
+                "Western",
+                "Central",
+                "Northern"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What did the Four Wangs value most?",
+              "options": [
+                "Abstract expressionism",
+                "Street graffiti",
+                "Imitating and learning from old masters",
+                "Photographic realism"
+              ],
+              "answer": "Imitating and learning from old masters",
+              "explain": "Learning from the ancients was central."
+            },
+            {
+              "type": "match",
+              "question": "Match each group to its attitude",
+              "options": [
+                "Four Wangs",
+                "Four Monks"
+              ],
+              "answer": {
+                "Four Wangs": "Learning from the past, orthodox",
+                "Four Monks": "Individuality, innovation"
+              },
+              "explain": "Two contrasting attitudes."
+            }
+          ],
+          "artistIds": [
+            "CN-DONGQC-01",
+            "CN-WANGSM-01",
+            "CN-WANGJIAN-01",
+            "CN-WANGHUI-01",
+            "CN-WANGYQ-01"
+          ]
+        },
+        {
+          "id": "U8-L5",
+          "title": "Postmodernism: How Contemporary Artists Borrow Traditional Symbols",
+          "cards": [
+            "Postmodern art often uses appropriation: putting old images and symbols into a new context so we rethink what they mean.",
+            "Qiu Zhijie (邱志杰), Writing the 'Orchid Pavilion Preface' One Thousand Times (1990–1995): he wrote the famous calligraphy text over and over on one sheet until it turned black — tradition becomes a work about time and repetition.",
+            "Xu Bing (徐冰), Book from the Sky (《天書》, 1987–1991): thousands of carved 'characters' that look Chinese but cannot be read, making us question language and culture.",
+            "Ding Yi (丁乙) has painted his 'Appearance of Crosses' (十示) series since 1988, repeating '+' and '×'; Lam Tung-pang (林東鵬) mixes traditional landscape composition with Hong Kong memories on plywood; Wilson Shieh (石家豪) paints contemporary figures in gongbi.",
+            "Note: contemporary works are under copyright, so the platform shows no images. Please view them on the museums' official websites."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does 'appropriation' mean?",
+              "options": [
+                "Not referring to anything",
+                "Putting old images into a new context to create new meaning",
+                "Stealing an artwork",
+                "Only using newly invented paint"
+              ],
+              "answer": "Putting old images into a new context to create new meaning",
+              "explain": "Appropriation is a common postmodern strategy."
+            },
+            {
+              "type": "match",
+              "question": "Match each artist to a work",
+              "options": [
+                "Qiu Zhijie",
+                "Xu Bing",
+                "Ding Yi"
+              ],
+              "answer": {
+                "Qiu Zhijie": "Writing the Orchid Pavilion Preface 1,000 times",
+                "Xu Bing": "Book from the Sky's fake characters",
+                "Ding Yi": "'Appearance of Crosses' series"
+              },
+              "explain": "All three borrow traditional writing or signs."
+            },
+            {
+              "type": "fill",
+              "question": "Qiu Zhijie rewrote the '____ Pavilion Preface' a thousand times.",
+              "options": [],
+              "answer": "Orchid",
+              "explain": "Wang Xizhi's Orchid Pavilion Preface.",
+              "wordBank": [
+                "Yueyang",
+                "Peach Blossom",
+                "Memorial",
+                "Orchid"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Why does the platform show no images of contemporary works?",
+              "options": [
+                "They are protected by copyright",
+                "They have no colour",
+                "The files are too big",
+                "The teacher dislikes them"
+              ],
+              "answer": "They are protected by copyright",
+              "explain": "Link to official websites instead."
+            }
+          ],
+          "artistIds": [
+            "CN-QIUZJ-01",
+            "CN-DINGYI-01",
+            "CN-XUBING-01",
+            "HK-LAMTP-01",
+            "HK-SHIEH-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U9-ROLE-TAKING",
+      "title": "Role-taking: Re-presenting Someone in a Chinese Context",
+      "intro": "Elective unit. From Cindy Sherman's role-play to the figures and self-images of the Yangzhou Eccentrics, Xu Beihong and Qi Baishi, learn to 're-present someone in a Chinese context'. Links to DSE work 2 (dry/wet media drawing and painting). Matches F.6 Role taking (Part 3) and 'Ming–Qing art: Yangzhou Eccentrics, Xu Beihong, Qi Baishi'. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "U9-L1",
+          "title": "Cindy Sherman and Wang Qingsong: Role-play and Restaging",
+          "cards": [
+            "American artist Cindy Sherman's Untitled Film Stills (1977–1980) is a series of about 70 black-and-white photographs. Sherman is her own model, dressed as different female characters from films.",
+            "The characters look familiar, but they come from no real film. Sherman makes us ask: how do films and media shape images of women?",
+            "Wang Qingsong (王慶松), Night Revels of Lao Li (《老栗夜宴圖》, 2000), restages the classic Night Revels of Han Xizai (《韓熙載夜宴圖》, attributed to Gu Hongzhong 顧閎中) as a photograph, with art critic Li Xianting (栗憲庭) in the main role, to comment on today's society.",
+            "Both use role-play and restaging: borrow a familiar image, put it in a new context, and raise questions about identity and society.",
+            "Note: both are contemporary artists whose works are under copyright, so the platform shows no images. View them on official sites such as MoMA and Tate."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Who is the model in Untitled Film Stills?",
+              "options": [
+                "Film stars",
+                "A robot",
+                "Sherman herself",
+                "Her students"
+              ],
+              "answer": "Sherman herself",
+              "explain": "Sherman plays every character herself."
+            },
+            {
+              "type": "fill",
+              "question": "Untitled Film Stills has about ____ black-and-white photographs.",
+              "options": [],
+              "answer": "70",
+              "explain": "About 70 photos, 1977–1980.",
+              "wordBank": [
+                "7000",
+                "70",
+                "7",
+                "700"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which old painting does Wang Qingsong's Night Revels of Lao Li restage?",
+              "options": [
+                "Night Revels of Han Xizai",
+                "Along the River During the Qingming Festival",
+                "Mona Lisa",
+                "Lofty Mount Lu"
+              ],
+              "answer": "Night Revels of Han Xizai",
+              "explain": "It restages the painting attributed to Gu Hongzhong."
+            },
+            {
+              "type": "mcq",
+              "question": "What strategy do the two artists share?",
+              "options": [
+                "No people at all",
+                "Role-play or restaging a familiar image",
+                "Only landscapes",
+                "Only sculpture"
+              ],
+              "answer": "Role-play or restaging a familiar image",
+              "explain": "Role-play raises questions of identity and society."
+            }
+          ],
+          "artistIds": [
+            "INTL-SHERMAN-01",
+            "CN-WANGQS-01"
+          ]
+        },
+        {
+          "id": "U9-L2",
+          "title": "The Eight Eccentrics of Yangzhou: What Made Them 'Eccentric'?",
+          "cards": [
+            "In the mid-Qing, Yangzhou grew rich from the salt trade and drew many painters to sell their work. A group with new, unusual styles became known as the 'Eight Eccentrics of Yangzhou' (揚州八怪). (The scheme of work writes 楊州; the correct form is 揚州.)",
+            "Lists of the 'Eight' vary. Common names: Jin Nong (金農), Zheng Xie (鄭燮, Zheng Banqiao), Huang Shen (黃慎), Li Shan (李鱓), Li Fangying (李方膺), Wang Shishen (汪士慎), Gao Xiang (高翔) and Luo Pin (羅聘); some lists add Hua Yan (華嵒) and others.",
+            "Zheng Xie loved painting bamboo, invented his own 'six-and-a-half' script (六分半書), and wrote 'it is hard to be muddle-headed' (難得糊塗). As a county magistrate, his bamboo poem says even small officials care about every branch and leaf — he cared for ordinary people.",
+            "Jin Nong painted self-portraits; his student Luo Pin painted his teacher's portrait and the Ghost Amusements scroll (《鬼趣圖》), using ghosts to mock society.",
+            "Think: why were they called 'eccentric'? Their methods, their personalities, or refusing to follow the mainstream?"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Why did Qing Yangzhou attract many painters?",
+              "options": [
+                "It had many snow mountains",
+                "It was the capital",
+                "It had many factories",
+                "Rich salt merchants made a big art market"
+              ],
+              "answer": "Rich salt merchants made a big art market",
+              "explain": "The salt economy made the art market thrive."
+            },
+            {
+              "type": "mcq",
+              "question": "Who wrote 'it is hard to be muddle-headed' (難得糊塗)?",
+              "options": [
+                "Zheng Xie (Zheng Banqiao)",
+                "Shen Zhou",
+                "Xu Beihong",
+                "Cindy Sherman"
+              ],
+              "answer": "Zheng Xie (Zheng Banqiao)",
+              "explain": "A famous saying of Zheng Banqiao."
+            },
+            {
+              "type": "match",
+              "question": "Match each painter to a feature",
+              "options": [
+                "Zheng Xie",
+                "Luo Pin",
+                "Jin Nong"
+              ],
+              "answer": {
+                "Zheng Xie": "Bamboo, six-and-a-half script",
+                "Luo Pin": "Ghost Amusements",
+                "Jin Nong": "Self-portraits"
+              },
+              "explain": "Each Eccentric had his own character."
+            },
+            {
+              "type": "fill",
+              "question": "The scheme of work writes 楊州; the correct character is '____州'.",
+              "options": [],
+              "answer": "揚",
+              "explain": "Yangzhou is written 揚州.",
+              "wordBank": [
+                "揚",
+                "楊",
+                "陽",
+                "洋"
+              ]
+            }
+          ],
+          "artistIds": [
+            "CN-JINNONG-01",
+            "CN-ZHENGXIE-01",
+            "CN-LUOPIN-01",
+            "CN-HUANGSHEN-01",
+            "CN-LISHAN-01",
+            "CN-WANGSS-01",
+            "CN-GAOXIANG-01",
+            "CN-HUAYAN-01",
+            "CN-LIFY-01"
+          ]
+        },
+        {
+          "id": "U9-L3",
+          "title": "Xu Beihong: Telling His Times Through Figures",
+          "cards": [
+            "Xu Beihong (徐悲鴻, 1895–1953) studied Western drawing and oil painting in France and argued for using realism to reform Chinese painting.",
+            "In 1940, at Visva-Bharati University in India (founded by Rabindranath Tagore), he painted the large ink work The Foolish Old Man Who Removed the Mountains (《愚公移山》) and also a portrait of Tagore.",
+            "The work uses an ancient fable and shows strong labourers. During the war against Japan it spread the message: keep going and you will succeed.",
+            "He combined Western anatomy and drawing with Chinese brush lines — a good example of re-presenting someone in a Chinese context.",
+            "Class task: choose a fable or historical story, use someone near you as the model, and redraw one character."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "In which country did Xu Beihong study Western art?",
+              "options": [
+                "France",
+                "Japan",
+                "Brazil",
+                "Egypt"
+              ],
+              "answer": "France",
+              "explain": "He studied in France."
+            },
+            {
+              "type": "fill",
+              "question": "In 1940 in India, Xu Beihong painted The Foolish Old Man Who Removed the ____.",
+              "options": [],
+              "answer": "Mountains",
+              "explain": "The Foolish Old Man Who Removed the Mountains.",
+              "wordBank": [
+                "Fish",
+                "Books",
+                "Paintings",
+                "Mountains"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What did the painting express during the war?",
+              "options": [
+                "A travel advert",
+                "The height of a mountain",
+                "Keep going and you will succeed",
+                "Give up"
+              ],
+              "answer": "Keep going and you will succeed",
+              "explain": "An old fable used to lift people's spirits."
+            },
+            {
+              "type": "mcq",
+              "question": "What is special about Xu Beihong's figures?",
+              "options": [
+                "Computer drawing only",
+                "Totally abstract",
+                "Animals only",
+                "Western drawing combined with Chinese brushwork"
+              ],
+              "answer": "Western drawing combined with Chinese brushwork",
+              "explain": "Realist figures blending Chinese and Western methods."
+            }
+          ],
+          "artistIds": [
+            "CN-XUBH-01"
+          ]
+        },
+        {
+          "id": "U9-L4",
+          "title": "Qi Baishi: From Carpenter to Master, 'Between Likeness and Unlikeness'",
+          "cards": [
+            "Qi Baishi (齊白石, 1864–1957) grew up in rural Hunan and worked as a carpenter when young. He taught himself poetry, calligraphy, painting and seal carving.",
+            "From around 1917, encouraged by his friend Chen Shizeng (陳師曾), he 'changed his style in old age' (衰年變法): in his fifties he boldly changed, learning from the bold ink of Xu Wei, Bada Shanren and Wu Changshuo.",
+            "He often paired finely detailed insects with loose, bold leaves and flowers ('fine and free combined', 工寫結合); 'red flowers, ink leaves' (紅花墨葉) is another trademark.",
+            "He said: 'The wonder of painting lies between likeness and unlikeness. Too alike flatters vulgar taste; too unlike deceives the world.' Don't only chase likeness — but don't lose it completely.",
+            "Link: Qi painted everyday small things — shrimps, cabbages, chicks. Ordinary life can become important art."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What was Qi Baishi's job when he was young?",
+              "options": [
+                "Teacher",
+                "Carpenter",
+                "Doctor",
+                "Sailor"
+              ],
+              "answer": "Carpenter",
+              "explain": "He rose from carpenter to master."
+            },
+            {
+              "type": "fill",
+              "question": "Qi said the wonder of painting lies between likeness and ____.",
+              "options": [],
+              "answer": "unlikeness",
+              "explain": "Between likeness and unlikeness.",
+              "wordBank": [
+                "unlikeness",
+                "goodness",
+                "speed",
+                "size"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What does 'changing style in old age' (衰年變法) mean?",
+              "options": [
+                "Stopping painting in old age",
+                "Copying pictures when young",
+                "Painting only old people",
+                "Boldly changing his style even when older"
+              ],
+              "answer": "Boldly changing his style even when older",
+              "explain": "He kept changing in his fifties."
+            },
+            {
+              "type": "match",
+              "question": "Match each term to its meaning",
+              "options": [
+                "Fine and free combined",
+                "Red flowers, ink leaves"
+              ],
+              "answer": {
+                "Fine and free combined": "Detailed insects with loose leaves",
+                "Red flowers, ink leaves": "Red blossoms with black-ink leaves"
+              },
+              "explain": "Two of Qi Baishi's trademarks."
+            }
+          ],
+          "artistIds": [
+            "CN-QIBS-01"
+          ]
+        },
+        {
+          "id": "U9-L5",
+          "title": "DSE Work 2: Re-presenting Someone with Dry and Wet Media",
+          "cards": [
+            "Title: Reappear someone in Chinese context. First choose a person: a family member, friend, historical figure, or a role you play yourself.",
+            "Wet media: ink, watercolour, acrylic — good for washes, large areas and mood. Dry media: charcoal, pencil, pastel, coloured pencil — good for line, texture and detail.",
+            "Try mixing them: e.g. lay a pale ink wash first, then strengthen outlines with charcoal. Like Sherman, you can stage and photograph a role-play for reference.",
+            "Add a Chinese context: clothing, objects, auspicious symbols, composition (e.g. handscroll or hanging-scroll format), or restage an old painting.",
+            "Afterwards, make a mind map and a critique of your own work: which part works best? What could improve?"
+          ],
+          "quiz": [
+            {
+              "type": "match",
+              "question": "Match each medium to its type",
+              "options": [
+                "Charcoal",
+                "Ink"
+              ],
+              "answer": {
+                "Charcoal": "Dry medium",
+                "Ink": "Wet medium"
+              },
+              "explain": "Know your dry and wet media."
+            },
+            {
+              "type": "mcq",
+              "question": "What effect are wet media better for?",
+              "options": [
+                "Very fine hard lines",
+                "Carving",
+                "3D printing",
+                "Washes and mood"
+              ],
+              "answer": "Washes and mood",
+              "explain": "Ink and watercolour spread easily."
+            },
+            {
+              "type": "fill",
+              "question": "Work 2's title is 'Reappear someone in Chinese ____'.",
+              "options": [],
+              "answer": "context",
+              "explain": "Reappear someone in Chinese context.",
+              "wordBank": [
+                "context",
+                "restaurant",
+                "MTR",
+                "supermarket"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which is NOT a way to add a Chinese context?",
+              "options": [
+                "Restaging an old painting",
+                "Using only English letters with no link to Chinese culture",
+                "Adding traditional clothing or objects",
+                "Using a hanging-scroll or handscroll format"
+              ],
+              "answer": "Using only English letters with no link to Chinese culture",
+              "explain": "Connect to Chinese cultural elements."
+            }
+          ],
+          "artistIds": [
+            "INTL-SHERMAN-01",
+            "CN-XUBH-01",
+            "CN-QIBS-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U10-YBA-CN",
+      "title": "British YBAs and Contemporary Art: Connecting with Chinese Art",
+      "intro": "Elective unit. Meet the 1990s Young British Artists (YBAs), then compare them with Chinese and Hong Kong contemporary artists. Matches F.6 Contextual Studies 'British YBA Art' and 'how YBA, American art relate to Chinese Art'. All works here are contemporary, so there are no images — only text descriptions and official museum links. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "U10-L1",
+          "title": "What Are the YBAs?",
+          "cards": [
+            "YBA means Young British Artists — a group who rose in London in the late 1980s and 1990s.",
+            "In 1988, while still a student at Goldsmiths College in London, Damien Hirst organised the exhibition 'Freeze' with fellow students in an empty building in London's Docklands. It is seen as the YBAs' starting point.",
+            "Collector Charles Saatchi bought many of their works. In 1997 the Royal Academy of Arts in London showed his collection in 'Sensation', which caused great controversy.",
+            "YBA features: unexpected materials (animals, beds, everyday objects), shock effects, organising their own shows, and skill with the media.",
+            "Think: is shock the aim of art in itself, or a way to make people think?"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does YBA stand for?",
+              "options": [
+                "Yellow Brush Association",
+                "Your Best Art",
+                "Young Basketball Academy",
+                "Young British Artists"
+              ],
+              "answer": "Young British Artists",
+              "explain": "Young British Artists."
+            },
+            {
+              "type": "fill",
+              "question": "The 1988 show Hirst organised with fellow students was called '____'.",
+              "options": [],
+              "answer": "Freeze",
+              "explain": "'Freeze' is seen as the YBAs' start.",
+              "wordBank": [
+                "Sensation",
+                "Summer",
+                "Freeze",
+                "Frozen"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which collector bought many YBA works?",
+              "options": [
+                "Xu Beihong",
+                "Charles Saatchi",
+                "Andy Warhol",
+                "Van Gogh"
+              ],
+              "answer": "Charles Saatchi",
+              "explain": "Saatchi's collection was later shown in 'Sensation'."
+            },
+            {
+              "type": "mcq",
+              "question": "Which is NOT a common YBA feature?",
+              "options": [
+                "Shock effects",
+                "Organising their own shows",
+                "Only copying ancient landscapes",
+                "Unexpected materials"
+              ],
+              "answer": "Only copying ancient landscapes",
+              "explain": "YBAs stressed new materials and shock."
+            }
+          ],
+          "artistIds": [
+            "INTL-HIRST-01"
+          ]
+        },
+        {
+          "id": "U10-L2",
+          "title": "Damien Hirst and Tracey Emin: Death and Private Life",
+          "cards": [
+            "Damien Hirst's 1991 work The Physical Impossibility of Death in the Mind of Someone Living suspends a real tiger shark in formaldehyde in a glass tank, asking how we face death.",
+            "Hirst's spot paintings arrange coloured dots in neat grids; many were made by assistants, raising the question 'who is the author?'. He won the Turner Prize in 1995.",
+            "Tracey Emin's My Bed (1998) shows her own messy bed and the things around it — the real state of a low period in her life. It was shortlisted for the Turner Prize in 1999.",
+            "Emin also uses neon text and embroidery to write very personal sentences, making diary-like feelings public.",
+            "Note: these works are under copyright. See images and texts on Tate's official website."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What did Hirst suspend in formaldehyde in 1991?",
+              "options": [
+                "A tiger shark",
+                "A bed",
+                "A car",
+                "A landscape painting"
+              ],
+              "answer": "A tiger shark",
+              "explain": "It asks how we face death."
+            },
+            {
+              "type": "match",
+              "question": "Match each artist to a work",
+              "options": [
+                "Damien Hirst",
+                "Tracey Emin"
+              ],
+              "answer": {
+                "Damien Hirst": "Shark in formaldehyde",
+                "Tracey Emin": "My Bed"
+              },
+              "explain": "Both are leading YBAs."
+            },
+            {
+              "type": "fill",
+              "question": "Emin's 'My ____' shows her own messy bed.",
+              "options": [],
+              "answer": "Bed",
+              "explain": "My Bed, 1998.",
+              "wordBank": [
+                "Car",
+                "Desk",
+                "Bed",
+                "Room"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What is the main feature of Emin's work?",
+              "options": [
+                "Only painting emperors",
+                "Only maths charts",
+                "No words at all",
+                "Making very private life and feelings public"
+              ],
+              "answer": "Making very private life and feelings public",
+              "explain": "Private life becomes the artwork."
+            }
+          ],
+          "artistIds": [
+            "INTL-HIRST-01",
+            "INTL-EMIN-01"
+          ]
+        },
+        {
+          "id": "U10-L3",
+          "title": "Rachel Whiteread and Gillian Wearing: Space and Identity",
+          "cards": [
+            "Rachel Whiteread casts space itself: the inside of a wardrobe, the space under a bath, the gaps of a staircase, turned into solid sculpture — the invisible becomes visible.",
+            "Her House (1993) cast the inside of a condemned house in East London in concrete; it was demolished in 1994. That year, 1993, Whiteread became the first woman to win the Turner Prize.",
+            "In 1992–93 Gillian Wearing asked strangers on the street to write what they wanted to say on a sheet of white paper and photographed them (Signs that say what you want them to say…), letting ordinary people speak their real minds. She won the Turner Prize in 1997.",
+            "Later, Wearing used masks to 'play' her family members and herself at different ages — compare this with Cindy Sherman's role-play.",
+            "Think: Whiteread shows us emptiness; Wearing shows us honest words. What do you want viewers to see in your work?"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does Whiteread mainly cast?",
+              "options": [
+                "Sounds",
+                "The space around or inside objects",
+                "People's faces",
+                "Animals"
+              ],
+              "answer": "The space around or inside objects",
+              "explain": "She makes invisible space solid."
+            },
+            {
+              "type": "fill",
+              "question": "In 1993 Whiteread became the first woman to win the ____ Prize.",
+              "options": [],
+              "answer": "Turner",
+              "explain": "Turner Prize, 1993.",
+              "wordBank": [
+                "Turner",
+                "Nobel",
+                "Oscar",
+                "Golden Horse"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What did Wearing ask strangers to write on white paper?",
+              "options": [
+                "Maths answers",
+                "Advertising slogans",
+                "Phone numbers",
+                "What they wanted to say"
+              ],
+              "answer": "What they wanted to say",
+              "explain": "Ordinary people speak their minds."
+            },
+            {
+              "type": "match",
+              "question": "Match each artist to a work",
+              "options": [
+                "Rachel Whiteread",
+                "Gillian Wearing"
+              ],
+              "answer": {
+                "Rachel Whiteread": "House",
+                "Gillian Wearing": "Signs that say what you want them to say…"
+              },
+              "explain": "Two directions: space and identity."
+            }
+          ]
+        },
+        {
+          "id": "U10-L4",
+          "title": "Reading YBAs, American Art and Chinese Art Together",
+          "cards": [
+            "Hirst ↔ Huang Yong Ping (黃永砅): both use real animals or living things. Huang's Theater of the World (1993) puts insects and reptiles together in one cage to survive side by side — a metaphor for conflict in the world.",
+            "Emin ↔ Song Dong (宋冬): Emin shows her own bed; Song Dong's Waste Not (2005) shows over ten thousand everyday things his mother kept for decades. Both use private belongings to speak about identity and memory.",
+            "Wearing ↔ Pak Sheung Chuen (白雙全): both care about ordinary people and daily life, making work from simple actions or records.",
+            "American Pop ↔ Chinese Political Pop: Andy Warhol repeated images of products and celebrities; Wang Guangyi (王廣義) set Cultural Revolution poster imagery beside Western brands, responding to consumer society.",
+            "Method: describe the works first, then fill three columns — similar, different, what you can borrow — instead of just saying which is 'better'."
+          ],
+          "quiz": [
+            {
+              "type": "match",
+              "question": "Match artists who can be compared",
+              "options": [
+                "Damien Hirst",
+                "Tracey Emin",
+                "Andy Warhol"
+              ],
+              "answer": {
+                "Damien Hirst": "Huang Yong Ping",
+                "Tracey Emin": "Song Dong",
+                "Andy Warhol": "Wang Guangyi"
+              },
+              "explain": "Matched by strategy and subject."
+            },
+            {
+              "type": "mcq",
+              "question": "What does Song Dong's Waste Not show?",
+              "options": [
+                "A shark",
+                "A cast house",
+                "Celebrity photos",
+                "Everyday things his mother kept for decades"
+              ],
+              "answer": "Everyday things his mother kept for decades",
+              "explain": "Private objects carry family memory."
+            },
+            {
+              "type": "fill",
+              "question": "Three comparison columns: similar, different, what you can ____.",
+              "options": [],
+              "answer": "borrow",
+              "explain": "Same method as U5.",
+              "wordBank": [
+                "borrow",
+                "price",
+                "sell",
+                "follow"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What do Emin and Song Dong share?",
+              "options": [
+                "Both only make animation",
+                "Using private belongings to speak of identity and memory",
+                "Both paint landscapes",
+                "Both use formaldehyde"
+              ],
+              "answer": "Using private belongings to speak of identity and memory",
+              "explain": "Everyday objects carry personal history."
+            }
+          ],
+          "artistIds": [
+            "INTL-HIRST-01",
+            "CN-HUANGYP-01",
+            "INTL-EMIN-01",
+            "CN-SONGDONG-01",
+            "WEST-WARHOL-01",
+            "CN-WANGGY-01",
+            "HK-PAK-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "U11-EXHIBIT-REVIEW",
+      "title": "Exhibition Visits and Self-Review",
+      "intro": "Elective unit. Prepare for visits to the Hong Kong Palace Museum and the Xubaizhai Gallery at the Hong Kong Museum of Art, learn how to look at an exhibition, then review your own portfolio and give peer feedback. Matches F.6 Weeks 27–28: Exhibition Visit, Self Review/Evaluation/Portfolio, Peer review. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "U11-L1",
+          "title": "Visiting the Hong Kong Palace Museum",
+          "cards": [
+            "The Hong Kong Palace Museum is in the West Kowloon Cultural District. It opened on 3 July 2022 and shows objects from the Palace Museum in Beijing.",
+            "The building was designed by Hong Kong architect Rocco Yim (嚴迅奇), drawing on traditional Chinese architecture and objects.",
+            "Before the visit: check the official website for current exhibitions and booking, and choose one or two objects related to your own work as a focus.",
+            "During the visit: notice each object's use, material, pattern and colour (link to U8 on symbols). Sketch or note the object's title and label.",
+            "Note: follow the museum's own rules on photos and sketching; respect other visitors and never touch the objects."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Where is the Hong Kong Palace Museum?",
+              "options": [
+                "West Kowloon Cultural District",
+                "Stanley",
+                "Tai O",
+                "Sha Tau Kok"
+              ],
+              "answer": "West Kowloon Cultural District",
+              "explain": "It is in the West Kowloon Cultural District."
+            },
+            {
+              "type": "fill",
+              "question": "The Hong Kong Palace Museum opened in ____.",
+              "options": [],
+              "answer": "2022",
+              "explain": "It opened on 3 July 2022.",
+              "wordBank": [
+                "1997",
+                "2008",
+                "2030",
+                "2022"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What should you do before visiting?",
+              "options": [
+                "Bring only snacks",
+                "Decide not to look at objects",
+                "Check the official website for exhibitions and booking",
+                "Prepare nothing"
+              ],
+              "answer": "Check the official website for exhibitions and booking",
+              "explain": "Preparation makes a visit richer."
+            },
+            {
+              "type": "mcq",
+              "question": "Which is the right museum behaviour?",
+              "options": [
+                "Talk loudly on the phone",
+                "Touch the artefacts",
+                "Tear off the labels",
+                "Don't touch objects; respect other visitors"
+              ],
+              "answer": "Don't touch objects; respect other visitors",
+              "explain": "Protect the objects; respect others."
+            }
+          ]
+        },
+        {
+          "id": "U11-L2",
+          "title": "Xubaizhai Gallery, Hong Kong Museum of Art: Ming–Qing Painting Up Close",
+          "cards": [
+            "The Xubaizhai Collection comes from collector Low Chuck-tiew (劉作籌, 1911–1993). In 1989 he donated over 600 works to the Hong Kong Museum of Art, and the Xubaizhai Gallery opened in 1992.",
+            "The name 'Xubai' (虛白) comes from calligraphy by the Qing calligrapher Yi Bingshou (伊秉綬).",
+            "The collection includes the Wu School, Songjiang School, the Four Monks, the Orthodox School (the Four Wangs' line) and the Yangzhou School — painters from U6, U7, U8 and U9.",
+            "Ink paintings are sensitive to light, so displays rotate. Check the museum website for current exhibitions before you go.",
+            "Task: choose one work and record it with the U6-L4 method — format, inscriptions, seals, composition — plus one sentence on how it makes you feel."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Who donated the Xubaizhai Collection?",
+              "options": [
+                "Qi Baishi",
+                "Low Chuck-tiew",
+                "Xu Beihong",
+                "Damien Hirst"
+              ],
+              "answer": "Low Chuck-tiew",
+              "explain": "Donated by Low Chuck-tiew in 1989."
+            },
+            {
+              "type": "fill",
+              "question": "Low Chuck-tiew donated his collection to the Hong Kong Museum of Art in ____.",
+              "options": [],
+              "answer": "1989",
+              "explain": "Donated 1989; gallery opened 1992.",
+              "wordBank": [
+                "1989",
+                "1949",
+                "1999",
+                "2019"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Why do the Xubaizhai displays rotate?",
+              "options": [
+                "The works are too cheap",
+                "Nobody visits",
+                "The weather is too hot",
+                "Paintings are sensitive to light and need rest"
+              ],
+              "answer": "Paintings are sensitive to light and need rest",
+              "explain": "To protect old paintings."
+            },
+            {
+              "type": "match",
+              "question": "Match each school to examples",
+              "options": [
+                "Wu School",
+                "Four Monks",
+                "Yangzhou School"
+              ],
+              "answer": {
+                "Wu School": "Shen Zhou, Wen Zhengming",
+                "Four Monks": "Bada Shanren, Shitao",
+                "Yangzhou School": "Jin Nong, Zheng Xie"
+              },
+              "explain": "The collection links to earlier units."
+            }
+          ],
+          "artistIds": [
+            "CN-SHENZHOU-01",
+            "CN-WENZM-01",
+            "CN-BADASHANREN-01",
+            "CN-JINNONG-01",
+            "CN-SHITAO-01"
+          ]
+        },
+        {
+          "id": "U11-L3",
+          "title": "How to Look at an Exhibition: See, Think, Wonder",
+          "cards": [
+            "See–Think–Wonder is a thinking routine from Harvard's Project Zero: What do I see? What do I think? What do I wonder?",
+            "Feldman's four steps: describe (what you see) → analyse (form, composition, colour) → interpret (meaning) → judge (value and reasons).",
+            "Don't just take photos. Choose a few works, look at each for at least two minutes, and sketch one detail.",
+            "Record exhibition details: title, artist, year, material and venue, so you can write and cite them later.",
+            "Back at school, put your notes into your visual diary and write down one idea you could use in your own work."
+          ],
+          "quiz": [
+            {
+              "type": "match",
+              "question": "Match See–Think–Wonder",
+              "options": [
+                "See",
+                "Think",
+                "Wonder"
+              ],
+              "answer": {
+                "See": "What do I see?",
+                "Think": "What do I think?",
+                "Wonder": "What do I wonder?"
+              },
+              "explain": "A three-step thinking routine."
+            },
+            {
+              "type": "mcq",
+              "question": "What is the correct order of Feldman's steps?",
+              "options": [
+                "Judge → describe → analyse → interpret",
+                "Interpret → judge → describe → analyse",
+                "Judge only",
+                "Describe → analyse → interpret → judge"
+              ],
+              "answer": "Describe → analyse → interpret → judge",
+              "explain": "Evidence first, judgement last."
+            },
+            {
+              "type": "fill",
+              "question": "Look at each work for at least two ____.",
+              "options": [],
+              "answer": "minutes",
+              "explain": "Slow looking reveals details.",
+              "wordBank": [
+                "minutes",
+                "seconds",
+                "hours",
+                "days"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which is NOT exhibition information you should record?",
+              "options": [
+                "Material",
+                "What you ate for lunch",
+                "Title",
+                "Artist"
+              ],
+              "answer": "What you ate for lunch",
+              "explain": "Records help you cite works later."
+            }
+          ]
+        },
+        {
+          "id": "U11-L4",
+          "title": "Self-Review and Organising Your Portfolio",
+          "cards": [
+            "A portfolio is not just finished pieces. It should include research, sketches, experiments and failed attempts that show your thinking.",
+            "Three self-review questions: What are my strengths? What are my weaknesses? How will I improve next?",
+            "Use evidence: e.g. 'I control ink washes well — see the experiment on page 5', not just 'I drew quite well'.",
+            "Organise DSE work 1 and work 2 separately, with a date and a short note for each section.",
+            "Set one specific goal, e.g. 'Finish three dry/wet media tests next week'."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What should a portfolio include?",
+              "options": [
+                "Only the final piece",
+                "Only other people's work",
+                "Nothing",
+                "Research, sketches, experiments and final work"
+              ],
+              "answer": "Research, sketches, experiments and final work",
+              "explain": "Process and results both matter."
+            },
+            {
+              "type": "match",
+              "question": "Match each self-review question",
+              "options": [
+                "Strengths",
+                "Weaknesses",
+                "Next step"
+              ],
+              "answer": {
+                "Strengths": "What I do well",
+                "Weaknesses": "What I need to improve",
+                "Next step": "A specific improvement plan"
+              },
+              "explain": "The three self-review questions."
+            },
+            {
+              "type": "fill",
+              "question": "In a self-review, back up your points with ____, e.g. a page number.",
+              "options": [],
+              "answer": "evidence",
+              "explain": "Concrete evidence is more convincing.",
+              "wordBank": [
+                "prices",
+                "evidence",
+                "guesses",
+                "luck"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which is a specific goal?",
+              "options": [
+                "Become a master",
+                "Whatever",
+                "Finish three dry/wet media tests next week",
+                "Become better"
+              ],
+              "answer": "Finish three dry/wet media tests next week",
+              "explain": "Specific, measurable, time-bound."
+            }
+          ]
+        },
+        {
+          "id": "U11-L5",
+          "title": "Peer Review: Respectful and Useful Feedback",
+          "cards": [
+            "Peer review means looking at each other's work and giving feedback so everyone improves.",
+            "'Two stars and a wish': name two things done well (two stars), then one thing to improve (a wish).",
+            "Make feedback specific and about the work, not the person: e.g. 'The background ink could be a little paler so the figure stands out.'",
+            "When you receive feedback, listen and note it first — no need to defend yourself straight away. Decide later what to use.",
+            "Privacy: peer review happens only in class or on the platform your teacher sets. Don't post classmates' work or comments on public social media."
+          ],
+          "quiz": [
+            {
+              "type": "fill",
+              "question": "'Two stars and a ____': two strengths, one improvement.",
+              "options": [],
+              "answer": "wish",
+              "explain": "Praise first, then suggest improvement.",
+              "wordBank": [
+                "wish",
+                "fine",
+                "joke",
+                "score"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which is good peer feedback?",
+              "options": [
+                "Whatever",
+                "The background ink could be paler so the figure stands out",
+                "You're really bad",
+                "I don't like you"
+              ],
+              "answer": "The background ink could be paler so the figure stands out",
+              "explain": "Specific, about the work, not the person."
+            },
+            {
+              "type": "mcq",
+              "question": "What should you do when you receive feedback?",
+              "options": [
+                "Delete all comments",
+                "Stop handing in work",
+                "Listen and note it first, decide later",
+                "Argue loudly at once"
+              ],
+              "answer": "Listen and note it first, decide later",
+              "explain": "Handle feedback calmly."
+            },
+            {
+              "type": "mcq",
+              "question": "Where can classmates' work and comments be shared?",
+              "options": [
+                "Public social media",
+                "Street posters",
+                "Sent to strangers",
+                "Only in class or on the teacher's chosen platform"
+              ],
+              "answer": "Only in class or on the teacher's chosen platform",
+              "explain": "Protect classmates' privacy."
+            }
           ]
         }
       ]
