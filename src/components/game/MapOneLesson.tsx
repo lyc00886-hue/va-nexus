@@ -1,14 +1,17 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
+import { ListenButton } from '../easy-read/ListenButton'
 import { getNodeById, getUnits } from '../../game/curriculum'
 import type { FillQuestion, Lesson, MatchQuestion, McqQuestion, Question } from '../../game/types'
 import { getLocale, t } from '../../i18n'
+import { readLines, readPlace, writePlace } from '../../lib/easyReadMode'
 import { postFeldmanFeedback } from '../../lib/feldmanAiRequest'
 import { lessonChunks, nextLessonId, stepChunk } from '../../lib/mapUx'
 import { requestOpenTab } from '../../lib/openTab'
 import { useAiAgeGate } from '../../lib/useAiAgeGate'
 import { AiLearningTipScreen, type AiTipState } from './AiLearningTipScreen'
+import { OtterPose } from './OtterPose'
 import { SoftScreen } from './SoftScreen'
 
 const AI_IDLE: AiTipState = { status: 'idle', text: '' }
@@ -21,10 +24,20 @@ export function MapOneLesson({
   lesson,
   onExit,
   onOpenLesson,
+  step = false,
+  kind = 'lesson',
+  exitLabel,
+  following,
 }: {
   lesson: Lesson
   onExit: () => void
   onOpenLesson: (id: string) => void
+  /** Step-by-step chrome. The map1 preview leaves this off. */
+  step?: boolean
+  kind?: 'lesson' | 'quest'
+  exitLabel?: string
+  /** When set, replaces curriculum “next lesson”. `null` id means there is no next. */
+  following?: { id: string | null; open: boolean }
 }) {
   const { finishLesson, isUnlocked } = useGame()
   const { settings, easyRead } = useSen()
@@ -33,27 +46,65 @@ export function MapOneLesson({
     () => lessonChunks(lesson.cards.length, lesson.questions.length),
     [lesson],
   )
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(() => {
+    if (!step) return 0
+    const saved = readPlace(localStorage, lesson.id)
+    const count = lesson.cards.length + lesson.questions.length
+    if (count <= 0) return 0
+    return Math.min(saved, count - 1)
+  })
   const [view, setView] = useState<'lesson' | 'celebrate' | 'ai'>('lesson')
   const [revealed, setRevealed] = useState(false)
   const [choice, setChoice] = useState<number | string | null>(null)
   const [hits, setHits] = useState(0)
+  const [lastCorrect, setLastCorrect] = useState<boolean | null>(null)
+  const [leaving, setLeaving] = useState(false)
+  const [saved, setSaved] = useState(false)
   const [ai, setAi] = useState<AiTipState>(AI_IDLE)
   const finished = useRef(false)
   const motion = !settings.reduceMotion
+  const backLabel = exitLabel ?? (step ? t('er.map.back') : t('empty.nextLesson.cta'))
 
-  const nextId = nextLessonId(getUnits(), lesson.id)
-  const nextOpen = Boolean(nextId && isUnlocked(nextId))
+  const curriculumNext = nextLessonId(getUnits(), lesson.id)
+  const nextId = following ? following.id : curriculumNext
+  const nextOpen = following ? Boolean(following.open && following.id) : Boolean(nextId && isUnlocked(nextId))
+
+  useEffect(() => {
+    if (!step) return
+    writePlace(localStorage, lesson.id, index)
+  }, [step, lesson.id, index])
   const chunk = chunks[index]
   const last = chunks.length > 0 && index >= chunks.length - 1
   const practice = chunk?.kind === 'practice' ? lesson.questions[chunk.index] : undefined
   const waiting = Boolean(practice && !revealed && (practice.type === 'match' || choice === null))
-  const cta = last && (!practice || revealed) ? t('map.chunk.done') : t('map.chunk.cta')
+  const sectionEnd = Boolean(chunk?.kind === 'read' && chunk.index === lesson.cards.length - 1 && lesson.questions.length > 0)
+  const cta = step
+    ? practice && !revealed
+      ? t('er.quiz.check')
+      : sectionEnd
+        ? t('er.lesson.sectionDone')
+        : last && (!practice || revealed)
+          ? t('er.cta.done')
+          : practice && revealed
+            ? t('er.quiz.next')
+            : t('er.lesson.continue')
+    : last && (!practice || revealed)
+      ? t('map.chunk.done')
+      : t('map.chunk.cta')
   const checklist = lesson.cards.map((card) => card.title)
 
   function mark(correct: boolean) {
     setRevealed(true)
+    setLastCorrect(correct)
     if (correct) setHits((n) => n + 1)
+  }
+
+  function requestExit() {
+    if (step && view === 'lesson' && index > 0) {
+      setLeaving(true)
+      return
+    }
+    onExit()
   }
 
   function complete() {
@@ -72,7 +123,7 @@ export function MapOneLesson({
         accuracy: total ? hits / total : 1,
         wrongByType: {},
       },
-      'lesson',
+      kind,
     )
     setView('celebrate')
   }
@@ -91,7 +142,9 @@ export function MapOneLesson({
     }
     setIndex(next.index)
     setRevealed(false)
+    setLastCorrect(null)
     setChoice(null)
+    if (step) setSaved(true)
   }
 
   async function requestTip() {
@@ -130,10 +183,13 @@ export function MapOneLesson({
   if (chunks.length === 0 || !chunk) {
     return (
       <SoftScreen marker="map-empty">
-        <Back onClick={onExit} />
+        <Back onClick={onExit} label={backLabel} />
         <h2 className="text-2xl font-bold text-slate-900">{lesson.title}</h2>
+        {step ? (
+          <img src="/mascot-otter-empty.png" alt="" width={128} height={128} className="mx-auto h-28 w-28 object-contain" decoding="async" />
+        ) : null}
         <p className="text-base font-semibold text-slate-800">{t('empty.noContent')}</p>
-        <Primary onClick={() => requestOpenTab('research')}>{t('empty.noContent.cta')}</Primary>
+        <Primary tall={step} onClick={() => requestOpenTab('research')}>{t('empty.noContent.cta')}</Primary>
       </SoftScreen>
     )
   }
@@ -141,26 +197,37 @@ export function MapOneLesson({
   if (view === 'celebrate') {
     return (
       <SoftScreen marker="map-celebrate">
-        <Back onClick={onExit} />
+        <Back onClick={onExit} label={backLabel} />
         <div data-map-celebrate className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
-          <img
-            src="/o2-otter.png"
-            alt=""
-            width={96}
-            height={96}
-            data-otter="stub"
-            className="h-20 w-20 object-contain"
-            decoding="async"
-          />
+          {step ? (
+            <OtterPose
+              pose="complete"
+              label={t('celebrate.soft')}
+              reduceMotion={!motion}
+              enter="celebrate"
+              testId="easy-read-celebrate"
+            />
+          ) : (
+            <img
+              src="/o2-otter.png"
+              alt=""
+              width={96}
+              height={96}
+              data-otter="stub"
+              className="h-20 w-20 object-contain"
+              decoding="async"
+            />
+          )}
           <h2 className="text-2xl font-bold text-slate-900">{t('celebrate.soft')}</h2>
           <p className="text-base text-slate-700">{t('celebrate.soft.sub')}</p>
+          {step ? <p className="text-base font-bold text-[#0D9488]">{t('mascot.chest.reward')}</p> : null}
         </div>
         {nextOpen && nextId ? (
-          <Primary onClick={() => onOpenLesson(nextId)}>{t('celebrate.soft.cta')}</Primary>
+          <Primary tall={step} onClick={() => onOpenLesson(nextId)}>{t('celebrate.soft.cta')}</Primary>
         ) : (
           <>
             <p className="text-center text-base font-semibold text-slate-800">{t('empty.nextLesson')}</p>
-            <Primary onClick={onExit}>{t('empty.nextLesson.cta')}</Primary>
+            <Primary tall={step} onClick={onExit}>{step ? backLabel : t('empty.nextLesson.cta')}</Primary>
           </>
         )}
       </SoftScreen>
@@ -171,8 +238,21 @@ export function MapOneLesson({
 
   return (
     <SoftScreen marker="map-lesson">
+      {leaving ? (
+        <div data-testid="easy-read-leave" className="rounded-3xl border border-teal-100 bg-[#FFF9E9] p-4">
+          <p className="text-lg font-bold text-teal-950">{t('er.leave.confirm')}</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button type="button" onClick={onExit} className="min-h-11 rounded-2xl bg-teal-700 px-4 text-base font-bold text-white">
+              {t('er.lesson.leave')}
+            </button>
+            <button type="button" onClick={() => setLeaving(false)} className="min-h-11 rounded-2xl border border-teal-200 bg-white px-4 text-base font-semibold text-teal-900">
+              {t('er.cta.back')}
+            </button>
+          </div>
+        </div>
+      ) : null}
       <div className="flex items-center gap-3">
-        <Back onClick={onExit} />
+        <Back onClick={requestExit} label={backLabel} />
         <div
           className="h-1.5 flex-1 overflow-hidden rounded-full bg-slate-200"
           role="progressbar"
@@ -187,14 +267,50 @@ export function MapOneLesson({
           />
         </div>
         <span className="text-sm font-semibold tabular-nums text-slate-600">
-          {index + 1}/{chunks.length}
+          {step ? t('er.progress.of', { n: index + 1, t: chunks.length }) : `${index + 1}/${chunks.length}`}
         </span>
       </div>
+      {step ? (
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="text-sm font-semibold text-teal-800">
+            <p>
+              <span className="mr-2 rounded-full bg-teal-700 px-2 py-0.5 text-xs font-bold text-white">{t('er.mode.badge')}</span>
+              {t('er.lesson.oneTask')}
+            </p>
+            <p>{t('er.progress.left', { n: Math.max(0, chunks.length - index - 1) })}</p>
+          </div>
+          <ListenButton text={chunkText(lesson, chunk, easyRead)} />
+          {saved ? (
+            <p className="text-sm font-semibold text-teal-800" role="status">
+              {t('er.cta.saved')}
+            </p>
+          ) : null}
+        </div>
+      ) : null}
+      {step ? (
+        <ol aria-label={t('er.map.progress')} className="flex flex-wrap gap-2">
+          {chunks.map((item, tick) => (
+            <li key={`${item.kind}-${item.index}`}>
+              <span
+                aria-current={tick === index ? 'step' : undefined}
+                className={`flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold ${
+                  tick < index ? 'bg-teal-700 text-white' : tick === index ? 'bg-[#FFF9E9] text-teal-950 ring-2 ring-teal-700' : 'bg-slate-100 text-slate-500'
+                }`}
+              >
+                {tick < index ? '✓' : tick + 1}
+              </span>
+            </li>
+          ))}
+        </ol>
+      ) : null}
 
       <div key={`${lesson.id}-${index}`} className={`flex-1 ${motion ? 'map-one-in' : ''}`}>
         <h2 className="text-2xl font-bold text-slate-900">{lesson.title}</h2>
+        {step && practice && !revealed && practice.type !== 'match' ? (
+          <p className="mt-2 text-sm font-semibold text-teal-800">{t('er.quiz.pickOne')}</p>
+        ) : null}
         {chunk.kind === 'read' ? (
-          <ReadChunk card={lesson.cards[chunk.index]} easy={easyRead} />
+          <ReadChunk card={lesson.cards[chunk.index]} easy={easyRead} step={step && easyRead} />
         ) : (
           <PracticeChunk
             question={lesson.questions[chunk.index]}
@@ -204,6 +320,11 @@ export function MapOneLesson({
             onSolved={mark}
           />
         )}
+        {step && revealed && lastCorrect !== null ? (
+          <p className="mt-3 text-base font-bold text-teal-900" role="status">
+            {lastCorrect ? t('er.quiz.correct') : t('er.quiz.retry')}
+          </p>
+        ) : null}
         {revealed && practice && (
           <p className="mt-3 text-sm text-slate-700" role="status">
             {practice.explain}
@@ -211,17 +332,27 @@ export function MapOneLesson({
         )}
       </div>
 
-      <Primary disabled={waiting} onClick={onPrimary}>
+      <Primary tall={step} disabled={waiting} onClick={onPrimary}>
         {cta}
       </Primary>
       <button
         type="button"
         data-map-tip
         onClick={() => setView('ai')}
-        className="self-center text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
+        className="self-center min-h-11 text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
       >
         {t('rs.cta.tip')}
       </button>
+      {step ? (
+        <button
+          type="button"
+          data-testid="easy-read-skip"
+          onClick={onExit}
+          className="self-center min-h-11 text-sm font-semibold text-slate-600 underline-offset-2 hover:underline"
+        >
+          {t('er.cta.skip')}
+        </button>
+      ) : null}
     </SoftScreen>
   )
 }
@@ -288,15 +419,15 @@ function chunkText(lesson: Lesson, chunk: ReturnType<typeof lessonChunks>[number
   return lesson.questions[chunk.index]?.prompt ?? lesson.title
 }
 
-function Back({ onClick }: { onClick: () => void }) {
+function Back({ onClick, label }: { onClick: () => void; label: string }) {
   return (
     <button
       type="button"
       data-map-back
       onClick={onClick}
-      className="shrink-0 text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
+      className="inline-flex min-h-11 shrink-0 items-center text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
     >
-      {t('empty.nextLesson.cta')}
+      {label}
     </button>
   )
 }
@@ -305,10 +436,12 @@ function Primary({
   children,
   onClick,
   disabled,
+  tall = false,
 }: {
   children: string
   onClick: () => void
   disabled?: boolean
+  tall?: boolean
 }) {
   return (
     <button
@@ -316,20 +449,24 @@ function Primary({
       data-map-cta="primary"
       onClick={onClick}
       disabled={disabled}
-      className="w-full rounded-2xl bg-teal-700 py-3.5 text-base font-bold text-white hover:bg-teal-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400"
+      className={`w-full rounded-2xl bg-teal-700 py-3.5 text-base font-bold text-white hover:bg-teal-600 disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-400 ${
+        tall ? 'min-h-11' : ''
+      }`}
     >
       {children}
     </button>
   )
 }
 
-function ReadChunk({ card, easy }: { card: Lesson['cards'][number]; easy: boolean }) {
+function ReadChunk({ card, easy, step = false }: { card: Lesson['cards'][number]; easy: boolean; step?: boolean }) {
+  const lines = readLines(card, easy)
+  const chunked = easy
   return (
-    <article className="mt-4">
+    <article className={`mt-4 ${step ? 'rounded-3xl bg-[#FFF9E9] p-4' : ''}`}>
       <h3 className="text-xl font-bold text-slate-900">{card.title}</h3>
-      {easy ? (
+      {chunked ? (
         <ul className="mt-3 space-y-2 text-lg text-slate-800">
-          {card.easy.map((line) => (
+          {lines.map((line) => (
             <li key={line}>{line}</li>
           ))}
         </ul>
