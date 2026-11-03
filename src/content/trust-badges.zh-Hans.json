@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "id": "trust-badges",
+    "version": "2026-11-03",
+    "status": "soft-copy",
+    "issue": "#34",
+    "locale": "zh-Hans",
+    "claimType": "commitment-labels-only",
+    "hang": "thu-pilot-soft-after-wed-28-ai",
+    "outOfScope": [
+      "hkeaa-compliance-mode",
+      "edb-lsg-hkeaa-endorsement",
+      "official-certification-seals",
+      "sen-list-or-label-chrome",
+      "clinical-diagnosis"
+    ]
+  },
+  "bannerIntro": "产品承诺（非官方认证）",
+  "badges": [
+    {
+      "id": "academic-integrity",
+      "shortTitle": "学术诚信",
+      "body": "以苏格拉底式提问与词汇鹰架协助学习；不提供一键代写全文。"
+    },
+    {
+      "id": "privacy-deidentify",
+      "shortTitle": "隐私与去识别",
+      "body": "传送至 AI 前会去除可辨识姓名。能力图只供课堂自我检视参考，非临床诊断。本站不设 SEN 名单或 SEN 标签显示。"
+    },
+    {
+      "id": "support-direction",
+      "shortTitle": "学习支援方向",
+      "body": "设计对齐学习支援与智教方向；并非教育局、学习支援津贴（LSG）或考评局批核／认证。"
+    }
+  ],
+  "footerDisclaimer": "以上为产品承诺标签，非考评局、教育局或任何官方认证／批核。"
+}

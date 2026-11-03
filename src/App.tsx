@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 import { ArtistCompare } from './components/ArtistCompare'
+import { CommitmentFooter } from './components/CommitmentBadges'
 import { FocusTunnel } from './components/FocusTunnel'
 import { Header } from './components/Header'
 import { SbaQuest } from './components/SbaQuest'
-import { PrivacyLink, PrivacyModal } from './components/PrivacyModal'
+import { PrivacyModal } from './components/PrivacyModal'
 import { MobileNav, Sidebar, TABS } from './components/Sidebar'
 import { Achievements } from './components/game/Achievements'
 import { CheckInModal } from './components/game/CheckInModal'
@@ -90,9 +91,7 @@ export default function App() {
               )}
               {tab === 'achievements' && <Achievements />}
             </div>
-            <p className="mt-8 text-center text-[11px] text-slate-400">
-              {footer} · <PrivacyLink />
-            </p>
+            <CommitmentFooter dataLine={footer} />
           </div>
         </main>
       </div>
