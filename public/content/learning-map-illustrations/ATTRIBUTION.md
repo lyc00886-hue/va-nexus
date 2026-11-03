@@ -6,7 +6,7 @@ Generated: 2026-11-03 (Asia/Hong_Kong)
 
 ## F4 unit-card covers (`f4-covers/`)
 
-All four covers are **自制 for VA-Nexus** (generated educational illustrations; abstract geometric; no third-party artwork, no trademarks, no O2 otter required on these tiles).
+All six covers are **自制 for VA-Nexus** (generated educational illustrations; abstract geometric; no third-party artwork, no trademarks, no O2 otter required on these tiles).
 
 | File | Unit | License | Source |
 |---|---|---|---|
@@ -14,6 +14,8 @@ All four covers are **自制 for VA-Nexus** (generated educational illustrations
 | `f4-covers/F4-U2-DRAW-DESIGN.png` | F4-U2-DRAW-DESIGN · 寫生、美感同設計思維 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 | `f4-covers/F4-U3-COMMUNITY.png` | F4-U3-COMMUNITY · 社區觀察、視覺日記同主題種子 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 | `f4-covers/F4-U4-SELF-RESEARCH.png` | F4-U4-SELF-RESEARCH · 自畫像、藝術家研究同主題發展 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
+| `f4-covers/F4-U5-ART-HIST.png` | F4-U5-ART-HIST · 藝術史入門：古代西方同中國藝術 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
+| `f4-covers/F4-U6-THEME-SEEDS.png` | F4-U6-THEME-SEEDS · 主題種子：Self、Relationship、Story | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 
 Suggested on-screen credit (optional footer / about): 「單元封面插圖 © VA-Nexus（自制）」 / “Unit cover illustrations © VA-Nexus (original).”
 

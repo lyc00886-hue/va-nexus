@@ -8,7 +8,29 @@ import { artistsFromLesson, coverFromUnit, learningMapAssetPath } from './f4Medi
 const PUBLIC = resolve(dirname(fileURLToPath(import.meta.url)), '../../public')
 
 const FILES = ['f4-demo.json', 'f4-demo.en.json', 'f4-demo.zh-Hans.json'] as const
-const UNIT_IDS = ['F4-U1-ORIENT', 'F4-U2-DRAW-DESIGN', 'F4-U3-COMMUNITY', 'F4-U4-SELF-RESEARCH']
+const UNIT_IDS = [
+  'F4-U1-ORIENT',
+  'F4-U2-DRAW-DESIGN',
+  'F4-U3-COMMUNITY',
+  'F4-U4-SELF-RESEARCH',
+  'F4-U5-ART-HIST',
+  'F4-U6-THEME-SEEDS',
+]
+const LESSON_IDS = [
+  'F4-U1-L1',
+  'F4-U1-L2',
+  'F4-U2-L1',
+  'F4-U2-L2',
+  'F4-U3-L1',
+  'F4-U3-L2',
+  'F4-U4-L1',
+  'F4-U4-L2',
+  'F4-U5-L1',
+  'F4-U5-L2',
+  'F4-U6-L1',
+  'F4-U6-L2',
+]
+const SYLLABUS_YEAR = /20\d{2}\s*[-/–—]\s*(?:20)?\d{2}/
 const PLACEHOLDER = {
   'f4-demo.json': '暫無合法圖',
   'f4-demo.en.json': '[No cleared image yet]',
@@ -40,7 +62,7 @@ function pack(name: string): { units: Unit[] } {
 }
 
 describe('F.4 demo slice', () => {
-  it('ships the same four units and eight lessons in each locale', () => {
+  it('ships the same six units and twelve lessons in each locale', () => {
     for (const name of FILES) {
       const units = pack(name).units
       assert.deepEqual(
@@ -49,15 +71,20 @@ describe('F.4 demo slice', () => {
         name,
       )
       const lessons = units.flatMap((unit) => unit.lessons)
-      assert.equal(lessons.length, 8, name)
+      assert.deepEqual(
+        lessons.map((lesson) => lesson.id),
+        LESSON_IDS,
+        name,
+      )
+      assert.equal(lessons.length, 12, name)
       assert.equal(
         lessons.reduce((n, lesson) => n + lesson.cards.length, 0),
-        40,
+        60,
         name,
       )
       assert.equal(
         lessons.reduce((n, lesson) => n + lesson.quiz.length, 0),
-        30,
+        46,
         name,
       )
       for (const unit of units) {
@@ -65,6 +92,8 @@ describe('F.4 demo slice', () => {
         assert.ok(unit.title.length > 0)
         assert.equal(typeof unit.intro, 'string')
         assert.equal(unit.lessons.length, 2)
+        assert.equal(SYLLABUS_YEAR.test(unit.title), false, `${name} ${unit.id} title`)
+        assert.equal(SYLLABUS_YEAR.test(unit.intro), false, `${name} ${unit.id} intro`)
       }
     }
   })
@@ -92,6 +121,7 @@ describe('F.4 demo slice', () => {
         assert.equal(cover.coverImage, `/content/learning-map-illustrations/f4-covers/${unit.id}.png`, name)
         assert.equal(typeof cover.coverCredit, 'string', name)
         assert.ok((cover.coverCredit ?? '').length > 0, name)
+        assert.ok(cover.coverImage, name)
         const file = resolve(PUBLIC, cover.coverImage.slice(1))
         assert.ok(statSync(file).size > 1000, file)
       }
@@ -141,6 +171,16 @@ describe('F.4 demo slice', () => {
       },
     })
     assert.deepEqual(refs, [{ artistId: 'WEST-KAHLO-01' }, { artistId: 'HK-SHIEH-01' }])
+  })
+
+  it('does not put a syllabus year on the F.4 map chrome', () => {
+    for (const file of ['zh-Hant.json', 'en.json', 'zh-Hans.json']) {
+      const messages = JSON.parse(readFileSync(new URL(`../i18n/${file}`, import.meta.url), 'utf8')) as Record<string, string>
+      for (const key of ['map.track.f4', 'map.f4.subtitle']) {
+        assert.equal(SYLLABUS_YEAR.test(messages[key] ?? ''), false, `${file} ${key}`)
+      }
+      assert.equal(/四個單元|四个单元|four units/.test(messages['map.f4.subtitle'] ?? ''), false, file)
+    }
   })
 
   it('keeps image placeholders and does not embed paper or exemplar bodies', () => {
