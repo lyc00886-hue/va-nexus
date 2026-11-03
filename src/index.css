@@ -35,6 +35,9 @@ html {
  * panel to the viewport below its offset parent (100% = that header row).
  * 100dvh stays tied to the viewport when --sen-font-scale changes; a rem-only
  * max-height would grow with the font and push the lower controls off-screen.
+ * overscroll-behavior contains a touch that starts on the panel. Desktop
+ * mouse-wheel is contained in SenSettingsPanel: on some desktops a wheel over
+ * this absolute panel still scrolls the page behind it.
  */
 .sen-settings-panel {
   max-height: calc(100dvh - 100% - 0.75rem);

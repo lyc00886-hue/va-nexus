@@ -4,12 +4,37 @@ import { useSenSupport } from '../context/SenSupportContext'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { useSen, type FontSizeLevel } from '../context/SenContext'
 import { t, type MessageKey } from '../i18n'
+import { nextContainedScrollTop, wheelDeltaPixels, wheelHitsPanel } from '../lib/panelWheel'
 
 const FONT_LEVELS: { id: FontSizeLevel; label: MessageKey }[] = [
   { id: 'md', label: 'sen.font.md' },
   { id: 'lg', label: 'sen.font.lg' },
   { id: 'xl', label: 'sen.font.xl' },
 ]
+
+function lineBox(el: HTMLElement): number {
+  const style = getComputedStyle(el)
+  const parsed = Number.parseFloat(style.lineHeight)
+  if (Number.isFinite(parsed) && parsed > 0) return parsed
+  const font = Number.parseFloat(style.fontSize)
+  return Number.isFinite(font) && font > 0 ? font * 1.5 : 16
+}
+
+/** Nested overflow, else the panel itself. Touch scroll is left to the browser. */
+function wheelScroller(panel: HTMLElement, target: EventTarget | null): HTMLElement {
+  let node: Element | null =
+    target instanceof Element ? target : target instanceof Node ? target.parentElement : null
+  while (node && node !== panel) {
+    if (node instanceof HTMLElement) {
+      const oy = getComputedStyle(node).overflowY
+      if ((oy === 'auto' || oy === 'scroll' || oy === 'overlay') && node.scrollHeight > node.clientHeight + 1) {
+        return node
+      }
+    }
+    node = node.parentElement
+  }
+  return panel
+}
 
 function Toggle({
   icon,
@@ -76,6 +101,45 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
       window.removeEventListener('mousedown', onDown)
     }
   }, [onClose])
+
+  useEffect(() => {
+    const panel = ref.current
+    if (!panel) return
+    // React's onWheel is passive, so preventDefault there cannot stop the page.
+    // Capture on window also catches a wheel whose hit target is the page behind
+    // this absolute panel (sticky header). Touch swipes do not fire wheel.
+    const onWheel = (event: WheelEvent) => {
+      if (event.ctrlKey || event.metaKey) return
+      const rect = panel.getBoundingClientRect()
+      if (
+        !wheelHitsPanel(
+          {
+            contains: (node) => node instanceof Node && panel.contains(node),
+            left: rect.left,
+            top: rect.top,
+            right: rect.right,
+            bottom: rect.bottom,
+          },
+          event,
+        )
+      ) {
+        return
+      }
+      const scroller = wheelScroller(panel, event.target)
+      const delta = wheelDeltaPixels(event.deltaY, event.deltaMode, lineBox(scroller), scroller.clientHeight)
+      event.preventDefault()
+      event.stopPropagation()
+      if (delta === 0) return
+      scroller.scrollTop = nextContainedScrollTop(
+        scroller.scrollTop,
+        scroller.scrollHeight,
+        scroller.clientHeight,
+        delta,
+      )
+    }
+    window.addEventListener('wheel', onWheel, { capture: true, passive: false })
+    return () => window.removeEventListener('wheel', onWheel, { capture: true })
+  }, [])
 
   return (
     <div
