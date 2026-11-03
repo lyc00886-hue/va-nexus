@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "id": "sba-ai-feedback-copy",
+    "locale": "en",
+    "feature": "sba_upload_manual_ai_formative",
+    "version": "2026-11-03-thin-slice",
+    "locks": {
+      "manual_trigger_only": true,
+      "age_gate_18_plus": true,
+      "formative_only": true,
+      "never_edit_image": true,
+      "never_official_or_sba_looking_scores": true,
+      "ai_marks": false
+    }
+  },
+  "buttonOpenFeedback": "Get learning feedback",
+  "ageGateTitle": "18+ only",
+  "ageGateBody": "AI feedback is only for accounts marked 18 or older (same gate as Feldman feedback). Under 18: use checklists and sentence frames.",
+  "ageGateConfirm": "I am 18 or older",
+  "ageGateDeny": "Not now",
+  "loading": "Getting feedback…",
+  "resultTitle": "Learning feedback",
+  "disclaimer": "For self-review only — formative guidance, not an official SBA / HKEAA mark. AI does not award marks, edit your image, or give grades or scores.",
+  "emptyState": "Upload evidence first, then tap for feedback (it never runs automatically).",
+  "errorGeneric": "Couldn’t get feedback. Try again later.",
+  "tipUseOwnWords": "If you use AI elsewhere in your writing, you must declare it."
+}

@@ -19,6 +19,7 @@ import {
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AbilityChart } from './AbilityChart'
+import { SbaAiFeedback } from './SbaAiFeedback'
 import { PortfolioAccordion } from './PortfolioAccordion'
 import { SbaArtworkSlotSwitcher } from './SbaArtworkSlotSwitcher'
 import { SbaSeriesOutline } from './SbaSeriesOutline'
@@ -407,6 +408,7 @@ export function SbaQuest() {
       updateDraft(slot, { message: { kind: 'error', text: t('sba.msg.empty') } })
       return
     }
+    // Saving evidence stores the note and photos only. It must not request AI feedback.
     setSaving(true)
     updateDraft(slot, { message: null })
     try {
@@ -902,6 +904,12 @@ export function SbaQuest() {
                     </ul>
                   </div>
                 )}
+                <SbaAiFeedback
+                  stepLabel={t('sba.stepHeading', { n: activeStep.id, title: activeStep.title })}
+                  note={note}
+                  savedNotes={activeItems.map((item) => item.note)}
+                  photoCount={pending.length + activeItems.filter((item) => Boolean(item.file_path || item.url)).length}
+                />
               </section>
             )}
           </div>
