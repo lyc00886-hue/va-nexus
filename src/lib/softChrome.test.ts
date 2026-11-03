@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-import { readFileSync } from 'node:fs'
+import { readdirSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
@@ -117,10 +117,10 @@ describe('soft leftover display chrome', () => {
 
   it('clears student-facing SENCO, SEN chart labels, and dyslexia spacing names', () => {
     const privacy = {
-      'ability-chart.json': '數據只儲存在學生自己的裝置╱帳戶；圖表不顯示任何診斷標籤。',
-      'ability-chart.zh-Hans.json': '数据只储存在学生自己的设备╱账户；图表不显示任何诊断标签。',
+      'ability-chart.json': '數據只儲存在學生自己的裝置╱帳戶；圖表唔會為你貼上任何標籤。',
+      'ability-chart.zh-Hans.json': '数据只储存在学生自己的设备╱账户；图表不会为你贴上任何标签。',
       'ability-chart.en.json':
-        "Data stays on the student's own device / account; the chart never shows any diagnostic label.",
+        "Data stays on the student's own device / account; the chart never labels you.",
     } as const
     for (const [file, expected] of Object.entries(privacy)) {
       const chart = JSON.parse(read(`src/content/${file}`)) as { meta: { privacy: string; no_sen_labels: boolean } }
@@ -130,11 +130,11 @@ describe('soft leftover display chrome', () => {
 
     const disclaimer = {
       'sen-checkin.json':
-        '呢個問卷唔係診斷，亦唔會判斷你有冇任何學習困難。佢只係幫你揀用得舒服啲嘅顯示同閱讀方式。答案只會存喺你部裝置，唔會傳俾老師或者學校。如果你覺得讀書有困難，可以同老師、社工或者學校嘅支援老師傾。',
+        '呢個問卷唔係醫學判斷，亦唔會定性你有冇任何學習困難。佢只係幫你揀用得舒服啲嘅顯示同閱讀方式。答案只會存喺你部裝置，唔會傳俾老師或者學校。如果你覺得讀書有困難，可以同老師、社工或者學校嘅支援老師傾。',
       'sen-checkin.zh-Hans.json':
-        '这份问卷不是诊断，也不会判断你是否有任何学习困难。它只是帮助你选择更舒适的显示与阅读方式。答案只会保存在你的设备上，不会传送给老师或学校。如果你觉得学习有困难，可以和老师、社工或学校的支援老师商量。',
+        '这份问卷不是医学判断，也不会定性你是否有任何学习困难。它只是帮助你选择更舒适的显示与阅读方式。答案只会保存在你的设备上，不会传送给老师或学校。如果你觉得学习有困难，可以和老师、社工或学校的支援老师商量。',
       'sen-checkin.en.json':
-        "This questionnaire is not a diagnosis, and it does not decide whether you have any learning difficulty. It only helps you choose display and reading options that feel more comfortable. Your answers stay on your device and are never sent to teachers or your school. If you find schoolwork hard, talk to a teacher, a social worker, or your school's support teacher.",
+        "This questionnaire is not a medical judgment, and it will not label you or decide whether you have any learning difficulty. It only helps you choose display and reading options that feel more comfortable. Your answers stay on your device and are never sent to teachers or your school. If you find schoolwork hard, talk to a teacher, a social worker, or your school's support teacher.",
     } as const
     for (const [file, expected] of Object.entries(disclaimer)) {
       const pack = JSON.parse(read(`src/content/${file}`)) as { disclaimer: string }
@@ -191,5 +191,126 @@ describe('soft leftover display chrome', () => {
     const header = read('src/components/Header.tsx')
     const app = read('src/App.tsx')
     assert.equal(/sfx\.|new Audio|HTMLAudioElement/.test(header + app), false)
+  })
+
+  it('wires easy-read student lines and keeps the AI feedback gate', () => {
+    const easy = {
+      'easy-read-mode.json': {
+        locale: 'zh-Hant',
+        disclaimer: '呢個係學習顯示方式，唔係醫學判斷、亦唔會定性你。同一套任務，路徑更短、更清楚。',
+        settingsHint: '喺設定隨時開關。唔會為你寫入任何標籤。',
+        privacyLine: '我哋唔會為你儲存任何標籤。只記住你開咗邊啲顯示選項。',
+      },
+      'easy-read-mode.zh-Hans.json': {
+        locale: 'zh-Hans',
+        disclaimer: '这是学习显示方式，不是医学判断、也不会定性你。同一套任务，路径更短、更清楚。',
+        settingsHint: '在设置里随时开关。不会为你写入任何标签。',
+        privacyLine: '我们不会为你存储任何标签。只记住你打开了哪些显示选项。',
+      },
+      'easy-read-mode.en.json': {
+        locale: 'en',
+        disclaimer:
+          'This is a display and reading preference — not a medical judgment, and it will not label you. Same tasks, clearer path.',
+        settingsHint: 'Toggle anytime in Settings. No labels are stored about you.',
+        privacyLine: 'We do not store any labels about you. We only remember which display options you turned on.',
+      },
+    } as const
+    for (const [file, expected] of Object.entries(easy)) {
+      const pack = JSON.parse(read(`src/content/${file}`)) as {
+        locale: string
+        disclaimer: string
+        settingsHint: string
+        privacyLine: string
+      }
+      assert.equal(pack.locale, expected.locale)
+      assert.equal(pack.disclaimer, expected.disclaimer)
+      assert.equal(pack.settingsHint, expected.settingsHint)
+      assert.equal(pack.privacyLine, expected.privacyLine)
+    }
+
+    const panel = read('src/components/SenSettingsPanel.tsx')
+    assert.match(panel, /contentJson<EasyReadStudentCopy>\('easy-read-mode'\)/)
+    assert.match(panel, /data-testid="easy-read-disclaimer"/)
+    assert.match(panel, /data-testid="easy-read-settings-hint"/)
+    assert.match(panel, /data-testid="easy-read-privacy-line"/)
+    assert.match(panel, /t\('sen\.toggle\.dyslexia'\)/)
+
+    const gates = {
+      'privacy-notice.md': '**AI 回饋（只限 18 歲或以上帳戶）**',
+      'privacy-notice.zh-Hans.md': '**AI 反馈（仅限 18 岁或以上账户）**',
+      'privacy-notice.en.md': '**AI feedback (18+ accounts only)**',
+    } as const
+    for (const [file, title] of Object.entries(gates)) {
+      const notice = read(`src/content/${file}`)
+      assert.equal(notice.includes(title), true, file)
+      assert.equal(/學習困難|学习困难|learning difficulty/.test(notice), true, file)
+    }
+    assert.equal(
+      read('src/content/privacy-notice.en.md').includes('Ability charts never label you.'),
+      true,
+    )
+
+    const notes = {
+      'zh-Hant': '呢個唔係醫學判斷，只係幫你揀合適工具',
+      'zh-Hans': '这不是医学判断，只是帮你选择合适的工具',
+      en: 'This is not a medical judgment — it just helps you choose suitable tools',
+    } as const
+    const support = {
+      'zh-Hant': '想要大字、朗讀或專注模式？做個 1 分鐘問卷，揀最啱你嘅工具（唔係醫學判斷）。',
+      'zh-Hans': '想要大字、朗读或专注模式？做一份 1 分钟问卷，选出最适合你的工具（这不是医学判断）。',
+      en: 'Want larger text, read-aloud or focus mode? Take a 1-minute check-in to pick the tools that suit you (not a medical judgment).',
+    } as const
+    for (const locale of Object.keys(FILES) as (keyof typeof FILES)[]) {
+      const bag = messages(FILES[locale])
+      assert.equal(bag['sen.checkin.note'], notes[locale])
+      assert.equal(bag['map.support.text'], support[locale])
+      assert.equal(bag['header.a11y'], COPY[locale]['header.a11y'])
+      assert.equal(bag['er.mode.standard'].length > 0, true)
+      assert.equal(bag['er.mode.step'].length > 0, true)
+    }
+  })
+})
+
+const DIAGNOSIS = /診斷|诊断|臨床診斷|临床诊断|diagnos(?:is|tic)/i
+
+function studentStrings(value: unknown, path: string, hits: string[]) {
+  if (typeof value === 'string') {
+    if (DIAGNOSIS.test(value)) hits.push(`${path}: ${value}`)
+    return
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => studentStrings(item, `${path}[${index}]`, hits))
+    return
+  }
+  if (!value || typeof value !== 'object') return
+  for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
+    if (key === 'teacherUse' || key === 'outOfScope') continue
+    studentStrings(child, `${path}.${key}`, hits)
+  }
+}
+
+describe('student chrome diagnosis glyphs', () => {
+  it('keeps diagnosis words out of student-facing copy', () => {
+    const hits: string[] = []
+    for (const file of [
+      'src/i18n/zh-Hant.json',
+      'src/i18n/zh-Hans.json',
+      'src/i18n/zh-Hans.overrides.json',
+      'src/i18n/en.json',
+    ]) {
+      studentStrings(JSON.parse(read(file)), file, hits)
+    }
+    const contentDir = join(root, 'src/content')
+    for (const name of readdirSync(contentDir)) {
+      if (name.startsWith('teacher-draft-band')) continue
+      if (!name.endsWith('.json') && !name.startsWith('privacy-notice')) continue
+      if (name.endsWith('.md') && !name.startsWith('privacy-notice')) continue
+      const full = `src/content/${name}`
+      if (name.endsWith('.json')) studentStrings(JSON.parse(read(full)), full, hits)
+      else if (DIAGNOSIS.test(read(full))) hits.push(full)
+    }
+    const panel = read('src/components/SenSettingsPanel.tsx').replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, '')
+    if (DIAGNOSIS.test(panel)) hits.push('src/components/SenSettingsPanel.tsx')
+    assert.deepEqual(hits, [])
   })
 })

@@ -4,7 +4,14 @@ import { useSenSupport } from '../context/SenSupportContext'
 import { useEffect, useRef, type ReactNode } from 'react'
 import { useSen, type FontSizeLevel } from '../context/SenContext'
 import { t, type MessageKey } from '../i18n'
+import { contentJson } from '../i18n/content'
 import { nextContainedScrollTop, wheelDeltaPixels, wheelHitsPanel } from '../lib/panelWheel'
+
+type EasyReadStudentCopy = {
+  disclaimer: string
+  settingsHint: string
+  privacyLine: string
+}
 
 const FONT_LEVELS: { id: FontSizeLevel; label: MessageKey }[] = [
   { id: 'md', label: 'sen.font.md' },
@@ -85,6 +92,7 @@ function Toggle({
 export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
   const { settings, update, reset } = useSen()
   const { openCheckIn } = useSenSupport()
+  const easyCopy = contentJson<EasyReadStudentCopy>('easy-read-mode')
   const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -163,6 +171,11 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
 
       <div className="mt-3">
         <EasyReadBar />
+        <div className="mt-2 space-y-1 text-[11px] leading-relaxed text-teal-800/80" data-testid="easy-read-student-copy">
+          <p data-testid="easy-read-disclaimer">{easyCopy.disclaimer}</p>
+          <p data-testid="easy-read-settings-hint">{easyCopy.settingsHint}</p>
+          <p data-testid="easy-read-privacy-line">{easyCopy.privacyLine}</p>
+        </div>
       </div>
 
       <button
