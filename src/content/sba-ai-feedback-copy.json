@@ -1,0 +1,27 @@
+{
+  "meta": {
+    "id": "sba-ai-feedback-copy",
+    "locale": "zh-Hant",
+    "feature": "sba_upload_manual_ai_formative",
+    "version": "2026-11-03-thin-slice",
+    "locks": {
+      "manual_trigger_only": true,
+      "age_gate_18_plus": true,
+      "formative_only": true,
+      "never_edit_image": true,
+      "never_official_or_sba_looking_scores": true,
+      "ai_marks": false
+    }
+  },
+  "buttonOpenFeedback": "取得學習評語",
+  "ageGateTitle": "只限 18 歲或以上",
+  "ageGateBody": "AI 評語只開放予已標記為年滿 18 歲的帳戶，與 Feldman 回饋相同。未滿 18 歲請用檢查清單與句式。",
+  "ageGateConfirm": "我已年滿 18 歲",
+  "ageGateDeny": "暫時不用",
+  "loading": "正在取得評語…",
+  "resultTitle": "學習評語",
+  "disclaimer": "只供自我檢視，屬進展性引導，並非正式 SBA／考評局分數；AI 不會評分、不會改圖，亦不會給等級或分數。",
+  "emptyState": "請先上載證據，再按掣取得評語（不會自動評）。",
+  "errorGeneric": "暫時未能取得評語，請稍後再試。",
+  "tipUseOwnWords": "若你在其他地方使用 AI 寫作，須自行註明。"
+}
