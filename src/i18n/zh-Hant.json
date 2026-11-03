@@ -530,5 +530,11 @@
   "rs.ai.age": "確認已滿 18 歲",
   "rs.list.good": "好！",
   "rs.list.done": "清單齊了",
-  "rs.list.skip": "這項稍後"
+  "rs.list.skip": "這項稍後",
+  "mascot.encourage": "加油呀！",
+  "mascot.complete": "做得好！",
+  "mascot.chest": "開箱！",
+  "mascot.chest.reward": "＋10 學習點",
+  "mascot.chest.cta": "開箱",
+  "mascot.chest.skip": "稍後"
 }
