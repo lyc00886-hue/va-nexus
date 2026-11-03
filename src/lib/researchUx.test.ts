@@ -21,7 +21,7 @@ const COPY = {
     'rs.step.ai': 'AI tip',
     'rs.cta.continue': 'Continue',
     'rs.cta.next': 'Next',
-    'rs.cta.tip': 'Get tip',
+    'rs.cta.tip': 'Get learning tip',
     'rs.back': 'Back',
     'rs.later': 'Later',
     'rs.ai.title': 'AI learning tip',
@@ -77,10 +77,10 @@ const COPY = {
   },
 } as const
 
-const CLASSIC_AI_TITLE = {
-  en: 'AI teacher feedback',
-  'zh-Hant': 'AI 老師回饋',
-  'zh-Hans': 'AI 老师反馈',
+const AI_TITLE = {
+  en: 'AI learning tip',
+  'zh-Hant': 'AI 學習建議',
+  'zh-Hans': 'AI 学习建议',
 } as const
 
 const BANNED = [
@@ -173,7 +173,9 @@ describe('research steps copy', () => {
         else assert.ok(hanCount(value) <= 18, value)
         for (const banned of BANNED) assert.equal(value.includes(banned), false, `${key} ${banned}`)
       }
-      assert.equal(bag['fw.ai.title'], CLASSIC_AI_TITLE[locale])
+      assert.equal(bag['fw.ai.title'], AI_TITLE[locale])
+      assert.equal(bag['research.feldmanBench'], AI_TITLE[locale])
+      assert.equal(bag['rs.ai.title'], AI_TITLE[locale])
     }
   })
 
@@ -185,6 +187,7 @@ describe('research steps copy', () => {
 
     assert.match(lab, /useResearchStepsShell/)
     assert.match(lab, /shell=\{steps \? 'steps' : undefined\}/)
+    assert.match(lab, /steps && getLocale\(\) === 'en' \? t\('lp\.exit'\) : undefined/)
     assert.equal(lab.includes("shell=\"steps\""), false)
 
     assert.match(writer, /if \(shell === 'steps'\)/)
@@ -196,6 +199,8 @@ describe('research steps copy', () => {
     assert.match(shell, /t\('rs\.cta\.continue'\)/)
     assert.match(shell, /t\('rs\.cta\.next'\)/)
     assert.match(shell, /t\('rs\.cta\.tip'\)/)
+    assert.equal((shell.match(/t\('rs\.back'\)/g) ?? []).length, 1)
+    assert.equal((shell.match(/data-research-back/g) ?? []).length, 1)
     assert.equal(shell.includes('/api/feedback'), false)
     assert.equal(shell.includes('fw.ai.title'), false)
     assert.equal(shell.includes('SbaAiFeedback'), false)

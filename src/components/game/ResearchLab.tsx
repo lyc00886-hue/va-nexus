@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useGame } from '../../context/GameContext'
 import { getResearchQuests } from '../../game/research'
 import { getBadgeById } from '../../game/rewards'
-import { t } from '../../i18n'
+import { getLocale, t } from '../../i18n'
 import type { ResearchQuest } from '../../game/types'
 import { FeldmanWriter } from '../FeldmanWriter'
 import { useResearchStepsShell } from '../../lib/useResearchStepsShell'
@@ -22,6 +22,7 @@ export function ResearchLab() {
       <LessonPlayer
         lesson={open}
         kind="quest"
+        exitLabel={steps && getLocale() === 'en' ? t('lp.exit') : undefined}
         onExit={() => {
           setHideEmbed(false)
           setOpen(null)

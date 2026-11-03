@@ -1,4 +1,4 @@
-import { Loader2, LogIn } from 'lucide-react'
+import { ChevronLeft, Loader2, LogIn } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { t } from '../../i18n'
 import { PrivacyLink } from '../PrivacyModal'
@@ -112,6 +112,10 @@ export function ResearchStepShell({
 
   function back() {
     setTipOpen(false)
+    if (phase === 'list' && listIndex > 0) {
+      setListIndex((i) => i - 1)
+      return
+    }
     if (phase === 'ai') {
       setPhase('list')
       setListIndex(items.length > 0 ? items.length - 1 : 0)
@@ -125,9 +129,11 @@ export function ResearchStepShell({
       {phase !== 'write' && (
         <button
           type="button"
+          data-research-back
           onClick={back}
-          className="text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
+          className="inline-flex items-center gap-1 text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
         >
+          <ChevronLeft className="h-4 w-4" aria-hidden />
           {t('rs.back')}
         </button>
       )}

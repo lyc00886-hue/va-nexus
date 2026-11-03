@@ -64,6 +64,7 @@ export function LessonPlayer({
   kind,
   onExit,
   after,
+  exitLabel,
   presentation = 'flow',
   folds,
   onSetFold,
@@ -73,6 +74,8 @@ export function LessonPlayer({
   onExit: () => void
   /** Rendered under the result screen (e.g. embedded Feldman writer) */
   after?: ReactNode
+  /** Overrides the result exit label. Default stays “Back to the research lab” / map. */
+  exitLabel?: string
   /** Learning-map lessons fold Goal / Steps / Practice. Quests keep the linear flow. */
   presentation?: 'flow' | 'folds'
   folds?: LessonFoldOpen
@@ -249,6 +252,7 @@ export function LessonPlayer({
         motion={motion}
         onExit={onExit}
         onRestart={restart}
+        exitLabel={exitLabel}
         after={after}
       />
     ) : null
@@ -578,6 +582,7 @@ function ResultStage({
   motion,
   onExit,
   onRestart,
+  exitLabel,
   after,
 }: {
   outcome: FinishOutcome
@@ -586,6 +591,7 @@ function ResultStage({
   motion: boolean
   onExit: () => void
   onRestart: () => void
+  exitLabel?: string
   after?: ReactNode
 }) {
   return (
@@ -621,7 +627,7 @@ function ResultStage({
         )}
         <div className="mt-5 flex flex-wrap justify-center gap-2">
           <button type="button" onClick={onExit} className="rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-500">
-            {kind === 'lesson' ? t('lp.backMap') : t('lp.backResearch')}
+            {exitLabel ?? (kind === 'lesson' ? t('lp.backMap') : t('lp.backResearch'))}
           </button>
           <button
             type="button"
