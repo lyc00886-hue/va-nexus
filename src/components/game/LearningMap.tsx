@@ -706,6 +706,11 @@ function UnitSection({
               data-open={lessonOpen ? 'true' : 'false'}
               className={`relative scroll-mt-24 ${indent ? OFFSETS[i % OFFSETS.length] : ''}`}
             >
+              {node.coverImage ? (
+                <div className="mb-2 overflow-hidden rounded-2xl ring-1 ring-slate-200">
+                  <UnitCover src={node.coverImage} credit={node.coverCredit} lesson />
+                </div>
+              ) : null}
               <h4 className="m-0 text-base">
               <button
                 type="button"
@@ -792,7 +797,7 @@ function UnitSection({
   )
 }
 
-function UnitCover({ src, credit }: { src: string; credit?: string }) {
+function UnitCover({ src, credit, lesson = false }: { src: string; credit?: string; lesson?: boolean }) {
   const [failed, setFailed] = useState(false)
   if (failed) return null
   return (
@@ -800,11 +805,11 @@ function UnitCover({ src, credit }: { src: string; credit?: string }) {
       <img
         src={src}
         alt=""
-        width={1152}
-        height={864}
+        width={lesson ? 1280 : 1152}
+        height={lesson ? 720 : 864}
         loading="lazy"
         decoding="async"
-        className="h-44 w-full object-cover object-center sm:h-52"
+        className={lesson ? 'aspect-video h-auto w-full object-cover object-center' : 'h-44 w-full object-cover object-center sm:h-52'}
         onError={() => setFailed(true)}
       />
       {credit ? (

@@ -19,6 +19,16 @@ All six covers are **自制 for VA-Nexus** (generated educational illustrations;
 
 Suggested on-screen credit (optional footer / about): 「單元封面插圖 © VA-Nexus（自制）」 / “Unit cover illustrations © VA-Nexus (original).”
 
+## F4 November lesson-tile covers (`f4-covers/`)
+
+Three formative classroom lessons ship their own tile illustration. Same rule as the unit covers: **自制 for VA-Nexus**, abstract classroom scenes, no third-party artwork.
+
+| File | Lesson | License | Source |
+|---|---|---|---|
+| `f4-covers/F4-U2-L3.png` | F4-U2-L3 · 十一月：設計繪圖同設計思維 | 自制 · VA-Nexus | November classroom cover, wired 2026-11-04 |
+| `f4-covers/F4-U3-L3.png` | F4-U3-L3 · 十一月：社區藝術計劃——研究 | 自制 · VA-Nexus | November classroom cover, wired 2026-11-04 |
+| `f4-covers/F4-U3-L4.png` | F4-U3-L4 · 十一月：社區藝術計劃——發展同創作 | 自制 · VA-Nexus | November classroom cover, wired 2026-11-04 |
+
 ## Artist thumbs bundled in this pack (`artist-thumbs/`)
 
 Only cleared files are copied here. Status taken from `/workspace/va-nexus-content/artist-images/final.json` (Commons `extmetadata` check). Do **not** invent licenses.

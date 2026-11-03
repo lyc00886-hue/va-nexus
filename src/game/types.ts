@@ -60,6 +60,9 @@ export type Lesson = {
   questions: Question[]
   /** Present when the content lesson lists artistIds. Thumbs only for cleared media. */
   artists?: LessonArtistRef[]
+  /** Optional lesson-tile illustration. Same local pack path as unit covers. */
+  coverImage?: string
+  coverCredit?: string
 }
 
 export type Unit = {

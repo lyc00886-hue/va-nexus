@@ -21,8 +21,11 @@ const LESSON_IDS = [
   'F4-U1-L2',
   'F4-U2-L1',
   'F4-U2-L2',
+  'F4-U2-L3',
   'F4-U3-L1',
   'F4-U3-L2',
+  'F4-U3-L3',
+  'F4-U3-L4',
   'F4-U4-L1',
   'F4-U4-L2',
   'F4-U5-L1',
@@ -30,6 +33,52 @@ const LESSON_IDS = [
   'F4-U6-L1',
   'F4-U6-L2',
 ]
+const LESSONS_PER_UNIT = [2, 3, 4, 2, 2, 2]
+const NOVEMBER_LESSONS = ['F4-U2-L3', 'F4-U3-L3', 'F4-U3-L4'] as const
+const NOVEMBER_COPY = {
+  'f4-demo.json': {
+    'F4-U2-L3': {
+      title: '十一月：設計繪圖同設計思維',
+      goal: '由「畫得似」轉去「設計得清楚」——先問功能同觀眾，再落筆。',
+    },
+    'F4-U3-L3': {
+      title: '十一月：社區藝術計劃——研究',
+      goal: '主題來自真實環境——人物、地方、習慣、物件；做社區藝術研究。',
+    },
+    'F4-U3-L4': {
+      title: '十一月：社區藝術計劃——發展同創作',
+      goal: '把研究變成創作——繪畫、設計、雕塑或其他媒介都可以。',
+    },
+  },
+  'f4-demo.zh-Hans.json': {
+    'F4-U2-L3': {
+      title: '十一月：设计绘图与设计思维',
+      goal: '由「画得像」转向「设计得清楚」——先问功能与观众，再落笔。',
+    },
+    'F4-U3-L3': {
+      title: '十一月：社区艺术计划——研究',
+      goal: '主题来自真实环境——人物、地方、习惯、物件；做社区艺术研究。',
+    },
+    'F4-U3-L4': {
+      title: '十一月：社区艺术计划——发展与创作',
+      goal: '把研究变成创作——绘画、设计、雕塑或其他媒介都可以。',
+    },
+  },
+  'f4-demo.en.json': {
+    'F4-U2-L3': {
+      title: 'November: Design drawing and design thinking',
+      goal: 'Move from “looks real” to “communicates clearly”—ask who it is for, then draw.',
+    },
+    'F4-U3-L3': {
+      title: 'November: Community art project — research',
+      goal: 'Grow themes from real places—people, habits, objects, spaces—through community-art research.',
+    },
+    'F4-U3-L4': {
+      title: 'November: Community art project — develop and make',
+      goal: 'Turn research into making—painting, design, sculpture or other media.',
+    },
+  },
+} as const
 const SYLLABUS_YEAR = /20\d{2}\s*[-/–—]\s*(?:20)?\d{2}/
 const PLACEHOLDER = {
   'f4-demo.json': '暫無合法圖',
@@ -49,6 +98,9 @@ type ArtistMedia = { thumb?: string; license?: string; credit?: string; sourceUr
 type Lesson = {
   id: string
   title: string
+  subtitle?: string
+  coverImage?: string
+  coverCredit?: string
   cards: string[]
   quiz: Quiz[]
   artistIds?: string[]
@@ -62,7 +114,7 @@ function pack(name: string): { units: Unit[] } {
 }
 
 describe('F.4 demo slice', () => {
-  it('ships the same six units and twelve lessons in each locale', () => {
+  it('ships the same six units and fifteen lessons in each locale', () => {
     for (const name of FILES) {
       const units = pack(name).units
       assert.deepEqual(
@@ -76,22 +128,22 @@ describe('F.4 demo slice', () => {
         LESSON_IDS,
         name,
       )
-      assert.equal(lessons.length, 12, name)
+      assert.equal(lessons.length, 15, name)
       assert.equal(
         lessons.reduce((n, lesson) => n + lesson.cards.length, 0),
-        60,
+        75,
         name,
       )
       assert.equal(
         lessons.reduce((n, lesson) => n + lesson.quiz.length, 0),
-        46,
+        55,
         name,
       )
-      for (const unit of units) {
+      for (const [index, unit] of units.entries()) {
         assert.equal(typeof unit.title, 'string')
         assert.ok(unit.title.length > 0)
         assert.equal(typeof unit.intro, 'string')
-        assert.equal(unit.lessons.length, 2)
+        assert.equal(unit.lessons.length, LESSONS_PER_UNIT[index], `${name} ${unit.id}`)
         assert.equal(SYLLABUS_YEAR.test(unit.title), false, `${name} ${unit.id} title`)
         assert.equal(SYLLABUS_YEAR.test(unit.intro), false, `${name} ${unit.id} intro`)
       }
@@ -155,6 +207,29 @@ describe('F.4 demo slice', () => {
             assert.equal(ref.sourceUrl, undefined, ref.artistId)
           }
         }
+      }
+    }
+  })
+
+  it('wires November lesson tiles with对照表 titles, goals, and local covers', () => {
+    for (const name of FILES) {
+      const lessons = pack(name).units.flatMap((unit) => unit.lessons)
+      const copy = NOVEMBER_COPY[name]
+      for (const lesson of lessons) {
+        if (!NOVEMBER_LESSONS.includes(lesson.id as (typeof NOVEMBER_LESSONS)[number])) {
+          assert.equal(lesson.coverImage, undefined, `${name} ${lesson.id}`)
+          continue
+        }
+        const expected = copy[lesson.id as keyof typeof copy]
+        assert.equal(lesson.title, expected.title, `${name} ${lesson.id}`)
+        assert.equal(lesson.subtitle, expected.goal, `${name} ${lesson.id}`)
+        const cover = coverFromUnit(lesson)
+        assert.equal(cover.coverImage, `/content/learning-map-illustrations/f4-covers/${lesson.id}.png`, name)
+        assert.equal(cover.coverCredit, lesson.coverCredit, name)
+        assert.ok((cover.coverCredit ?? '').length > 0, name)
+        assert.ok(statSync(resolve(PUBLIC, cover.coverImage.slice(1))).size > 1000, lesson.id)
+        const blob = JSON.stringify(lesson)
+        assert.equal(/HKEAA|考評局|考评局|SEN|IQ|FOMO/.test(blob), false, `${name} ${lesson.id}`)
       }
     }
   })

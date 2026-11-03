@@ -261,6 +261,60 @@
               "explain": "Link ideas to visual decisions."
             }
           ]
+        },
+        {
+          "id": "F4-U2-L3",
+          "title": "November: Design drawing and design thinking",
+          "subtitle": "Move from “looks real” to “communicates clearly”—ask who it is for, then draw.",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Creative Practice 3 (November): move from “looks real” to “communicates clearly”—ask who it is for, then draw.",
+            "Design thinking in 3 moves: notice a need → sketch several options → deepen one (materials / colour / text).",
+            "Material try-out: same theme, two materials (e.g. pencil + paper collage); compare which carries the message better.",
+            "Design writing: one short line each for audience, intended action, and which visual element helps.",
+            "Aligned to CCC F4 SoW Nov Wk 11–14. No real public exam papers—practice theme presentation structure only."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A strong start for design thinking is to:",
+              "options": [
+                "Jump straight to a final rendering",
+                "Clarify audience and need, then sketch options",
+                "Only copy a famous work",
+                "Skip sketches"
+              ],
+              "answer": "Clarify audience and need, then sketch options",
+              "explain": "Clear problem first; then options matter."
+            },
+            {
+              "type": "mcq",
+              "question": "Material exploration is for:",
+              "options": [
+                "Wasting supplies",
+                "Comparing which material fits the message",
+                "Exam formatting only",
+                "Avoiding comparison"
+              ],
+              "answer": "Comparing which material fits the message",
+              "explain": "Two trials show which message lands."
+            },
+            {
+              "type": "fill",
+              "question": "Design notes should name audience, what they should＿＿, and a visual element.",
+              "options": [],
+              "answer": "do",
+              "explain": "Audience + action + visual cue.",
+              "wordBank": [
+                "do",
+                "holiday",
+                "password",
+                "bus"
+              ]
+            }
+          ],
+          "artistIds": []
         }
       ]
     },
@@ -387,6 +441,113 @@
             "HK-PAK-01",
             "HK-LEEKIT-01"
           ]
+        },
+        {
+          "id": "F4-U3-L3",
+          "title": "November: Community art project — research",
+          "subtitle": "Grow themes from real places—people, habits, objects, spaces—through community-art research.",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Community Art Project I (research): themes grow from real places—people, habits, objects, spaces.",
+            "Visual research: observe + sketch + photo/video notes (ask before photographing people; protect privacy).",
+            "Interview tips: short questions, silence, key quotes; later keep only stories that feed your theme.",
+            "From a walk/tour: one insight you had not noticed before that still relates to community.",
+            "Aligned to CCC SoW Oct–Nov Wk 9–10. Keep the weekly visual diary. No past papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Before photographing people you should:",
+              "options": [
+                "Never ask",
+                "Ask / respect privacy",
+                "Hide the camera",
+                "Only photograph children"
+              ],
+              "answer": "Ask / respect privacy",
+              "explain": "Respect and safety come first."
+            },
+            {
+              "type": "mcq",
+              "question": "After interviews, use the notes to:",
+              "options": [
+                "Post everything online",
+                "Select useful stories for your theme",
+                "Skip recording",
+                "Copy news headlines"
+              ],
+              "answer": "Select useful stories for your theme",
+              "explain": "Filter what serves the theme."
+            },
+            {
+              "type": "fill",
+              "question": "Visual research often starts with＿＿, sketches and notes.",
+              "options": [],
+              "answer": "observation",
+              "explain": "Observe first.",
+              "wordBank": [
+                "observation",
+                "exam mark",
+                "password",
+                "shopping"
+              ]
+            }
+          ],
+          "artistIds": []
+        },
+        {
+          "id": "F4-U3-L4",
+          "title": "November: Community art project — develop and make",
+          "subtitle": "Turn research into making—painting, design, sculpture or other media.",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Community Art Project II: turn research into making—painting, design, sculpture or other media.",
+            "Leave a trail of thinking: written/visual sketches, material tests, why you changed ideas (for the research workbook).",
+            "When borrowing a style: learn the method; do not copy images; use legal or self-made references only.",
+            "Finish one community-linked work and say in three lines: theme, method, what you want viewers to feel.",
+            "Aligned to CCC SoW Community Art Project II. Reflect on learning. No high-score exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Leaving a process trail helps to:",
+              "options": [
+                "Submit a blank book",
+                "Show how ideas evolved",
+                "Hide the process",
+                "Only show a final photo"
+              ],
+              "answer": "Show how ideas evolved",
+              "explain": "SBA research workbooks value process."
+            },
+            {
+              "type": "mcq",
+              "question": "Safer use of an artist’s style is to:",
+              "options": [
+                "Download their work as yours",
+                "Learn the method and remake with your subject",
+                "Paste without credit",
+                "Rename the file"
+              ],
+              "answer": "Learn the method and remake with your subject",
+              "explain": "Method yes; their image no."
+            },
+            {
+              "type": "mcq",
+              "question": "A three-line artist talk should cover:",
+              "options": [
+                "Only marks",
+                "Theme, method, viewer feeling",
+                "Only weather",
+                "Only price"
+              ],
+              "answer": "Theme, method, viewer feeling",
+              "explain": "Clear intent for the viewer."
+            }
+          ],
+          "artistIds": []
         }
       ]
     },
