@@ -1,0 +1,8 @@
+{
+  "version": "2026-11-04",
+  "id": "easy-read-mode",
+  "locale": "en",
+  "disclaimer": "This is a display and reading preference — not a medical judgment, and it will not label you. Same tasks, clearer path.",
+  "settingsHint": "Toggle anytime in Settings. No labels are stored about you.",
+  "privacyLine": "We do not store any labels about you. We only remember which display options you turned on."
+}

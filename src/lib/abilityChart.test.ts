@@ -200,9 +200,9 @@ describe('ability-chart content', () => {
     ])
     assert.equal(ids.includes('self-aw-5'), false)
     const privacy = {
-      'zh-Hant': '數據只儲存在學生自己的裝置╱帳戶；圖表不顯示任何診斷標籤。',
-      en: "Data stays on the student's own device / account; the chart never shows any diagnostic label.",
-      'zh-Hans': '数据只储存在学生自己的设备╱账户；图表不显示任何诊断标签。',
+      'zh-Hant': '數據只儲存在學生自己的裝置╱帳戶；圖表唔會為你貼上任何標籤。',
+      en: "Data stays on the student's own device / account; the chart never labels you.",
+      'zh-Hans': '数据只储存在学生自己的设备╱账户；图表不会为你贴上任何标签。',
     } as const
     for (const file of files) {
       assert.equal(file.chart.meta.privacy, privacy[file.locale])

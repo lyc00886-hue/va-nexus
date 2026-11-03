@@ -7,7 +7,7 @@
     "title": "My Ability Chart",
     "subtitle": "See your own progress: self-assess against the HKEAA criteria. No ranking, no comparison with classmates.",
     "disclaimer": "For self-review only; this is not an official SBA mark. Official marks are given by your subject teacher according to the HKEAA criteria. AI does not mark your work.",
-    "privacy": "Data stays on the student's own device / account; the chart never shows any diagnostic label.",
+    "privacy": "Data stays on the student's own device / account; the chart never labels you.",
     "no_ranking": true,
     "no_peer_comparison": true,
     "no_sen_labels": true,

@@ -22,7 +22,7 @@ const EXPECTED = {
       {
         id: 'privacy-deidentify',
         shortTitle: 'Privacy & de-identification',
-        body: 'Data is de-identified before it is sent to AI. The ability chart is a classroom self-assessment reference, not a clinical diagnosis. No diagnostic labels or support lists appear in product chrome.',
+        body: 'Data is de-identified before it is sent to AI. The ability chart is a classroom self-assessment reference — not a medical judgment, and it will not label you. No support lists or labels appear in product chrome.',
       },
       {
         id: 'support-direction',
@@ -44,7 +44,7 @@ const EXPECTED = {
       {
         id: 'privacy-deidentify',
         shortTitle: '私隱與去識別',
-        body: '傳送至 AI 前會去除可辨識姓名。能力圖只供課堂自我檢視參考，非臨床診斷。學生介面唔顯示診斷標籤或支援名單。',
+        body: '傳送至 AI 前會去除可辨識姓名。能力圖只供課堂自我檢視參考，唔係醫學判斷，亦唔會定性你。學生介面唔顯示支援名單或任何標籤。',
       },
       {
         id: 'support-direction',
@@ -66,7 +66,7 @@ const EXPECTED = {
       {
         id: 'privacy-deidentify',
         shortTitle: '隐私与去识别',
-        body: '传送至 AI 前会去除可辨识姓名。能力图只供课堂自我检视参考，非临床诊断。学生界面不显示诊断标签或支援名单。',
+        body: '传送至 AI 前会去除可辨识姓名。能力图只供课堂自我检视参考，不是医学判断，也不会定性你。学生界面不显示支援名单或任何标签。',
       },
       {
         id: 'support-direction',

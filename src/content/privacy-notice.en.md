@@ -2,7 +2,7 @@
 
 **Guest mode**
 - Answers from the learning-style check-in and display settings are stored only in this device's browser (localStorage). They are not uploaded and do not sync across devices.
-- The check-in and display settings only help you choose a more comfortable interface (for example larger text, read-aloud, or fewer animations). They are not a diagnosis and do not label or decide whether you have any learning need.
+- The check-in and display settings only help you choose a more comfortable interface (for example larger text, read-aloud, or fewer animations). They are not a medical judgment and will not label you or decide whether you have any learning difficulty.
 - Guests can use lessons and games but cannot upload SBA photos. Progress and badges stay on this device. If you clear browser data or switch devices, these records will be lost.
 
 **After signing in with Google**
@@ -22,7 +22,7 @@
 **Ability charts**
 - Ability charts show only your own four-level self-assessment. They do not compare you with classmates and do not rank anyone.
 - Every chart states that it is for self-review only and is not an official SBA mark; official marks are given by your subject teacher.
-- Ability charts never show any diagnostic label or diagnosis.
+- Ability charts never label you.
 
 **Other**
 - We will not sell your data to anyone, and we will not use it for advertising.
