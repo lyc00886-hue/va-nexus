@@ -143,6 +143,7 @@
   "ac.filter.region.west": "西方／国际",
   "ac.filter.region.mingqing": "明清",
   "map.unitProgressAria": "{title}：已完成 {done} / {total} 课，{pct}%",
+  "map.f4.subtitle": "示范切片：四个单元。短课卡，然后小测。不是全年课程。",
   "map.media.subtitle": "{n} 种媒介：选一张卡进入短课和小测。交件提示来自每个媒介的说明。",
   "map.media.pendingNote": "这个媒介的课文还没到，暂时不能开始。",
   "map.media.kit": "材料与安全",

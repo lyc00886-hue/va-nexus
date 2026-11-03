@@ -1,0 +1,530 @@
+{
+  "units": [
+    {
+      "id": "F4-U1-ORIENT",
+      "title": "Form 4 VA Intro: Course and SBA Portfolio",
+      "intro": "Form 4 starter unit. Learn the two learning strands (appreciation and making), positive values, and the basic SBA portfolio structure (research workbook + artwork/critical studies). Aligned to CCCKLC F.4 Syllabus 25–26 Orientation and SBA criteria notes. No real HKEAA papers or high-score student exemplars. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "F4-U1-L1",
+          "title": "Two Strands: Appreciation and Making",
+          "cards": [
+            "Form 4 Visual Arts follows the official curriculum with two main strands: visual arts appreciation and visual arts making.",
+            "Appreciation: learn to look at artworks, understand signs and styles, and the historical, social and cultural contexts of art.",
+            "Making: learn to use materials and techniques to express ideas, turning experience and feeling into visual form.",
+            "Throughout both strands, build an open and respectful attitude toward different cultures and viewpoints.",
+            "[No cleared image yet] Later: a simple two-strand diagram (self-made / CC0)."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What are the two main learning strands in the VA curriculum?",
+              "options": [
+                "PE and Music",
+                "Appreciation and making",
+                "Dictation and accounting",
+                "Coding only"
+              ],
+              "answer": "Appreciation and making",
+              "explain": "The curriculum emphasises visual arts appreciation and visual arts making."
+            },
+            {
+              "type": "fill",
+              "question": "Appreciation often includes describe, analyse, interpret and ____ artworks.",
+              "options": [],
+              "answer": "judge",
+              "explain": "A common four-step critical frame is describe–analyse–interpret–judge (Feldman-aligned).",
+              "wordBank": [
+                "delete",
+                "judge",
+                "copy",
+                "hide"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "What does the making strand emphasise?",
+              "options": [
+                "Only copying textbook pictures",
+                "Using media and skills to express your own ideas",
+                "Only memorising artists' birthdays",
+                "Never reflecting on your work"
+              ],
+              "answer": "Using media and skills to express your own ideas",
+              "explain": "Making turns ideas and experience into visual form while building skill."
+            },
+            {
+              "type": "match",
+              "question": "Match each focus",
+              "options": [
+                "Appreciation",
+                "Making",
+                "Values"
+              ],
+              "answer": {
+                "Appreciation": "Analyse meaning and context",
+                "Making": "Realise intention with materials",
+                "Values": "Respect different cultural views"
+              },
+              "explain": "All three work together in VA learning."
+            }
+          ]
+        },
+        {
+          "id": "F4-U1-L2",
+          "title": "SBA Portfolio: Research Workbook and Artwork/Critical Studies",
+          "cards": [
+            "School-based Assessment (SBA) usually means one portfolio: a research workbook plus artwork/critical studies.",
+            "Artwork/critical studies: about four pieces under one theme; some may be written critical studies (follow school and official guidance).",
+            "The research workbook shows theme exploration, study of related artworks, media experiments and reflection on progress.",
+            "Assessment focuses on media skills, visual presentation, relationship with context, creativity/imagination, overall theme communication and progression.",
+            "This lesson covers structure only. It does not provide real HKEAA papers or high-score student exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "An SBA portfolio usually includes which two parts?",
+              "options": [
+                "Only a final exam paper",
+                "Research workbook and artwork/critical studies",
+                "Only a dictation book",
+                "PE fitness logs"
+              ],
+              "answer": "Research workbook and artwork/critical studies",
+              "explain": "Official SBA centres on the research workbook plus artwork/critical studies."
+            },
+            {
+              "type": "fill",
+              "question": "The research workbook develops a theme that the student ____.",
+              "options": [],
+              "answer": "chooses",
+              "explain": "The theme is self-selected and developed over time.",
+              "wordBank": [
+                "chooses",
+                "randomises",
+                "outsources",
+                "bans"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Which item should NOT appear in this platform's demo content?",
+              "options": [
+                "Steps for theme exploration",
+                "Full real HKEAA exam papers",
+                "Tips for media experiments",
+                "Self-review prompt questions"
+              ],
+              "answer": "Full real HKEAA exam papers",
+              "explain": "VA-Nexus does not reproduce real HKEAA papers or high-score student exemplars."
+            },
+            {
+              "type": "match",
+              "question": "Match portfolio parts to roles",
+              "options": [
+                "Research workbook",
+                "Artwork/critical studies"
+              ],
+              "answer": {
+                "Research workbook": "Theme development, research, experiments, reflection",
+                "Artwork/critical studies": "Visual works or critical writing under the theme"
+              },
+              "explain": "The two parts work together to show process and outcomes."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F4-U2-DRAW-DESIGN",
+      "title": "Drawing, Aesthetics and Design Thinking",
+      "intro": "Aligned to F.4 Scheme “Creative Practice 2”: drawing skills, aesthetic/design thinking, material exploration and presentation skills. Builds observation, composition and material foundations for later theme work. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "F4-U2-L1",
+          "title": "Observation and Drawing Basics: Line, Shape, Composition",
+          "cards": [
+            "Drawing from observation starts with looking: overall shape and proportion first, details later—not deepest shadows first.",
+            "Basic visual elements: line, shape, colour, texture, space. Organising principles: contrast, rhythm, balance, emphasis.",
+            "Try compositions such as rule of thirds, diagonal guides and empty space. Different compositions change where viewers look first.",
+            "Wucius Wong brought design principles into ink landscape, showing how structure can organise a picture.",
+            "[No cleared image yet] Later: self-made line/shape drills, or an official museum page about Wucius Wong (text + link)."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A better way to start observational drawing is to:",
+              "options": [
+                "Fill the darkest shadows first",
+                "Observe overall shape and proportion first",
+                "Ignore the subject and invent everything",
+                "Draw only the eyes"
+              ],
+              "answer": "Observe overall shape and proportion first",
+              "explain": "Stable overall proportions make details easier."
+            },
+            {
+              "type": "fill",
+              "question": "Visual elements include line, shape, colour, texture and ____.",
+              "options": [],
+              "answer": "space",
+              "explain": "Space (depth, layers, empty areas) is a key element.",
+              "wordBank": [
+                "password",
+                "space",
+                "exam mark",
+                "bus"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "Wucius Wong’s practice reminds us that:",
+              "options": [
+                "Design structure can organise a picture",
+                "Art needs no composition",
+                "Only watercolour is allowed",
+                "Traditional landscape cannot be referenced"
+              ],
+              "answer": "Design structure can organise a picture",
+              "explain": "He reorganised ink landscapes with geometric/design-based composition."
+            },
+            {
+              "type": "match",
+              "question": "Match element/principle",
+              "options": [
+                "Contrast",
+                "Emphasis",
+                "Empty space"
+              ],
+              "answer": {
+                "Contrast": "Makes differences clearer",
+                "Emphasis": "Guides viewers to look somewhere first",
+                "Empty space": "Gives the picture breathing room"
+              },
+              "explain": "Organising principles control how people look."
+            }
+          ],
+          "artistIds": [
+            "HK-WUCIUS-01"
+          ]
+        },
+        {
+          "id": "F4-U2-L2",
+          "title": "Aesthetics, Design Thinking and Material Exploration",
+          "cards": [
+            "Aesthetic/design thinking: define a problem → generate options → prototype → test/reflect → improve.",
+            "Material exploration: try the same theme in pencil, charcoal, ink, collage, etc., and note which medium best serves your intention.",
+            "Presentation skills: state your theme, why you chose the medium, and how composition and symbols carry meaning.",
+            "Practice: pick one everyday object; make it twice in two media; write three sentences comparing which fits your theme better.",
+            "[No cleared image yet] Later: a self-made material-experiment comparison chart."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Design thinking is closest to which flow?",
+              "options": [
+                "Submit a final once with no reflection",
+                "Ideate → prototype → test → improve",
+                "Only memorise definitions",
+                "Only copy a classmate’s finish"
+              ],
+              "answer": "Ideate → prototype → test → improve",
+              "explain": "Design thinking is iterative and reflective."
+            },
+            {
+              "type": "fill",
+              "question": "In material exploration, record which medium best expresses your ____.",
+              "options": [],
+              "answer": "intention",
+              "explain": "Medium choices should serve creative intention.",
+              "wordBank": [
+                "intention",
+                "lucky colour",
+                "form teacher",
+                "school motto"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "In a presentation you should at least cover:",
+              "options": [
+                "Only your class number",
+                "Theme, reasons for medium, and how composition/symbols communicate",
+                "Only a full Wikipedia read-aloud",
+                "Comments on classmates’ looks"
+              ],
+              "answer": "Theme, reasons for medium, and how composition/symbols communicate",
+              "explain": "Link ideas to visual decisions."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F4-U3-COMMUNITY",
+      "title": "Community Looking, Visual Diary and Theme Seeds",
+      "intro": "Aligned to F.4 community tour/presentation, weekly visual diary, and community-related design/making. Learn to gather materials from everyday environments as theme seeds; connect to Hong Kong artists who attend to daily space. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "F4-U3-L1",
+          "title": "Weekly Visual Diary: How to Observe and Record",
+          "cards": [
+            "A visual diary is a year-long habit: each week record what you see and feel, plus small experiments, in images and short notes.",
+            "You can include quick compositions, colour notes, tiny material trials, and one “today I noticed…” line.",
+            "The point is not perfect pages but steady observation and reflection—later theme work will use these materials.",
+            "Tip: keep one small book or digital folder; date + place + one reflection sentence.",
+            "[No cleared image yet] Later: a blank visual-diary layout template (self-made)."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What matters most in a visual diary?",
+              "options": [
+                "Every page must be a finished masterpiece",
+                "Steady observation, recording and reflection",
+                "Only celebrity photos",
+                "Writing once a year"
+              ],
+              "answer": "Steady observation, recording and reflection",
+              "explain": "The diary is a process tool for later themes and the portfolio."
+            },
+            {
+              "type": "fill",
+              "question": "Each entry should note date, place and one ____.",
+              "options": [],
+              "answer": "reflection",
+              "explain": "Reflection turns looking into usable ideas.",
+              "wordBank": [
+                "ad",
+                "reflection",
+                "password",
+                "punishment"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "How can a visual diary be used later?",
+              "options": [
+                "As material for theme development and the research workbook",
+                "Only torn up and never reused",
+                "To replace all exams",
+                "As an official HKEAA paper"
+              ],
+              "answer": "As material for theme development and the research workbook",
+              "explain": "Diaries feed theme work and the RWB."
+            }
+          ]
+        },
+        {
+          "id": "F4-U3-L2",
+          "title": "Community Tour: Finding a Theme in the Environment",
+          "cards": [
+            "A community tour can use photos, short video, interviews, collected objects, sketches or actions to record the environment and learning.",
+            "Making can relate to community: public space, neighbourhood routines, local signs—then reconnect to your theme.",
+            "Pak Sheung Chuen often uses everyday actions and ready-mades to make housing/space experiences visible.",
+            "Lee Kit often uses household cloth and everyday objects to speak about private feeling and space—community and personal life can be read together.",
+            "Practice: walk a familiar street; collect three notes on symbol/object/sound; write how each could become a theme question. Contemporary works: [no cleared image] — text + official collection pages only."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Community-tour materials can include:",
+              "options": [
+                "Only exam essays",
+                "Photos, interviews, sketches, collected objects, etc.",
+                "Only one textbook sentence",
+                "Imagination with no leaving the classroom ever"
+              ],
+              "answer": "Photos, interviews, sketches, collected objects, etc.",
+              "explain": "Diverse sources help theme exploration."
+            },
+            {
+              "type": "fill",
+              "question": "Pak Sheung Chuen’s practice often makes everyday ____ experience visible.",
+              "options": [],
+              "answer": "space",
+              "explain": "For example, bagging a flat’s air to respond to cramped housing.",
+              "wordBank": [
+                "outer-space",
+                "space",
+                "classical Chinese",
+                "chemistry"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match artist to focus",
+              "options": [
+                "Pak Sheung Chuen",
+                "Lee Kit"
+              ],
+              "answer": {
+                "Pak Sheung Chuen": "Everyday actions / pressure of urban space",
+                "Lee Kit": "Household objects and private emotional space"
+              },
+              "explain": "Both start from the everyday, with different focuses."
+            },
+            {
+              "type": "mcq",
+              "question": "After gathering community materials, a good next step is to:",
+              "options": [
+                "Ask a theme question you can keep exploring",
+                "Throw all notes away",
+                "Paste photos with no thinking",
+                "Demand real exam papers from the platform"
+              ],
+              "answer": "Ask a theme question you can keep exploring",
+              "explain": "A theme question drives research and making."
+            }
+          ],
+          "artistIds": [
+            "HK-PAK-01",
+            "HK-LEEKIT-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F4-U4-SELF-RESEARCH",
+      "title": "Self-Portrait, Artist Research and Theme Development",
+      "intro": "Aligned to F.4 “Theme and Artist research and Presentation I (Self-Portrait)” and discovery prompts Self / Relationship / Story. Use self-portrait to explore identity and practise proper artist research (cite sources, compare views) to start SBA theme development. No high-score student exemplars. (Content pending teacher review)",
+      "lessons": [
+        {
+          "id": "F4-U4-L1",
+          "title": "Self-Portrait and Identity: Self, Relationship, Story",
+          "cards": [
+            "A self-portrait is more than likeness: it can speak about identity, bodily experience, roles and social gaze.",
+            "School prompts can open three doors: Self (a collection of curiosities), Relationship (family objects), Story (conflict or tension).",
+            "Frida Kahlo used self-portrait to speak personal experience and cultural identity—the learning goal is how symbols tell a self, not copying a style for marks.",
+            "Wilson Shieh paints contemporary figures in gongbi to explore Hong Kong identity; David Hockney often paints family and looking—useful for a “relationship” theme.",
+            "Copyrighted/contemporary works: [no cleared image] — classroom text + museum/reliable encyclopedia sources; public-domain historic self-portraits can be added later."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A self-portrait can explore:",
+              "options": [
+                "Only shading drills, never identity",
+                "Identity, relationships, personal story and social gaze",
+                "Only landscapes",
+                "Only black ballpoint"
+              ],
+              "answer": "Identity, relationships, personal story and social gaze",
+              "explain": "Self-portrait is a common entry to theme and identity research."
+            },
+            {
+              "type": "fill",
+              "question": "School theme doors include Self, Relationship and ____.",
+              "options": [],
+              "answer": "Story",
+              "explain": "Story can mean conflict, tension or a narrative line.",
+              "wordBank": [
+                "Story",
+                "Spam",
+                "Sport only",
+                "Silence forever"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match artist to entry point",
+              "options": [
+                "Frida Kahlo",
+                "Wilson Shieh",
+                "David Hockney"
+              ],
+              "answer": {
+                "Frida Kahlo": "Self-portrait and personal/cultural identity",
+                "Wilson Shieh": "Gongbi contemporary figures and HK identity",
+                "David Hockney": "Family and the gaze / relationships"
+              },
+              "explain": "All three can inspire self-portrait/relationship themes in different media and contexts."
+            },
+            {
+              "type": "mcq",
+              "question": "When referencing artists, the right move is to:",
+              "options": [
+                "Understand how they use symbols, then develop your own view",
+                "Copy a work exactly as your own",
+                "Make claims with no sources",
+                "Only paste images with no thinking"
+              ],
+              "answer": "Understand how they use symbols, then develop your own view",
+              "explain": "Research is for dialogue and inspiration, not cloning."
+            }
+          ],
+          "artistIds": [
+            "WEST-KAHLO-01",
+            "HK-SHIEH-01",
+            "WEST-HOCKNEY-01"
+          ]
+        },
+        {
+          "id": "F4-U4-L2",
+          "title": "How to Do Artist Research and a Theme Presentation",
+          "cards": [
+            "Artist-research steps: choose relevant artists → record basics → study form and context → link to your theme → write a personal view with evidence.",
+            "Use reliable sources: museums, galleries, textbooks, teacher notes; separate facts from opinions.",
+            "Presentation I suggested structure: theme question → self/relationship entry → 1–2 artist comparisons → next media experiments.",
+            "The research workbook should show process: drafts, experiments, failures and improvements—not only final pretty photos.",
+            "Reminder: no full real exam papers and no “high-score” student exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Artist research should end with:",
+              "options": [
+                "A personal view with evidence, linked to your theme",
+                "An unsourced online paragraph only",
+                "Only birthday and star sign",
+                "Comments on classmates’ families"
+              ],
+              "answer": "A personal view with evidence, linked to your theme",
+              "explain": "Research must serve theme development."
+            },
+            {
+              "type": "fill",
+              "question": "A presentation should include theme question, entry point, artist comparison and next ____ experiments.",
+              "options": [],
+              "answer": "media",
+              "explain": "Media experiments turn research into making.",
+              "wordBank": [
+                "media",
+                "dictation",
+                "password",
+                "gossip"
+              ]
+            },
+            {
+              "type": "mcq",
+              "question": "A research workbook should show:",
+              "options": [
+                "Only finals, hiding all drafts",
+                "Drafts, experiments, reflection and progression",
+                "Only unrelated memes",
+                "Confidential real HKEAA papers"
+              ],
+              "answer": "Drafts, experiments, reflection and progression",
+              "explain": "Progression and reflection matter in SBA."
+            },
+            {
+              "type": "match",
+              "question": "Match research steps",
+              "options": [
+                "Choose artists",
+                "Analyse works",
+                "Link to theme"
+              ],
+              "answer": {
+                "Choose artists": "Relevant to your theme",
+                "Analyse works": "Form + context",
+                "Link to theme": "State what it sparks for your making"
+              },
+              "explain": "These steps stop research from becoming a dump of facts."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
