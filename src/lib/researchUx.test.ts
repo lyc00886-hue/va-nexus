@@ -18,7 +18,7 @@ const COPY = {
   en: {
     'rs.step.write': 'Write one line',
     'rs.step.list': 'Check the list',
-    'rs.step.ai': 'AI tip',
+    'rs.step.ai': 'AI learning tip',
     'rs.cta.continue': 'Continue',
     'rs.cta.next': 'Next',
     'rs.cta.tip': 'Get learning tip',
@@ -38,7 +38,7 @@ const COPY = {
   'zh-Hant': {
     'rs.step.write': '寫一句',
     'rs.step.list': '對清單',
-    'rs.step.ai': 'AI 建議',
+    'rs.step.ai': 'AI 學習建議',
     'rs.cta.continue': '繼續',
     'rs.cta.next': '下一步',
     'rs.cta.tip': '取得學習建議',
@@ -58,7 +58,7 @@ const COPY = {
   'zh-Hans': {
     'rs.step.write': '写一句',
     'rs.step.list': '对清单',
-    'rs.step.ai': 'AI 建议',
+    'rs.step.ai': 'AI 学习建议',
     'rs.cta.continue': '继续',
     'rs.cta.next': '下一步',
     'rs.cta.tip': '取得学习建议',

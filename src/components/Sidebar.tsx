@@ -61,9 +61,9 @@ export function Sidebar({ active, onChange, extraTabs }: Props) {
       </ul>
       <div className="mt-auto rounded-2xl bg-slate-50 p-3 text-xs text-slate-600">
         <p className="font-bold text-slate-900">
-          Lv.{level.level} {level.title}
+          {t('chrome.levelTitle', { n: level.level, title: level.title })}
         </p>
-        <p>{state.xp} XP</p>
+        <p>{t('chrome.xp', { n: state.xp })}</p>
         <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-200">
           <div className="h-full rounded-full bg-blue-600" style={{ width: `${level.pct}%` }} />
         </div>
