@@ -4,6 +4,7 @@
  */
 import { t } from '../i18n'
 import { isAiFeedbackPaused } from './aiFeedbackPause'
+import { feedbackFailureText, feedbackLocaleHeaders } from './feedbackLocale'
 import { supabase } from './supabase'
 
 export type FeldmanAiStage = 'describe' | 'analyze' | 'interpret' | 'judge'
@@ -29,6 +30,7 @@ export async function postFeldmanFeedback(input: {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
+        ...feedbackLocaleHeaders(input.locale),
       },
       body: JSON.stringify({
         stage: input.stage,
@@ -44,11 +46,11 @@ export async function postFeldmanFeedback(input: {
     }
     if (isAiFeedbackPaused(res.status, data)) return { status: 'notice' }
     if (!res.ok || !data.feedback) {
-      return { status: 'error', text: data.error || t('fw.err.status', { status: res.status }) }
+      return { status: 'error', text: feedbackFailureText(data, t('fw.err.status', { status: res.status })) }
     }
     return { status: 'done', text: data.feedback }
   } catch (err) {
-    const msg = err instanceof Error && err.message !== 'Failed to fetch' ? err.message : t('fw.err.network')
-    return { status: 'error', text: msg }
+    console.warn('[feedback] request failed', err)
+    return { status: 'error', text: t('fw.err.network') }
   }
 }

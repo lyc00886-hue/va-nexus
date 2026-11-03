@@ -8,6 +8,7 @@ import {
   saveBirthYearForAiGate,
 } from '../lib/aiAgeGate'
 import { signInWithGoogle, useAuth } from '../lib/auth'
+import { feedbackLocaleHeaders } from '../lib/feedbackLocale'
 import { supabase } from '../lib/supabase'
 import {
   sbaAiCallAllowed,
@@ -188,6 +189,7 @@ export function SbaAiFeedback({ stepLabel, note, savedNotes, photoCount }: Props
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${accessToken}`,
+            ...feedbackLocaleHeaders(locale),
           },
           body: JSON.stringify(
             sbaFeedbackRequestBody({

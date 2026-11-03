@@ -11,6 +11,9 @@
 // Age gate: a Supabase session plus user_progress.can_use_ai from the DB.
 // Client adultConfirmed and birth_year are ignored. birth_year is never
 // selected, logged, or placed in the Gemini prompt.
+//
+// Error locale: X-VA-Locale (active UI) or Accept-Language before the body is
+// read. After JSON parses, body.locale wins, then that header, then zh-Hant.
 
 import type { SupabaseClient } from '@supabase/supabase-js'
 
@@ -86,17 +89,68 @@ const ERR: Record<
 const AUTH_FETCH_MS = 2_000
 const MAX_BODY_BYTES = 16 * 1024
 
-function localeOf(raw: unknown): Locale {
-  if (raw === 'zh-Hans' || raw === 'zh-CN') return 'zh-Hans'
-  if (raw === 'en' || raw === 'en-US' || raw === 'en-GB') return 'en'
-  return 'zh-Hant'
+/** Known app locale, or null when the value is missing or not one of the three UI languages. */
+export function matchLocale(raw: unknown): Locale | null {
+  if (typeof raw !== 'string') return null
+  const lower = raw.trim().toLowerCase()
+  if (!lower) return null
+  if (lower === 'zh-hans' || lower === 'zh-cn' || lower === 'zh-sg') return 'zh-Hans'
+  if (lower === 'en' || lower.startsWith('en-')) return 'en'
+  if (lower === 'zh-hant' || lower === 'zh-hk' || lower === 'zh-tw' || lower === 'zh-mo' || lower.startsWith('yue')) {
+    return 'zh-Hant'
+  }
+  return null
 }
 
-function localeFromHeader(request: Request): Locale {
+export function localeOf(raw: unknown, fallback: Locale = 'zh-Hant'): Locale {
+  return matchLocale(raw) ?? fallback
+}
+
+/**
+ * Locale for errors that happen before a JSON body is trusted.
+ * `X-VA-Locale` is the active UI locale (set by the client). Accept-Language is the fallback.
+ */
+export function localeFromHeader(request: Request): Locale {
+  const explicit = matchLocale(request.headers.get('x-va-locale'))
+  if (explicit) return explicit
   const h = (request.headers.get('accept-language') ?? '').toLowerCase()
   if (h.startsWith('en')) return 'en'
   if (h.includes('zh-cn') || h.includes('zh-hans') || h.includes('zh-sg')) return 'zh-Hans'
   return 'zh-Hant'
+}
+
+export const FEEDBACK_ERROR_CODES = [
+  'method',
+  'json',
+  'stage',
+  'empty',
+  'too_long',
+  'no_key',
+  'gemini_upstream',
+  'gemini_quota',
+  'auth_required',
+  'auth_down',
+  'under18',
+] as const
+
+export type FeedbackErrorCode = (typeof FEEDBACK_ERROR_CODES)[number]
+
+const ERR_KEY: Record<FeedbackErrorCode, keyof (typeof ERR)[Locale]> = {
+  method: 'method',
+  json: 'json',
+  stage: 'stage',
+  empty: 'empty',
+  too_long: 'tooLong',
+  no_key: 'noKey',
+  gemini_upstream: 'gemini',
+  gemini_quota: 'quota',
+  auth_required: 'authRequired',
+  auth_down: 'authDown',
+  under18: 'under18',
+}
+
+export function feedbackErrorText(locale: Locale, code: FeedbackErrorCode): string {
+  return ERR[locale][ERR_KEY[code]]
 }
 
 function json(status: number, body: unknown): Response {
@@ -107,6 +161,10 @@ function json(status: number, body: unknown): Response {
       'Cache-Control': 'no-store',
     },
   })
+}
+
+function fail(status: number, locale: Locale, code: FeedbackErrorCode): Response {
+  return json(status, { error: feedbackErrorText(locale, code), code })
 }
 
 function bearerToken(request: Request): string | null {
@@ -142,11 +200,13 @@ function fetchWithDeadline(ms: number): typeof fetch {
 
 async function requireUser(
   token: string,
-  err: (typeof ERR)[Locale],
+  locale: Locale,
 ): Promise<{ supabase: SupabaseClient; userId: string } | Response> {
   const url = (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '').replace(/\/+$/, '')
   const anon = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || ''
-  if (!url || !anon) return json(503, { error: 'Server missing Supabase configuration' })
+  // Student copy reuses authDown. A separate config sentence is not written here.
+  // TODO(PEANUTS): short ERR.config in zh-Hant / zh-Hans / en if this should not say "sign-in".
+  if (!url || !anon) return fail(503, locale, 'auth_down')
 
   // Loaded only after a structurally valid JWT. Unauthenticated requests never reach this.
   // skipAutoInitialize: constructing the client does no I/O. Each fetch is aborted at AUTH_FETCH_MS.
@@ -168,12 +228,12 @@ async function requireUser(
     const { data, error } = await supabase.auth.getUser(token)
     if (error) {
       const down = isAuthOutage(error)
-      return json(down ? 503 : 401, { error: down ? err.authDown : err.authRequired })
+      return fail(down ? 503 : 401, locale, down ? 'auth_down' : 'auth_required')
     }
-    if (!data.user?.id) return json(401, { error: err.authRequired })
+    if (!data.user?.id) return fail(401, locale, 'auth_required')
     return { supabase, userId: data.user.id }
   } catch {
-    return json(503, { error: err.authDown })
+    return fail(503, locale, 'auth_down')
   }
 }
 
@@ -187,7 +247,7 @@ function isAuthOutage(error: unknown): boolean {
 async function requireCanUseAi(
   supabase: SupabaseClient,
   userId: string,
-  err: (typeof ERR)[Locale],
+  locale: Locale,
 ): Promise<Response | null> {
   try {
     const { data, error } = await supabase
@@ -195,9 +255,9 @@ async function requireCanUseAi(
       .select('can_use_ai')
       .eq('user_id', userId)
       .maybeSingle()
-    if (error || data?.can_use_ai !== true) return json(403, { error: err.under18 })
+    if (error || data?.can_use_ai !== true) return fail(403, locale, 'under18')
   } catch {
-    return json(403, { error: err.under18 })
+    return fail(403, locale, 'under18')
   }
   return null
 }
@@ -213,30 +273,31 @@ type FeedbackBody = {
   [key: string]: unknown
 }
 
-async function readJsonBody(
+export async function readJsonBody(
   request: Request,
+  locale: Locale,
 ): Promise<{ ok: true; body: FeedbackBody } | { ok: false; response: Response }> {
   const declared = Number(request.headers.get('content-length') ?? '0')
   if (Number.isFinite(declared) && declared > MAX_BODY_BYTES) {
-    return { ok: false, response: json(400, { error: ERR['zh-Hant'].tooLong }) }
+    return { ok: false, response: fail(400, locale, 'too_long') }
   }
   let raw: string
   try {
     raw = await request.text()
   } catch {
-    return { ok: false, response: json(400, { error: ERR['zh-Hant'].json }) }
+    return { ok: false, response: fail(400, locale, 'json') }
   }
   if (raw.length > MAX_BODY_BYTES) {
-    return { ok: false, response: json(400, { error: ERR['zh-Hant'].tooLong }) }
+    return { ok: false, response: fail(400, locale, 'too_long') }
   }
   try {
     const body = raw ? (JSON.parse(raw) as unknown) : {}
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
-      return { ok: false, response: json(400, { error: ERR['zh-Hant'].json }) }
+      return { ok: false, response: fail(400, locale, 'json') }
     }
     return { ok: true, body: body as FeedbackBody }
   } catch {
-    return { ok: false, response: json(400, { error: ERR['zh-Hant'].json }) }
+    return { ok: false, response: fail(400, locale, 'json') }
   }
 }
 
@@ -531,60 +592,58 @@ export async function geminiFeedback(apiKey: string, system: string, userText: s
   return { ok: false, quota: sawHighDemand }
 }
 
-async function handleSbaFormative(
-  body: FeedbackBody,
-  locale: Locale,
-  err: (typeof ERR)[Locale],
-): Promise<Response> {
+async function handleSbaFormative(body: FeedbackBody, locale: Locale): Promise<Response> {
   const plan = planSbaFormative(body, locale)
   if (!plan.ok) {
-    if (plan.reason === 'tooLong') return json(400, { error: err.tooLong })
-    if (plan.reason === 'empty') return json(400, { error: err.empty })
-    return json(400, { error: err.json })
+    if (plan.reason === 'tooLong') return fail(400, locale, 'too_long')
+    if (plan.reason === 'empty') return fail(400, locale, 'empty')
+    return fail(400, locale, 'json')
   }
   const apiKey = process.env.GEMINI_API_KEY
-  if (!apiKey) return json(503, { error: err.noKey })
+  if (!apiKey) return fail(503, locale, 'no_key')
   const result = await geminiFeedback(apiKey, plan.system, plan.user)
   if (result.ok) return json(200, sbaFeedbackResponse(result.feedback))
-  if (result.quota) return json(503, { error: err.quota, code: 'gemini_quota' })
-  return json(502, { error: err.gemini, code: 'gemini_upstream' })
+  if (result.quota) return fail(503, locale, 'gemini_quota')
+  // AbortSignal timeout and other model failures share `gemini` (no separate timeout sentence).
+  // TODO(PEANUTS): short ERR.timeout in zh-Hant / zh-Hans / en if DICK wants timeout split from model unavailable.
+  return fail(502, locale, 'gemini_upstream')
 }
 
 async function handleFeedback(request: Request): Promise<Response> {
+  const headerLocale = localeFromHeader(request)
   if (request.method !== 'POST') {
-    return json(405, { error: ERR['zh-Hant'].method })
+    return fail(405, headerLocale, 'method')
   }
 
   // Missing, malformed, or expired tokens return before the body is read and before Supabase.
   const token = bearerToken(request)
-  const headerErr = ERR[localeFromHeader(request)]
   if (!token || !jwtCurrentlyValid(token)) {
-    return json(401, { error: headerErr.authRequired })
+    return fail(401, headerLocale, 'auth_required')
   }
 
-  const session = await requireUser(token, headerErr)
+  const session = await requireUser(token, headerLocale)
   if (session instanceof Response) return session
 
-  // Locale for the 403 comes from the body when it parses. birth_year / adultConfirmed
-  // are never copied into the prompt. A bad body still cannot reach Gemini: the DB
-  // flag is checked first, and an allowed user with a bad body gets 400.
-  const parsed = await readJsonBody(request)
-  const err = parsed.ok ? ERR[localeOf(parsed.body.locale)] : headerErr
-  const gateFail = await requireCanUseAi(session.supabase, session.userId, err)
+  // Locale for the 403 comes from the body when it parses, else the UI header.
+  // birth_year / adultConfirmed are never copied into the prompt. A bad body still
+  // cannot reach Gemini: the DB flag is checked first, and an allowed user with a
+  // bad body gets 400.
+  const parsed = await readJsonBody(request, headerLocale)
+  const locale = parsed.ok ? localeOf(parsed.body.locale, headerLocale) : headerLocale
+  const gateFail = await requireCanUseAi(session.supabase, session.userId, locale)
   if (gateFail) return gateFail
   if (!parsed.ok) return parsed.response
   const body = parsed.body
-  const loc = localeOf(body.locale)
 
-  if (body.mode === 'sba') return handleSbaFormative(body, loc, err)
+  if (body.mode === 'sba') return handleSbaFormative(body, locale)
 
   const stageRaw = body.stage
-  if (typeof stageRaw !== 'string' || !(stageRaw in STAGE_HINT)) return json(400, { error: err.stage })
+  if (typeof stageRaw !== 'string' || !(stageRaw in STAGE_HINT)) return fail(400, locale, 'stage')
   const stage = stageRaw as Stage
 
   const text = typeof body.text === 'string' ? body.text.trim() : ''
-  if (!text) return json(400, { error: err.empty })
-  if (text.length > 2000) return json(400, { error: err.tooLong })
+  if (!text) return fail(400, locale, 'empty')
+  if (text.length > 2000) return fail(400, locale, 'too_long')
 
   const artwork =
     typeof body.artwork === 'string' && body.artwork.trim()
@@ -592,9 +651,9 @@ async function handleFeedback(request: Request): Promise<Response> {
       : null
 
   const apiKey = process.env.GEMINI_API_KEY
-  if (!apiKey) return json(503, { error: err.noKey })
+  if (!apiKey) return fail(503, locale, 'no_key')
 
-  const system = feldmanSystemPrompt(stage, loc)
+  const system = feldmanSystemPrompt(stage, locale)
 
   const userParts = [
     artwork ? `Artwork / context: ${artwork}` : null,
@@ -605,8 +664,9 @@ async function handleFeedback(request: Request): Promise<Response> {
 
   const result = await geminiFeedback(apiKey, system, userParts)
   if (result.ok) return json(200, { feedback: result.feedback })
-  if (result.quota) return json(503, { error: err.quota, code: 'gemini_quota' })
-  return json(502, { error: err.gemini, code: 'gemini_upstream' })
+  if (result.quota) return fail(503, locale, 'gemini_quota')
+  // Same student string as SBA: timeout and model unavailable share `gemini`.
+  return fail(502, locale, 'gemini_upstream')
 }
 
 export default {
