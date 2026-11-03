@@ -1,0 +1,1079 @@
+{
+  "version": 1,
+  "id": "ability-chart",
+  "locale": "zh-Hans",
+  "source": "sba-guide.zh-Hans.json (final, 2026-11-03)",
+  "meta": {
+    "title": "我的能力图",
+    "subtitle": "只看自己的进步：按考评局评核准则自评，不排名、不与同学比较。",
+    "disclaimer": "只供自我检视，并非正式 SBA 分数；正式分数由任课老师按考评局准则评定；AI 不会评分。",
+    "privacy": "数据只储存在学生自己的设备╱账户；图表不显示任何学习需要（SEN）标签或诊断。",
+    "no_ranking": true,
+    "no_peer_comparison": true,
+    "no_sen_labels": true,
+    "ai_marks": false
+  },
+  "scale": {
+    "min": 1,
+    "max": 4,
+    "empty_label": "未自评",
+    "levels": [
+      {
+        "value": 1,
+        "level": "not-yet",
+        "label": "未达标",
+        "hkeaa_band": "0–1"
+      },
+      {
+        "value": 2,
+        "level": "basic",
+        "label": "基本",
+        "hkeaa_band": "2"
+      },
+      {
+        "value": 3,
+        "level": "good",
+        "label": "良好",
+        "hkeaa_band": "3–4"
+      },
+      {
+        "value": 4,
+        "level": "excellent",
+        "label": "优秀",
+        "hkeaa_band": "5"
+      }
+    ]
+  },
+  "scoring": {
+    "source": "self_assessment_select_only",
+    "rule": "数值只来自学生在第 6 步“反思及自评”为该准则选择的四级自评（未达标=1、基本=2、良好=3、优秀=4）。未填写的准则不绘点（显示“未自评”），不当作 0。检查清单、文字、照片数量等一律不计分。",
+    "rubric_note": "四级描述取自 SBA 指南对应步骤的教师评估指引，只供参考；四级约对应考评局 0–5 分段，正式分数以考评局评分准则为准。",
+    "counts_toward_score": [
+      "self_field"
+    ],
+    "never_counts": [
+      "checklist",
+      "text_fields",
+      "photo_count",
+      "step_progress",
+      "ai_output"
+    ]
+  },
+  "charts": [
+    {
+      "id": "research_workbook",
+      "type": "radar",
+      "component": "rwb",
+      "title": "研究工作簿（Research Workbook，20%）",
+      "axes": [
+        {
+          "id": "rwb-1",
+          "label": "主题或意念的探索及发展",
+          "official_criterion": "主题或意念的探索及发展",
+          "self_field": {
+            "id": "self-rwb-1",
+            "is_new": false,
+            "step": 6,
+            "label": "自评：主题或意念的探索及发展",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "主题空泛或与学生无关；素材来自单一来源或与主题无关。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "有主题及少量关键词；使用有限度的素材，四件作品规划不完整。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "主题具个人角度；使用若干至足够的素材，四件作品有初步推进脉络。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "主题具个人及社会╱文化层次；使用多样素材并开始转化为原创意念，四部曲推进清晰。"
+            }
+          ],
+          "rubric_source": {
+            "step": 1,
+            "step_title": "主题探索",
+            "path": "steps[0].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c1",
+                "text": "主题有清晰的四件作品发展脉络（个人 → 人际 → 社会╱文化 → 反思╱出路，或其他合理的推进）。"
+              },
+              {
+                "id": "c2",
+                "text": "有一手资料（自己拍摄、写生、问卷、访问、个人经历）及二手资料（书籍、新闻、网站），并注明出处。"
+              }
+            ]
+          }
+        },
+        {
+          "id": "rwb-2",
+          "label": "艺术品的诠释及其与创作╱评赏研究的运用",
+          "official_criterion": "艺术品的诠释及其与创作╱评赏研究的运用",
+          "self_field": {
+            "id": "self-rwb-2",
+            "is_new": false,
+            "step": 6,
+            "label": "自评：艺术品的诠释及其与创作的运用",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "只呈现一两项零碎事实，或抄录生平，没有个人观点。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "了解有限的情境或形式要素；有个人观点但未能提供支持；有限度地应用到创作。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "了解一两种情境及部分形式要素；观点有若干至足够理由；能联系到自己的作品。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "了解多样情境及形式要素；观点具凭据或有洞见；能把知识转化到自己的创作。"
+            }
+          ],
+          "rubric_source": {
+            "step": 2,
+            "step_title": "参考研究",
+            "path": "steps[1].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c3",
+                "text": "研究了多于一种文化的艺术家╱作品，每位都有费德曼四步分析及“亲手试”小练习。"
+              },
+              {
+                "id": "c7",
+                "text": "创作说明把每个概念对应到具体的视觉元素，并提及参考艺术家的影响。"
+              }
+            ]
+          }
+        },
+        {
+          "id": "rwb-3",
+          "label": "媒介及技巧的实验，以及表达形式的探索",
+          "official_criterion": "媒介及技巧的实验，以及表达形式的探索",
+          "self_field": {
+            "id": "self-rwb-3",
+            "is_new": false,
+            "step": 6,
+            "label": "自评：媒介及技巧的实验",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "没有试验，或试验与主题无关。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "有少许至有限度的试验，只记录结果，没有原因或比较。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "有若干至丰富的试验，包括失败纪录，并能说明选择原因。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "丰富而全面的试验，有系统地改变变项，失败转化为解决方案，并探索多种表达形式。"
+            }
+          ],
+          "rubric_source": {
+            "step": 4,
+            "step_title": "媒材试验",
+            "path": "steps[3].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c5",
+                "text": "每件作品至少有三种物料╱技法试验，包括至少一个失败或效果不理想的纪录。"
+              }
+            ]
+          }
+        },
+        {
+          "id": "rwb-4",
+          "label": "反思及学习进程",
+          "official_criterion": "反思及学习进程",
+          "self_field": {
+            "id": "self-rwb-4",
+            "is_new": true,
+            "step": 6,
+            "label": "自评：反思及学习进程",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "没有反思，或绝少反思；看不到学习进程。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "甚少反思，内容空泛（例如“我很满意”）；进步有限。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "偶尔至频密地从某些或多个角度反思；展示相当至足够的进步。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "持续及全面地从多样化角度反思，有具体证据；四件作品展示显著的进步。"
+            }
+          ],
+          "rubric_source": {
+            "step": 6,
+            "step_title": "反思评鉴",
+            "path": "steps[5].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c8",
+                "text": "每件作品完成后有反思，并说明下一件作品如何改进。"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "artwork",
+      "type": "radar",
+      "component": "artwork",
+      "title": "艺术作品╱评赏研究（Artwork / Critical Studies，30%）",
+      "axes": [
+        {
+          "id": "aw-1",
+          "label": "媒介、技巧及技法╱写作技巧",
+          "official_criterion": "媒介、技巧及技法╱写作技巧",
+          "self_field": {
+            "id": "self-aw-1",
+            "is_new": true,
+            "step": 6,
+            "label": "自评：媒介、技巧及技法╱写作技巧",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "只展示少许技巧；未能传递主题；没有过程证据。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "技巧有限；视觉元素运用有限；主题传意不完整；过程证据很少。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "技巧达一般至纯熟水平；恰当至有效地运用视觉元素；主题清晰完整；有足够过程纪录。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "技巧超卓；卓越地运用视觉元素及组织原理；以一致、完整及创新的方式传意；过程纪录详尽。"
+            }
+          ],
+          "rubric_source": {
+            "step": 5,
+            "step_title": "作品制作",
+            "path": "steps[4].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c5",
+                "text": "每件作品至少有三种物料╱技法试验，包括至少一个失败或效果不理想的纪录。"
+              },
+              {
+                "id": "c6",
+                "text": "制作过程有多张照片，并记录“问题 → 解决方法”。"
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-2",
+          "label": "视觉表达形式╱分析",
+          "official_criterion": "视觉表达形式╱分析",
+          "self_field": {
+            "id": "self-aw-2",
+            "is_new": true,
+            "step": 6,
+            "label": "自评：视觉表达形式╱分析",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "没有草图或只有定稿；意念模仿他人或与主题无关。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "有一两个方案，意念不完整；随意地投入素材，原因只写“好看╱不好看”。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "有三个方案，能选择和组织素材；淘汰及选择有合理原因，意念令人满意至具个人特色。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "方案多样且具创意；持续整合研究以产生原创意念；以清晰理据作出批判性选择。"
+            }
+          ],
+          "rubric_source": {
+            "step": 3,
+            "step_title": "草图发展",
+            "path": "steps[2].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c4",
+                "text": "每件作品至少有三个构图方案，落选方案打上 × 并写原因。"
+              },
+              {
+                "id": "c10",
+                "text": "立体作品有清晰照片；动画╱多媒体附平面分镜。"
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-3",
+          "label": "与情境的关系",
+          "official_criterion": "与情境的关系",
+          "self_field": {
+            "id": "self-aw-3",
+            "is_new": true,
+            "step": 6,
+            "label": "自评：与情境的关系",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "只呈现一两项零碎事实，或抄录生平，没有个人观点。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "了解有限的情境或形式要素；有个人观点但未能提供支持；有限度地应用到创作。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "了解一两种情境及部分形式要素；观点有若干至足够理由；能联系到自己的作品。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "了解多样情境及形式要素；观点具凭据或有洞见；能把知识转化到自己的创作。"
+            }
+          ],
+          "rubric_source": {
+            "step": 2,
+            "step_title": "参考研究",
+            "path": "steps[1].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c2",
+                "text": "有一手资料（自己拍摄、写生、问卷、访问、个人经历）及二手资料（书籍、新闻、网站），并注明出处。"
+              },
+              {
+                "id": "c3",
+                "text": "研究了多于一种文化的艺术家╱作品，每位都有费德曼四步分析及“亲手试”小练习。"
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-4",
+          "label": "创意及想像力╱批判思维",
+          "official_criterion": "创意及想像力╱批判思维",
+          "self_field": {
+            "id": "self-aw-4",
+            "is_new": true,
+            "step": 6,
+            "label": "自评：创意及想像力╱批判思维",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "没有草图或只有定稿；意念模仿他人或与主题无关。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "有一两个方案，意念不完整；随意地投入素材，原因只写“好看╱不好看”。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "有三个方案，能选择和组织素材；淘汰及选择有合理原因，意念令人满意至具个人特色。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "方案多样且具创意；持续整合研究以产生原创意念；以清晰理据作出批判性选择。"
+            }
+          ],
+          "rubric_source": {
+            "step": 3,
+            "step_title": "草图发展",
+            "path": "steps[2].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c4",
+                "text": "每件作品至少有三个构图方案，落选方案打上 × 并写原因。"
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-5",
+          "label": "整体表现及主题的传意",
+          "official_criterion": "整体表现及主题的传意",
+          "self_field": {
+            "id": "self-aw",
+            "is_new": false,
+            "step": 6,
+            "label": "自评：作品的整体表现及主题的传意",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "只展示少许技巧；未能传递主题；没有过程证据。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "技巧有限；视觉元素运用有限；主题传意不完整；过程证据很少。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "技巧达一般至纯熟水平；恰当至有效地运用视觉元素；主题清晰完整；有足够过程纪录。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "技巧超卓；卓越地运用视觉元素及组织原理；以一致、完整及创新的方式传意；过程纪录详尽。"
+            }
+          ],
+          "rubric_source": {
+            "step": 5,
+            "step_title": "作品制作",
+            "path": "steps[4].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c7",
+                "text": "创作说明把每个概念对应到具体的视觉元素，并提及参考艺术家的影响。"
+              },
+              {
+                "id": "c10",
+                "text": "立体作品有清晰照片；动画╱多媒体附平面分镜。"
+              }
+            ]
+          }
+        },
+        {
+          "id": "aw-6",
+          "label": "四件作品的改进",
+          "official_criterion": "四件作品的改进",
+          "self_field": {
+            "id": "self-aw-6",
+            "is_new": true,
+            "step": 6,
+            "label": "自评：四件作品的改进",
+            "type": "select",
+            "placeholder": "按评核准则自评",
+            "required": true,
+            "options": [
+              {
+                "value": "1",
+                "label": "未达标"
+              },
+              {
+                "value": "2",
+                "label": "基本"
+              },
+              {
+                "value": "3",
+                "label": "良好"
+              },
+              {
+                "value": "4",
+                "label": "优秀"
+              }
+            ]
+          },
+          "levels": [
+            {
+              "value": 1,
+              "level": "not-yet",
+              "label": "未达标",
+              "hkeaa_band": "0–1",
+              "descriptor": "没有反思，或绝少反思；看不到学习进程。"
+            },
+            {
+              "value": 2,
+              "level": "basic",
+              "label": "基本",
+              "hkeaa_band": "2",
+              "descriptor": "甚少反思，内容空泛（例如“我很满意”）；进步有限。"
+            },
+            {
+              "value": 3,
+              "level": "good",
+              "label": "良好",
+              "hkeaa_band": "3–4",
+              "descriptor": "偶尔至频密地从某些或多个角度反思；展示相当至足够的进步。"
+            },
+            {
+              "value": 4,
+              "level": "excellent",
+              "label": "优秀",
+              "hkeaa_band": "5",
+              "descriptor": "持续及全面地从多样化角度反思，有具体证据；四件作品展示显著的进步。"
+            }
+          ],
+          "rubric_source": {
+            "step": 6,
+            "step_title": "反思评鉴",
+            "path": "steps[5].teacherRubric.levels"
+          },
+          "related_checklist": {
+            "counts_toward_score": false,
+            "note": "相关检查清单只作提示，不计入分数。",
+            "items": [
+              {
+                "id": "c1",
+                "text": "主题有清晰的四件作品发展脉络（个人 → 人际 → 社会╱文化 → 反思╱出路，或其他合理的推进）。"
+              },
+              {
+                "id": "c8",
+                "text": "每件作品完成后有反思，并说明下一件作品如何改进。"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "critique_daie",
+      "type": "radar",
+      "title": "评赏能力（费德曼四步）",
+      "note": "DAIE 评赏练习的自我检视；不排名、不与同学比较。",
+      "axes": [
+        {
+          "id": "describe",
+          "label": "描述"
+        },
+        {
+          "id": "analyse",
+          "label": "分析"
+        },
+        {
+          "id": "interpret",
+          "label": "诠释"
+        },
+        {
+          "id": "judge",
+          "label": "评价"
+        }
+      ]
+    }
+  ],
+  "step_progress": {
+    "id": "sba_steps",
+    "type": "progress_bar",
+    "position": "below_sba_charts",
+    "title": "SBA 六步进度",
+    "note": "显示六个步骤的完成度，并非考评局评核准则。",
+    "is_hkeaa_criterion": false,
+    "rule": "每步完成度 = 该步范本已填写的必填栏位 ÷ 必填栏位总数（第 4 步至少 3 行试验）。",
+    "steps": [
+      {
+        "id": 1,
+        "key": "theme",
+        "title": "主题探索",
+        "required_fields": [
+          "theme",
+          "keywords",
+          "why",
+          "5w1h",
+          "mindmap",
+          "arc-1",
+          "artists",
+          "primary-photos"
+        ],
+        "min_rows": null
+      },
+      {
+        "id": 2,
+        "key": "research",
+        "title": "参考研究",
+        "required_fields": [
+          "artist",
+          "context",
+          "works",
+          "work-image",
+          "feldman-describe",
+          "feldman-analyse",
+          "feldman-interpret",
+          "feldman-judge",
+          "learnt",
+          "rejected",
+          "try-by-myself",
+          "sources"
+        ],
+        "min_rows": null
+      },
+      {
+        "id": 3,
+        "key": "sketch",
+        "title": "草图发展",
+        "required_fields": [
+          "concept-map",
+          "guiding-answers",
+          "option-a",
+          "option-a-notes",
+          "option-b",
+          "option-b-notes",
+          "option-c",
+          "option-c-notes",
+          "chosen",
+          "rejection-reasons",
+          "why-chosen"
+        ],
+        "min_rows": null
+      },
+      {
+        "id": 4,
+        "key": "media",
+        "title": "媒材试验",
+        "required_fields": [
+          "question",
+          "variable",
+          "material",
+          "photo",
+          "effect",
+          "result",
+          "why",
+          "next-change",
+          "conclusion"
+        ],
+        "min_rows": 3
+      },
+      {
+        "id": 5,
+        "key": "making",
+        "title": "作品制作",
+        "required_fields": [
+          "title",
+          "piece-no",
+          "media-size",
+          "idea",
+          "visual-meaning",
+          "media-why",
+          "artist-link",
+          "process-photos",
+          "problems",
+          "final-photo",
+          "ai-declaration"
+        ],
+        "min_rows": null
+      },
+      {
+        "id": 6,
+        "key": "reflection",
+        "title": "反思评鉴",
+        "required_fields": [
+          "first-vs-found",
+          "success",
+          "improve",
+          "self-rwb-1",
+          "self-rwb-2",
+          "self-rwb-3",
+          "self-aw",
+          "evidence-ref",
+          "next-plan",
+          "self-rwb-4",
+          "self-aw-1",
+          "self-aw-2",
+          "self-aw-3",
+          "self-aw-4",
+          "self-aw-6"
+        ],
+        "min_rows": null
+      }
+    ]
+  },
+  "field_mapping": [
+    {
+      "criterion": "rwb-1",
+      "self_field": "self-rwb-1",
+      "is_new": false
+    },
+    {
+      "criterion": "rwb-2",
+      "self_field": "self-rwb-2",
+      "is_new": false
+    },
+    {
+      "criterion": "rwb-3",
+      "self_field": "self-rwb-3",
+      "is_new": false
+    },
+    {
+      "criterion": "rwb-4",
+      "self_field": "self-rwb-4",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-1",
+      "self_field": "self-aw-1",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-2",
+      "self_field": "self-aw-2",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-3",
+      "self_field": "self-aw-3",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-4",
+      "self_field": "self-aw-4",
+      "is_new": true
+    },
+    {
+      "criterion": "aw-5",
+      "self_field": "self-aw",
+      "is_new": false
+    },
+    {
+      "criterion": "aw-6",
+      "self_field": "self-aw-6",
+      "is_new": true
+    }
+  ]
+}
