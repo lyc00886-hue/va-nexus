@@ -133,9 +133,34 @@ html {
 .tab-panel-enter {
   animation: tab-panel-in 180ms ease-out;
 }
+/* Otter poses: step fade ≤200ms, chest celebrate 500ms. One shot — never looped. */
+@keyframes otter-step-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes otter-celebrate-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .tab-panel-enter {
     animation: none;
+  }
+  .otter-pose,
+  .otter-celebrate {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
   }
   .ability-chart,
   .ability-chart * {

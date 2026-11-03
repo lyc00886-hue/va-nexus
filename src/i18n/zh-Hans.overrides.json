@@ -182,5 +182,11 @@
   "map.lesson.stepsHint": "跟着做",
   "map.lesson.practice": "练习",
   "map.lesson.practiceHint": "小测与练习",
-  "rs.ai.more": "看更多"
+  "rs.ai.more": "看更多",
+  "mascot.encourage": "加油呀！",
+  "mascot.complete": "做得好！",
+  "mascot.chest": "开箱！",
+  "mascot.chest.reward": "＋10 学习点",
+  "mascot.chest.cta": "开箱",
+  "mascot.chest.skip": "稍后"
 }

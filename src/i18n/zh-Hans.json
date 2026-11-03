@@ -530,5 +530,11 @@
   "rs.ai.age": "确认已满 18 岁",
   "rs.list.good": "好！",
   "rs.list.done": "清单齐了",
-  "rs.list.skip": "这项稍后"
+  "rs.list.skip": "这项稍后",
+  "mascot.encourage": "加油呀！",
+  "mascot.complete": "做得好！",
+  "mascot.chest": "开箱！",
+  "mascot.chest.reward": "＋10 学习点",
+  "mascot.chest.cta": "开箱",
+  "mascot.chest.skip": "稍后"
 }

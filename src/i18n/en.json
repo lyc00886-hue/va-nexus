@@ -530,5 +530,11 @@
   "rs.ai.age": "Confirm you are 18+",
   "rs.list.good": "Good!",
   "rs.list.done": "Checklist done",
-  "rs.list.skip": "Skip for now"
+  "rs.list.skip": "Skip for now",
+  "mascot.encourage": "Keep going!",
+  "mascot.complete": "Nice work!",
+  "mascot.chest": "Open it!",
+  "mascot.chest.reward": "+10 learning points",
+  "mascot.chest.cta": "Open",
+  "mascot.chest.skip": "Later"
 }

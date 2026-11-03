@@ -1,3 +1,4 @@
+import { OTTER_CHEST_AWARD_PREFIX, OTTER_CHEST_XP } from '../game/otterMascot'
 import { XP } from '../game/rewards'
 import type { ActivityEntry, GameStateV1, NodeProgress } from '../game/types'
 import { clearCachedCanUseAi } from './aiAgeGate'
@@ -68,6 +69,7 @@ function unionMin(a: Record<string, number>, b: Record<string, number>): Record<
 export function xpForAwardKey(key: string): number {
   if (/^sba-step-\d+$/.test(key)) return XP.sbaStep
   if (key.startsWith('feldman')) return XP.feldmanAi
+  if (key.startsWith(OTTER_CHEST_AWARD_PREFIX)) return OTTER_CHEST_XP
   return 0
 }
 

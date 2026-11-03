@@ -14,7 +14,19 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNod
 import { useGame, type FinishOutcome } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { useSenSupport } from '../../context/SenSupportContext'
-import { getBadgeById, masteryHint, masteryLabel } from '../../game/rewards'
+import { getUnits } from '../../game/curriculum'
+import { getF4Units } from '../../game/f4Demo'
+import { getMediaUnits } from '../../game/mediaIntro'
+import {
+  OTTER_CHEST_XP,
+  OTTER_STORAGE_KEY,
+  chestOffer,
+  otterChestAwardKey,
+  queryOtterFlag,
+  resolveOtterMascotEnabled,
+  unitSliceFor,
+} from '../../game/otterMascot'
+import { PASS_ACCURACY, getBadgeById, masteryHint, masteryLabel } from '../../game/rewards'
 import { getLocale, joinList, t } from '../../i18n'
 import {
   DEFAULT_LESSON_FOLDS,
@@ -34,6 +46,7 @@ import type {
 } from '../../game/types'
 import { DemoBadge } from './DemoBadge'
 import { LessonArtistPanel } from './LessonArtists'
+import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
 
 const IDLE_MS = 90_000
@@ -43,6 +56,14 @@ const FOLD_COPY: Record<LessonFoldId, { title: 'map.lesson.goal' | 'map.lesson.s
   goal: { title: 'map.lesson.goal', hint: 'map.lesson.goalHint' },
   steps: { title: 'map.lesson.steps', hint: 'map.lesson.stepsHint' },
   practice: { title: 'map.lesson.practice', hint: 'map.lesson.practiceHint' },
+}
+
+function mapUnitSlice(lessonId: string) {
+  const units = [...getUnits(), ...getF4Units(), ...getMediaUnits()]
+  return unitSliceFor(
+    lessonId,
+    units.map((unit) => ({ id: unit.id, nodeIds: unit.nodes.map((node) => node.id) })),
+  )
 }
 
 function shuffle<T>(arr: T[], seed: number): T[] {
@@ -82,7 +103,7 @@ export function LessonPlayer({
   onSetFold?: (id: LessonFoldId, open: boolean) => void
 }) {
   const { settings, easyRead, supportsOn, focusTunnel } = useSen()
-  const { state, finishLesson } = useGame()
+  const { state, finishLesson, awardOnce } = useGame()
   const { reportSignal } = useSenSupport()
   const heartsOn = state.prefs.hearts && !supportsOn
   const motion = !settings.reduceMotion
@@ -97,6 +118,18 @@ export function LessonPlayer({
   const [attemptSeed, setAttemptSeed] = useState(1)
   const [outcome, setOutcome] = useState<FinishOutcome | null>(null)
   const [result, setResult] = useState<SessionResult | null>(null)
+  const [chestKey, setChestKey] = useState<string | null>(null)
+  const [otterOn] = useState(() => {
+    if (typeof window === 'undefined') return true
+    const flag = queryOtterFlag(window.location.search)
+    try {
+      if (flag === 'off') localStorage.setItem(OTTER_STORAGE_KEY, '0')
+      else if (flag === 'on') localStorage.setItem(OTTER_STORAGE_KEY, '1')
+      return resolveOtterMascotEnabled(window.location.search, localStorage.getItem(OTTER_STORAGE_KEY))
+    } catch {
+      return flag !== 'off'
+    }
+  })
   const foldButtonRefs = useRef<Partial<Record<LessonFoldId, HTMLButtonElement | null>>>({})
   const foldOpen = folds ?? DEFAULT_LESSON_FOLDS
 
@@ -155,8 +188,23 @@ export function LessonPlayer({
     const total = lesson.questions.length
     const ft = lesson.questions.filter((q) => firstTry[q.id]).length
     const r: SessionResult = { total, firstTryCorrect: ft, accuracy: total ? ft / total : 1, wrongByType }
+    const passed = r.accuracy >= PASS_ACCURACY
+    const offer = otterOn
+      ? chestOffer({
+          kind,
+          passed,
+          id: lesson.id,
+          unit: kind === 'lesson' ? mapUnitSlice(lesson.id) : null,
+          completedBefore: (id) =>
+            kind === 'quest' ? Boolean(state.quests[id]?.completed) : Boolean(state.nodes[id]?.completed),
+        })
+      : { offer: false as const, key: null }
+    if (otterOn && offer.offer) {
+      awardOnce(otterChestAwardKey(offer.key), OTTER_CHEST_XP, t('mascot.chest.reward'), kind)
+    }
     setResult(r)
     setOutcome(finishLesson(lesson.id, lesson.title, r, kind))
+    setChestKey(offer.key)
     setQueue([])
     setPhase('result')
     openFold('practice')
@@ -172,6 +220,7 @@ export function LessonPlayer({
     setHearts(MAX_HEARTS)
     setOutcome(null)
     setResult(null)
+    setChestKey(null)
     reportSignal({ kind: 'session-reset' })
   }
 
@@ -222,6 +271,8 @@ export function LessonPlayer({
       feedback={feedback}
       attemptSeed={attemptSeed}
       easyRead={easyRead}
+      otterOn={otterOn}
+      reduceMotion={!motion}
       onAnswer={answer}
       onNext={next}
     />
@@ -250,6 +301,8 @@ export function LessonPlayer({
         result={result}
         kind={kind}
         motion={motion}
+        otterOn={otterOn}
+        chestKey={chestKey}
         onExit={onExit}
         onRestart={restart}
         exitLabel={exitLabel}
@@ -489,6 +542,8 @@ function QuizStage({
   feedback,
   attemptSeed,
   easyRead,
+  otterOn,
+  reduceMotion,
   onAnswer,
   onNext,
 }: {
@@ -497,6 +552,8 @@ function QuizStage({
   feedback: Feedback
   attemptSeed: number
   easyRead: boolean
+  otterOn: boolean
+  reduceMotion: boolean
   onAnswer: (correct: boolean, explain: string) => void
   onNext: () => void
 }) {
@@ -527,6 +584,15 @@ function QuizStage({
           }`}
         >
           <div className="flex items-start gap-2">
+            {otterOn && feedback.correct ? (
+              <OtterPose
+                pose="encourage"
+                label={t('mascot.encourage')}
+                reduceMotion={reduceMotion}
+                size="sm"
+                testId="otter-pose-encourage"
+              />
+            ) : null}
             {feedback.correct ? (
               <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
             ) : (
@@ -580,6 +646,8 @@ function ResultStage({
   result,
   kind,
   motion,
+  otterOn,
+  chestKey,
   onExit,
   onRestart,
   exitLabel,
@@ -589,15 +657,27 @@ function ResultStage({
   result: SessionResult
   kind: 'lesson' | 'quest'
   motion: boolean
+  otterOn: boolean
+  chestKey: string | null
   onExit: () => void
   onRestart: () => void
   exitLabel?: string
   after?: ReactNode
 }) {
+  const [chestPhase, setChestPhase] = useState<'offer' | 'open' | 'skip'>('offer')
   return (
     <div className="space-y-4">
       <div className="rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-        <Trophy className={`mx-auto h-12 w-12 text-amber-500 ${motion ? 'animate-bounce' : ''}`} aria-hidden />
+        {otterOn ? (
+          <OtterPose
+            pose="complete"
+            label={t('mascot.complete')}
+            reduceMotion={!motion}
+            testId="otter-pose-complete"
+          />
+        ) : (
+          <Trophy className={`mx-auto h-12 w-12 text-amber-500 ${motion ? 'animate-bounce' : ''}`} aria-hidden />
+        )}
         <h3 className="mt-2 text-xl font-bold text-slate-900">
           {outcome.passed ? (kind === 'lesson' ? t('lp.res.lesson') : t('lp.res.quest')) : t('lp.res.practice')}
         </h3>
@@ -637,6 +717,15 @@ function ResultStage({
             <RotateCcw className="h-4 w-4" aria-hidden /> {t('lp.again')}
           </button>
         </div>
+        {otterOn && chestKey && chestPhase !== 'skip' ? (
+          <OtterChest
+            reduceMotion={!motion}
+            opened={chestPhase === 'open'}
+            badgeIds={outcome.newBadges}
+            onOpen={() => setChestPhase('open')}
+            onSkip={() => setChestPhase('skip')}
+          />
+        ) : null}
       </div>
       {after}
     </div>
