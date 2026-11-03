@@ -243,11 +243,11 @@ async function readJsonBody(
 /**
  * AI Studio's current default Flash model.
  * GEMINI_MODEL, when set to a model id, is tried first.
- * Then gemini-3.8-flash, gemini-flash-latest, and gemini-2.5-flash-lite.
+ * Then gemini-3.8-flash, gemini-flash-latest, and gemini-3.5-flash-lite.
  * gemini-2.5-flash (non-lite) stays out: it is unavailable to new projects.
  */
 const GEMINI_MODEL = 'gemini-3.8-flash'
-const GEMINI_MODEL_FALLBACKS = ['gemini-flash-latest', 'gemini-2.5-flash-lite'] as const
+const GEMINI_MODEL_FALLBACKS = ['gemini-flash-latest', 'gemini-3.5-flash-lite'] as const
 
 function isGeminiModelId(value: string): boolean {
   return /^[A-Za-z0-9._-]{1,80}$/.test(value) && !value.startsWith('AIza')

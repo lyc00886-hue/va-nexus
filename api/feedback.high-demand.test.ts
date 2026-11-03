@@ -16,13 +16,13 @@ function withModel(value: string | undefined, run: () => void) {
   }
 }
 
-test('GEMINI_MODEL is tried first, then 3.8, flash-latest, and 2.5-flash-lite', () => {
+test('GEMINI_MODEL is tried first, then 3.8, flash-latest, and 3.5-flash-lite', () => {
   withModel('gemini-2.0-flash', () => {
     assert.deepEqual(geminiModels(), [
       'gemini-2.0-flash',
       'gemini-3.8-flash',
       'gemini-flash-latest',
-      'gemini-2.5-flash-lite',
+      'gemini-3.5-flash-lite',
     ])
   })
 })
@@ -32,7 +32,7 @@ test('missing GEMINI_MODEL still tries the stable flash chain once each', () => 
     assert.deepEqual(geminiModels(), [
       'gemini-3.8-flash',
       'gemini-flash-latest',
-      'gemini-2.5-flash-lite',
+      'gemini-3.5-flash-lite',
     ])
   })
 })
@@ -40,7 +40,7 @@ test('missing GEMINI_MODEL still tries the stable flash chain once each', () => 
 test('an API key in GEMINI_MODEL is ignored', () => {
   withModel('AIzaSyNotAModel', () => {
     assert.equal(geminiModels()[0], 'gemini-3.8-flash')
-    assert.equal(geminiModels().includes('gemini-2.5-flash-lite'), true)
+    assert.equal(geminiModels().includes('gemini-3.5-flash-lite'), true)
   })
 })
 
@@ -56,7 +56,7 @@ test('high demand tries later flash models, then a success is returned', async (
     const url = String(input)
     calls.push(url)
     const model = url.split('/models/')[1]?.split(':')[0] ?? ''
-    if (model === 'gemini-2.5-flash-lite') {
+    if (model === 'gemini-3.5-flash-lite') {
       return new Response(
         JSON.stringify({ candidates: [{ content: { parts: [{ text: 'Nice observation.' }] } }] }),
         { status: 200, headers: { 'Content-Type': 'application/json' } },
@@ -79,7 +79,7 @@ test('high demand tries later flash models, then a success is returned', async (
     assert.deepEqual(result, { ok: true, feedback: 'Nice observation.' })
     assert.deepEqual(
       calls.map((url) => url.split('/models/')[1]?.split(':')[0]),
-      ['gemini-3.8-flash', 'gemini-flash-latest', 'gemini-2.5-flash-lite'],
+      ['gemini-3.8-flash', 'gemini-flash-latest', 'gemini-3.5-flash-lite'],
     )
     const blob = `${calls.join('\n')}\n${logs.join('\n')}`
     assert.equal(blob.includes('test-key-not-for-logs'), false)
