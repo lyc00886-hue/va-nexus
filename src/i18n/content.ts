@@ -6,7 +6,12 @@
  */
 import { getLocale, type Locale } from './index'
 
-const JSON_FILES = import.meta.glob('../content/*.json', { eager: true, import: 'default' }) as Record<string, unknown>
+// Teacher draft-band JSON is imported by the staff page only, so the student bundle
+// does not eager-load practice bands, criteria, or teacher tips.
+const JSON_FILES = import.meta.glob(
+  ['../content/*.json', '!../content/teacher-draft-band.json', '!../content/teacher-draft-band.*.json'],
+  { eager: true, import: 'default' },
+) as Record<string, unknown>
 const MD_FILES = import.meta.glob('../content/*.md', { eager: true, query: '?raw', import: 'default' }) as Record<
   string,
   string

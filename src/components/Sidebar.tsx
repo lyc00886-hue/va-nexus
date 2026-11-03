@@ -1,10 +1,12 @@
-import { Award, FolderOpen, Library, Map, Search, type LucideIcon } from 'lucide-react'
+import { Award, ClipboardList, FolderOpen, Library, Map, Search, type LucideIcon } from 'lucide-react'
 import { useGame } from '../context/GameContext'
 import { t as tr, useT, type MessageKey } from '../i18n'
 import type { TabId } from '../types'
 import { PrivacyLink } from './PrivacyModal'
 
-export const TABS: { id: TabId; icon: LucideIcon }[] = [
+export type TabItem = { id: TabId; icon: LucideIcon }
+
+export const TABS: TabItem[] = [
   { id: 'map', icon: Map },
   { id: 'research', icon: Search },
   { id: 'portfolio', icon: FolderOpen },
@@ -12,22 +14,31 @@ export const TABS: { id: TabId; icon: LucideIcon }[] = [
   { id: 'achievements', icon: Award },
 ]
 
+/** Staff-only. Not part of TABS, so student chrome stays the five learning tabs. */
+export const STAFF_TAB: TabItem = { id: 'staff', icon: ClipboardList }
+
 export function tabLabel(id: TabId, short = false): string {
   return tr(`tab.${id}${short ? '.short' : ''}` as MessageKey)
 }
 
-type Props = { active: TabId; onChange: (t: TabId) => void }
+type Props = { active: TabId; onChange: (t: TabId) => void; extraTabs?: TabItem[] }
 
-export function Sidebar({ active, onChange }: Props) {
+function tabsFor(extraTabs?: TabItem[]): TabItem[] {
+  if (!extraTabs || extraTabs.length === 0) return TABS
+  return [...TABS, ...extraTabs]
+}
+
+export function Sidebar({ active, onChange, extraTabs }: Props) {
   const { level, state } = useGame()
   const { t } = useT()
+  const tabs = tabsFor(extraTabs)
   return (
     <nav
       aria-label={t('nav.main')}
       className="sticky top-[64px] hidden h-[calc(100vh-64px)] w-60 shrink-0 flex-col border-r border-slate-200 bg-white px-3 py-5 md:flex"
     >
       <ul className="space-y-1">
-        {TABS.map((tab) => {
+        {tabs.map((tab) => {
           const Icon = tab.icon
           const on = active === tab.id
           return (
@@ -35,6 +46,7 @@ export function Sidebar({ active, onChange }: Props) {
               <button
                 type="button"
                 aria-current={on ? 'page' : undefined}
+                data-testid={tab.id === 'staff' ? 'nav-staff-desktop' : undefined}
                 onClick={() => onChange(tab.id)}
                 className={`flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold ${
                   on ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
@@ -61,15 +73,20 @@ export function Sidebar({ active, onChange }: Props) {
   )
 }
 
-export function MobileNav({ active, onChange }: Props) {
+export function MobileNav({ active, onChange, extraTabs }: Props) {
   const { t } = useT()
+  const tabs = tabsFor(extraTabs)
+  const studentGrid = tabs.length === TABS.length
   return (
     <nav
       aria-label={t('nav.main')}
       className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
-      <ul className="grid grid-cols-5">
-        {TABS.map((tab) => {
+      <ul
+        className={studentGrid ? 'grid grid-cols-5' : 'grid'}
+        style={studentGrid ? undefined : { gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
+      >
+        {tabs.map((tab) => {
           const Icon = tab.icon
           const on = active === tab.id
           return (
@@ -77,6 +94,7 @@ export function MobileNav({ active, onChange }: Props) {
               <button
                 type="button"
                 aria-current={on ? 'page' : undefined}
+                data-testid={tab.id === 'staff' ? 'nav-staff-mobile' : undefined}
                 onClick={() => onChange(tab.id)}
                 className={`flex w-full flex-col items-center gap-0.5 py-2 text-[11px] font-semibold ${
                   on ? 'text-blue-700' : 'text-slate-500'

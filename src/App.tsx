@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import { ArtistCompare } from './components/ArtistCompare'
 import { CommitmentFooter } from './components/CommitmentBadges'
 import { FocusTunnel } from './components/FocusTunnel'
 import { Header } from './components/Header'
 import { SbaQuest } from './components/SbaQuest'
 import { PrivacyModal } from './components/PrivacyModal'
-import { MobileNav, Sidebar, TABS } from './components/Sidebar'
+import { MobileNav, Sidebar, STAFF_TAB, TABS } from './components/Sidebar'
 import { Achievements } from './components/game/Achievements'
 import { CheckInModal } from './components/game/CheckInModal'
 import { LearningMap } from './components/game/LearningMap'
@@ -16,13 +16,17 @@ import { contentJson } from './i18n/content'
 import type { AbilityChartFile } from './lib/abilityChart'
 import { requestOpenAbilityChart } from './lib/portfolioSections'
 import { isSupabaseConfigured } from './lib/supabase'
+import { useStaffGate } from './lib/useStaffRole'
 import type { TabId } from './types'
+
+const TeacherDraftBand = lazy(() => import('./components/TeacherDraftBand'))
 
 const TAB_KEY = 'va-nexus:tab'
 
 function initialTab(): TabId {
   try {
     const saved = localStorage.getItem(TAB_KEY) as TabId | null
+    if (saved === 'staff') return saved
     if (saved && TABS.some((x) => x.id === saved)) return saved
   } catch {
     /* ignore */
@@ -32,6 +36,8 @@ function initialTab(): TabId {
 
 export default function App() {
   const { t } = useT()
+  const staffGate = useStaffGate()
+  const staffRole = staffGate.role
   const [tab, setTab] = useState<TabId>(initialTab)
   const [artistSource, setArtistSource] = useState<'live' | 'mock'>(
     isSupabaseConfigured ? 'live' : 'mock',
@@ -40,14 +46,23 @@ export default function App() {
     setArtistSource(source)
   }, [])
 
+  const showStaffNav = staffRole != null
+  const activeTab: TabId = tab === 'staff' && !showStaffNav ? 'map' : tab
+  const extraTabs = showStaffNav ? [STAFF_TAB] : undefined
+
   useEffect(() => {
+    // Don't overwrite a teacher's saved staff tab before the session is known.
+    if (tab === 'staff' && !staffGate.ready) return
     try {
-      localStorage.setItem(TAB_KEY, tab)
+      localStorage.setItem(TAB_KEY, activeTab)
     } catch {
       /* ignore */
     }
+  }, [activeTab, tab, staffGate.ready])
+
+  useEffect(() => {
     window.scrollTo({ top: 0 })
-  }, [tab])
+  }, [activeTab])
 
   const footer = t(artistSource === 'live' ? 'app.footer.live' : 'app.footer.mock')
 
@@ -55,13 +70,13 @@ export default function App() {
     <div className="min-h-screen bg-slate-50">
       <Header />
       <div className="flex">
-        <Sidebar active={tab} onChange={setTab} />
+        <Sidebar active={activeTab} onChange={setTab} extraTabs={extraTabs} />
         <main className="min-w-0 flex-1 px-4 py-5 pb-28 sm:px-6 md:pb-10 lg:px-8">
           <div className="mx-auto max-w-5xl">
-            <div key={tab} className="tab-panel-enter">
-              {tab === 'map' && <LearningMap />}
-              {tab === 'research' && <ResearchLab />}
-              {tab === 'portfolio' && (
+            <div key={activeTab} className="tab-panel-enter">
+              {activeTab === 'map' && <LearningMap />}
+              {activeTab === 'research' && <ResearchLab />}
+              {activeTab === 'portfolio' && (
                 <div className="space-y-4">
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900">{t('tab.portfolio')}</h2>
@@ -78,7 +93,7 @@ export default function App() {
                   <SbaQuest />
                 </div>
               )}
-              {tab === 'library' && (
+              {activeTab === 'library' && (
                 <div className="space-y-4">
                   <div>
                     <h2 className="text-2xl font-bold text-slate-900">{t('tab.library')}</h2>
@@ -89,13 +104,18 @@ export default function App() {
                   </div>
                 </div>
               )}
-              {tab === 'achievements' && <Achievements />}
+              {activeTab === 'achievements' && <Achievements />}
+              {activeTab === 'staff' && showStaffNav && (
+                <Suspense fallback={<div className="min-h-40" aria-busy="true" data-testid="teacher-draft-loading" />}>
+                  <TeacherDraftBand />
+                </Suspense>
+              )}
             </div>
             <CommitmentFooter dataLine={footer} />
           </div>
         </main>
       </div>
-      <MobileNav active={tab} onChange={setTab} />
+      <MobileNav active={activeTab} onChange={setTab} extraTabs={extraTabs} />
       <FocusTunnel />
       <NudgeToast />
       <CheckInModal />
