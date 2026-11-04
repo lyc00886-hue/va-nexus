@@ -1,8 +1,9 @@
 import { Accessibility } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useEasyRead } from '../context/EasyReadContext'
 import { useSen } from '../context/SenContext'
 import { LOCALE_NAME, LOCALE_SHORT, LOCALES, useT } from '../i18n'
+import { PLATFORM_HEADER_MOBILE_MQ, PLATFORM_HEADER_PATH_EVENT, stepPlatformHeader } from '../lib/platformHeaderShell'
 import { AuthButton } from './AuthButton'
 import { ProgressSync } from './ProgressSync'
 import { SenSettingsPanel } from './SenSettingsPanel'
@@ -75,14 +76,86 @@ function LanguageSwitcher() {
   )
 }
 
+function usePlatformHeaderCollapsed(panelOpen: boolean) {
+  const [collapsed, setCollapsed] = useState(false)
+  const collapsedRef = useRef(false)
+  const accRef = useRef(0)
+  const lastYRef = useRef(0)
+  const panelRef = useRef(panelOpen)
+
+  useEffect(() => {
+    panelRef.current = panelOpen
+    if (!panelOpen) return
+    accRef.current = 0
+    if (!collapsedRef.current) return
+    collapsedRef.current = false
+    setCollapsed(false)
+  }, [panelOpen])
+
+  useEffect(() => {
+    const mq = window.matchMedia(PLATFORM_HEADER_MOBILE_MQ)
+    lastYRef.current = window.scrollY
+
+    const apply = (delta: number) => {
+      const header = document.querySelector<HTMLElement>('[data-platform-header]')
+      const next = stepPlatformHeader({
+        scrollY: window.scrollY,
+        delta,
+        acc: accRef.current,
+        collapsed: collapsedRef.current,
+        mobile: mq.matches,
+        path: document.querySelector('[data-map-chrome="path"]') != null,
+        anchored: panelRef.current,
+        hidePast: header?.offsetHeight ?? 0,
+      })
+      accRef.current = next.acc
+      if (next.collapsed === collapsedRef.current) return
+      collapsedRef.current = next.collapsed
+      setCollapsed(next.collapsed)
+    }
+
+    const onScroll = () => {
+      const y = window.scrollY
+      const delta = y - lastYRef.current
+      lastYRef.current = y
+      apply(delta)
+    }
+
+    const onResync = () => {
+      lastYRef.current = window.scrollY
+      apply(0)
+    }
+
+    onResync()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener(PLATFORM_HEADER_PATH_EVENT, onResync)
+    mq.addEventListener('change', onResync)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener(PLATFORM_HEADER_PATH_EVENT, onResync)
+      mq.removeEventListener('change', onResync)
+    }
+  }, [])
+
+  return collapsed
+}
+
 export function Header() {
   const { mode } = useSen()
   const { t } = useT()
   const [open, setOpen] = useState(false)
   const close = useCallback(() => setOpen(false), [])
+  const collapsed = usePlatformHeaderCollapsed(open) && !open
 
   return (
-    <header className="sticky top-0 z-40 border-b border-teal-100 bg-white/90 backdrop-blur">
+    <header
+      data-testid="platform-header"
+      data-platform-header={collapsed ? 'collapsed' : 'visible'}
+      data-collapsed={collapsed ? 'true' : 'false'}
+      aria-hidden={collapsed || undefined}
+      inert={collapsed || undefined}
+      className="platform-header sticky top-0 z-40 border-b border-teal-100 bg-white/90 backdrop-blur"
+    >
       <div className="relative flex flex-wrap items-center justify-between gap-3 px-4 py-3">
         <div className="flex min-w-0 items-center gap-2.5">
           <div className="min-w-0">

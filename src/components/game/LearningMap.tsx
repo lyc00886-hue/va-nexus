@@ -1,5 +1,5 @@
 import { ChevronLeft, Play } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { useLayoutEffect, useState, type ReactNode } from 'react'
 import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { getNodeById, getUnits } from '../../game/curriculum'
@@ -18,6 +18,7 @@ import {
 import { useEasyRead } from '../../context/EasyReadContext'
 import { EasyReadBar } from '../easy-read/EasyReadBar'
 import { StepMap } from '../easy-read/StepPath'
+import { PLATFORM_HEADER_PATH_EVENT } from '../../lib/platformHeaderShell'
 import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
@@ -144,6 +145,15 @@ export function LearningMap() {
     setMediaId(null)
     remember('media', null)
   }
+
+  const pathOn = !easy.on && !mapOne && (track === 'history' || track === 'f4' || selected != null)
+  useLayoutEffect(() => {
+    if (!pathOn) return
+    window.dispatchEvent(new Event(PLATFORM_HEADER_PATH_EVENT))
+    return () => {
+      window.dispatchEvent(new Event(PLATFORM_HEADER_PATH_EVENT))
+    }
+  }, [pathOn])
 
   if (easy.on) {
     return <StepMap />
