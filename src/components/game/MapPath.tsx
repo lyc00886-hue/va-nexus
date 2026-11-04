@@ -9,8 +9,10 @@ import { requestOpenTab } from '../../lib/openTab'
 import type { LessonFoldId } from '../../lib/learningMapSections'
 import { sectionOpen, type LearningMapSections } from '../../lib/learningMapSections'
 import { mapPathVisibleIds } from '../../lib/mapPathViewport'
+import { useMapPathAdvance } from '../../lib/useMapPathAdvance'
 import { ExerciseMarks } from './ExerciseMark'
 import { LessonPlayer } from './LessonPlayer'
+import { MapPresence } from './MapPresence'
 
 type Props = {
   units: Unit[]
@@ -49,6 +51,10 @@ export function MapPath({
       done: completed(node.id),
       current: node.id === currentId,
     })),
+  )
+  const advancing = useMapPathAdvance(
+    currentId,
+    flat.map((node) => node.id),
   )
   const openIds = new Set(flat.filter((node) => sectionOpen(sections.lessons, node.id)).map((node) => node.id))
   const windowIds = mapPathVisibleIds(flat, { openIds })
@@ -149,9 +155,14 @@ export function MapPath({
                         }
                         className={`mx-auto flex w-full max-w-[16rem] flex-col items-center rounded-3xl px-2 py-1 text-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#0D9488] ${unlocked ? '' : 'cursor-not-allowed'}`}
                       >
+                        {isCurrent ? (
+                          <span className="mx-auto mb-1 block min-h-[5.5rem] w-36">
+                            <MapPresence advancing={advancing} />
+                          </span>
+                        ) : null}
                         {cover ? (
                           <CoverFace state={state}>{cover}</CoverFace>
-                        ) : (
+                        ) : isCurrent ? null : (
                           <StatusFace state={state} />
                         )}
                         <span

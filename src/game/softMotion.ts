@@ -68,3 +68,83 @@ export function celebratePoses(play: boolean): readonly CelebratePose[] {
 export function softMotionPlay(input: { soundMotion: boolean; reduceMotion: boolean }): boolean {
   return input.soundMotion === true && input.reduceMotion !== true
 }
+
+/**
+ * Map path presence. Separate from the celebrate stills.
+ * Idle and a short blink while the otter waits. Walk frames only while the path moves forward.
+ * One pose is shown at a time. Gear off, the reduce-motion switch, or prefers-reduced-motion stays on idle.
+ */
+export const MOTION_V2_MAP = {
+  idle: '/content/learning-map-illustrations/moods/motion-v2/otter-map-idle.png',
+  blink: '/content/learning-map-illustrations/moods/motion-v2/otter-map-blink.png',
+  'walk-1': '/content/learning-map-illustrations/moods/motion-v2/otter-map-walk-1.png',
+  'walk-2': '/content/learning-map-illustrations/moods/motion-v2/otter-map-walk-2.png',
+} as const
+
+export type MapPose = keyof typeof MOTION_V2_MAP
+
+/** Closed-eye hold. Soft note 120–180ms. */
+export const MAP_BLINK_MS = 150
+
+/** Open-eye hold between blinks. Slow loop, not a flicker. */
+export const MAP_IDLE_HOLD_MS = 2800
+
+/** One stride. Soft note 600–800ms per step. */
+export const MAP_WALK_MS = 700
+
+/** One forward move plays walk-1 then walk-2, then returns to the idle blink. */
+export const MAP_WALK_POSES = ['walk-1', 'walk-2'] as const
+
+export function mapWalkMs(): number {
+  return MAP_WALK_MS * MAP_WALK_POSES.length
+}
+
+/** Gear off or any reduce-motion signal stays on the idle still. */
+export function mapMotionPlay(input: {
+  soundMotion: boolean
+  reduceMotion: boolean
+  prefersReducedMotion?: boolean
+}): boolean {
+  return softMotionPlay({
+    soundMotion: input.soundMotion,
+    reduceMotion: input.reduceMotion === true || input.prefersReducedMotion === true,
+  })
+}
+
+/** True when the current lesson id moves forward along the path order. */
+export function mapPathAdvanced(fromId: string | null, toId: string | null, ids: readonly string[]): boolean {
+  if (!fromId || !toId || fromId === toId) return false
+  const from = ids.indexOf(fromId)
+  const to = ids.indexOf(toId)
+  return from >= 0 && to > from
+}
+
+/** Hard-cut pose. Walk wins over the blink loop. Motion off is always idle. */
+export function mapPresencePose(input: { play: boolean; advancing: boolean; elapsedMs: number }): MapPose {
+  if (!input.play) return 'idle'
+  const elapsed = Math.max(0, input.elapsedMs)
+  if (input.advancing) {
+    const step = Math.floor(elapsed / MAP_WALK_MS)
+    if (step >= 0 && step < MAP_WALK_POSES.length) return MAP_WALK_POSES[step]
+    return 'idle'
+  }
+  const cycle = MAP_IDLE_HOLD_MS + MAP_BLINK_MS
+  const at = elapsed % cycle
+  return at >= MAP_IDLE_HOLD_MS ? 'blink' : 'idle'
+}
+
+/** Milliseconds until the next hard cut. Never zero, so a timer cannot spin. */
+export function mapPoseDelay(advancing: boolean, elapsedMs: number): number {
+  const elapsed = Math.max(0, elapsedMs)
+  if (advancing) {
+    const step = Math.floor(elapsed / MAP_WALK_MS)
+    if (step < MAP_WALK_POSES.length) {
+      const into = elapsed - step * MAP_WALK_MS
+      return Math.max(16, MAP_WALK_MS - into)
+    }
+  }
+  const cycle = MAP_IDLE_HOLD_MS + MAP_BLINK_MS
+  const at = elapsed % cycle
+  if (at < MAP_IDLE_HOLD_MS) return Math.max(16, MAP_IDLE_HOLD_MS - at)
+  return Math.max(16, cycle - at)
+}
