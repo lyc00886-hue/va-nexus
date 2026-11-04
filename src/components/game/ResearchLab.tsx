@@ -1,6 +1,7 @@
 import { CheckCircle2, ChevronRight, PenLine } from 'lucide-react'
 import { useState } from 'react'
 import { useGame } from '../../context/GameContext'
+import { lessonExerciseIds } from '../../game/exerciseLogos'
 import { getResearchQuests } from '../../game/research'
 import { getBadgeById } from '../../game/rewards'
 import { getLocale, t } from '../../i18n'
@@ -11,6 +12,7 @@ import { useResearchStepsShell } from '../../lib/useResearchStepsShell'
 import { EasyReadBar } from '../easy-read/EasyReadBar'
 import { StepResearch } from '../easy-read/StepPath'
 import { DemoBadge } from './DemoBadge'
+import { ExerciseMarks } from './ExerciseMark'
 import { LessonPlayer } from './LessonPlayer'
 
 export function ResearchLab() {
@@ -101,6 +103,13 @@ export function ResearchLab() {
               <p className="mt-3 text-xs font-semibold text-blue-600">{q.skill}</p>
               <p className="text-lg font-bold text-slate-900">{q.title}</p>
               <p className="text-sm text-slate-500">{q.subtitle}</p>
+              <ExerciseMarks
+                ids={lessonExerciseIds({
+                  questions: q.questions,
+                  artists: q.artists,
+                  embedFeldman: q.embedFeldman,
+                })}
+              />
               <span className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 group-hover:underline">
                 {completed ? t('research.retry') : t('research.start')} · {t('common.aboutMin', { n: q.minutes })}
                 <ChevronRight className="h-4 w-4" aria-hidden />

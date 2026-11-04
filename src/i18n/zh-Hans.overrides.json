@@ -179,6 +179,7 @@
   "sba.delete.deleted": "已删除",
   "sba.delete.err": "删除失败，请稍后再试",
   "map.pageIntro": "点开你要看的年级／单元或课；不必一次看完。",
+  "ex.image.short": "看图",
   "map.fold.gradeOrUnit": "年级／单元",
   "map.fold.gradeOrUnitHint": "点开才见课列表",
   "map.fold.lessons": "课列表",

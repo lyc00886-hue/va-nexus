@@ -3,6 +3,7 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { artistName } from '../../game/lessonArtistLabels'
 import type { LessonArtistRef } from '../../game/types'
 import { t } from '../../i18n'
+import { ExerciseMark } from './ExerciseMark'
 
 /** Non-interactive chips for inside a lesson-node button. */
 export function LessonArtistChips({ artists }: { artists: LessonArtistRef[] }) {
@@ -61,9 +62,12 @@ export function LessonArtistPanel({ artists }: { artists: LessonArtistRef[] }) {
   const open = artists.find((artist) => artist.artistId === openId && artist.thumb)
   return (
     <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm" aria-labelledby={headingId}>
-      <h3 id={headingId} className="text-sm font-bold text-slate-900">
-        {t('map.artists.heading')}
-      </h3>
+      <div className="flex flex-wrap items-center gap-2">
+        <h3 id={headingId} className="text-sm font-bold text-slate-900">
+          {t('map.artists.heading')}
+        </h3>
+        <ExerciseMark id="ex.image" />
+      </div>
       <ul className="mt-3 grid gap-3 sm:grid-cols-3">
         {artists.map((artist) => (
           <li key={artist.artistId}>
