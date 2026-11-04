@@ -5,10 +5,13 @@ import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { coverFromUnit } from './f4Media.ts'
 import {
+  MOTION_V2_CELEBRATE_MS,
+  MOTION_V2_OTTER,
   MOOD_EMPTY_MAP,
   MOOD_OTTER_PEEK,
   SOFT_EVENTS,
   SOUND_MOTION_DEFAULT,
+  celebratePoses,
   softMotionPlay,
 } from './softMotion.ts'
 
@@ -66,6 +69,36 @@ describe('early wire covers and soft motion', () => {
       assert.equal(existsSync(file), true, mood)
       assert.equal(statSync(file).size > 1000, true, mood)
     }
+  })
+
+  it('plays a visible otter clap and nod once, and stays on idle when motion is off', () => {
+    assert.equal(MOTION_V2_CELEBRATE_MS >= 700 && MOTION_V2_CELEBRATE_MS <= 900, true)
+    const hold = MOTION_V2_CELEBRATE_MS / 4
+    assert.equal(hold >= 180 && hold <= 300, true)
+    assert.deepEqual(celebratePoses(false), ['idle'])
+    assert.deepEqual(celebratePoses(true), ['idle', 'clap', 'nod', 'idle'])
+    assert.equal(softMotionPlay({ soundMotion: false, reduceMotion: false }), false)
+    assert.equal(softMotionPlay({ soundMotion: true, reduceMotion: true }), false)
+    for (const pose of ['idle', 'clap', 'nod'] as const) {
+      assert.match(MOTION_V2_OTTER[pose], /\/moods\/motion-v2\/otter-celebrate-(idle|clap|nod)\.png$/)
+      const file = join(PUBLIC, MOTION_V2_OTTER[pose].slice(1))
+      assert.equal(existsSync(file), true, pose)
+      assert.equal(statSync(file).size > 1000, true, pose)
+    }
+    const frames = read('src/components/game/SoftMotion.tsx')
+    assert.match(frames, /data-otter-celebrate/)
+    assert.match(frames, /data-celebrate-sequence/)
+    assert.equal(frames.includes('data-otter="peek"'), false)
+    assert.equal(frames.includes('MOOD_OTTER_PEEK'), false)
+    assert.equal(frames.includes('infinite'), false)
+    const css = read('src/index.css')
+    assert.match(css, /soft-celebrate-idle/)
+    assert.match(css, /soft-celebrate-clap/)
+    assert.match(css, /soft-celebrate-nod/)
+    assert.match(css, /--celebrate-ms, 800ms/)
+    assert.match(css, /animation-iteration-count: 1/)
+    assert.match(css, /\.sen-reduce-motion \.soft-celebrate-clap/)
+    assert.match(css, /html:not\(\[data-sound-motion='on'\]\) \.soft-celebrate-nod/)
   })
 
   it('wires eleven art-history unit covers and leaves lesson tiles unwired', () => {
