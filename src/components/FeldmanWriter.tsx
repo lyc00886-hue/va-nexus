@@ -19,6 +19,7 @@ import { contentJson } from '../i18n/content'
 import { selfFieldId, type AbilityChartFile } from '../lib/abilityChart'
 import { setSelfSelect, useSelfAssessment } from '../lib/selfAssessment'
 import { SelfLevelSelect } from './SelfLevelSelect'
+import { ExerciseMark } from './game/ExerciseMark'
 import { ResearchStepShell } from './game/ResearchStepShell'
 
 type StepKey = FeldmanStageId
@@ -133,6 +134,8 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
 
   if (shell === 'steps') {
     return (
+      <div className="space-y-3">
+        <ExerciseMark id="ex.feldman" />
       <ResearchStepShell
         stages={STEPS}
         active={active}
@@ -161,13 +164,15 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
         onSignIn={onSignIn}
         onLater={onLater}
       />
+      </div>
     )
   }
 
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-xl font-bold text-teal-950">{t('fw.title')}</h2>
+        <ExerciseMark id="ex.feldman" />
+        <h2 className="mt-2 text-xl font-bold text-teal-950">{t('fw.title')}</h2>
         <p className="text-sm text-teal-800/70">{t('fw.subtitle.noAi')}</p>
         {!canUseAi ? (
           <div className="mt-2 space-y-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-950">

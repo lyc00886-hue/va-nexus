@@ -44,7 +44,9 @@ import type {
   QuestionType,
   SessionResult,
 } from '../../game/types'
+import { exerciseIdForQuestion } from '../../game/exerciseLogos'
 import { DemoBadge } from './DemoBadge'
+import { ExerciseMark } from './ExerciseMark'
 import { LessonArtistPanel } from './LessonArtists'
 import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
@@ -559,14 +561,18 @@ function QuizStage({
   onAnswer: (correct: boolean, explain: string) => void
   onNext: () => void
 }) {
+  const mark = exerciseIdForQuestion(question.type)
   return (
     <div className="space-y-4">
       <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
         <div className="flex items-start justify-between gap-3">
-          <p className="text-xs font-semibold text-violet-600">
-            {t('lp.quiz')} · {t(question.type === 'mcq' ? 'lp.mcq' : question.type === 'fill' ? 'lp.fill' : 'lp.match')}
-            {showRetry ? t('lp.retry') : ''}
-          </p>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xs font-semibold text-violet-600">
+              {t('lp.quiz')}
+              {showRetry ? t('lp.retry') : ''}
+            </p>
+            {mark ? <ExerciseMark id={mark} /> : null}
+          </div>
           <ReadAloudButton text={questionSpeech(question)} small />
         </div>
         <QuestionView

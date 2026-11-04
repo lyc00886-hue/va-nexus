@@ -1,5 +1,5 @@
-import { Check, ChevronDown, ChevronLeft, Crown, Lock, Play, Sparkles } from 'lucide-react'
-import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { ChevronLeft, Play } from 'lucide-react'
+import { useState, type ReactNode } from 'react'
 import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { useSenSupport } from '../../context/SenSupportContext'
@@ -7,7 +7,7 @@ import { getNodeById, getUnits } from '../../game/curriculum'
 import { getF4Units } from '../../game/f4Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
-import { masteryFor, masteryLabel } from '../../game/rewards'
+import { masteryFor } from '../../game/rewards'
 import { t } from '../../i18n'
 import {
   loadLearningMapSections,
@@ -24,22 +24,10 @@ import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
 import { ActivityLog } from './ActivityLog'
 import { DemoBadge } from './DemoBadge'
-import { artistCreditSummary } from '../../game/lessonArtistLabels'
-import { LessonArtistChips } from './LessonArtists'
-import { LessonPlayer } from './LessonPlayer'
+import { MapPath } from './MapPath'
 import { MapOneCard, MapOneLesson } from './MapOneLesson'
-import { MapFold } from './MapFold'
 import { StatCards } from './StatCards'
 
-const MASTERY_CHIP: Record<Mastery, string> = {
-  none: 'bg-slate-100 text-slate-500',
-  attempted: 'bg-orange-50 text-orange-700',
-  familiar: 'bg-sky-50 text-sky-700',
-  proficient: 'bg-blue-100 text-blue-800',
-  mastered: 'bg-violet-100 text-violet-800',
-}
-
-const OFFSETS = ['ml-0', 'ml-10', 'ml-20', 'ml-10']
 const TRACK_KEY = 'va-nexus:map-track'
 const MEDIA_KEY = 'va-nexus:map-media'
 
@@ -83,16 +71,11 @@ export function LearningMap() {
   const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
   const [mediaId, setMediaId] = useState<string | null>(readMediaId)
-  const unitButtonRefs = useRef<Partial<Record<string, HTMLButtonElement | null>>>({})
   const motion = !settings.reduceMotion
 
   function commitSections(next: LearningMapSections) {
     saveLearningMapSections(next)
     return next
-  }
-
-  function toggleUnit(id: string) {
-    setSections((prev) => commitSections({ ...prev, units: { ...prev.units, [id]: !sectionOpen(prev.units, id) } }))
   }
 
   function setLesson(id: string, open: boolean) {
@@ -115,11 +98,10 @@ export function LearningMap() {
     })
   }
 
-  function revealLesson(lesson: Lesson, unitId: string) {
+  function revealLesson(lesson: Lesson) {
     setSections((prev) =>
       commitSections({
         ...prev,
-        units: { ...prev.units, [unitId]: true },
         lessons: { ...prev.lessons, [lesson.id]: true },
       }),
     )
@@ -129,18 +111,6 @@ export function LearningMap() {
         block: 'start',
       })
     })
-  }
-
-  function onUnitKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number, ids: string[]) {
-    const last = ids.length - 1
-    let next = index
-    if (event.key === 'ArrowDown') next = index === last ? 0 : index + 1
-    else if (event.key === 'ArrowUp') next = index === 0 ? last : index - 1
-    else if (event.key === 'Home') next = 0
-    else if (event.key === 'End') next = last
-    else return
-    event.preventDefault()
-    unitButtonRefs.current[ids[next]]?.focus()
   }
 
   const history = getUnits()
@@ -175,10 +145,6 @@ export function LearningMap() {
   function openMedia(id: string) {
     setMediaId(id)
     remember('media', id)
-    setSections((prev) => {
-      if (sectionOpen(prev.units, id)) return prev
-      return commitSections({ ...prev, units: { ...prev.units, [id]: true } })
-    })
     window.scrollTo({ top: 0 })
   }
 
@@ -247,20 +213,14 @@ export function LearningMap() {
               current={current}
               currentNodeId={currentNodeId}
               motion={motion}
-              indent={!focusTunnel}
               isUnlocked={isUnlocked}
               completed={completed}
               masteryOf={(id) => masteryFor(state.nodes[id])}
               sections={sections}
-              onToggleUnit={toggleUnit}
               onToggleLesson={toggleLesson}
               onCloseLesson={(id) => setLesson(id, false)}
               onSetFold={setFold}
               onReveal={revealLesson}
-              onUnitKeyDown={onUnitKeyDown}
-              unitButtonRef={(id, node) => {
-                unitButtonRefs.current[id] = node
-              }}
             />
           ) : track === 'f4' ? (
             <HistoryTrack
@@ -268,20 +228,14 @@ export function LearningMap() {
               current={f4Current}
               currentNodeId={f4Current?.id ?? null}
               motion={motion}
-              indent={!focusTunnel}
               isUnlocked={f4Unlocked}
               completed={completed}
               masteryOf={(id) => masteryFor(state.nodes[id])}
               sections={sections}
-              onToggleUnit={toggleUnit}
               onToggleLesson={toggleLesson}
               onCloseLesson={(id) => setLesson(id, false)}
               onSetFold={setFold}
               onReveal={revealLesson}
-              onUnitKeyDown={onUnitKeyDown}
-              unitButtonRef={(id, node) => {
-                unitButtonRefs.current[id] = node
-              }}
             />
           ) : selected ? (
             <MediaDetail
@@ -290,15 +244,10 @@ export function LearningMap() {
               completed={completed}
               masteryOf={(id) => masteryFor(state.nodes[id])}
               sections={sections}
-              onToggleUnit={toggleUnit}
               onToggleLesson={toggleLesson}
               onCloseLesson={(id) => setLesson(id, false)}
               onSetFold={setFold}
               onReveal={revealLesson}
-              onUnitKeyDown={onUnitKeyDown}
-              unitButtonRef={(id, node) => {
-                unitButtonRefs.current[id] = node
-              }}
               onBack={closeMedia}
             />
           ) : (
@@ -347,15 +296,12 @@ function TrackTab({ active, onClick, children }: { active: boolean; onClick: () 
   )
 }
 
-type FoldControls = {
+type PathControls = {
   sections: LearningMapSections
-  onToggleUnit: (id: string) => void
   onToggleLesson: (id: string) => void
   onCloseLesson: (id: string) => void
   onSetFold: (id: LessonFoldId, open: boolean) => void
-  onReveal: (lesson: Lesson, unitId: string) => void
-  onUnitKeyDown: (event: KeyboardEvent<HTMLButtonElement>, index: number, ids: string[]) => void
-  unitButtonRef: (id: string, node: HTMLButtonElement | null) => void
+  onReveal: (lesson: Lesson) => void
 }
 
 function HistoryTrack({
@@ -363,61 +309,45 @@ function HistoryTrack({
   current,
   currentNodeId,
   motion,
-  indent,
   isUnlocked,
   completed,
   masteryOf,
   sections,
-  onToggleUnit,
   onToggleLesson,
   onCloseLesson,
   onSetFold,
   onReveal,
-  onUnitKeyDown,
-  unitButtonRef,
 }: {
   units: Unit[]
   current: Lesson | undefined
   currentNodeId: string | null
   motion: boolean
-  indent: boolean
   isUnlocked: (id: string) => boolean
   completed: (id: string) => boolean
   masteryOf: (id: string) => Mastery
-} & FoldControls) {
-  const ids = units.map((unit) => unit.id)
+} & PathControls) {
   return (
-    <>
-      {current && (
-        <ContinueButton
-          lesson={current}
-          onContinue={() => {
-            const unit = units.find((item) => item.nodes.some((node) => node.id === current.id))
-            if (unit) onReveal(current, unit.id)
-          }}
-        />
-      )}
-      {units.map((unit, index) => (
-        <UnitSection
-          key={unit.id}
-          unit={unit}
-          motion={motion}
-          indent={indent}
-          currentId={currentNodeId}
-          isUnlocked={isUnlocked}
-          completed={completed}
-          masteryOf={masteryOf}
-          sections={sections}
-          onToggleUnit={onToggleUnit}
-          onToggleLesson={onToggleLesson}
-          onCloseLesson={onCloseLesson}
-          onSetFold={onSetFold}
-          onUnitKeyDown={(event) => onUnitKeyDown(event, index, ids)}
-          unitButtonRef={unitButtonRef}
-        />
-      ))}
+    <div data-map-chrome="path" className="space-y-5 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-6">
+      {current && <ContinueButton lesson={current} onContinue={() => onReveal(current)} />}
+      <MapPath
+        units={units}
+        currentId={currentNodeId}
+        motion={motion}
+        isUnlocked={isUnlocked}
+        completed={completed}
+        masteryOf={masteryOf}
+        sections={sections}
+        onToggleLesson={onToggleLesson}
+        onCloseLesson={onCloseLesson}
+        onSetFold={onSetFold}
+        renderCover={(node) =>
+          node.coverImage ? (
+            <UnitCover src={node.coverImage} credit={node.coverCredit} lesson title={node.title} lessonId={node.id} />
+          ) : null
+        }
+      />
       {!current && <p className="rounded-3xl bg-emerald-50 p-4 text-sm font-medium text-emerald-800">{t('map.allDone')}</p>}
-    </>
+    </div>
   )
 }
 
@@ -506,13 +436,10 @@ function MediaDetail({
   completed,
   masteryOf,
   sections,
-  onToggleUnit,
   onToggleLesson,
   onCloseLesson,
   onSetFold,
   onReveal,
-  onUnitKeyDown,
-  unitButtonRef,
   onBack,
 }: {
   unit: MediaUnit
@@ -520,41 +447,43 @@ function MediaDetail({
   completed: (id: string) => boolean
   masteryOf: (id: string) => Mastery
   onBack: () => void
-} & FoldControls) {
+} & PathControls) {
   const ids = unit.nodes.map((node) => node.id)
   const unlocked = (id: string) => isSequentialUnlocked(ids, id, completed)
   const current = unit.nodes.find((node) => unlocked(node.id) && !completed(node.id))
   return (
-    <>
+    <div data-map-chrome="path" className="space-y-5 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-6">
       <button
         type="button"
         onClick={onBack}
-        className="inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:underline"
+        className="inline-flex items-center gap-1 text-sm font-semibold text-teal-800 hover:underline"
       >
         <ChevronLeft className="h-4 w-4" aria-hidden />
         {t('map.media.back')}
       </button>
-      {current && <ContinueButton lesson={current} onContinue={() => onReveal(current, unit.id)} />}
-      <UnitSection
-        unit={unit}
-        motion={motion}
+      {current && <ContinueButton lesson={current} onContinue={() => onReveal(current)} />}
+      <MapPath
+        units={[unit]}
         currentId={current?.id ?? null}
+        motion={motion}
         isUnlocked={unlocked}
         completed={completed}
         masteryOf={masteryOf}
         sections={sections}
-        onToggleUnit={onToggleUnit}
         onToggleLesson={onToggleLesson}
         onCloseLesson={onCloseLesson}
         onSetFold={onSetFold}
-        onUnitKeyDown={(event) => onUnitKeyDown(event, 0, [unit.id])}
-        unitButtonRef={unitButtonRef}
-        banner={<MediaNotes unit={unit} />}
+        bannerFor={() => <MediaNotes unit={unit} />}
+        renderCover={(node) =>
+          node.coverImage ? (
+            <UnitCover src={node.coverImage} credit={node.coverCredit} lesson title={node.title} lessonId={node.id} />
+          ) : null
+        }
       />
       {!current && (
         <p className="rounded-3xl bg-emerald-50 p-4 text-sm font-medium text-emerald-800">{t('map.media.allDone')}</p>
       )}
-    </>
+    </div>
   )
 }
 
@@ -605,219 +534,21 @@ function ContinueButton({ lesson, onContinue }: { lesson: Lesson; onContinue: ()
   return (
     <button
       type="button"
+      data-map-cta="primary"
       onClick={onContinue}
-      className="flex w-full items-center gap-4 rounded-3xl bg-gradient-to-r from-blue-600 to-indigo-600 p-5 text-left text-white shadow-md hover:from-blue-500 hover:to-indigo-500"
+      className="flex min-h-14 w-full items-center gap-4 rounded-3xl bg-[#0D9488] px-5 py-4 text-left text-white shadow-md hover:bg-teal-700"
     >
       <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/20">
         <Play className="h-6 w-6 fill-white" aria-hidden />
       </span>
       <span className="flex-1">
-        <span className="block text-xs font-semibold uppercase tracking-wide text-blue-100">{t('map.continue')}</span>
+        <span className="block text-sm font-semibold text-teal-50">{t('map.continue')}</span>
         <span className="block text-lg font-bold">{lesson.title}</span>
-        <span className="block text-sm text-blue-100">
+        <span className="block text-sm text-teal-50">
           {lesson.subtitle} · {t('common.aboutMin', { n: lesson.minutes })}
         </span>
       </span>
     </button>
-  )
-}
-
-function UnitSection({
-  unit,
-  motion,
-  indent = true,
-  currentId,
-  isUnlocked,
-  completed,
-  masteryOf,
-  sections,
-  onToggleUnit,
-  onToggleLesson,
-  onCloseLesson,
-  onSetFold,
-  onUnitKeyDown,
-  unitButtonRef,
-  banner,
-}: {
-  unit: Unit
-  motion: boolean
-  indent?: boolean
-  currentId: string | null
-  isUnlocked: (id: string) => boolean
-  completed: (id: string) => boolean
-  masteryOf: (id: string) => Mastery
-  banner?: ReactNode
-} & Omit<FoldControls, 'onReveal' | 'onUnitKeyDown' | 'unitButtonRef'> & {
-  onUnitKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void
-  unitButtonRef: FoldControls['unitButtonRef']
-}) {
-  const done = unit.nodes.filter((node) => completed(node.id)).length
-  const total = unit.nodes.length
-  const pct = total === 0 ? 0 : Math.round((done / total) * 100)
-  const unitOpen = sectionOpen(sections.units, unit.id)
-  return (
-    <MapFold
-      testId={`map-unit-${unit.id}`}
-      eyebrow={t('map.fold.gradeOrUnit')}
-      title={unit.title}
-      hint={t('map.fold.gradeOrUnitHint')}
-      titleClassName="block text-lg font-bold text-slate-900"
-      open={unitOpen}
-      onToggle={() => onToggleUnit(unit.id)}
-      onKeyDown={onUnitKeyDown}
-      buttonRef={(node) => unitButtonRef(unit.id, node)}
-      panelClassName="border-t border-slate-200"
-      trailing={
-        <>
-          {unit.nodes.some((node) => node.demo) && <DemoBadge />}
-          <span
-            className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-600"
-            aria-label={t('map.unitProgressAria', { title: unit.title, done, total, pct })}
-          >
-            {t('map.unitProgress', { done, total, pct })}
-          </span>
-        </>
-      }
-    >
-      {unit.coverImage ? (
-        <UnitCover
-          src={unit.coverImage}
-          credit={unit.coverCredit}
-          lesson={unit.coverImage.includes('/map-covers/')}
-          title={unit.coverImage.includes('/map-covers/') ? unit.title : undefined}
-          lessonId={unit.id}
-        />
-      ) : null}
-      <div className="p-5">
-      {unit.subtitle ? <p className="text-sm text-slate-600">{unit.subtitle}</p> : null}
-      {banner}
-      <div
-        className="mt-3 h-2 w-full overflow-hidden rounded-full bg-slate-100"
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={pct}
-        aria-label={t('map.unitProgressAria', { title: unit.title, done, total, pct })}
-      >
-        <div className={`h-full rounded-full bg-blue-600 ${motion ? 'transition-all' : ''}`} style={{ width: `${pct}%` }} />
-      </div>
-      <div className="mt-5">
-        <p className="text-sm font-bold text-slate-900">{t('map.fold.lessons')}</p>
-        <p className="text-sm text-slate-500">{t('map.fold.lessonsHint')}</p>
-      </div>
-      <ol className="mt-3">
-        {unit.nodes.map((node, i) => {
-          const unlocked = isUnlocked(node.id)
-          const isDone = completed(node.id)
-          const isCurrent = node.id === currentId
-          const mastery = masteryOf(node.id)
-          const last = i === unit.nodes.length - 1
-          const lessonOpen = unlocked && sectionOpen(sections.lessons, node.id)
-          const panelId = `map-lesson-panel-${node.id}`
-          const status = t(isDone ? 'map.status.done' : unlocked ? 'map.status.open' : 'map.status.locked')
-          const artistNote = node.artists?.length ? artistCreditSummary(node.artists) : ''
-          return (
-            <li
-              key={node.id}
-              id={`map-lesson-${node.id}`}
-              data-testid={`map-lesson-${node.id}`}
-              data-open={lessonOpen ? 'true' : 'false'}
-              className={`relative scroll-mt-24 ${indent ? OFFSETS[i % OFFSETS.length] : ''}`}
-            >
-              {node.coverImage ? (
-                <div className="mb-2 overflow-hidden rounded-2xl ring-1 ring-slate-200">
-                  <UnitCover
-                    src={node.coverImage}
-                    credit={node.coverCredit}
-                    lesson
-                    title={node.title}
-                    lessonId={node.id}
-                  />
-                </div>
-              ) : null}
-              <h4 className="m-0 text-base">
-              <button
-                type="button"
-                disabled={!unlocked}
-                aria-expanded={unlocked ? lessonOpen : undefined}
-                aria-controls={unlocked ? panelId : undefined}
-                onClick={() => unlocked && onToggleLesson(node.id)}
-                className="group flex w-full items-center gap-4 rounded-2xl p-1 text-left disabled:cursor-not-allowed"
-                aria-label={
-                  artistNote
-                    ? t('map.nodeAriaCredit', { title: node.title, status, credit: artistNote })
-                    : t('map.nodeAria', { title: node.title, status })
-                }
-              >
-                <span className="relative flex h-16 w-16 shrink-0 items-center justify-center">
-                  {isCurrent && motion && <span className="absolute inset-0 animate-ping rounded-full bg-blue-400 opacity-40" aria-hidden />}
-                  <span
-                    className={`relative flex h-16 w-16 items-center justify-center rounded-full border-4 shadow-sm ${
-                      isDone
-                        ? mastery === 'mastered'
-                          ? 'border-violet-200 bg-violet-500 text-white'
-                          : 'border-emerald-200 bg-emerald-500 text-white'
-                        : isCurrent
-                          ? 'border-blue-200 bg-blue-600 text-white ring-4 ring-blue-300'
-                          : unlocked
-                            ? 'border-blue-100 bg-white text-blue-600'
-                            : 'border-slate-200 bg-slate-100 text-slate-400'
-                    }`}
-                  >
-                    {isDone ? (
-                      mastery === 'mastered' ? (
-                        <Crown className="h-7 w-7" aria-hidden />
-                      ) : (
-                        <Check className="h-7 w-7" strokeWidth={3} aria-hidden />
-                      )
-                    ) : unlocked ? (
-                      <Sparkles className="h-7 w-7" aria-hidden />
-                    ) : (
-                      <Lock className="h-6 w-6" aria-hidden />
-                    )}
-                  </span>
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className={`block font-bold ${unlocked ? 'text-slate-900 group-hover:text-blue-700' : 'text-slate-400'}`}>
-                    {node.title}
-                  </span>
-                  <span className={`block text-xs ${unlocked ? 'text-slate-500' : 'text-slate-400'}`}>{node.subtitle}</span>
-                  {node.artists?.length ? <LessonArtistChips artists={node.artists} /> : null}
-                  {mastery !== 'none' && (
-                    <span className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ${MASTERY_CHIP[mastery]}`}>
-                      {masteryLabel(mastery)}
-                    </span>
-                  )}
-                </span>
-                {unlocked ? (
-                  <ChevronDown
-                    className={`map-section-chevron h-5 w-5 shrink-0 text-slate-500 ${lessonOpen ? 'rotate-180' : ''} ${
-                      motion ? 'transition-transform' : ''
-                    }`}
-                    aria-hidden
-                  />
-                ) : null}
-              </button>
-              </h4>
-              {lessonOpen ? (
-                <div id={panelId} role="region" className="mb-3 ml-2 mt-2 sm:ml-20">
-                  <LessonPlayer
-                    lesson={node}
-                    kind="lesson"
-                    presentation="folds"
-                    folds={sections.folds}
-                    onSetFold={onSetFold}
-                    onExit={() => onCloseLesson(node.id)}
-                  />
-                </div>
-              ) : null}
-              {!last && <span className="ml-[2.2rem] block h-8 border-l-4 border-dotted border-slate-300" aria-hidden />}
-            </li>
-          )
-        })}
-      </ol>
-      </div>
-    </MapFold>
   )
 }
 

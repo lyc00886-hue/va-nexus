@@ -7,12 +7,14 @@ import type { FillQuestion, Lesson, MatchQuestion, McqQuestion, Question } from 
 import { getLocale, t } from '../../i18n'
 import { readLines, readPlace, writePlace } from '../../lib/easyReadMode'
 import { postFeldmanFeedback } from '../../lib/feldmanAiRequest'
+import { exerciseIdForQuestion } from '../../game/exerciseLogos'
 import { lessonChunks, nextLessonId, stepChunk } from '../../lib/mapUx'
 import { requestOpenTab } from '../../lib/openTab'
 import { useAiAgeGate } from '../../lib/useAiAgeGate'
 import { MOOD_EMPTY_MAP } from '../../game/softMotion'
 import { useSoftMotion } from '../../lib/useSoftMotion'
 import { AiLearningTipScreen, type AiTipState } from './AiLearningTipScreen'
+import { ExerciseMark } from './ExerciseMark'
 import { LessonCompleteFrame, StepAdvanceMark } from './SoftMotion'
 import { SoftScreen } from './SoftScreen'
 
@@ -515,13 +517,25 @@ function PracticeChunk({
   onChoice: (value: number | string) => void
   onSolved: (correct: boolean) => void
 }) {
-  if (question.type === 'mcq') {
-    return <McqChunk q={question} revealed={revealed} choice={typeof choice === 'number' ? choice : null} onChoice={onChoice} />
-  }
-  if (question.type === 'fill') {
-    return <FillChunk q={question} revealed={revealed} choice={typeof choice === 'string' ? choice : null} onChoice={onChoice} />
-  }
-  return <MatchChunk q={question} onSolved={onSolved} />
+  const mark = exerciseIdForQuestion(question.type)
+  const body =
+    question.type === 'mcq' ? (
+      <McqChunk q={question} revealed={revealed} choice={typeof choice === 'number' ? choice : null} onChoice={onChoice} />
+    ) : question.type === 'fill' ? (
+      <FillChunk q={question} revealed={revealed} choice={typeof choice === 'string' ? choice : null} onChoice={onChoice} />
+    ) : (
+      <MatchChunk q={question} onSolved={onSolved} />
+    )
+  return (
+    <div>
+      {mark ? (
+        <div className="mt-4">
+          <ExerciseMark id={mark} />
+        </div>
+      ) : null}
+      {body}
+    </div>
+  )
 }
 
 function McqChunk({
