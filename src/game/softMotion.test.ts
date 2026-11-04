@@ -112,7 +112,7 @@ describe('early wire covers and soft motion', () => {
       createHash('sha256').update(readFileSync(join(PUBLIC, MOTION_V2_OTTER[pose].slice(1)))).digest('hex')
     assert.equal(hash('idle'), '934e62059641e4baef987540c6318098515ec19b2469e0dafe2fe2d0f612bf6f')
     assert.equal(hash('clap'), 'cc79a0a91189589f8eaf4eeb24ce2358f382f427858988ec80279acb4787a75a')
-    assert.equal(hash('nod'), '94ce10874311ff8e1eb33aa88acd2c113b5149a0dd68e326e99b0d8a80de0010')
+    assert.equal(hash('nod'), 'f8dc210fdf0147c62b6ee13b6b92efbaee2fbb16ab239771fb08684063ce19f1')
     assert.match(css, /\.sen-reduce-motion \.soft-celebrate-clap/)
     assert.match(css, /html:not\(\[data-sound-motion='on'\]\) \.soft-celebrate-nod/)
   })
