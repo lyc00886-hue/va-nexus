@@ -3,8 +3,8 @@
  "stages": [
   {
    "id": "describe",
-   "zh": "描述",
-   "en": "Description",
+   "zh": "字面描述",
+   "en": "Literal Description",
    "goal": "客观说出看到什么，不加判断",
    "frames": [
     "这件作品是一幅以＿＿（媒介）创作的＿＿（类型），尺寸约＿＿。",
@@ -22,8 +22,8 @@
   },
   {
    "id": "analyse",
-   "zh": "分析",
-   "en": "Analysis",
+   "zh": "形式分析",
+   "en": "Formal Analysis",
    "goal": "说明元素和原理如何组织画面",
    "frames": [
     "艺术家以＿＿构图，使视线由＿＿引向＿＿。",
@@ -61,8 +61,8 @@
   },
   {
    "id": "judge",
-   "zh": "评价",
-   "en": "Judgement",
+   "zh": "价值判断",
+   "en": "Value Judgment",
    "goal": "有理据地评价成效，并联系自己的创作",
    "frames": [
     "作品成功地／未能＿＿，因为＿＿。",

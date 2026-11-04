@@ -16,6 +16,8 @@ export const FEEDBACK_ERROR_CODES = [
   'auth_required',
   'auth_down',
   'under18',
+  'rate_limited',
+  'usage_down',
 ] as const
 
 const CODE_SET = new Set<string>(FEEDBACK_ERROR_CODES)

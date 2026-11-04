@@ -29,7 +29,7 @@ const MESSAGES: Record<Locale, Partial<Messages>> = {
 /** BCP-47 tag for <html lang> */
 export const HTML_LANG: Record<Locale, string> = { 'zh-Hant': 'zh-Hant-HK', 'zh-Hans': 'zh-Hans-CN', en: 'en' }
 /** Web Speech voice language */
-export const SPEECH_LANG: Record<Locale, string> = { 'zh-Hant': 'zh-HK', 'zh-Hans': 'zh-CN', en: 'en-US' }
+export const SPEECH_LANG: Record<Locale, string> = { 'zh-Hant': 'zh-HK', 'zh-Hans': 'zh-CN', en: 'en-GB' }
 /** Intl date/number formatting locale */
 export const INTL_LOCALE: Record<Locale, string> = { 'zh-Hant': 'zh-HK', 'zh-Hans': 'zh-CN', en: 'en-HK' }
 /** Short switcher labels */

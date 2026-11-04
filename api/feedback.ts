@@ -15,15 +15,51 @@
 // Error locale: X-VA-Locale (active UI) or Accept-Language before the body is
 // read. After JSON parses, body.locale wins, then that header, then zh-Hant.
 
+import { createHash } from 'node:crypto'
 import type { SupabaseClient } from '@supabase/supabase-js'
 
 type Stage = 'describe' | 'analyze' | 'interpret' | 'judge'
 
+/**
+ * Public senior-secondary criticism names for the four Feldman steps.
+ * Wording is the published move (literal / formal / interpretation / value),
+ * not a mark scheme, examiner report, or candidate script.
+ */
+const DSE_MOVE: Record<Stage, { en: string; zhHant: string; zhHans: string; focus: string }> = {
+  describe: {
+    en: 'Literal Description',
+    zhHant: '字面描述',
+    zhHans: '字面描述',
+    focus:
+      'Focus on observable facts only: subject matter, medium, colour, line, shape, texture, and where things sit. No interpretation and no value judgment yet.',
+  },
+  analyze: {
+    en: 'Formal Analysis',
+    zhHant: '形式分析',
+    zhHans: '形式分析',
+    focus:
+      'Focus on formal elements and how they are organised: composition, colour relationships, line, texture, contrast, balance, rhythm, and space. No value judgment yet.',
+  },
+  interpret: {
+    en: 'Interpretation',
+    zhHant: '詮釋',
+    zhHans: '诠释',
+    focus: 'Focus on meaning, mood, and context, tied only to visual evidence the student already wrote.',
+  },
+  judge: {
+    en: 'Value Judgment',
+    zhHant: '價值判斷',
+    zhHans: '价值判断',
+    focus:
+      'Focus on a reasoned value judgment with criteria the student can point to, and on what they might try in their own work.',
+  },
+}
+
 const STAGE_HINT: Record<Stage, string> = {
-  describe: 'Focus on observable facts only (what you see). No interpretation yet.',
-  analyze: 'Focus on formal elements and relationships (composition, colour, line, texture, space).',
-  interpret: 'Focus on meaning, mood, context, and possible messages.',
-  judge: 'Focus on evaluation with clear criteria and reasoned judgment.',
+  describe: DSE_MOVE.describe.focus,
+  analyze: DSE_MOVE.analyze.focus,
+  interpret: DSE_MOVE.interpret.focus,
+  judge: DSE_MOVE.judge.focus,
 }
 
 type Locale = 'zh-Hant' | 'zh-Hans' | 'en'
@@ -42,6 +78,8 @@ const ERR: Record<
     authRequired: string
     authDown: string
     under18: string
+    rateLimited: string
+    usageDown: string
   }
 > = {
   'zh-Hant': {
@@ -56,6 +94,8 @@ const ERR: Record<
     authRequired: '請先登入 Google 帳戶先可以使用 AI 回饋。',
     authDown: '暫時未能核實登入狀態，請稍後再試。',
     under18: 'AI 回饋只開放畀已核實 18 歲或以上嘅用戶。寫作框架、檢查清單同術語助推仍然可以用。',
+    rateLimited: '今個鐘嘅 AI 回饋次數用完咗，請大約一個鐘後再試。',
+    usageDown: '暫時未能核對用量，請稍後再試。',
   },
   'zh-Hans': {
     method: '只接受 POST',
@@ -69,6 +109,8 @@ const ERR: Record<
     authRequired: '请先登录 Google 账户才可以使用 AI 反馈。',
     authDown: '暂时未能核实登录状态，请稍后再试。',
     under18: 'AI 反馈只对已核实 18 岁或以上的用户开放。写作框架、检查清单和术语助推仍然可用。',
+    rateLimited: '这个小时的 AI 反馈次数已经用完，请大约一小时后再试。',
+    usageDown: '暂时未能核对用量，请稍后再试。',
   },
   en: {
     method: 'POST only',
@@ -82,6 +124,8 @@ const ERR: Record<
     authRequired: 'Sign in with Google to use AI feedback.',
     authDown: 'Could not verify sign-in just now. Try again shortly.',
     under18: 'AI feedback is only available to verified users aged 18 or over. Writing frames, checklists and the vocab booster still work.',
+    rateLimited: 'You have used this hour’s AI feedback. Please try again in about an hour.',
+    usageDown: 'Could not check your usage just now. Please try again shortly.',
   },
 }
 
@@ -131,6 +175,8 @@ export const FEEDBACK_ERROR_CODES = [
   'auth_required',
   'auth_down',
   'under18',
+  'rate_limited',
+  'usage_down',
 ] as const
 
 export type FeedbackErrorCode = (typeof FEEDBACK_ERROR_CODES)[number]
@@ -147,6 +193,8 @@ const ERR_KEY: Record<FeedbackErrorCode, keyof (typeof ERR)[Locale]> = {
   auth_required: 'authRequired',
   auth_down: 'authDown',
   under18: 'under18',
+  rate_limited: 'rateLimited',
+  usage_down: 'usageDown',
 }
 
 export function feedbackErrorText(locale: Locale, code: FeedbackErrorCode): string {
@@ -164,7 +212,9 @@ function json(status: number, body: unknown): Response {
 }
 
 function fail(status: number, locale: Locale, code: FeedbackErrorCode): Response {
-  return json(status, { error: feedbackErrorText(locale, code), code })
+  const response = json(status, { error: feedbackErrorText(locale, code), code })
+  if (code === 'rate_limited') response.headers.set('Retry-After', '3600')
+  return response
 }
 
 function bearerToken(request: Request): string | null {
@@ -413,9 +463,13 @@ export function formativeLockLine(): string {
 }
 
 export function feldmanSystemPrompt(stage: Stage, locale: Locale): string {
+  const move = DSE_MOVE[stage]
+  const zh = locale === 'zh-Hans' ? move.zhHans : move.zhHant
   return [
-    'You are a supportive Visual Arts teacher giving Feldman-method writing feedback.',
-    STAGE_HINT[stage],
+    'You are a supportive Visual Arts teacher giving Feldman-method writing feedback for senior secondary visual arts.',
+    `This step is the public criticism move ${move.en} / ${zh}.`,
+    move.focus,
+    'Use these public step names only. Do not quote a mark scheme, examiner report, candidate script, or private assessment file.',
     languageLine(locale),
     'Be concise (3–6 short sentences). Praise one strength, then give 1–2 concrete next steps.',
     'Do not invent artwork details the student did not write. Never ask for or mention age or birth year.',
@@ -515,6 +569,185 @@ export function sbaFeedbackResponse(feedback: string): { feedback: string; ai_ma
   return { feedback, ai_marks: false }
 }
 
+/** Successful Gemini calls per user in a rolling hour. Cache hits do not count. */
+export const AI_CALLS_PER_HOUR = 20
+/** Identical stage/mode + locale + content hash is reused inside this window. */
+export const AI_CACHE_TTL_MS = 20 * 60 * 1000
+export const AI_RATE_WINDOW_MS = 60 * 60 * 1000
+/** Matches the feedback column check in the cache migration. */
+export const AI_FEEDBACK_STORE_MAX = 8000
+
+const AI_CACHE_TABLE = 'ai_feedback_cache'
+
+export type FeedbackUsageMode = 'feldman' | 'sba'
+
+export type FeedbackUsageIdentity = {
+  userId: string
+  mode: FeedbackUsageMode
+  stage: string
+  locale: Locale
+  contentHash: string
+}
+
+export type FeedbackUsageStore = {
+  recentSuccessCount(userId: string, sinceMs: number): Promise<number>
+  freshFeedback(identity: FeedbackUsageIdentity, sinceMs: number): Promise<string | null>
+  recordSuccess(identity: FeedbackUsageIdentity, feedback: string): Promise<void>
+}
+
+export type CachedFeedbackResult =
+  | { ok: true; feedback: string; cache: 'hit' | 'miss' }
+  | { ok: false; reason: 'rate_limited' | 'store' }
+  | { ok: false; reason: 'gemini'; quota: boolean }
+
+/** Trim and collapse whitespace. Case and punctuation stay, so different sentences do not collide. */
+export function normalizeFeedbackText(text: string): string {
+  return text.normalize('NFC').replace(/\s+/g, ' ').trim()
+}
+
+export type FeedbackHashParts = {
+  text: string
+  artwork?: string | null
+  step?: string | null
+  photoCount?: number | null
+}
+
+/** SHA-256 of normalized text plus step metadata. The raw text is not returned or stored. */
+export function feedbackContentHash(parts: FeedbackHashParts): string {
+  const canonical = [
+    normalizeFeedbackText(parts.text),
+    normalizeFeedbackText(parts.artwork ?? ''),
+    normalizeFeedbackText(parts.step ?? ''),
+    String(parts.photoCount ?? 0),
+  ].join('\n')
+  return createHash('sha256').update(canonical, 'utf8').digest('hex')
+}
+
+function feedbackForStore(text: string): string {
+  return text
+    .replace(/data:image\/[a-zA-Z0-9.+-]+;base64,[a-zA-Z0-9+/=]+/gi, '[image omitted]')
+    .trim()
+    .slice(0, AI_FEEDBACK_STORE_MAX)
+}
+
+export async function takeCachedOrLimited(input: {
+  identity: FeedbackUsageIdentity
+  nowMs: number
+  store: FeedbackUsageStore
+  limit?: number
+  ttlMs?: number
+  windowMs?: number
+  generate: () => Promise<GeminiResult>
+}): Promise<CachedFeedbackResult> {
+  const limit = input.limit ?? AI_CALLS_PER_HOUR
+  const ttlMs = input.ttlMs ?? AI_CACHE_TTL_MS
+  const windowMs = input.windowMs ?? AI_RATE_WINDOW_MS
+
+  let cached: string | null = null
+  try {
+    cached = await input.store.freshFeedback(input.identity, input.nowMs - ttlMs)
+  } catch {
+    cached = null
+  }
+  if (cached && cached.trim()) {
+    return { ok: true, feedback: feedbackForStore(cached), cache: 'hit' }
+  }
+
+  let count: number
+  try {
+    count = await input.store.recentSuccessCount(input.identity.userId, input.nowMs - windowMs)
+  } catch {
+    return { ok: false, reason: 'store' }
+  }
+  if (!Number.isFinite(count) || count >= limit) {
+    return { ok: false, reason: 'rate_limited' }
+  }
+
+  const generated = await input.generate()
+  if (!generated.ok) return { ok: false, reason: 'gemini', quota: generated.quota }
+  const feedback = feedbackForStore(generated.feedback)
+  if (!feedback) return { ok: false, reason: 'gemini', quota: false }
+  try {
+    await input.store.recordSuccess(input.identity, feedback)
+  } catch {
+    console.error(JSON.stringify({ message: 'ai_feedback_cache insert failed' }))
+  }
+  return { ok: true, feedback, cache: 'miss' }
+}
+
+export function supabaseFeedbackUsageStore(supabase: SupabaseClient): FeedbackUsageStore {
+  return {
+    async recentSuccessCount(userId, sinceMs) {
+      const { count, error } = await supabase
+        .from(AI_CACHE_TABLE)
+        .select('id', { count: 'exact', head: true })
+        .eq('user_id', userId)
+        .gte('created_at', new Date(sinceMs).toISOString())
+      if (error) throw error
+      return count ?? 0
+    },
+    async freshFeedback(identity, sinceMs) {
+      const { data, error } = await supabase
+        .from(AI_CACHE_TABLE)
+        .select('feedback')
+        .eq('user_id', identity.userId)
+        .eq('mode', identity.mode)
+        .eq('stage', identity.stage)
+        .eq('locale', identity.locale)
+        .eq('content_hash', identity.contentHash)
+        .gte('created_at', new Date(sinceMs).toISOString())
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+      if (error) throw error
+      return typeof data?.feedback === 'string' ? data.feedback : null
+    },
+    async recordSuccess(identity, feedback) {
+      const { error } = await supabase.from(AI_CACHE_TABLE).insert({
+        user_id: identity.userId,
+        mode: identity.mode,
+        stage: identity.stage,
+        locale: identity.locale,
+        content_hash: identity.contentHash,
+        feedback,
+      })
+      if (error) throw error
+    },
+  }
+}
+
+let usageStoreFactory: (supabase: SupabaseClient) => FeedbackUsageStore = supabaseFeedbackUsageStore
+
+/** Tests inject a store. Production uses the Supabase table. */
+export function setFeedbackUsageStoreForTests(
+  factory: ((supabase: SupabaseClient) => FeedbackUsageStore) | null,
+): void {
+  usageStoreFactory = factory ?? supabaseFeedbackUsageStore
+}
+
+async function respondWithUsage(
+  supabase: SupabaseClient,
+  userId: string,
+  identity: Omit<FeedbackUsageIdentity, 'userId'>,
+  locale: Locale,
+  generate: () => Promise<GeminiResult>,
+  bodyOf: (feedback: string) => unknown,
+): Promise<Response> {
+  const outcome = await takeCachedOrLimited({
+    identity: { ...identity, userId },
+    nowMs: Date.now(),
+    store: usageStoreFactory(supabase),
+    generate,
+  })
+  if (!outcome.ok) {
+    if (outcome.reason === 'rate_limited') return fail(429, locale, 'rate_limited')
+    if (outcome.reason === 'store') return fail(503, locale, 'usage_down')
+    if (outcome.reason === 'gemini' && outcome.quota) return fail(503, locale, 'gemini_quota')
+    return fail(502, locale, 'gemini_upstream')
+  }
+  return json(200, bodyOf(outcome.feedback))
+}
+
 function feedbackText(payload: unknown): string {
   if (!payload || typeof payload !== 'object') return ''
   const candidates = (payload as { candidates?: unknown }).candidates
@@ -592,7 +825,12 @@ export async function geminiFeedback(apiKey: string, system: string, userText: s
   return { ok: false, quota: sawHighDemand }
 }
 
-async function handleSbaFormative(body: FeedbackBody, locale: Locale): Promise<Response> {
+async function handleSbaFormative(
+  supabase: SupabaseClient,
+  userId: string,
+  body: FeedbackBody,
+  locale: Locale,
+): Promise<Response> {
   const plan = planSbaFormative(body, locale)
   if (!plan.ok) {
     if (plan.reason === 'tooLong') return fail(400, locale, 'too_long')
@@ -601,12 +839,24 @@ async function handleSbaFormative(body: FeedbackBody, locale: Locale): Promise<R
   }
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) return fail(503, locale, 'no_key')
-  const result = await geminiFeedback(apiKey, plan.system, plan.user)
-  if (result.ok) return json(200, sbaFeedbackResponse(result.feedback))
-  if (result.quota) return fail(503, locale, 'gemini_quota')
+  const text = typeof body.text === 'string' ? body.text : ''
+  const step = typeof body.step === 'string' ? body.step : ''
+  const photoCount = typeof body.photoCount === 'number' ? body.photoCount : 0
   // AbortSignal timeout and other model failures share `gemini` (no separate timeout sentence).
   // TODO(PEANUTS): short ERR.timeout in zh-Hant / zh-Hans / en if DICK wants timeout split from model unavailable.
-  return fail(502, locale, 'gemini_upstream')
+  return respondWithUsage(
+    supabase,
+    userId,
+    {
+      mode: 'sba',
+      stage: '',
+      locale,
+      contentHash: feedbackContentHash({ text, step, photoCount }),
+    },
+    locale,
+    () => geminiFeedback(apiKey, plan.system, plan.user),
+    sbaFeedbackResponse,
+  )
 }
 
 async function handleFeedback(request: Request): Promise<Response> {
@@ -635,7 +885,7 @@ async function handleFeedback(request: Request): Promise<Response> {
   if (!parsed.ok) return parsed.response
   const body = parsed.body
 
-  if (body.mode === 'sba') return handleSbaFormative(body, locale)
+  if (body.mode === 'sba') return handleSbaFormative(session.supabase, session.userId, body, locale)
 
   const stageRaw = body.stage
   if (typeof stageRaw !== 'string' || !(stageRaw in STAGE_HINT)) return fail(400, locale, 'stage')
@@ -662,11 +912,20 @@ async function handleFeedback(request: Request): Promise<Response> {
     .filter(Boolean)
     .join('\n\n')
 
-  const result = await geminiFeedback(apiKey, system, userParts)
-  if (result.ok) return json(200, { feedback: result.feedback })
-  if (result.quota) return fail(503, locale, 'gemini_quota')
   // Same student string as SBA: timeout and model unavailable share `gemini`.
-  return fail(502, locale, 'gemini_upstream')
+  return respondWithUsage(
+    session.supabase,
+    session.userId,
+    {
+      mode: 'feldman',
+      stage,
+      locale,
+      contentHash: feedbackContentHash({ text, artwork }),
+    },
+    locale,
+    () => geminiFeedback(apiKey, system, userParts),
+    (feedback) => ({ feedback }),
+  )
 }
 
 export default {
