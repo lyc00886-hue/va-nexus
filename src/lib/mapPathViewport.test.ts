@@ -96,6 +96,6 @@ describe('soft v3 map chrome', () => {
     assert.match(motion, /data-otter-celebrate/)
     assert.match(celebrate, /mood-lessonComplete/)
     const player = readFileSync(join(root, 'src/components/game/LessonPlayer.tsx'), 'utf8')
-    assert.match(player, /presentation !== 'folds' && state\.prefs\.hearts/)
+    assert.equal(/HeartOff|lp\.hearts|prefs\.hearts|<Heart[\s/>]/.test(player), false)
   })
 })

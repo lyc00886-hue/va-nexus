@@ -2,8 +2,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
-  Heart,
-  HeartOff,
   Pause,
   RotateCcw,
   Trophy,
@@ -54,7 +52,6 @@ import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
 
 const IDLE_MS = 90_000
-const MAX_HEARTS = 5
 
 const FOLD_COPY: Record<LessonFoldId, { title: 'map.lesson.goal' | 'map.lesson.steps' | 'map.lesson.practice'; hint: 'map.lesson.goalHint' | 'map.lesson.stepsHint' | 'map.lesson.practiceHint' }> = {
   goal: { title: 'map.lesson.goal', hint: 'map.lesson.goalHint' },
@@ -106,10 +103,9 @@ export function LessonPlayer({
   folds?: LessonFoldOpen
   onSetFold?: (id: LessonFoldId, open: boolean) => void
 }) {
-  const { settings, easyRead, supportsOn, focusTunnel } = useSen()
+  const { settings, easyRead, focusTunnel } = useSen()
   const { state, finishLesson, awardOnce } = useGame()
   const { reportSignal } = useSenSupport()
-  const heartsOn = presentation !== 'folds' && state.prefs.hearts && !supportsOn
   const motion = !settings.reduceMotion
   const playSoft = softMotionPlay({ soundMotion: settings.soundMotion, reduceMotion: settings.reduceMotion })
 
@@ -119,7 +115,6 @@ export function LessonPlayer({
   const [firstTry, setFirstTry] = useState<Record<string, boolean>>({})
   const [wrongByType, setWrongByType] = useState<Partial<Record<QuestionType, number>>>({})
   const [feedback, setFeedback] = useState<Feedback>(null)
-  const [hearts, setHearts] = useState(MAX_HEARTS)
   const [attemptSeed, setAttemptSeed] = useState(1)
   const [outcome, setOutcome] = useState<FinishOutcome | null>(null)
   const [result, setResult] = useState<SessionResult | null>(null)
@@ -168,7 +163,6 @@ export function LessonPlayer({
     if (!correct) {
       setWrongByType((w) => ({ ...w, [question.type]: (w[question.type] ?? 0) + 1 }))
       reportSignal({ kind: 'wrong', qtype: question.type })
-      if (heartsOn) setHearts((h) => Math.max(0, h - 1))
     }
   }
 
@@ -183,10 +177,6 @@ export function LessonPlayer({
       return
     }
     setQueue(nq)
-    if (heartsOn && hearts === 0) {
-      setPhase('rest')
-      openFold('practice')
-    }
   }
 
   function finish() {
@@ -222,7 +212,6 @@ export function LessonPlayer({
     setFirstTry({})
     setWrongByType({})
     setFeedback(null)
-    setHearts(MAX_HEARTS)
     setOutcome(null)
     setResult(null)
     setChestKey(null)
@@ -293,13 +282,11 @@ export function LessonPlayer({
   const restStage = (
     <RestStage
       onReview={() => {
-        setHearts(MAX_HEARTS)
         setCardIdx(0)
         setPhase('cards')
         openFold('steps')
       }}
       onContinue={() => {
-        setHearts(MAX_HEARTS)
         setPhase('quiz')
         openFold('practice')
       }}
@@ -414,18 +401,6 @@ export function LessonPlayer({
             style={{ width: `${progress}%` }}
           />
         </div>
-        {heartsOn ? (
-          <span className="inline-flex items-center gap-1 text-sm font-bold text-rose-500" aria-label={t('lp.hearts', { n: hearts })}>
-            <Heart className="h-5 w-5 fill-rose-500" aria-hidden /> {hearts}
-          </span>
-        ) : (
-          <span
-            className="inline-flex items-center gap-1 text-xs text-slate-400"
-            title={supportsOn ? t('lp.heartsOffSupport') : t('lp.heartsOff')}
-          >
-            <HeartOff className="h-4 w-4" aria-hidden /> {t('lp.unlimited')}
-          </span>
-        )}
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
