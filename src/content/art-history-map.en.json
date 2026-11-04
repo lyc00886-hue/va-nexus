@@ -4,6 +4,8 @@
       "id": "U1-CN-MODERN",
       "title": "Modern Chinese Art: Finding New Paths",
       "intro": "In the early 20th century, facing the impact of Western art, Chinese painters tried different ways to 'modernise' Chinese painting.",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U1-CN-MODERN.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U1-L1",
@@ -354,6 +356,8 @@
       "id": "U2-HK-IDENTITY",
       "title": "Hong Kong Art and Identity",
       "intro": "From New Ink to contemporary practice, Hong Kong artists respond to the city, identity and collecting spaces—aligned with CCCKLC F.6 themes and museum visits (HK Palace Museum, Xubaizhai).",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U2-HK-IDENTITY.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U2-L1",
@@ -622,6 +626,8 @@
       "id": "U3-WEST-MODERN",
       "title": "Introduction to Western Modernism",
       "intro": "From Impressionism to abstraction, then a bridge to postmodern identity, Cindy Sherman and the YBA—matching CCCKLC needs.",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U3-WEST-MODERN.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U3-L1",
@@ -898,6 +904,8 @@
       "id": "U4-CN-CONTEMP",
       "title": "Contemporary Chinese Art",
       "intro": "Bridge from Xu Beihong and Qi Baishi into Xu Bing, Political Pop, installation/performance and video—aligned with F.5 Art Talk and global contemporary views.",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U4-CN-CONTEMP.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U4-L1",
@@ -1173,6 +1181,8 @@
       "id": "U5-COMPARE",
       "title": "East–West Comparative Perspectives",
       "intro": "Practise cross-cultural comparison: symbols, role-taking, and how YBA/American contemporary relate to Chinese art—per F.6. Full Ming–Qing survey is U6 backlog.",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U5-COMPARE.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U5-L1",
@@ -1442,6 +1452,8 @@
       "id": "U6-MQ-WUMEN",
       "title": "Ming–Qing Art (1): The Wu School",
       "intro": "Elective unit. Meet the Ming literati painters of Suzhou, Shen Zhou and Wen Zhengming, and learn to read handscrolls, inscriptions and seals. Matches F.6 Contextual Studies 'Ming–Qing art 1: Shen Zhou, Wen Zhengming'. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U6-MQ-WUMEN.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U6-L1",
@@ -1715,6 +1727,8 @@
       "id": "U7-SELF-HERITAGE",
       "title": "Self, Chinese Tradition and Society",
       "intro": "Elective unit. Through Tang Yin, Chen Chun, Xu Wei, Bada Shanren, Chen Hongshou and Wu Bin, see how artists used painting to express the self and respond to society. Links to DSE work 1 (ink + mixed media, life-size 2D). F.6 theme: How Society and traditional Chinese Heritage influence ordinary life. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U7-SELF-HERITAGE.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U7-L1",
@@ -2056,6 +2070,8 @@
       "id": "U8-CN-SYMBOLS",
       "title": "Traditional Chinese Symbols: Colour, Pattern and Painting",
       "intro": "Elective unit. Learn traditional Chinese colours, auspicious patterns, the Four Monks and the Four Wangs, then see how contemporary artists borrow these symbols. Matches F.6 'Sign and symbol in traditional Chinese Heritage' and 'Ming–Qing art 2: literati painting, Four Monks, Four Wangs'. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U8-CN-SYMBOLS.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U8-L1",
@@ -2406,6 +2422,8 @@
       "id": "U9-ROLE-TAKING",
       "title": "Role-taking: Re-presenting Someone in a Chinese Context",
       "intro": "Elective unit. From Cindy Sherman's role-play to the figures and self-images of the Yangzhou Eccentrics, Xu Beihong and Qi Baishi, learn to 're-present someone in a Chinese context'. Links to DSE work 2 (dry/wet media drawing and painting). Matches F.6 Role taking (Part 3) and 'Ming–Qing art: Yangzhou Eccentrics, Xu Beihong, Qi Baishi'. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U9-ROLE-TAKING.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U9-L1",
@@ -2754,6 +2772,8 @@
       "id": "U10-YBA-CN",
       "title": "British YBAs and Contemporary Art: Connecting with Chinese Art",
       "intro": "Elective unit. Meet the 1990s Young British Artists (YBAs), then compare them with Chinese and Hong Kong contemporary artists. Matches F.6 Contextual Studies 'British YBA Art' and 'how YBA, American art relate to Chinese Art'. All works here are contemporary, so there are no images — only text descriptions and official museum links. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U10-YBA-CN.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U10-L1",
@@ -3030,6 +3050,8 @@
       "id": "U11-EXHIBIT-REVIEW",
       "title": "Exhibition Visits and Self-Review",
       "intro": "Elective unit. Prepare for visits to the Hong Kong Palace Museum and the Xubaizhai Gallery at the Hong Kong Museum of Art, learn how to look at an exhibition, then review your own portfolio and give peer feedback. Matches F.6 Weeks 27–28: Exhibition Visit, Self Review/Evaluation/Portfolio, Peer review. (Content pending teacher review)",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U11-EXHIBIT-REVIEW.png",
+      "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "U11-L1",

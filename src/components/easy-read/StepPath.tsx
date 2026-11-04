@@ -106,10 +106,7 @@ export function StepMap() {
           </button>
         ))}
       </div>
-      <p className="text-sm font-semibold text-teal-800">
-        <span className="mr-2 rounded-full bg-teal-700 px-2 py-0.5 text-xs font-bold text-white">{t('er.mode.badge')}</span>
-        {t('er.lesson.oneTask')}
-      </p>
+      <p className="text-sm font-semibold text-teal-800">{t('er.lesson.oneTask')}</p>
       {empty ? (
         <EasyReadEmpty kind={empty} />
       ) : current ? (

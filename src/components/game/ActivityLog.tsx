@@ -1,6 +1,7 @@
 import { Award, BookOpen, Flame, FolderOpen, PenLine, Search, TrendingUp } from 'lucide-react'
 import { useGame } from '../../context/GameContext'
 import type { ActivityEntry } from '../../game/types'
+import { MOOD_EMPTY_MAP } from '../../game/softMotion'
 import { t } from '../../i18n'
 
 const ICONS: Record<ActivityEntry['kind'], typeof Award> = {
@@ -29,16 +30,16 @@ export function ActivityLog({ limit = 6 }: { limit?: number }) {
     <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
       <h3 className="text-sm font-bold text-slate-900">{t('activity.recent')}</h3>
       {items.length === 0 ? (
-        <div className="mt-3 flex flex-col items-center gap-2 py-4 text-center">
+        <div className="mt-3 flex flex-col items-center gap-3 rounded-3xl bg-[#FFF9E9] px-4 py-6 text-center">
           <img
-            src="/o2-otter.png"
+            src={MOOD_EMPTY_MAP}
             alt=""
-            width={96}
-            height={96}
-            className="h-24 w-24 object-contain"
+            width={1152}
+            height={864}
+            className="w-full max-w-xs rounded-3xl object-contain"
             decoding="async"
           />
-          <p className="text-sm text-slate-500">{t('activity.empty')}</p>
+          <p className="text-sm font-semibold text-slate-700">{t('activity.empty')}</p>
         </div>
       ) : (
         <ul className="mt-3 space-y-3">

@@ -10,15 +10,17 @@ import { postFeldmanFeedback } from '../../lib/feldmanAiRequest'
 import { lessonChunks, nextLessonId, stepChunk } from '../../lib/mapUx'
 import { requestOpenTab } from '../../lib/openTab'
 import { useAiAgeGate } from '../../lib/useAiAgeGate'
+import { MOOD_EMPTY_MAP } from '../../game/softMotion'
+import { useSoftMotion } from '../../lib/useSoftMotion'
 import { AiLearningTipScreen, type AiTipState } from './AiLearningTipScreen'
-import { OtterPose } from './OtterPose'
+import { LessonCompleteFrame, StepAdvanceMark } from './SoftMotion'
 import { SoftScreen } from './SoftScreen'
 
 const AI_IDLE: AiTipState = { status: 'idle', text: '' }
 
 /**
  * One lesson, one chunk, one primary action.
- * Otter pose is a static stub — otter-complete motion is not wired.
+ * Lesson-complete motion stays off until the gear sound-and-motion switch is on.
  */
 export function MapOneLesson({
   lesson,
@@ -63,7 +65,17 @@ export function MapOneLesson({
   const [ai, setAi] = useState<AiTipState>(AI_IDLE)
   const finished = useRef(false)
   const motion = !settings.reduceMotion
+  const playSoft = useSoftMotion()
+  const stepCursor = useRef({ id: lesson.id, index })
+  const [stepMark, setStepMark] = useState(0)
   const backLabel = exitLabel ?? (step ? t('er.map.back') : t('empty.nextLesson.cta'))
+
+  useEffect(() => {
+    const before = stepCursor.current
+    stepCursor.current = { id: lesson.id, index }
+    if (!step || before.id !== lesson.id || index <= before.index) return
+    setStepMark((n) => n + 1)
+  }, [lesson.id, index, step])
 
   const curriculumNext = nextLessonId(getUnits(), lesson.id)
   const nextId = following ? following.id : curriculumNext
@@ -183,13 +195,18 @@ export function MapOneLesson({
   if (chunks.length === 0 || !chunk) {
     return (
       <SoftScreen marker="map-empty">
-        <Back onClick={onExit} label={backLabel} />
-        <h2 className="text-2xl font-bold text-slate-900">{lesson.title}</h2>
-        {step ? (
-          <img src="/mascot-otter-empty.png" alt="" width={128} height={128} className="mx-auto h-28 w-28 object-contain" decoding="async" />
-        ) : null}
-        <p className="text-base font-semibold text-slate-800">{t('empty.noContent')}</p>
+        <img
+          src={MOOD_EMPTY_MAP}
+          alt=""
+          width={1152}
+          height={864}
+          className="mx-auto w-full max-w-md rounded-3xl object-contain"
+          decoding="async"
+        />
+        <h2 className="text-center text-2xl font-bold text-slate-900">{lesson.title}</h2>
+        <p className="text-center text-base font-semibold text-slate-800">{t('empty.noContent')}</p>
         <Primary tall={step} onClick={() => requestOpenTab('research')}>{t('empty.noContent.cta')}</Primary>
+        <Back onClick={onExit} label={backLabel} />
       </SoftScreen>
     )
   }
@@ -197,33 +214,17 @@ export function MapOneLesson({
   if (view === 'celebrate') {
     return (
       <SoftScreen marker="map-celebrate">
-        <Back onClick={onExit} label={backLabel} />
-        <div data-map-celebrate className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
-          {step ? (
-            <OtterPose
-              pose="complete"
-              label={t('celebrate.soft')}
-              reduceMotion={!motion}
-              enter="celebrate"
-              testId="easy-read-celebrate"
-            />
-          ) : (
-            <img
-              src="/o2-otter.png"
-              alt=""
-              width={96}
-              height={96}
-              data-otter="stub"
-              className="h-20 w-20 object-contain"
-              decoding="async"
-            />
-          )}
+        <div data-map-celebrate className="flex flex-1 flex-col items-center justify-center gap-4 py-4 text-center">
+          <LessonCompleteFrame play={playSoft} />
           <h2 className="text-2xl font-bold text-slate-900">{t('celebrate.soft')}</h2>
           <p className="text-base text-slate-700">{t('celebrate.soft.sub')}</p>
           {step ? <p className="text-base font-bold text-[#0D9488]">{t('mascot.chest.reward')}</p> : null}
         </div>
         {nextOpen && nextId ? (
-          <Primary tall={step} onClick={() => onOpenLesson(nextId)}>{t('celebrate.soft.cta')}</Primary>
+          <>
+            <Primary tall={step} onClick={() => onOpenLesson(nextId)}>{t('celebrate.soft.cta')}</Primary>
+            <Back onClick={onExit} label={backLabel} />
+          </>
         ) : (
           <>
             <p className="text-center text-base font-semibold text-slate-800">{t('empty.nextLesson')}</p>
@@ -273,10 +274,7 @@ export function MapOneLesson({
       {step ? (
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="text-sm font-semibold text-teal-800">
-            <p>
-              <span className="mr-2 rounded-full bg-teal-700 px-2 py-0.5 text-xs font-bold text-white">{t('er.mode.badge')}</span>
-              {t('er.lesson.oneTask')}
-            </p>
+            <p>{t('er.lesson.oneTask')}</p>
             <p>{t('er.progress.left', { n: Math.max(0, chunks.length - index - 1) })}</p>
           </div>
           <ListenButton text={chunkText(lesson, chunk, easyRead)} />
@@ -295,7 +293,7 @@ export function MapOneLesson({
                 aria-current={tick === index ? 'step' : undefined}
                 className={`flex h-11 w-11 items-center justify-center rounded-full text-sm font-bold ${
                   tick < index ? 'bg-teal-700 text-white' : tick === index ? 'bg-[#FFF9E9] text-teal-950 ring-2 ring-teal-700' : 'bg-slate-100 text-slate-500'
-                }`}
+                } ${tick === index && playSoft && stepMark > 0 ? 'soft-step-cell' : ''}`}
               >
                 {tick < index ? '✓' : tick + 1}
               </span>
@@ -304,6 +302,7 @@ export function MapOneLesson({
         </ol>
       ) : null}
 
+      {step ? <StepAdvanceMark play={playSoft} tick={stepMark} /> : null}
       <div key={`${lesson.id}-${index}`} className={`flex-1 ${motion ? 'map-one-in' : ''}`}>
         <h2 className="text-2xl font-bold text-slate-900">{lesson.title}</h2>
         {step && practice && !revealed && practice.type !== 'match' ? (
@@ -365,8 +364,16 @@ export function MapOneCard({ onOpen }: { onOpen: (id: string) => void }) {
 
   if (!lesson || !unit) {
     return (
-      <div data-map-empty="next" className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
+      <div data-map-empty="next" className="rounded-3xl border border-teal-100 bg-[#FFF9E9] px-6 py-8 text-center">
+        <img
+          src={MOOD_EMPTY_MAP}
+          alt=""
+          width={1152}
+          height={864}
+          className="mx-auto w-full max-w-sm rounded-3xl object-contain"
+          decoding="async"
+        />
+        <h2 className="mt-4 text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
         <p className="mt-3 text-base font-semibold text-slate-800">{t('empty.nextLesson')}</p>
       </div>
     )
@@ -386,7 +393,25 @@ export function MapOneCard({ onOpen }: { onOpen: (id: string) => void }) {
         className="w-full overflow-hidden rounded-3xl border border-slate-200 bg-white text-left shadow-sm hover:border-teal-300"
       >
         {unit.coverImage ? (
-          <img src={unit.coverImage} alt="" className="h-40 w-full object-cover" decoding="async" />
+          <span className="relative block">
+            <img
+              src={unit.coverImage}
+              alt=""
+              width={1280}
+              height={720}
+              className={
+                unit.coverImage.includes('/map-covers/')
+                  ? 'aspect-video w-full object-cover object-center'
+                  : 'h-40 w-full object-cover object-center'
+              }
+              decoding="async"
+            />
+            {unit.coverImage.includes('/map-covers/') ? (
+              <span className="pointer-events-none absolute inset-x-[6%] top-[7%] flex h-[27%] items-center justify-center px-1 text-center text-sm font-bold leading-tight text-[#164e4c]">
+                {unit.title}
+              </span>
+            ) : null}
+          </span>
         ) : null}
         <span className="block p-5">
           <span className="block text-lg font-bold text-slate-900">{lesson.title}</span>
@@ -425,7 +450,7 @@ function Back({ onClick, label }: { onClick: () => void; label: string }) {
       type="button"
       data-map-back
       onClick={onClick}
-      className="inline-flex min-h-11 shrink-0 items-center text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
+      className="inline-flex min-h-11 shrink-0 items-center self-center text-sm font-semibold text-slate-500 underline-offset-2 hover:underline"
     >
       {label}
     </button>
