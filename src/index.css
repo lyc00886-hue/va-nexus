@@ -374,6 +374,25 @@ html {
   animation: none !important;
 }
 
+/* Map presence: one frame element. Pose changes replace its src. No opacity crossfade. */
+.soft-map-otter,
+.soft-map-otter img {
+  transition: none;
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .soft-map-otter,
+  .soft-map-otter img {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+.sen-reduce-motion .soft-map-otter,
+.sen-reduce-motion .soft-map-otter img {
+  animation: none !important;
+  transition: none !important;
+}
+
 /* Library browser: sticky search chip while the list is collapsed.
    Desktop side list sticks under the measured header (--library-sticky-top). */
 .library-browser-sticky {
