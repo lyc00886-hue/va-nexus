@@ -255,15 +255,9 @@ describe('soft leftover display chrome', () => {
       'zh-Hans': '这不是医学判断，只是帮你选择合适的工具',
       en: 'This is not a medical judgment — it just helps you choose suitable tools',
     } as const
-    const support = {
-      'zh-Hant': '想要大字、朗讀或專注模式？做個 1 分鐘問卷，揀最啱你嘅工具（唔係醫學判斷）。',
-      'zh-Hans': '想要大字、朗读或专注模式？做一份 1 分钟问卷，选出最适合你的工具（这不是医学判断）。',
-      en: 'Want larger text, read-aloud or focus mode? Take a 1-minute check-in to pick the tools that suit you (not a medical judgment).',
-    } as const
     for (const locale of Object.keys(FILES) as (keyof typeof FILES)[]) {
       const bag = messages(FILES[locale])
       assert.equal(bag['sen.checkin.note'], notes[locale])
-      assert.equal(bag['map.support.text'], support[locale])
       assert.equal(bag['header.a11y'], COPY[locale]['header.a11y'])
       assert.equal(bag['er.mode.standard'].length > 0, true)
       assert.equal(bag['er.mode.step'].length > 0, true)

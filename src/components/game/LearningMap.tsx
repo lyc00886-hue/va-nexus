@@ -21,7 +21,6 @@ import { StepMap } from '../easy-read/StepPath'
 import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
-import { DemoBadge } from './DemoBadge'
 import { MapPath } from './MapPath'
 import { MapOneCard, MapOneLesson } from './MapOneLesson'
 
@@ -230,7 +229,7 @@ export function LearningMap() {
           onBack={closeMedia}
         />
       ) : (
-        <MediaPicker units={media} completed={completed} onOpen={openMedia} />
+        <MediaPicker units={media} onOpen={openMedia} />
       )}
       <MapCommitments />
     </div>
@@ -319,15 +318,7 @@ function HistoryTrack({
   )
 }
 
-function MediaPicker({
-  units,
-  completed,
-  onOpen,
-}: {
-  units: MediaUnit[]
-  completed: (id: string) => boolean
-  onOpen: (id: string) => void
-}) {
+function MediaPicker({ units, onOpen }: { units: MediaUnit[]; onOpen: (id: string) => void }) {
   return (
     <div className="space-y-4">
       <div className="flex items-start gap-3 rounded-3xl border border-teal-100 bg-white p-4 shadow-sm">
@@ -336,8 +327,6 @@ function MediaPicker({
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         {units.map((unit) => {
-          const done = unit.nodes.filter((node) => completed(node.id)).length
-          const total = unit.nodes.length
           const showNote = !unit.pending && unit.paper2Note.length > 0
           return (
             <button
@@ -364,9 +353,7 @@ function MediaPicker({
                   <span className="rounded-full bg-slate-200 px-2 py-0.5 text-[10px] font-semibold text-slate-600">
                     {t('map.media.pending')}
                   </span>
-                ) : (
-                  <DemoBadge />
-                )}
+                ) : null}
               </span>
               <span className={`mt-2 text-base font-bold leading-snug ${unit.pending ? 'text-slate-600' : 'text-slate-900'}`}>
                 {unit.title}
@@ -388,7 +375,7 @@ function MediaPicker({
                 )
               )}
               <span className={`mt-3 text-sm font-semibold ${unit.pending ? 'text-slate-400' : 'text-blue-700'}`}>
-                {unit.pending ? t('map.media.pending') : `${t('map.media.open')} · ${t('map.unitProgress', { done, total, pct: total ? Math.round((done / total) * 100) : 0 })}`}
+                {unit.pending ? t('map.media.pending') : t('map.media.open')}
               </span>
             </button>
           )

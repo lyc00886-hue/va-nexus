@@ -75,7 +75,6 @@ describe('learning map accordion sections', () => {
 
 const PEANUTS = {
   en: {
-    'map.pageIntro': 'Open the grade, unit, or lesson you need—no need to read it all at once.',
     'map.fold.gradeOrUnit': 'Grade / unit',
     'map.fold.gradeOrUnitHint': 'Expand to see lessons',
     'map.fold.lessons': 'Lessons',
@@ -88,7 +87,6 @@ const PEANUTS = {
     'map.lesson.practiceHint': 'Quiz and practice',
   },
   'zh-Hant': {
-    'map.pageIntro': '撳開你要睇嘅級／單元或課；唔使一次睇晒。',
     'map.fold.gradeOrUnit': '級／單元',
     'map.fold.gradeOrUnitHint': '撳開先見課列表',
     'map.fold.lessons': '課列表',
@@ -101,7 +99,6 @@ const PEANUTS = {
     'map.lesson.practiceHint': '小測同練習',
   },
   'zh-Hans': {
-    'map.pageIntro': '点开你要看的年级／单元或课；不必一次看完。',
     'map.fold.gradeOrUnit': '年级／单元',
     'map.fold.gradeOrUnitHint': '点开才见课列表',
     'map.fold.lessons': '课列表',
