@@ -1,6 +1,7 @@
 import { contentJson } from '../i18n/content'
 import { perLocale, t } from '../i18n'
 import { adaptCards, adaptQuiz, fillAnswersOf, type ContentLesson } from './content'
+import { coverFromUnit } from './f4Media'
 import type { Lesson, Unit } from './types'
 
 /**
@@ -8,7 +9,14 @@ import type { Lesson, Unit } from './types'
  * Accepts either legacy `{ unit }` or multi-unit `{ units: [...] }` (v2/v3; U6–U11 electives unlock per unit).
  * Facts not yet source-checked → every lesson carries 「內容待老師審閱」.
  */
-type ContentUnit = { id: string; title: string; intro?: string; lessons: ContentLesson[] }
+type ContentUnit = {
+  id: string
+  title: string
+  intro?: string
+  coverImage?: unknown
+  coverCredit?: unknown
+  lessons: ContentLesson[]
+}
 
 type ArtHistoryMapFile = { units?: ContentUnit[]; unit?: ContentUnit }
 
@@ -35,7 +43,13 @@ export function lessonFromContent(l: ContentLesson, pool: string[]): Lesson {
 export const getUnits = perLocale<Unit[]>(() =>
   contentUnits().map((u) => {
     const pool = fillAnswersOf(u.lessons)
-    return { id: u.id, title: u.title, subtitle: u.intro ?? '', nodes: u.lessons.map((l) => lessonFromContent(l, pool)) }
+    return {
+      id: u.id,
+      title: u.title,
+      subtitle: u.intro ?? '',
+      ...coverFromUnit(u),
+      nodes: u.lessons.map((l) => lessonFromContent(l, pool)),
+    }
   }),
 )
 

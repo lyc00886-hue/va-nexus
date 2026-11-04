@@ -19,6 +19,40 @@ All six covers are **自制 for VA-Nexus** (generated educational illustrations;
 
 Suggested on-screen credit (optional footer / about): 「單元封面插圖 © VA-Nexus（自制）」 / “Unit cover illustrations © VA-Nexus (original).”
 
+## Art-history unit covers (`map-covers/`)
+
+Eleven 16:9 unit tiles, wired 2026-11-04. **自制 · VA-Nexus**. Blank title plate; the Learning Map overlays the unit title for the active locale. No historical artwork.
+
+| File | Unit |
+|---|---|
+| `map-covers/U1-CN-MODERN.png` | U1-CN-MODERN |
+| `map-covers/U2-HK-IDENTITY.png` | U2-HK-IDENTITY |
+| `map-covers/U3-WEST-MODERN.png` | U3-WEST-MODERN |
+| `map-covers/U4-CN-CONTEMP.png` | U4-CN-CONTEMP |
+| `map-covers/U5-COMPARE.png` | U5-COMPARE |
+| `map-covers/U6-MQ-WUMEN.png` | U6-MQ-WUMEN |
+| `map-covers/U7-SELF-HERITAGE.png` | U7-SELF-HERITAGE |
+| `map-covers/U8-CN-SYMBOLS.png` | U8-CN-SYMBOLS |
+| `map-covers/U9-ROLE-TAKING.png` | U9-ROLE-TAKING |
+| `map-covers/U10-YBA-CN.png` | U10-YBA-CN |
+| `map-covers/U11-EXHIBIT-REVIEW.png` | U11-EXHIBIT-REVIEW |
+
+## F4 lesson-tile covers (`f4-covers/`)
+
+Every F.4 lesson ships `f4-covers/{lessonId}.png` (1280×720). **自制 · VA-Nexus**. Blank title plate. November lessons F4-U2-L3, F4-U3-L3, and F4-U3-L4 were already wired; the early-wire batch adds the remaining lesson tiles, including F4-U5-L1, F4-U5-L2, and F4-U6-L1.
+
+## Mood frames (`moods/`)
+
+Static end frames for empty, celebrate, chest, and step. **自制 · VA-Nexus**. `mood-otter-peek.png` is the re-passed otter (long muzzle, whiskers), not the earlier bear-like frame. No audio files.
+
+| File | Use |
+|---|---|
+| `moods/mood-empty-map.png` | Empty map and empty lists |
+| `moods/mood-lessonComplete.png` | `motion.lessonComplete` |
+| `moods/mood-chestOpen.png` | `motion.chestOpen` |
+| `moods/mood-stepAdvance.png` | `motion.stepAdvance` |
+| `moods/mood-otter-peek.png` | Celebrate accent |
+
 ## F4 November lesson-tile covers (`f4-covers/`)
 
 Three formative classroom lessons ship their own tile illustration. Same rule as the unit covers: **自制 for VA-Nexus**, abstract classroom scenes, no third-party artwork. The rounded title plate is left blank so the Learning Map can overlay the lesson title for the active locale (zh-Hant / zh-Hans / EN). Do not bake one language, a short goal, or an optional one-liner into the PNG.

@@ -1,4 +1,5 @@
 import { t, type MessageKey } from '../../i18n'
+import { MOOD_EMPTY_MAP } from '../../game/softMotion'
 import type { EasyEmptyKind } from '../../lib/easyReadMode'
 
 const COPY: Record<EasyEmptyKind, MessageKey> = {
@@ -12,11 +13,11 @@ export function EasyReadEmpty({ kind }: { kind: EasyEmptyKind }) {
   return (
     <div data-testid={`easy-read-empty-${kind}`} className="rounded-3xl border border-teal-100 bg-[#FFF9E9] px-6 py-8 text-center">
       <img
-        src="/mascot-otter-empty.png"
+        src={MOOD_EMPTY_MAP}
         alt=""
-        width={160}
-        height={160}
-        className="mx-auto h-32 w-32 object-contain"
+        width={1152}
+        height={864}
+        className="mx-auto w-full max-w-sm rounded-3xl object-contain"
         decoding="async"
       />
       <p className="mt-3 text-lg font-bold text-teal-950">{t(COPY[kind])}</p>

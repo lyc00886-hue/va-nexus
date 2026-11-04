@@ -5,8 +5,6 @@ import {
   Heart,
   HeartOff,
   RotateCcw,
-  Sparkles,
-  Star,
   Trophy,
   X,
 } from 'lucide-react'
@@ -27,6 +25,7 @@ import {
   unitSliceFor,
 } from '../../game/otterMascot'
 import { PASS_ACCURACY, getBadgeById, masteryHint, masteryLabel } from '../../game/rewards'
+import { softMotionPlay } from '../../game/softMotion'
 import { getLocale, joinList, t } from '../../i18n'
 import {
   DEFAULT_LESSON_FOLDS,
@@ -35,6 +34,7 @@ import {
   type LessonFoldOpen,
 } from '../../lib/learningMapSections'
 import { MapFold } from './MapFold'
+import { LessonCompleteFrame } from './SoftMotion'
 import type {
   FillQuestion,
   Lesson,
@@ -107,6 +107,7 @@ export function LessonPlayer({
   const { reportSignal } = useSenSupport()
   const heartsOn = state.prefs.hearts && !supportsOn
   const motion = !settings.reduceMotion
+  const playSoft = softMotionPlay({ soundMotion: settings.soundMotion, reduceMotion: settings.reduceMotion })
 
   const [phase, setPhase] = useState<Phase>('cards')
   const [cardIdx, setCardIdx] = useState(0)
@@ -301,6 +302,7 @@ export function LessonPlayer({
         result={result}
         kind={kind}
         motion={motion}
+        playSoft={playSoft}
         otterOn={otterOn}
         chestKey={chestKey}
         onExit={onExit}
@@ -646,6 +648,7 @@ function ResultStage({
   result,
   kind,
   motion,
+  playSoft,
   otterOn,
   chestKey,
   onExit,
@@ -657,6 +660,7 @@ function ResultStage({
   result: SessionResult
   kind: 'lesson' | 'quest'
   motion: boolean
+  playSoft: boolean
   otterOn: boolean
   chestKey: string | null
   onExit: () => void
@@ -665,61 +669,57 @@ function ResultStage({
   after?: ReactNode
 }) {
   const [chestPhase, setChestPhase] = useState<'offer' | 'open' | 'skip'>('offer')
+  const celebrate = kind === 'lesson' && outcome.passed
   return (
     <div className="space-y-4">
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
-        {otterOn ? (
+      <div className="rounded-3xl border border-teal-100 bg-[#FFF9E9] px-5 py-8 text-center">
+        {celebrate ? (
+          <LessonCompleteFrame play={playSoft} />
+        ) : otterOn ? (
           <OtterPose
             pose="complete"
             label={t('mascot.complete')}
-            reduceMotion={!motion}
+            reduceMotion={!playSoft}
             testId="otter-pose-complete"
           />
         ) : (
-          <Trophy className={`mx-auto h-12 w-12 text-amber-500 ${motion ? 'animate-bounce' : ''}`} aria-hidden />
+          <Trophy className="mx-auto h-12 w-12 text-amber-500" aria-hidden />
         )}
-        <h3 className="mt-2 text-xl font-bold text-slate-900">
+        <h3 className="mt-4 text-2xl font-bold text-slate-900">
           {outcome.passed ? (kind === 'lesson' ? t('lp.res.lesson') : t('lp.res.quest')) : t('lp.res.practice')}
         </h3>
-        <div className="mt-4 grid grid-cols-3 gap-2 text-sm">
-          <div className="rounded-2xl bg-amber-50 p-3">
-            <Star className="mx-auto h-5 w-5 fill-amber-400 text-amber-400" aria-hidden />
-            <p className="mt-1 font-bold text-amber-700">{t('chrome.xpGain', { n: outcome.xpGained })}</p>
-          </div>
-          <div className="rounded-2xl bg-emerald-50 p-3">
-            <Check className="mx-auto h-5 w-5 text-emerald-600" aria-hidden />
-            <p className="mt-1 font-bold text-emerald-700">{t('lp.res.firstTry', { n: Math.round(result.accuracy * 100) })}</p>
-          </div>
-          <div className="rounded-2xl bg-blue-50 p-3">
-            <Sparkles className="mx-auto h-5 w-5 text-blue-600" aria-hidden />
-            <p className="mt-1 font-bold text-blue-700">{masteryLabel(outcome.mastery)}</p>
-          </div>
-        </div>
-        {kind === 'lesson' && <p className="mt-3 text-xs text-slate-500">{masteryHint(outcome.mastery)}</p>}
+        <p className="mt-3 text-base font-bold text-[#0D9488]">{t('chrome.xpGain', { n: outcome.xpGained })}</p>
+        <p className="mt-1 text-sm text-slate-600">
+          {t('lp.res.firstTry', { n: Math.round(result.accuracy * 100) })}
+          {' · '}
+          {masteryLabel(outcome.mastery)}
+        </p>
+        {kind === 'lesson' && <p className="mt-2 text-sm text-slate-500">{masteryHint(outcome.mastery)}</p>}
         {!outcome.passed && <p className="mt-2 text-sm text-slate-600">{t('lp.res.unlockHint')}</p>}
         {outcome.newBadges.length > 0 && (
-          <div className="mt-4 rounded-2xl bg-violet-50 p-3 text-sm text-violet-900">
-            <p className="font-bold">{t('lp.res.newBadge')}</p>
-            <p>
-              {joinList(outcome.newBadges.map((b) => `${getBadgeById().get(b)?.emoji ?? ''} ${getBadgeById().get(b)?.title ?? b}`))}
-            </p>
-          </div>
+          <p className="mt-3 text-sm text-slate-700">
+            <span className="font-bold">{t('lp.res.newBadge')}</span>{' '}
+            {joinList(outcome.newBadges.map((b) => `${getBadgeById().get(b)?.emoji ?? ''} ${getBadgeById().get(b)?.title ?? b}`))}
+          </p>
         )}
-        <div className="mt-5 flex flex-wrap justify-center gap-2">
-          <button type="button" onClick={onExit} className="rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-500">
-            {exitLabel ?? (kind === 'lesson' ? t('lp.backMap') : t('lp.backResearch'))}
-          </button>
-          <button
-            type="button"
-            onClick={onRestart}
-            className="inline-flex items-center gap-1.5 rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-          >
-            <RotateCcw className="h-4 w-4" aria-hidden /> {t('lp.again')}
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={onExit}
+          className="mt-6 w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white hover:bg-[#0f766e]"
+        >
+          {exitLabel ?? (kind === 'lesson' ? t('lp.backMap') : t('lp.backResearch'))}
+        </button>
+        <button
+          type="button"
+          onClick={onRestart}
+          className="mt-3 min-h-11 text-sm font-semibold text-slate-500 underline-offset-2 hover:underline"
+        >
+          {t('lp.again')}
+        </button>
         {otterOn && chestKey && chestPhase !== 'skip' ? (
           <OtterChest
             reduceMotion={!motion}
+            play={playSoft}
             opened={chestPhase === 'open'}
             badgeIds={outcome.newBadges}
             onOpen={() => setChestPhase('open')}

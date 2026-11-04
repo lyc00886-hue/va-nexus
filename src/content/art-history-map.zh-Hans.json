@@ -4,6 +4,8 @@
       "id": "U1-CN-MODERN",
       "title": "中国现代艺术－寻找新路",
       "intro": "二十世纪初，中国画家面对西方艺术冲击，尝试用不同方法使中国画“现代化”。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U1-CN-MODERN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U1-L1",
@@ -354,6 +356,8 @@
       "id": "U2-HK-IDENTITY",
       "title": "香港艺术与身份",
       "intro": "从新水墨到当代观念，香港艺术家以不同媒介回应城市、身份与收藏空间。对应 CCCKLC F.6「自我／传统／社会」主题及故宫、虚白斋参观。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U2-HK-IDENTITY.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U2-L1",
@@ -622,6 +626,8 @@
       "id": "U3-WEST-MODERN",
       "title": "西方现代主义入门",
       "intro": "由印象派到抽象，再接到后现代身份与英国 YBA，对应 CCCKLC 对 YBA、Cindy Sherman 与 changed identity 的需要。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U3-WEST-MODERN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U3-L1",
@@ -898,6 +904,8 @@
       "id": "U4-CN-CONTEMP",
       "title": "中国当代",
       "intro": "由徐悲鸿、齐白石的现代遗产过渡到当代：徐冰、政治波普、装置行为与录像新媒体。对应 F.5 Art Talk（徐冰）与全球当代视野。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U4-CN-CONTEMP.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U4-L1",
@@ -1173,6 +1181,8 @@
       "id": "U5-COMPARE",
       "title": "中西比较视角",
       "intro": "练习跨文化比较：符号、角色扮演、YBA／美国当代与中国艺术如何对话。对应 F.6「how YBA, American art relate to Chinese Art」与 research「至少两位／跨文化」。明清文人画本体详见 U6 backlog。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U5-COMPARE.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U5-L1",
@@ -1442,6 +1452,8 @@
       "id": "U6-MQ-WUMEN",
       "title": "明清艺术（一）：吴门画派",
       "intro": "选修单元。认识明代苏州的文人画家沈周、文征明，学会看手卷、题跋和印章。对应 F.6 Contextual Studies「明清朝艺术 1：沈周、文征明」。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U6-MQ-WUMEN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U6-L1",
@@ -1715,6 +1727,8 @@
       "id": "U7-SELF-HERITAGE",
       "title": "自我、中国传统与社会",
       "intro": "选修单元。从唐寅、陈淳、徐渭、八大山人、陈洪绶、吴彬，看艺术家怎样用画表达自我和面对社会。联系 DSE 作品一（水墨＋混合媒介、真人大小平面作品）。F.6 主题：How Society and traditional Chinese Heritage influence ordinary life。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U7-SELF-HERITAGE.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U7-L1",
@@ -2056,6 +2070,8 @@
       "id": "U8-CN-SYMBOLS",
       "title": "中国传统符号：色彩、图案与绘画",
       "intro": "选修单元。认识中国传统的颜色、吉祥图案、清初四僧和四王，再看当代艺术家怎样挪用传统符号。对应 F.6「Sign and symbol in traditional Chinese Heritage」及「明清朝艺术 2：文人画、四僧、四王」。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U8-CN-SYMBOLS.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U8-L1",
@@ -2406,6 +2422,8 @@
       "id": "U9-ROLE-TAKING",
       "title": "角色扮演：在中国语境重现某人",
       "intro": "选修单元。由 Cindy Sherman 的角色扮演，到扬州八怪、徐悲鸿、齐白石的人物和自我形象，学习「在中国语境重现某人」。联系 DSE 作品二（干／湿媒介绘画）。对应 F.6 Role taking (Part 3) 及「明清朝艺术：扬州八怪、徐悲鸿、齐白石」。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U9-ROLE-TAKING.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U9-L1",
@@ -2754,6 +2772,8 @@
       "id": "U10-YBA-CN",
       "title": "英国 YBA 与当代艺术：怎样联系中国艺术",
       "intro": "选修单元。认识 1990 年代的英国「青年英国艺术家」（YBA），再和中国及香港当代艺术家对读。对应 F.6 Contextual Studies「British YBA Art」及「how YBA, American art relate to Chinese Art」。本单元全部是当代作品，不放图片，只用文字描述和官方美术馆链接。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U10-YBA-CN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U10-L1",
@@ -3030,6 +3050,8 @@
       "id": "U11-EXHIBIT-REVIEW",
       "title": "展览参观与自评",
       "intro": "选修单元。准备参观香港故宫文化博物馆和香港艺术馆虚白斋，学习看展览的方法，再为自己的作品集做自评和同伴互评。对应 F.6 Week 27–28：Exhibition Visit、Self Review/Evaluation/Portfolio、Peer review。（内容待老师审阅）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U11-EXHIBIT-REVIEW.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U11-L1",

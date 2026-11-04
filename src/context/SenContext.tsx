@@ -16,6 +16,8 @@ export type SenSettings = {
   highContrast: boolean
   dyslexia: boolean
   reduceMotion: boolean
+  /** Opt-in celebrate sound and motion. Default off. Separate from reduceMotion. */
+  soundMotion: boolean
   focusTunnel: boolean
   /** Auto read-aloud lesson cards (TTS) */
   readAloud: boolean
@@ -28,6 +30,7 @@ const DEFAULTS: SenSettings = {
   highContrast: false,
   dyslexia: false,
   reduceMotion: false,
+  soundMotion: false,
   focusTunnel: false,
   readAloud: false,
 }
@@ -94,6 +97,7 @@ export function SenProvider({ children }: { children: ReactNode }) {
     root.classList.toggle('sen-contrast', settings.highContrast)
     root.classList.toggle('sen-dyslexia', settings.dyslexia)
     root.classList.toggle('sen-reduce-motion', settings.reduceMotion)
+    root.dataset.soundMotion = settings.soundMotion ? 'on' : 'off'
     root.classList.toggle('sen-focus', settings.focusTunnel)
     root.classList.toggle('sen-read-aloud', settings.readAloud)
   }, [settings])
