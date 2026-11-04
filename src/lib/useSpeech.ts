@@ -5,7 +5,7 @@ import { getLocale, SPEECH_LANG, type Locale } from '../i18n'
 const LANG_PREFS: Record<Locale, string[]> = {
   'zh-Hant': ['zh-HK', 'yue-HK', 'yue', 'zh-TW'],
   'zh-Hans': ['zh-CN', 'cmn-CN', 'zh-SG', 'zh'],
-  en: ['en-US', 'en-GB', 'en-HK', 'en'],
+  en: ['en-GB', 'en-HK', 'en-US', 'en'],
 }
 
 function pickVoice(voices: SpeechSynthesisVoice[], locale: Locale) {
@@ -16,7 +16,7 @@ function pickVoice(voices: SpeechSynthesisVoice[], locale: Locale) {
   return undefined
 }
 
-/** Minimal Web Speech API wrapper; voice language follows the UI locale (zh-HK / zh-CN / en-US). */
+/** Minimal Web Speech API wrapper; voice language follows the UI locale (zh-HK / zh-CN / en-GB). */
 export function useSpeech() {
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
   const [speaking, setSpeaking] = useState(false)

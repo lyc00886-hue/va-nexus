@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
+    "test": "node --experimental-strip-types --test api/*.test.ts src/**/*.test.ts",
     "i18n": "node scripts/gen-zh-hans.mjs",
     "prebuild": "node scripts/gen-zh-hans.mjs"
   },

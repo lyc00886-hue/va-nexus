@@ -8,7 +8,7 @@ import {
   saveBirthYearForAiGate,
 } from '../lib/aiAgeGate'
 import { signInWithGoogle, useAuth } from '../lib/auth'
-import { feedbackLocaleHeaders } from '../lib/feedbackLocale'
+import { feedbackFailureText, feedbackLocaleHeaders } from '../lib/feedbackLocale'
 import { supabase } from '../lib/supabase'
 import {
   sbaAiCallAllowed,
@@ -60,6 +60,7 @@ export function SbaAiFeedback({ stepLabel, note, savedNotes, photoCount }: Props
 
   const [phase, setPhase] = useState<Phase>('idle')
   const [feedback, setFeedback] = useState('')
+  const [errorText, setErrorText] = useState('')
   const [canUseAi, setCanUseAi] = useState(false)
   const [gateReady, setGateReady] = useState(false)
   const [birthYearInput, setBirthYearInput] = useState('')
@@ -74,6 +75,7 @@ export function SbaAiFeedback({ stepLabel, note, savedNotes, photoCount }: Props
   if (trackedMaterial !== materialKey) {
     setTrackedMaterial(materialKey)
     setFeedback('')
+    setErrorText('')
     setPhase('idle')
   }
 
@@ -172,6 +174,7 @@ export function SbaAiFeedback({ stepLabel, note, savedNotes, photoCount }: Props
       if (!sbaAiCallAllowed({ manualConfirm: true, canUseAi: aiAllowed, hasMaterial: true })) return
 
       const keyAtStart = materialKey
+      setErrorText('')
       setPhase('loading')
       try {
         if (!supabase) throw new Error('no_supabase')
@@ -210,14 +213,25 @@ export function SbaAiFeedback({ stepLabel, note, savedNotes, photoCount }: Props
         }
         if (!res.ok || !sbaFeedbackPayloadIsFormative(data)) {
           setFeedback('')
+          setErrorText(
+            feedbackFailureText(
+              {
+                error: typeof data.error === 'string' ? data.error : '',
+                code: typeof data.code === 'string' ? data.code : '',
+              },
+              copy.errorGeneric,
+            ),
+          )
           setPhase('error')
           return
         }
+        setErrorText('')
         setFeedback(data.feedback)
         setPhase('done')
       } catch {
         if (materialKeyRef.current !== keyAtStart) return
         setFeedback('')
+        setErrorText('')
         setPhase('error')
       }
     } finally {
@@ -255,7 +269,7 @@ export function SbaAiFeedback({ stepLabel, note, savedNotes, photoCount }: Props
 
       {phase === 'error' && (
         <p className="mt-3 rounded-xl bg-rose-50 px-3 py-2 text-sm text-rose-900" role="alert" data-testid="sba-ai-error">
-          {copy.errorGeneric}
+          {errorText || copy.errorGeneric}
         </p>
       )}
 
