@@ -7,6 +7,7 @@ import type { FillQuestion, Lesson, MatchQuestion, McqQuestion, Question } from 
 import { getLocale, t } from '../../i18n'
 import { readLines, readPlace, writePlace } from '../../lib/easyReadMode'
 import { postFeldmanFeedback } from '../../lib/feldmanAiRequest'
+import { socraticZh } from '../../lib/socraticCopy'
 import { exerciseIdForQuestion } from '../../game/exerciseLogos'
 import { lessonChunks, nextLessonId, stepChunk } from '../../lib/mapUx'
 import { requestOpenTab } from '../../lib/openTab'
@@ -165,7 +166,7 @@ export function MapOneLesson({
     if (!gate.canUseAi) return
     const text = chunkText(lesson, chunk, easyRead)
     if (!text.trim()) {
-      setAi({ status: 'error', text: t('fw.err.empty') })
+      setAi({ status: 'error', text: socraticZh('research.socratic.empty') ?? t('fw.err.empty') })
       return
     }
     setAi({ status: 'loading', text: '' })
@@ -269,7 +270,7 @@ export function MapOneLesson({
             style={{ width: `${pct}%` }}
           />
         </div>
-        <span className="text-sm font-semibold tabular-nums text-slate-600">
+        <span className="text-xs font-medium tabular-nums text-slate-400">
           {step ? t('er.progress.of', { n: index + 1, t: chunks.length }) : `${index + 1}/${chunks.length}`}
         </span>
       </div>
@@ -306,7 +307,15 @@ export function MapOneLesson({
 
       {step ? <StepAdvanceMark play={playSoft} tick={stepMark} /> : null}
       <div key={`${lesson.id}-${index}`} className={`flex-1 ${motion ? 'map-one-in' : ''}`}>
-        <h2 className="text-2xl font-bold text-slate-900">{lesson.title}</h2>
+        <h2
+        className={
+          chunk.kind === 'read'
+            ? 'text-sm font-medium text-slate-500'
+            : 'text-2xl font-bold text-slate-900'
+        }
+      >
+        {lesson.title}
+      </h2>
         {step && practice && !revealed && practice.type !== 'match' ? (
           <p className="mt-2 text-sm font-semibold text-teal-800">{t('er.quiz.pickOne')}</p>
         ) : null}
@@ -417,18 +426,14 @@ export function MapOneCard({ onOpen }: { onOpen: (id: string) => void }) {
         ) : null}
         <span className="block p-5">
           <span className="block text-lg font-bold text-slate-900">{lesson.title}</span>
-          {lesson.subtitle ? <span className="mt-1 block text-sm text-slate-600">{lesson.subtitle}</span> : null}
-          <span
-            className="mt-4 block h-1.5 overflow-hidden rounded-full bg-slate-200"
-            role="progressbar"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={pct}
-          >
-            <span className="block h-full rounded-full bg-teal-700" style={{ width: `${pct}%` }} />
-          </span>
-          <span className="mt-4 block w-full rounded-2xl bg-teal-700 py-3.5 text-center text-base font-bold text-white">
+          {lesson.subtitle ? (
+            <span className="mt-0.5 block text-xs font-normal text-slate-400">{lesson.subtitle}</span>
+          ) : null}
+          <span className="mt-3 block w-full rounded-2xl bg-teal-700 py-3.5 text-center text-base font-bold text-white">
             {t('map.chunk.cta')}
+          </span>
+          <span className="sr-only" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={pct}>
+            {pct}%
           </span>
         </span>
       </button>

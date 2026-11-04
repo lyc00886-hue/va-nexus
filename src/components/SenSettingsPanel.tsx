@@ -219,26 +219,28 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="mt-3 space-y-0.5">
+        <div data-a11y-pair="spacing-contrast" className="space-y-0.5">
+          <Toggle
+            icon={<BookOpenText className="h-4 w-4" />}
+            label={t('sen.toggle.dyslexia')}
+            desc={t('sen.toggle.dyslexia.desc')}
+            checked={settings.dyslexia}
+            onChange={(v) => update('dyslexia', v)}
+          />
+          <Toggle
+            icon={<Contrast className="h-4 w-4" />}
+            label={t('support.contrast')}
+            desc={t('sen.toggle.contrast.desc')}
+            checked={settings.highContrast}
+            onChange={(v) => update('highContrast', v)}
+          />
+        </div>
         <Toggle
           icon={<Sparkles className="h-4 w-4" />}
           label={t('settings.soundMotion')}
           desc={t('settings.soundMotion.desc')}
           checked={settings.soundMotion}
           onChange={(v) => update('soundMotion', v)}
-        />
-        <Toggle
-          icon={<Contrast className="h-4 w-4" />}
-          label={t('support.contrast')}
-          desc={t('sen.toggle.contrast.desc')}
-          checked={settings.highContrast}
-          onChange={(v) => update('highContrast', v)}
-        />
-        <Toggle
-          icon={<BookOpenText className="h-4 w-4" />}
-          label={t('sen.toggle.dyslexia')}
-          desc={t('sen.toggle.dyslexia.desc')}
-          checked={settings.dyslexia}
-          onChange={(v) => update('dyslexia', v)}
         />
         <Toggle
           icon={<Wind className="h-4 w-4" />}

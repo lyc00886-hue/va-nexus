@@ -53,26 +53,45 @@ html {
   }
 }
 
-/* High contrast */
+/* High contrast — cream MapPath, lesson text, and borders when 高對比 is on. */
 .sen-contrast body,
 .sen-contrast #root > div {
   background: #ffffff !important;
+  color: #000000;
 }
 .sen-contrast [class*='text-teal-'],
 .sen-contrast [class*='text-slate-'] {
-  color: #001a17 !important;
+  color: #000000 !important;
+}
+.sen-contrast [class*='text-[#0D9488]'],
+.sen-contrast [class*='text-[#8ecfc9]'] {
+  color: #04221f !important;
 }
 .sen-contrast [class*='border-teal-'],
+.sen-contrast [class*='border-slate-'],
 .sen-contrast [class*='ring-teal-'] {
-  border-color: #0b3b36 !important;
-  --tw-ring-color: #0b3b36 !important;
+  border-color: #04221f !important;
+  --tw-ring-color: #04221f !important;
+}
+.sen-contrast [class*='ring-[#b7ebe4]'],
+.sen-contrast [class*='ring-[#2f9d96]'],
+.sen-contrast [class*='ring-[#8ecfc9]'] {
+  --tw-ring-color: #04221f !important;
+}
+.sen-contrast [class*='bg-[#FFF9E9]'] {
+  background-color: #ffffff !important;
+  outline: 2px solid #04221f;
+  outline-offset: -2px;
 }
 .sen-contrast [class*='bg-teal-700'],
-.sen-contrast [class*='bg-teal-600'] {
-  background-color: #00211d !important;
+.sen-contrast [class*='bg-teal-600'],
+.sen-contrast [class*='bg-[#0D9488]'] {
+  background-color: #04221f !important;
 }
 .sen-contrast [class*='bg-teal-700'] *,
-.sen-contrast [class*='bg-teal-700'][class*='text-'] {
+.sen-contrast [class*='bg-teal-700'][class*='text-'],
+.sen-contrast [class*='bg-[#0D9488]'],
+.sen-contrast [class*='bg-[#0D9488]'] * {
   color: #ffffff !important;
 }
 .sen-contrast [class*='bg-white/'],
@@ -80,11 +99,11 @@ html {
   background-color: #ffffff !important;
 }
 .sen-contrast :focus-visible {
-  outline: 3px solid #b45309 !important;
+  outline: 3px solid #7c2d12 !important;
   outline-offset: 2px;
 }
 .sen-contrast img {
-  outline: 1px solid #0b3b36;
+  outline: 2px solid #04221f;
 }
 
 /* Wider spacing */

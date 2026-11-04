@@ -2,6 +2,7 @@ import { ChevronLeft, Loader2, LogIn } from 'lucide-react'
 import { useEffect, useState, type ReactNode } from 'react'
 import { t } from '../../i18n'
 import { splitLearningTip } from '../../lib/researchUx'
+import { socraticZh } from '../../lib/socraticCopy'
 import { holdSoftScreen } from '../../lib/softScreen'
 import { PrivacyLink } from '../PrivacyModal'
 
@@ -29,6 +30,8 @@ type Props = {
   onEnableAi: () => void
   onDisableAi: () => void
   onSignIn: () => void
+  /** zh-HK Feldman short name, when the Socratic chrome is on. */
+  stageName?: string | null
 }
 
 /**
@@ -40,6 +43,13 @@ export function AiLearningTipScreen(props: Props) {
   const [tipOpen, setTipOpen] = useState(false)
   const tip = splitLearningTip(props.ai.status === 'done' ? props.ai.text : '')
   const showList = props.ai.status === 'notice' || props.ai.status === 'error'
+  const ask = socraticZh('research.socratic.ctaAsk')
+  const again = socraticZh('research.socratic.ctaAgain')
+  const skip = socraticZh('research.socratic.ctaSkipStage')
+  const done = socraticZh('research.socratic.ctaDone')
+  const loading = socraticZh('research.socratic.loading')
+  const empty = socraticZh('research.socratic.empty')
+  const disclaimer = socraticZh('research.socratic.disclaimer')
 
   useEffect(() => holdSoftScreen(), [])
 
@@ -59,7 +69,10 @@ export function AiLearningTipScreen(props: Props) {
           {t('rs.back')}
         </button>
 
-        <h2 className="text-2xl font-bold text-slate-900">{t('ai.title')}</h2>
+        <h2 className="text-2xl font-bold text-slate-900">{socraticZh('research.socratic.tipTitle') ?? t('ai.title')}</h2>
+        {props.stageName ? (
+          <p className="text-xs text-slate-500">{t('research.socratic.progressHint', { stage: props.stageName })}</p>
+        ) : null}
 
         <div className="flex-1 space-y-3">
           {props.ai.status === 'done' && (
@@ -87,7 +100,7 @@ export function AiLearningTipScreen(props: Props) {
               {props.ai.status === 'loading' ? (
                 <span className="inline-flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-                  {t('ai.busy')}
+                  {loading ?? t('ai.busy')}
                 </span>
               ) : (
                 t('ai.busy')
@@ -100,6 +113,10 @@ export function AiLearningTipScreen(props: Props) {
               {props.ai.text}
             </p>
           )}
+
+          {props.canUseAi && props.ai.status === 'idle' && empty ? (
+            <p className="text-sm text-slate-600">{empty}</p>
+          ) : null}
 
           {showList && props.checklist.length > 0 && (
             <ul className="space-y-2" aria-label={t('ai.busy.fallback')}>
@@ -126,7 +143,7 @@ export function AiLearningTipScreen(props: Props) {
         </div>
 
         <p className="text-xs text-teal-800/70">
-          {t('rs.ai.footer')} <PrivacyLink />
+          {disclaimer ?? t('rs.ai.footer')} <PrivacyLink />
         </p>
         {props.canUseAi && (
           <button
@@ -139,13 +156,35 @@ export function AiLearningTipScreen(props: Props) {
         )}
 
         {props.canUseAi && props.ai.status === 'done' && (
-          <Primary onClick={props.onContinue}>{t('map.chunk.cta')}</Primary>
+          <>
+            <Primary onClick={props.onContinue}>{done ?? t('map.chunk.cta')}</Primary>
+            {again ? (
+              <button
+                type="button"
+                onClick={props.onRequestAi}
+                className="self-center text-sm font-semibold text-slate-600 underline-offset-2 hover:underline"
+              >
+                {again}
+              </button>
+            ) : null}
+          </>
         )}
         {props.canUseAi && (props.ai.status === 'notice' || props.ai.status === 'error') && (
           <Primary onClick={props.onFallback}>{t('ai.busy.fallback')}</Primary>
         )}
         {props.canUseAi && props.ai.status === 'idle' && (
-          <Primary onClick={props.onRequestAi}>{t('rs.cta.tip')}</Primary>
+          <>
+            <Primary onClick={props.onRequestAi}>{ask ?? t('rs.cta.tip')}</Primary>
+            {skip ? (
+              <button
+                type="button"
+                onClick={props.onFallback}
+                className="self-center text-sm font-semibold text-slate-600 underline-offset-2 hover:underline"
+              >
+                {skip}
+              </button>
+            ) : null}
+          </>
         )}
       </div>
     </div>
@@ -195,7 +234,13 @@ function AgeGate({
 }) {
   return (
     <div className="space-y-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-amber-950">
-      <p className="text-base font-bold">{t('rs.ai.age')}</p>
+      <p className="text-base font-bold">{socraticZh('research.socratic.gateTitle') ?? t('rs.ai.age')}</p>
+      {socraticZh('research.socratic.ageGate') ? (
+        <p className="text-sm font-semibold">{socraticZh('research.socratic.ageGate')}</p>
+      ) : null}
+      {socraticZh('research.socratic.ageBody') ? (
+        <p className="text-sm">{socraticZh('research.socratic.ageBody')}</p>
+      ) : null}
       {!userId ? (
         <Primary onClick={onSignIn}>
           <span className="inline-flex items-center justify-center gap-2">

@@ -5,6 +5,7 @@ import { useSen } from '../context/SenContext'
 import { XP } from '../game/rewards'
 import { PrivacyLink } from './PrivacyModal'
 import { postFeldmanFeedback } from '../lib/feldmanAiRequest'
+import { socraticZh } from '../lib/socraticCopy'
 import { useAiAgeGate } from '../lib/useAiAgeGate'
 import {
   boostOralText,
@@ -110,7 +111,7 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
     }
     const text = texts[key].trim()
     if (!text) {
-      setAi((a) => ({ ...a, [key]: { status: 'error', text: t('fw.err.empty') } }))
+      setAi((a) => ({ ...a, [key]: { status: 'error', text: socraticZh('research.socratic.empty') ?? t('fw.err.empty') } }))
       return
     }
     setAi((a) => ({ ...a, [key]: { status: 'loading', text: '' } }))
@@ -176,6 +177,12 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
         <p className="text-sm text-teal-800/70">{t('fw.subtitle.noAi')}</p>
         {!canUseAi ? (
           <div className="mt-2 space-y-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs text-amber-950">
+            {socraticZh('research.socratic.gateTitle') ? (
+              <p className="text-sm font-bold">
+                {socraticZh('research.socratic.gateTitle')}
+                <span className="ml-2 font-semibold">{socraticZh('research.socratic.ageGate')}</span>
+              </p>
+            ) : null}
             <p>{t('fw.ai.gated')}</p>
             {!userId ? (
               <button
@@ -385,7 +392,7 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
                   ) : (
                     <Bot className="h-4 w-4" aria-hidden />
                   )}
-                  {ai[s.key].status === 'loading' ? t('fw.ai.loading') : t('fw.ai')}
+                  {ai[s.key].status === 'loading' ? (socraticZh('research.socratic.loading') ?? t('fw.ai.loading')) : t('fw.ai')}
                 </button>
               ) : (
                 <button
@@ -428,7 +435,7 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
               >
                 <p className="mb-1 font-semibold">{t('fw.ai.title')}</p>
                 <p className="whitespace-pre-wrap">{ai[s.key].text}</p>
-                <p className="mt-2 text-xs text-teal-800/60">{t('fw.ai.disclaimer')}</p>
+                <p className="mt-2 text-xs text-teal-800/60">{socraticZh('research.socratic.disclaimer') ?? t('fw.ai.disclaimer')}</p>
               </div>
             )}
             {ai[s.key].status === 'notice' && (

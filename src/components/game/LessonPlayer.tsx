@@ -4,6 +4,7 @@ import {
   Check,
   Heart,
   HeartOff,
+  Pause,
   RotateCcw,
   Trophy,
   X,
@@ -352,7 +353,7 @@ export function LessonPlayer({
               style={{ width: `${progress}%` }}
             />
           </div>
-          {lesson.demo ? <DemoBadge /> : null}
+          {lesson.demo ? <DemoBadge quiet /> : null}
         </div>
         <div className="space-y-3">
           {LESSON_FOLD_IDS.map((id, index) => (
@@ -421,7 +422,7 @@ export function LessonPlayer({
 
       <div className="flex flex-wrap items-center gap-2">
         <h2 className="text-lg font-bold text-slate-900">{lesson.title}</h2>
-        {lesson.demo && <DemoBadge />}
+        {lesson.demo && <DemoBadge quiet />}
         <span className="text-xs text-slate-500">{t('common.aboutMin', { n: lesson.minutes })}</span>
       </div>
 
@@ -440,7 +441,7 @@ function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean })
   const mastery = masteryFor(state.nodes[lesson.id])
   return (
     <div className="space-y-3">
-      {lesson.subtitle ? <p className="text-sm text-slate-600">{lesson.subtitle}</p> : null}
+      {lesson.subtitle ? <p className="text-xs leading-snug text-slate-500">{lesson.subtitle}</p> : null}
       {mastery !== 'none' ? <p className="text-xs font-semibold text-slate-600">{masteryLabel(mastery)}</p> : null}
       {lesson.artists?.length ? <LessonArtistPanel artists={lesson.artists} /> : null}
       <ul className="space-y-3">
@@ -620,20 +621,24 @@ function QuizStage({
 
 function RestStage({ onReview, onContinue }: { onReview: () => void; onContinue: () => void }) {
   return (
-    <div className="rounded-3xl border border-rose-100 bg-white p-6 text-center shadow-sm">
-      <Heart className="mx-auto h-10 w-10 text-rose-400" aria-hidden />
+    <div className="rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm">
+      <Pause className="mx-auto h-6 w-6 text-slate-400" aria-hidden />
       <h3 className="mt-2 text-lg font-bold text-slate-900">{t('lp.rest.title')}</h3>
       <p className="mt-1 text-sm text-slate-600">{t('lp.rest.text')}</p>
-      <div className="mt-4 flex flex-wrap justify-center gap-2">
-        <button type="button" onClick={onReview} className="rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500">
-          {t('lp.rest.review')}
-        </button>
+      <div className="mt-4 flex flex-col items-center gap-2">
         <button
           type="button"
           onClick={onContinue}
-          className="rounded-2xl border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+          className="rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white hover:bg-blue-500"
         >
           {t('lp.rest.continue')}
+        </button>
+        <button
+          type="button"
+          onClick={onReview}
+          className="text-sm font-semibold text-slate-600 underline-offset-2 hover:underline"
+        >
+          {t('lp.rest.review')}
         </button>
       </div>
     </div>
