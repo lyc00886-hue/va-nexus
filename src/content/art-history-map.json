@@ -4,6 +4,8 @@
       "id": "U1-CN-MODERN",
       "title": "中國現代藝術－尋找新路",
       "intro": "二十世紀初，中國畫家面對西方藝術衝擊，嘗試用唔同方法令中國畫「現代化」。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U1-CN-MODERN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U1-L1",
@@ -354,6 +356,8 @@
       "id": "U2-HK-IDENTITY",
       "title": "香港藝術同身份",
       "intro": "由新水墨到當代觀念，香港藝術家用唔同媒介回應城市、身份同收藏空間。對齊 CCCKLC F.6 主題「自我／傳統／社會」同故宮、虛白齋參觀。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U2-HK-IDENTITY.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U2-L1",
@@ -622,6 +626,8 @@
       "id": "U3-WEST-MODERN",
       "title": "西方現代主義入門",
       "intro": "由印象派到抽象，再接到後現代身份同英國 YBA，對齊 CCCKLC 對 YBA、Cindy Sherman 同 changed identity 嘅需要。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U3-WEST-MODERN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U3-L1",
@@ -898,6 +904,8 @@
       "id": "U4-CN-CONTEMP",
       "title": "中國當代",
       "intro": "由徐悲鴻、齊白石嘅現代遺產過渡到當代：徐冰、政治波普、裝置行為同錄像新媒体。對齊 F.5 Art Talk（徐冰）同全球當代視野。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U4-CN-CONTEMP.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U4-L1",
@@ -1173,6 +1181,8 @@
       "id": "U5-COMPARE",
       "title": "中西比較視角",
       "intro": "練習跨文化比較：符號、角色扮演、YBA／美國當代同中國藝術點樣對話。對齊 F.6「how YBA, American art relate to Chinese Art」同 research「最少兩位／跨文化」。明清文人畫本體詳見 U6 backlog。",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U5-COMPARE.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U5-L1",
@@ -1442,6 +1452,8 @@
       "id": "U6-MQ-WUMEN",
       "title": "明清藝術（一）：吳門畫派",
       "intro": "選修單元。認識明代蘇州的文人畫家沈周、文徵明，學會看手卷、題跋和印章。對應 F.6 Contextual Studies「明清朝藝術 1：沈周、文徵明」。（內容待老師審閱）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U6-MQ-WUMEN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U6-L1",
@@ -1715,6 +1727,8 @@
       "id": "U7-SELF-HERITAGE",
       "title": "自我、中國傳統與社會",
       "intro": "選修單元。從唐寅、陳淳、徐渭、八大山人、陳洪綬、吳彬，看藝術家點樣用畫表達自我和面對社會。連繫 DSE 作品一（水墨＋混合媒介、真人大小平面作品）。F.6 主題：How Society and traditional Chinese Heritage influence ordinary life。（內容待老師審閱）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U7-SELF-HERITAGE.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U7-L1",
@@ -2056,6 +2070,8 @@
       "id": "U8-CN-SYMBOLS",
       "title": "中國傳統符號：色彩、圖案與繪畫",
       "intro": "選修單元。認識中國傳統的顏色、吉祥圖案、清初四僧和四王，再看當代藝術家點樣挪用傳統符號。對應 F.6「Sign and symbol in traditional Chinese Heritage」及「明清朝藝術 2：文人畫、四僧、四王」。（內容待老師審閱）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U8-CN-SYMBOLS.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U8-L1",
@@ -2406,6 +2422,8 @@
       "id": "U9-ROLE-TAKING",
       "title": "角色扮演：在中國語境重現某人",
       "intro": "選修單元。由 Cindy Sherman 的角色扮演，到揚州八怪、徐悲鴻、齊白石的人物和自我形象，學習「在中國語境重現某人」。連繫 DSE 作品二（乾／濕媒介繪畫）。對應 F.6 Role taking (Part 3) 及「明清朝藝術：揚州八怪、徐悲鴻、齊白石」。（內容待老師審閱）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U9-ROLE-TAKING.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U9-L1",
@@ -2754,6 +2772,8 @@
       "id": "U10-YBA-CN",
       "title": "英國 YBA 與當代藝術：點樣連繫中國藝術",
       "intro": "選修單元。認識 1990 年代的英國「年青英國藝術家」（YBA），再和中國及香港當代藝術家對讀。對應 F.6 Contextual Studies「British YBA Art」及「how YBA, American art relate to Chinese Art」。本單元全部是當代作品，不放圖片，只用文字描述和官方美術館連結。（內容待老師審閱）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U10-YBA-CN.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U10-L1",
@@ -3030,6 +3050,8 @@
       "id": "U11-EXHIBIT-REVIEW",
       "title": "展覽參觀與自評",
       "intro": "選修單元。準備參觀香港故宮文化博物館和香港藝術館虛白齋，學習看展覽的方法，再為自己的作品集做自評和同儕互評。對應 F.6 Week 27–28：Exhibition Visit、Self Review/Evaluation/Portfolio、Peer review。（內容待老師審閱）",
+      "coverImage": "/content/learning-map-illustrations/map-covers/U11-EXHIBIT-REVIEW.png",
+      "coverCredit": "自制 · VA-Nexus",
       "lessons": [
         {
           "id": "U11-L1",

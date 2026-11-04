@@ -10,6 +10,8 @@
         {
           "id": "F4-U1-L1",
           "title": "兩條學習線：評賞同創作",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U1-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "中四視藝跟官方課程，主要有兩條學習線：視覺藝術評賞，同視覺藝術創作。",
             "評賞：學習睇作品、明白符號同風格，以及作品嘅歷史、社會、文化背景。",
@@ -75,6 +77,8 @@
         {
           "id": "F4-U1-L2",
           "title": "SBA 作品集：研究工作簿同作品／評賞",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U1-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "學校評估（SBA）通常係一個作品集：研究工作簿（Research workbook），加作品／評賞（Artwork／Critical studies）。",
             "作品／評賞：同一個主題下大約四件作品；其中可以有書寫／評賞部分（跟學校同官方指引）。",
@@ -147,6 +151,8 @@
         {
           "id": "F4-U2-L1",
           "title": "觀察同繪畫基礎：線、形、構圖",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "寫生由觀察開始：先睇整體形狀同比例，再加細節，唔好一開始就抄陰影。",
             "基本視覺元素：線、形狀、顏色、質感、空間。組織原則：對比、節奏、平衡、焦點。",
@@ -215,6 +221,8 @@
         {
           "id": "F4-U2-L2",
           "title": "美感、設計思維同物料探索",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "美感／設計思維：界定問題 → 發想多個方案 → 試作 → 測試／反思 → 改良。",
             "物料探索：同一主題可以用鉛筆、炭筆、墨、拼貼等試效果；記錄邊種物料最能表達意圖。",
@@ -265,6 +273,8 @@
         {
           "id": "F4-U2-L3",
           "title": "十一月：設計繪圖同設計思維",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
           "subtitle": "由「畫得似」轉去「設計得清楚」——先問功能同觀眾，再落筆。",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
           "coverCredit": "自制 · VA-Nexus",
@@ -328,6 +338,8 @@
         {
           "id": "F4-U3-L1",
           "title": "每週視覺日記：點樣觀察同記錄",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "視覺日記係全年習慣：每星期用圖／短句記錄所見、所感同小實驗。",
             "可以記：構圖速寫、顏色筆記、物料小試、一句「今日發現」。",
@@ -378,6 +390,8 @@
         {
           "id": "F4-U3-L2",
           "title": "社區導賞：由環境搵主題",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "社區導賞／tour：用相片、短片、訪問、收集物、速寫或行動，記錄環境同學習。",
             "創作可以同社區有關：例如公共空間、鄰里日常、本地符號——再連返你嘅主題。",
@@ -445,6 +459,8 @@
         {
           "id": "F4-U3-L3",
           "title": "十一月：社區藝術計劃——研究",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
           "subtitle": "主題來自真實環境——人物、地方、習慣、物件；做社區藝術研究。",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
           "coverCredit": "自制 · VA-Nexus",
@@ -499,6 +515,8 @@
         {
           "id": "F4-U3-L4",
           "title": "十一月：社區藝術計劃——發展同創作",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
+          "coverCredit": "自制 · VA-Nexus",
           "subtitle": "把研究變成創作——繪畫、設計、雕塑或其他媒介都可以。",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
           "coverCredit": "自制 · VA-Nexus",
@@ -561,6 +579,8 @@
         {
           "id": "F4-U4-L1",
           "title": "自畫像同身份：自我、關係、故事",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "自畫像唔止係「似唔似」：可以講身份、身體經驗、角色同社會目光。",
             "學校線索可以試三個入口：Self（自己嘅好奇收藏）、Relationship（家庭物件）、Story（衝突或張力）。",
@@ -639,6 +659,8 @@
         {
           "id": "F4-U4-L2",
           "title": "點樣做藝術家研究同主題簡報",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "藝術家研究步驟：揀相關藝術家 → 記錄基本資料 → 睇作品形式同語境 → 連結自己主題 → 寫個人觀點（有證據）。",
             "來源要可靠：博物館、美術館、教科書、老師筆記；分清事實同意見。",
@@ -713,6 +735,8 @@
         {
           "id": "F4-U5-L1",
           "title": "古代西方：洞穴、埃及、希臘、羅馬",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U5-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "藝術史入門先建立時間感：唔同時代嘅人用圖像解決咩問題——記錄、信仰、權力、美學定紀念。",
             "史前洞穴圖像：常見動物同手印；重點係空間、重複同儀式感，而唔係「似唔似照片」。",
@@ -778,6 +802,8 @@
         {
           "id": "F4-U5-L2",
           "title": "中國藝術入門同書畫視覺語言",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U5-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "中國藝術入門可由「文字同圖像一齊講故事」開始：象形、甲骨文同青銅器紋飾，都係視覺溝通。",
             "戰國帛畫等早期圖像，常連生死、儀式同人物身份——睇線條、符號同空間佈局。",
@@ -852,6 +878,8 @@
         {
           "id": "F4-U6-L1",
           "title": "三個入口：收藏、家庭物件、衝突",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "主題種子要細同真實：由你真正在意嘅物件或經驗起步，而唔係空泛大題。",
             "Self：整理一小盒「好奇收藏」（票根、石頭、包裝、舊物），問：點解留低佢？佢講咗我邊一面？",
@@ -917,6 +945,8 @@
         {
           "id": "F4-U6-L2",
           "title": "由種子變成主題問題",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
           "cards": [
             "把種子寫成主題問題：例如「呢件家物點樣定義『關懷』？」「等待時身體同空間有咩張力？」",
             "好問題可以帶出研究同創作：你可以觀察、訪問、實驗媒介，而唔係一句答完。",

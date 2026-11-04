@@ -176,6 +176,109 @@ html {
   }
 }
 
+/* Soft events: one shot, never looped. Off unless the gear opt-in adds .soft-motion-on. */
+@keyframes soft-check-in {
+  from {
+    transform: scale(0.85);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes soft-otter-in {
+  from {
+    transform: translateY(6px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes soft-sparkle {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes soft-chest-glow {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes soft-step-nudge {
+  from {
+    transform: translateX(0);
+    opacity: 0.45;
+  }
+  to {
+    transform: translateX(10px);
+    opacity: 1;
+  }
+}
+@keyframes soft-step-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
+  }
+  45% {
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.35);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
+  }
+}
+.soft-motion-on .soft-check {
+  animation: soft-check-in var(--soft-ms, 560ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.soft-motion-on .soft-otter {
+  animation: soft-otter-in var(--soft-ms, 560ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.soft-motion-on .soft-spark {
+  animation: soft-sparkle var(--soft-ms, 560ms) cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.soft-motion-on .soft-chest-glow {
+  background: radial-gradient(circle, rgba(255, 214, 120, 0.55), transparent 68%);
+  animation: soft-chest-glow 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.soft-step-mood {
+  animation: soft-step-nudge 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.soft-step-cell {
+  animation: soft-step-glow 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+[data-soft-screen='map-celebrate'],
+[data-soft-screen='map-empty'],
+[data-soft-screen='map-lesson'] {
+  background-color: #fff9e9;
+}
+@media (prefers-reduced-motion: reduce) {
+  html:not([data-sound-motion='on']) .soft-check,
+  html:not([data-sound-motion='on']) .soft-otter,
+  html:not([data-sound-motion='on']) .soft-spark,
+  html:not([data-sound-motion='on']) .soft-chest-glow,
+  html:not([data-sound-motion='on']) .soft-step-mood,
+  html:not([data-sound-motion='on']) .soft-step-cell {
+    animation: none !important;
+  }
+}
+.sen-reduce-motion .soft-check,
+.sen-reduce-motion .soft-otter,
+.sen-reduce-motion .soft-spark,
+.sen-reduce-motion .soft-chest-glow,
+.sen-reduce-motion .soft-step-mood,
+.sen-reduce-motion .soft-step-cell {
+  animation: none !important;
+}
+
 /* Library browser: sticky search chip while the list is collapsed.
    Desktop side list sticks under the measured header (--library-sticky-top). */
 .library-browser-sticky {

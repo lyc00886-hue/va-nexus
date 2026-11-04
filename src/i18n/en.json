@@ -211,6 +211,8 @@
   "sen.toggle.dyslexia": "Wider spacing",
   "sen.toggle.dyslexia.desc": "Wider letter, line and paragraph spacing",
   "sen.toggle.motion.desc": "Turns off transitions and animated effects",
+  "settings.soundMotion": "Sound & motion",
+  "settings.soundMotion.desc": "Short animations and sounds when you finish a lesson. Off by default. Follows Reduce Motion.",
   "sen.toggle.focus.desc": "Shows one step at a time, with a 25-minute focus timer",
   "sen.toggle.read.desc": "Reads short cards aloud when opened (you can stop any time)",
   "sen.reset": "Restore defaults",

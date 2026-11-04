@@ -1,4 +1,4 @@
-import { Contrast, Focus, RotateCcw, Type, Wind, X, BookOpenText, Volume2, ClipboardList } from 'lucide-react'
+import { Contrast, Focus, RotateCcw, Sparkles, Type, Wind, X, BookOpenText, Volume2, ClipboardList } from 'lucide-react'
 import { EasyReadBar } from './easy-read/EasyReadBar'
 import { useSenSupport } from '../context/SenSupportContext'
 import { useEffect, useRef, type ReactNode } from 'react'
@@ -219,6 +219,13 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
       </div>
 
       <div className="mt-3 space-y-0.5">
+        <Toggle
+          icon={<Sparkles className="h-4 w-4" />}
+          label={t('settings.soundMotion')}
+          desc={t('settings.soundMotion.desc')}
+          checked={settings.soundMotion}
+          onChange={(v) => update('soundMotion', v)}
+        />
         <Toggle
           icon={<Contrast className="h-4 w-4" />}
           label={t('support.contrast')}

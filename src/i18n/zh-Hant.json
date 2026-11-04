@@ -211,6 +211,8 @@
   "sen.toggle.dyslexia": "寬鬆間距",
   "sen.toggle.dyslexia.desc": "加大字距、行距同段落間距",
   "sen.toggle.motion.desc": "關閉過場同動態效果",
+  "settings.soundMotion": "音效同動效",
+  "settings.soundMotion.desc": "完成課時可播短動畫同音效；預設關閉。跟系統「減少動態效果」。",
   "sen.toggle.focus.desc": "一次只顯示一個步驟，附 25 分鐘專注計時",
   "sen.toggle.read.desc": "打開短課卡時自動讀出內容（可隨時停止）",
   "sen.reset": "還原預設",

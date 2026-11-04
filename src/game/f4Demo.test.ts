@@ -224,25 +224,25 @@ describe('F.4 demo slice', () => {
     assert.equal(map.includes('SEN'), false)
   })
 
-  it('wires November lesson tiles with对照表 titles, goals, and local covers', () => {
+  it('wires every F.4 lesson tile to a local cover, and keeps November titles', () => {
     for (const name of FILES) {
       const lessons = pack(name).units.flatMap((unit) => unit.lessons)
       const copy = NOVEMBER_COPY[name]
       for (const lesson of lessons) {
-        if (!NOVEMBER_LESSONS.includes(lesson.id as (typeof NOVEMBER_LESSONS)[number])) {
-          assert.equal(lesson.coverImage, undefined, `${name} ${lesson.id}`)
-          continue
+        if (NOVEMBER_LESSONS.includes(lesson.id as (typeof NOVEMBER_LESSONS)[number])) {
+          const expected = copy[lesson.id as keyof typeof copy]
+          assert.equal(lesson.title, expected.title, `${name} ${lesson.id}`)
+          assert.equal(lesson.subtitle, expected.goal, `${name} ${lesson.id}`)
         }
-        const expected = copy[lesson.id as keyof typeof copy]
-        assert.equal(lesson.title, expected.title, `${name} ${lesson.id}`)
-        assert.equal(lesson.subtitle, expected.goal, `${name} ${lesson.id}`)
         const cover = coverFromUnit(lesson)
         assert.equal(cover.coverImage, `/content/learning-map-illustrations/f4-covers/${lesson.id}.png`, name)
         assert.equal(cover.coverCredit, lesson.coverCredit, name)
         assert.ok((cover.coverCredit ?? '').length > 0, name)
         assert.ok(statSync(resolve(PUBLIC, cover.coverImage.slice(1))).size > 1000, lesson.id)
-        const blob = JSON.stringify(lesson)
-        assert.equal(/HKEAA|考評局|考评局|SEN|IQ|FOMO/.test(blob), false, `${name} ${lesson.id}`)
+        if (NOVEMBER_LESSONS.includes(lesson.id as (typeof NOVEMBER_LESSONS)[number])) {
+          const blob = JSON.stringify(lesson)
+          assert.equal(/HKEAA|考評局|考评局|SEN|IQ|FOMO/.test(blob), false, `${name} ${lesson.id}`)
+        }
       }
     }
   })

@@ -679,7 +679,15 @@ function UnitSection({
         </>
       }
     >
-      {unit.coverImage ? <UnitCover src={unit.coverImage} credit={unit.coverCredit} /> : null}
+      {unit.coverImage ? (
+        <UnitCover
+          src={unit.coverImage}
+          credit={unit.coverCredit}
+          lesson={unit.coverImage.includes('/map-covers/')}
+          title={unit.coverImage.includes('/map-covers/') ? unit.title : undefined}
+          lessonId={unit.id}
+        />
+      ) : null}
       <div className="p-5">
       {unit.subtitle ? <p className="text-sm text-slate-600">{unit.subtitle}</p> : null}
       {banner}
@@ -823,7 +831,8 @@ const COVER_TITLE_PLATE: Record<string, string> = {
   'F4-U3-L4': 'inset-x-[6%] top-[3%] h-[19%]',
 }
 
-const COVER_TITLE_PLATE_FALLBACK = 'inset-x-[7%] top-[6%] h-[16%]'
+/** Blank plate on 1280×720 lesson and art-history unit covers. */
+const COVER_TITLE_PLATE_FALLBACK = 'inset-x-[6%] top-[7%] h-[27%]'
 
 function UnitCover({
   src,

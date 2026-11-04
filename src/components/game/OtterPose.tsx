@@ -1,6 +1,7 @@
 import { getBadgeById } from '../../game/rewards'
 import { OTTER_SRC, otterEnterMs, type OtterEnter, type OtterPoseId } from '../../game/otterMascot'
 import { t } from '../../i18n'
+import { ChestOpenFrame } from './SoftMotion'
 
 const SIZE = {
   sm: { px: 96, className: 'h-16 w-16' },
@@ -58,35 +59,42 @@ export function OtterPose({
 /** Optional one-chest celebrate. Open reveals ＋10 learning points and any new achievements. Later removes it. */
 export function OtterChest({
   reduceMotion,
+  play = false,
   opened,
   badgeIds,
   onOpen,
   onSkip,
 }: {
   reduceMotion: boolean
+  /** Gear opt-in. The open frame stays static when this is false. */
+  play?: boolean
   opened: boolean
   badgeIds: readonly string[]
   onOpen: () => void
   onSkip: () => void
 }) {
-  const rewardMs = otterEnterMs(reduceMotion, 'celebrate')
+  const rewardMs = otterEnterMs(reduceMotion || !play, 'celebrate')
   const badges = badgeIds.map((id) => ({ id, title: getBadgeById().get(id)?.title ?? id }))
   return (
     <section
       data-testid="otter-chest"
       aria-label={t('mascot.chest')}
-      className="mt-4 rounded-3xl border border-[#0D9488]/25 bg-[#FFF9E9] px-4 py-4 text-center"
+      className="mt-5 rounded-3xl border border-[#0D9488]/20 bg-[#FFF9E9] px-5 py-6 text-center"
     >
-      <OtterPose
-        pose="chest"
-        label={t('mascot.chest')}
-        reduceMotion={reduceMotion}
-        enter="step"
-        testId="otter-pose-chest"
-      />
+      {opened ? (
+        <ChestOpenFrame play={play && !reduceMotion} />
+      ) : (
+        <OtterPose
+          pose="chest"
+          label={t('mascot.chest')}
+          reduceMotion={reduceMotion || !play}
+          enter="step"
+          testId="otter-pose-chest"
+        />
+      )}
       {opened ? (
         <div
-          className="otter-celebrate mt-2"
+          className="otter-celebrate mt-3"
           data-testid="otter-chest-reward"
           data-otter-enter={rewardMs === 0 ? 'instant' : 'celebrate'}
           role="status"
@@ -104,12 +112,12 @@ export function OtterChest({
           ) : null}
         </div>
       ) : (
-        <div className="mt-3 flex flex-wrap justify-center gap-2">
+        <div className="mt-4 flex flex-col items-center">
           <button
             type="button"
             data-testid="otter-chest-open"
             onClick={onOpen}
-            className="rounded-2xl bg-[#0D9488] px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_#0f766e] hover:bg-[#0f766e]"
+            className="w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white hover:bg-[#0f766e]"
           >
             {t('mascot.chest.cta')}
           </button>
@@ -117,7 +125,7 @@ export function OtterChest({
             type="button"
             data-testid="otter-chest-skip"
             onClick={onSkip}
-            className="rounded-2xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+            className="mt-3 min-h-11 text-sm font-semibold text-slate-500 underline-offset-2 hover:underline"
           >
             {t('mascot.chest.skip')}
           </button>
