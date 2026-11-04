@@ -28,6 +28,7 @@ import {
 import { PASS_ACCURACY, getBadgeById, masteryFor, masteryHint, masteryLabel } from '../../game/rewards'
 import { softMotionPlay } from '../../game/softMotion'
 import { getLocale, joinList, t } from '../../i18n'
+import { shortLessonFooterCta } from '../../lib/shortLessonCta'
 import {
   DEFAULT_LESSON_FOLDS,
   LESSON_FOLD_IDS,
@@ -243,6 +244,14 @@ export function LessonPlayer({
     foldButtonRefs.current[LESSON_FOLD_IDS[nextIndex]]?.focus()
   }
 
+  const lastCard = cardIdx >= lesson.cards.length - 1
+  const nextTone = shortLessonFooterCta({
+    folds: presentation === 'folds',
+    practiceOpen: foldOpen.practice,
+    phase,
+    lastCard,
+  })
+
   const cardsStage = card ? (
     <CardsStage
       card={card}
@@ -253,9 +262,8 @@ export function LessonPlayer({
       cardText={cardText}
       autoRead={settings.readAloud}
       autoKey={`${lesson.id}-${cardIdx}`}
-      nextLabel={
-        cardIdx < lesson.cards.length - 1 ? t('lp.next') : phase === 'cards' ? t('lp.startQuiz') : t('lp.continue')
-      }
+      nextLabel={lastCard ? (phase === 'cards' ? t('lp.startQuiz') : t('lp.continue')) : t('lp.next')}
+      nextTone={nextTone}
       onPrev={() => setCardIdx((i) => i - 1)}
       onNext={() => {
         if (cardIdx < lesson.cards.length - 1) {
@@ -474,6 +482,7 @@ function CardsStage({
   autoRead,
   autoKey,
   nextLabel,
+  nextTone,
   onPrev,
   onNext,
 }: {
@@ -486,6 +495,7 @@ function CardsStage({
   autoRead: boolean
   autoKey: string
   nextLabel: string
+  nextTone: 'primary' | 'quiet' | 'hidden'
   onPrev: () => void
   onNext: () => void
 }) {
@@ -519,14 +529,20 @@ function CardsStage({
         >
           <ArrowLeft className="h-4 w-4" aria-hidden /> {t('lp.prev')}
         </button>
-        <button
-          type="button"
-          onClick={onNext}
-          className="inline-flex items-center gap-1.5 rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_#1d4ed8] hover:bg-blue-500 active:translate-y-0.5 active:shadow-none"
-        >
-          {nextLabel}
-          <ArrowRight className="h-4 w-4" aria-hidden />
-        </button>
+        {nextTone === 'hidden' ? null : (
+          <button
+            type="button"
+            onClick={onNext}
+            className={
+              nextTone === 'quiet'
+                ? 'inline-flex items-center gap-1.5 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100'
+                : 'inline-flex items-center gap-1.5 rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_#1d4ed8] hover:bg-blue-500 active:translate-y-0.5 active:shadow-none'
+            }
+          >
+            {nextLabel}
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </button>
+        )}
       </div>
     </div>
   )
