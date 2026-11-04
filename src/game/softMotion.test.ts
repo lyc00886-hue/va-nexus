@@ -1,10 +1,12 @@
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { coverFromUnit } from './f4Media.ts'
 import {
+  CELEBRATE_CUTS_MS,
   MOTION_V2_CELEBRATE_MS,
   MOTION_V2_OTTER,
   MOOD_EMPTY_MAP,
@@ -73,8 +75,13 @@ describe('early wire covers and soft motion', () => {
 
   it('plays a visible otter clap and nod once, and stays on idle when motion is off', () => {
     assert.equal(MOTION_V2_CELEBRATE_MS >= 700 && MOTION_V2_CELEBRATE_MS <= 900, true)
-    const hold = MOTION_V2_CELEBRATE_MS / 4
-    assert.equal(hold >= 180 && hold <= 300, true)
+    assert.equal(CELEBRATE_CUTS_MS[0], 0)
+    assert.equal(CELEBRATE_CUTS_MS[CELEBRATE_CUTS_MS.length - 1], MOTION_V2_CELEBRATE_MS)
+    const clapHold = CELEBRATE_CUTS_MS[2] - CELEBRATE_CUTS_MS[1]
+    assert.equal(clapHold >= 220 && clapHold <= 300, true)
+    for (let i = 1; i < CELEBRATE_CUTS_MS.length; i++) {
+      assert.equal(CELEBRATE_CUTS_MS[i] > CELEBRATE_CUTS_MS[i - 1], true)
+    }
     assert.deepEqual(celebratePoses(false), ['idle'])
     assert.deepEqual(celebratePoses(true), ['idle', 'clap', 'nod', 'idle'])
     assert.equal(softMotionPlay({ soundMotion: false, reduceMotion: false }), false)
@@ -92,11 +99,20 @@ describe('early wire covers and soft motion', () => {
     assert.equal(frames.includes('MOOD_OTTER_PEEK'), false)
     assert.equal(frames.includes('infinite'), false)
     const css = read('src/index.css')
-    assert.match(css, /soft-celebrate-idle/)
-    assert.match(css, /soft-celebrate-clap/)
-    assert.match(css, /soft-celebrate-nod/)
-    assert.match(css, /--celebrate-ms, 800ms/)
+    const celebrate = css.slice(css.indexOf('Character celebrate'), css.indexOf('.soft-motion-on .soft-spark'))
+    assert.match(celebrate, /soft-celebrate-idle/)
+    assert.match(celebrate, /soft-celebrate-clap/)
+    assert.match(celebrate, /soft-celebrate-nod/)
+    assert.match(celebrate, /--celebrate-ms, 800ms/)
+    assert.match(celebrate, /animation-timing-function: step-start/)
+    assert.match(celebrate, /56\.25%/)
+    assert.equal(celebrate.includes('cubic-bezier'), false)
     assert.match(css, /animation-iteration-count: 1/)
+    const hash = (pose: 'idle' | 'clap' | 'nod') =>
+      createHash('sha256').update(readFileSync(join(PUBLIC, MOTION_V2_OTTER[pose].slice(1)))).digest('hex')
+    assert.equal(hash('idle'), '934e62059641e4baef987540c6318098515ec19b2469e0dafe2fe2d0f612bf6f')
+    assert.equal(hash('clap'), 'cc79a0a91189589f8eaf4eeb24ce2358f382f427858988ec80279acb4787a75a')
+    assert.equal(hash('nod'), '94ce10874311ff8e1eb33aa88acd2c113b5149a0dd68e326e99b0d8a80de0010')
     assert.match(css, /\.sen-reduce-motion \.soft-celebrate-clap/)
     assert.match(css, /html:not\(\[data-sound-motion='on'\]\) \.soft-celebrate-nod/)
   })

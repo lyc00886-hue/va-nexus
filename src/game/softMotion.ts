@@ -43,9 +43,13 @@ export const MOOD_OTTER_PEEK = '/content/learning-map-illustrations/moods/mood-o
 
 /**
  * Motion v2 lesson-complete character. Paths stay stable if a frame file is replaced.
- * Nod is the chin-tuck still. One pass, 700–900ms, no loop.
+ * Idle, chest-paws clap, and happy chin-tuck nod are the aligned set.
+ * One hard-cut pass, 700–900ms, no loop.
  */
 export const MOTION_V2_CELEBRATE_MS = 800
+
+/** Hard-cut edges in ms: idle, clap, nod, idle. No two poses share a millisecond. */
+export const CELEBRATE_CUTS_MS = [0, 200, 450, 700, 800] as const
 
 export const MOTION_V2_OTTER = {
   idle: '/content/learning-map-illustrations/moods/motion-v2/otter-celebrate-idle.png',
