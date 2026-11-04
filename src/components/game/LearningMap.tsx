@@ -2,12 +2,11 @@ import { ChevronLeft, Play } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
-import { useSenSupport } from '../../context/SenSupportContext'
 import { getNodeById, getUnits } from '../../game/curriculum'
 import { getF4Units } from '../../game/f4Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
-import { masteryFor } from '../../game/rewards'
+import { masteryFor, masteryLabel } from '../../game/rewards'
 import { t } from '../../i18n'
 import {
   loadLearningMapSections,
@@ -22,11 +21,9 @@ import { StepMap } from '../easy-read/StepPath'
 import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
-import { ActivityLog } from './ActivityLog'
 import { DemoBadge } from './DemoBadge'
 import { MapPath } from './MapPath'
 import { MapOneCard, MapOneLesson } from './MapOneLesson'
-import { StatCards } from './StatCards'
 
 const TRACK_KEY = 'va-nexus:map-track'
 const MEDIA_KEY = 'va-nexus:map-media'
@@ -64,14 +61,12 @@ function remember(track: Track, mediaId: string | null) {
 export function LearningMap() {
   const { state, isUnlocked, currentNodeId } = useGame()
   const { settings, focusTunnel } = useSen()
-  const { openCheckIn, stored } = useSenSupport()
   const mapOne = useMapOneShell()
   const easy = useEasyRead()
   const [mapLessonId, setMapLessonId] = useState<string | null>(null)
   const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
   const [mediaId, setMediaId] = useState<string | null>(readMediaId)
-  const motion = !settings.reduceMotion
 
   function commitSections(next: LearningMapSections) {
     saveLearningMapSections(next)
@@ -106,9 +101,13 @@ export function LearningMap() {
       }),
     )
     window.requestAnimationFrame(() => {
-      document.getElementById(`map-lesson-${lesson.id}`)?.scrollIntoView({
-        behavior: settings.reduceMotion ? 'auto' : 'smooth',
-        block: 'start',
+      window.requestAnimationFrame(() => {
+        const panel = document.getElementById(`map-lesson-panel-${lesson.id}`)
+        const anchor = panel ?? document.getElementById(`map-lesson-${lesson.id}`)
+        anchor?.scrollIntoView({
+          behavior: settings.reduceMotion ? 'auto' : 'smooth',
+          block: 'nearest',
+        })
       })
     })
   }
@@ -130,12 +129,6 @@ export function LearningMap() {
   const f4Current = f4All.flatMap((unit) => unit.nodes).find((node) => f4Unlocked(node.id) && !completed(node.id))
   const f4Units =
     focusTunnel && f4Current ? f4All.filter((unit) => unit.nodes.some((node) => node.id === f4Current.id)) : f4All
-  const subtitle =
-    track === 'media'
-      ? t('map.media.subtitle', { n: media.length })
-      : track === 'f4'
-        ? t('map.f4.subtitle')
-        : t('map.subtitle')
 
   function chooseTrack(next: Track) {
     setTrack(next)
@@ -171,7 +164,7 @@ export function LearningMap() {
         ) : (
           <>
             {easy.preview ? <EasyReadBar /> : null}
-            <CommitmentBanner />
+            <MapCommitments />
             <MapOneCard onOpen={setMapLessonId} />
           </>
         )}
@@ -182,14 +175,7 @@ export function LearningMap() {
   return (
     <div className="space-y-5">
       {easy.preview ? <EasyReadBar /> : null}
-      <CommitmentBanner />
-      <div>
-        <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
-        <p className="text-sm text-slate-500">{subtitle}</p>
-        <p className="mt-1 text-sm text-slate-600" data-testid="map-page-intro">
-          {t('map.pageIntro')}
-        </p>
-      </div>
+      <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
 
       <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
         <TrackTab active={track === 'history'} onClick={() => chooseTrack('history')}>
@@ -203,78 +189,62 @@ export function LearningMap() {
         </TrackTab>
       </div>
 
-      {!focusTunnel && <StatCards />}
-
-      <div className={`grid gap-5 ${focusTunnel ? '' : 'lg:grid-cols-3'}`}>
-        <div className="space-y-5 lg:col-span-2">
-          {track === 'history' ? (
-            <HistoryTrack
-              units={historyUnits}
-              current={current}
-              currentNodeId={currentNodeId}
-              motion={motion}
-              isUnlocked={isUnlocked}
-              completed={completed}
-              masteryOf={(id) => masteryFor(state.nodes[id])}
-              sections={sections}
-              onToggleLesson={toggleLesson}
-              onCloseLesson={(id) => setLesson(id, false)}
-              onSetFold={setFold}
-              onReveal={revealLesson}
-            />
-          ) : track === 'f4' ? (
-            <HistoryTrack
-              units={f4Units}
-              current={f4Current}
-              currentNodeId={f4Current?.id ?? null}
-              motion={motion}
-              isUnlocked={f4Unlocked}
-              completed={completed}
-              masteryOf={(id) => masteryFor(state.nodes[id])}
-              sections={sections}
-              onToggleLesson={toggleLesson}
-              onCloseLesson={(id) => setLesson(id, false)}
-              onSetFold={setFold}
-              onReveal={revealLesson}
-            />
-          ) : selected ? (
-            <MediaDetail
-              unit={selected}
-              motion={motion}
-              completed={completed}
-              masteryOf={(id) => masteryFor(state.nodes[id])}
-              sections={sections}
-              onToggleLesson={toggleLesson}
-              onCloseLesson={(id) => setLesson(id, false)}
-              onSetFold={setFold}
-              onReveal={revealLesson}
-              onBack={closeMedia}
-            />
-          ) : (
-            <MediaPicker units={media} completed={completed} onOpen={openMedia} />
-          )}
-        </div>
-
-        {!focusTunnel && (
-          <div className="space-y-5">
-            <ActivityLog />
-            <section className="rounded-3xl border border-slate-200 bg-white p-4 text-sm shadow-sm">
-              <h3 className="font-bold text-slate-900">{t('map.ladder')}</h3>
-              <p className="mt-1 text-xs text-slate-500">{t('map.ladder.text')}</p>
-              <h3 className="mt-4 font-bold text-slate-900">{t('map.support')}</h3>
-              <p className="mt-1 text-xs text-slate-500">{t('map.support.text')}</p>
-              <button
-                type="button"
-                onClick={openCheckIn}
-                className="mt-2 rounded-xl border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-semibold text-blue-800 hover:bg-blue-100"
-              >
-                {stored.checkIn ? t('map.checkin.redo') : t('map.checkin.start')}
-              </button>
-            </section>
-          </div>
-        )}
-      </div>
+      {track === 'history' ? (
+        <HistoryTrack
+          units={historyUnits}
+          current={current}
+          currentNodeId={currentNodeId}
+          isUnlocked={isUnlocked}
+          completed={completed}
+          masteryOf={(id) => masteryFor(state.nodes[id])}
+          sections={sections}
+          onToggleLesson={toggleLesson}
+          onCloseLesson={(id) => setLesson(id, false)}
+          onSetFold={setFold}
+          onReveal={revealLesson}
+        />
+      ) : track === 'f4' ? (
+        <HistoryTrack
+          units={f4Units}
+          current={f4Current}
+          currentNodeId={f4Current?.id ?? null}
+          isUnlocked={f4Unlocked}
+          completed={completed}
+          masteryOf={(id) => masteryFor(state.nodes[id])}
+          sections={sections}
+          onToggleLesson={toggleLesson}
+          onCloseLesson={(id) => setLesson(id, false)}
+          onSetFold={setFold}
+          onReveal={revealLesson}
+        />
+      ) : selected ? (
+        <MediaDetail
+          unit={selected}
+          completed={completed}
+          masteryOf={(id) => masteryFor(state.nodes[id])}
+          sections={sections}
+          onToggleLesson={toggleLesson}
+          onCloseLesson={(id) => setLesson(id, false)}
+          onSetFold={setFold}
+          onReveal={revealLesson}
+          onBack={closeMedia}
+        />
+      ) : (
+        <MediaPicker units={media} completed={completed} onOpen={openMedia} />
+      )}
+      <MapCommitments />
     </div>
+  )
+}
+
+function MapCommitments() {
+  return (
+    <details data-map-chrome="commitments" className="rounded-2xl border border-slate-200 bg-white px-3 py-2">
+      <summary className="cursor-pointer text-xs font-medium text-slate-500">{t('map.commitments')}</summary>
+      <div className="mt-2">
+        <CommitmentBanner embedded />
+      </div>
+    </details>
   )
 }
 
@@ -308,7 +278,6 @@ function HistoryTrack({
   units,
   current,
   currentNodeId,
-  motion,
   isUnlocked,
   completed,
   masteryOf,
@@ -321,21 +290,20 @@ function HistoryTrack({
   units: Unit[]
   current: Lesson | undefined
   currentNodeId: string | null
-  motion: boolean
   isUnlocked: (id: string) => boolean
   completed: (id: string) => boolean
   masteryOf: (id: string) => Mastery
 } & PathControls) {
   return (
     <div data-map-chrome="path" className="space-y-5 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-6">
-      {current && <ContinueButton lesson={current} onContinue={() => onReveal(current)} />}
+      {current && (
+        <ContinueButton lesson={current} mastery={masteryOf(current.id)} onContinue={() => onReveal(current)} />
+      )}
       <MapPath
         units={units}
         currentId={currentNodeId}
-        motion={motion}
         isUnlocked={isUnlocked}
         completed={completed}
-        masteryOf={masteryOf}
         sections={sections}
         onToggleLesson={onToggleLesson}
         onCloseLesson={onCloseLesson}
@@ -432,7 +400,6 @@ function MediaPicker({
 
 function MediaDetail({
   unit,
-  motion,
   completed,
   masteryOf,
   sections,
@@ -443,7 +410,6 @@ function MediaDetail({
   onBack,
 }: {
   unit: MediaUnit
-  motion: boolean
   completed: (id: string) => boolean
   masteryOf: (id: string) => Mastery
   onBack: () => void
@@ -461,14 +427,14 @@ function MediaDetail({
         <ChevronLeft className="h-4 w-4" aria-hidden />
         {t('map.media.back')}
       </button>
-      {current && <ContinueButton lesson={current} onContinue={() => onReveal(current)} />}
+      {current && (
+        <ContinueButton lesson={current} mastery={masteryOf(current.id)} onContinue={() => onReveal(current)} />
+      )}
       <MapPath
         units={[unit]}
         currentId={current?.id ?? null}
-        motion={motion}
         isUnlocked={unlocked}
         completed={completed}
-        masteryOf={masteryOf}
         sections={sections}
         onToggleLesson={onToggleLesson}
         onCloseLesson={onCloseLesson}
@@ -530,7 +496,15 @@ function MediaNotes({ unit }: { unit: MediaUnit }) {
   )
 }
 
-function ContinueButton({ lesson, onContinue }: { lesson: Lesson; onContinue: () => void }) {
+function ContinueButton({
+  lesson,
+  mastery,
+  onContinue,
+}: {
+  lesson: Lesson
+  mastery: Mastery
+  onContinue: () => void
+}) {
   return (
     <button
       type="button"
@@ -546,6 +520,7 @@ function ContinueButton({ lesson, onContinue }: { lesson: Lesson; onContinue: ()
         <span className="block text-lg font-bold">{lesson.title}</span>
         <span className="block text-sm text-teal-50">
           {lesson.subtitle} · {t('common.aboutMin', { n: lesson.minutes })}
+          {mastery !== 'none' ? ` · ${masteryLabel(mastery)}` : ''}
         </span>
       </span>
     </button>
