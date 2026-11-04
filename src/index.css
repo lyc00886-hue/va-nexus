@@ -430,6 +430,24 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
   }
 }
 
+/* Mobile path only: tuck the sticky platform header off-screen on scroll-down.
+   The display "reduce motion" switch already zeroes transition-duration.
+   Desktop (md, 768+) keeps the header put. */
+@media (max-width: 767px) {
+  .platform-header {
+    transition: transform 160ms ease-out;
+  }
+  .platform-header[data-collapsed='true'] {
+    transform: translateY(-100%);
+    pointer-events: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .platform-header {
+    transition: none;
+  }
+}
+
 @media (min-width: 1024px) {
   .library-browser-side {
     position: sticky;
