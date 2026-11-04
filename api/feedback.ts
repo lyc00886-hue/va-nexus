@@ -17,6 +17,7 @@
 
 import { createHash } from 'node:crypto'
 import type { SupabaseClient } from '@supabase/supabase-js'
+import { pickSocraticCue } from './socraticBank.ts'
 
 type Stage = 'describe' | 'analyze' | 'interpret' | 'judge'
 
@@ -35,27 +36,28 @@ const DSE_MOVE: Record<Stage, { en: string; zhHant: string; zhHans: string; focu
     zhHant: '描述',
     zhHans: '描述',
     focus:
-      'Focus on observable facts only: subject matter, medium, colour, line, shape, texture, and where things sit. No interpretation and no judgement yet.',
+      'Stay on Description only. Ask about observable facts: subject, medium, colour, line, shape, texture, and position. No interpretation and no judgement yet.',
   },
   analyze: {
     en: 'Analysis',
     zhHant: '分析',
     zhHans: '分析',
     focus:
-      'Focus on formal elements and how they are organised: composition, colour relationships, line, texture, contrast, balance, rhythm, and space. No judgement yet.',
+      'Stay on Analysis only. Ask how elements are organised: composition, contrast, balance, rhythm, focus, and proportion. Do not say whether it is good or bad, and do not jump to meaning.',
   },
   interpret: {
     en: 'Interpretation',
     zhHant: '詮釋',
     zhHans: '诠释',
-    focus: 'Focus on meaning, mood, and context, tied only to visual evidence the student already wrote.',
+    focus:
+      'Stay on Interpretation only. Ask for a possible feeling or meaning, and require visual evidence: what they see that supports the idea. Do not state the meaning.',
   },
   judge: {
     en: 'Judgement',
     zhHant: '評價',
     zhHans: '评价',
     focus:
-      'Focus on a reasoned judgement with criteria the student can point to, and on what they might try in their own work.',
+      'Stay on Judgement only. Ask about effectiveness against a criterion the student names, tied to visual evidence, and what they might borrow for their own work without copying a style. Do not score or write the evaluation for them.',
   },
 }
 
@@ -466,17 +468,41 @@ export function formativeLockLine(): string {
   ].join(' ')
 }
 
-export function feldmanSystemPrompt(stage: Stage, locale: Locale): string {
+/** §B lock: one question, no final answer, this stage only, evidence on later stages. */
+function socraticRuleLine(stage: Stage): string {
+  const evidence =
+    stage === 'interpret' || stage === 'judge'
+      ? 'This stage must ask what visual evidence supports the idea.'
+      : 'Do not jump ahead to a later stage.'
+  return [
+    'Socratic coach: the student writes. You do not answer for them.',
+    'At most one question in the reply. You may add at most one short praise. Do not stack a question list.',
+    'Do not give a final answer, a correct interpretation, or lines the student should copy as their conclusion.',
+    'Never write that the work therefore means something, that there is one correct reading, or that they should write a finished paragraph.',
+    'Stay on this Feldman stage only.',
+    evidence,
+    'If they are stuck, offer one unfilled sentence frame or two or three observation directions, still without answering, and still only one question.',
+    'Keep the question to 28 Chinese characters or fewer, or 12 English words. Keep any praise to 16 Chinese characters or fewer.',
+    'Never use these with the student: SEN, diagnosis, IQ, streak, hearts, gems, combo, disability labels, or a medical judgment.',
+    'Do not invent artwork details the student did not write. Never ask for or mention age or birth year.',
+  ].join(' ')
+}
+
+export function feldmanSystemPrompt(stage: Stage, locale: Locale, studentText = ''): string {
   const move = DSE_MOVE[stage]
   const zh = locale === 'zh-Hans' ? move.zhHans : move.zhHant
+  const cue =
+    locale === 'zh-Hant'
+      ? `This turn, ask only this one question (at most one question mark; do not add a second question, a list, or a final answer): ${pickSocraticCue(stage, studentText).ask}`
+      : 'Ask exactly one question for this stage. Do not list questions or give a final answer.'
   return [
-    'You are a supportive Visual Arts teacher giving Feldman-method writing feedback for senior secondary visual arts.',
+    'You are a Socratic Visual Arts coach for senior secondary students. You ask; the student writes.',
     `This step is the public criticism move ${move.en} / ${zh}.`,
     move.focus,
     'Use these public step names only. Do not quote a mark scheme, examiner report, candidate script, or private assessment file.',
     languageLine(locale),
-    'Be concise (3–6 short sentences). Praise one strength, then give 1–2 concrete next steps.',
-    'Do not invent artwork details the student did not write. Never ask for or mention age or birth year.',
+    socraticRuleLine(stage),
+    cue,
     formativeLockLine(),
   ].join(' ')
 }
@@ -907,11 +933,12 @@ async function handleFeedback(request: Request): Promise<Response> {
   const apiKey = process.env.GEMINI_API_KEY
   if (!apiKey) return fail(503, locale, 'no_key')
 
-  const system = feldmanSystemPrompt(stage, locale)
+  const system = feldmanSystemPrompt(stage, locale, text)
 
   const userParts = [
     artwork ? `Artwork / context: ${artwork}` : null,
     `Student writing (${stage}):\n${text}`,
+    'Reply with at most one question. Do not give the final answer.',
   ]
     .filter(Boolean)
     .join('\n\n')

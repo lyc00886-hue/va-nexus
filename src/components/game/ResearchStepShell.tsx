@@ -1,6 +1,7 @@
 import { ChevronLeft } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { t } from '../../i18n'
+import { socraticStageZh } from '../../lib/socraticCopy'
 import {
   advanceChecklist,
   RESEARCH_STEP_COPY,
@@ -115,11 +116,14 @@ export function ResearchStepShell({
     setPhase('write')
   }
 
+  const stageName = stage ? socraticStageZh(stage.key) : null
+
   if (phase === 'ai') {
     return (
       <AiLearningTipScreen
         ai={ai}
         checklist={items}
+        stageName={stageName}
         onRequestAi={onRequestAi}
         onBack={back}
         onContinue={() => {
@@ -194,6 +198,9 @@ export function ResearchStepShell({
       <h3 id="rs-step-title" className="text-2xl font-bold text-slate-900">
         {heading}
       </h3>
+      {stageName ? (
+        <p className="text-xs text-slate-500">{t('research.socratic.progressHint', { stage: stageName })}</p>
+      ) : null}
 
       {phase === 'write' && stage && (
         <div className="space-y-3">
