@@ -517,6 +517,10 @@ function ContinueButton({
 /**
  * Blank title plates on the November lesson covers (1280×720).
  * The overlay is the lesson title for the active locale, never the short goal or one-liner.
+ *
+ * Plates are 19–27% of a w-40 16:9 cover (~17–24px). Type stays in rem so it
+ * scales with that card, not the viewport. 0.4375rem (7px at the default root)
+ * keeps every locale title inside the band, at most two lines.
  */
 const COVER_TITLE_PLATE: Record<string, string> = {
   'F4-U2-L3': 'inset-x-[6%] top-[7%] h-[27%]',
@@ -560,10 +564,10 @@ function UnitCover({
           <p
             data-cover-title={title}
             data-testid={lessonId ? `cover-title-${lessonId}` : 'cover-title'}
-            className={`pointer-events-none absolute ${plate} flex items-center justify-center overflow-hidden text-balance px-1 text-center text-[clamp(0.72rem,2.1vw,1.35rem)] font-bold leading-[1.15] text-[#164e4c]`}
+            className={`pointer-events-none absolute ${plate} flex items-center justify-center px-1 text-center text-[#164e4c]`}
             aria-hidden="true"
           >
-            {title}
+            <span className="block w-full min-w-0 text-[0.4375rem] font-bold leading-[1.2]">{title}</span>
           </p>
         ) : null}
       </div>

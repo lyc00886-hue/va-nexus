@@ -216,6 +216,10 @@ describe('F.4 demo slice', () => {
     assert.match(map, /title=\{node\.title\}/)
     assert.equal(map.includes('title={node.subtitle}'), false)
     assert.match(map, /data-cover-title=\{title\}/)
+    assert.match(map, /text-\[0\.4375rem\]/)
+    assert.equal(map.includes('overflow-hidden'), false)
+    assert.equal(map.includes('2.1vw'), false)
+    assert.equal(map.includes('text-balance'), false)
     for (const id of NOVEMBER_LESSONS) {
       assert.match(map, new RegExp(`'${id}'`))
     }
