@@ -20,18 +20,30 @@ import handler, {
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 
 const DSE_EN = {
-  describe: 'Literal Description',
-  analyze: 'Formal Analysis',
+  describe: 'Description',
+  analyze: 'Analysis',
   interpret: 'Interpretation',
-  judge: 'Value Judgment',
+  judge: 'Judgement',
 } as const
 
 const DSE_ZH = {
-  describe: { 'zh-Hant': '字面描述', 'zh-Hans': '字面描述', en: '字面描述' },
-  analyze: { 'zh-Hant': '形式分析', 'zh-Hans': '形式分析', en: '形式分析' },
+  describe: { 'zh-Hant': '描述', 'zh-Hans': '描述', en: '描述' },
+  analyze: { 'zh-Hant': '分析', 'zh-Hans': '分析', en: '分析' },
   interpret: { 'zh-Hant': '詮釋', 'zh-Hans': '诠释', en: '詮釋' },
-  judge: { 'zh-Hant': '價值判斷', 'zh-Hans': '价值判断', en: '價值判斷' },
+  judge: { 'zh-Hant': '評價', 'zh-Hans': '评价', en: '評價' },
 } as const
+
+const REJECTED_STAGE_NAMES = [
+  'Literal Description',
+  'Formal Analysis',
+  'Value Judgment',
+  'Value Judgement',
+  'Judgment',
+  '字面描述',
+  '形式分析',
+  '價值判斷',
+  '价值判断',
+] as const
 
 function futureJwt(): string {
   const header = Buffer.from(JSON.stringify({ alg: 'none', typ: 'JWT' })).toString('base64url')
@@ -53,12 +65,15 @@ function identity(over: Partial<FeedbackUsageIdentity> = {}): FeedbackUsageIdent
 }
 
 describe('DSE Feldman wording', () => {
-  test('system prompts name the public criticism moves and keep the formative lock', () => {
+  test('system prompts name the short public steps and keep the formative lock', () => {
     for (const stage of ['describe', 'analyze', 'interpret', 'judge'] as const) {
       for (const locale of ['en', 'zh-Hant', 'zh-Hans'] as const) {
         const system = feldmanSystemPrompt(stage, locale)
         assert.equal(system.includes(DSE_EN[stage]), true, `${stage} ${locale}`)
         assert.equal(system.includes(DSE_ZH[stage][locale]), true, `${stage} ${locale}`)
+        for (const rejected of REJECTED_STAGE_NAMES) {
+          assert.equal(system.includes(rejected), false, `${stage} ${locale} ${rejected}`)
+        }
         assert.equal(system.includes(formativeLockLine()), true)
         assert.match(system, /Do not award official scores, HKEAA grades, SBA marks/)
         assert.match(system, /Do not edit, fix, redraw, crop, or rewrite any image/)
@@ -70,17 +85,17 @@ describe('DSE Feldman wording', () => {
     }
   })
 
-  test('Feldman stage labels use the Literal / Formal / Value names', () => {
+  test('Feldman stage labels use the short public names', () => {
     const files = {
-      'feldman.json': { describe: '字面描述', analyse: '形式分析', interpret: '詮釋', judge: '價值判斷' },
-      'feldman.en.json': { describe: '字面描述', analyse: '形式分析', interpret: '詮釋', judge: '價值判斷' },
-      'feldman.zh-Hans.json': { describe: '字面描述', analyse: '形式分析', interpret: '诠释', judge: '价值判断' },
+      'feldman.json': { describe: '描述', analyse: '分析', interpret: '詮釋', judge: '評價' },
+      'feldman.en.json': { describe: '描述', analyse: '分析', interpret: '詮釋', judge: '評價' },
+      'feldman.zh-Hans.json': { describe: '描述', analyse: '分析', interpret: '诠释', judge: '评价' },
     } as const
     const en = {
-      describe: 'Literal Description',
-      analyse: 'Formal Analysis',
+      describe: 'Description',
+      analyse: 'Analysis',
       interpret: 'Interpretation',
-      judge: 'Value Judgment',
+      judge: 'Judgement',
     }
     for (const [file, zh] of Object.entries(files)) {
       const pack = JSON.parse(readFileSync(join(root, 'src/content', file), 'utf8')) as {

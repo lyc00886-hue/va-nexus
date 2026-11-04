@@ -2,8 +2,8 @@
   "version": 1,
   "stages": [
     {
-      "id": "describe", "zh": "字面描述", "en": "Literal Description",
-      "goal": "客觀講出睇到乜，唔加判斷",
+      "id": "describe", "zh": "描述", "en": "Description",
+      "goal": "客觀講出睇到乜，未評好壞",
       "frames": [
         "呢件作品係一幅以＿＿（媒介）創作嘅＿＿（類型），尺寸約＿＿。",
         "畫面主要描繪咗＿＿，位於畫面嘅＿＿（前景／中景／背景）。",
@@ -13,7 +13,7 @@
       "checklist": ["媒介與物料", "主題／題材", "色彩", "線條與形狀", "空間位置"]
     },
     {
-      "id": "analyse", "zh": "形式分析", "en": "Formal Analysis",
+      "id": "analyse", "zh": "分析", "en": "Analysis",
       "goal": "講元素同原理點樣組織畫面",
       "frames": [
         "藝術家以＿＿構圖，令視線由＿＿引向＿＿。",
@@ -35,7 +35,7 @@
       "checklist": ["主題意念", "情感氛圍", "象徵", "創作背景", "必須有視覺證據支持"]
     },
     {
-      "id": "judge", "zh": "價值判斷", "en": "Value Judgment",
+      "id": "judge", "zh": "評價", "en": "Judgement",
       "goal": "有理據咁評價成效，並連結自己創作",
       "frames": [
         "作品成功地／未能＿＿，因為＿＿。",

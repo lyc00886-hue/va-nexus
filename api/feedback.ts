@@ -21,24 +21,28 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 type Stage = 'describe' | 'analyze' | 'interpret' | 'judge'
 
 /**
- * Public senior-secondary criticism names for the four Feldman steps.
- * Wording is the published move (literal / formal / interpretation / value),
- * not a mark scheme, examiner report, or candidate script.
+ * Short public names for the four Feldman writing steps.
+ * zh-Hant / zh-Hans / en:
+ * 描述 / 描述 / Description,
+ * 分析 / 分析 / Analysis,
+ * 詮釋 / 诠释 / Interpretation,
+ * 評價 / 评价 / Judgement.
+ * Not a mark scheme, examiner report, or candidate script.
  */
 const DSE_MOVE: Record<Stage, { en: string; zhHant: string; zhHans: string; focus: string }> = {
   describe: {
-    en: 'Literal Description',
-    zhHant: '字面描述',
-    zhHans: '字面描述',
+    en: 'Description',
+    zhHant: '描述',
+    zhHans: '描述',
     focus:
-      'Focus on observable facts only: subject matter, medium, colour, line, shape, texture, and where things sit. No interpretation and no value judgment yet.',
+      'Focus on observable facts only: subject matter, medium, colour, line, shape, texture, and where things sit. No interpretation and no judgement yet.',
   },
   analyze: {
-    en: 'Formal Analysis',
-    zhHant: '形式分析',
-    zhHans: '形式分析',
+    en: 'Analysis',
+    zhHant: '分析',
+    zhHans: '分析',
     focus:
-      'Focus on formal elements and how they are organised: composition, colour relationships, line, texture, contrast, balance, rhythm, and space. No value judgment yet.',
+      'Focus on formal elements and how they are organised: composition, colour relationships, line, texture, contrast, balance, rhythm, and space. No judgement yet.',
   },
   interpret: {
     en: 'Interpretation',
@@ -47,11 +51,11 @@ const DSE_MOVE: Record<Stage, { en: string; zhHant: string; zhHans: string; focu
     focus: 'Focus on meaning, mood, and context, tied only to visual evidence the student already wrote.',
   },
   judge: {
-    en: 'Value Judgment',
-    zhHant: '價值判斷',
-    zhHans: '价值判断',
+    en: 'Judgement',
+    zhHant: '評價',
+    zhHans: '评价',
     focus:
-      'Focus on a reasoned value judgment with criteria the student can point to, and on what they might try in their own work.',
+      'Focus on a reasoned judgement with criteria the student can point to, and on what they might try in their own work.',
   },
 }
 

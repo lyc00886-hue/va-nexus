@@ -3,8 +3,8 @@
  "stages": [
   {
    "id": "describe",
-   "zh": "字面描述",
-   "en": "Literal Description",
+   "zh": "描述",
+   "en": "Description",
    "goal": "Say objectively what you see, without judging.",
    "frames": [
     "This work is a ____ (type) made in ____ (medium), about ____ in size.",
@@ -22,8 +22,8 @@
   },
   {
    "id": "analyse",
-   "zh": "形式分析",
-   "en": "Formal Analysis",
+   "zh": "分析",
+   "en": "Analysis",
    "goal": "Explain how the elements and principles organise the picture.",
    "frames": [
     "The artist uses a ____ composition to lead the eye from ____ to ____.",
@@ -61,8 +61,8 @@
   },
   {
    "id": "judge",
-   "zh": "價值判斷",
-   "en": "Value Judgment",
+   "zh": "評價",
+   "en": "Judgement",
    "goal": "Judge how successful the work is, with reasons, and link it to your own art-making.",
    "frames": [
     "The work succeeds / fails in ____, because ____.",
