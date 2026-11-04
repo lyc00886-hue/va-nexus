@@ -355,7 +355,7 @@
     {
       "id": "U2-HK-IDENTITY",
       "title": "Hong Kong Art and Identity",
-      "intro": "From New Ink to contemporary practice, Hong Kong artists respond to the city, identity and collecting spaces—aligned with CCCKLC F.6 themes and museum visits (HK Palace Museum, Xubaizhai).",
+      "intro": "From New Ink to contemporary practice, Hong Kong artists respond to the city, identity and collecting spaces—aligned with Form 6 themes (Self / Tradition / Society) and museum visits (HK Palace Museum, Xubaizhai).",
       "coverImage": "/content/learning-map-illustrations/map-covers/U2-HK-IDENTITY.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -433,7 +433,7 @@
             "Bright colour, naïve forms and dream logic turn Hong Kong hills and harbour into imagined worlds.",
             "Humour and folk-like play challenge the idea that Hong Kong art must only document reality.",
             "For DSE students he models surreal strategies for “everyday city + inner feeling”.",
-            "(Pending teacher review) Maps to CCCKLC’s “explore surreal life” aim."
+            "(Pending teacher review) Maps to this unit’s “explore surreal life” aim."
           ],
           "quiz": [
             {
@@ -499,7 +499,7 @@
             "Lee Kit builds quiet installations with painting, cloth, projection and domestic objects—private, fragile moments.",
             "Wilson Shieh paints contemporary figures in gongbi colour; faces may be blank or role-like, probing identity and gender.",
             "Concept, spatial sensing and figuration—all ask who we are and how we live here.",
-            "(Pending teacher review) Ties to CCCKLC “Self…society” and role-taking."
+            "(Pending teacher review) Ties to this unit’s “Self…society” theme and role-taking."
           ],
           "quiz": [
             {
@@ -565,7 +565,7 @@
             "The Hong Kong Palace Museum stages exhibitions tied to Palace Museum culture—useful for material culture and aesthetics.",
             "The Xubaizhai Collection at the Hong Kong Museum of Art centres Chinese painting and calligraphy for literati study.",
             "A visit is observation practice: composition, colophons, seals, mounting and display narratives.",
-            "CCCKLC F.6 links these visits to self-review and portfolio; keep a visual diary of questions.",
+            "This unit links these visits to self-review and portfolio; keep a visual diary of questions.",
             "(Pending teacher review) Prompt: how do traditional symbols enter life in Hong Kong today?"
           ],
           "quiz": [
@@ -608,7 +608,7 @@
             },
             {
               "type": "mcq",
-              "question": "CCCKLC links museum visits to?",
+              "question": "This unit links museum visits to?",
               "options": [
                 "Self-review / portfolio",
                 "Lunch seating only",
@@ -616,7 +616,7 @@
                 "Cancelling diaries"
               ],
               "answer": "Self-review / portfolio",
-              "explain": "Stated in the scheme."
+              "explain": "Stated in this unit’s learning aims."
             }
           ]
         }
@@ -625,7 +625,7 @@
     {
       "id": "U3-WEST-MODERN",
       "title": "Introduction to Western Modernism",
-      "intro": "From Impressionism to abstraction, then a bridge to postmodern identity, Cindy Sherman and the YBA—matching CCCKLC needs.",
+      "intro": "From Impressionism to abstraction, then a bridge to postmodern identity, Cindy Sherman and the YBA—matching this unit’s learning aims.",
       "coverImage": "/content/learning-map-illustrations/map-covers/U3-WEST-MODERN.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -837,7 +837,7 @@
             "Cindy Sherman’s Untitled Film Stills (1977–1980) stages typed female roles to probe gaze and representation.",
             "Pop Art paved the way for postmodernism: Andy Warhol used silkscreen printing to repeat images of celebrities and consumer goods, as in Marilyn Diptych (1962), questioning originality and the value of the handmade.",
             "The YBA emerged in 1990s Britain; Damien Hirst and Tracey Emin became widely known for startling materials and autobiographical strategies.",
-            "This bridge lesson supports CCCKLC role-taking: “Reappear someone in Chinese context”.",
+            "This bridge lesson supports this unit’s role-taking aim: “Reappear someone in Chinese context”.",
             "(Pending teacher review) Extend with Tate “changed identity” / “human figure”."
           ],
           "quiz": [
@@ -880,7 +880,7 @@
             },
             {
               "type": "mcq",
-              "question": "How does this lesson serve CCCKLC?",
+              "question": "How does this lesson serve this unit’s topic?",
               "options": [
                 "Supplies role-taking / identity models",
                 "Replaces Chinese art history",
@@ -888,7 +888,7 @@
                 "Only memorises classics"
               ],
               "answer": "Supplies role-taking / identity models",
-              "explain": "Direct syllabus fit."
+              "explain": "Fits this unit’s learning aims."
             }
           ],
           "artistIds": [
@@ -1253,7 +1253,7 @@
             "Ming–Qing literati painting uses birds, strange rocks, colophons and brush habits as moral/feeling signs; Bada Shanren’s creatures are often read with loyalist anguish.",
             "Wu School figures such as Shen Zhou and Wen Zhengming stress poetry–calligraphy–painting unity; Xu Wei and Chen Chun push freer xieyi ink.",
             "Contemporaries may reuse or deliberately misalign these signs for present issues.",
-            "CCCKLC asks students to read colour/pattern/painting symbols beside postmodern practice.",
+            "This unit asks students to read colour/pattern/painting symbols beside postmodern practice.",
             "(Pending teacher review) Full Ming–Qing unit = U6 backlog."
           ],
           "quiz": [
@@ -1314,7 +1314,7 @@
           "cards": [
             "Sherman’s photo roles show identity shaped by media and gaze.",
             "Wilson Shieh’s gongbi figures offer a HK counterpart for “re-presenting someone”.",
-            "Figure traditions such as Chen Hongshou and Wu Bin feed CCCKLC portrait/identity talk.",
+            "Figure traditions such as Chen Hongshou and Wu Bin feed this unit’s portrait/identity talk.",
             "Studio task: role-take a real person with Chinese media and log it in a visual diary.",
             "(Pending teacher review) F.6 title: Reappear someone in Chinese context."
           ],
@@ -1333,7 +1333,7 @@
             },
             {
               "type": "mcq",
-              "question": "CCCKLC role-taking title stresses?",
+              "question": "The role-taking topic stresses?",
               "options": [
                 "Reappearing someone in a Chinese context",
                 "Only Greek copies",
@@ -1341,7 +1341,7 @@
                 "English essay only"
               ],
               "answer": "Reappearing someone in a Chinese context",
-              "explain": "Syllabus wording."
+              "explain": "Matches this unit’s topic wording."
             },
             {
               "type": "fill",

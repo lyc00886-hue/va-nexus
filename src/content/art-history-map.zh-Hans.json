@@ -355,7 +355,7 @@
     {
       "id": "U2-HK-IDENTITY",
       "title": "香港艺术与身份",
-      "intro": "从新水墨到当代观念，香港艺术家以不同媒介回应城市、身份与收藏空间。对应 CCCKLC F.6「自我／传统／社会」主题及故宫、虚白斋参观。",
+      "intro": "从新水墨到当代观念，香港艺术家以不同媒介回应城市、身份与收藏空间。对应中六「自我／传统／社会」主题及故宫、虚白斋参观。",
       "coverImage": "/content/learning-map-illustrations/map-covers/U2-HK-IDENTITY.png",
       "coverCredit": "自制 · VA-Nexus",
       "lessons": [
@@ -433,7 +433,7 @@
             "他以鲜艳色彩、稚拙造型与梦境构图，把香港山海与城市转化为想象世界。",
             "作品常带幽默与民间趣味，打破「香港只能写实记录」的想象。",
             "对 DSE 学生而言，他示范如何用超现实手法处理「日常城市＋自我情感」。",
-            "（内容待老师审阅）可对照 CCCKLC「explore surreal life」学习目标。"
+            "（内容待老师审阅）可对照本单元「explore surreal life」学习目标。"
           ],
           "quiz": [
             {
@@ -499,7 +499,7 @@
             "李杰以绘画、布幔、投影与日常物件做装置，气氛安静私密，关注细微生活时刻。",
             "石家豪用工笔重彩画当代人物，常以无面或角色化形象探讨身份、性别与社会角色。",
             "概念、空间感知与人物图像，共同回应「我是谁／我们如何生活」。",
-            "（内容待老师审阅）可衔接 CCCKLC「Self…society」与 role-taking。"
+            "（内容待老师审阅）可衔接本单元「Self…society」与 role-taking。"
           ],
           "quiz": [
             {
@@ -565,7 +565,7 @@
             "香港故宫文化博物馆展出与故宫相关的文物与展览，是接触中国物质文化与美学的重要场地。",
             "香港艺术馆「虚白斋」藏品以中国书画为核心，便于对照文人画传统与后世诠释。",
             "参观应练习观察：构图、题跋、印章、装裱与展览叙事如何塑造意义。",
-            "CCCKLC F.6 安排故宫／虚白斋参观，配合自我检视与作品集；可用视觉日记记录问题。",
+            "本单元安排故宫／虚白斋参观，配合自我检视与作品集；可用视觉日记记录问题。",
             "（内容待老师审阅）建议写下三个问题：传统符号如何进入当代香港生活？"
           ],
           "quiz": [
@@ -608,7 +608,7 @@
             },
             {
               "type": "mcq",
-              "question": "CCCKLC F.6 将博物馆参观与什么学习活动连接？",
+              "question": "本单元将博物馆参观与什么学习活动连接？",
               "options": [
                 "自我检视／作品集",
                 "只与午膳安排有关",
@@ -616,7 +616,7 @@
                 "取消视觉日记"
               ],
               "answer": "自我检视／作品集",
-              "explain": "计划写明展览参观后做自我检视与作品集。"
+              "explain": "本单元学习目标写明展览参观后做自我检视与作品集。"
             }
           ]
         }
@@ -625,7 +625,7 @@
     {
       "id": "U3-WEST-MODERN",
       "title": "西方现代主义入门",
-      "intro": "由印象派到抽象，再接到后现代身份与英国 YBA，对应 CCCKLC 对 YBA、Cindy Sherman 与 changed identity 的需要。",
+      "intro": "由印象派到抽象，再接到后现代身份与英国 YBA，对应本单元对 YBA、Cindy Sherman 与 changed identity 的需要。",
       "coverImage": "/content/learning-map-illustrations/map-covers/U3-WEST-MODERN.png",
       "coverCredit": "自制 · VA-Nexus",
       "lessons": [
@@ -837,7 +837,7 @@
             "辛迪·舍曼（Cindy Sherman）的《无题电影静照》（Untitled Film Stills，1977–1980）扮演类型化女性角色，讨论凝视与再现。",
             "波普艺术（Pop Art）是后现代的前奏：安迪·沃荷（Andy Warhol）用丝网印刷重复名人和商品影像，例如《玛丽莲双联画》（1962），质疑原创和手工价值。",
             "英国 YBA（Young British Artists）在1990年代兴起；达米恩·赫斯特、翠西·艾敏等以震撼物料与自传式作品广为人知。",
-            "本课是现代主义骨架之后的「桥梁课」，直接支持 CCCKLC「Role taking／Reappear someone in Chinese context」。",
+            "本课是现代主义骨架之后的「桥梁课」，直接支持本单元「Role taking／Reappear someone in Chinese context」。",
             "（内容待老师审阅）延伸阅读：Tate exam-help「changed identity」「human figure」。"
           ],
           "quiz": [
@@ -880,7 +880,7 @@
             },
             {
               "type": "mcq",
-              "question": "本课如何服务 CCCKLC 课题？",
+              "question": "本课如何服务本单元课题？",
               "options": [
                 "提供 role-taking／身份再现参考",
                 "让学生默写古文",
@@ -1253,7 +1253,7 @@
             "明清文人画常用花鸟、怪石、题跋与笔墨习性作为品格与情感符号；八大山人的鸟鱼眼神常被读作孤愤与遗民心境。",
             "沈周、文征明等吴门传统强调诗书画一体；徐渭、陈淳等写意一路使笔墨更纵放。",
             "当代艺术家可以挪用这些符号，也可以故意错位，使传统进入今日社会问题。",
-            "CCCKLC 要求理解传统中国遗产中的 color／pattern／painting 符号，再与后现代并读。",
+            "本单元要求理解传统中国遗产中的 color／pattern／painting 符号，再与后现代并读。",
             "（内容待老师审阅）完整明清单元列为 U6 backlog；本课只练「符号阅读」。"
           ],
           "quiz": [
@@ -1314,7 +1314,7 @@
           "cards": [
             "Cindy Sherman 用摄影扮演类型角色，揭示身份如何被媒体与凝视塑造。",
             "石家豪用工笔人物探讨当代身份与性别角色；可对读「再呈现某人」的策略。",
-            "陈洪绶、吴彬等人物画传统提供另一套「角色／奇幻／变形」资源，CCCKLC 用来讨论 identity through portrait。",
+            "陈洪绶、吴彬等人物画传统提供另一套「角色／奇幻／变形」资源，本单元用来讨论 identity through portrait。",
             "练习：选一位身边人物，用中国媒介（水墨／工笔元素）做 role-taking，并写视觉日记。",
             "（内容待老师审阅）对齐 F.6 题目：Reappear someone in Chinese context。"
           ],
@@ -1333,7 +1333,7 @@
             },
             {
               "type": "mcq",
-              "question": "CCCKLC Role taking 题目强调？",
+              "question": "Role taking 课题强调？",
               "options": [
                 "在中国语境中再呈现某人",
                 "只临摹希腊神像",
