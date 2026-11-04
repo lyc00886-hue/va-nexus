@@ -51,7 +51,10 @@ Static end frames for empty, celebrate, chest, and step. **自制 · VA-Nexus**.
 | `moods/mood-lessonComplete.png` | `motion.lessonComplete` |
 | `moods/mood-chestOpen.png` | `motion.chestOpen` |
 | `moods/mood-stepAdvance.png` | `motion.stepAdvance` |
-| `moods/mood-otter-peek.png` | Celebrate accent |
+| `moods/mood-otter-peek.png` | Retained peek asset. Lesson-complete no longer uses this 6px accent. |
+| `moods/motion-v2/otter-celebrate-idle.png` | `motion.lessonComplete` character still (gear off / reduce) |
+| `moods/motion-v2/otter-celebrate-clap.png` | Character clap frame |
+| `moods/motion-v2/otter-celebrate-nod.png` | Character nod (chin-tuck). Path stays stable if the raster is replaced. |
 
 ## F4 November lesson-tile covers (`f4-covers/`)
 
