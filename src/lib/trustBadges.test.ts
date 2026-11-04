@@ -107,15 +107,27 @@ describe('activeCommitmentId', () => {
 })
 
 describe('commitment chrome', () => {
-  it('hangs a plain footer on every page and a homepage banner without seal icons', () => {
-    const banner = readFileSync(join(root, 'src/components/CommitmentBadges.tsx'), 'utf8')
+  it('keeps foldable commitments on the map and a residual site footer', () => {
+    const source = readFileSync(join(root, 'src/components/CommitmentBadges.tsx'), 'utf8')
     const app = readFileSync(join(root, 'src/App.tsx'), 'utf8')
     const map = readFileSync(join(root, 'src/components/game/LearningMap.tsx'), 'utf8')
-    assert.match(app, /CommitmentFooter/)
-    assert.match(map, /CommitmentBanner/)
+    const banner = source.slice(source.indexOf('export function CommitmentBanner'), source.indexOf('export function CommitmentFooter'))
+    const footer = source.slice(source.indexOf('export function CommitmentFooter'))
+
+    assert.match(app, /<CommitmentFooter dataLine=\{footer\}/)
+    assert.match(map, /<details[^>]*data-map-chrome="commitments"/)
+    assert.match(map, /t\('map\.commitments'\)/)
+    assert.match(map, /<CommitmentBanner embedded/)
+
+    assert.match(banner, /data-testid="commitment-banner"/)
     assert.match(banner, /footerDisclaimer/)
     assert.match(banner, /shortTitle/)
-    assert.match(banner, /badge\.body/)
+    assert.match(banner, /active\.body/)
     assert.doesNotMatch(banner, /lucide-react|Shield|BadgeCheck|Award|Stamp|Medal|Seal/)
+
+    assert.match(footer, /data-testid="site-footer"/)
+    assert.match(footer, /\{dataLine\}/)
+    assert.match(footer, /<PrivacyLink/)
+    assert.doesNotMatch(footer, /bannerIntro|footerDisclaimer|shortTitle|badge\.body|commitment-footer/)
   })
 })
