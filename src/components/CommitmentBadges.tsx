@@ -6,7 +6,7 @@ import { PrivacyLink } from './PrivacyModal'
 /** Plain text chips. Not seals, medals, or certification marks. */
 const CHIP = 'cursor-pointer rounded-full border px-3 py-1 text-left text-xs font-medium text-slate-700'
 
-export function CommitmentBanner() {
+export function CommitmentBanner({ embedded = false }: { embedded?: boolean }) {
   const file = contentJson<TrustBadgesFile>('trust-badges')
   const introId = useId()
   const bodyId = useId()
@@ -19,7 +19,7 @@ export function CommitmentBanner() {
     <section
       aria-labelledby={introId}
       data-testid="commitment-banner"
-      className="rounded-2xl border border-slate-200 bg-white px-3 py-2.5"
+      className={embedded ? '' : 'rounded-2xl border border-slate-200 bg-white px-3 py-2.5'}
       onKeyDown={(event) => {
         if (event.key !== 'Escape') return
         setPinned(null)

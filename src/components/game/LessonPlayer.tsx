@@ -24,7 +24,7 @@ import {
   resolveOtterMascotEnabled,
   unitSliceFor,
 } from '../../game/otterMascot'
-import { PASS_ACCURACY, getBadgeById, masteryHint, masteryLabel } from '../../game/rewards'
+import { PASS_ACCURACY, getBadgeById, masteryFor, masteryHint, masteryLabel } from '../../game/rewards'
 import { softMotionPlay } from '../../game/softMotion'
 import { getLocale, joinList, t } from '../../i18n'
 import {
@@ -107,7 +107,7 @@ export function LessonPlayer({
   const { settings, easyRead, supportsOn, focusTunnel } = useSen()
   const { state, finishLesson, awardOnce } = useGame()
   const { reportSignal } = useSenSupport()
-  const heartsOn = state.prefs.hearts && !supportsOn
+  const heartsOn = presentation !== 'folds' && state.prefs.hearts && !supportsOn
   const motion = !settings.reduceMotion
   const playSoft = softMotionPlay({ soundMotion: settings.soundMotion, reduceMotion: settings.reduceMotion })
 
@@ -353,18 +353,6 @@ export function LessonPlayer({
             />
           </div>
           {lesson.demo ? <DemoBadge /> : null}
-          {heartsOn ? (
-            <span className="inline-flex items-center gap-1 text-sm font-bold text-rose-500" aria-label={t('lp.hearts', { n: hearts })}>
-              <Heart className="h-5 w-5 fill-rose-500" aria-hidden /> {hearts}
-            </span>
-          ) : (
-            <span
-              className="inline-flex items-center gap-1 text-xs text-slate-400"
-              title={supportsOn ? t('lp.heartsOffSupport') : t('lp.heartsOff')}
-            >
-              <HeartOff className="h-4 w-4" aria-hidden /> {t('lp.unlimited')}
-            </span>
-          )}
         </div>
         <div className="space-y-3">
           {LESSON_FOLD_IDS.map((id, index) => (
@@ -448,9 +436,12 @@ export function LessonPlayer({
 }
 
 function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean }) {
+  const { state } = useGame()
+  const mastery = masteryFor(state.nodes[lesson.id])
   return (
     <div className="space-y-3">
       {lesson.subtitle ? <p className="text-sm text-slate-600">{lesson.subtitle}</p> : null}
+      {mastery !== 'none' ? <p className="text-xs font-semibold text-slate-600">{masteryLabel(mastery)}</p> : null}
       {lesson.artists?.length ? <LessonArtistPanel artists={lesson.artists} /> : null}
       <ul className="space-y-3">
         {lesson.cards.map((item, index) => (

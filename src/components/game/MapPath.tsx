@@ -1,33 +1,22 @@
 import { Check, Lock } from 'lucide-react'
-import { useRef, type KeyboardEvent, type ReactNode } from 'react'
-import type { Lesson, Mastery, Unit } from '../../game/types'
+import { useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import type { Lesson, Unit } from '../../game/types'
 import { lessonExerciseIds, MOOD_PATH_SOFT, pathBendSide } from '../../game/exerciseLogos'
 import { artistCreditSummary } from '../../game/lessonArtistLabels'
-import { masteryLabel } from '../../game/rewards'
 import { MOOD_EMPTY_MAP } from '../../game/softMotion'
 import { t } from '../../i18n'
 import { requestOpenTab } from '../../lib/openTab'
 import type { LessonFoldId } from '../../lib/learningMapSections'
 import { sectionOpen, type LearningMapSections } from '../../lib/learningMapSections'
-import { DemoBadge } from './DemoBadge'
+import { mapPathVisibleIds } from '../../lib/mapPathViewport'
 import { ExerciseMarks } from './ExerciseMark'
 import { LessonPlayer } from './LessonPlayer'
-
-const MASTERY_CHIP: Record<Mastery, string> = {
-  none: 'bg-slate-100 text-slate-500',
-  attempted: 'bg-orange-50 text-orange-700',
-  familiar: 'bg-sky-50 text-sky-700',
-  proficient: 'bg-blue-100 text-blue-800',
-  mastered: 'bg-violet-100 text-violet-800',
-}
 
 type Props = {
   units: Unit[]
   currentId: string | null
-  motion: boolean
   isUnlocked: (id: string) => boolean
   completed: (id: string) => boolean
-  masteryOf: (id: string) => Mastery
   sections: LearningMapSections
   onToggleLesson: (id: string) => void
   onCloseLesson: (id: string) => void
@@ -38,15 +27,13 @@ type Props = {
 
 /**
  * Vertical soft-bent path. Unit titles stay as quiet labels.
- * The path is the thing you see first — lessons are not tucked inside a fold.
+ * The default window is the current lesson, one recent done lesson, and two ahead.
  */
 export function MapPath({
   units,
   currentId,
-  motion,
   isUnlocked,
   completed,
-  masteryOf,
   sections,
   onToggleLesson,
   onCloseLesson,
@@ -55,12 +42,24 @@ export function MapPath({
   bannerFor,
 }: Props) {
   const buttonRefs = useRef<Record<string, HTMLButtonElement | null>>({})
-  const ids = units.flatMap((unit) => unit.nodes.map((node) => node.id))
-  const pathIndex = new Map(ids.map((id, index) => [id, index]))
-  const lessonCount = ids.length
+  const [expanded, setExpanded] = useState(false)
+  const flat = units.flatMap((unit) =>
+    unit.nodes.map((node) => ({
+      id: node.id,
+      done: completed(node.id),
+      current: node.id === currentId,
+    })),
+  )
+  const openIds = new Set(flat.filter((node) => sectionOpen(sections.lessons, node.id)).map((node) => node.id))
+  const windowIds = mapPathVisibleIds(flat, { openIds })
+  const visibleIds = expanded ? flat.map((node) => node.id) : windowIds
+  const visible = new Set(visibleIds)
+  const pathIndex = new Map(visibleIds.map((id, index) => [id, index]))
+  const lessonCount = flat.length
+  const canToggle = flat.length > mapPathVisibleIds(flat).length
 
   function onKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    const last = ids.length - 1
+    const last = visibleIds.length - 1
     let next = index
     if (event.key === 'ArrowDown') next = index === last ? 0 : index + 1
     else if (event.key === 'ArrowUp') next = index === 0 ? last : index - 1
@@ -68,7 +67,7 @@ export function MapPath({
     else if (event.key === 'End') next = last
     else return
     event.preventDefault()
-    buttonRefs.current[ids[next]]?.focus()
+    buttonRefs.current[visibleIds[next]]?.focus()
   }
 
   if (lessonCount === 0) {
@@ -96,49 +95,24 @@ export function MapPath({
   }
 
   return (
-    <div data-path-mood={MOOD_PATH_SOFT} className="space-y-8">
+    <div data-path-mood={MOOD_PATH_SOFT} data-map-viewport={expanded ? 'all' : 'window'} className="space-y-8">
       {units.map((unit) => {
-        const done = unit.nodes.filter((node) => completed(node.id)).length
-        const total = unit.nodes.length
-        const pct = total === 0 ? 0 : Math.round((done / total) * 100)
-        const openNodes = unit.nodes.filter((node) => isUnlocked(node.id) && sectionOpen(sections.lessons, node.id))
+        const nodes = unit.nodes.filter((node) => visible.has(node.id))
+        if (nodes.length === 0) return null
+        const openNodes = nodes.filter((node) => isUnlocked(node.id) && sectionOpen(sections.lessons, node.id))
         return (
           <section key={unit.id} data-testid={`map-unit-${unit.id}`} data-map-residual="unit" className="scroll-mt-24">
             <div className="mx-auto mb-2 max-w-xs text-center">
               <p className="text-xs font-semibold tracking-wide text-teal-800">{t('map.fold.gradeOrUnit')}</p>
               <h3 className="text-lg font-bold text-slate-900">{unit.title}</h3>
-              {unit.subtitle ? <p className="mt-1 line-clamp-2 text-sm text-slate-600">{unit.subtitle}</p> : null}
-              {unit.coverCredit ? <p className="mt-1 text-[11px] leading-snug text-slate-500">{unit.coverCredit}</p> : null}
-              <p className="mt-1 text-xs font-semibold text-slate-500">
-                {t('map.unitProgress', { done, total, pct })}
-              </p>
-              {unit.nodes.some((node) => node.demo) ? (
-                <span className="mt-1 inline-flex justify-center">
-                  <DemoBadge />
-                </span>
-              ) : null}
-            </div>
-            <div
-              className="mx-auto mt-2 h-1.5 max-w-xs overflow-hidden rounded-full bg-white"
-              role="progressbar"
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={pct}
-              aria-label={t('map.unitProgressAria', { title: unit.title, done, total, pct })}
-            >
-              <div
-                className={`h-full rounded-full bg-[#2f9d96] ${motion ? 'transition-[width]' : ''}`}
-                style={{ width: `${pct}%` }}
-              />
             </div>
             {bannerFor ? <div className="mx-auto mt-3 max-w-md">{bannerFor(unit)}</div> : null}
             <ol aria-label={t('map.path.aria')} className="mx-auto mt-4 max-w-sm">
-              {unit.nodes.map((node, index) => {
+              {nodes.map((node, index) => {
                 const indexOnPath = pathIndex.get(node.id) ?? index
                 const unlocked = isUnlocked(node.id)
                 const isDone = completed(node.id)
                 const isCurrent = node.id === currentId
-                const mastery = masteryOf(node.id)
                 const cover = renderCover?.(node)
                 const marks = lessonExerciseIds({ questions: node.questions, artists: node.artists })
                 const status = t(isDone ? 'map.status.done' : unlocked ? 'map.status.open' : 'map.status.locked')
@@ -185,17 +159,7 @@ export function MapPath({
                         >
                           {node.title}
                         </span>
-                        {node.subtitle ? (
-                          <span className={`mt-0.5 line-clamp-2 text-xs ${unlocked ? 'text-slate-500' : 'text-slate-400'}`}>
-                            {node.subtitle}
-                          </span>
-                        ) : null}
                         <ExerciseMarks ids={marks} center />
-                        {mastery !== 'none' ? (
-                          <span className={`mt-1 inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold ${MASTERY_CHIP[mastery]}`}>
-                            {masteryLabel(mastery)}
-                          </span>
-                        ) : null}
                       </button>
                     </h4>
                   </li>
@@ -217,6 +181,17 @@ export function MapPath({
           </section>
         )
       })}
+      {canToggle ? (
+        <button
+          type="button"
+          data-map-more="path"
+          aria-expanded={expanded}
+          onClick={() => setExpanded((open) => !open)}
+          className="mx-auto block min-h-11 px-2 text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
+        >
+          {expanded ? t('map.path.less') : t('map.path.more')}
+        </button>
+      ) : null}
     </div>
   )
 }
