@@ -242,45 +242,51 @@ html {
 .soft-motion-on .soft-otter {
   animation: soft-otter-in var(--soft-ms, 560ms) cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-/* Character celebrate: idle → clap → nod → idle. One pass, 800ms. Ends on idle. */
+/*
+ * Character celebrate: hard cuts, one frame at a time. 800ms.
+ * idle 0–200ms, clap 200–450ms (250ms), nod 450–700ms, idle 700–800ms.
+ * step-start jumps at each offset, so opacities never blend.
+ * Idle, chest-paws clap, and happy chin-tuck nod share one registration.
+ * Do not retarget the paths.
+ */
 @keyframes soft-celebrate-idle {
-  0%,
-  22% {
+  0% {
     opacity: 1;
   }
-  30%,
-  70% {
+  25% {
+    opacity: 1;
+  }
+  87.5% {
     opacity: 0;
   }
-  78%,
   100% {
     opacity: 1;
   }
 }
 @keyframes soft-celebrate-clap {
-  0%,
-  20% {
+  0% {
     opacity: 0;
   }
-  28%,
-  44% {
+  25% {
+    opacity: 0;
+  }
+  56.25% {
     opacity: 1;
   }
-  52%,
   100% {
     opacity: 0;
   }
 }
 @keyframes soft-celebrate-nod {
-  0%,
-  44% {
+  0% {
     opacity: 0;
   }
-  52%,
-  70% {
+  56.25% {
+    opacity: 0;
+  }
+  87.5% {
     opacity: 1;
   }
-  78%,
   100% {
     opacity: 0;
   }
@@ -293,7 +299,7 @@ html {
 .soft-motion-on .soft-celebrate-clap,
 .soft-motion-on .soft-celebrate-nod {
   animation-duration: var(--celebrate-ms, 800ms);
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-timing-function: step-start;
   animation-iteration-count: 1;
   animation-fill-mode: both;
 }

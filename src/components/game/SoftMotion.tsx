@@ -10,7 +10,7 @@ const FRAME_CLASS: Record<CelebratePose, string> = {
 
 /**
  * Lesson-complete still. The mood keeps the check.
- * The otter is a visible idle → clap → nod → idle layer (800ms) when play is on.
+ * The otter hard-cuts idle → clap → nod → idle (800ms). One pose at a time.
  * Gear off or reduce-motion mounts the idle still only. The 6px peek is not this screen.
  */
 export function LessonCompleteFrame({ play }: { play: boolean }) {
