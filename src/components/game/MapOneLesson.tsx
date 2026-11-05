@@ -3,6 +3,8 @@ import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { ListenButton } from '../easy-read/ListenButton'
 import { getNodeById, getUnits } from '../../game/curriculum'
+import type { DraftChoice } from '../../game/thinPractice'
+import { orderMatches, practiceNeedsDraft } from '../../game/thinPractice'
 import type { FillQuestion, Lesson, MatchQuestion, McqQuestion, Question } from '../../game/types'
 import { getLocale, t } from '../../i18n'
 import { readLines, readPlace, writePlace } from '../../lib/easyReadMode'
@@ -19,6 +21,7 @@ import { ExerciseMark } from './ExerciseMark'
 import { LessonCardArt } from './LessonCardArt'
 import { LessonCompleteFrame, StepAdvanceMark } from './SoftMotion'
 import { SoftScreen } from './SoftScreen'
+import { DualReadBoard, OrderBoard, ShortBoard } from './ThinPractice'
 
 const AI_IDLE: AiTipState = { status: 'idle', text: '' }
 
@@ -61,7 +64,7 @@ export function MapOneLesson({
   })
   const [view, setView] = useState<'lesson' | 'celebrate' | 'ai'>('lesson')
   const [revealed, setRevealed] = useState(false)
-  const [choice, setChoice] = useState<number | string | null>(null)
+  const [choice, setChoice] = useState<DraftChoice>(null)
   const [hits, setHits] = useState(0)
   const [lastCorrect, setLastCorrect] = useState<boolean | null>(null)
   const [leaving, setLeaving] = useState(false)
@@ -93,7 +96,11 @@ export function MapOneLesson({
   const chunk = chunks[index]
   const last = chunks.length > 0 && index >= chunks.length - 1
   const practice = chunk?.kind === 'practice' ? lesson.questions[chunk.index] : undefined
-  const waiting = Boolean(practice && !revealed && (practice.type === 'match' || choice === null))
+  const waiting = Boolean(
+    practice &&
+      !revealed &&
+      practiceNeedsDraft(practice.type, choice, practice.type === 'order' ? practice.items.length : 0),
+  )
   const sectionEnd = Boolean(chunk?.kind === 'read' && chunk.index === lesson.cards.length - 1 && lesson.questions.length > 0)
   const feedbackCta = t(lastCorrect ? 'tray.correct.cta' : 'tray.wrong.cta')
   const cta = step
@@ -154,6 +161,8 @@ export function MapOneLesson({
     if (practice && !revealed) {
       if (practice.type === 'mcq') mark(choice === practice.answer)
       else if (practice.type === 'fill') mark(choice === practice.answer)
+      else if (practice.type === 'order') mark(Array.isArray(choice) && orderMatches(choice, practice.items))
+      else if (practice.type === 'dualRead' || practice.type === 'short') mark(true)
       return
     }
     const next = stepChunk(index, chunks.length)
@@ -322,7 +331,7 @@ export function MapOneLesson({
       >
         {lesson.title}
       </h2>
-        {step && practice && !revealed && practice.type !== 'match' ? (
+        {step && practice && !revealed && (practice.type === 'mcq' || practice.type === 'fill') ? (
           <p className="mt-2 text-sm font-semibold text-teal-800">{t('er.quiz.pickOne')}</p>
         ) : null}
         {chunk.kind === 'read' ? (
@@ -525,16 +534,23 @@ function PracticeChunk({
 }: {
   question: Question
   revealed: boolean
-  choice: number | string | null
-  onChoice: (value: number | string) => void
+  choice: DraftChoice
+  onChoice: (value: DraftChoice) => void
   onSolved: (correct: boolean) => void
 }) {
   const mark = exerciseIdForQuestion(question.type)
+  const lines = Array.isArray(choice) ? choice : []
   const body =
     question.type === 'mcq' ? (
       <McqChunk q={question} revealed={revealed} choice={typeof choice === 'number' ? choice : null} onChoice={onChoice} />
     ) : question.type === 'fill' ? (
       <FillChunk q={question} revealed={revealed} choice={typeof choice === 'string' ? choice : null} onChoice={onChoice} />
+    ) : question.type === 'order' ? (
+      <OrderBoard q={question} order={lines} revealed={revealed} onChange={onChoice} />
+    ) : question.type === 'dualRead' ? (
+      <DualReadBoard q={question} lines={lines.length ? lines : ['', '']} revealed={revealed} onChange={onChoice} />
+    ) : question.type === 'short' ? (
+      <ShortBoard q={question} line={lines[0] ?? ''} revealed={revealed} onChange={onChoice} />
     ) : (
       <MatchChunk q={question} onSolved={onSolved} />
     )

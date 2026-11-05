@@ -71,6 +71,34 @@
                 "Values": "Respect different cultural views"
               },
               "explain": "All three work together in VA learning."
+            },
+            {
+              "type": "order",
+              "question": "Put the four appreciation steps in order: describe → analyse → interpret → evaluate.",
+              "options": [
+                "Describe",
+                "Analyse",
+                "Interpret",
+                "Evaluate"
+              ],
+              "explain": "Describe → Analyse → Interpret → Evaluate"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left leans “describe what you see”, right leans “making experiment”. One line each.",
+              "options": [
+                "I see…",
+                "I want to try…"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/01-u1-l1-dualread.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Short answer (structure): in two sentences, how you practise appreciation and making together.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         },
@@ -136,6 +164,34 @@
                 "Artwork/critical studies": "Visual works or critical writing under the theme"
               },
               "explain": "The two parts work together to show process and outcomes."
+            },
+            {
+              "type": "order",
+              "question": "In SBA lab, order the portfolio start steps: seed theme → open research workbook → gather materials → organise artwork／critical pages.",
+              "options": [
+                "Pick a theme seed",
+                "Open a research workbook",
+                "Gather materials",
+                "Organise artwork／critical pages"
+              ],
+              "explain": "Pick a theme seed → Open a research workbook → Gather materials → Organise artwork／critical pages"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left = workbook page, right = artwork photo. One line each on process vs decision.",
+              "options": [
+                "Workbook process",
+                "Artwork decision"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/02-u1-l2-dualread.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Short answer (structure): one theme line + two evidence points — how the workbook serves your artwork／critical study.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         }
@@ -212,6 +268,34 @@
                 "Empty space": "Gives the picture breathing room"
               },
               "explain": "Organising principles control how people look."
+            },
+            {
+              "type": "order",
+              "question": "Order a drawing start: overall proportion → big shapes → main lines → local detail.",
+              "options": [
+                "Overall proportion",
+                "Big shapes",
+                "Main lines",
+                "Local detail"
+              ],
+              "explain": "Overall proportion → Big shapes → Main lines → Local detail"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: dense line vs big colour blocks — where is the visual weight, and why?",
+              "options": [
+                "Which side feels heavier",
+                "Why"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/03-u2-l1-dualread.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Short answer (structure): one line on element + one on principle for your next observational drawing.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ],
           "artistIds": [
@@ -267,6 +351,51 @@
               ],
               "answer": "Theme, reasons for medium, and how composition/symbols communicate",
               "explain": "Link ideas to visual decisions."
+            },
+            {
+              "type": "match",
+              "question": "Match design-thinking steps to class actions (notice／ideate／prototype／reflect).",
+              "options": [
+                "Notice a problem",
+                "Ideate",
+                "Prototype",
+                "Reflect"
+              ],
+              "answer": {
+                "Notice a problem": "Name a situation you want to improve",
+                "Ideate": "Write a few ways to try",
+                "Prototype": "Make one small material try",
+                "Reflect": "Note which try is closer to your intent"
+              },
+              "explain": "Each step is a class action that serves your design intent."
+            },
+            {
+              "type": "order",
+              "question": "Order a material explore: touch → quick try → note feel／limits → choose what best carries intent.",
+              "options": [
+                "Touch the material",
+                "Quick try",
+                "Note the feel and limits",
+                "Choose what best carries your intent"
+              ],
+              "explain": "Touch the material → Quick try → Note the feel and limits → Choose what best carries your intent"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: two material swatches — which texture fits the feeling you mean, and why (one line)?",
+              "options": [
+                "Which texture",
+                "One reason"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/04-u2-l2-dualread.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Short answer (structure): one line each — problem → prototype → learned.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         },
@@ -401,6 +530,51 @@
               ],
               "answer": "As material for theme development and the research workbook",
               "explain": "Diaries feed theme work and the RWB."
+            },
+            {
+              "type": "match",
+              "question": "Match diary fields to use (date／place／one observation／sketch).",
+              "options": [
+                "Date",
+                "Place",
+                "One observation",
+                "Sketch"
+              ],
+              "answer": {
+                "Date": "Mark which day it was",
+                "Place": "Note where you looked",
+                "One observation": "Keep the point you want to remember",
+                "Sketch": "Draw the shape and the light"
+              },
+              "explain": "The four fields together make one visual-diary entry."
+            },
+            {
+              "type": "order",
+              "question": "Order one visual-diary entry: pause on site → observe briefly → sketch／photo → one key line.",
+              "options": [
+                "Pause on site",
+                "Observe for a few minutes",
+                "Sketch or photo",
+                "Write one key line"
+              ],
+              "explain": "Pause on site → Observe for a few minutes → Sketch or photo → Write one key line"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: same corner, day vs night — one line each on light／people flow.",
+              "options": [
+                "Day",
+                "Night"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/05-u3-l1-dualread.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Short answer (structure): date + place + one observation — a mini diary line (no rush).",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         },
@@ -466,6 +640,34 @@
               ],
               "answer": "Ask a theme question you can keep exploring",
               "explain": "A theme question drives research and making."
+            },
+            {
+              "type": "order",
+              "question": "Order community→theme: gather on-site materials → sort → list possible themes → pick one to deepen.",
+              "options": [
+                "Gather on-site materials",
+                "Sort them",
+                "List possible themes",
+                "Pick one to deepen"
+              ],
+              "explain": "Gather on-site materials → Sort them → List possible themes → Pick one to deepen"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: shop-sign detail vs whole corner — which better seeds a theme, and why (one line)?",
+              "options": [
+                "Which one seeds the theme",
+                "Why"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/06-u3-l2-dualread.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Short answer (structure): “I notice…”／“I wonder…” — draft one theme question from community material.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ],
           "artistIds": [

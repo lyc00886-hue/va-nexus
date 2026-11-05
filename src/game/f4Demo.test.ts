@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { describe, it } from 'node:test'
@@ -90,8 +91,10 @@ type Quiz = {
   type: string
   question: string
   options: string[]
-  answer: string | number | Record<string, string>
+  answer?: string | number | Record<string, string>
   wordBank?: string[]
+  image?: string
+  explain?: string
 }
 
 type ArtistMedia = { thumb?: string; license?: string; credit?: string; sourceUrl?: string }
@@ -149,7 +152,7 @@ describe('F.4 demo slice', () => {
       )
       assert.equal(
         lessons.reduce((n, lesson) => n + lesson.quiz.length, 0),
-        55,
+        75,
         name,
       )
       for (const [index, unit] of units.entries()) {
@@ -322,6 +325,14 @@ describe('F.4 demo slice', () => {
             } else if (quiz.type === 'match') {
               const map = quiz.answer as Record<string, string>
               assert.deepEqual(quiz.options.slice().sort(), Object.keys(map).slice().sort(), id)
+            } else if (quiz.type === 'order') {
+              assert.ok(quiz.options.length >= 2, id)
+              assert.equal(new Set(quiz.options).size, quiz.options.length, id)
+            } else if (quiz.type === 'dualRead') {
+              assert.equal(quiz.options.length, 2, id)
+              assert.match(String(quiz.image), /^\/content\/learning-map-illustrations\/soft-scout\/f4-dualread\//, id)
+            } else if (quiz.type === 'short') {
+              assert.ok(quiz.question.length > 0, id)
             } else {
               assert.fail(`${id} unknown type ${quiz.type}`)
             }
@@ -379,5 +390,65 @@ describe('F.4 demo slice', () => {
         })
       }
     }
+  })
+
+  it('wires U1–U3 order, dual-read, and short practice and keeps later units on the old types', () => {
+    const p0 = ['F4-U1-L1', 'F4-U1-L2', 'F4-U2-L1', 'F4-U2-L2', 'F4-U3-L1', 'F4-U3-L2']
+    const hashes: Record<string, string> = {
+      '01-u1-l1-dualread.png': 'f5d98ca741dd',
+      '02-u1-l2-dualread.png': '75fb6de0c981',
+      '03-u2-l1-dualread.png': '62bc72340877',
+      '04-u2-l2-dualread.png': 'c952ec78eadc',
+      '05-u3-l1-dualread.png': '27e9cdf0c8cd',
+      '06-u3-l2-dualread.png': 'd0f689770554',
+      '07-chrome-qtype-hints.png': 'd410840b0a93',
+      'preview-strip.png': 'af9f26b494c3',
+    }
+    const dir = resolve(PUBLIC, 'content/learning-map-illustrations/soft-scout/f4-dualread')
+    for (const [file, prefix] of Object.entries(hashes)) {
+      const buf = readFileSync(resolve(dir, file))
+      assert.equal(createHash('sha256').update(buf).digest('hex').slice(0, 12), prefix, file)
+    }
+    const frames = {
+      'F4-U1-L1': '01-u1-l1-dualread.png',
+      'F4-U1-L2': '02-u1-l2-dualread.png',
+      'F4-U2-L1': '03-u2-l1-dualread.png',
+      'F4-U2-L2': '04-u2-l2-dualread.png',
+      'F4-U3-L1': '05-u3-l1-dualread.png',
+      'F4-U3-L2': '06-u3-l2-dualread.png',
+    }
+    for (const name of FILES) {
+      for (const lesson of pack(name).units.flatMap((unit) => unit.lessons)) {
+        const types = lesson.quiz.map((quiz) => quiz.type)
+        if (!p0.includes(lesson.id)) {
+          assert.deepEqual(types.filter((type) => type === 'order' || type === 'dualRead' || type === 'short'), [], lesson.id)
+          continue
+        }
+        assert.equal(types.filter((type) => type === 'order').length, 1, lesson.id)
+        assert.equal(types.filter((type) => type === 'dualRead').length, 1, lesson.id)
+        assert.equal(types.filter((type) => type === 'short').length, 1, lesson.id)
+        const dual = lesson.quiz.find((quiz) => quiz.type === 'dualRead')
+        assert.equal(
+          dual?.image,
+          `/content/learning-map-illustrations/soft-scout/f4-dualread/${frames[lesson.id as keyof typeof frames]}`,
+          `${name} ${lesson.id}`,
+        )
+        const added = lesson.quiz.filter((quiz) => quiz.type === 'order' || quiz.type === 'dualRead' || quiz.type === 'short')
+        if (lesson.id === 'F4-U2-L2' || lesson.id === 'F4-U3-L1') {
+          added.push(...lesson.quiz.filter((quiz) => quiz.type === 'match'))
+        }
+        const blob = JSON.stringify(added)
+        for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim']) {
+          assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
+        }
+      }
+    }
+    const hant = pack('f4-demo.json')
+    const u3l1 = hant.units.flatMap((unit) => unit.lessons).find((lesson) => lesson.id === 'F4-U3-L1')
+    const u3l2 = hant.units.flatMap((unit) => unit.lessons).find((lesson) => lesson.id === 'F4-U3-L2')
+    assert.match(u3l1?.quiz.find((quiz) => quiz.type === 'short')?.question ?? '', /唔趕/)
+    assert.equal((u3l1?.quiz.find((quiz) => quiz.type === 'short')?.question ?? '').includes('streak'), false)
+    assert.match(u3l2?.quiz.find((quiz) => quiz.type === 'dualRead')?.question ?? '', /招牌細節/)
+    assert.equal((u3l2?.quiz.find((quiz) => quiz.type === 'dualRead')?.question ?? '').includes('店招'), false)
   })
 })

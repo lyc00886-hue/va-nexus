@@ -36,14 +36,18 @@ import {
 import { MapFold } from './MapFold'
 import { LessonCompleteFrame } from './SoftMotion'
 import type {
+  DualReadQuestion,
   FillQuestion,
   Lesson,
   MatchQuestion,
   McqQuestion,
+  OrderQuestion,
   Question,
   QuestionType,
   SessionResult,
+  ShortQuestion,
 } from '../../game/types'
+import { linesReady, orderMatches } from '../../game/thinPractice'
 import { exerciseIdForQuestion } from '../../game/exerciseLogos'
 import { DemoBadge } from './DemoBadge'
 import { ExerciseMark } from './ExerciseMark'
@@ -51,6 +55,7 @@ import { LessonArtistPanel } from './LessonArtists'
 import { LessonCardArt } from './LessonCardArt'
 import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
+import { DualReadBoard, OrderBoard, ShortBoard } from './ThinPractice'
 
 const IDLE_MS = 90_000
 
@@ -735,7 +740,10 @@ function questionSpeech(q: Question) {
     return `${q.prompt} ${q.options.map((o, i) => t('lp.speech.option', { n: i + 1, text: o })).join(sep)}`
   if (q.type === 'fill')
     return `${q.prompt.replace('＿＿', t('lp.speech.blank'))} ${t('lp.speech.choices', { list: joinList(q.bank) })}`
-  return `${q.prompt} ${joinList(q.pairs.map((p) => p.left))}`
+  if (q.type === 'match') return `${q.prompt} ${joinList(q.pairs.map((p) => p.left))}`
+  if (q.type === 'order') return `${q.prompt} ${joinList(q.items)}`
+  if (q.type === 'dualRead') return `${q.prompt} ${joinList(q.labels)}`
+  return q.prompt
 }
 
 type QProps<T> = {
@@ -750,6 +758,9 @@ function QuestionView(props: QProps<Question>) {
   const { q } = props
   if (q.type === 'mcq') return <Mcq {...props} q={q} />
   if (q.type === 'fill') return <Fill {...props} q={q} />
+  if (q.type === 'order') return <OrderQ {...props} q={q} />
+  if (q.type === 'dualRead') return <DualReadQ {...props} q={q} />
+  if (q.type === 'short') return <ShortQ {...props} q={q} />
   return <Match {...props} q={q} />
 }
 
@@ -838,6 +849,41 @@ function Fill({ q, seed, locked, easyRead, onAnswer }: QProps<FillQuestion>) {
         ))}
       </div>
       {!locked && <CheckButton disabled={!sel} onClick={() => sel && onAnswer(sel === q.answer, q.explain)} />}
+    </div>
+  )
+}
+
+function OrderQ({ q, locked, easyRead, onAnswer }: QProps<OrderQuestion>) {
+  const [order, setOrder] = useState<string[] | null>(null)
+  return (
+    <div>
+      <OrderBoard q={q} order={order} revealed={locked} easyRead={easyRead} onChange={setOrder} />
+      {!locked && (
+        <CheckButton
+          disabled={!order || order.length !== q.items.length}
+          onClick={() => order && onAnswer(orderMatches(order, q.items), q.explain)}
+        />
+      )}
+    </div>
+  )
+}
+
+function DualReadQ({ q, locked, easyRead, onAnswer }: QProps<DualReadQuestion>) {
+  const [lines, setLines] = useState<string[]>(['', ''])
+  return (
+    <div>
+      <DualReadBoard q={q} lines={lines} revealed={locked} easyRead={easyRead} onChange={setLines} />
+      {!locked && <CheckButton disabled={!linesReady(lines, 2)} onClick={() => onAnswer(true, q.explain)} />}
+    </div>
+  )
+}
+
+function ShortQ({ q, locked, easyRead, onAnswer }: QProps<ShortQuestion>) {
+  const [lines, setLines] = useState<string[]>([''])
+  return (
+    <div>
+      <ShortBoard q={q} line={lines[0] ?? ''} revealed={locked} easyRead={easyRead} onChange={setLines} />
+      {!locked && <CheckButton disabled={!linesReady(lines, 1)} onClick={() => onAnswer(true, q.explain)} />}
     </div>
   )
 }

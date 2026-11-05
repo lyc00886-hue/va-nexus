@@ -1,4 +1,10 @@
 {
+  "qtype.hint.order": "排一排步骤 · 不赶",
+  "qtype.hint.dualRead": "双图对读 · 慢慢看",
+  "qtype.hint.short": "短答 · 写出结构",
+  "qtype.practiceOnly": "练习结构 · 不是真题",
+  "qtype.pace": "一次一题 · 不限时 · 不赶着做完",
+  "qtype.write": "写一句…",
   "mastery.none.hint": "完成短课和小测即可开始",
   "mastery.attempted.hint": "再试一次，答对六成或以上即达到「熟悉」",
   "mastery.familiar.hint": "答对九成或以上即达到「精通」",
