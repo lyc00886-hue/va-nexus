@@ -11,6 +11,7 @@
  *             (both empty → auto-generated distractors)
  */
 import { t } from '../i18n'
+import { cardArtFrom } from './f4Media'
 import type { LessonCard, Question } from './types'
 
 export type ContentQuiz = {
@@ -23,10 +24,18 @@ export type ContentQuiz = {
   wordBank?: string[]
 }
 
+export type ContentCard = {
+  title?: string
+  body: string
+  easy?: string[]
+  image?: string
+  imageCredit?: string
+}
+
 export type ContentLesson = {
   id: string
   title: string
-  cards: (string | { title?: string; body: string; easy?: string[] })[]
+  cards: (string | ContentCard)[]
   quiz: ContentQuiz[]
   subtitle?: string
   minutes?: number
@@ -43,7 +52,12 @@ function easyBullets(text: string): string[] {
 export function adaptCards(cards: ContentLesson['cards']): LessonCard[] {
   return cards.map((c, i) => {
     if (typeof c === 'string') return { title: t('card.point', { n: i + 1 }), body: c, easy: easyBullets(c) }
-    return { title: c.title ?? t('card.point', { n: i + 1 }), body: c.body, easy: c.easy?.length ? c.easy : easyBullets(c.body) }
+    return {
+      title: c.title ?? t('card.point', { n: i + 1 }),
+      body: c.body,
+      easy: c.easy?.length ? c.easy : easyBullets(c.body),
+      ...cardArtFrom(c),
+    }
   })
 }
 

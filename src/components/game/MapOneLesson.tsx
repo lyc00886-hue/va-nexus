@@ -16,6 +16,7 @@ import { MOOD_EMPTY_MAP } from '../../game/softMotion'
 import { useSoftMotion } from '../../lib/useSoftMotion'
 import { AiLearningTipScreen, type AiTipState } from './AiLearningTipScreen'
 import { ExerciseMark } from './ExerciseMark'
+import { LessonCardArt } from './LessonCardArt'
 import { LessonCompleteFrame, StepAdvanceMark } from './SoftMotion'
 import { SoftScreen } from './SoftScreen'
 
@@ -496,6 +497,7 @@ function ReadChunk({ card, easy, step = false }: { card: Lesson['cards'][number]
   return (
     <article className={`mt-4 ${step ? 'rounded-3xl bg-[#FFF9E9] p-4' : ''}`}>
       <h3 className="text-xl font-bold text-slate-900">{card.title}</h3>
+      <LessonCardArt image={card.image} credit={card.imageCredit} />
       {chunked ? (
         <ul className="mt-3 space-y-2 text-lg text-slate-800">
           {lines.map((line) => (

@@ -48,6 +48,7 @@ import { exerciseIdForQuestion } from '../../game/exerciseLogos'
 import { DemoBadge } from './DemoBadge'
 import { ExerciseMark } from './ExerciseMark'
 import { LessonArtistPanel } from './LessonArtists'
+import { LessonCardArt } from './LessonCardArt'
 import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
 
@@ -431,6 +432,7 @@ function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean })
         {lesson.cards.map((item, index) => (
           <li key={`${item.title}-${index}`} className="rounded-2xl bg-slate-50 px-3 py-2">
             <p className={`font-semibold text-slate-900 ${easyRead ? 'text-lg' : 'text-base'}`}>{item.title}</p>
+            <LessonCardArt image={item.image} credit={item.imageCredit} />
             {easyRead ? (
               <ul className="mt-2 space-y-1 text-base text-slate-800">
                 {item.easy.map((line) => (
@@ -482,6 +484,7 @@ function CardsStage({
           <ReadAloudButton text={cardText} auto={autoRead} autoKey={autoKey} small />
         </div>
         <h3 className={`mt-2 font-bold text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{card.title}</h3>
+        <LessonCardArt image={card.image} credit={card.imageCredit} />
         {easyRead ? (
           <ul className="mt-3 space-y-2 text-lg text-slate-800">
             {card.easy.map((line) => (
