@@ -36,7 +36,7 @@ export function Achievements() {
           <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
             <Trophy className="h-4 w-4 text-blue-600" aria-hidden /> {t('ach.level')}
           </p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">{t('chrome.level', { n: level.level })}</p>
+          <p className="mt-1 text-2xl font-bold text-slate-900">{t('lp.level', { n: level.level })}</p>
           <p className="text-sm text-slate-600">{level.title}</p>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
             <div className="h-full rounded-full bg-blue-600" style={{ width: `${level.pct}%` }} />

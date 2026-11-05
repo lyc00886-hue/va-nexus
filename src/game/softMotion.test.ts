@@ -236,7 +236,7 @@ describe('early wire covers and soft motion', () => {
     assert.match(chest, /otter-chest-open/)
     assert.match(chest, /otter-chest-skip/)
     assert.match(chest, /ChestOpenFrame/)
-    assert.match(player, /chrome\.xpGain/)
+    assert.match(player, /lp\.gain/)
     assert.match(player, /w-full rounded-2xl bg-\[#0D9488\]/)
     assert.equal(/\bLv\./.test(lesson + player), false)
     assert.equal(/ XP/.test(lesson + player), false)

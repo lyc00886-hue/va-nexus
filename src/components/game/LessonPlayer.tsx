@@ -593,7 +593,7 @@ function QuizStage({
               <RotateCcw className="mt-0.5 h-5 w-5 shrink-0 text-rose-600" aria-hidden />
             )}
             <div>
-              <p className="font-bold">{feedback.correct ? t('lp.correct') : t('lp.wrong')}</p>
+              <p className="font-bold">{feedback.correct ? t('tray.correct.title') : t('tray.wrong.title')}</p>
               <p className="text-sm">{feedback.explain}</p>
             </div>
           </div>
@@ -605,7 +605,7 @@ function QuizStage({
               feedback.correct ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-rose-600 hover:bg-rose-500'
             }`}
           >
-            {t('lp.continue')}
+            {t(feedback.correct ? 'tray.correct.cta' : 'tray.wrong.cta')}
           </button>
         </div>
       )}
@@ -682,9 +682,10 @@ function ResultStage({
           <Trophy className="mx-auto h-12 w-12 text-amber-500" aria-hidden />
         )}
         <h3 className="mt-4 text-2xl font-bold text-slate-900">
-          {outcome.passed ? (kind === 'lesson' ? t('lp.res.lesson') : t('lp.res.quest')) : t('lp.res.practice')}
+          {outcome.passed ? (kind === 'lesson' ? t('tray.complete.title') : t('lp.res.quest')) : t('lp.res.practice')}
         </h3>
-        <p className="mt-3 text-base font-bold text-[#0D9488]">{t('chrome.xpGain', { n: outcome.xpGained })}</p>
+        <p className="mt-3 text-base font-bold text-[#0D9488]">{t('lp.gain', { n: outcome.xpGained })}</p>
+        <p className="mt-1 text-sm text-slate-600">{t('lp.tip')}</p>
         <p className="mt-1 text-sm text-slate-600">
           {t('lp.res.firstTry', { n: Math.round(result.accuracy * 100) })}
           {' · '}
