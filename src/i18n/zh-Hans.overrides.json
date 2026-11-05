@@ -313,5 +313,7 @@
   "map.grade.empty": "这个年级还没有地图 · 可以选全部年级",
   "ux.switchToClassic": "切换到原版地图",
   "ux.switchToMap1": "切换到闯关地图",
-  "ux.hint": "可以随时换到另一个版本。"
+  "ux.hint": "可以随时换到另一个版本。",
+  "motion.reduceNote": "打开后会少一些过场动画",
+  "motion.cardBody": "「减少动态」默认已选，柔和过场默认关闭，随时可以关掉。不会强制播放动画。"
 }

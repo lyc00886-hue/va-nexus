@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { t } from '../../i18n'
 import { useSpeech } from '../../lib/useSpeech'
 import { ISLAND_MICRO_QUEST, ISLAND_QUEST_ANSWER, islandQuestFeedback, type QuestIslandId } from '../../lib/softIslands'
+import { QuestImage } from './QuestImage'
 
 const LETTERS = ['A', 'B', 'C'] as const
 
@@ -52,6 +53,7 @@ export function SoftIslandQuest({ island, onExit }: { island: QuestIslandId; onE
       <h2 className="mt-3 text-2xl font-bold leading-snug text-slate-900">{t(quest.title)}</h2>
       <p className="mt-1 text-sm text-slate-500">{t(quest.sub)}</p>
       <p className="mt-1 text-sm text-slate-500">{t('island.quest.sub')}</p>
+      <QuestImage id={island} />
       <div className="mt-3 rounded-2xl border border-[#f0c48a] bg-[#fde8c8] px-4 py-2.5 text-[#7a4b1a]">
         <p className="text-base font-bold">{t(quest.contextTitle)}</p>
         <p className="mt-1 text-sm leading-relaxed">{t(quest.context)}</p>

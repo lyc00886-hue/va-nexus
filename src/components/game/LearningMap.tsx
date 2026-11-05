@@ -53,6 +53,7 @@ import { SoftHistoryQuest } from './SoftHistoryQuest'
 import { SoftIllustrationMap } from './SoftIllustrationMap'
 import { SoftIslandFocus } from './SoftIslandFocus'
 import { SoftIslandQuest } from './SoftIslandQuest'
+import { SoftMotionTransition } from './SoftMotionTransition'
 
 const TRACK_KEY = 'va-nexus:map-track'
 const MEDIA_KEY = 'va-nexus:map-media'
@@ -114,6 +115,7 @@ export function LearningMap() {
   const [grade, setGrade] = useState<SoftGoGrade>(() =>
     typeof window === 'undefined' ? 'all' : softGoGradeFromSearch(window.location.search),
   )
+  const [motionOpen, setMotionOpen] = useState(false)
 
   function commitSections(next: LearningMapSections) {
     saveLearningMapSections(next)
@@ -203,6 +205,7 @@ export function LearningMap() {
   function chooseScope(next: SoftGoTrack) {
     setScope(next)
     setMapLessonId(null)
+    setMotionOpen(false)
     if (next === 'islands') setPlate('home')
     else setPlate('path')
     writeScope(next, grade)
@@ -247,6 +250,7 @@ export function LearningMap() {
 
   function onShell(next: SoftShell) {
     setShell(next)
+    setMotionOpen(false)
     if (next === 'map') setPlate('home')
     if (next === 'path') setPlate('path')
   }
@@ -339,15 +343,19 @@ export function LearningMap() {
                 onTrack={chooseScope}
                 onGrade={chooseGrade}
                 onOpen={() => {
+                  setMotionOpen(false)
                   if (scope === 'islands') setPlate(isIslandNode(island) ? 'focus' : 'home')
                   window.requestAnimationFrame(() => {
                     document.getElementById('soft-go-scope')?.scrollIntoView({ block: 'nearest' })
                   })
                 }}
                 onBack={() => chooseScope('islands')}
+                onMotion={scope === 'islands' && plateView === 'home' ? () => setMotionOpen(true) : undefined}
               />
             ) : null}
-            {shell === 'atlas' ? (
+            {motionOpen && shell !== 'atlas' && shell !== 'mine' ? (
+              <SoftMotionTransition onBack={() => setMotionOpen(false)} />
+            ) : shell === 'atlas' ? (
               <SoftAtlas onShell={onShell} />
             ) : shell === 'mine' ? (
               <SoftMine onShell={onShell} />

@@ -791,5 +791,20 @@
   "map.f4.chrome.u1": "視藝入門",
   "map.f4.chrome.u2": "素描美感設計",
   "map.f4.chrome.u3": "社區藝術視覺日記",
-  "map.f4.chrome.u4": "自畫像藝術家研究"
+  "map.f4.chrome.u4": "自畫像藝術家研究",
+  "map.pickTip": "五大冒險島沿用闖關地圖；其他範疇接返原版地圖。",
+  "map.grade.later": "中五／中六稍後開放",
+  "map.selected": "已選",
+  "map.quick": "快捷",
+  "map.card.f4": "中四課徑",
+  "map.card.islands": "闖關地圖",
+  "map.motion": "過場說明",
+  "motion.title": "過場動畫",
+  "motion.sub": "節點之間 · 輕柔過場",
+  "motion.reduce": "減少動態",
+  "motion.open": "過場開啟",
+  "motion.reduceNote": "開咗會少啲過場動畫",
+  "motion.cardTitle": "過場說明",
+  "motion.cardBody": "「減少動態」預設已選，柔和過場預設關閉，隨時可以關掉。唔會逼你播動畫。",
+  "motion.keep": "減少動態 · 保留"
 }
