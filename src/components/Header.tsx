@@ -98,13 +98,17 @@ function usePlatformHeaderCollapsed(panelOpen: boolean) {
 
     const apply = (delta: number) => {
       const header = document.querySelector<HTMLElement>('[data-platform-header]')
+      const focus = document.documentElement.dataset.softScreen === 'focus'
+      const mapOne = !focus && document.querySelector('[data-map-shell="one"]') != null
+      const cream = document.querySelector('[data-map-chrome="path"]') != null
       const next = stepPlatformHeader({
         scrollY: window.scrollY,
         delta,
         acc: accRef.current,
         collapsed: collapsedRef.current,
         mobile: mq.matches,
-        path: document.querySelector('[data-map-chrome="path"]') != null,
+        mapOne,
+        path: mapOne || cream,
         anchored: panelRef.current,
         hidePast: header?.offsetHeight ?? 0,
       })
@@ -126,11 +130,15 @@ function usePlatformHeaderCollapsed(panelOpen: boolean) {
       apply(0)
     }
 
+    const shellObserver = new MutationObserver(onResync)
+    shellObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-soft-screen'] })
+
     onResync()
     window.addEventListener('scroll', onScroll, { passive: true })
     window.addEventListener(PLATFORM_HEADER_PATH_EVENT, onResync)
     mq.addEventListener('change', onResync)
     return () => {
+      shellObserver.disconnect()
       window.removeEventListener('scroll', onScroll)
       window.removeEventListener(PLATFORM_HEADER_PATH_EVENT, onResync)
       mq.removeEventListener('change', onResync)

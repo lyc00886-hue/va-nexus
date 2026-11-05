@@ -1,7 +1,8 @@
 /**
- * Mobile map-path shell.
+ * Map-path shell.
  * Scroll down hides the sticky platform header. Scroll up, or returning to the top, shows it.
- * Desktop, other tabs, and an open gear panel never collapse it.
+ * Classic path hides on phone width only. The 闖關 shell (`?ux=map1`) hides at any width.
+ * Other tabs and an open gear panel never collapse it.
  */
 
 /** Matches Tailwind `md` (768). Mobile nav is the same breakpoint. */
@@ -24,9 +25,14 @@ export type PlatformHeaderStep = {
   delta: number
   acc: number
   collapsed: boolean
-  /** Phone width. Desktop never collapses. */
+  /** Phone width. Classic path collapses only here. */
   mobile: boolean
-  /** Cream MapPath shell is on screen. */
+  /**
+   * 闖關 shell is on screen (`data-map-shell="one"`).
+   * That shell collapses on desktop as well as on a phone.
+   */
+  mapOne: boolean
+  /** Cream path or the 闖關 shell is on screen. */
   path: boolean
   /** Gear panel is open, so the header stays where the 無障礙 controls are. */
   anchored: boolean
@@ -43,8 +49,9 @@ export type PlatformHeaderState = {
 }
 
 export function stepPlatformHeader(step: PlatformHeaderStep): PlatformHeaderState {
+  const allowWidth = step.mobile || step.mapOne
   if (
-    !step.mobile ||
+    !allowWidth ||
     !step.path ||
     step.anchored ||
     step.hidePast <= 0 ||

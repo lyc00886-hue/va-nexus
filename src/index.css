@@ -437,20 +437,29 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
   }
 }
 
-/* Mobile path only: tuck the sticky platform header off-screen on scroll-down.
-   The display "reduce motion" switch already zeroes transition-duration.
-   Desktop (md, 768+) keeps the header put. */
-@media (max-width: 767px) {
-  .platform-header {
-    transition: transform 160ms ease-out;
+/* Tuck the sticky platform header off-screen on scroll-down.
+   Classic path sets data-collapsed only at phone width.
+   The 闖關 shell sets it at any width, and the desktop sidebar rises with it.
+   The display "reduce motion" switch already zeroes transition-duration. */
+.platform-header {
+  transition: transform 160ms ease-out;
+}
+.platform-header[data-collapsed='true'] {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+@media (min-width: 768px) {
+  .platform-header + .flex > .map-one-chrome {
+    transition: top 160ms ease-out, height 160ms ease-out;
   }
-  .platform-header[data-collapsed='true'] {
-    transform: translateY(-100%);
-    pointer-events: none;
+  .platform-header[data-collapsed='true'] + .flex > .map-one-chrome {
+    top: 0;
+    height: 100dvh;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .platform-header {
+  .platform-header,
+  .platform-header + .flex > .map-one-chrome {
     transition: none;
   }
 }
