@@ -38,6 +38,27 @@ export function mapUxPersist(search: string): 'set' | 'clear' | 'keep' {
   return 'keep'
 }
 
+/** Fired after the student map-version toggle rewrites `ux`. */
+export const MAP_VERSION_EVENT = 'va-nexus:map-version'
+
+export type MapVersion = 'map1' | 'classic'
+
+/**
+ * Student-facing version. `?ux=off` is the classic map.
+ * A stored map1 opt-in still counts when the query does not say otherwise.
+ */
+export function mapVersionOf(search: string, stored: string | null | undefined): MapVersion {
+  return mapOneEnabled(search, stored) ? 'map1' : 'classic'
+}
+
+/** Next search string. Other params stay. Classic is written as `ux=classic` (`off` remains a read alias). */
+export function mapVersionSearch(search: string, version: MapVersion): string {
+  const params = searchParams(search)
+  params.set('ux', version)
+  const q = params.toString()
+  return q ? `?${q}` : ''
+}
+
 /** Read cards, then one practice item. Empty when the lesson has neither. */
 export function lessonChunks(cardCount: number, questionCount: number): MapChunkRef[] {
   const chunks: MapChunkRef[] = []
