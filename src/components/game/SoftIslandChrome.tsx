@@ -149,8 +149,8 @@ function LockedNode() {
   )
 }
 
-/** History island path. One quest node. The other marks are path chrome, not new lessons. */
-export function SoftHistoryPath({ onOpen }: { onOpen: () => void }) {
+/** History island path. The quest stays first. Illustrated lessons can continue after it. */
+export function SoftHistoryPath({ onOpen, children }: { onOpen: () => void; children?: ReactNode }) {
   return (
     <div data-history-path className="mx-auto flex max-w-xs flex-col items-center">
       <span aria-hidden className="flex h-14 w-14 items-center justify-center rounded-full bg-[#0D9488] text-white">
@@ -185,9 +185,13 @@ export function SoftHistoryPath({ onOpen }: { onOpen: () => void }) {
         </span>
       </button>
       <PathStem />
-      <LockedNode />
-      <PathStem />
-      <LockedNode />
+      {children ?? (
+        <>
+          <LockedNode />
+          <PathStem />
+          <LockedNode />
+        </>
+      )}
     </div>
   )
 }

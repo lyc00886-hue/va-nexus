@@ -31,8 +31,22 @@ import {
   type SoftIslandId,
   type SoftPlate,
 } from '../../lib/softIslands'
+import {
+  F4_CHROME_KEY,
+  historyUnitsFor,
+  lessonFromUnits,
+  softGoGradeFromSearch,
+  softGoTrackFromSearch,
+  withF4ChromeTitles,
+  withSoftGoQuery,
+  yearUnitsFor,
+  type SoftGoGrade,
+  type SoftGoTrack,
+} from '../../lib/softGoMaps'
 import { MapPath } from './MapPath'
 import { MapOneLesson } from './MapOneLesson'
+import { MapVersionToggle } from './MapVersionToggle'
+import { GradeEmpty, SoftMapPicker } from './SoftMapPicker'
 import { SoftAtlas, SoftMine, SoftShellNav } from './SoftAtlas'
 import { SoftHistoryPath, SoftMapPlate } from './SoftIslandChrome'
 import { SoftHistoryQuest } from './SoftHistoryQuest'
@@ -94,6 +108,12 @@ export function LearningMap() {
   const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
   const [mediaId, setMediaId] = useState<string | null>(readMediaId)
+  const [scope, setScope] = useState<SoftGoTrack>(() =>
+    typeof window === 'undefined' ? 'islands' : softGoTrackFromSearch(window.location.search),
+  )
+  const [grade, setGrade] = useState<SoftGoGrade>(() =>
+    typeof window === 'undefined' ? 'all' : softGoGradeFromSearch(window.location.search),
+  )
 
   function commitSections(next: LearningMapSections) {
     saveLearningMapSections(next)
@@ -173,6 +193,41 @@ export function LearningMap() {
     remember('media', null)
   }
 
+  function writeScope(nextTrack: SoftGoTrack, nextGrade: SoftGoGrade) {
+    if (typeof window === 'undefined') return
+    const next = withSoftGoQuery(window.location.search, nextTrack, nextGrade)
+    const url = `${window.location.pathname}${next}${window.location.hash}`
+    window.history.replaceState(window.history.state, '', url)
+  }
+
+  function chooseScope(next: SoftGoTrack) {
+    setScope(next)
+    setMapLessonId(null)
+    if (next === 'islands') setPlate('home')
+    else setPlate('path')
+    writeScope(next, grade)
+  }
+
+  function chooseGrade(next: SoftGoGrade) {
+    setGrade(next)
+    setMapLessonId(null)
+    writeScope(scope, next)
+  }
+
+  function canOpenScoped(id: string): boolean {
+    if (scope === 'f4') return f4Unlocked(id)
+    if (scope === 'media') {
+      const unit = media.find((item) => item.nodes.some((node) => node.id === id))
+      if (!unit) return false
+      return isSequentialUnlocked(
+        unit.nodes.map((node) => node.id),
+        id,
+        completed,
+      )
+    }
+    return isUnlocked(id)
+  }
+
   const pathOn = !easy.on && !mapOne && (track === 'history' || track === 'f4' || selected != null)
   useLayoutEffect(() => {
     if (!pathOn) return
@@ -201,25 +256,53 @@ export function LearningMap() {
   }
 
   if (mapOne) {
-    const openLesson = mapLessonId ? getNodeById().get(mapLessonId) : undefined
+    const openLesson = mapLessonId
+      ? lessonFromUnits(history, mapLessonId) ??
+        lessonFromUnits(f4All, mapLessonId) ??
+        lessonFromUnits(media, mapLessonId)
+      : undefined
     const quietSections: LearningMapSections = { units: {}, lessons: {}, folds: sections.folds }
-    const keptPath = (
-      <HistoryTrack
-        units={historyUnits}
-        current={current}
-        currentNodeId={currentNodeId}
-        isUnlocked={isUnlocked}
-        completed={completed}
-        masteryOf={(id) => masteryFor(state.nodes[id])}
-        sections={quietSections}
-        onToggleLesson={(id) => {
-          if (isUnlocked(id)) setMapLessonId(id)
-        }}
-        onCloseLesson={() => {}}
-        onSetFold={() => {}}
-        onReveal={(lesson) => setMapLessonId(lesson.id)}
-      />
-    )
+    const illustrated = historyUnitsFor(historyUnits, 'all', grade)
+    const scopedHistory =
+      scope === 'history-cn'
+        ? historyUnitsFor(historyUnits, 'cn', grade)
+        : scope === 'history-west'
+          ? historyUnitsFor(historyUnits, 'west', grade)
+          : []
+    const scopedF4 = withF4ChromeTitles(yearUnitsFor(f4Units, grade), (id) => {
+      const key = F4_CHROME_KEY[id]
+      return key ? t(key) : undefined
+    })
+    const scopedMedia = yearUnitsFor(media, grade)
+    const mediaSelection = scopedMedia.find((unit) => unit.id === mediaId && !unit.pending) ?? null
+    const pathUnits =
+      scope === 'f4' ? scopedF4 : scope === 'media' ? scopedMedia : scope === 'islands' ? illustrated : scopedHistory
+    const nextIndex = openLesson ? pathUnits.flatMap((unit) => unit.nodes).findIndex((node) => node.id === openLesson.id) : -1
+    const nextNode = nextIndex >= 0 ? pathUnits.flatMap((unit) => unit.nodes)[nextIndex + 1] : undefined
+    function lessonPath(units: Unit[], unlocked: (id: string) => boolean, marked?: Lesson) {
+      const here =
+        marked && units.some((unit) => unit.nodes.some((node) => node.id === marked.id))
+          ? marked
+          : units.flatMap((unit) => unit.nodes).find((node) => unlocked(node.id) && !completed(node.id))
+      return (
+        <HistoryTrack
+          units={units}
+          current={here}
+          currentNodeId={here?.id ?? null}
+          isUnlocked={unlocked}
+          completed={completed}
+          masteryOf={(id) => masteryFor(state.nodes[id])}
+          sections={quietSections}
+          onToggleLesson={(id) => {
+            if (unlocked(id)) setMapLessonId(id)
+          }}
+          onCloseLesson={() => {}}
+          onSetFold={() => {}}
+          onReveal={(lesson) => setMapLessonId(lesson.id)}
+          bannerFor={(unit) => <UnitCoverBanner unit={unit} />}
+        />
+      )
+    }
     const plateView: SoftPlate =
       plate === 'quest' && island !== 'history' && !isQuestIsland(island)
         ? 'home'
@@ -228,23 +311,76 @@ export function LearningMap() {
           : plate === 'focus' && !isIslandNode(island)
             ? 'home'
             : plate
-    const navActive: SoftShell = plateView === 'path' ? 'path' : 'map'
+    const navActive: SoftShell = plateView === 'path' || scope !== 'islands' ? 'path' : 'map'
+    const showPicker = shell !== 'atlas' && shell !== 'mine' && !(scope === 'islands' && plateView === 'quest')
     return (
-      <div data-map-shell="one" data-soft-shell={shell} className="space-y-5">
+      <div data-map-shell="one" data-map-scope={scope} data-map-grade={grade} data-soft-shell={shell} className="space-y-5">
+        <MapVersionToggle mapOne />
         {openLesson ? (
           <MapOneLesson
             key={openLesson.id}
             lesson={openLesson}
             onExit={() => setMapLessonId(null)}
             onOpenLesson={setMapLessonId}
+            following={
+              nextIndex >= 0
+                ? { id: nextNode?.id ?? null, open: Boolean(nextNode && canOpenScoped(nextNode.id)) }
+                : undefined
+            }
           />
         ) : (
           <>
             {easy.preview ? <EasyReadBar /> : null}
+            {showPicker ? (
+              <SoftMapPicker
+                track={scope}
+                grade={grade}
+                compact={!(scope === 'islands' && plateView === 'home')}
+                onTrack={chooseScope}
+                onGrade={chooseGrade}
+                onOpen={() => {
+                  if (scope === 'islands') setPlate(isIslandNode(island) ? 'focus' : 'home')
+                  window.requestAnimationFrame(() => {
+                    document.getElementById('soft-go-scope')?.scrollIntoView({ block: 'nearest' })
+                  })
+                }}
+                onBack={() => chooseScope('islands')}
+              />
+            ) : null}
             {shell === 'atlas' ? (
               <SoftAtlas onShell={onShell} />
             ) : shell === 'mine' ? (
               <SoftMine onShell={onShell} />
+            ) : scope !== 'islands' ? (
+              <div id="soft-go-scope" data-map-scope={scope} data-map-grade={grade} className="space-y-4">
+                {scope === 'media' ? (
+                  scopedMedia.length === 0 ? (
+                    <GradeEmpty />
+                  ) : mediaSelection ? (
+                    <MediaDetail
+                      unit={mediaSelection}
+                      completed={completed}
+                      masteryOf={(id) => masteryFor(state.nodes[id])}
+                      sections={quietSections}
+                      onToggleLesson={(id) => {
+                        if (canOpenScoped(id)) setMapLessonId(id)
+                      }}
+                      onCloseLesson={() => {}}
+                      onSetFold={() => {}}
+                      onReveal={(lesson) => setMapLessonId(lesson.id)}
+                      onBack={closeMedia}
+                    />
+                  ) : (
+                    <MediaPicker units={scopedMedia} onOpen={openMedia} />
+                  )
+                ) : scope === 'f4' ? (
+                  scopedF4.length === 0 ? <GradeEmpty /> : lessonPath(scopedF4, f4Unlocked)
+                ) : scopedHistory.length === 0 ? (
+                  <GradeEmpty />
+                ) : (
+                  lessonPath(scopedHistory, isUnlocked)
+                )}
+              </div>
             ) : plateView === 'quest' && island === 'history' ? (
               <SoftHistoryQuest onExit={() => setPlate('path')} />
             ) : plateView === 'quest' && isQuestIsland(island) ? (
@@ -258,7 +394,13 @@ export function LearningMap() {
                 }}
                 onHome={() => setPlate('home')}
               >
-                {island === 'history' ? <SoftHistoryPath onOpen={() => setPlate('quest')} /> : keptPath}
+                {island === 'history' ? (
+                  <SoftHistoryPath onOpen={() => setPlate('quest')}>
+                    {illustrated.length > 0 ? lessonPath(illustrated, isUnlocked) : <GradeEmpty />}
+                  </SoftHistoryPath>
+                ) : (
+                  lessonPath(historyUnits, isUnlocked, current)
+                )}
               </SoftMapPlate>
             ) : plateView === 'focus' && isIslandNode(island) ? (
               <SoftIslandFocus
@@ -279,7 +421,7 @@ export function LearningMap() {
                 }}
               />
             )}
-            {shell === 'atlas' || shell === 'mine' || plateView === 'quest' ? null : (
+            {shell === 'atlas' || shell === 'mine' || (scope === 'islands' && plateView === 'quest') ? null : (
               <SoftShellNav active={navActive} onShell={onShell} placement="flow" />
             )}
             {shell === 'atlas' || shell === 'mine' ? null : <MapCommitments />}
@@ -292,6 +434,7 @@ export function LearningMap() {
   return (
     <div className="space-y-5">
       {easy.preview ? <EasyReadBar /> : null}
+      <MapVersionToggle mapOne={false} />
       <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
 
       <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
@@ -403,6 +546,7 @@ function HistoryTrack({
   onCloseLesson,
   onSetFold,
   onReveal,
+  bannerFor,
 }: {
   units: Unit[]
   current: Lesson | undefined
@@ -410,6 +554,7 @@ function HistoryTrack({
   isUnlocked: (id: string) => boolean
   completed: (id: string) => boolean
   masteryOf: (id: string) => Mastery
+  bannerFor?: (unit: Unit) => ReactNode
 } & PathControls) {
   return (
     <div data-map-chrome="path" className="space-y-5 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-6">
@@ -425,6 +570,7 @@ function HistoryTrack({
         onToggleLesson={onToggleLesson}
         onCloseLesson={onCloseLesson}
         onSetFold={onSetFold}
+        bannerFor={bannerFor}
         renderCover={(node) =>
           node.coverImage ? (
             <UnitCover src={node.coverImage} credit={node.coverCredit} lesson title={node.title} lessonId={node.id} />
@@ -544,7 +690,12 @@ function MediaDetail({
         onToggleLesson={onToggleLesson}
         onCloseLesson={onCloseLesson}
         onSetFold={onSetFold}
-        bannerFor={() => <MediaNotes unit={unit} />}
+        bannerFor={() => (
+          <>
+            <UnitCoverBanner unit={unit} />
+            <MediaNotes unit={unit} />
+          </>
+        )}
         renderCover={(node) =>
           node.coverImage ? (
             <UnitCover src={node.coverImage} credit={node.coverCredit} lesson title={node.title} lessonId={node.id} />
@@ -648,6 +799,28 @@ const COVER_TITLE_PLATE: Record<string, string> = {
 
 /** Blank plate on 1280×720 lesson and art-history unit covers. */
 const COVER_TITLE_PLATE_FALLBACK = 'inset-x-[6%] top-[7%] h-[27%]'
+
+function UnitCoverBanner({ unit }: { unit: Unit }) {
+  const [failed, setFailed] = useState(false)
+  if (!unit.coverImage || failed) return null
+  return (
+    <figure data-unit-cover={unit.id} className="rounded-3xl border border-teal-100 bg-white">
+      <img
+        src={unit.coverImage}
+        alt=""
+        width={1152}
+        height={864}
+        loading="lazy"
+        decoding="async"
+        className="h-36 w-full rounded-t-3xl object-cover object-center"
+        onError={() => setFailed(true)}
+      />
+      {unit.coverCredit ? (
+        <figcaption className="px-3 py-1.5 text-[11px] leading-snug text-slate-500">{unit.coverCredit}</figcaption>
+      ) : null}
+    </figure>
+  )
+}
 
 function UnitCover({
   src,

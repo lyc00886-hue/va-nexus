@@ -306,5 +306,12 @@
   "island.mq.exam.b": "共同：都以人物／家庭关系做立体雕塑；相异：一件偏圆润有机和负空间，另一件偏几何块面和前进动势。",
   "island.mq.exam.c": "只讲自己比较喜欢哪一件，不分析形式。",
   "island.mq.exam.ok": "做得好——共同和相异一起到位。",
-  "island.mq.exam.missA": "再试：两图要交叉比较，不要单图写尽。"
+  "island.mq.exam.missA": "再试：两图要交叉比较，不要单图写尽。",
+  "map.pickTitle": "选地图",
+  "map.pickSub": "范畴和年级 · 慢慢选",
+  "map.backTracks": "返回选地图",
+  "map.grade.empty": "这个年级还没有地图 · 可以选全部年级",
+  "ux.switchToClassic": "切换到原版地图",
+  "ux.switchToMap1": "切换到闯关地图",
+  "ux.hint": "可以随时换到另一个版本。"
 }
