@@ -130,13 +130,14 @@ describe('soft island plates', () => {
     const map = read('src/components/game/LearningMap.tsx')
     const home = read('src/components/game/SoftIslandChrome.tsx')
     const quest = read('src/components/game/SoftHistoryQuest.tsx')
-    const wire = `${map}\n${home}\n${quest}`
+    const plates = `${home}\n${quest}`
     assert.match(map, /data-map-shell="one"/)
     assert.match(map, /SoftIslandHome/)
     assert.match(map, /SoftMapPlate/)
     assert.match(map, /SoftHistoryQuest/)
     assert.match(map, /SoftHistoryPath/)
     assert.match(map, /HistoryTrack/)
+    assert.match(map, /SoftShellNav/)
     assert.match(home, /data-soft-plate="home"/)
     assert.match(home, /data-soft-plate="path"/)
     assert.match(home, /data-history-node/)
@@ -148,8 +149,11 @@ describe('soft island plates', () => {
     assert.equal(home.includes('SoftMotion'), false)
     assert.equal(home.includes('moods/motion-v2'), false)
     for (const banned of ['真題', '奪星', 'HKEAA', 'FOMO', 'streak', 'hearts', 'gems', '經驗值', 'atlas', '雙圖對讀']) {
-      assert.equal(wire.includes(banned), false, banned)
+      assert.equal(plates.includes(banned), false, banned)
     }
-    assert.equal(/\bXP\b/.test(wire), false)
+    for (const banned of ['真題', '奪星', 'HKEAA', 'FOMO', 'streak', 'hearts', 'gems', '經驗值', '雙圖對讀']) {
+      assert.equal(map.includes(banned), false, banned)
+    }
+    assert.equal(/\bXP\b/.test(`${map}\n${plates}`), false)
   })
 })
