@@ -69,33 +69,11 @@ export function CommitmentBanner({ embedded = false }: { embedded?: boolean }) {
   )
 }
 
+/** Site footer residual: data line and privacy only. Commitments live on the map. */
 export function CommitmentFooter({ dataLine }: { dataLine: string }) {
-  const file = contentJson<TrustBadgesFile>('trust-badges')
-  const introId = useId()
-
   return (
     <footer className="mt-8 border-t border-slate-200 pt-5" data-testid="site-footer">
-      <section aria-labelledby={introId} data-testid="commitment-footer">
-        <p id={introId} className="text-xs font-semibold text-slate-600">
-          {file.bannerIntro}
-        </p>
-        <ul className="mt-2 grid gap-2 sm:grid-cols-3">
-          {file.badges.map((badge) => (
-            <li
-              key={badge.id}
-              data-badge-id={badge.id}
-              className="rounded-2xl border border-slate-200 bg-white px-3 py-2"
-            >
-              <p className="text-sm font-semibold text-slate-800">{badge.shortTitle}</p>
-              <p className="mt-1 text-xs leading-relaxed text-slate-600">{badge.body}</p>
-            </li>
-          ))}
-        </ul>
-        <p data-testid="commitment-footer-disclaimer" className="mt-3 text-[11px] leading-relaxed text-slate-500">
-          {file.footerDisclaimer}
-        </p>
-      </section>
-      <p className="mt-4 text-center text-[11px] text-slate-400">
+      <p className="text-center text-[11px] text-slate-400">
         {dataLine} · <PrivacyLink />
       </p>
     </footer>
