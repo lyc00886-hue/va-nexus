@@ -63,9 +63,10 @@ export const getBadges = perLocale<BadgeDef[]>(() => [
     emoji: ['🏮', '🌅', '🗺️', '🏙️', '⚖️', '🖌️', '🪞', '🧧', '🎭', '🇬🇧', '🏛️'][i] ?? '🗺️',
   })),
   { id: 'mastery', title: t('badge.mastery'), desc: t('badge.mastery.desc'), emoji: '🏆' },
-  { id: 'streak-3', title: t('badge.streak-3'), desc: t('badge.streak-3.desc'), emoji: '🔥' },
-  { id: 'streak-7', title: t('badge.streak-7'), desc: t('badge.streak-7.desc'), emoji: '⚡' },
-  { id: 'xp-500', title: t('badge.xp-500'), desc: t('badge.xp-500.desc'), emoji: '⭐' },
+  { id: 'unit-done', title: t('badge.unit-done'), desc: t('badge.unit-done.desc'), emoji: '🗺️' },
+  { id: 'xp-500', title: t('badge.xp-500'), desc: t('badge.xp-500.desc'), emoji: '✦' },
+  { id: 'explorer', title: t('badge.explorer'), desc: t('badge.explorer.desc'), emoji: '🧭' },
+  { id: 'dualread', title: t('badge.dualread'), desc: t('badge.dualread.desc'), emoji: '⧉' },
   ...getResearchQuests().map((q, i) => ({
     id: q.badgeId,
     title: q.badgeTitle,

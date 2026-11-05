@@ -1,13 +1,17 @@
-import { Flame, Lock, Star, Trophy } from 'lucide-react'
+import { Lock, Star, Trophy } from 'lucide-react'
 import { useGame } from '../../context/GameContext'
 import { getAllNodes } from '../../game/curriculum'
 import { getBadges, getLevels } from '../../game/rewards'
 import { getLocale, INTL_LOCALE, t } from '../../i18n'
 import { ActivityLog } from './ActivityLog'
 
+/** Plate set. Day-count and flame badges stay out of this list. */
+const MILD_BADGES = ['first-lesson', 'unit-done', 'xp-500', 'explorer', 'dualread', 'sba-starter'] as const
+
 export function Achievements() {
-  const { state, level, streak, resetGame, progressPct } = useGame()
-  const BADGES = getBadges()
+  const { state, level, resetGame, progressPct } = useGame()
+  const catalog = getBadges()
+  const BADGES = MILD_BADGES.map((id) => catalog.find((badge) => badge.id === id)).filter((badge) => badge != null)
   const LEVELS = getLevels()
   const unlocked = BADGES.filter((b) => state.badges[b.id]).length
   const allNodes = getAllNodes()
@@ -18,45 +22,39 @@ export function Achievements() {
     <div className="space-y-5">
       <div>
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.achievements')}</h2>
+        <p className="text-sm text-slate-500">{t('ach.pace')}</p>
         <p className="text-sm text-slate-500">{t('ach.unlocked', { n: unlocked, total: BADGES.length })}</p>
       </div>
 
-      <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="rounded-3xl border border-[#b7e4df] bg-white p-4 shadow-sm">
         <p className="text-xs font-medium text-slate-500">{t('ach.overallProgress')}</p>
         <p className="mt-1 text-2xl font-bold text-slate-900">
           {t('ach.overallProgressValue', { pct: progressPct, done: doneLessons, total: totalLessons })}
         </p>
         <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100" role="progressbar" aria-valuenow={progressPct} aria-valuemin={0} aria-valuemax={100}>
-          <div className="h-full rounded-full bg-emerald-500" style={{ width: `${progressPct}%` }} />
+          <div className="h-full rounded-full bg-[#0D9488]" style={{ width: `${progressPct}%` }} />
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
-        <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="grid gap-3 sm:grid-cols-2">
+        <div className="rounded-3xl border border-[#b7e4df] bg-[#FFF9E9] p-4 shadow-sm">
           <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
-            <Trophy className="h-4 w-4 text-blue-600" aria-hidden /> {t('ach.level')}
+            <Trophy className="h-4 w-4 text-[#0D9488]" aria-hidden /> {t('ach.level')}
           </p>
           <p className="mt-1 text-2xl font-bold text-slate-900">{t('lp.level', { n: level.level })}</p>
           <p className="text-sm text-slate-600">{level.title}</p>
-          <div className="mt-2 h-2 overflow-hidden rounded-full bg-slate-100">
-            <div className="h-full rounded-full bg-blue-600" style={{ width: `${level.pct}%` }} />
+          <div className="mt-2 h-2 overflow-hidden rounded-full bg-white">
+            <div className="h-full rounded-full bg-[#0D9488]" style={{ width: `${level.pct}%` }} />
           </div>
           <p className="mt-1 text-[11px] text-slate-500">
             {level.next !== null ? t('ach.nextLevel', { n: level.next }) : t('ach.maxLevel')}
           </p>
         </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div className="rounded-3xl border border-[#b7e4df] bg-[#FFF9E9] p-4 shadow-sm">
           <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
-            <Star className="h-4 w-4 fill-amber-400 text-amber-400" aria-hidden /> {t('ach.totalXp')}
+            <Star className="h-4 w-4 text-[#0D9488]" aria-hidden /> {t('ach.totalXp')}
           </p>
           <p className="mt-1 text-2xl font-bold text-slate-900">{t('chrome.xp', { n: state.xp.toLocaleString() })}</p>
-        </div>
-        <div className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
-          <p className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
-            <Flame className="h-4 w-4 text-orange-500" aria-hidden /> {t('stats.streak')}
-          </p>
-          <p className="mt-1 text-2xl font-bold text-slate-900">{t('common.days', { n: streak })}</p>
-          <p className="text-[11px] text-slate-500">{t('ach.best', { n: state.streak.best })}</p>
         </div>
       </div>
 
@@ -69,14 +67,18 @@ export function Achievements() {
               <li
                 key={b.id}
                 className={`rounded-2xl border p-3 text-center ${
-                  ts ? 'border-violet-200 bg-violet-50' : 'border-slate-200 bg-slate-50'
+                  ts ? 'border-[#0D9488] bg-[#FFF9E9]' : 'border-[#b7e4df] bg-white'
                 }`}
               >
-                <span className={`block text-3xl ${ts ? '' : 'opacity-30 grayscale'}`} aria-hidden>
-                  {b.emoji}
+                <span
+                  className={`mx-auto flex h-10 w-10 items-center justify-center rounded-full border text-[#0D9488] ${
+                    ts ? 'border-[#0D9488] bg-white' : 'border-[#b7e4df]'
+                  }`}
+                  aria-hidden
+                >
+                  {ts ? '✓' : <Lock className="h-4 w-4" />}
                 </span>
-                <p className={`mt-1 text-sm font-bold ${ts ? 'text-violet-900' : 'text-slate-500'}`}>
-                  {!ts && <Lock className="mr-1 inline h-3 w-3" aria-label={t('map.status.locked')} />}
+                <p className={`mt-1 text-sm font-bold ${ts ? 'text-slate-900' : 'text-slate-500'}`}>
                   {b.title}
                 </p>
                 <p className="text-[11px] text-slate-500">{b.desc}</p>

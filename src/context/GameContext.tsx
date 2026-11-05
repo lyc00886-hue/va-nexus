@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react'
 import { getAllNodes, getUnits } from '../game/curriculum'
+import { getF4Units } from '../game/f4Demo'
 import { getResearchQuests } from '../game/research'
 import { t } from '../i18n'
 import {
@@ -83,8 +84,7 @@ function touchStreak(s: GameStateV1): GameStateV1 {
   if (s.streak.lastDate === today) return s
   const yesterday = hktDate(Date.now() - 24 * 3600 * 1000)
   const count = s.streak.lastDate === yesterday ? s.streak.count + 1 : 1
-  const next = { ...s, streak: { count, best: Math.max(s.streak.best, count), lastDate: today } }
-  return count > 1 ? pushActivity(next, entry('streak', t('activity.streak', { n: count }))) : next
+  return { ...s, streak: { count, best: Math.max(s.streak.best, count), lastDate: today } }
 }
 
 function addXp(s: GameStateV1, amount: number): GameStateV1 {
@@ -110,11 +110,26 @@ function grantBadge(s: GameStateV1, id: string, out: string[]): GameStateV1 {
 function checkBadges(s: GameStateV1, out: string[]): GameStateV1 {
   let n = s
   const done = (id: string) => n.nodes[id]?.completed
+  const anyDone = Object.values(n.nodes).some((p) => p?.completed)
   if (getAllNodes().some((x) => done(x.id))) n = grantBadge(n, 'first-lesson', out)
-  for (const u of getUnits()) if (u.nodes.every((x) => done(x.id))) n = grantBadge(n, `unit-${u.id}`, out)
+  if (anyDone) n = grantBadge(n, 'explorer', out)
+  let unitDone = false
+  for (const u of getUnits()) {
+    if (u.nodes.every((x) => done(x.id))) {
+      n = grantBadge(n, `unit-${u.id}`, out)
+      unitDone = true
+    }
+  }
+  if (getF4Units().some((u) => u.nodes.length > 0 && u.nodes.every((x) => done(x.id)))) unitDone = true
+  if (unitDone) n = grantBadge(n, 'unit-done', out)
+  if (
+    getF4Units().some((u) =>
+      u.nodes.some((node) => done(node.id) && node.questions.some((q) => q.type === 'dualRead')),
+    )
+  ) {
+    n = grantBadge(n, 'dualread', out)
+  }
   if (Object.values(n.nodes).some((p) => masteryFor(p) === 'mastered')) n = grantBadge(n, 'mastery', out)
-  if (n.streak.count >= 3) n = grantBadge(n, 'streak-3', out)
-  if (n.streak.count >= 7) n = grantBadge(n, 'streak-7', out)
   if (n.xp >= 500) n = grantBadge(n, 'xp-500', out)
   for (const q of getResearchQuests()) if (n.quests[q.id]?.completed) n = grantBadge(n, q.badgeId, out)
   const sbaSteps = Object.keys(n.awarded).filter((k) => k.startsWith('sba-step-')).length

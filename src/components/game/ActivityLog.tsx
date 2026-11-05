@@ -1,4 +1,4 @@
-import { Award, BookOpen, Flame, FolderOpen, PenLine, Search, TrendingUp } from 'lucide-react'
+import { Award, BookOpen, FolderOpen, PenLine, Search, TrendingUp } from 'lucide-react'
 import { useGame } from '../../context/GameContext'
 import type { ActivityEntry } from '../../game/types'
 import { MOOD_EMPTY_MAP } from '../../game/softMotion'
@@ -11,7 +11,7 @@ const ICONS: Record<ActivityEntry['kind'], typeof Award> = {
   sba: FolderOpen,
   feldman: PenLine,
   level: TrendingUp,
-  streak: Flame,
+  streak: BookOpen,
 }
 
 function ago(ts: number) {
@@ -25,7 +25,9 @@ function ago(ts: number) {
 
 export function ActivityLog({ limit = 6 }: { limit?: number }) {
   const { state } = useGame()
-  const items = state.activity.slice(0, limit)
+  const items = state.activity
+    .filter((item) => item.kind !== 'streak' && !/streak|火焰|連續學習|三日連續|一週不斷|3-Day Streak|7-Day Streak/i.test(item.text))
+    .slice(0, limit)
   return (
     <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm">
       <h3 className="text-sm font-bold text-slate-900">{t('activity.recent')}</h3>
