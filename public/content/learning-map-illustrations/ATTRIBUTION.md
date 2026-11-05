@@ -66,6 +66,20 @@ Three formative classroom lessons ship their own tile illustration. Same rule as
 | `f4-covers/F4-U3-L3.png` | F4-U3-L3 · 十一月：社區藝術計劃——研究 | 自制 · VA-Nexus | November classroom cover, wired 2026-11-04 |
 | `f4-covers/F4-U3-L4.png` | F4-U3-L4 · 十一月：社區藝術計劃——發展同創作 | 自制 · VA-Nexus | November classroom cover, wired 2026-11-04 |
 
+## F4 November in-lesson cards (`f4-lesson-cards/`)
+
+Seven P0 classroom diagrams for F4-U2-L3, F4-U3-L3, and F4-U3-L4. **自制 · VA-Nexus**. Abstract icons and hands only — no identifiable student or neighbour faces, no past-paper or exemplar layout. Cards with no file stay text-only. English and simplified Chinese lessons reuse these same files; labels inside the PNG are Traditional Chinese.
+
+| File | Card |
+|---|---|
+| `f4-lesson-cards/F4-U2-L3-c1.png` | F4-U2-L3 · 設計思維三步 |
+| `f4-lesson-cards/F4-U2-L3-c2.png` | F4-U2-L3 · 試兩種物料 |
+| `f4-lesson-cards/F4-U3-L3-c0.png` | F4-U3-L3 · 主題喺社區 |
+| `f4-lesson-cards/F4-U3-L3-c1.png` | F4-U3-L3 · 觀察要問准 |
+| `f4-lesson-cards/F4-U3-L4-c0.png` | F4-U3-L4 · 研究變創作 |
+| `f4-lesson-cards/F4-U3-L4-c1.png` | F4-U3-L4 · 過程要留痕 |
+| `f4-lesson-cards/F4-U3-L4-c2.png` | F4-U3-L4 · 學方法唔抄圖 |
+
 ## Artist thumbs bundled in this pack (`artist-thumbs/`)
 
 Only cleared files are copied here. Status taken from `/workspace/va-nexus-content/artist-images/final.json` (Commons `extmetadata` check). Do **not** invent licenses.

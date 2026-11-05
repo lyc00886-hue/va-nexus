@@ -31,6 +31,20 @@ function text(value: unknown): string | undefined {
   return trimmed.length > 0 ? trimmed : undefined
 }
 
+/**
+ * Optional in-lesson card art. A remote or parent-path image is dropped so the
+ * card still renders as title + body. Credit is kept only with a local image.
+ */
+export function cardArtFrom(card: { image?: unknown; imageCredit?: unknown }): {
+  image?: string
+  imageCredit?: string
+} {
+  const image = learningMapAssetPath(card.image)
+  if (!image) return {}
+  const imageCredit = text(card.imageCredit)
+  return imageCredit ? { image, imageCredit } : { image }
+}
+
 /** Cover fields for a unit card. Credit is kept only when a local cover image is present. */
 export function coverFromUnit(unit: { coverImage?: unknown; coverCredit?: unknown }): {
   coverImage?: string

@@ -6,6 +6,9 @@ export type LessonCard = {
   body: string
   /** Short easy-read version (SpLD / 讀寫支援) — bullet points */
   easy: string[]
+  /** Optional in-lesson illustration. Absent when the card has no local image. */
+  image?: string
+  imageCredit?: string
 }
 
 export type QuestionType = 'mcq' | 'match' | 'fill'

@@ -276,14 +276,31 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
           "coverCredit": "自制 · VA-Nexus",
           "subtitle": "由「畫得似」轉去「設計得清楚」——先問功能同觀眾，再落筆。",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
-          "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "十一月創意練習 3：由「畫得似」轉去「設計得清楚」——先問功能同觀眾，再落筆。",
-            "設計思維三步：觀察需要 → 畫多個方案草圖 → 選一個深化（物料／顏色／文字）。",
-            "物料探索：同一主題試兩種物料（例如鉛筆＋色紙拼貼），比較邊種更能表達訊息。",
-            "設計評賞寫作：用短句寫「對象係邊個、想佢做咩、畫面邊個元素幫手」。",
-            "【課堂對齊 CCC 中四 SoW · Nov Wk 11–14】唔做真實公開試試卷；只練主題表達結構。"
+            {
+              "title": "先問觀眾",
+              "body": "由「畫得似」轉去「設計得清楚」——先問：邊個用？想佢做咩？再落筆。"
+            },
+            {
+              "title": "設計思維三步",
+              "body": "觀察需要 → 畫多個方案草圖 → 選一個深化（物料／顏色／文字）。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "試兩種物料",
+              "body": "同一主題試兩種物料（例如鉛筆＋色紙拼貼），比較邊種更能表達訊息。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c2.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "三句設計評賞",
+              "body": "用短句寫：對象係邊個、想佢做咩、畫面邊個元素幫手。"
+            },
+            {
+              "title": "課堂練習",
+              "body": "對齊中四十一月設計繪圖練習——練主題表達結構；唔做公開試試卷。"
+            }
           ],
           "quiz": [
             {
@@ -462,14 +479,31 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
           "coverCredit": "自制 · VA-Nexus",
           "subtitle": "主題來自真實環境——人物、地方、習慣、物件；做社區藝術研究。",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
-          "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "社區藝術計劃 I（研究）：主題來自真實環境——人物、地方、習慣、物件。",
-            "視覺研究：觀察＋速寫＋相片／影片筆記（唔公開他人私隱；要問准先影人）。",
-            "訪問技巧：短問題、留白、記錄關鍵句；之後只揀有用嘅故事發展主題。",
-            "由導賞／走訪拎「洞察」：一件你以前冇留意、但同社區有關嘅細節。",
-            "【對齊 CCC SoW · Oct–Nov Wk 9–10】視覺日記每週繼續；唔用公開試試卷。"
+            {
+              "title": "主題喺社區",
+              "body": "社區藝術研究：主題來自真實環境——人物、地方、習慣、物件。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c0.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "觀察要問准",
+              "body": "視覺研究：觀察＋速寫＋相片／影片筆記。影人之前要問准，尊重私隱。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "短訪問",
+              "body": "訪問：短問題、留白、記錄關鍵句；之後只揀有用嘅故事發展主題。"
+            },
+            {
+              "title": "拎一個洞察",
+              "body": "由導賞／走訪拎「洞察」：一件你以前冇留意、但同社區有關嘅細節。"
+            },
+            {
+              "title": "課堂練習",
+              "body": "對齊中四社區藝術研究課——視覺日記每週繼續；唔用公開試試卷。"
+            }
           ],
           "quiz": [
             {
@@ -518,14 +552,33 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
           "coverCredit": "自制 · VA-Nexus",
           "subtitle": "把研究變成創作——繪畫、設計、雕塑或其他媒介都可以。",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
-          "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "社區藝術計劃 II：把研究變成創作——繪畫、設計、雕塑或其他媒介都可以。",
-            "概念發展要留痕：文字／圖像草圖、物料試驗、改動原因（研究工作簿用）。",
-            "參考藝術運動或藝術家風格時：學方法，唔抄圖像；只用合法／自制參考。",
-            "完成一件同社區主題有關嘅作品，並用三句講：主題、做法、想觀眾感受到咩。",
-            "【對齊 CCC SoW · Community Art Project II】反思學習經驗；無高分 exemplar。"
+            {
+              "title": "研究變創作",
+              "body": "把研究變成創作——繪畫、設計、雕塑或其他媒介都可以。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "過程要留痕",
+              "body": "概念發展留痕：文字／圖像草圖、物料試驗、改動原因（研究工作簿用）。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "學方法唔抄圖",
+              "body": "參考風格時：學方法，唔抄圖像；只用合法／自制參考。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c2.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "三句講作品",
+              "body": "完成一件同社區主題有關嘅作品，並用三句講：主題、做法、想觀眾感受到咩。"
+            },
+            {
+              "title": "課堂練習",
+              "body": "對齊中四社區藝術創作課——反思學習經驗；無高分 exemplar。"
+            }
           ],
           "quiz": [
             {

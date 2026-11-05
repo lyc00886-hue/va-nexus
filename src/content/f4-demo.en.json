@@ -276,14 +276,31 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
           "coverCredit": "Original · VA-Nexus",
           "subtitle": "Move from “looks real” to “communicates clearly”—ask who it is for, then draw.",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
-          "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Creative Practice 3 (November): move from “looks real” to “communicates clearly”—ask who it is for, then draw.",
-            "Design thinking in 3 moves: notice a need → sketch several options → deepen one (materials / colour / text).",
-            "Material try-out: same theme, two materials (e.g. pencil + paper collage); compare which carries the message better.",
-            "Design writing: one short line each for audience, intended action, and which visual element helps.",
-            "Aligned to CCC F4 SoW Nov Wk 11–14. No real public exam papers—practice theme presentation structure only."
+            {
+              "title": "Ask the audience first",
+              "body": "Move from “looks real” to “communicates clearly”—ask who it is for and what you want them to do, then draw."
+            },
+            {
+              "title": "Design thinking in 3 steps",
+              "body": "Spot the need → sketch several options → deepen one (materials / colour / words).",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c1.png",
+              "imageCredit": "Self-made · VA-Nexus"
+            },
+            {
+              "title": "Try two materials",
+              "body": "Test the same theme in two materials (e.g. pencil + paper collage) and compare which carries the message better.",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c2.png",
+              "imageCredit": "Self-made · VA-Nexus"
+            },
+            {
+              "title": "Three design notes",
+              "body": "In short lines write: who it is for, what you want them to do, and which visual element helps."
+            },
+            {
+              "title": "Classroom practice",
+              "body": "Aligned to Form 4 November design-drawing practice—structure for theme and message; no public exam papers."
+            }
           ],
           "quiz": [
             {
@@ -462,14 +479,31 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
           "coverCredit": "Original · VA-Nexus",
           "subtitle": "Grow themes from real places—people, habits, objects, spaces—through community-art research.",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
-          "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Community Art Project I (research): themes grow from real places—people, habits, objects, spaces.",
-            "Visual research: observe + sketch + photo/video notes (ask before photographing people; protect privacy).",
-            "Interview tips: short questions, silence, key quotes; later keep only stories that feed your theme.",
-            "From a walk/tour: one insight you had not noticed before that still relates to community.",
-            "Aligned to CCC SoW Oct–Nov Wk 9–10. Keep the weekly visual diary. No past papers."
+            {
+              "title": "Themes in community",
+              "body": "Community-art research: grow themes from real places—people, habits, objects, spaces.",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c0.png",
+              "imageCredit": "Self-made · VA-Nexus"
+            },
+            {
+              "title": "Ask before you shoot",
+              "body": "Visual research: look, sketch, and note photos/video. Ask permission before photographing people; respect privacy.",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c1.png",
+              "imageCredit": "Self-made · VA-Nexus"
+            },
+            {
+              "title": "Short interviews",
+              "body": "Interviews: short questions, leave space, jot key lines; keep only stories that feed the theme."
+            },
+            {
+              "title": "One insight",
+              "body": "From a walk or tour, pick one “insight”—a detail you used to miss that still belongs to the community."
+            },
+            {
+              "title": "Classroom practice",
+              "body": "Aligned to Form 4 community-art research—keep the weekly visual diary; no public exam papers."
+            }
           ],
           "quiz": [
             {
@@ -518,14 +552,33 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
           "coverCredit": "Original · VA-Nexus",
           "subtitle": "Turn research into making—painting, design, sculpture or other media.",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
-          "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Community Art Project II: turn research into making—painting, design, sculpture or other media.",
-            "Leave a trail of thinking: written/visual sketches, material tests, why you changed ideas (for the research workbook).",
-            "When borrowing a style: learn the method; do not copy images; use legal or self-made references only.",
-            "Finish one community-linked work and say in three lines: theme, method, what you want viewers to feel.",
-            "Aligned to CCC SoW Community Art Project II. Reflect on learning. No high-score exemplars."
+            {
+              "title": "Research into making",
+              "body": "Turn research into making—painting, design, sculpture, or other media.",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png",
+              "imageCredit": "Self-made · VA-Nexus"
+            },
+            {
+              "title": "Leave a trail",
+              "body": "Leave traces of idea development: word/image sketches, material trials, why you changed course (research workbook).",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png",
+              "imageCredit": "Self-made · VA-Nexus"
+            },
+            {
+              "title": "Learn methods, don’t copy",
+              "body": "When using an artist’s approach: learn the method, don’t copy their images; use legal or self-made references only.",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c2.png",
+              "imageCredit": "Self-made · VA-Nexus"
+            },
+            {
+              "title": "Say it in three lines",
+              "body": "Finish one work tied to the community theme, then say in three lines: theme, how you made it, what you want viewers to feel."
+            },
+            {
+              "title": "Classroom practice",
+              "body": "Aligned to Form 4 community-art making—reflect on learning; no high-score exemplars."
+            }
           ],
           "quiz": [
             {

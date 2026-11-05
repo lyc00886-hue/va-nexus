@@ -3,7 +3,7 @@ import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { artistsFromLesson, coverFromUnit, learningMapAssetPath } from './f4Media.ts'
+import { artistsFromLesson, cardArtFrom, coverFromUnit, learningMapAssetPath } from './f4Media.ts'
 
 const PUBLIC = resolve(dirname(fileURLToPath(import.meta.url)), '../../public')
 
@@ -95,16 +95,29 @@ type Quiz = {
 }
 
 type ArtistMedia = { thumb?: string; license?: string; credit?: string; sourceUrl?: string }
+type ContentCard = {
+  title?: string
+  body?: string
+  image?: string
+  imageCredit?: string
+}
 type Lesson = {
   id: string
   title: string
   subtitle?: string
   coverImage?: string
   coverCredit?: string
-  cards: string[]
+  cards: (string | ContentCard)[]
   quiz: Quiz[]
   artistIds?: string[]
   artistMedia?: Record<string, ArtistMedia>
+}
+
+/** P0 in-lesson slots. null = titled card with no image. */
+const NOVEMBER_CARD_IMAGES: Record<(typeof NOVEMBER_LESSONS)[number], (string | null)[]> = {
+  'F4-U2-L3': [null, 'F4-U2-L3-c1.png', 'F4-U2-L3-c2.png', null, null],
+  'F4-U3-L3': ['F4-U3-L3-c0.png', 'F4-U3-L3-c1.png', null, null, null],
+  'F4-U3-L4': ['F4-U3-L4-c0.png', 'F4-U3-L4-c1.png', 'F4-U3-L4-c2.png', null, null],
 }
 type Unit = { id: string; title: string; intro: string; coverImage?: string; coverCredit?: string; lessons: Lesson[] }
 
@@ -287,7 +300,16 @@ describe('F.4 demo slice', () => {
     for (const name of FILES) {
       for (const unit of pack(name).units) {
         for (const lesson of unit.lessons) {
-          assert.ok(lesson.cards.every((card) => typeof card === 'string' && card.length > 0))
+          for (const card of lesson.cards) {
+            if (typeof card === 'string') {
+              assert.ok(card.length > 0, `${name} ${lesson.id}`)
+              continue
+            }
+            assert.equal(typeof card.body, 'string', `${name} ${lesson.id}`)
+            assert.ok((card.body ?? '').length > 0, `${name} ${lesson.id}`)
+            assert.equal(typeof card.title, 'string', `${name} ${lesson.id}`)
+            assert.ok((card.title ?? '').length > 0, `${name} ${lesson.id}`)
+          }
           lesson.quiz.forEach((quiz, index) => {
             const id = `${name} ${lesson.id} q${index + 1}`
             if (quiz.type === 'mcq') {
@@ -305,6 +327,56 @@ describe('F.4 demo slice', () => {
             }
           })
         }
+      }
+    }
+  })
+
+  it('keeps November quizzes at 3 and wires optional P0 card images', () => {
+    const player = readFileSync(new URL('../components/game/LessonPlayer.tsx', import.meta.url), 'utf8')
+    const one = readFileSync(new URL('../components/game/MapOneLesson.tsx', import.meta.url), 'utf8')
+    const adapter = readFileSync(new URL('./content.ts', import.meta.url), 'utf8')
+    assert.match(player, /LessonCardArt/)
+    assert.match(player, /card\.image/)
+    assert.match(one, /LessonCardArt/)
+    assert.match(adapter, /cardArtFrom/)
+    assert.deepEqual(cardArtFrom({}), {})
+    assert.deepEqual(cardArtFrom({ image: 'https://example.com/x.png', imageCredit: 'nope' }), {})
+    assert.deepEqual(
+      cardArtFrom({
+        image: '/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c1.png',
+        imageCredit: '  自制 · VA-Nexus  ',
+      }),
+      {
+        image: '/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c1.png',
+        imageCredit: '自制 · VA-Nexus',
+      },
+    )
+    const prefix = '/content/learning-map-illustrations/f4-lesson-cards/'
+    for (const name of FILES) {
+      const raw = readFileSync(new URL(`../content/${name}`, import.meta.url), 'utf8')
+      assert.equal(/cccklc/i.test(raw), false, name)
+      const lessons = pack(name).units.flatMap((unit) => unit.lessons)
+      for (const lesson of lessons) {
+        const slots = NOVEMBER_CARD_IMAGES[lesson.id as (typeof NOVEMBER_LESSONS)[number]]
+        if (!slots) {
+          assert.ok(lesson.cards.every((card) => typeof card === 'string'), `${name} ${lesson.id}`)
+          continue
+        }
+        assert.equal(lesson.quiz.length, 3, `${name} ${lesson.id}`)
+        assert.equal(/CCC|cccklc/i.test(JSON.stringify(lesson)), false, `${name} ${lesson.id}`)
+        assert.equal(lesson.cards.length, slots.length, `${name} ${lesson.id}`)
+        lesson.cards.forEach((card, index) => {
+          assert.equal(typeof card, 'object', `${name} ${lesson.id} ${index}`)
+          const row = card as ContentCard
+          const file = slots[index]
+          if (!file) {
+            assert.equal(row.image, undefined, `${name} ${lesson.id} ${index}`)
+            return
+          }
+          assert.equal(row.image, `${prefix}${file}`, `${name} ${lesson.id} ${index}`)
+          assert.ok((row.imageCredit ?? '').length > 0, `${name} ${lesson.id} ${index}`)
+          assert.ok(statSync(resolve(PUBLIC, row.image!.slice(1))).size > 1000, file)
+        })
       }
     }
   })

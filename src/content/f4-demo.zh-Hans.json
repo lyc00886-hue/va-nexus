@@ -276,14 +276,31 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
           "coverCredit": "自制 · VA-Nexus",
           "subtitle": "由「画得像」转向「设计得清楚」——先问功能与观众，再落笔。",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L3.png",
-          "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "十一月创意练习 3：由「画得像」转向「设计得清楚」——先问功能与观众，再落笔。",
-            "设计思维三步：观察需要 → 画多个方案草图 → 选一个深化（材料／颜色／文字）。",
-            "材料探索：同一主题试两种材料（例如铅笔＋色纸拼贴），比较哪种更能表达信息。",
-            "设计评赏写作：用短句写「对象是谁、想对方做什么、画面哪个元素在帮忙」。",
-            "【课堂对齐 CCC 中四 SoW · Nov Wk 11–14】不做真实公开考试卷；只练主题表达结构。"
+            {
+              "title": "先问观众",
+              "body": "由「画得像」转向「设计得清楚」——先问：谁在用？想对方做什么？再落笔。"
+            },
+            {
+              "title": "设计思维三步",
+              "body": "观察需要 → 画多个方案草图 → 选一个深化（物料／颜色／文字）。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "试两种物料",
+              "body": "同一主题试两种物料（例如铅笔＋色纸拼贴），比较哪种更能表达信息。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c2.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "三句设计评赏",
+              "body": "用短句写：对象是谁、想对方做什么、画面哪个元素在帮忙。"
+            },
+            {
+              "title": "课堂练习",
+              "body": "对齐中四十一月设计绘图练习——练主题表达结构；不做公开试卷。"
+            }
           ],
           "quiz": [
             {
@@ -462,14 +479,31 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
           "coverCredit": "自制 · VA-Nexus",
           "subtitle": "主题来自真实环境——人物、地方、习惯、物件；做社区艺术研究。",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
-          "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "社区艺术计划 I（研究）：主题来自真实环境——人物、地方、习惯、物件。",
-            "视觉研究：观察＋速写＋照片／影片笔记（不公开他人隐私；要问准再拍人）。",
-            "访问技巧：短问题、留白、记录关键句；之后只选有用的故事发展主题。",
-            "由导赏／走访拿走「洞察」：一件你以前没留意、但与社区有关的细节。",
-            "【对齐 CCC SoW · Oct–Nov Wk 9–10】视觉日记每周继续；不用公开考试卷。"
+            {
+              "title": "主题在社区",
+              "body": "社区艺术研究：主题来自真实环境——人物、地方、习惯、物件。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c0.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "观察要问准",
+              "body": "视觉研究：观察＋速写＋相片／影片笔记。拍人之前要问准，尊重隐私。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "短访问",
+              "body": "访问：短问题、留白、记录关键句；之后只选有用的故事发展主题。"
+            },
+            {
+              "title": "拿一个洞察",
+              "body": "由导赏／走访拿「洞察」：一件你以前没留意、但和社区有关的细节。"
+            },
+            {
+              "title": "课堂练习",
+              "body": "对齐中四社区艺术研究课——视觉日记每周继续；不用公开试卷。"
+            }
           ],
           "quiz": [
             {
@@ -518,14 +552,33 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
           "coverCredit": "自制 · VA-Nexus",
           "subtitle": "把研究变成创作——绘画、设计、雕塑或其他媒介都可以。",
-          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
-          "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "社区艺术计划 II：把研究变成创作——绘画、设计、雕塑或其他媒介都可以。",
-            "概念发展要留痕：文字／图像草图、材料试验、改动原因（研究工作簿用）。",
-            "参考艺术运动或艺术家风格时：学方法，不抄图像；只用合法／自制参考。",
-            "完成一件与社区主题有关的作品，并用三句讲：主题、做法、想观众感受到什么。",
-            "【对齐 CCC SoW · Community Art Project II】反思学习经验；无高分 exemplar。"
+            {
+              "title": "研究变创作",
+              "body": "把研究变成创作——绘画、设计、雕塑或其他媒介都可以。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "过程要留痕",
+              "body": "概念发展留痕：文字／图像草图、物料试验、改动原因（研究工作簿用）。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "学方法不抄图",
+              "body": "参考风格时：学方法，不抄图像；只用合法／自制参考。",
+              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c2.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "三句讲作品",
+              "body": "完成一件与社区主题有关的作品，并用三句讲：主题、做法、想观众感受到什么。"
+            },
+            {
+              "title": "课堂练习",
+              "body": "对齐中四社区艺术创作课——反思学习经验；无高分 exemplar。"
+            }
           ],
           "quiz": [
             {
