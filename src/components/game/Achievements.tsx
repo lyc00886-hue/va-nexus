@@ -1,14 +1,12 @@
-import { Flame, Heart, Lock, Star, Trophy } from 'lucide-react'
+import { Flame, Lock, Star, Trophy } from 'lucide-react'
 import { useGame } from '../../context/GameContext'
-import { useSen } from '../../context/SenContext'
 import { getAllNodes } from '../../game/curriculum'
 import { getBadges, getLevels } from '../../game/rewards'
 import { getLocale, INTL_LOCALE, t } from '../../i18n'
 import { ActivityLog } from './ActivityLog'
 
 export function Achievements() {
-  const { state, level, streak, setHearts, resetGame, progressPct } = useGame()
-  const { supportsOn } = useSen()
+  const { state, level, streak, resetGame, progressPct } = useGame()
   const BADGES = getBadges()
   const LEVELS = getLevels()
   const unlocked = BADGES.filter((b) => state.badges[b.id]).length
@@ -105,16 +103,6 @@ export function Achievements() {
             ))}
           </ul>
           <h3 className="mt-5 font-bold text-slate-900">{t('ach.gameSettings')}</h3>
-          <label className="mt-2 flex items-center gap-2 text-slate-700">
-            <input
-              type="checkbox"
-              checked={state.prefs.hearts}
-              onChange={(e) => setHearts(e.target.checked)}
-              className="h-4 w-4 accent-rose-500"
-            />
-            <Heart className="h-4 w-4 text-rose-500" aria-hidden /> {t('ach.hearts')}
-          </label>
-          {supportsOn && <p className="mt-1 text-xs text-slate-500">{t('ach.heartsOff')}</p>}
           <p className="mt-3 text-xs text-slate-500">{t('ach.syncNote')}</p>
           <button
             type="button"

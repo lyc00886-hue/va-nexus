@@ -283,6 +283,23 @@ function studentStrings(value: unknown, path: string, hits: string[]) {
   }
 }
 
+describe('achievements hearts residual', () => {
+  it('does not offer a student hearts toggle or keep the dead copy', () => {
+    const ach = read('src/components/game/Achievements.tsx')
+    assert.equal(/Heart|setHearts|prefs\.hearts|ach\.hearts|心心|愛心|爱心/.test(ach), false)
+    const stored = ['src/context/GameContext.tsx', 'src/game/types.ts', 'src/lib/progressSync.ts'].map(read).join('\n')
+    assert.equal(/setHearts|\bhearts\b/.test(stored), false)
+    for (const file of [
+      'src/i18n/zh-Hant.json',
+      'src/i18n/zh-Hans.json',
+      'src/i18n/zh-Hans.overrides.json',
+      'src/i18n/en.json',
+    ]) {
+      assert.equal(/ach\.hearts|lp\.hearts|心心|愛心|爱心|\bhearts\b/i.test(read(file)), false, file)
+    }
+  })
+})
+
 describe('student chrome diagnosis glyphs', () => {
   it('keeps diagnosis words out of student-facing copy', () => {
     const hits: string[] = []
