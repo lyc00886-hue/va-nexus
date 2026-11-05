@@ -67,6 +67,7 @@ export function MapOneLesson({
   const [leaving, setLeaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [ai, setAi] = useState<AiTipState>(AI_IDLE)
+  const [gained, setGained] = useState(0)
   const finished = useRef(false)
   const motion = !settings.reduceMotion
   const playSoft = useSoftMotion()
@@ -94,6 +95,7 @@ export function MapOneLesson({
   const practice = chunk?.kind === 'practice' ? lesson.questions[chunk.index] : undefined
   const waiting = Boolean(practice && !revealed && (practice.type === 'match' || choice === null))
   const sectionEnd = Boolean(chunk?.kind === 'read' && chunk.index === lesson.cards.length - 1 && lesson.questions.length > 0)
+  const feedbackCta = t(lastCorrect ? 'tray.correct.cta' : 'tray.wrong.cta')
   const cta = step
     ? practice && !revealed
       ? t('er.quiz.check')
@@ -102,11 +104,13 @@ export function MapOneLesson({
         : last && (!practice || revealed)
           ? t('er.cta.done')
           : practice && revealed
-            ? t('er.quiz.next')
+            ? feedbackCta
             : t('er.lesson.continue')
-    : last && (!practice || revealed)
-      ? t('map.chunk.done')
-      : t('map.chunk.cta')
+    : practice && revealed && !last
+      ? feedbackCta
+      : last && (!practice || revealed)
+        ? t('map.chunk.done')
+        : t('map.chunk.cta')
   const checklist = lesson.cards.map((card) => card.title)
 
   function mark(correct: boolean) {
@@ -130,7 +134,7 @@ export function MapOneLesson({
     }
     finished.current = true
     const total = lesson.questions.length
-    finishLesson(
+    const outcome = finishLesson(
       lesson.id,
       lesson.title,
       {
@@ -141,6 +145,7 @@ export function MapOneLesson({
       },
       kind,
     )
+    setGained(outcome.xpGained)
     setView('celebrate')
   }
 
@@ -220,13 +225,13 @@ export function MapOneLesson({
       <SoftScreen marker="map-celebrate">
         <div data-map-celebrate className="flex flex-1 flex-col items-center justify-center gap-4 py-4 text-center">
           <LessonCompleteFrame play={playSoft} />
-          <h2 className="text-2xl font-bold text-slate-900">{t('celebrate.soft')}</h2>
-          <p className="text-base text-slate-700">{t('celebrate.soft.sub')}</p>
-          {step ? <p className="text-base font-bold text-[#0D9488]">{t('mascot.chest.reward')}</p> : null}
+          <h2 className="text-2xl font-bold text-slate-900">{t('tray.complete.title')}</h2>
+          <p className="text-base text-slate-700">{t('lp.tip')}</p>
+          {gained > 0 ? <p className="text-base font-bold text-[#0D9488]">{t('lp.gain', { n: gained })}</p> : null}
         </div>
         {nextOpen && nextId ? (
           <>
-            <Primary tall={step} onClick={() => onOpenLesson(nextId)}>{t('celebrate.soft.cta')}</Primary>
+            <Primary tall={step} onClick={() => onOpenLesson(nextId)}>{t('tray.complete.cta')}</Primary>
             <Back onClick={onExit} label={backLabel} />
           </>
         ) : (
@@ -331,9 +336,9 @@ export function MapOneLesson({
             onSolved={mark}
           />
         )}
-        {step && revealed && lastCorrect !== null ? (
+        {revealed && lastCorrect !== null ? (
           <p className="mt-3 text-base font-bold text-teal-900" role="status">
-            {lastCorrect ? t('er.quiz.correct') : t('er.quiz.retry')}
+            {lastCorrect ? t('tray.correct.title') : t('tray.wrong.title')}
           </p>
         ) : null}
         {revealed && practice && (
@@ -361,7 +366,7 @@ export function MapOneLesson({
           onClick={onExit}
           className="self-center min-h-11 text-sm font-semibold text-slate-600 underline-offset-2 hover:underline"
         >
-          {t('er.cta.skip')}
+          {t('tray.softSkip')}
         </button>
       ) : null}
     </SoftScreen>

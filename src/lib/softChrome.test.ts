@@ -28,10 +28,10 @@ const COPY = {
     'sen.quick': '顯示設定',
     'sen.title': '顯示同閱讀設定',
     'chrome.xp': '{n} 學習點',
-    'chrome.xpGain': '+{n} 學習點',
-    'chrome.level': '第 {n} 級',
-    'chrome.levelTitle': '第 {n} 級 {title}',
-    'chrome.levelXpRow': '第 {n} 級 {title} · {xp} 學習點',
+    'chrome.xpGain': '＋{n} 學習點',
+    'chrome.level': '等級 {n}',
+    'chrome.levelTitle': '等級 {n} {title}',
+    'chrome.levelXpRow': '等級 {n} {title} · {xp} 學習點',
     'rs.step.ai': 'AI 學習建議',
   },
   'zh-Hans': {
@@ -41,10 +41,10 @@ const COPY = {
     'sen.quick': '显示设置',
     'sen.title': '显示与阅读设置',
     'chrome.xp': '{n} 学习点',
-    'chrome.xpGain': '+{n} 学习点',
-    'chrome.level': '第 {n} 级',
-    'chrome.levelTitle': '第 {n} 级 {title}',
-    'chrome.levelXpRow': '第 {n} 级 {title} · {xp} 学习点',
+    'chrome.xpGain': '＋{n} 学习点',
+    'chrome.level': '等级 {n}',
+    'chrome.levelTitle': '等级 {n} {title}',
+    'chrome.levelXpRow': '等级 {n} {title} · {xp} 学习点',
     'rs.step.ai': 'AI 学习建议',
   },
 } as const
@@ -102,7 +102,7 @@ describe('soft leftover display chrome', () => {
       const source = read(file)
       assert.equal(/\bLv\./.test(source), false, file)
       assert.equal(/ XP/.test(source), false, file)
-      assert.match(source, /chrome\.(xp|xpGain|level|levelTitle|levelXpRow)/)
+      assert.match(source, /chrome\.(xp|xpGain|level|levelTitle|levelXpRow)|lp\.(gain|level)/)
     }
 
     const panel = read('src/components/SenSettingsPanel.tsx')

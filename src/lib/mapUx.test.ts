@@ -164,8 +164,9 @@ describe('map / AI preview copy', () => {
 
     assert.match(lesson, /t\('map\.chunk\.cta'\)/)
     assert.match(lesson, /t\('map\.chunk\.done'\)/)
-    assert.match(lesson, /t\('celebrate\.soft'\)/)
-    assert.match(lesson, /t\('celebrate\.soft\.sub'\)/)
+    assert.match(lesson, /t\('tray\.complete\.title'\)/)
+    assert.match(lesson, /t\('lp\.tip'\)/)
+    assert.match(lesson, /t\('tray\.complete\.cta'\)/)
     assert.match(lesson, /t\('empty\.nextLesson'\)/)
     assert.match(lesson, /t\('empty\.noContent'\)/)
     assert.match(lesson, /postFeldmanFeedback/)
