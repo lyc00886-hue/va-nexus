@@ -18,9 +18,9 @@ const PLATE = {
     'island.home.title': '「五大冒險島」',
     'island.home.sub': '選島探索',
     'island.start': '揀島開始',
-    'island.start.note': '{name} · Soft 可重試',
+    'island.start.note': '{name} · 可再試',
     'island.map.heading': '地圖 · {name}',
-    'island.map.sub': '選島 · Soft MapPath',
+    'island.map.sub': '選島 · 地圖路徑',
     'island.chip.all': '全部',
     'island.chip.history': '藝術史對決',
     'island.chip.research': '一手研究局',
@@ -34,7 +34,7 @@ const PLATE = {
     'island.short.exam': '應試',
     'island.quest.tag': '藝術史 · 視覺解難',
     'island.quest.title': '借鑑筆觸，唔抄畫面',
-    'island.quest.sub': '約 3 分鐘微關 · Soft 可重試',
+    'island.quest.sub': '約 3 分鐘微關 · 可再試',
     'island.quest.tipTitle': '小提示',
     'island.quest.tip': '呂壽琨常用大面積留白同焦墨；梵高常用急促交錯筆觸同互補色。重點係「點解決情緒」，唔係臨摹成幅畫。',
     'island.quest.q': '如果想表達「壓抑入面想透氣」，邊個做法較似個人轉化？',
@@ -48,19 +48,25 @@ const PLATE = {
     'island.quest.skill': '視覺解難',
   },
   en: {
+    'island.start.note': '{name} · Try again',
+    'island.map.sub': 'Islands · Map path',
     'island.chip.sba': 'SBA lab',
     'island.chip.exam': 'Exam skills',
     'island.short.exam': 'Exam',
+    'island.quest.sub': '~3 min quest · Try again',
     'island.quest.check': 'Check',
     'island.quest.gain': '+1 learning point',
   },
   'zh-Hans': {
+    'island.start.note': '{name} · 可再试',
+    'island.map.sub': '选岛 · 地图路径',
     'island.chip.sba': 'SBA 实验室',
     'island.chip.exam': '应试练习场',
     'island.short.exam': '应试',
     'island.quest.check': '检查',
     'island.quest.gain': '＋1 学习点',
     'island.quest.title': '借鉴笔触，不抄画面',
+    'island.quest.sub': '约 3 分钟微关 · 可再试',
   },
 } as const
 
@@ -109,6 +115,13 @@ describe('soft island plates', () => {
       }
       for (const key of Object.keys(bag).filter((item) => item.startsWith('island.'))) {
         for (const banned of BANNED) assert.equal(bag[key].includes(banned), false, `${locale} ${key} ${banned}`)
+        assert.equal(/\bSoft\b/.test(bag[key]), false, `${locale} ${key} Soft`)
+      }
+    }
+    for (const file of ['src/i18n/zh-Hant.json', 'src/i18n/zh-Hans.json', 'src/i18n/zh-Hans.overrides.json', 'src/i18n/en.json']) {
+      const bag = messages(file)
+      for (const [key, value] of Object.entries(bag)) {
+        assert.equal(/\bSoft\b/.test(value), false, `${file} ${key}`)
       }
     }
   })
