@@ -113,7 +113,7 @@ export type GameStateV1 = {
   activity: ActivityEntry[]
   /** idempotency keys for one-off XP rewards (e.g. sba-step-3) */
   awarded: Record<string, number>
-  prefs: { hearts: boolean }
+  prefs: Record<string, never>
 }
 
 export type SessionResult = {

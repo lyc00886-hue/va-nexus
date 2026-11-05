@@ -43,7 +43,7 @@ export function createEmptyGame(): GameStateV1 {
     badges: {},
     activity: [],
     awarded: {},
-    prefs: { hearts: true },
+    prefs: {},
   }
 }
 
@@ -118,7 +118,7 @@ export function mergeGame(local: GameStateV1, server: GameStateV1): GameStateV1 
     badges: unionMin(local.badges ?? {}, server.badges ?? {}),
     awarded: unionMin(local.awarded ?? {}, server.awarded ?? {}),
     activity,
-    prefs: { ...server.prefs, ...local.prefs },
+    prefs: {},
   }
 }
 

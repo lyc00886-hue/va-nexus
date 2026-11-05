@@ -35,7 +35,7 @@ const INITIAL: GameStateV1 = {
   badges: {},
   activity: [],
   awarded: {},
-  prefs: { hearts: true },
+  prefs: {},
 }
 
 /** Local calendar date in Hong Kong time (YYYY-MM-DD). */
@@ -58,7 +58,7 @@ function load(): GameStateV1 {
           ...INITIAL,
           ...parsed,
           streak: { ...INITIAL.streak, ...parsed.streak },
-          prefs: { ...INITIAL.prefs, ...parsed.prefs },
+          prefs: {},
         }
       }
     }
@@ -141,7 +141,6 @@ type GameContextValue = {
   finishLesson: (id: string, title: string, result: SessionResult, kind: 'lesson' | 'quest') => FinishOutcome
   /** Idempotent one-off reward (e.g. `sba-step-2`). Returns XP gained (0 if already awarded). */
   awardOnce: (key: string, xp: number, text: string, kind: ActivityEntry['kind']) => number
-  setHearts: (on: boolean) => void
   resetGame: () => void
   /** Replace the whole state (used by per-user cloud sync after merging). */
   replaceState: (s: GameStateV1) => void
@@ -241,10 +240,6 @@ export function GameProvider({ children }: { children: ReactNode }) {
     [commit],
   )
 
-  const setHearts = useCallback(
-    (on: boolean) => commit({ ...ref.current, prefs: { ...ref.current.prefs, hearts: on } }),
-    [commit],
-  )
   const resetGame = useCallback(() => commit(INITIAL), [commit])
 
   const value = useMemo<GameContextValue>(() => {
@@ -272,11 +267,10 @@ export function GameProvider({ children }: { children: ReactNode }) {
       currentNodeId: current?.id ?? null,
       finishLesson,
       awardOnce,
-      setHearts,
       resetGame,
       replaceState: commit,
     }
-  }, [state, finishLesson, awardOnce, setHearts, resetGame, commit])
+  }, [state, finishLesson, awardOnce, resetGame, commit])
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>
 }
