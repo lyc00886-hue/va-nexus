@@ -24,6 +24,8 @@ import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
 import { softShellFromSearch, type SoftShell } from '../../lib/softAtlas'
 import {
+  isIslandNode,
+  isQuestIsland,
   softIslandFromSearch,
   softPlateFromSearch,
   type SoftIslandId,
@@ -32,8 +34,11 @@ import {
 import { MapPath } from './MapPath'
 import { MapOneLesson } from './MapOneLesson'
 import { SoftAtlas, SoftMine, SoftShellNav } from './SoftAtlas'
-import { SoftHistoryPath, SoftIslandHome, SoftMapPlate } from './SoftIslandChrome'
+import { SoftHistoryPath, SoftMapPlate } from './SoftIslandChrome'
 import { SoftHistoryQuest } from './SoftHistoryQuest'
+import { SoftIllustrationMap } from './SoftIllustrationMap'
+import { SoftIslandFocus } from './SoftIslandFocus'
+import { SoftIslandQuest } from './SoftIslandQuest'
 
 const TRACK_KEY = 'va-nexus:map-track'
 const MEDIA_KEY = 'va-nexus:map-media'
@@ -216,11 +221,13 @@ export function LearningMap() {
       />
     )
     const plateView: SoftPlate =
-      plate === 'quest' && island !== 'history'
+      plate === 'quest' && island !== 'history' && !isQuestIsland(island)
         ? 'home'
         : plate === 'path' && island !== 'all' && island !== 'history'
           ? 'home'
-          : plate
+          : plate === 'focus' && !isIslandNode(island)
+            ? 'home'
+            : plate
     const navActive: SoftShell = plateView === 'path' ? 'path' : 'map'
     return (
       <div data-map-shell="one" data-soft-shell={shell} className="space-y-5">
@@ -238,8 +245,10 @@ export function LearningMap() {
               <SoftAtlas onShell={onShell} />
             ) : shell === 'mine' ? (
               <SoftMine onShell={onShell} />
-            ) : plateView === 'quest' ? (
+            ) : plateView === 'quest' && island === 'history' ? (
               <SoftHistoryQuest onExit={() => setPlate('path')} />
+            ) : plateView === 'quest' && isQuestIsland(island) ? (
+              <SoftIslandQuest island={island} onExit={() => setPlate('focus')} />
             ) : plateView === 'path' ? (
               <SoftMapPlate
                 island={island}
@@ -251,12 +260,23 @@ export function LearningMap() {
               >
                 {island === 'history' ? <SoftHistoryPath onOpen={() => setPlate('quest')} /> : keptPath}
               </SoftMapPlate>
-            ) : (
-              <SoftIslandHome
+            ) : plateView === 'focus' && isIslandNode(island) ? (
+              <SoftIslandFocus
                 island={island}
-                onIsland={setIsland}
-                onStart={() => setPlate('path')}
-                mainPath={island === 'all' ? keptPath : undefined}
+                onBack={() => setPlate('home')}
+                onStart={() => setPlate(island === 'history' ? 'path' : 'quest')}
+              />
+            ) : (
+              <SoftIllustrationMap
+                island={island}
+                onIsland={(next) => {
+                  setIsland(next)
+                  setPlate('home')
+                }}
+                onOpen={(id) => {
+                  setIsland(id)
+                  setPlate('focus')
+                }}
               />
             )}
             {shell === 'atlas' || shell === 'mine' || plateView === 'quest' ? null : (

@@ -6,7 +6,10 @@ import { fileURLToPath } from 'node:url'
 import {
   HISTORY_QUEST_ANSWER,
   historyQuestFeedback,
+  ISLAND_QUEST_ANSWER,
   islandKeepsLesson,
+  islandNodeState,
+  islandQuestFeedback,
   softIslandFromSearch,
   softPlateFromSearch,
 } from './softIslands.ts'
@@ -100,6 +103,17 @@ describe('soft island plates', () => {
     assert.equal(softPlateFromSearch('?plate=path'), 'path')
     assert.equal(softPlateFromSearch('?plate=quest'), 'quest')
     assert.equal(softPlateFromSearch('?ux=map1'), 'home')
+    assert.equal(softPlateFromSearch('?plate=focus'), 'focus')
+    assert.equal(islandNodeState('history', 'research'), 'done')
+    assert.equal(islandNodeState('research', 'research'), 'progress')
+    assert.equal(islandNodeState('critique', 'research'), 'later')
+    assert.equal(islandNodeState('sba', 'all'), 'progress')
+    assert.equal(islandNodeState('exam', 'all'), 'progress')
+    assert.equal(ISLAND_QUEST_ANSWER, 1)
+    assert.equal(islandQuestFeedback('research', 1), 'island.mq.research.ok')
+    assert.equal(islandQuestFeedback('critique', 0), 'island.mq.critique.missA')
+    assert.equal(islandQuestFeedback('sba', 2), 'island.mq.sba.missC')
+    assert.equal(islandQuestFeedback('exam', 1), 'island.mq.exam.ok')
   })
 
   it('matches the Soft QA plate copy and the name lock', () => {
@@ -130,30 +144,64 @@ describe('soft island plates', () => {
     const map = read('src/components/game/LearningMap.tsx')
     const home = read('src/components/game/SoftIslandChrome.tsx')
     const quest = read('src/components/game/SoftHistoryQuest.tsx')
+    const illu = read('src/components/game/SoftIllustrationMap.tsx')
+    const focus = read('src/components/game/SoftIslandFocus.tsx')
+    const micro = read('src/components/game/SoftIslandQuest.tsx')
     const plates = `${home}\n${quest}`
+    const added = `${illu}\n${focus}\n${micro}\n${map}`
     assert.match(map, /data-map-shell="one"/)
-    assert.match(map, /SoftIslandHome/)
+    assert.match(map, /SoftIllustrationMap/)
+    assert.match(map, /SoftIslandFocus/)
+    assert.match(map, /SoftIslandQuest/)
     assert.match(map, /SoftMapPlate/)
     assert.match(map, /SoftHistoryQuest/)
     assert.match(map, /SoftHistoryPath/)
     assert.match(map, /HistoryTrack/)
     assert.match(map, /SoftShellNav/)
+    assert.match(map, /shell === 'atlas'/)
+    assert.equal(map.includes('SoftIslandHome'), false)
     assert.match(home, /data-soft-plate="home"/)
     assert.match(home, /data-soft-plate="path"/)
     assert.match(home, /data-history-node/)
     assert.match(quest, /data-soft-plate="quest"/)
     assert.match(quest, /island\.quest\.check/)
     assert.match(quest, /data-soft-gain/)
+    assert.match(illu, /data-illu-map/)
+    assert.match(illu, /data-island-node/)
+    assert.match(focus, /data-island-start/)
+    assert.match(focus, /island\.focus\.start/)
+    assert.match(micro, /data-island-quest/)
+    assert.match(micro, /island\.mq\.check/)
+    assert.match(micro, /data-soft-gain/)
+    assert.match(micro, /data-exam-form/)
     assert.equal(quest.includes('finishLesson'), false)
+    assert.equal(micro.includes('finishLesson'), false)
     assert.equal(quest.includes('SoftMotion'), false)
     assert.equal(home.includes('SoftMotion'), false)
+    assert.equal(illu.includes('SoftMotion'), false)
+    assert.equal(focus.includes('SoftMotion'), false)
+    assert.equal(micro.includes('SoftMotion'), false)
     assert.equal(home.includes('moods/motion-v2'), false)
+    assert.equal(added.includes('animate-'), false)
     for (const banned of ['真題', '奪星', 'HKEAA', 'FOMO', 'streak', 'hearts', 'gems', '經驗值', 'atlas', '雙圖對讀']) {
       assert.equal(plates.includes(banned), false, banned)
     }
-    for (const banned of ['真題', '奪星', 'HKEAA', 'FOMO', 'streak', 'hearts', 'gems', '經驗值', '雙圖對讀']) {
-      assert.equal(map.includes(banned), false, banned)
+    for (const banned of ['真題', '奪星', '競技場', 'HKEAA', 'FOMO', 'streak', 'hearts', 'gems', '經驗值', 'claim', '雙圖對讀']) {
+      assert.equal(added.includes(banned), false, banned)
     }
-    assert.equal(/\bXP\b/.test(`${map}\n${plates}`), false)
+    assert.equal(/\bXP\b/.test(`${map}\n${plates}\n${added}`), false)
+    const hant = messages('src/i18n/zh-Hant.json')
+    assert.equal(hant['island.illu.title'], '選島 · 地圖路徑')
+    assert.equal(hant['island.illu.sub'], '五大冒險島 · 插圖路徑')
+    assert.equal(hant['island.focus.start'], '開始')
+    assert.equal(hant['island.short.exam'], '應試')
+    assert.equal(hant['island.chip.sba'], 'SBA 實驗室')
+    assert.equal(hant['island.chip.exam'], '應試練習場')
+    assert.equal(hant['island.exam.form'], '雙圖對讀')
+    assert.equal(hant['island.mq.research.title'], '邊組先算一手證據？')
+    assert.equal(hant['island.mq.critique.b'], '用低明度、低彩度冷色，配合急促交錯筆觸，構圖逼近，加強壓抑感。')
+    assert.equal(hant['island.mq.sba.b'].includes('熱熔膠'), true)
+    assert.equal(hant['island.mq.exam.b'].includes('負空間'), true)
+    assert.equal(hant['island.node.later'], '稍後開放')
   })
 })
