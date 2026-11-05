@@ -37,7 +37,7 @@ export function LessonCompleteFrame({ play }: { play: boolean }) {
         decoding="async"
       />
       <div
-        className="soft-otter-celebrate pointer-events-none absolute bottom-0 right-0 w-[58%]"
+        className="soft-otter-celebrate pointer-events-none absolute bottom-0 right-0 w-[43.5%]"
         data-otter-celebrate={play ? 'play' : 'idle'}
         data-celebrate-sequence={sequence.join(' ')}
         data-celebrate-ms={MOTION_V2_CELEBRATE_MS}

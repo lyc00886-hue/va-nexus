@@ -42,7 +42,9 @@ export const MOOD_EMPTY_MAP = '/content/learning-map-illustrations/moods/mood-em
 export const MOOD_OTTER_PEEK = '/content/learning-map-illustrations/moods/mood-otter-peek.png'
 
 /**
- * Motion v2 lesson-complete character. Paths stay stable if a frame file is replaced.
+ * Motion v2 lesson-complete character.
+ * Live plates are the true-alpha sibling set. Opaque parent plates stay at
+ * motion-v2/otter-celebrate-*.png for rollback and are not the overlay.
  * Idle, chest-paws clap, and happy chin-tuck nod are the aligned set.
  * One hard-cut pass, 700–900ms, no loop.
  */
@@ -52,9 +54,9 @@ export const MOTION_V2_CELEBRATE_MS = 800
 export const CELEBRATE_CUTS_MS = [0, 200, 450, 700, 800] as const
 
 export const MOTION_V2_OTTER = {
-  idle: '/content/learning-map-illustrations/moods/motion-v2/otter-celebrate-idle.png',
-  clap: '/content/learning-map-illustrations/moods/motion-v2/otter-celebrate-clap.png',
-  nod: '/content/learning-map-illustrations/moods/motion-v2/otter-celebrate-nod.png',
+  idle: '/content/learning-map-illustrations/moods/motion-v2/for-wire-alpha/otter-celebrate-idle.png',
+  clap: '/content/learning-map-illustrations/moods/motion-v2/for-wire-alpha/otter-celebrate-clap.png',
+  nod: '/content/learning-map-illustrations/moods/motion-v2/for-wire-alpha/otter-celebrate-nod.png',
 } as const
 
 export type CelebratePose = keyof typeof MOTION_V2_OTTER
