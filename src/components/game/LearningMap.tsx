@@ -22,8 +22,16 @@ import { PLATFORM_HEADER_PATH_EVENT } from '../../lib/platformHeaderShell'
 import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
+import {
+  softIslandFromSearch,
+  softPlateFromSearch,
+  type SoftIslandId,
+  type SoftPlate,
+} from '../../lib/softIslands'
 import { MapPath } from './MapPath'
-import { MapOneCard, MapOneLesson } from './MapOneLesson'
+import { MapOneLesson } from './MapOneLesson'
+import { SoftHistoryPath, SoftIslandHome, SoftMapPlate } from './SoftIslandChrome'
+import { SoftHistoryQuest } from './SoftHistoryQuest'
 
 const TRACK_KEY = 'va-nexus:map-track'
 const MEDIA_KEY = 'va-nexus:map-media'
@@ -64,6 +72,12 @@ export function LearningMap() {
   const mapOne = useMapOneShell()
   const easy = useEasyRead()
   const [mapLessonId, setMapLessonId] = useState<string | null>(null)
+  const [island, setIsland] = useState<SoftIslandId>(() =>
+    typeof window === 'undefined' ? 'history' : softIslandFromSearch(window.location.search),
+  )
+  const [plate, setPlate] = useState<SoftPlate>(() =>
+    typeof window === 'undefined' ? 'home' : softPlateFromSearch(window.location.search),
+  )
   const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
   const [mediaId, setMediaId] = useState<string | null>(readMediaId)
@@ -161,6 +175,30 @@ export function LearningMap() {
 
   if (mapOne) {
     const openLesson = mapLessonId ? getNodeById().get(mapLessonId) : undefined
+    const quietSections: LearningMapSections = { units: {}, lessons: {}, folds: sections.folds }
+    const keptPath = (
+      <HistoryTrack
+        units={historyUnits}
+        current={current}
+        currentNodeId={currentNodeId}
+        isUnlocked={isUnlocked}
+        completed={completed}
+        masteryOf={(id) => masteryFor(state.nodes[id])}
+        sections={quietSections}
+        onToggleLesson={(id) => {
+          if (isUnlocked(id)) setMapLessonId(id)
+        }}
+        onCloseLesson={() => {}}
+        onSetFold={() => {}}
+        onReveal={(lesson) => setMapLessonId(lesson.id)}
+      />
+    )
+    const plateView: SoftPlate =
+      plate === 'quest' && island !== 'history'
+        ? 'home'
+        : plate === 'path' && island !== 'all' && island !== 'history'
+          ? 'home'
+          : plate
     return (
       <div data-map-shell="one" className="space-y-5">
         {openLesson ? (
@@ -173,8 +211,28 @@ export function LearningMap() {
         ) : (
           <>
             {easy.preview ? <EasyReadBar /> : null}
+            {plateView === 'quest' ? (
+              <SoftHistoryQuest onExit={() => setPlate('path')} />
+            ) : plateView === 'path' ? (
+              <SoftMapPlate
+                island={island}
+                onIsland={(next) => {
+                  setIsland(next)
+                  if (next !== 'all' && next !== 'history') setPlate('home')
+                }}
+                onHome={() => setPlate('home')}
+              >
+                {island === 'history' ? <SoftHistoryPath onOpen={() => setPlate('quest')} /> : keptPath}
+              </SoftMapPlate>
+            ) : (
+              <SoftIslandHome
+                island={island}
+                onIsland={setIsland}
+                onStart={() => setPlate('path')}
+                mainPath={island === 'all' ? keptPath : undefined}
+              />
+            )}
             <MapCommitments />
-            <MapOneCard onOpen={setMapLessonId} />
           </>
         )}
       </div>
