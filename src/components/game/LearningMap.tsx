@@ -228,7 +228,7 @@ export function LearningMap() {
     return isUnlocked(id)
   }
 
-  const pathOn = !easy.on && !mapOne && (track === 'history' || track === 'f4' || selected != null)
+  const pathOn = !easy.on && (mapOne || track === 'history' || track === 'f4' || selected != null)
   useLayoutEffect(() => {
     if (!pathOn) return
     window.dispatchEvent(new Event(PLATFORM_HEADER_PATH_EVENT))

@@ -20,6 +20,7 @@ function step(over: Partial<PlatformHeaderStep> = {}) {
     acc: 0,
     collapsed: false,
     mobile: true,
+    mapOne: false,
     path: true,
     anchored: false,
     hidePast: 80,
@@ -61,11 +62,20 @@ describe('platform header shell', () => {
     assert.equal(step({ scrollY: 220, delta: 6, collapsed: true }).collapsed, true)
   })
 
-  it('stays visible on desktop, off the path, and while the gear panel is open', () => {
+  it('stays visible on desktop classic, off the path, and while the gear panel is open', () => {
     assert.equal(step({ mobile: false, delta: 80, collapsed: true }).collapsed, false)
     assert.equal(step({ path: false, delta: 80, collapsed: true }).collapsed, false)
     assert.equal(step({ anchored: true, delta: 80, collapsed: true }).collapsed, false)
     assert.equal(step({ hidePast: 0, delta: 80, collapsed: true }).collapsed, false)
+  })
+
+  it('hides the 闖關 shell on desktop and brings it back on scroll-up', () => {
+    const hidden = step({ mobile: false, mapOne: true, scrollY: 120, delta: PLATFORM_HEADER_HIDE_ACC_PX })
+    assert.equal(hidden.collapsed, true)
+    assert.equal(step({ mobile: false, mapOne: true, scrollY: 80, delta: -PLATFORM_HEADER_SHOW_ACC_PX, collapsed: true }).collapsed, false)
+    assert.equal(step({ mobile: false, mapOne: true, path: false, delta: 80, collapsed: true }).collapsed, false)
+    assert.equal(step({ mobile: false, mapOne: true, anchored: true, delta: 80, collapsed: true }).collapsed, false)
+    assert.equal(step({ mobile: true, mapOne: true, scrollY: 120, delta: PLATFORM_HEADER_HIDE_ACC_PX }).collapsed, true)
   })
 
   it('starts a new accumulation when the scroll direction flips', () => {
@@ -84,10 +94,15 @@ describe('platform header shell', () => {
     assert.match(header, /t\('header\.a11y'\)/)
     assert.match(header, /t\('header\.subtitle'\)/)
     assert.match(header, /platform-header/)
-    assert.match(css, /@media \(max-width: 767px\) \{\s*\n\s*\.platform-header/)
-    assert.match(css, /\.platform-header\[data-collapsed='true'\]/)
+    assert.match(header, /data-map-shell="one"/)
+    assert.match(header, /data-map-chrome="path"/)
+    assert.match(header, /dataset\.softScreen === 'focus'/)
+    assert.match(css, /\.platform-header\s*\{[^}]*transition:\s*transform 160ms ease-out/)
+    assert.match(css, /\.platform-header\[data-collapsed='true'\]\s*\{[^}]*translateY\(-100%\)/)
+    assert.match(css, /@media \(min-width: 768px\) \{\s*\n\s*\.platform-header \+ \.flex > \.map-one-chrome/)
     assert.match(css, /@media \(prefers-reduced-motion: reduce\) \{\s*\n\s*\.platform-header/)
     assert.match(map, /data-map-chrome="path"/)
+    assert.match(map, /mapOne \|\| track === 'history'/)
     assert.match(map, /bg-\[#FFF9E9\]/)
     assert.match(map, /bg-\[#0D9488\]/)
     assert.equal(map.includes('StatCards'), false)
