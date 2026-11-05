@@ -14,8 +14,6 @@ import { LearningMap } from './components/game/LearningMap'
 import { NudgeToast } from './components/game/NudgeToast'
 import { ResearchLab } from './components/game/ResearchLab'
 import { useT } from './i18n'
-import { contentJson } from './i18n/content'
-import type { AbilityChartFile } from './lib/abilityChart'
 import { requestOpenAbilityChart } from './lib/portfolioSections'
 import { isStudentTab, OPEN_TAB_EVENT } from './lib/openTab'
 import { isSupabaseConfigured } from './lib/supabase'
@@ -99,7 +97,7 @@ export default function App() {
                       onClick={requestOpenAbilityChart}
                       className="mt-2 inline-block text-left text-sm font-semibold text-teal-800 underline-offset-2 hover:underline"
                     >
-                      {contentJson<AbilityChartFile>('ability-chart').meta.title}
+                      {t('score.v1.studentSurface')}
                     </button>
                   </div>
                   <SbaQuest />

@@ -32,7 +32,8 @@ const STUDENT_FILES = [
   'src/components/SbaSeriesOutline.tsx',
   'src/components/SbaArtworkSlotSwitcher.tsx',
   'src/components/AbilityChart.tsx',
-  'src/components/SelfLevelSelect.tsx',
+  'src/components/LearningProgressRef.tsx',
+  'src/components/FeldmanWriter.tsx',
   'src/components/game/LearningMap.tsx',
   'src/components/game/MapFold.tsx',
   'src/lib/selfAssessment.ts',
@@ -170,7 +171,13 @@ describe('student pilot path', () => {
       }
     }
     const quest = readFileSync(join(root, 'src/components/SbaQuest.tsx'), 'utf8')
-    assert.match(quest, /SelfLevelSelect/)
+    const chart = readFileSync(join(root, 'src/components/AbilityChart.tsx'), 'utf8')
+    const progress = readFileSync(join(root, 'src/components/LearningProgressRef.tsx'), 'utf8')
+    assert.doesNotMatch(quest, /SelfLevelSelect|setSelfSelect/)
+    assert.doesNotMatch(chart, /SelfLevelSelect|setSelfSelect/)
+    assert.match(chart, /LearningProgressRef/)
+    assert.match(progress, /score-student/)
+    assert.doesNotMatch(progress, /<select|setSelfSelect/)
   })
 
   it('gates the staff page in App and keeps the student tabs and footer', () => {
