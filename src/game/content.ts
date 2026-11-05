@@ -4,24 +4,30 @@
  * Content shape (drop-in replaceable):
  *   lesson = { id, title, cards: string[], quiz: ContentQuiz[] }
  *   quest  = lesson + { badge: string }
- *   quiz   = { type: 'mcq'|'match'|'fill', question, options: string[], answer, explain }
+ *   quiz   = { type: 'mcq'|'match'|'fill'|'order'|'dualRead'|'short', question, options, answer, explain }
  *     mcq   → answer = the correct option text (or index)
  *     match → options = left terms, answer = { [left]: right }
  *     fill  → question contains ＿＿ ; wordBank (preferred, curated by PEANUTS) or options = word bank
  *             (both empty → auto-generated distractors)
+ *     order → options = the sequence in the correct order
+ *     dualRead → options = two line labels; optional image uses the same local pack path as lesson cards
+ *     short → one open line; options unused
  */
 import { t } from '../i18n'
 import { cardArtFrom } from './f4Media'
 import type { LessonCard, Question } from './types'
 
 export type ContentQuiz = {
-  type: 'mcq' | 'match' | 'fill'
+  type: 'mcq' | 'match' | 'fill' | 'order' | 'dualRead' | 'short'
   question: string
   options: string[]
-  answer: string | number | Record<string, string>
+  answer?: string | number | Record<string, string>
   explain?: string
   /** Curated fill-in choices (incl. the answer). When present, used instead of auto distractors. */
   wordBank?: string[]
+  /** Local lesson-pack image. Used by dualRead frames. */
+  image?: string
+  imageCredit?: string
 }
 
 export type ContentCard = {
@@ -93,7 +99,26 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
         explain,
       }
     }
-    const answer = String(q.answer)
+    if (q.type === 'order') {
+      const items = q.options.map((item) => item.trim()).filter(Boolean)
+      return { id, type: 'order', prompt: q.question, items, explain }
+    }
+    if (q.type === 'dualRead') {
+      const labels = q.options.map((item) => item.trim()).filter(Boolean)
+      const art = cardArtFrom(q)
+      return {
+        id,
+        type: 'dualRead',
+        prompt: q.question,
+        labels: [labels[0] ?? '', labels[1] ?? ''],
+        ...art,
+        explain,
+      }
+    }
+    if (q.type === 'short') {
+      return { id, type: 'short', prompt: q.question, explain }
+    }
+    const answer = String(q.answer ?? '')
     const qText = q.question.replace(/_{2,}/g, '＿＿')
     const prompt = qText.includes('＿＿') ? qText : `${qText} ＿＿`
     const curated = (q.wordBank ?? []).map((w) => String(w).trim()).filter(Boolean)

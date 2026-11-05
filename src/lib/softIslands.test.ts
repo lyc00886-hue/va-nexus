@@ -33,8 +33,8 @@ const PLATE = {
     'island.short.history': '藝術史',
     'island.short.research': '研究',
     'island.short.critique': '評賞',
-    'island.short.sba': 'SBA',
-    'island.short.exam': '應試',
+    'island.short.sba': 'SBA 實驗室',
+    'island.short.exam': '應試練習場',
     'island.quest.tag': '藝術史 · 視覺解難',
     'island.quest.title': '借鑑筆觸，唔抄畫面',
     'island.quest.sub': '約 3 分鐘微關 · 可再試',
@@ -55,7 +55,8 @@ const PLATE = {
     'island.map.sub': 'Islands · Map path',
     'island.chip.sba': 'SBA lab',
     'island.chip.exam': 'Exam skills',
-    'island.short.exam': 'Exam',
+    'island.short.sba': 'SBA lab',
+    'island.short.exam': 'Exam skills',
     'island.quest.sub': '~3 min quest · Try again',
     'island.quest.check': 'Check',
     'island.quest.gain': '+1 learning point',
@@ -65,7 +66,8 @@ const PLATE = {
     'island.map.sub': '选岛 · 地图路径',
     'island.chip.sba': 'SBA 实验室',
     'island.chip.exam': '应试练习场',
-    'island.short.exam': '应试',
+    'island.short.sba': 'SBA 实验室',
+    'island.short.exam': '应试练习场',
     'island.quest.check': '检查',
     'island.quest.gain': '＋1 学习点',
     'island.quest.title': '借鉴笔触，不抄画面',
@@ -194,7 +196,8 @@ describe('soft island plates', () => {
     assert.equal(hant['island.illu.title'], '選島 · 地圖路徑')
     assert.equal(hant['island.illu.sub'], '五大冒險島 · 插圖路徑')
     assert.equal(hant['island.focus.start'], '開始')
-    assert.equal(hant['island.short.exam'], '應試')
+    assert.equal(hant['island.short.exam'], '應試練習場')
+    assert.equal(hant['island.short.sba'], 'SBA 實驗室')
     assert.equal(hant['island.chip.sba'], 'SBA 實驗室')
     assert.equal(hant['island.chip.exam'], '應試練習場')
     assert.equal(hant['island.exam.form'], '雙圖對讀')

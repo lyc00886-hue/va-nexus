@@ -71,6 +71,34 @@
                 "价值态度": "尊重不同文化观点"
               },
               "explain": "三方面一起构成视艺学习。"
+            },
+            {
+              "type": "order",
+              "question": "将评赏四步排好次序：描述 → 分析 → 诠释 → 评价。",
+              "options": [
+                "描述",
+                "分析",
+                "诠释",
+                "评价"
+              ],
+              "explain": "描述 → 分析 → 诠释 → 评价"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边偏「描述所见」，右边偏「创作实验」。各写一句——你见到什么？你会试什么？",
+              "options": [
+                "我见到…",
+                "我想试…"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/01-u1-l1-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不是真题"
+            },
+            {
+              "type": "short",
+              "question": "短答（结构）：用两句说明你怎样同时练习「评赏」与「创作」。",
+              "options": [],
+              "explain": "练习结构 · 不是真题"
             }
           ]
         },
@@ -136,6 +164,34 @@
                 "作品／评赏": "主题下的视觉作品或评赏写作"
               },
               "explain": "两部分互相配合，展示进程与成果。"
+            },
+            {
+              "type": "order",
+              "question": "在 SBA 实验室，将作品集起步步骤排好：选主题种子 → 开研究工作簿 → 收集材料 → 整理作品／评赏页。",
+              "options": [
+                "选主题种子",
+                "开研究工作簿",
+                "收集材料",
+                "整理作品／评赏页"
+              ],
+              "explain": "选主题种子 → 开研究工作簿 → 收集材料 → 整理作品／评赏页"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左＝研究工作簿一页，右＝一件作品照。各写一句。",
+              "options": [
+                "簿页过程",
+                "作品决定"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/02-u1-l2-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不是真题"
+            },
+            {
+              "type": "short",
+              "question": "短答（结构）：用「主题一句＋证据两项」说明研究工作簿怎样服务你的作品／评赏。",
+              "options": [],
+              "explain": "练习结构 · 不是真题"
             }
           ]
         }
@@ -212,6 +268,34 @@
                 "留白": "给画面呼吸与层次"
               },
               "explain": "组织原则帮你控制观众如何看。"
+            },
+            {
+              "type": "order",
+              "question": "将一次写生起步排好：整体比例 → 大形块面 → 主要线条 → 局部细节。",
+              "options": [
+                "整体比例",
+                "大形块面",
+                "主要线条",
+                "局部细节"
+              ],
+              "explain": "整体比例 → 大形块面 → 主要线条 → 局部细节"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左图线条密、右图大色块。比较构图重心。",
+              "options": [
+                "哪边较重",
+                "为什么"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/03-u2-l1-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不是真题"
+            },
+            {
+              "type": "short",
+              "question": "短答（结构）：用「元素一句＋原则一句」描述你下一张写生想强调什么。",
+              "options": [],
+              "explain": "练习结构 · 不是真题"
             }
           ],
           "artistIds": [
@@ -267,6 +351,51 @@
               ],
               "answer": "主题、媒介选择理由、构图／符号怎样传达意思",
               "explain": "演示要连结意念与视觉决定。"
+            },
+            {
+              "type": "match",
+              "question": "配对：设计思维步骤 ↔ 课堂行动（发现问题／构思／试作／反思）。",
+              "options": [
+                "发现问题",
+                "构思",
+                "试作",
+                "反思"
+              ],
+              "answer": {
+                "发现问题": "留意一个想改善的情况",
+                "构思": "写几个可以试的做法",
+                "试作": "用物料小试一次",
+                "反思": "记下哪种更接近意图"
+              },
+              "explain": "四步都是课堂行动，服务你的设计意图。"
+            },
+            {
+              "type": "order",
+              "question": "排好一次物料探索：摸物料 → 小试效果 → 记录感觉／限制 → 选最能表达意图的物料。",
+              "options": [
+                "摸物料",
+                "小试效果",
+                "记录感觉／限制",
+                "选最能表达意图的物料"
+              ],
+              "explain": "摸物料 → 小试效果 → 记录感觉／限制 → 选最能表达意图的物料"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：两种物料小样。哪种质感更接近你想讲的「感觉」？",
+              "options": [
+                "选哪种",
+                "原因一句"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/04-u2-l2-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不是真题"
+            },
+            {
+              "type": "short",
+              "question": "短答（结构）：写「问题 → 试作 → 学到」三栏各一句。",
+              "options": [],
+              "explain": "练习结构 · 不是真题"
             }
           ]
         },
@@ -401,6 +530,51 @@
               ],
               "answer": "当主题发展与研究工作簿材料",
               "explain": "日记是主题与 RWB 的原料库。"
+            },
+            {
+              "type": "match",
+              "question": "配对：日记栏位 ↔ 用途（日期／地点／一句观察／速写）。",
+              "options": [
+                "日期",
+                "地点",
+                "一句观察",
+                "速写"
+              ],
+              "answer": {
+                "日期": "标明是哪一天",
+                "地点": "记住在哪里看到",
+                "一句观察": "留下最想记住的一点",
+                "速写": "用线记下形和光"
+              },
+              "explain": "四栏合起来就是一则视觉日记。"
+            },
+            {
+              "type": "order",
+              "question": "排好一则视觉日记：到场停下 → 观察三分钟 → 速写／照片 → 写一句重点。",
+              "options": [
+                "到场停下",
+                "观察三分钟",
+                "速写／照片",
+                "写一句重点"
+              ],
+              "explain": "到场停下 → 观察三分钟 → 速写／照片 → 写一句重点"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：同一角落，日间与夜间。各写一句。",
+              "options": [
+                "日间一句",
+                "夜间一句"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/05-u3-l1-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不是真题"
+            },
+            {
+              "type": "short",
+              "question": "短答（结构）：用「日期＋地点＋一句观察」写一则迷你日记（不赶）。",
+              "options": [],
+              "explain": "练习结构 · 不是真题"
             }
           ]
         },
@@ -466,6 +640,34 @@
               ],
               "answer": "问一个可以持续探索的主题问题",
               "explain": "主题问题驱动研究与创作。"
+            },
+            {
+              "type": "order",
+              "question": "将「由社区到主题」排好：收集现场材料 → 分类整理 → 写可能主题 → 选一个再深挖。",
+              "options": [
+                "收集现场材料",
+                "分类整理",
+                "写可能主题",
+                "选一个再深挖"
+              ],
+              "explain": "收集现场材料 → 分类整理 → 写可能主题 → 选一个再深挖"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：招牌细节 vs 街角整体。哪张更适合做「主题种子」？为什么？（一句）",
+              "options": [
+                "哪张做种子",
+                "为什么一句"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/06-u3-l2-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不是真题"
+            },
+            {
+              "type": "short",
+              "question": "短答（结构）：用「我见到…／我想问…」两句写出主题问题草稿。",
+              "options": [],
+              "explain": "练习结构 · 不是真题"
             }
           ],
           "artistIds": [

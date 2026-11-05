@@ -11,7 +11,7 @@ export type LessonCard = {
   imageCredit?: string
 }
 
-export type QuestionType = 'mcq' | 'match' | 'fill'
+export type QuestionType = 'mcq' | 'match' | 'fill' | 'order' | 'dualRead' | 'short'
 
 export type McqQuestion = {
   id: string
@@ -41,7 +41,35 @@ export type FillQuestion = {
   explain: string
 }
 
-export type Question = McqQuestion | MatchQuestion | FillQuestion
+/** Canonical order is `items`. The board shuffles them for the student. */
+export type OrderQuestion = {
+  id: string
+  type: 'order'
+  prompt: string
+  items: string[]
+  explain: string
+}
+
+/** Two writing lines beside one local frame. Structure practice, not a marked paper. */
+export type DualReadQuestion = {
+  id: string
+  type: 'dualRead'
+  prompt: string
+  labels: [string, string]
+  image?: string
+  imageCredit?: string
+  explain: string
+}
+
+/** One open line. Structure practice, not a marked paper. */
+export type ShortQuestion = {
+  id: string
+  type: 'short'
+  prompt: string
+  explain: string
+}
+
+export type Question = McqQuestion | MatchQuestion | FillQuestion | OrderQuestion | DualReadQuestion | ShortQuestion
 
 /** Cleared lesson artwork. No `thumb` means the card keeps the empty-image placeholder. */
 export type LessonArtistRef = {

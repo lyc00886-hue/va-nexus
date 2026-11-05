@@ -71,6 +71,34 @@
                 "價值態度": "尊重唔同文化觀點"
               },
               "explain": "三方面一齊構成視藝學習。"
+            },
+            {
+              "type": "order",
+              "question": "將評賞四步排好次序：描述 → 分析 → 詮釋 → 評價。",
+              "options": [
+                "描述",
+                "分析",
+                "詮釋",
+                "評價"
+              ],
+              "explain": "描述 → 分析 → 詮釋 → 評價"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊偏「描述所見」，右邊偏「創作實驗」。各寫一句——你見到咩？你會試咩？",
+              "options": [
+                "我見到…",
+                "我想試…"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/01-u1-l1-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "練習結構 · 唔係真題"
+            },
+            {
+              "type": "short",
+              "question": "短答（結構）：用兩句講你點樣同時練習「評賞」同「創作」。（提示：一句評賞焦點＋一句創作行動）",
+              "options": [],
+              "explain": "練習結構 · 唔係真題"
             }
           ]
         },
@@ -136,6 +164,34 @@
                 "作品／評賞": "主題下嘅視覺作品或評賞寫作"
               },
               "explain": "兩部分互相配合，展示進程同成果。"
+            },
+            {
+              "type": "order",
+              "question": "喺 SBA 實驗室，將作品集起步步驟排好：揀主題種子 → 開研究工作簿 → 收集材料 → 整理作品／評賞頁。",
+              "options": [
+                "揀主題種子",
+                "開研究工作簿",
+                "收集材料",
+                "整理作品／評賞頁"
+              ],
+              "explain": "揀主題種子 → 開研究工作簿 → 收集材料 → 整理作品／評賞頁"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左＝研究工作簿一頁，右＝一件作品照。各寫一句——簿頁記咗咩過程？作品呈現咩決定？",
+              "options": [
+                "簿頁過程",
+                "作品決定"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/02-u1-l2-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "練習結構 · 唔係真題"
+            },
+            {
+              "type": "short",
+              "question": "短答（結構）：用「主題一句＋證據兩項」說明研究工作簿點樣服務你嘅作品／評賞。（練習結構 · 唔係真題）",
+              "options": [],
+              "explain": "練習結構 · 唔係真題"
             }
           ]
         }
@@ -212,6 +268,34 @@
                 "留白": "俾畫面呼吸同層次"
               },
               "explain": "組織原則幫你控制觀眾點樣睇。"
+            },
+            {
+              "type": "order",
+              "question": "將一次寫生起步排好：整體比例 → 大形塊面 → 主要線條 → 局部細節。",
+              "options": [
+                "整體比例",
+                "大形塊面",
+                "主要線條",
+                "局部細節"
+              ],
+              "explain": "整體比例 → 大形塊面 → 主要線條 → 局部細節"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左圖線條密、右圖大色塊。比較構圖重心——邊邊較「重」？點解？",
+              "options": [
+                "邊邊較重",
+                "點解"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/03-u2-l1-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "練習結構 · 唔係真題"
+            },
+            {
+              "type": "short",
+              "question": "短答（結構）：用「元素一句＋原則一句」描述你下一張寫生想強調咩（線／形／構圖）。",
+              "options": [],
+              "explain": "練習結構 · 唔係真題"
             }
           ],
           "artistIds": [
@@ -267,6 +351,51 @@
               ],
               "answer": "主題、媒介選擇理由、構圖／符號點樣傳達意思",
               "explain": "演示要連結意念同視覺決定。"
+            },
+            {
+              "type": "match",
+              "question": "配對：設計思維步驟 ↔ 課堂行動（發現問題／構思／試作／反思）。",
+              "options": [
+                "發現問題",
+                "構思",
+                "試作",
+                "反思"
+              ],
+              "answer": {
+                "發現問題": "留意一個想改善嘅情況",
+                "構思": "寫幾個可以試嘅做法",
+                "試作": "用物料小試一次",
+                "反思": "記低邊樣更接近意圖"
+              },
+              "explain": "四步都係課堂行動，服務你嘅設計意圖。"
+            },
+            {
+              "type": "order",
+              "question": "排好一次物料探索：摸物料 → 小試效果 → 記錄感覺／限制 → 揀最能表達意圖嘅物料。",
+              "options": [
+                "摸物料",
+                "小試效果",
+                "記錄感覺／限制",
+                "揀最能表達意圖嘅物料"
+              ],
+              "explain": "摸物料 → 小試效果 → 記錄感覺／限制 → 揀最能表達意圖嘅物料"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：兩種物料小樣。邊種質感較接近你想講嘅「感覺」？用一句講原因。",
+              "options": [
+                "揀邊種",
+                "原因一句"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/04-u2-l2-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "練習結構 · 唔係真題"
+            },
+            {
+              "type": "short",
+              "question": "短答（結構）：寫「問題 → 試作 → 學到」三欄各一句，總結一次設計思維循環。",
+              "options": [],
+              "explain": "練習結構 · 唔係真題"
             }
           ]
         },
@@ -401,6 +530,51 @@
               ],
               "answer": "當主題發展同研究工作簿材料",
               "explain": "日記係主題同 RWB 嘅原料庫。"
+            },
+            {
+              "type": "match",
+              "question": "配對：日記欄位 ↔ 用途（日期／地點／一句觀察／速寫）。",
+              "options": [
+                "日期",
+                "地點",
+                "一句觀察",
+                "速寫"
+              ],
+              "answer": {
+                "日期": "標明係邊一日",
+                "地點": "記住喺邊度睇到",
+                "一句觀察": "留下最想記住嘅一點",
+                "速寫": "用線記下形同光"
+              },
+              "explain": "四欄一齊就係一則視覺日記。"
+            },
+            {
+              "type": "order",
+              "question": "排好一則視覺日記：到場停下 → 觀察三分鐘 → 速寫／照片 → 寫一句重點。",
+              "options": [
+                "到場停下",
+                "觀察三分鐘",
+                "速寫／照片",
+                "寫一句重點"
+              ],
+              "explain": "到場停下 → 觀察三分鐘 → 速寫／照片 → 寫一句重點"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：同一角落，日間同夜間。各寫一句——光影／人流有咩唔同？",
+              "options": [
+                "日間一句",
+                "夜間一句"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/05-u3-l1-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "練習結構 · 唔係真題"
+            },
+            {
+              "type": "short",
+              "question": "短答（結構）：用「日期＋地點＋一句觀察」寫一則迷你日記（唔趕）。",
+              "options": [],
+              "explain": "練習結構 · 唔係真題"
             }
           ]
         },
@@ -466,6 +640,34 @@
               ],
               "answer": "問一個可以持續探索嘅主題問題",
               "explain": "主題問題驅動研究同創作。"
+            },
+            {
+              "type": "order",
+              "question": "將「由社區到主題」排好：收集現場材料 → 分類整理 → 寫可能主題 → 揀一個再深挖。",
+              "options": [
+                "收集現場材料",
+                "分類整理",
+                "寫可能主題",
+                "揀一個再深挖"
+              ],
+              "explain": "收集現場材料 → 分類整理 → 寫可能主題 → 揀一個再深挖"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：招牌細節 vs 街角整體。邊張較適合做「主題種子」？點解？（一句）",
+              "options": [
+                "邊張做種子",
+                "點解一句"
+              ],
+              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/06-u3-l2-dualread.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "練習結構 · 唔係真題"
+            },
+            {
+              "type": "short",
+              "question": "短答（結構）：用「我見到…／我想問…」兩句，由社區材料寫出一個主題問題草稿。",
+              "options": [],
+              "explain": "練習結構 · 唔係真題"
             }
           ],
           "artistIds": [
