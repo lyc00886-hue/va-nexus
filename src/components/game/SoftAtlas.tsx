@@ -9,7 +9,6 @@ import {
   type AtlasCard,
   type AtlasCardId,
   type AtlasFilter,
-  type AtlasGlyph,
   type SoftShell,
 } from '../../lib/softAtlas'
 
@@ -23,45 +22,40 @@ const NAV: { id: SoftShell; label: 'atlas.nav.map' | 'atlas.nav.path' | 'atlas.n
   { id: 'mine', label: 'atlas.nav.mine' },
 ]
 
-function Glyph({ kind, large = false }: { kind: AtlasGlyph; large?: boolean }) {
-  const size = large ? 'h-16 w-16' : 'h-10 w-10'
+function BrushMark({ large = false }: { large?: boolean }) {
+  const size = large ? 'h-14 w-14' : 'h-12 w-12'
   return (
     <svg viewBox="0 0 64 64" className={`${size} text-[#0D9488]`} aria-hidden>
-      {kind === 'steps' ? (
-        <>
-          <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" strokeWidth="3" />
-          <circle cx="24" cy="40" r="3" fill="currentColor" />
-          <circle cx="32" cy="32" r="3" fill="currentColor" />
-          <circle cx="40" cy="24" r="3" fill="currentColor" />
-        </>
-      ) : (
-        <>
-          <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" strokeWidth="3" />
-          <path
-            d={kind === 'wave' ? 'M16 34c6-8 10 8 16 0s10-8 16 0' : 'M20 36c4 8 20 8 24 0'}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-            strokeLinecap="round"
-          />
-        </>
-      )}
+      <circle cx="32" cy="32" r="22" fill="none" stroke="currentColor" strokeWidth="2.25" />
+      <path
+        d="M24 42c2-12 8-18 18-22"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
+      <path
+        d="M30 38c5 1 9-1 12-6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }
 
 function NavMark({ id, on }: { id: SoftShell; on: boolean }) {
-  const stroke = on ? '#0D9488' : '#8AA8A4'
   if (id === 'atlas') {
     return (
       <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden>
-        <rect x="5" y="5" width="14" height="14" rx="3" fill={on ? '#0D9488' : 'none'} stroke={stroke} strokeWidth="2" />
+        <rect x="5" y="5" width="14" height="14" rx="4" fill={on ? '#0D9488' : 'none'} stroke="#0D9488" strokeWidth="2" />
       </svg>
     )
   }
   return (
     <svg viewBox="0 0 24 24" className="h-6 w-6" aria-hidden>
-      <circle cx="12" cy="12" r="7" fill={on ? '#0D9488' : 'none'} stroke={stroke} strokeWidth="2" />
+      <circle cx="12" cy="12" r="7" fill="none" stroke="#0D9488" strokeWidth={on ? 2.5 : 2} />
     </svg>
   )
 }
@@ -144,10 +138,14 @@ function AtlasChips({ filter, onFilter }: { filter: AtlasFilter; onFilter: (next
 
 function AtlasCardFace({ card, onOpen }: { card: AtlasCard; onOpen: (id: AtlasCardId) => void }) {
   const locked = card.locked
+  const chip = locked
+    ? 'rounded-full border border-[#C4BEB2] px-2 py-0.5 text-[10px] font-semibold text-[#8C877D]'
+    : 'rounded-full border border-[#0D9488] bg-white px-2 py-0.5 text-[10px] font-semibold text-[#0D9488]'
   return (
     <button
       type="button"
       data-atlas-card={card.id}
+      data-atlas-glyph={card.glyph}
       data-atlas-locked={locked ? 'true' : 'false'}
       aria-disabled={locked}
       onClick={() => {
@@ -155,24 +153,29 @@ function AtlasCardFace({ card, onOpen }: { card: AtlasCard; onOpen: (id: AtlasCa
       }}
       className={
         locked
-          ? 'flex h-full min-h-[11.5rem] w-full flex-col items-center rounded-3xl border-2 border-[#8C877D] bg-[#EBE4D2] px-1.5 py-3 text-center text-[#8C877D] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]'
-          : 'flex h-full min-h-[11.5rem] w-full flex-col items-center rounded-3xl border-2 border-[#0D9488] bg-[#99D2CC] px-1.5 py-3 text-center text-[#2D2D30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]'
+          ? 'flex h-full min-h-[13.25rem] w-full flex-col items-center rounded-[1.35rem] border-2 border-[#C9C2B4] bg-[#EBE4D2] px-1.5 py-3 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]'
+          : 'flex h-full min-h-[13.25rem] w-full flex-col items-center rounded-[1.35rem] border-2 border-[#0D9488] bg-white px-1.5 py-3 text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]'
       }
     >
-      <span className={`flex h-14 w-14 items-center justify-center rounded-full ${locked ? 'bg-[#D9D3C7]' : 'bg-white'}`}>
-        {locked ? <Lock className="h-5 w-5" aria-hidden /> : <Glyph kind={card.glyph} />}
-      </span>
-      <span
-        data-atlas-category={card.category}
-        className={`mt-3 rounded-full px-2 py-0.5 text-[10px] font-bold text-[#FFF9E9] ${locked ? 'bg-[#8C877D]' : 'bg-[#0D9488]'}`}
-      >
+      <span data-atlas-category={card.category} className={chip}>
         {t(ATLAS_CHIP[card.category])}
       </span>
-      <span className="mt-1.5 text-[13px] font-bold leading-tight">{t(card.title)}</span>
-      <span data-atlas-subtitle className="mt-0.5 text-[10px] leading-tight opacity-90">
+      <span className="mt-2">
+        {locked ? (
+          <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#C4BEB2] text-[#8C877D]">
+            <Lock className="h-5 w-5" aria-hidden />
+          </span>
+        ) : (
+          <BrushMark />
+        )}
+      </span>
+      <span className={`mt-2 text-[13px] font-bold leading-tight ${locked ? 'text-[#5C564C]' : 'text-slate-900'}`}>
+        {t(card.title)}
+      </span>
+      <span data-atlas-subtitle className={`mt-0.5 text-[10px] leading-tight ${locked ? 'text-[#8C877D]' : 'text-slate-500'}`}>
         {t(card.subtitle)}
       </span>
-      <span className="mt-1 text-[11px] font-semibold">{t(locked ? 'atlas.locked' : 'atlas.unlocked')}</span>
+      <span className={`mt-auto pt-2 ${chip}`}>{t(locked ? 'atlas.locked' : 'atlas.unlocked')}</span>
     </button>
   )
 }
@@ -192,14 +195,14 @@ function AtlasDetail({
         type="button"
         data-atlas-back
         onClick={onBack}
-        className="inline-flex min-h-9 items-center gap-1 rounded-full border border-[#0D9488] bg-white px-3 text-sm font-semibold text-[#0D9488] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]"
+        className="inline-flex min-h-9 items-center gap-1 rounded-full bg-[#0D9488] px-3 text-sm font-semibold text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]"
       >
         <span aria-hidden>←</span>
         {t('atlas.back')}
       </button>
-      <article className="mt-4 overflow-hidden rounded-[1.75rem] border-2 border-[#0D9488] bg-[#FFFCF5]">
-        <div className="flex h-40 items-center justify-center bg-[#E1EFE7]">
-          <Glyph kind={card.glyph} large />
+      <article className="mt-4 overflow-hidden rounded-[1.75rem] border-2 border-[#0D9488] bg-white">
+        <div className="flex h-36 items-center justify-center bg-[#E7F3EE]">
+          <BrushMark large />
         </div>
         <div className="px-4 py-4">
           <div className="flex items-center justify-between gap-2">
@@ -213,7 +216,7 @@ function AtlasDetail({
           <h2 className="mt-3 text-2xl font-bold text-slate-900">{t(card.title)}</h2>
           <p className="mt-1 text-sm text-slate-500">{t(card.subtitle)}</p>
           {card.tip ? (
-            <div data-atlas-tip className="mt-4 rounded-2xl bg-[#FFECD2] px-4 py-3 text-[#7A4B1A]">
+            <div data-atlas-tip className="mt-4 rounded-2xl border border-[#F3D7A6] bg-[#FFE6C2] px-4 py-3 text-[#7A4B1A]">
               <p className="text-base font-bold">{t('atlas.tipTitle')}</p>
               <p className="mt-1 whitespace-pre-line text-sm leading-relaxed">{t(card.tip)}</p>
             </div>
@@ -236,8 +239,8 @@ function AtlasDetail({
                 }}
                 className={
                   locked
-                    ? 'rounded-full bg-[#EBE4D2] px-3 py-1 text-sm font-semibold text-[#8C877D]'
-                    : 'rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]'
+                    ? 'rounded-full border border-[#C4BEB2] bg-[#EBE4D2] px-3 py-1 text-sm font-semibold text-[#8C877D]'
+                    : 'rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]'
                 }
               >
                 {t(related.title)}
@@ -274,6 +277,7 @@ export function SoftAtlas({ onShell }: { onShell: (next: SoftShell) => void }) {
         ))}
       </ul>
       {cards.length === 0 ? <p className="mt-4 text-center text-sm text-slate-500">{t('atlas.empty')}</p> : null}
+      <p data-atlas-note className="mt-5 text-center text-sm text-slate-500">{t('atlas.note')}</p>
       <div className="mt-6">
         <SoftShellNav active="atlas" onShell={onShell} placement="dock" />
       </div>

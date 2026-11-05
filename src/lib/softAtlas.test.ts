@@ -18,10 +18,13 @@ const COPY = {
     'atlas.chip.sba': 'SBA',
     'atlas.chip.exam': '應試',
     'atlas.unlocked': '已解鎖',
-    'atlas.locked': '未解鎖',
+    'atlas.locked': '稍後開放',
+    'atlas.related': '相關卡牌',
+    'atlas.note': '教育圖鑑 · 慢慢讀解難方法',
     'atlas.card.lingnan.title': '嶺南畫派',
+    'atlas.card.lingnan.tip': '撞水撞粉同折衷中西——睇點樣用濕潤過渡解決空氣感。傳統筆墨 × 西方透視／光影。\n慢慢讀就得——重點係解難方法，唔使一次記晒。',
     'atlas.card.expression.title': '表現主義',
-    'atlas.card.feldman.title': '費德曼步驟',
+    'atlas.card.feldman.title': '費德曼四步',
     'atlas.card.observe.title': '一手觀察',
     'atlas.card.sketch.title': '草圖捨棄',
     'atlas.card.compare.title': '雙圖對讀',
@@ -35,6 +38,7 @@ const COPY = {
     'atlas.chip.exam': 'Exam',
     'atlas.card.compare.title': 'Read two works',
     'atlas.card.compare.sub': 'Exam · practice',
+    'atlas.locked': 'Later',
     'atlas.unlocked': 'Unlocked',
     'atlas.nav.atlas': 'Atlas',
   },
@@ -42,7 +46,10 @@ const COPY = {
     'atlas.chip.exam': '应试',
     'atlas.card.compare.title': '双图对读',
     'atlas.card.compare.sub': '应试・练习',
-    'atlas.card.lingnan.tip': '岭南画派讲「折衷中西」——\n传统笔墨 × 西方透视／光影。\n慢慢读就好，不用一次记完。',
+    'atlas.card.lingnan.tip': '撞水撞粉和折衷中西——看怎样用湿润过渡解决空气感。传统笔墨 × 西方透视／光影。\n慢慢读就好——重点是解题方法，不用一次记完。',
+    'atlas.card.feldman.title': '费德曼四步',
+    'atlas.locked': '稍后开放',
+    'atlas.related': '相关卡牌',
     'atlas.mine.body': '学习记录留在这台设备。',
   },
 } as const
@@ -128,6 +135,7 @@ describe('soft atlas cards', () => {
       assert.match(bag['atlas.card.lingnan.tip'], locale === 'zh-Hans' ? /慢慢读就好/ : /慢慢讀就得|Read slowly/)
       for (const key of Object.keys(bag).filter((item) => item.startsWith('atlas.'))) {
         for (const banned of BANNED) assert.equal(bag[key].includes(banned), false, `${locale} ${key} ${banned}`)
+        assert.equal(/\bSoft\b/i.test(bag[key]), false, `${locale} ${key} Soft`)
         assert.equal(/\bXP\b/.test(bag[key]), false, key)
       }
     }
@@ -156,7 +164,10 @@ describe('soft atlas cards', () => {
     assert.match(atlas, /grid-cols-3/)
     assert.match(atlas, /text-\[#FFF9E9\]/)
     assert.match(atlas, /bg-\[#0D9488\]/)
-    assert.match(atlas, /bg-\[#FFECD2\]/)
+    assert.match(atlas, /bg-white/)
+    assert.match(atlas, /bg-\[#FFE6C2\]/)
+    assert.match(atlas, /data-atlas-note/)
+    assert.match(atlas, /atlas\.locked/)
     assert.match(atlas, /<Lock /)
     assert.equal(atlas.includes('useSoftMotion'), false)
     assert.equal(atlas.includes('SoftMotion'), false)
