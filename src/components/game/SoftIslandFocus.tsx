@@ -1,6 +1,7 @@
 import { t } from '../../i18n'
-import { ISLAND_CHIP, ISLAND_LINE, islandNodeState, type IslandNodeId } from '../../lib/softIslands'
+import { ISLAND_CHIP, ISLAND_LINE, isQuestIsland, islandNodeState, type IslandNodeId } from '../../lib/softIslands'
 import { IslandGlyph } from './SoftIllustrationMap'
+import { QuestImage } from './QuestImage'
 
 const STATE_KEY = {
   done: 'island.node.done',
@@ -28,12 +29,14 @@ export function SoftIslandFocus({
     >
       <h2 className="text-[1.65rem] font-bold leading-tight text-slate-900">{t('island.focus.title')}</h2>
       <p className="mt-0.5 text-sm text-slate-500">{t('island.focus.sub')}</p>
-      <div className="relative mx-auto mt-4 flex h-36 w-36 items-center justify-center">
-        <span className="absolute inset-2 rounded-full bg-[#d7f3ee] blur-2xl" aria-hidden />
-        <span className="relative flex h-28 w-28 items-center justify-center rounded-full bg-[#e7f7f4] text-[#0D9488] shadow-[0_0_0_6px_#fff,0_0_0_9px_#0D9488,0_0_0_16px_rgba(13,148,136,0.16)]">
-          <IslandGlyph id={island} className="h-12 w-12" />
-        </span>
-      </div>
+      {island === 'history' ? (
+        <div className="relative mx-auto mt-4 flex h-36 w-36 items-center justify-center">
+          <span className="absolute inset-2 rounded-full bg-[#d7f3ee] blur-2xl" aria-hidden />
+          <span className="relative flex h-28 w-28 items-center justify-center rounded-full bg-[#e7f7f4] text-[#0D9488] shadow-[0_0_0_6px_#fff,0_0_0_9px_#0D9488,0_0_0_16px_rgba(13,148,136,0.16)]">
+            <IslandGlyph id={island} className="h-12 w-12" />
+          </span>
+        </div>
+      ) : null}
       <article className="mt-4 rounded-[1.35rem] border border-[#9ed9d2] bg-white px-4 py-4">
         <h3 className="text-2xl font-bold leading-tight text-slate-900">{t(ISLAND_CHIP[island])}</h3>
         <p
@@ -44,6 +47,7 @@ export function SoftIslandFocus({
         >
           {t(STATE_KEY[state])}
         </p>
+        {isQuestIsland(island) ? <QuestImage id={island} /> : null}
         <p className="mt-3 text-sm font-semibold text-[#0D9488]">{t('island.focus.intro')}</p>
         <p className="mt-1 text-[15px] leading-relaxed text-slate-800">{t(ISLAND_LINE[island])}</p>
         {island === 'exam' ? (

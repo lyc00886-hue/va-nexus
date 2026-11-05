@@ -792,5 +792,20 @@
   "map.f4.chrome.u1": "Visual arts start",
   "map.f4.chrome.u2": "Drawing and design",
   "map.f4.chrome.u3": "Community visual diary",
-  "map.f4.chrome.u4": "Self-portrait study"
+  "map.f4.chrome.u4": "Self-portrait study",
+  "map.pickTip": "Five islands stay on the quest map. Other tracks return to the classic map.",
+  "map.grade.later": "Form 5 and Form 6 open later",
+  "map.selected": "Selected",
+  "map.quick": "Shortcuts",
+  "map.card.f4": "Form 4 path",
+  "map.card.islands": "Quest map",
+  "map.motion": "Transitions",
+  "motion.title": "Transitions",
+  "motion.sub": "Between nodes · a gentle pass",
+  "motion.reduce": "Reduce motion",
+  "motion.open": "Transitions on",
+  "motion.reduceNote": "On means fewer transition animations",
+  "motion.cardTitle": "About transitions",
+  "motion.cardBody": "Reduce motion is selected by default, so gentle transitions stay off. You can turn them off any time. Nothing plays on its own.",
+  "motion.keep": "Reduce motion · kept"
 }

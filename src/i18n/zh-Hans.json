@@ -808,5 +808,20 @@
   "map.f4.chrome.u1": "视艺入门",
   "map.f4.chrome.u2": "素描美感设计",
   "map.f4.chrome.u3": "社区艺术视觉日记",
-  "map.f4.chrome.u4": "自画像艺术家研究"
+  "map.f4.chrome.u4": "自画像艺术家研究",
+  "map.pickTip": "五大冒险岛沿用闯关地图；其他范畴接返原版地图。",
+  "map.grade.later": "中五／中六稍后开放",
+  "map.selected": "已选",
+  "map.quick": "快捷",
+  "map.card.f4": "中四课径",
+  "map.card.islands": "闯关地图",
+  "map.motion": "过场说明",
+  "motion.title": "过场动画",
+  "motion.sub": "节点之间 · 轻柔过场",
+  "motion.reduce": "减少动态",
+  "motion.open": "过场开启",
+  "motion.reduceNote": "打开后会少一些过场动画",
+  "motion.cardTitle": "过场说明",
+  "motion.cardBody": "「减少动态」默认已选，柔和过场默认关闭，随时可以关掉。不会强制播放动画。",
+  "motion.keep": "减少动态 · 保留"
 }

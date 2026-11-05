@@ -95,3 +95,17 @@ Only cleared files are copied here. Status taken from `/workspace/va-nexus-conte
 ### Explicitly NOT bundled (no cleared local artwork)
 
 See `artist-thumbs-plan.md`. Living / contemporary HK artists and Hockney artworks remain 「暫無合法圖」 until a cleared source exists.
+
+## Map1 knife 2 plates (`soft-go-map1-knife2/`)
+
+VA-Nexus original UI plates for the map picker, the static node pass, and the quest illustration crops. **自制 · VA-Nexus**. Not third-party art.
+
+| File | Use |
+|---|---|
+| `soft-go-map1-knife2/01-map-picker.png` | Map picker plate |
+| `soft-go-map1-knife2/02-softmotion-transition.png` | Static node-pass plate |
+| `soft-go-map1-knife2/03-quest-image-research.png` | Research quest plate |
+| `soft-go-map1-knife2/04-quest-image-critique.png` | Critique quest plate |
+| `soft-go-map1-knife2/05-quest-image-sba.png` | SBA quest plate |
+| `soft-go-map1-knife2/06-quest-image-exam.png` | Exam quest plate |
+| `soft-go-map1-knife2/preview-strip.png` | Contact sheet |
