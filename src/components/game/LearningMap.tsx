@@ -335,7 +335,7 @@ export function LearningMap() {
         ) : (
           <>
             {easy.preview ? <EasyReadBar /> : null}
-            {showPicker ? (
+            {showPicker && !motionOpen ? (
               <SoftMapPicker
                 track={scope}
                 grade={grade}
