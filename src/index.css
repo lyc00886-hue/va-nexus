@@ -404,6 +404,13 @@ html {
 html[data-soft-screen='focus'] .map-one-chrome {
   display: none;
 }
+/* Atlas and 我的 use the soft 圖鑑 dock instead of the app tab bar. */
+html[data-soft-nav='atlas'] .map-one-chrome {
+  display: none;
+}
+html[data-soft-nav='atlas'] main {
+  background-color: #fff9e9;
+}
 /* Keep the page under the preview surface out of the tab order. */
 html[data-soft-screen='focus'] main {
   visibility: hidden;

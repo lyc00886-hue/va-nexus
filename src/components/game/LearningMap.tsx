@@ -22,6 +22,7 @@ import { PLATFORM_HEADER_PATH_EVENT } from '../../lib/platformHeaderShell'
 import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
+import { softShellFromSearch, type SoftShell } from '../../lib/softAtlas'
 import {
   softIslandFromSearch,
   softPlateFromSearch,
@@ -30,6 +31,7 @@ import {
 } from '../../lib/softIslands'
 import { MapPath } from './MapPath'
 import { MapOneLesson } from './MapOneLesson'
+import { SoftAtlas, SoftMine, SoftShellNav } from './SoftAtlas'
 import { SoftHistoryPath, SoftIslandHome, SoftMapPlate } from './SoftIslandChrome'
 import { SoftHistoryQuest } from './SoftHistoryQuest'
 
@@ -75,9 +77,15 @@ export function LearningMap() {
   const [island, setIsland] = useState<SoftIslandId>(() =>
     typeof window === 'undefined' ? 'history' : softIslandFromSearch(window.location.search),
   )
-  const [plate, setPlate] = useState<SoftPlate>(() =>
-    typeof window === 'undefined' ? 'home' : softPlateFromSearch(window.location.search),
+  const [shell, setShell] = useState<SoftShell>(() =>
+    typeof window === 'undefined' ? 'map' : softShellFromSearch(window.location.search),
   )
+  const [plate, setPlate] = useState<SoftPlate>(() => {
+    if (typeof window === 'undefined') return 'home'
+    const search = window.location.search
+    if (softShellFromSearch(search) === 'path') return 'path'
+    return softPlateFromSearch(search)
+  })
   const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
   const [mediaId, setMediaId] = useState<string | null>(readMediaId)
@@ -169,6 +177,20 @@ export function LearningMap() {
     }
   }, [pathOn])
 
+  useLayoutEffect(() => {
+    if (!mapOne || easy.on || (shell !== 'atlas' && shell !== 'mine')) return
+    document.documentElement.dataset.softNav = 'atlas'
+    return () => {
+      delete document.documentElement.dataset.softNav
+    }
+  }, [mapOne, easy.on, shell])
+
+  function onShell(next: SoftShell) {
+    setShell(next)
+    if (next === 'map') setPlate('home')
+    if (next === 'path') setPlate('path')
+  }
+
   if (easy.on) {
     return <StepMap />
   }
@@ -199,8 +221,9 @@ export function LearningMap() {
         : plate === 'path' && island !== 'all' && island !== 'history'
           ? 'home'
           : plate
+    const navActive: SoftShell = plateView === 'path' ? 'path' : 'map'
     return (
-      <div data-map-shell="one" className="space-y-5">
+      <div data-map-shell="one" data-soft-shell={shell} className="space-y-5">
         {openLesson ? (
           <MapOneLesson
             key={openLesson.id}
@@ -211,7 +234,11 @@ export function LearningMap() {
         ) : (
           <>
             {easy.preview ? <EasyReadBar /> : null}
-            {plateView === 'quest' ? (
+            {shell === 'atlas' ? (
+              <SoftAtlas onShell={onShell} />
+            ) : shell === 'mine' ? (
+              <SoftMine onShell={onShell} />
+            ) : plateView === 'quest' ? (
               <SoftHistoryQuest onExit={() => setPlate('path')} />
             ) : plateView === 'path' ? (
               <SoftMapPlate
@@ -232,7 +259,10 @@ export function LearningMap() {
                 mainPath={island === 'all' ? keptPath : undefined}
               />
             )}
-            <MapCommitments />
+            {shell === 'atlas' || shell === 'mine' || plateView === 'quest' ? null : (
+              <SoftShellNav active={navActive} onShell={onShell} placement="flow" />
+            )}
+            {shell === 'atlas' || shell === 'mine' ? null : <MapCommitments />}
           </>
         )}
       </div>

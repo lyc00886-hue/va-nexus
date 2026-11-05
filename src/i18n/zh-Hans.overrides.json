@@ -263,5 +263,9 @@
   "island.quest.check": "检查",
   "island.quest.continue": "继续",
   "island.quest.choice": "选择",
-  "island.quest.skill": "视觉解难"
+  "island.quest.skill": "视觉解难",
+  "atlas.mine.body": "学习记录留在这台设备。",
+  "atlas.card.lingnan.tip": "岭南画派讲「折衷中西」——\n传统笔墨 × 西方透视／光影。\n慢慢读就好，不用一次记完。",
+  "atlas.card.expression.tip": "表现主义用笔触和色彩讲情绪。慢慢读就好，不用一次记完。",
+  "atlas.card.feldman.tip": "描述、分析、诠释、判断，一步一步看。慢慢读就好，不用一次记完。"
 }
