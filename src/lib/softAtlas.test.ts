@@ -154,7 +154,7 @@ describe('soft atlas cards', () => {
     const lesson = read('src/components/game/MapOneLesson.tsx')
     const motion = read('src/components/game/SoftMotion.tsx')
     assert.match(map, /SoftAtlas/)
-    assert.match(map, /SoftShellNav/)
+    assert.match(atlas, /SoftShellNav/)
     assert.match(map, /data-soft-shell=\{shell\}/)
     assert.match(map, /shell === 'atlas'/)
     assert.match(atlas, /data-soft-plate="atlas"/)

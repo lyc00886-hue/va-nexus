@@ -152,14 +152,10 @@ describe('soft island plates', () => {
     const plates = `${home}\n${quest}`
     const added = `${illu}\n${focus}\n${micro}\n${map}`
     assert.match(map, /data-map-shell="one"/)
-    assert.match(map, /SoftIllustrationMap/)
-    assert.match(map, /SoftIslandFocus/)
-    assert.match(map, /SoftIslandQuest/)
-    assert.match(map, /SoftMapPlate/)
-    assert.match(map, /SoftHistoryQuest/)
-    assert.match(map, /SoftHistoryPath/)
+    assert.match(map, /MapQuest/)
+    assert.equal(map.includes('SoftIllustrationMap'), false)
+    assert.equal(map.includes('SoftMapPicker'), false)
     assert.match(map, /HistoryTrack/)
-    assert.match(map, /SoftShellNav/)
     assert.match(map, /shell === 'atlas'/)
     assert.equal(map.includes('SoftIslandHome'), false)
     assert.match(home, /data-soft-plate="home"/)

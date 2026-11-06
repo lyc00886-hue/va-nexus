@@ -3,8 +3,13 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useEasyRead } from '../context/EasyReadContext'
 import { useSen } from '../context/SenContext'
 import { LOCALE_NAME, LOCALE_SHORT, LOCALES, useT } from '../i18n'
+import { QUEST_CHROME } from '../lib/mapQuest'
 import { PLATFORM_HEADER_MOBILE_MQ, PLATFORM_HEADER_PATH_EVENT, stepPlatformHeader } from '../lib/platformHeaderShell'
+import { isSupabaseConfigured } from '../lib/supabase'
+import { useMapOneShell } from '../lib/useMapOneShell'
+import { useQuestCalm } from '../lib/useQuestForm'
 import { AuthButton } from './AuthButton'
+import { QuestGearButton, QuestGradeSwitch, QuestOtterMark, QuestStats } from './game/MapQuestChrome'
 import { ProgressSync } from './ProgressSync'
 import { SenSettingsPanel } from './SenSettingsPanel'
 
@@ -148,12 +153,80 @@ function usePlatformHeaderCollapsed(panelOpen: boolean) {
   return collapsed
 }
 
+function QuestSettingsDrawer({ onClose }: { onClose: () => void }) {
+  const { locale } = useT()
+  const { update } = useSen()
+  const [calm, setCalm] = useQuestCalm()
+  const chrome = QUEST_CHROME[locale]
+  return (
+    <div className="absolute inset-x-3 top-full z-50 mt-2 sm:inset-x-auto sm:right-3 sm:w-80" role="presentation">
+      <div
+        role="dialog"
+        aria-label={chrome.settings}
+        data-quest-drawer
+        className="rounded-3xl border border-[#b7e4df] bg-white p-4 shadow-xl"
+      >
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">{chrome.settings}</h2>
+            <p className="text-xs text-slate-500">{chrome.settingsSub}</p>
+          </div>
+          <button type="button" onClick={onClose} className="text-sm font-semibold text-[#0D9488]">
+            {chrome.back}
+          </button>
+        </div>
+        <div className="mt-3 space-y-2">
+          <div className="rounded-2xl bg-[#FFF9E9] px-3 py-2">
+            <p className="text-sm font-bold text-slate-900">{chrome.language}</p>
+            <div className="mt-2">
+              <LanguageSwitcher />
+            </div>
+          </div>
+          <div className="rounded-2xl bg-[#FFF9E9] px-3 py-2">
+            <p className="text-sm font-bold text-slate-900">{chrome.stepHint}</p>
+            <div className="mt-2">
+              <DisplayModeSwitch />
+            </div>
+          </div>
+          <div className="rounded-2xl bg-[#FFF9E9] px-3 py-2">
+            <p className="text-sm font-bold text-slate-900">{chrome.access}</p>
+            <label className="mt-1 flex items-center justify-between gap-3 text-sm text-slate-700">
+              <span>{calm ? chrome.calmOn : chrome.calmOff}</span>
+              <input
+                type="checkbox"
+                role="switch"
+                data-quest-calm-switch
+                checked={calm}
+                aria-checked={calm}
+                onChange={(event) => {
+                  const next = event.target.checked
+                  setCalm(next)
+                  update('reduceMotion', next)
+                }}
+              />
+            </label>
+          </div>
+          <div className="rounded-2xl bg-[#FFF9E9] px-3 py-2">
+            <p className="text-sm font-bold text-slate-900">{chrome.signIn}</p>
+            <div className="mt-2">
+              <AuthButton />
+              {isSupabaseConfigured ? null : <p className="text-xs text-slate-500">{chrome.guest}</p>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function Header() {
   const { mode } = useSen()
   const { t } = useT()
+  const mapOne = useMapOneShell()
   const [open, setOpen] = useState(false)
+  const [gear, setGear] = useState(false)
   const close = useCallback(() => setOpen(false), [])
-  const collapsed = usePlatformHeaderCollapsed(open) && !open
+  const collapsed = usePlatformHeaderCollapsed(open || gear) && !open && !gear
 
   return (
     <header
@@ -162,10 +235,19 @@ export function Header() {
       data-collapsed={collapsed ? 'true' : 'false'}
       aria-hidden={collapsed || undefined}
       inert={collapsed || undefined}
-      className="platform-header sticky top-0 z-40 border-b border-teal-100 bg-white/90 backdrop-blur"
+      className={`platform-header sticky top-0 z-40 border-b border-teal-100 backdrop-blur ${
+        mapOne ? 'bg-[#FFF9E9]/95' : 'bg-white/90'
+      }`}
     >
-      <div className="relative flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+      <div
+        className={
+          mapOne
+            ? 'relative flex flex-col gap-2 px-4 py-3'
+            : 'relative flex flex-wrap items-center justify-between gap-3 px-4 py-3'
+        }
+      >
         <div className="flex min-w-0 items-center gap-2.5">
+          {mapOne ? <QuestOtterMark /> : null}
           <div className="min-w-0">
             <img
               src="/logo.png"
@@ -175,13 +257,14 @@ export function Header() {
               className="h-9 w-auto max-w-[11rem] object-contain object-left sm:h-11 sm:max-w-[16rem]"
               decoding="async"
             />
-            <p className="truncate text-[11px] text-slate-500">{t('header.subtitle')}</p>
+            <p className={mapOne ? 'sr-only' : 'truncate text-[11px] text-slate-500'}>{t('header.subtitle')}</p>
           </div>
+          {mapOne ? <QuestGradeSwitch /> : null}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <LanguageSwitcher />
-          <DisplayModeSwitch />
+        <div className={mapOne ? 'flex w-full flex-wrap items-center gap-1.5' : 'flex flex-wrap items-center gap-2'}>
+          {mapOne ? <QuestStats /> : <LanguageSwitcher />}
+          {mapOne ? null : <DisplayModeSwitch />}
 
           <button
             type="button"
@@ -196,14 +279,15 @@ export function Header() {
             }`}
           >
             <Accessibility className="h-3.5 w-3.5" aria-hidden />
-            {t('header.a11y')}
+            <span className={mapOne ? 'sr-only' : undefined}>{t('header.a11y')}</span>
           </button>
 
-          <AuthButton />
+          {mapOne ? <QuestGearButton open={gear} onClick={() => setGear((value) => !value)} /> : <AuthButton />}
           <ProgressSync />
         </div>
 
         {open && <SenSettingsPanel onClose={close} />}
+        {mapOne && gear ? <QuestSettingsDrawer onClose={() => setGear(false)} /> : null}
       </div>
     </header>
   )
