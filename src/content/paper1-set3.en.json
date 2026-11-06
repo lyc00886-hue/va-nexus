@@ -1,0 +1,358 @@
+{
+  "version": 1,
+  "id": "paper1-set3",
+  "locale": "en",
+  "label": "Mock practice paper",
+  "set": "Set 3",
+  "source": "School mock paper 2025–26; not an HKEAA paper",
+  "paperLabel": "Visual Arts (Paper 1) Mock Practice — Visual Forms Expressing a Theme",
+  "examNote": "School-authored mock, not an official HKEAA paper. Formal exams require Chinese for Paper 1 Part A; on this platform students may use guided self-check. Under 18 / age not confirmed: self-guide only — no AI marking.",
+  "totalMarks": 100,
+  "timeLimitMinutes": 240,
+  "aiPolicy": {
+    "under18": "self_guide_only",
+    "adultOptionalAi": "v1.1_trial_marking_not_in_skeleton",
+    "note": "Under 18 or age not confirmed: use this checklist only — no AI trial marking."
+  },
+  "instructions": [
+    "Five questions; answer ONE question fully (Part A then Part B).",
+    "Part A: Art criticism (suggested 45 minutes, 20 marks) — describe, analyse, compare, interpret and evaluate both works.",
+    "Part B: Art making (suggested 3 h 15 min, 80 marks) — one two-dimensional work in any medium; submit sketches/notes and a ~50-word artist statement.",
+    "Read plate captions carefully; every artwork image carries source and licence."
+  ],
+  "primaryQuestionId": "set3-q1",
+  "questions": [
+    {
+      "id": "set3-q1",
+      "number": 1,
+      "status": "complete",
+      "title": "Q1: Cross-cultural comparison — Northern Song monumental landscape vs British Romantic industrial landscape",
+      "theme": "Advancing in the Wind",
+      "compareFocus": "Compare how both works use compositional scale, brushwork/facture, spatial layers and rhythmic movement (e.g. mountain pressing down on tiny travellers; rain, steam and the train’s rush) to express moving forward amid natural or historical forces; discuss differences in cultural ways of seeing and aesthetic orientation.",
+      "artworks": [
+        {
+          "id": "set3-q1a",
+          "title": "Travelers Among Mountains and Streams",
+          "artist": "Fan Kuan",
+          "year": "c. late 10th–early 11th century (Northern Song)",
+          "medium": "Ink and light colour on silk",
+          "dims": "206.3 × 103.3 cm",
+          "museum": "National Palace Museum, Taipei",
+          "image_url": "images/fan-kuan-travelers.jpg",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Fan_Kuan_-_Travelers_Among_Mountains_and_Streams_-_Google_Art_Project.jpg",
+          "license": "Public domain (PD-Art / artist died c.1032; Google Art Project scan on Wikimedia Commons)",
+          "credit": "Fan Kuan, Travelers Among Mountains and Streams; Wikimedia Commons / Google Art Project; public domain",
+          "image_status": "ok"
+        },
+        {
+          "id": "set3-q1b",
+          "title": "Rain, Steam and Speed – The Great Western Railway",
+          "artist": "J. M. W. Turner",
+          "year": "1844",
+          "medium": "Oil on canvas",
+          "dims": "91 × 121.8 cm",
+          "museum": "The National Gallery, London",
+          "image_url": "images/turner-rain-steam-speed.jpg",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Turner_-_Rain,_Steam_and_Speed_-_National_Gallery_file.jpg",
+          "license": "Public domain (PD-Art / artist died 1851; National Gallery file on Wikimedia Commons)",
+          "credit": "Turner, Rain, Steam and Speed; National Gallery, London via Wikimedia Commons; public domain",
+          "image_status": "ok"
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "label": "Part A: Art criticism",
+          "marks": 20,
+          "timeLimitMinutes": 45,
+          "prompt": "Describe, analyse and compare the form and expression of plates (1a) and (1b), then interpret and evaluate both works. (20 marks)",
+          "framework": "Feldman / DAIE (Describe–Analyse–Interpret–Evaluate)",
+          "selfCheck": [
+            {
+              "id": "d1",
+              "layer": "D",
+              "text": "I named media, subjects and the shared ‘advancing’ motif (mountain travel vs train in storm)."
+            },
+            {
+              "id": "d2",
+              "layer": "D",
+              "text": "I framed (1a) as monumental landscape and (1b) as industrial-era dynamic landscape (Song stillness vs Romantic motion)."
+            },
+            {
+              "id": "a1",
+              "layer": "A",
+              "text": "I compared scale/composition: giant peak / tiny travellers vs diagonal bridge and speed perspective."
+            },
+            {
+              "id": "a2",
+              "layer": "A",
+              "text": "I compared facture: raindrop/nail-head cun and dense ink vs thin glazes, impasto, rain and steam."
+            },
+            {
+              "id": "a3",
+              "layer": "A",
+              "text": "I compared atmosphere: quiet path-bound travel vs rush dissolved in light and vapour."
+            },
+            {
+              "id": "i1",
+              "layer": "I",
+              "text": "I linked Northern Song ‘learning from nature/heart’ and the idea of landscapes one may wander and dwell in."
+            },
+            {
+              "id": "i2",
+              "layer": "I",
+              "text": "I linked 19th-century British railways and Romantic awe/ambivalence toward nature and technology."
+            },
+            {
+              "id": "e1",
+              "layer": "E",
+              "text": "I gave an evidenced aesthetic judgement on how both elevate ‘advancing’ into a dialogue with force (reverent stillness vs modern turbulence)."
+            },
+            {
+              "id": "e2",
+              "layer": "E",
+              "text": "My writing stays on visual evidence and the question’s focus — not biography alone."
+            }
+          ],
+          "markGuideSummary": [
+            "Describe: media, subjects, advancing motif.",
+            "Analyse: monumental press / tiny travellers vs diagonal speed / dissolved rain-steam; cun vs oily vapour.",
+            "Interpret: Song nature learning vs industrial Romanticism.",
+            "Evaluate: tie judgement to Advancing in the Wind."
+          ]
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "label": "Part B: Art making",
+          "marks": 80,
+          "timeLimitMinutes": 195,
+          "prompt": "Create a two-dimensional work on the theme Advancing in the Wind. (80 marks)",
+          "hint": "Transform Part A insights (pressing scale / speed; tiny advance / steam-light; solid–void layers) into a personal response to journey, weather or change. Submit sketches/notes on the support. Write a ~50-word statement linking intent to Part A.",
+          "linkedPaper2Id": "paper2-set3-q1"
+        }
+      ]
+    },
+    {
+      "id": "set3-q2",
+      "number": 2,
+      "status": "stub",
+      "title": "Q2: Tang court ladies’ daily scene vs Dutch Golden Age interior genre",
+      "theme": "Dignity in the Everyday",
+      "artworks": [
+        {
+          "id": "set3-q2a",
+          "title": "Ladies Playing Go (Astana tomb screen, detail)",
+          "artist": "Anonymous (Tang dynasty)",
+          "year": "c. 8th century",
+          "medium": "Ink and colour on silk",
+          "dims": "Approx. 62.3 × 54.3 cm",
+          "museum": "Xinjiang Uyghur Autonomous Region Museum",
+          "image_url": null,
+          "source_url": null,
+          "license": null,
+          "credit": null,
+          "image_status": "placeholder_no_legal_image",
+          "image_note": "8th-century work is PD in principle; need museum-open or Commons file before ship."
+        },
+        {
+          "id": "set3-q2b",
+          "title": "The Milkmaid",
+          "artist": "Johannes Vermeer",
+          "year": "c. 1658–1660",
+          "medium": "Oil on canvas",
+          "dims": "45.5 × 41 cm",
+          "museum": "Rijksmuseum, Amsterdam",
+          "image_url": null,
+          "source_url": "https://commons.wikimedia.org/wiki/File:Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg",
+          "license": "Public domain (PD-Art); Rijksmuseum / Google Art Project on Wikimedia Commons",
+          "credit": null,
+          "image_status": "stub_pd_source_listed_not_bundled",
+          "image_note": "PD confirmed on Commons; image not bundled in v1 skeleton (stub)."
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub",
+          "note": "Full prompts + DAIE checklist in backlog after Q1 ship."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "Dignity in the Everyday"
+        }
+      ]
+    },
+    {
+      "id": "set3-q3",
+      "number": 3,
+      "status": "stub",
+      "title": "Q3: Modern Chinese historical figure painting vs French Romantic revolution imagery",
+      "theme": "Moving Forward Together",
+      "artworks": [
+        {
+          "id": "set3-q3a",
+          "title": "The Foolish Old Man Removes the Mountains",
+          "artist": "Xu Beihong",
+          "year": "1940",
+          "medium": "Ink and colour on paper",
+          "dims": "Approx. 144 × 421 cm",
+          "museum": "Xu Beihong Memorial Museum",
+          "image_url": null,
+          "source_url": null,
+          "license": null,
+          "credit": null,
+          "image_status": "placeholder_no_legal_image",
+          "image_note": "Artist died 1953; do not ship image without confirmed open license from rights holder/museum."
+        },
+        {
+          "id": "set3-q3b",
+          "title": "Liberty Leading the People",
+          "artist": "Eugène Delacroix",
+          "year": "1830",
+          "medium": "Oil on canvas",
+          "dims": "Approx. 260 × 325 cm",
+          "museum": "Musée du Louvre, Paris",
+          "image_url": null,
+          "source_url": "https://commons.wikimedia.org/wiki/File:Eug%C3%A8ne_Delacroix_-_Le_28_Juillet._La_Libert%C3%A9_guidant_le_peuple.jpg",
+          "license": "Public domain (PD-Art)",
+          "credit": null,
+          "image_status": "stub_pd_source_listed_not_bundled",
+          "image_note": "PD confirmed on Commons; image not bundled in v1 skeleton (stub)."
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub",
+          "note": "Full prompts + DAIE checklist in backlog after Q1 ship."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "Moving Forward Together"
+        }
+      ]
+    },
+    {
+      "id": "set3-q4",
+      "number": 4,
+      "status": "stub",
+      "title": "Q4: Freehand bird-and-flower vitality vs French still-life material gaze",
+      "theme": "Tiny Lives",
+      "artworks": [
+        {
+          "id": "set3-q4a",
+          "title": "Shrimps",
+          "artist": "Qi Baishi",
+          "year": "c. mid-20th century (typical 1940s–50s style)",
+          "medium": "Ink on paper hanging scroll",
+          "dims": "Dimensions vary by version",
+          "museum": "(version varies; typical shrimp-group composition)",
+          "image_url": null,
+          "source_url": null,
+          "license": null,
+          "credit": null,
+          "image_status": "placeholder_no_legal_image",
+          "image_note": "Artist died 1957; many museum photos unclear license — placeholder."
+        },
+        {
+          "id": "set3-q4b",
+          "title": "The Copper Cistern (La Fontaine de cuivre)",
+          "artist": "Jean-Baptiste-Siméon Chardin",
+          "year": "c. 1733–1734",
+          "medium": "Oil on panel",
+          "dims": "28.5 × 23 cm",
+          "museum": "Musée du Louvre, Paris",
+          "image_url": null,
+          "source_url": "https://commons.wikimedia.org/wiki/Category:The_Copper_Cistern_by_Jean_Sim%C3%A9on_Chardin_(Louvre_MI_1037)",
+          "license": "Public domain (PD-Art); Louvre MI 1037",
+          "credit": null,
+          "image_status": "stub_pd_source_listed_not_bundled",
+          "image_note": "PD category on Commons; image not bundled in v1 skeleton (stub)."
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub",
+          "note": "Full prompts + DAIE checklist in backlog after Q1 ship."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "Tiny Lives"
+        }
+      ]
+    },
+    {
+      "id": "set3-q5",
+      "number": 5,
+      "status": "stub",
+      "title": "Q5: Early Qing individualist landscape vs Post-Impressionist structural landscape",
+      "theme": "Overlapping Mountain Shadows",
+      "artworks": [
+        {
+          "id": "set3-q5a",
+          "title": "Searching through Mountains for Drafts (detail)",
+          "artist": "Shitao (Yuanji)",
+          "year": "1691 (Kangxi 30)",
+          "medium": "Ink on paper",
+          "dims": "Full scroll approx. 42.8 × 285.5 cm",
+          "museum": "Palace Museum, Beijing",
+          "image_url": null,
+          "source_url": null,
+          "license": null,
+          "credit": null,
+          "image_status": "placeholder_no_legal_image",
+          "image_note": "Qing-dynasty work PD in principle; need confirmed open digital file before ship."
+        },
+        {
+          "id": "set3-q5b",
+          "title": "Mont Sainte-Victoire",
+          "artist": "Paul Cézanne",
+          "year": "c. 1902–1904",
+          "medium": "Oil on canvas",
+          "dims": "73 × 91.9 cm",
+          "museum": "Philadelphia Museum of Art",
+          "image_url": null,
+          "source_url": "https://commons.wikimedia.org/wiki/Category:Montagne_Sainte-Victoire_by_Paul_C%C3%A9zanne",
+          "license": "Public domain (PD-Art / artist died 1906)",
+          "credit": null,
+          "image_status": "stub_pd_source_listed_not_bundled",
+          "image_note": "PD category on Commons; image not bundled in v1 skeleton (stub)."
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub",
+          "note": "Full prompts + DAIE checklist in backlog after Q1 ship."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "Overlapping Mountain Shadows"
+        }
+      ]
+    }
+  ]
+}

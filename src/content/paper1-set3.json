@@ -1,0 +1,358 @@
+{
+  "version": 1,
+  "id": "paper1-set3",
+  "locale": "zh-Hant",
+  "label": "模擬練習卷",
+  "set": "Set 3",
+  "source": "CL school mock 2025–26 (模擬); not HKEAA",
+  "paperLabel": "視覺藝術科（卷一）模擬練習卷——視覺形式表達主題",
+  "examNote": "學校原創模擬卷，非 HKEAA 真題。甲部必須用中文作答（正式考試習慣）；本平台練習可用引導勾選自評，未滿 18／未確認年齡：只提供自我引導，無 AI 試改。",
+  "totalMarks": 100,
+  "timeLimitMinutes": 240,
+  "aiPolicy": {
+    "under18": "self_guide_only",
+    "adultOptionalAi": "v1.1_trial_marking_not_in_skeleton",
+    "note": "未滿 18 或未確認年齡：只用此 checklist 自我引導，不提供 AI 試改／試評。"
+  },
+  "instructions": [
+    "本卷共五題，只須選答一題，並依次完成該題甲部與乙部；必須先答甲部。",
+    "甲部：藝術評賞（建議 45 分鐘，20 分）——描述、分析、比較、詮釋及評價兩件作品。",
+    "乙部：藝術創作（建議 3 小時 15 分鐘，80 分）——以任何媒介創作一件平面作品；須交草圖／筆記及約 50 字作品自述。",
+    "細閱圖版說明與引導提示；作品圖一律附來源與授權。"
+  ],
+  "primaryQuestionId": "set3-q1",
+  "questions": [
+    {
+      "id": "set3-q1",
+      "number": 1,
+      "status": "complete",
+      "title": "第1題：中西跨文化比較——北宋巨碑山水 vs 英國浪漫主義工業風景",
+      "theme": "風中的行進",
+      "compareFocus": "考生宜聚焦比較兩者如何運用構圖比例、筆墨／筆觸、空間層次與動態節奏（例如：山勢壓境與行旅渺小、雨氣蒸汽與火車衝刺），以表達「人在自然或時代力量之中向前行進」的感受；並探討其所反映之文化觀看與美學取向差異。",
+      "artworks": [
+        {
+          "id": "set3-q1a",
+          "title": "谿山行旅圖",
+          "artist": "范寬",
+          "year": "約10世紀末至11世紀初／北宋",
+          "medium": "淺設色絹本",
+          "dims": "206.3 × 103.3 cm",
+          "museum": "國立故宮博物院",
+          "image_url": "images/fan-kuan-travelers.jpg",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Fan_Kuan_-_Travelers_Among_Mountains_and_Streams_-_Google_Art_Project.jpg",
+          "license": "Public domain (PD-Art / artist died c.1032; Google Art Project scan on Wikimedia Commons)",
+          "credit": "范寬《谿山行旅圖》；Wikimedia Commons／Google Art Project；公有領域",
+          "image_status": "ok"
+        },
+        {
+          "id": "set3-q1b",
+          "title": "雨、蒸汽和速度——大西方鐵路",
+          "artist": "約瑟夫·馬洛德·威廉·透納（J. M. W. Turner）",
+          "year": "1844",
+          "medium": "油彩畫布",
+          "dims": "91 × 121.8 cm",
+          "museum": "倫敦國家美術館",
+          "image_url": "images/turner-rain-steam-speed.jpg",
+          "source_url": "https://commons.wikimedia.org/wiki/File:Turner_-_Rain,_Steam_and_Speed_-_National_Gallery_file.jpg",
+          "license": "Public domain (PD-Art / artist died 1851; National Gallery file on Wikimedia Commons)",
+          "credit": "Turner《Rain, Steam and Speed》；National Gallery, London via Wikimedia Commons；公有領域",
+          "image_status": "ok"
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "label": "甲部：藝術評賞",
+          "marks": 20,
+          "timeLimitMinutes": 45,
+          "prompt": "試描述、分析及比較圖（1a）與圖（1b）兩件作品的形式及表現，並詮釋及評價這兩件作品。（20分）",
+          "framework": "Feldman / DAIE (Describe–Analyse–Interpret–Evaluate)",
+          "selfCheck": [
+            {
+              "id": "d1",
+              "layer": "D",
+              "text": "我已寫出兩作的媒介、題材、大致尺寸／形制，以及「行進」母題的基本對比（山嶽行旅 vs 火車風雨）。"
+            },
+            {
+              "id": "d2",
+              "layer": "D",
+              "text": "我指出圖（1a）為巨碑式山水、圖（1b）為工業時代動態風景，並點出北宋靜穆 vs 浪漫主義動態的方向。"
+            },
+            {
+              "id": "a1",
+              "layer": "A",
+              "text": "我比較了構圖比例：山大人小／高遠三段 vs 對角線橋面與速度透視。"
+            },
+            {
+              "id": "a2",
+              "layer": "A",
+              "text": "我比較了筆墨／筆觸：雨點皴、釘頭皴與沉厚墨色 vs 稀薄與厚堆油彩、蒸汽雨絲。"
+            },
+            {
+              "id": "a3",
+              "layer": "A",
+              "text": "我比較了動態與氛圍：路徑中的緩慢行進 vs 光氣中的風中衝刺。"
+            },
+            {
+              "id": "i1",
+              "layer": "I",
+              "text": "我聯繫北宋「師造化／師諸心」與山水可游可居，解釋行旅作為進入自然秩序的謙卑儀式。"
+            },
+            {
+              "id": "i2",
+              "layer": "I",
+              "text": "我聯繫19世紀英國鐵路擴張與浪漫主義對自然力／科技力的迷戀與敬畏。"
+            },
+            {
+              "id": "e1",
+              "layer": "E",
+              "text": "我提出有畫面證據的美學評價，並總結中西風景如何把「行進」升華為人與力量的對話（靜穆敬畏 vs 動盪現代）。"
+            },
+            {
+              "id": "e2",
+              "layer": "E",
+              "text": "全文扣緊題目引導的視覺語言與主題視角，沒有只寫生平而無畫面。"
+            }
+          ],
+          "markGuideSummary": [
+            "描述：準確交代兩作媒介、題材與「行進」母題對比。",
+            "分析：巨碑壓境／渺小行旅 對 對角線速度／雨氣溶解；雨點皴 對 油彩光氣。",
+            "詮釋：北宋師造化與工業浪漫主義情境。",
+            "評價：扣緊「風中的行進」的中西美學對照。"
+          ]
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "label": "乙部：藝術創作",
+          "marks": 80,
+          "timeLimitMinutes": 195,
+          "prompt": "以《風中的行進》為主題，創作一件平面作品。（80分）",
+          "hint": "可把甲部所得「壓境／速度」「渺小行進／蒸汽光氣」「虛實層次」等視覺語言，轉化至個人對旅程、風雨或時代變遷的平面創作；創作筆記／草圖須一併呈交。建議另撰約50字作品自述，說明創作意圖及與甲部評賞之關係。",
+          "linkedPaper2Id": "paper2-set3-q1"
+        }
+      ]
+    },
+    {
+      "id": "set3-q2",
+      "number": 2,
+      "status": "stub",
+      "title": "第2題：唐代日常仕女場景 vs 荷蘭黃金時代室內風俗",
+      "theme": "日常的莊嚴",
+      "artworks": [
+        {
+          "id": "set3-q2a",
+          "title": "弈棋仕女圖（吐魯番阿斯塔那古墓出土屏風畫局部）",
+          "artist": "唐代佚名",
+          "year": "約8世紀",
+          "medium": "絹本設色",
+          "dims": "約62.3 × 54.3 cm",
+          "museum": "新疆維吾爾自治區博物館",
+          "image_url": null,
+          "source_url": null,
+          "license": null,
+          "credit": null,
+          "image_status": "placeholder_no_legal_image",
+          "image_note": "8th-century work is PD in principle; need museum-open or Commons file before ship."
+        },
+        {
+          "id": "set3-q2b",
+          "title": "倒牛奶的女僕",
+          "artist": "約翰內斯·維梅爾（Johannes Vermeer）",
+          "year": "約1658–1660",
+          "medium": "油彩畫布",
+          "dims": "45.5 × 41 cm",
+          "museum": "阿姆斯特丹國立博物館",
+          "image_url": null,
+          "source_url": "https://commons.wikimedia.org/wiki/File:Johannes_Vermeer_-_Het_melkmeisje_-_Google_Art_Project.jpg",
+          "license": "Public domain (PD-Art); Rijksmuseum / Google Art Project on Wikimedia Commons",
+          "credit": null,
+          "image_status": "stub_pd_source_listed_not_bundled",
+          "image_note": "PD confirmed on Commons; image not bundled in v1 skeleton (stub)."
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub",
+          "note": "Full prompts + DAIE checklist in backlog after Q1 ship."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "日常的莊嚴"
+        }
+      ]
+    },
+    {
+      "id": "set3-q3",
+      "number": 3,
+      "status": "stub",
+      "title": "第3題：現代中國歷史主題人物畫 vs 法國浪漫主義革命圖像",
+      "theme": "眾人向前",
+      "artworks": [
+        {
+          "id": "set3-q3a",
+          "title": "愚公移山",
+          "artist": "徐悲鴻",
+          "year": "1940",
+          "medium": "紙本設色",
+          "dims": "約144 × 421 cm",
+          "museum": "徐悲鴻紀念館",
+          "image_url": null,
+          "source_url": null,
+          "license": null,
+          "credit": null,
+          "image_status": "placeholder_no_legal_image",
+          "image_note": "Artist died 1953; do not ship image without confirmed open license from rights holder/museum."
+        },
+        {
+          "id": "set3-q3b",
+          "title": "自由引導人民",
+          "artist": "歐仁·德拉克洛瓦（Eugène Delacroix）",
+          "year": "1830",
+          "medium": "油彩畫布",
+          "dims": "約260 × 325 cm",
+          "museum": "巴黎羅浮宮",
+          "image_url": null,
+          "source_url": "https://commons.wikimedia.org/wiki/File:Eug%C3%A8ne_Delacroix_-_Le_28_Juillet._La_Libert%C3%A9_guidant_le_peuple.jpg",
+          "license": "Public domain (PD-Art)",
+          "credit": null,
+          "image_status": "stub_pd_source_listed_not_bundled",
+          "image_note": "PD confirmed on Commons; image not bundled in v1 skeleton (stub)."
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub",
+          "note": "Full prompts + DAIE checklist in backlog after Q1 ship."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "眾人向前"
+        }
+      ]
+    },
+    {
+      "id": "set3-q4",
+      "number": 4,
+      "status": "stub",
+      "title": "第4題：寫意花鳥生命意象 vs 法國靜物質感凝視",
+      "theme": "微小的生命",
+      "artworks": [
+        {
+          "id": "set3-q4a",
+          "title": "蝦",
+          "artist": "齊白石",
+          "year": "約20世紀中期（常見1940–1950年代風格）",
+          "medium": "水墨紙本立軸",
+          "dims": "尺寸因版本而異",
+          "museum": "（版本不一；本卷以典型水墨蝦群構圖為評賞對象）",
+          "image_url": null,
+          "source_url": null,
+          "license": null,
+          "credit": null,
+          "image_status": "placeholder_no_legal_image",
+          "image_note": "Artist died 1957; many museum photos unclear license — placeholder."
+        },
+        {
+          "id": "set3-q4b",
+          "title": "銅壺",
+          "artist": "讓·西梅翁·夏爾丹（Jean-Baptiste-Siméon Chardin）",
+          "year": "約1733–1734",
+          "medium": "油彩木板",
+          "dims": "28.5 × 23 cm",
+          "museum": "巴黎羅浮宮",
+          "image_url": null,
+          "source_url": "https://commons.wikimedia.org/wiki/Category:The_Copper_Cistern_by_Jean_Sim%C3%A9on_Chardin_(Louvre_MI_1037)",
+          "license": "Public domain (PD-Art); Louvre MI 1037",
+          "credit": null,
+          "image_status": "stub_pd_source_listed_not_bundled",
+          "image_note": "PD category on Commons; image not bundled in v1 skeleton (stub)."
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub",
+          "note": "Full prompts + DAIE checklist in backlog after Q1 ship."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "微小的生命"
+        }
+      ]
+    },
+    {
+      "id": "set3-q5",
+      "number": 5,
+      "status": "stub",
+      "title": "第5題：清初個性山水 vs 後印象派結構風景",
+      "theme": "重疊的山影",
+      "artworks": [
+        {
+          "id": "set3-q5a",
+          "title": "搜盡奇峰打草稿圖（局部）",
+          "artist": "石濤（原濟）",
+          "year": "1691（清康熙三十年）",
+          "medium": "紙本墨筆",
+          "dims": "全卷約42.8 × 285.5 cm",
+          "museum": "北京故宮博物院",
+          "image_url": null,
+          "source_url": null,
+          "license": null,
+          "credit": null,
+          "image_status": "placeholder_no_legal_image",
+          "image_note": "Qing-dynasty work PD in principle; need confirmed open digital file before ship."
+        },
+        {
+          "id": "set3-q5b",
+          "title": "聖維克多山",
+          "artist": "保羅·塞尚（Paul Cézanne）",
+          "year": "約1902–1904",
+          "medium": "油彩畫布",
+          "dims": "73 × 91.9 cm",
+          "museum": "費城藝術博物館",
+          "image_url": null,
+          "source_url": "https://commons.wikimedia.org/wiki/Category:Montagne_Sainte-Victoire_by_Paul_C%C3%A9zanne",
+          "license": "Public domain (PD-Art / artist died 1906)",
+          "credit": null,
+          "image_status": "stub_pd_source_listed_not_bundled",
+          "image_note": "PD category on Commons; image not bundled in v1 skeleton (stub)."
+        }
+      ],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub",
+          "note": "Full prompts + DAIE checklist in backlog after Q1 ship."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "重疊的山影"
+        }
+      ]
+    }
+  ]
+}
