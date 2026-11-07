@@ -33,6 +33,8 @@ const STUDENT_FILES = [
   'src/components/SbaArtworkSlotSwitcher.tsx',
   'src/components/AbilityChart.tsx',
   'src/components/LearningProgressRef.tsx',
+  'src/components/SchoolScoreDualStudent.tsx',
+  'src/components/SchoolScoreDualFigure.tsx',
   'src/components/FeldmanWriter.tsx',
   'src/components/game/LearningMap.tsx',
   'src/components/game/MapFold.tsx',
