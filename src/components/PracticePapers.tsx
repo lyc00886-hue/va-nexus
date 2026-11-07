@@ -31,6 +31,7 @@ import { validateImage } from '../lib/sbaEvidence'
  * School mock practice papers (Set 3).
  * Only Question 1 is answerable. Questions 2–5 are locked "coming soon" cards.
  * Drafts stay in localStorage. This module never calls /api/feedback or any AI marker.
+ * Soft-safe preview note (PR #88): deploy touch only. Q2–Q5 stay locked. No AI marking.
  */
 
 const LAYER_KEY: Record<DaieLayer, MessageKey> = {
