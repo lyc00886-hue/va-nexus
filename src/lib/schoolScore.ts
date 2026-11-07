@@ -2,7 +2,7 @@
  * School scoring reference v1 (single-school LOCK).
  * Practice bands stay on the teacher-draft store, under one school slot.
  * Student self-assessment (`va-nexus:sba-self-assessment:v1`) is not written here.
- * CL sample path and hash stay unlocked until SAMPLES.md — do not invent either.
+ * Sample file path and hash stay out of app code — do not invent either.
  */
 import type { MessageKey } from '../i18n'
 import {

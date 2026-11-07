@@ -76,6 +76,9 @@ describe('school score v1 locale', () => {
         assert.equal(BANNED.test(value), false, `${locale} ${key} ${value}`)
         assert.equal(/[a-f0-9]{12}/.test(value), false, `${locale} ${key}`)
       }
+      assert.equal(/待鎖定|待锁定|not locked|SAMPLES\.md/.test(bag['score.v1.samplePending']), false)
+      assert.equal(/待鎖定|待锁定|not locked|SAMPLES\.md/.test(bag['score.v1.sampleLock']), false)
+      assert.match(bag['score.v1.samplePending'], /locked|已鎖定|已锁定/)
     }
   })
 })
