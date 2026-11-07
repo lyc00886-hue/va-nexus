@@ -1,4 +1,4 @@
-import { Award, ClipboardList, FolderOpen, Library, Map, Search, type LucideIcon } from 'lucide-react'
+import { Award, ClipboardList, FileText, FolderOpen, Library, Map, Search, type LucideIcon } from 'lucide-react'
 import { useGame } from '../context/GameContext'
 import { t as tr, useT, type MessageKey } from '../i18n'
 import type { TabId } from '../types'
@@ -11,6 +11,7 @@ export const TABS: TabItem[] = [
   { id: 'research', icon: Search },
   { id: 'portfolio', icon: FolderOpen },
   { id: 'library', icon: Library },
+  { id: 'practice', icon: FileText },
   { id: 'achievements', icon: Award },
 ]
 
@@ -76,32 +77,31 @@ export function Sidebar({ active, onChange, extraTabs }: Props) {
 export function MobileNav({ active, onChange, extraTabs }: Props) {
   const { t } = useT()
   const tabs = tabsFor(extraTabs)
-  const studentGrid = tabs.length === TABS.length
   return (
     <nav
       aria-label={t('nav.main')}
       className="map-one-chrome fixed inset-x-0 bottom-0 z-30 border-t border-slate-200 bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
     >
-      <ul
-        className={studentGrid ? 'grid grid-cols-5' : 'grid'}
-        style={studentGrid ? undefined : { gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}
-      >
+      <ul className="grid" style={{ gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))` }}>
         {tabs.map((tab) => {
           const Icon = tab.icon
           const on = active === tab.id
+          const full = tabLabel(tab.id)
           return (
-            <li key={tab.id}>
+            <li key={tab.id} className="min-w-0">
               <button
                 type="button"
                 aria-current={on ? 'page' : undefined}
+                aria-label={full}
+                title={full}
                 data-testid={tab.id === 'staff' ? 'nav-staff-mobile' : undefined}
                 onClick={() => onChange(tab.id)}
-                className={`flex w-full flex-col items-center gap-0.5 py-2 text-[11px] font-semibold ${
+                className={`flex w-full min-w-0 flex-col items-center justify-center gap-0.5 px-0.5 py-1.5 text-[11px] font-semibold leading-none ${
                   on ? 'text-blue-700' : 'text-slate-500'
                 }`}
               >
-                <Icon className="h-5 w-5" aria-hidden />
-                {tabLabel(tab.id, true)}
+                <Icon className="h-5 w-5 shrink-0" aria-hidden />
+                <span className="max-w-full truncate whitespace-nowrap">{tabLabel(tab.id, true)}</span>
               </button>
             </li>
           )

@@ -4,6 +4,8 @@ import { CommitmentFooter } from './components/CommitmentBadges'
 import { FocusTunnel } from './components/FocusTunnel'
 import { Header } from './components/Header'
 import { SbaQuest } from './components/SbaQuest'
+import { PracticeGuestDraftPrompt } from './components/PracticeGuestDraftPrompt'
+import { PracticePapers } from './components/PracticePapers'
 import { PrivacyModal } from './components/PrivacyModal'
 import { MobileNav, Sidebar, STAFF_TAB, TABS } from './components/Sidebar'
 import { Achievements } from './components/game/Achievements'
@@ -103,6 +105,7 @@ export default function App() {
                   <SbaQuest />
                 </div>
               )}
+              {activeTab === 'practice' && <PracticePapers />}
               {activeTab === 'library' && (
                 <div className="space-y-4">
                   <div>
@@ -130,6 +133,7 @@ export default function App() {
       <NudgeToast />
       <CheckInModal />
       <PrivacyModal />
+      <PracticeGuestDraftPrompt />
     </div>
   )
 }
