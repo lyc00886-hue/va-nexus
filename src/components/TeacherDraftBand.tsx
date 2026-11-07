@@ -1,4 +1,5 @@
 import { useId, useMemo, useState } from 'react'
+import { SchoolScoreStaff } from './SchoolScoreStaff'
 import zhHant from '../content/teacher-draft-band.json'
 import en from '../content/teacher-draft-band.en.json'
 import zhHans from '../content/teacher-draft-band.zh-Hans.json'
@@ -98,7 +99,7 @@ function TeacherDraftBandPage({ role }: { role: StaffRole }) {
   return (
     <div className="space-y-4" data-testid="teacher-draft-band" data-staff-role={role} data-audience="teacher-only">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">{copy.pageTitle}</h1>
+        <h2 className="text-xl font-bold text-slate-900">{copy.pageTitle}</h2>
         <p className="mt-1 text-sm text-slate-600">{copy.pageIntro}</p>
       </div>
 
@@ -246,5 +247,10 @@ function TeacherDraftBandPage({ role }: { role: StaffRole }) {
 export default function TeacherDraftBand() {
   const role = useStaffRole()
   if (!role) return <StaffDenied />
-  return <TeacherDraftBandPage role={role} />
+  return (
+    <div className="space-y-8">
+      <SchoolScoreStaff />
+      <TeacherDraftBandPage role={role} />
+    </div>
+  )
 }

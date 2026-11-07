@@ -16,11 +16,8 @@ import {
 } from '../lib/content'
 import type { FeldmanStageId, FeldmanVocabEntry } from '../types'
 import { getLocale, joinList, t } from '../i18n'
-import { contentJson } from '../i18n/content'
-import { selfFieldId, type AbilityChartFile } from '../lib/abilityChart'
-import { setSelfSelect, useSelfAssessment } from '../lib/selfAssessment'
-import { SelfLevelSelect } from './SelfLevelSelect'
 import { ExerciseMark } from './game/ExerciseMark'
+import { LearningProgressRef } from './LearningProgressRef'
 import { ResearchStepShell } from './game/ResearchStepShell'
 
 type StepKey = FeldmanStageId
@@ -54,7 +51,6 @@ function emptyRecord<T>(v: () => T): Record<StepKey, T> {
 export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: () => void }) {
   const { cardPadding } = useSen()
   const { awardOnce } = useGame()
-  const { selects } = useSelfAssessment()
   const {
     canUseAi,
     userId,
@@ -258,6 +254,8 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
         />
       </label>
 
+      <LearningProgressRef compact />
+
       <div className="flex flex-wrap gap-2">
         {STEPS.map((s) => (
           <button
@@ -293,26 +291,6 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
           >
             <h3 className="text-lg font-bold text-teal-950">{s.title}</h3>
             <p className="mt-1 text-sm text-teal-800/70">{t('fw.goal', { goal: s.goal })}</p>
-            {(() => {
-              const file = contentJson<AbilityChartFile>('ability-chart')
-              const critique = file.charts.find((c) => c.id === 'critique_daie')
-              const axis = critique?.axes.find((a) => a.id === s.key)
-              const fieldId = axis ? selfFieldId('critique_daie', axis) : null
-              if (!axis || !fieldId) return null
-              return (
-                <div className="mt-3 space-y-2">
-                  {critique?.note ? <p className="text-xs leading-relaxed text-teal-800/80">{critique.note}</p> : null}
-                  <SelfLevelSelect
-                    fieldId={fieldId}
-                    label={axis.label}
-                    placeholder={file.scale.empty_label}
-                    options={file.scale.levels.map((level) => ({ value: String(level.value), label: level.label }))}
-                    value={selects[fieldId] ?? ''}
-                    onChange={(value) => setSelfSelect(fieldId, value)}
-                  />
-                </div>
-              )
-            })()}
 
             <div className="mt-3">
               <p className="text-xs font-semibold text-teal-700">{t('fw.frames')}</p>

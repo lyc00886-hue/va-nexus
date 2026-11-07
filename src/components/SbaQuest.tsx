@@ -51,8 +51,6 @@ import { useSbaArtworkSlots } from '../lib/useSbaArtworkSlots'
 import { useSbaSeriesOutline } from '../lib/useSbaSeriesOutline'
 import { isSupabaseConfigured } from '../lib/supabase'
 import { t, type MessageKey } from '../i18n'
-import { setSelfSelect, useSelfAssessment } from '../lib/selfAssessment'
-import { SelfLevelSelect } from './SelfLevelSelect'
 
 
 const STEP_IDS = [1, 2, 3, 4, 5, 6] as const
@@ -78,7 +76,6 @@ type SbaGuideStep = {
   sentenceFrames: string[]
   tip?: string
   redFlagReminders?: SbaGuideRedFlag[]
-  /** Step 6 self-assessment selects. Checklist items are not fields. */
   fields?: SbaGuideField[]
 }
 
@@ -152,7 +149,6 @@ export function SbaQuest() {
   const { cardPadding, focusTunnel, settings } = useSen()
   const { awardOnce } = useGame()
   const { ready, user } = useAuth()
-  const { selects } = useSelfAssessment()
   const userId = user?.id ?? null
   const STEPS = useMemo(getSteps, [])
   const pieces = useSbaArtworkSlots()
@@ -724,32 +720,6 @@ export function SbaQuest() {
       })()
     : null
 
-  const selfFields = activeStep
-    ? (() => {
-        const { guide } = getGuideForStep(activeStep.id)
-        const fields = (guide?.fields ?? []).filter(
-          (field) => field.type === 'select' && field.id !== 'self-aw-5' && field.options && field.options.length > 0,
-        )
-        if (fields.length === 0) return null
-        return (
-          <fieldset className="space-y-3">
-            <legend className="text-sm font-semibold text-teal-950">{activeStep.title}</legend>
-            {fields.map((field) => (
-              <SelfLevelSelect
-                key={field.id}
-                fieldId={field.id}
-                label={field.label}
-                placeholder={field.placeholder ?? ''}
-                options={field.options ?? []}
-                value={selects[field.id] ?? ''}
-                onChange={(value) => setSelfSelect(field.id, value)}
-              />
-            ))}
-          </fieldset>
-        )
-      })()
-    : null
-
   return (
     <>
       <PortfolioAccordion
@@ -944,7 +914,6 @@ export function SbaQuest() {
                   <p className="mt-1 text-sm text-teal-800/70">{activeStep.hint}</p>
                 </div>
                 {guidePanel}
-                {selfFields}
               </section>
             )}
             <AbilityChart />
