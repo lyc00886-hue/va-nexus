@@ -1,12 +1,12 @@
 {
   "version": 1,
-  "id": "paper1-set3",
+  "id": "paint-set3",
   "locale": "zh-Hant",
   "label": "模擬練習卷",
   "set": "Set 3",
   "source": "CL school mock 2025–26 (模擬); not HKEAA",
-  "paperLabel": "視覺藝術科（卷一）模擬練習卷——視覺形式表達主題",
-  "examNote": "學校原創模擬卷，非 HKEAA 真題。甲部必須用中文作答（正式考試習慣）；本平台練習可用引導勾選自評，未滿 18／未確認年齡：只提供自我引導，無 AI 試改。",
+  "paperLabel": "畫畫卷（視覺形式表達）模擬練習卷",
+  "examNote": "學校原創模擬卷，非 HKEAA 真題。畫畫卷甲部必須用中文作答（正式考試習慣）；本平台練習可用引導勾選自評，未滿 18／未確認年齡：只提供自我引導，無 AI 試改。",
   "totalMarks": 100,
   "timeLimitMinutes": 240,
   "aiPolicy": {
@@ -63,7 +63,7 @@
         {
           "id": "part-a",
           "key": "criticism",
-          "label": "甲部：藝術評賞",
+          "label": "甲部 · 評賞",
           "marks": 20,
           "timeLimitMinutes": 45,
           "prompt": "試描述、分析及比較圖（1a）與圖（1b）兩件作品的形式及表現，並詮釋及評價這兩件作品。（20分）",
@@ -125,12 +125,86 @@
         {
           "id": "part-b",
           "key": "creation",
-          "label": "乙部：藝術創作",
+          "label": "乙部 · 創作",
           "marks": 80,
           "timeLimitMinutes": 195,
           "prompt": "以《風中的行進》為主題，創作一件平面作品。（80分）",
           "hint": "可把甲部所得「壓境／速度」「渺小行進／蒸汽光氣」「虛實層次」等視覺語言，轉化至個人對旅程、風雨或時代變遷的平面創作；創作筆記／草圖須一併呈交。建議另撰約50字作品自述，說明創作意圖及與甲部評賞之關係。",
-          "linkedPaper2Id": "paper2-set3-q1"
+          "theme": "風中的行進",
+          "themePrompt": "以《風中的行進》為主題，創作一件平面作品。把甲部評賞所得的視覺語言（壓境／速度、渺小行進／蒸汽光氣、虛實層次）轉化到個人對旅程、風雨或時代變遷的表達。",
+          "mediaConstraints": [
+            "任何平面媒介均可（水墨、水彩、壓克力、混合媒介等）",
+            "作品須為平面創作（本卷乙部要求）",
+            "鼓勵可見「風／雨／氣」氛圍與行進動勢或旅程意志"
+          ],
+          "checklist": [
+            {
+              "id": "p2-c1",
+              "key": "composition",
+              "text": "構圖有清晰動線或比例張力（例如對角線行進、遠景壓境與近景人物）。"
+            },
+            {
+              "id": "p2-c2",
+              "key": "medium",
+              "text": "媒介選擇能支撐意念（例如遠景密點／短皴、前景斜向水痕或飛白）。"
+            },
+            {
+              "id": "p2-c3",
+              "key": "theme",
+              "text": "主題《風中的行進》在畫面中可被讀出，而非只靠標題說明。"
+            },
+            {
+              "id": "p2-c4",
+              "key": "sketch_notes",
+              "text": "已附創作筆記／草圖，記錄構思與甲部轉化要點。"
+            },
+            {
+              "id": "p2-c5",
+              "key": "artist_statement",
+              "text": "已撰約 50 字作品自述，說明創作意圖及與甲部評賞之關係。"
+            },
+            {
+              "id": "p2-c6",
+              "key": "transfer",
+              "text": "能指出最少一項由甲部圖（1a）或（1b）轉化而來的視覺語言。"
+            }
+          ],
+          "uploadKeys": [
+            "artwork_image",
+            "sketch_notes_image",
+            "artist_statement_text"
+          ],
+          "timeBoxMinutes": 195,
+          "referenceArtworks": [
+            {
+              "id": "set3-q1a",
+              "title": "谿山行旅圖",
+              "artist": "范寬",
+              "year": "約10世紀末至11世紀初／北宋",
+              "medium": "淺設色絹本",
+              "dims": "206.3 × 103.3 cm",
+              "museum": "國立故宮博物院",
+              "image_url": "images/fan-kuan-travelers.jpg",
+              "source_url": "https://commons.wikimedia.org/wiki/File:Fan_Kuan_-_Travelers_Among_Mountains_and_Streams_-_Google_Art_Project.jpg",
+              "license": "Public domain (PD-Art / artist died c.1032; Google Art Project scan on Wikimedia Commons)",
+              "credit": "范寬《谿山行旅圖》；Wikimedia Commons／Google Art Project；公有領域",
+              "image_status": "ok"
+            },
+            {
+              "id": "set3-q1b",
+              "title": "雨、蒸汽和速度——大西方鐵路",
+              "artist": "約瑟夫·馬洛德·威廉·透納（J. M. W. Turner）",
+              "year": "1844",
+              "medium": "油彩畫布",
+              "dims": "91 × 121.8 cm",
+              "museum": "倫敦國家美術館",
+              "image_url": "images/turner-rain-steam-speed.jpg",
+              "source_url": "https://commons.wikimedia.org/wiki/File:Turner_-_Rain,_Steam_and_Speed_-_National_Gallery_file.jpg",
+              "license": "Public domain (PD-Art / artist died 1851; National Gallery file on Wikimedia Commons)",
+              "credit": "Turner《Rain, Steam and Speed》；National Gallery, London via Wikimedia Commons；公有領域",
+              "image_status": "ok"
+            }
+          ]
         }
       ]
     },

@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { useT } from '../i18n'
 import { useAuth } from '../lib/auth'
-import {
-  applyGuestDraftChoice,
-  hasUnclaimedGuestDraft,
-  isPracticeDraftBlank,
-  loadPracticeDraft,
-} from '../lib/practiceDraft'
+import { applyGuestDraftChoice, hasUnclaimedGuestDraft, ownerHasPracticeDraft } from '../lib/practiceDraft'
 
 const SKIP_KEY = 'va-nexus:practice-guest-prompt-skip'
 
@@ -52,7 +47,7 @@ export function PracticeGuestDraftPrompt() {
       setOpen(false)
       return
     }
-    setReplaces(!isPracticeDraftBlank(loadPracticeDraft(uid)))
+    setReplaces(ownerHasPracticeDraft(uid))
     setOpen(true)
   }, [ready, uid])
 

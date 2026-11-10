@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "id": "design-set3",
+  "locale": "en",
+  "label": "Mock practice paper",
+  "set": "Set 3",
+  "source": "School mock paper 2025–26; not an HKEAA paper",
+  "paperLabel": "Design paper mock practice",
+  "examNote": "School-authored mock, not an official HKEAA paper. Design-paper practice may use guided self-check. Under 18 / age not confirmed: self-guide only — no AI marking.",
+  "totalMarks": 100,
+  "timeLimitMinutes": 240,
+  "aiPolicy": {
+    "under18": "self_guide_only",
+    "adultOptionalAi": "v1.1_trial_marking_not_in_skeleton",
+    "note": "Under 18 or age not confirmed: use this checklist only — no AI trial marking."
+  },
+  "instructions": [
+    "Five questions on the design paper; only Question 1 is open. Questions 2–5 are not open yet.",
+    "Question 1 Part A is a written criticism (20 marks). Part B is a creation skeleton (80 marks). Both stay on this paper.",
+    "School mock practice, not an official HKEAA paper. Under 18 / age not confirmed: self-guide only — no AI marking."
+  ],
+  "primaryQuestionId": "design-set3-q1",
+  "questions": [
+    {
+      "id": "design-set3-q1",
+      "number": 1,
+      "status": "complete",
+      "title": "Question 1: Community rest space (written criticism)",
+      "theme": "Community rest space",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "label": "Part A · Criticism",
+          "marks": 20,
+          "prompt": "Read this school-mock note on a community rest space: colour, circulation, and seating. Write how the design responds to different users, and suggest one improvement."
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "label": "Part B · Creation",
+          "marks": 80,
+          "theme": "Community rest space",
+          "themePrompt": "Make a design for a community rest space. Show how colour, circulation, and seating respond to different users, and write the artist statement on this paper.",
+          "mediaConstraints": [
+            "Follow the question (a design drawing, a plan, or a flat presentation you can carry)",
+            "Part B creation stays on this paper",
+            "No new licensed plates; work from the written note"
+          ],
+          "checklist": [
+            {
+              "id": "d3-c1",
+              "key": "brief",
+              "text": "I have read the medium requirements."
+            },
+            {
+              "id": "d3-c2",
+              "key": "proposal",
+              "text": "I have drafted a design proposal (colour, circulation, or seating)."
+            },
+            {
+              "id": "d3-c3",
+              "key": "statement",
+              "text": "I have an artist statement linking intent to Part A criticism."
+            }
+          ],
+          "uploadKeys": [
+            "artwork_image",
+            "sketch_notes_image",
+            "artist_statement_text"
+          ],
+          "timeBoxMinutes": 195,
+          "hint": "Skeleton practice: checklist, artist statement, and upload slots are on this paper. Full plates come later."
+        }
+      ]
+    },
+    {
+      "id": "design-set3-q2",
+      "number": 2,
+      "status": "stub",
+      "title": "Question 2",
+      "theme": "Coming later",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "Coming later"
+        }
+      ]
+    },
+    {
+      "id": "design-set3-q3",
+      "number": 3,
+      "status": "stub",
+      "title": "Question 3",
+      "theme": "Coming later",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "Coming later"
+        }
+      ]
+    },
+    {
+      "id": "design-set3-q4",
+      "number": 4,
+      "status": "stub",
+      "title": "Question 4",
+      "theme": "Coming later",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "Coming later"
+        }
+      ]
+    },
+    {
+      "id": "design-set3-q5",
+      "number": 5,
+      "status": "stub",
+      "title": "Question 5",
+      "theme": "Coming later",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "Coming later"
+        }
+      ]
+    }
+  ]
+}

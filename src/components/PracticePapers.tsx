@@ -5,33 +5,38 @@ import { useT, type MessageKey } from '../i18n'
 import { useAuth } from '../lib/auth'
 import {
   DAIE_LAYERS,
-  loadPaper1,
-  loadPaper2,
+  loadDesignPaper,
+  loadPaintPaper,
   plateFor,
   type DaieLayer,
-  type Paper2File,
   type PracticeArtwork,
+  type PracticePaperFile,
   type PracticePart,
   type PracticePlate,
   type PracticeQuestion,
   type PracticeSelfCheck,
 } from '../lib/practiceContent'
 import {
+  DESIGN_PAPER_ID,
+  emptyQuestionDraft,
   loadPracticeDraft,
+  PAINT_PAPER_ID,
   PRACTICE_DRAFT_EVENT,
   practiceResponseKey,
   practiceTextCount,
+  questionDraft,
   savePracticeDraft,
-  type PracticeDraftV1,
+  type PracticeDraftV2,
+  type PracticeQuestionDraft,
 } from '../lib/practiceDraft'
 import { isPracticeQuestionOpen } from '../lib/practiceLock'
 import { validateImage } from '../lib/sbaEvidence'
 
 /**
- * School mock practice papers (Set 3).
- * Only Question 1 is answerable. Questions 2–5 are locked "coming soon" cards.
- * Drafts stay in localStorage. This module never calls /api/feedback or any AI marker.
- * Soft-safe preview note (PR #88): deploy touch only. Q2–Q5 stay locked. No AI marking.
+ * School mock practice papers.
+ * Painting and design are separate papers. Each question keeps Part A criticism
+ * and Part B creation on that same paper. Only Question 1 can be answered.
+ * Drafts stay in localStorage, one record per paper. This module never calls an AI marker.
  */
 
 const LAYER_KEY: Record<DaieLayer, MessageKey> = {
@@ -41,13 +46,33 @@ const LAYER_KEY: Record<DaieLayer, MessageKey> = {
   E: 'practice.layer.E',
 }
 
-type DraftBundle = { owner: string | null; draft: PracticeDraftV1 }
+const TABS = [
+  { id: 'paint' as const, paperId: PAINT_PAPER_ID, label: 'practice.paperPaint' as const, short: 'practice.paperPaintShort' as const },
+  { id: 'design' as const, paperId: DESIGN_PAPER_ID, label: 'practice.paperDesign' as const, short: null },
+]
+
+type PaperTab = (typeof TABS)[number]['id']
+type DraftBundle = { owner: string | null; papers: Record<string, PracticeDraftV2> }
 
 function uploadLabel(key: string, t: (key: MessageKey, vars?: Record<string, string | number | null | undefined>) => string): string {
   if (key === 'artwork_image') return t('practice.upload.artwork_image')
   if (key === 'sketch_notes_image') return t('practice.upload.sketch_notes_image')
   if (key === 'artist_statement_text') return t('practice.upload.artist_statement_text')
   return key
+}
+
+function loadBundle(owner: string | null): DraftBundle {
+  return {
+    owner,
+    papers: {
+      [PAINT_PAPER_ID]: loadPracticeDraft(owner, PAINT_PAPER_ID),
+      [DESIGN_PAPER_ID]: loadPracticeDraft(owner, DESIGN_PAPER_ID),
+    },
+  }
+}
+
+function saveBundle(bundle: DraftBundle) {
+  for (const draft of Object.values(bundle.papers)) savePracticeDraft(bundle.owner, draft)
 }
 
 function ArtworkFigure({
@@ -104,7 +129,7 @@ function ArtworkFigure({
             href={art.source_url ?? undefined}
             target="_blank"
             rel="noreferrer"
-            className="font-semibold text-teal-800 underline decoration-teal-300 underline-offset-2"
+            className="font-semibold text-[#0D9488] underline decoration-teal-300 underline-offset-2"
           >
             {t('practice.source')}
           </a>
@@ -113,7 +138,7 @@ function ArtworkFigure({
             href={plate.src}
             target="_blank"
             rel="noreferrer"
-            className="font-semibold text-teal-800 underline decoration-teal-300 underline-offset-2"
+            className="font-semibold text-[#0D9488] underline decoration-teal-300 underline-offset-2"
           >
             {t('practice.viewFull')}
           </a>
@@ -185,45 +210,65 @@ function checksFor(part: PracticePart, layer: DaieLayer): PracticeSelfCheck[] {
   return (part.selfCheck ?? []).filter((item) => item.layer === layer)
 }
 
+function isTextStub(part: PracticePart): boolean {
+  return !part.selfCheck?.length && !part.framework
+}
+
 export function PracticePapers() {
   const { t, locale } = useT()
   const { cardPadding } = useSen()
   const { ready, user } = useAuth()
-  const paper1 = loadPaper1()
-  const paper2 = loadPaper2()
-  const [which, setWhich] = useState<'1' | '2'>('1')
+  const paint = loadPaintPaper()
+  const design = loadDesignPaper()
+  const papers: Record<string, PracticePaperFile> = {
+    [PAINT_PAPER_ID]: paint,
+    [DESIGN_PAPER_ID]: design,
+  }
+  const [which, setWhich] = useState<PaperTab>('paint')
+  const [narrow, setNarrow] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(max-width: 359px)').matches,
+  )
   const [bundle, setBundle] = useState<DraftBundle | null>(null)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const bundleRef = useRef<DraftBundle | null>(null)
+  const active = TABS.find((tab) => tab.id === which) ?? TABS[0]
+  const paper = papers[active.paperId]
 
   useEffect(() => {
     bundleRef.current = bundle
   }, [bundle])
 
   useEffect(() => {
+    const query = window.matchMedia('(max-width: 359px)')
+    const apply = () => setNarrow(query.matches)
+    query.addEventListener('change', apply)
+    return () => query.removeEventListener('change', apply)
+  }, [])
+
+  useEffect(() => {
     if (!ready) return
     const uid = user?.id ?? null
     const current = bundleRef.current
-    if (current && current.owner !== uid) savePracticeDraft(current.owner, current.draft)
-    const next = { owner: uid, draft: loadPracticeDraft(uid) }
+    if (current && current.owner !== uid) saveBundle(current)
+    const next = loadBundle(uid)
     bundleRef.current = next
     setBundle(next)
   }, [ready, user?.id])
 
   useEffect(() => {
     if (!bundle) return
-    const handle = window.setTimeout(() => savePracticeDraft(bundle.owner, bundle.draft), 300)
+    const handle = window.setTimeout(() => saveBundle(bundle), 300)
     return () => window.clearTimeout(handle)
   }, [bundle])
 
   useEffect(() => {
     const flush = () => {
       const current = bundleRef.current
-      if (current) savePracticeDraft(current.owner, current.draft)
+      if (current) saveBundle(current)
     }
     const reload = () => {
       const uid = user?.id ?? null
-      const next = { owner: uid, draft: loadPracticeDraft(uid) }
+      const next = loadBundle(uid)
       bundleRef.current = next
       setBundle(next)
     }
@@ -235,23 +280,28 @@ export function PracticePapers() {
     }
   }, [user?.id])
 
-  function patch(update: (draft: PracticeDraftV1) => PracticeDraftV1) {
+  function patchQuestion(paperId: string, questionId: string, update: (draft: PracticeQuestionDraft) => PracticeQuestionDraft) {
     const current = bundleRef.current
     if (!current) return
-    const next = { ...current, draft: update(current.draft) }
+    const stored = current.papers[paperId]
+    if (!stored) return
+    const slot = stored.questions[questionId] ?? emptyQuestionDraft()
+    const nextPaper: PracticeDraftV2 = {
+      ...stored,
+      questions: { ...stored.questions, [questionId]: update(slot) },
+    }
+    const next = { ...current, papers: { ...current.papers, [paperId]: nextPaper } }
     bundleRef.current = next
     setBundle(next)
   }
 
-  const openQuestions = paper1.questions.filter((q) => isPracticeQuestionOpen(q, paper1.primaryQuestionId))
-  const lockedQuestions = paper1.questions.filter((q) => !isPracticeQuestionOpen(q, paper1.primaryQuestionId))
-  const draft = bundle?.draft ?? null
+  const paperDraft = bundle?.papers[paper.id] ?? null
 
   return (
-    <div className="space-y-4" data-practice-root>
+    <div className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-6" data-practice-root data-soft-motion="off">
       <div>
-        <p className="text-xs font-semibold text-teal-700">
-          {t('practice.setLabel', { set: paper1.set, label: paper1.label })}
+        <p className="text-xs font-semibold text-[#0D9488]">
+          {t('practice.setLabel', { set: paper.set, label: paper.label })}
         </p>
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.practice')}</h2>
         <p className="text-sm text-slate-500">{t('app.practice.subtitle')}</p>
@@ -260,115 +310,99 @@ export function PracticePapers() {
       <div
         role="note"
         data-practice-banner
-        className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium leading-relaxed text-amber-950"
+        className="rounded-2xl border border-[#0D9488]/40 bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-800"
       >
-        {paper1.examNote}
+        {paper.examNote}
       </div>
 
-      <div role="tablist" aria-label={t('practice.papers')} className="grid grid-cols-2 gap-1 rounded-2xl bg-slate-100 p-1">
-        {(
-          [
-            ['1', 'practice.paper1'],
-            ['2', 'practice.paper2'],
-          ] as const
-        ).map(([id, key]) => {
-          const on = which === id
+      <div role="tablist" aria-label={t('practice.papers')} className="grid grid-cols-2 gap-2">
+        {TABS.map((tab) => {
+          const on = which === tab.id
+          const full = t(tab.label)
+          const label = tab.short && narrow ? t(tab.short) : full
           return (
             <button
-              key={id}
+              key={tab.id}
               type="button"
               role="tab"
-              id={`practice-tab-${id}`}
+              id={`practice-tab-${tab.id}`}
               aria-selected={on}
               aria-controls="practice-panel"
-              onClick={() => setWhich(id)}
+              onClick={() => {
+                setWhich(tab.id)
+                setUploadError(null)
+                document.querySelector('[data-practice-root]')?.scrollIntoView({ block: 'start' })
+              }}
               className={
                 on
-                  ? 'min-h-11 rounded-xl bg-white px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm'
-                  : 'min-h-11 rounded-xl px-3 py-2 text-sm font-semibold text-slate-600 hover:bg-white/70'
+                  ? 'min-h-11 rounded-full bg-[#0D9488] px-3 py-2 text-sm font-semibold leading-snug text-white shadow-sm'
+                  : 'min-h-11 rounded-full bg-white px-3 py-2 text-sm font-semibold leading-snug text-[#0D9488] ring-1 ring-[#0D9488] hover:bg-teal-50'
               }
             >
-              {t(key)}
+              {label}
             </button>
           )
         })}
       </div>
 
       <div role="tabpanel" id="practice-panel" aria-labelledby={`practice-tab-${which}`} className="space-y-4">
-        {which === '1' ? (
-          <PaperOne
-            paperLabel={paper1.paperLabel}
-            totalMarks={paper1.totalMarks}
-            timeLimitMinutes={paper1.timeLimitMinutes}
-            instructions={paper1.instructions}
-            aiNote={paper1.aiPolicy.note}
-            openQuestions={openQuestions}
-            lockedQuestions={lockedQuestions}
-            draft={draft}
-            cardPadding={cardPadding}
-            locale={locale}
-            onPatch={patch}
-            onOpenPaper2={() => setWhich('2')}
-          />
-        ) : (
-          <PaperTwo
-            paper2={paper2}
-            lockedQuestions={lockedQuestions}
-            draft={draft}
-            cardPadding={cardPadding}
-            locale={locale}
-            uploadError={uploadError}
-            onPatch={patch}
-            onUploadError={setUploadError}
-          />
-        )}
+        <PaperPanel
+          paper={paper}
+          draft={paperDraft}
+          cardPadding={cardPadding}
+          locale={locale}
+          uploadError={uploadError}
+          onPatch={(questionId, update) => patchQuestion(paper.id, questionId, update)}
+          onUploadError={setUploadError}
+        />
       </div>
     </div>
   )
 }
 
-function PaperOne({
-  paperLabel,
-  totalMarks,
-  timeLimitMinutes,
-  instructions,
-  aiNote,
-  openQuestions,
-  lockedQuestions,
+function PaperPanel({
+  paper,
   draft,
   cardPadding,
   locale,
+  uploadError,
   onPatch,
-  onOpenPaper2,
+  onUploadError,
 }: {
-  paperLabel: string
-  totalMarks: number
-  timeLimitMinutes: number
-  instructions: string[]
-  aiNote: string
-  openQuestions: PracticeQuestion[]
-  lockedQuestions: PracticeQuestion[]
-  draft: PracticeDraftV1 | null
+  paper: PracticePaperFile
+  draft: PracticeDraftV2 | null
   cardPadding: string
   locale: 'en' | 'zh-Hant' | 'zh-Hans'
-  onPatch: (update: (draft: PracticeDraftV1) => PracticeDraftV1) => void
-  onOpenPaper2: () => void
+  uploadError: string | null
+  onPatch: (questionId: string, update: (draft: PracticeQuestionDraft) => PracticeQuestionDraft) => void
+  onUploadError: (message: string | null) => void
 }) {
   const { t } = useT()
+  const openQuestions = paper.questions.filter((q) => isPracticeQuestionOpen(q, paper.primaryQuestionId))
+  const lockedQuestions = paper.questions.filter((q) => !isPracticeQuestionOpen(q, paper.primaryQuestionId))
   return (
     <div className="space-y-4">
-      <section className={`rounded-3xl border border-slate-200 bg-white shadow-sm ${cardPadding}`}>
-        <h3 className="text-lg font-bold text-slate-900">{paperLabel}</h3>
+      {paper.id === DESIGN_PAPER_ID && (
+        <div
+          role="note"
+          data-practice-design-stub
+          className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium leading-relaxed text-amber-950"
+        >
+          {t('practice.designStubNote')}
+        </div>
+      )}
+      <section className={`rounded-3xl border border-[#0D9488]/30 bg-white shadow-sm ${cardPadding}`}>
+        <h3 className="text-lg font-bold text-slate-900">{paper.paperLabel}</h3>
         <p className="mt-1 text-sm text-slate-600">
-          {t('practice.total', { marks: totalMarks, minutes: timeLimitMinutes })}
+          {t('practice.total', { marks: paper.totalMarks, minutes: paper.timeLimitMinutes })}
         </p>
         <h4 className="mt-4 text-sm font-bold text-slate-900">{t('practice.instructions')}</h4>
         <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-sm text-slate-700">
-          {instructions.map((line) => (
+          {paper.instructions.map((line) => (
             <li key={line}>{line}</li>
           ))}
         </ol>
-        <p className="mt-3 text-sm font-medium text-slate-800">{aiNote}</p>
+        <p className="mt-3 text-sm font-medium text-slate-800">{paper.aiPolicy.note}</p>
       </section>
 
       <div className="space-y-3">
@@ -377,12 +411,13 @@ function PaperOne({
           <OpenQuestion
             key={question.id}
             question={question}
-            draft={draft}
+            slot={draft ? questionDraft(draft, question.id) : null}
             cardPadding={cardPadding}
             locale={locale}
-            aiNote={aiNote}
-            onPatch={onPatch}
-            onOpenPaper2={onOpenPaper2}
+            aiNote={paper.aiPolicy.note}
+            uploadError={uploadError}
+            onPatch={(update) => onPatch(question.id, update)}
+            onUploadError={onUploadError}
           />
         ))}
         {lockedQuestions.map((question) => (
@@ -395,33 +430,45 @@ function PaperOne({
 
 function OpenQuestion({
   question,
-  draft,
+  slot,
   cardPadding,
   locale,
   aiNote,
+  uploadError,
   onPatch,
-  onOpenPaper2,
+  onUploadError,
 }: {
   question: PracticeQuestion
-  draft: PracticeDraftV1 | null
+  slot: PracticeQuestionDraft | null
   cardPadding: string
   locale: 'en' | 'zh-Hant' | 'zh-Hans'
   aiNote: string
-  onPatch: (update: (draft: PracticeDraftV1) => PracticeDraftV1) => void
-  onOpenPaper2: () => void
+  uploadError: string | null
+  onPatch: (update: (draft: PracticeQuestionDraft) => PracticeQuestionDraft) => void
+  onUploadError: (message: string | null) => void
 }) {
   const { t } = useT()
   const criticism = question.parts.find((part) => part.key === 'criticism')
   const creation = question.parts.find((part) => part.key === 'creation')
-  const ready = draft !== null
+  const ready = slot !== null
+  const textStub = criticism ? isTextStub(criticism) : false
+  const textKey = practiceResponseKey('text')
+  const textValue = slot?.responses[textKey] ?? ''
+
+  function openPartB() {
+    const node = document.querySelector<HTMLElement>(`[data-part-b-open="${question.id}"]`)
+    if (!node) return
+    node.scrollIntoView({ block: 'start' })
+    node.focus()
+  }
 
   return (
     <article
       data-question-open={question.number}
-      className={`rounded-3xl border border-teal-200 bg-white shadow-sm ${cardPadding}`}
+      className={`rounded-3xl border border-[#0D9488]/40 bg-white shadow-sm ${cardPadding}`}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full bg-teal-700 px-2.5 py-0.5 text-xs font-semibold text-white">
+        <span className="rounded-full bg-[#0D9488] px-2.5 py-0.5 text-xs font-semibold text-white">
           {t('practice.qOpen')}
         </span>
         <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
@@ -434,7 +481,7 @@ function OpenQuestion({
         {question.theme}
       </p>
       {question.compareFocus && (
-        <p className="mt-3 rounded-2xl bg-slate-50 px-3 py-2 text-sm leading-relaxed text-slate-700">
+        <p className="mt-3 rounded-2xl bg-[#FFF9E9] px-3 py-2 text-sm leading-relaxed text-slate-700">
           <span className="font-semibold text-slate-900">{t('practice.compare')}: </span>
           {question.compareFocus}
         </p>
@@ -447,7 +494,7 @@ function OpenQuestion({
       {criticism && (
         <section className="mt-5 space-y-4" aria-labelledby={`practice-${question.id}-part-a`}>
           <div>
-            <h4 id={`practice-${question.id}-part-a`} className="text-base font-bold text-slate-900">
+            <h4 id={`practice-${question.id}-part-a`} className="text-base font-bold text-[#0D9488]">
               {criticism.label ?? t('practice.partA')}
               {criticism.marks ? ` · ${t('practice.marks', { n: criticism.marks })}` : ''}
             </h4>
@@ -462,71 +509,95 @@ function OpenQuestion({
             )}
           </div>
 
-          {DAIE_LAYERS.map((layer) => {
-            const items = criticism.selfCheck ? checksFor(criticism, layer) : []
-            const responseKey = practiceResponseKey(layer)
-            const value = draft?.responses[responseKey] ?? ''
-            return (
-              <div key={layer} className="rounded-2xl border border-slate-200 p-3">
-                <label className="block text-sm font-semibold text-slate-900" htmlFor={`practice-${question.id}-${layer}`}>
-                  {t(LAYER_KEY[layer])}
-                </label>
-                <textarea
-                  id={`practice-${question.id}-${layer}`}
-                  className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-base leading-relaxed text-slate-900 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200 disabled:bg-slate-50"
-                  rows={5}
-                  maxLength={4000}
-                  disabled={!ready}
-                  value={value}
-                  placeholder={t('practice.responsePh')}
-                  onChange={(event) => {
-                    const next = event.target.value
-                    onPatch((current) => ({
-                      ...current,
-                      responses: { ...current.responses, [responseKey]: next },
-                    }))
-                  }}
-                />
-                <p className="mt-1 text-xs text-slate-500">
-                  {t('practice.count', { n: practiceTextCount(value, locale) })}
-                </p>
-                {items.length > 0 && (
-                  <fieldset className="mt-3 space-y-2" disabled={!ready}>
-                    <legend className="text-xs font-bold text-slate-500">
-                      {t('practice.selfCheck')}
-                    </legend>
-                    {items.map((item) => (
-                      <label key={item.id} className="flex min-h-11 items-start gap-3 rounded-xl bg-slate-50 px-2 py-2 text-sm text-slate-800">
-                        <input
-                          type="checkbox"
-                          className="mt-1 h-5 w-5 shrink-0 accent-teal-700"
-                          checked={Boolean(draft?.checks[item.id])}
-                          onChange={(event) => {
-                            const on = event.target.checked
-                            onPatch((current) => ({
-                              ...current,
-                              checks: { ...current.checks, [item.id]: on },
-                            }))
-                          }}
-                        />
-                        <span>{item.text}</span>
-                      </label>
-                    ))}
-                  </fieldset>
-                )}
-              </div>
-            )
-          })}
+          {textStub ? (
+            <div className="rounded-2xl border border-slate-200 p-3">
+              <textarea
+                id={`practice-${question.id}-text`}
+                aria-labelledby={`practice-${question.id}-part-a`}
+                className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-base leading-relaxed text-slate-900 shadow-sm focus:border-[#0D9488] focus:outline-none focus:ring-2 focus:ring-teal-200 disabled:bg-slate-50"
+                rows={6}
+                maxLength={4000}
+                disabled={!ready}
+                value={textValue}
+                placeholder={t('practice.responsePh')}
+                onChange={(event) => {
+                  const next = event.target.value
+                  onPatch((current) => ({
+                    ...current,
+                    responses: { ...current.responses, [textKey]: next },
+                  }))
+                }}
+              />
+              <p className="mt-1 text-xs text-slate-500">{t('practice.count', { n: practiceTextCount(textValue, locale) })}</p>
+              <p className="mt-2 text-sm font-medium text-slate-700">{t('practice.notAiMarking')}</p>
+            </div>
+          ) : (
+            DAIE_LAYERS.map((layer) => {
+              const items = criticism.selfCheck ? checksFor(criticism, layer) : []
+              const responseKey = practiceResponseKey(layer)
+              const value = slot?.responses[responseKey] ?? ''
+              return (
+                <div key={layer} className="rounded-2xl border border-slate-200 p-3">
+                  <label className="block text-sm font-semibold text-slate-900" htmlFor={`practice-${question.id}-${layer}`}>
+                    {t(LAYER_KEY[layer])}
+                  </label>
+                  <textarea
+                    id={`practice-${question.id}-${layer}`}
+                    className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-base leading-relaxed text-slate-900 shadow-sm focus:border-[#0D9488] focus:outline-none focus:ring-2 focus:ring-teal-200 disabled:bg-slate-50"
+                    rows={5}
+                    maxLength={4000}
+                    disabled={!ready}
+                    value={value}
+                    placeholder={t('practice.responsePh')}
+                    onChange={(event) => {
+                      const next = event.target.value
+                      onPatch((current) => ({
+                        ...current,
+                        responses: { ...current.responses, [responseKey]: next },
+                      }))
+                    }}
+                  />
+                  <p className="mt-1 text-xs text-slate-500">
+                    {t('practice.count', { n: practiceTextCount(value, locale) })}
+                  </p>
+                  {items.length > 0 && (
+                    <fieldset className="mt-3 space-y-2" disabled={!ready}>
+                      <legend className="text-xs font-bold text-slate-500">{t('practice.selfCheck')}</legend>
+                      {items.map((item) => (
+                        <label key={item.id} className="flex min-h-11 items-start gap-3 rounded-xl bg-[#FFF9E9] px-2 py-2 text-sm text-slate-800">
+                          <input
+                            type="checkbox"
+                            className="mt-1 h-5 w-5 shrink-0 accent-[#0D9488]"
+                            checked={Boolean(slot?.checks[item.id])}
+                            onChange={(event) => {
+                              const on = event.target.checked
+                              onPatch((current) => ({
+                                ...current,
+                                checks: { ...current.checks, [item.id]: on },
+                              }))
+                            }}
+                          />
+                          <span>{item.text}</span>
+                        </label>
+                      ))}
+                    </fieldset>
+                  )}
+                </div>
+              )
+            })
+          )}
 
           <div className="flex flex-wrap gap-2">
-            <button
-              type="button"
-              disabled={!ready}
-              onClick={() => onPatch((current) => ({ ...current, revealed: !current.revealed }))}
-              className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 disabled:opacity-60"
-            >
-              {draft?.revealed ? t('practice.hide') : t('practice.reveal')}
-            </button>
+            {!textStub && (
+              <button
+                type="button"
+                disabled={!ready}
+                onClick={() => onPatch((current) => ({ ...current, revealed: !current.revealed }))}
+                className="min-h-11 rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50 disabled:opacity-60"
+              >
+                {slot?.revealed ? t('practice.hide') : t('practice.reveal')}
+              </button>
+            )}
             <button
               type="button"
               disabled={!ready}
@@ -537,16 +608,16 @@ function OpenQuestion({
                   submittedAt: new Date().toISOString(),
                 }))
               }
-              className="min-h-11 rounded-xl bg-teal-700 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-800 disabled:opacity-60"
+              className="min-h-11 rounded-xl bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700 disabled:opacity-60"
             >
               {t('practice.submit')}
             </button>
           </div>
           <p role="status" className="text-sm text-slate-600">
-            {!draft ? t('practice.loading') : draft.submittedAt ? t('practice.submitted') : t('practice.draftSaved')}
+            {!slot ? t('practice.loading') : slot.submittedAt ? t('practice.submitted') : t('practice.draftSaved')}
           </p>
 
-          {draft?.revealed && criticism.markGuideSummary && (
+          {slot?.revealed && criticism.markGuideSummary && (
             <div className="space-y-3 rounded-2xl border border-amber-200 bg-amber-50 p-3">
               <h5 className="text-sm font-bold text-amber-950">{t('practice.markGuide')}</h5>
               <ul className="list-disc space-y-1 pl-5 text-sm text-amber-950">
@@ -559,7 +630,7 @@ function OpenQuestion({
                 {(criticism.selfCheck ?? []).map((item) => (
                   <li key={item.id}>
                     <span className="font-semibold">
-                      {draft.checks[item.id] ? t('practice.checked') : t('practice.unchecked')}
+                      {slot.checks[item.id] ? t('practice.checked') : t('practice.unchecked')}
                       {': '}
                     </span>
                     {item.text}
@@ -573,96 +644,111 @@ function OpenQuestion({
       )}
 
       {creation && (
-        <section className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-3" aria-labelledby={`practice-${question.id}-part-b`}>
-          <h4 id={`practice-${question.id}-part-b`} className="text-base font-bold text-slate-900">
-            {creation.label ?? t('practice.paper2')}
-            {creation.marks ? ` · ${t('practice.marks', { n: creation.marks })}` : ''}
-          </h4>
-          {creation.prompt && <p className="mt-2 text-sm text-slate-800">{creation.prompt}</p>}
-          {creation.hint && (
-            <p className="mt-2 text-sm text-slate-700">
-              <span className="font-semibold">{t('practice.hint')}: </span>
-              {creation.hint}
-            </p>
-          )}
-          <p className="mt-2 text-sm text-slate-600">{t('practice.partBNote')}</p>
-          <button
-            type="button"
-            onClick={onOpenPaper2}
-            className="mt-3 min-h-11 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
-          >
-            {t('practice.openPartB')}
-          </button>
-          <p className="mt-3 text-xs text-slate-500">{aiNote}</p>
-        </section>
+        <>
+          <div className="mt-5 space-y-3">
+            <p className="text-sm text-slate-600">{t('practice.partBNote')}</p>
+            <button
+              type="button"
+              onClick={openPartB}
+              className="min-h-11 w-full rounded-xl bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700"
+            >
+              {t('practice.openPartB')}
+            </button>
+          </div>
+          <PartB
+            questionId={question.id}
+            creation={creation}
+            slot={slot}
+            ready={ready}
+            locale={locale}
+            aiNote={aiNote}
+            uploadError={uploadError}
+            onPatch={onPatch}
+            onUploadError={onUploadError}
+          />
+        </>
       )}
     </article>
   )
 }
 
-function PaperTwo({
-  paper2,
-  lockedQuestions,
-  draft,
-  cardPadding,
+function PartB({
+  questionId,
+  creation,
+  slot,
+  ready,
   locale,
+  aiNote,
   uploadError,
   onPatch,
   onUploadError,
 }: {
-  paper2: Paper2File
-  lockedQuestions: PracticeQuestion[]
-  draft: PracticeDraftV1 | null
-  cardPadding: string
+  questionId: string
+  creation: PracticePart
+  slot: PracticeQuestionDraft | null
+  ready: boolean
   locale: 'en' | 'zh-Hant' | 'zh-Hans'
+  aiNote: string
   uploadError: string | null
-  onPatch: (update: (draft: PracticeDraftV1) => PracticeDraftV1) => void
+  onPatch: (update: (draft: PracticeQuestionDraft) => PracticeQuestionDraft) => void
   onUploadError: (message: string | null) => void
 }) {
   const { t } = useT()
-  const ready = draft !== null
-  const statement = draft?.statement ?? ''
+  const statement = slot?.statement ?? ''
+  const brief = creation.themePrompt || creation.prompt
+  const minutes = creation.timeBoxMinutes ?? creation.timeLimitMinutes
 
   return (
-    <div className="space-y-4">
-      <section className={`space-y-4 rounded-3xl border border-teal-200 bg-white shadow-sm ${cardPadding}`} data-paper2-open>
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="rounded-full bg-teal-700 px-2.5 py-0.5 text-xs font-semibold text-white">{t('practice.qOpen')}</span>
-          <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">{t('practice.noAi')}</span>
-        </div>
-        <h3 className="text-lg font-bold text-slate-900">{paper2.title}</h3>
-        <p className="text-sm text-slate-600">
-          {t('practice.total', { marks: paper2.marks, minutes: paper2.timeBoxMinutes })}
-        </p>
+    <section
+      id={`practice-${questionId}-part-b`}
+      tabIndex={-1}
+      data-part-b-open={questionId}
+      aria-labelledby={`practice-${questionId}-part-b-title`}
+      className="mt-5 scroll-mt-4 space-y-4 rounded-3xl border border-[#0D9488]/40 bg-white p-3 outline-none"
+    >
+      <div>
+        <h4 id={`practice-${questionId}-part-b-title`} className="text-base font-bold text-[#0D9488]">
+          {creation.label ?? t('practice.partB')}
+          {creation.marks ? ` · ${t('practice.marks', { n: creation.marks })}` : ''}
+        </h4>
+        {minutes ? <p className="text-xs text-slate-500">{t('practice.minutes', { n: minutes })}</p> : null}
+      </div>
+      {creation.theme && (
         <p className="text-sm font-semibold text-slate-900">
-          {t('practice.theme')}: {paper2.themeTitle}
+          {t('practice.theme')}: {creation.theme}
         </p>
-        <p className="text-sm leading-relaxed text-slate-800">{paper2.themePrompt}</p>
-
+      )}
+      {brief && <p className="text-sm leading-relaxed text-slate-800">{brief}</p>}
+      {creation.hint && (
+        <p className="text-sm text-slate-700">
+          <span className="font-semibold">{t('practice.hint')}: </span>
+          {creation.hint}
+        </p>
+      )}
+      {creation.mediaConstraints && creation.mediaConstraints.length > 0 && (
         <div>
-          <h4 className="text-sm font-bold text-slate-900">{t('practice.constraints')}</h4>
+          <h5 className="text-sm font-bold text-slate-900">{t('practice.constraints')}</h5>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-slate-700">
-            {paper2.mediaConstraints.map((line) => (
+            {creation.mediaConstraints.map((line) => (
               <li key={line}>{line}</li>
             ))}
           </ul>
         </div>
-
-        <Plates artworks={paper2.referenceArtworks} questionNumber={1} />
-
+      )}
+      {creation.checklist && creation.checklist.length > 0 && (
         <fieldset className="space-y-2" disabled={!ready}>
           <legend className="text-sm font-bold text-slate-900">{t('practice.checklist')}</legend>
-          {paper2.checklist.map((item) => (
-            <label key={item.id} className="flex min-h-11 items-start gap-3 rounded-xl bg-slate-50 px-2 py-2 text-sm text-slate-800">
+          {creation.checklist.map((item) => (
+            <label key={item.id} className="flex min-h-11 items-start gap-3 rounded-xl bg-[#FFF9E9] px-2 py-2 text-sm text-slate-800">
               <input
                 type="checkbox"
-                className="mt-1 h-5 w-5 shrink-0 accent-teal-700"
-                checked={Boolean(draft?.paper2Checks[item.id])}
+                className="mt-1 h-5 w-5 shrink-0 accent-[#0D9488]"
+                checked={Boolean(slot?.partBChecks[item.id])}
                 onChange={(event) => {
                   const on = event.target.checked
                   onPatch((current) => ({
                     ...current,
-                    paper2Checks: { ...current.paper2Checks, [item.id]: on },
+                    partBChecks: { ...current.partBChecks, [item.id]: on },
                   }))
                 }}
               />
@@ -670,38 +756,38 @@ function PaperTwo({
             </label>
           ))}
         </fieldset>
-
-        <label className="block text-sm font-semibold text-slate-900" htmlFor="practice-artist-statement">
-          {t('practice.statement')}
-          <span className="mt-1 block text-xs font-normal text-slate-500">{t('practice.statementHint')}</span>
-          <textarea
-            id="practice-artist-statement"
-            className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-base leading-relaxed text-slate-900 shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200 disabled:bg-slate-50"
-            rows={4}
-            maxLength={1200}
-            disabled={!ready}
-            value={statement}
-            placeholder={t('practice.statementPh')}
-            onChange={(event) => {
-              const next = event.target.value
-              onPatch((current) => ({ ...current, statement: next }))
-            }}
-          />
-        </label>
-        <p className="text-xs text-slate-500">{t('practice.count', { n: practiceTextCount(statement, locale) })}</p>
-
+      )}
+      <label className="block text-sm font-semibold text-slate-900" htmlFor={`practice-${questionId}-statement`}>
+        {t('practice.statement')}
+        <span className="mt-1 block text-xs font-normal text-slate-500">{t('practice.statementHint')}</span>
+        <textarea
+          id={`practice-${questionId}-statement`}
+          className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-base leading-relaxed text-slate-900 shadow-sm focus:border-[#0D9488] focus:outline-none focus:ring-2 focus:ring-teal-200 disabled:bg-slate-50"
+          rows={4}
+          maxLength={1200}
+          disabled={!ready}
+          value={statement}
+          placeholder={t('practice.statementPh')}
+          onChange={(event) => {
+            const next = event.target.value
+            onPatch((current) => ({ ...current, statement: next }))
+          }}
+        />
+      </label>
+      <p className="text-xs text-slate-500">{t('practice.count', { n: practiceTextCount(statement, locale) })}</p>
+      {creation.uploadKeys && creation.uploadKeys.length > 0 && (
         <div className="space-y-3">
-          <h4 className="text-sm font-bold text-slate-900">{t('practice.uploads')}</h4>
+          <h5 className="text-sm font-bold text-slate-900">{t('practice.uploads')}</h5>
           <p className="text-sm leading-relaxed text-slate-600">{t('practice.upload.note')}</p>
           <ul className="space-y-3">
-            {paper2.uploadKeys.map((key) => (
-              <li key={key} className="rounded-2xl border border-dashed border-teal-200 bg-teal-50/40 p-3">
+            {creation.uploadKeys.map((key) => (
+              <li key={key} className="rounded-2xl border border-dashed border-[#0D9488]/40 bg-[#e7f7f5] p-3">
                 <p className="text-sm font-semibold text-teal-950">{uploadLabel(key, t)}</p>
                 {key === 'artist_statement_text' ? (
                   <p className="mt-1 text-xs text-teal-900">{t('practice.upload.statementSlot')}</p>
                 ) : key === 'artwork_image' || key === 'sketch_notes_image' ? (
                   <div className="mt-2">
-                    <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xl border border-dashed border-teal-300 bg-white px-4 py-2 text-sm font-semibold text-teal-900">
+                    <label className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-xl border border-dashed border-[#0D9488]/50 bg-white px-4 py-2 text-sm font-semibold text-teal-900">
                       <Upload className="h-4 w-4" aria-hidden />
                       {t('practice.upload.pick')}
                       <input
@@ -726,8 +812,8 @@ function PaperTwo({
                         }}
                       />
                     </label>
-                    {draft?.uploadNames[key] && (
-                      <p className="mt-2 text-xs text-teal-900">{t('practice.upload.chosen', { name: draft.uploadNames[key] })}</p>
+                    {slot?.uploadNames[key] && (
+                      <p className="mt-2 text-xs text-teal-900">{t('practice.upload.chosen', { name: slot.uploadNames[key] })}</p>
                     )}
                   </div>
                 ) : (
@@ -742,21 +828,8 @@ function PaperTwo({
             </p>
           )}
         </div>
-
-        <p className="text-sm text-slate-600">{paper2.aiPolicy.note}</p>
-        <p role="status" className="text-sm text-slate-600">
-          {draft ? t('practice.draftSaved') : t('practice.loading')}
-        </p>
-      </section>
-
-      {lockedQuestions.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="text-sm font-bold text-slate-900">{t('practice.questions')}</h3>
-          {lockedQuestions.map((question) => (
-            <LockedQuestion key={question.id} question={question} />
-          ))}
-        </div>
       )}
-    </div>
+      <p className="text-sm text-slate-600">{aiNote}</p>
+    </section>
   )
 }
