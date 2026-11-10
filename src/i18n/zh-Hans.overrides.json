@@ -394,5 +394,13 @@
   "score.dual.short.aw-3": "情境关系",
   "score.dual.short.aw-4": "创意批判",
   "score.dual.short.aw-5": "整体传意",
-  "score.dual.short.aw-6": "四件改进"
+  "score.dual.short.aw-6": "四件改进",
+  "score.later.staffSub": "单校 · 校内 formative · 不当正式交卷",
+  "score.later.dropNote": "单校 · 不当正式交卷",
+  "score.later.studentSub": "只读参考 · 不可以改大概带",
+  "score.later.cannotEdit": "不可以自己改大概带",
+  "score.later.studentHint": "参考带供校内讨论，不是考试分，亦不可以自己改。",
+  "score.later.feedNote": "覆写后馈双雷达／学校参考（只供参考）",
+  "score.later.afterWrite": "调分后先馈学校参考／双雷达 · 参考用 · 单校",
+  "score.later.step4": "馈双雷达／学校参考"
 }

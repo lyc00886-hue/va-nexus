@@ -1,5 +1,6 @@
 import { useId, useMemo, useState } from 'react'
 import { SchoolScoreDualStaff } from './SchoolScoreDualStaff'
+import { SchoolScoreLaterStaff } from './SchoolScoreLaterStaff'
 import { SchoolScoreStaff } from './SchoolScoreStaff'
 import zhHant from '../content/teacher-draft-band.json'
 import en from '../content/teacher-draft-band.en.json'
@@ -252,6 +253,7 @@ export default function TeacherDraftBand() {
     <div className="space-y-8">
       <SchoolScoreStaff />
       <SchoolScoreDualStaff />
+      <SchoolScoreLaterStaff />
       <TeacherDraftBandPage role={role} />
     </div>
   )
