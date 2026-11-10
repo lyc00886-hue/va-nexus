@@ -17,7 +17,7 @@
     "locale": "en"
   },
   "pageTitle": "Teacher draft band (school-internal)",
-  "pageIntro": "Pick a formative practice band for a portfolio using your school rubric. Teacher / coordinator coaching only — never presented as an HKEAA result.",
+  "pageIntro": "Pick a formative practice band for a school-internal name stored on this device, using your school rubric. This page does not list or show student-uploaded photos or notes. Teacher / coordinator coaching only — never presented as an HKEAA result.",
   "disclaimer": "Not official. Not an HKEAA / public-exam result. These “practice / performance-reference” bands are for school-internal formative discussion only. Formal SBA marks follow the HKEAA Teachers’ Handbook and moderation. Do not upload student 5** exemplars to the public app.",
   "bandPicker": {
     "title": "Practice band (performance reference)",
@@ -116,7 +116,7 @@
     ]
   },
   "empty": {
-    "noStudent": "No student / portfolio selected. Choose one before setting a practice band.",
+    "noStudent": "No school-internal name yet (this device only). Type one before setting a practice band.",
     "noBand": "No practice band yet. Review criteria rows, then pick a performance reference.",
     "noCriteriaNote": "Criteria rows are placeholders; you can save a band first and add school descriptors later."
   },
