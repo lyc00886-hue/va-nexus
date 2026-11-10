@@ -27,10 +27,13 @@ export function SchoolScoreDualFigure({
   chartId,
   labels,
   values,
+  drawLabels = true,
 }: {
   chartId: string
   labels: string[]
   values: Array<number | null>
+  /** Formal dual radar keeps labels on the spokes. The AI radar lists full axis names beside the figure. */
+  drawLabels?: boolean
 }) {
   const n = labels.length
   if (n < 3 || n !== values.length) return null
@@ -81,25 +84,27 @@ export function SchoolScoreDualFigure({
         if (!point) return null
         return <circle key={`${chartId}-dot-${label}`} cx={point[0]} cy={point[1]} r={4} fill={TEAL} stroke="#ffffff" strokeWidth={1.5} />
       })}
-      {labels.map((label, i) => {
-        const angle = angleAt(i, n)
-        const [x, y] = polar(i, n, OUTER + 16)
-        const cos = Math.cos(angle)
-        const anchor = cos > 0.35 ? 'start' : cos < -0.35 ? 'end' : 'middle'
-        return (
-          <text
-            key={`${chartId}-label-${label}`}
-            x={x}
-            y={y}
-            textAnchor={anchor}
-            dominantBaseline="middle"
-            fill="#134e4a"
-            fontSize={12}
-          >
-            {label}
-          </text>
-        )
-      })}
+      {drawLabels
+        ? labels.map((label, i) => {
+            const angle = angleAt(i, n)
+            const [x, y] = polar(i, n, OUTER + 16)
+            const cos = Math.cos(angle)
+            const anchor = cos > 0.35 ? 'start' : cos < -0.35 ? 'end' : 'middle'
+            return (
+              <text
+                key={`${chartId}-label-${label}`}
+                x={x}
+                y={y}
+                textAnchor={anchor}
+                dominantBaseline="middle"
+                fill="#134e4a"
+                fontSize={12}
+              >
+                {label}
+              </text>
+            )
+          })
+        : null}
     </svg>
   )
 }

@@ -165,6 +165,15 @@ export function studentVisibleBand(draft: LaterDraft): PracticeBandId {
 }
 
 /**
+ * Formative value for the read-only AI reference radar.
+ * Uses the approximate band (model, fallback, or post-upload stub) only.
+ * A teacher adjust that has not been written does not change this value.
+ */
+export function aiReferenceFormative(draft: LaterDraft): number {
+  return formativeForBand(draft.approxBand)
+}
+
+/**
  * School reference takes the effective band. Dual-radar axes that are still empty
  * receive the same formative number the practice-band buttons already write.
  * Axes that already have a staff value stay as they are.

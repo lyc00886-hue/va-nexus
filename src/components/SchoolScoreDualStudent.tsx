@@ -35,6 +35,12 @@ export function SchoolScoreDualStudent() {
         {t('score.dual.studentSurface')}
       </h3>
       <p
+        data-testid="score-dual-not-final"
+        className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-900"
+      >
+        {t('score.later.notFinal')}
+      </p>
+      <p
         role="status"
         data-testid="score-dual-keep"
         className="rounded-2xl border border-[#0D9488]/30 bg-[#e7f7f5] px-4 py-3 text-sm font-semibold leading-relaxed text-teal-950"

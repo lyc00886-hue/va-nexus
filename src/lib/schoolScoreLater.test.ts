@@ -9,6 +9,9 @@ import { SCHOOL_SCORE_SLOT } from './schoolScore.ts'
 import {
   SCHOOL_SCORE_LATER_KEY,
   SCHOOL_SCORE_LATER_SHA256,
+  aiReferenceFormative,
+  applyAiFallback,
+  applyModelComment,
   approximateBandId,
   draftFromFile,
   effectiveBand,
@@ -34,6 +37,12 @@ const LOCALE = {
       'Not a public-exam or HKEAA result. AI approx is school-internal only; teacher-adjusted values prevail.',
     'score.later.pending': 'Pending teacher confirm',
     'score.later.studentRo': 'Learning progress reference (read-only)',
+    'score.later.notFinal': 'Not the final score',
+    'score.later.notFinalNote':
+      'What you see now is an approximate rating / reference band and comments, including the AI reference radar, not the final score. It is for school discussion only. The formal school reference and dual radar are written only after the teacher confirms or adjusts.',
+    'score.later.aiRadar': 'AI reference radar',
+    'score.later.aiRadarHint':
+      'This is the AI reference radar, not the final score. The formal school reference and dual radar are written only after the teacher confirms or adjusts.',
   },
   'zh-Hant': {
     'score.later.upload': '上傳作品／工作簿頁',
@@ -42,6 +51,11 @@ const LOCALE = {
     'score.later.disclaimer': '非公開試／非 HKEAA 正式分數。AI 大概分只供校內討論；以教師調分後為準。',
     'score.later.pending': '待教師確認',
     'score.later.studentRo': '學習進度參考（只讀）',
+    'score.later.notFinal': '唔係最終分數',
+    'score.later.notFinalNote':
+      '你而家見到嘅係大概評級／參考帶同參考評語，亦包括 AI 參考雷達，唔係最終分數。只供校內討論；正式學校參考／雙雷達仍要教師確認或調分後先餵。',
+    'score.later.aiRadar': 'AI 參考雷達',
+    'score.later.aiRadarHint': '呢幅係 AI 參考雷達，唔係最終分數。正式學校參考／雙雷達仍要教師確認或調分後先餵。',
   },
   'zh-Hans': {
     'score.later.upload': '上传作品／工作簿页',
@@ -50,6 +64,11 @@ const LOCALE = {
     'score.later.disclaimer': '非公开试／非 HKEAA 正式分数。AI 大概分只供校内讨论；以教师调分后为准。',
     'score.later.pending': '待教师确认',
     'score.later.studentRo': '学习进度参考（只读）',
+    'score.later.notFinal': '不是最终分数',
+    'score.later.notFinalNote':
+      '你现在见到的是大概评级／参考带和参考评语，也包括 AI 参考雷达，不是最终分数。只供校内讨论；正式学校参考／双雷达仍要教师确认或调分后先写入。',
+    'score.later.aiRadar': 'AI 参考雷达',
+    'score.later.aiRadarHint': '这幅是 AI 参考雷达，不是最终分数。正式学校参考／双雷达仍要教师确认或调分后先写入。',
   },
 } as const
 
@@ -183,9 +202,15 @@ describe('school score later chrome', () => {
     assert.doesNotMatch(staff, /animate-|framer-motion|多校|練習卷|未達標/)
     assert.match(student, /data-testid="score-later-student"/)
     assert.match(student, /data-readonly="true"/)
-    assert.match(student, /score\.later\.pending/)
+    assert.match(student, /score\.later\.notFinal/)
+    assert.match(student, /score\.later\.notFinalNote/)
+    assert.match(student, /score\.later\.aiRadar/)
     assert.match(student, /score\.later\.disclaimer/)
+    assert.match(student, /aiReferenceFormative/)
+    assert.match(student, /axisLabelKey/)
     assert.match(student, /disabled/)
+    assert.doesNotMatch(student, /score\.later\.pending|score\.later\.submitted|score\.later\.commentPending/)
+    assert.doesNotMatch(student, /axisShortKey|effectiveBand|adjustBand/)
     assert.doesNotMatch(student, /type="file"|<select|saveDualAxis|saveTeacherDraft|acceptLaterFile|setLaterAdjust|未達標|\bSoft\b/)
     assert.match(progress, /compact \? null : <SchoolScoreDualStudent/)
     assert.match(progress, /compact \? null : <SchoolScoreLaterStudent/)
@@ -199,5 +224,60 @@ describe('school score later chrome', () => {
     assert.match(v1, /data-testid="score-later"/)
     assert.doesNotMatch(v1, /SchoolScoreLater|type="file"/)
     assert.doesNotMatch(dual, /SchoolScoreLater|type="file"/)
+    const dualStudent = readFileSync(join(root, 'src/components/SchoolScoreDualStudent.tsx'), 'utf8')
+    assert.match(dualStudent, /score\.later\.notFinal/)
+    assert.match(dualStudent, /axisShortKey/)
+    assert.doesNotMatch(dualStudent, /aiReferenceFormative|useSchoolScoreLater|saveDualAxis/)
+  })
+})
+
+describe('student instant approximate band', () => {
+  it('maps the AI radar from the approximate band and leaves an unwritten teacher adjust off it', () => {
+    const draft = draftFromFile('工作簿頁 1.pdf', 12000, 'application/pdf')
+    assert.equal(draft.aiStatus, 'idle')
+    assert.equal(draft.aiComment, null)
+    assert.equal(aiReferenceFormative(draft), formativeForBand(draft.approxBand))
+    const other = draft.approxBand === 'practice-strong' ? 'practice-emerging' : 'practice-strong'
+    const adjusted = withAdjustBand(draft, other)
+    assert.notEqual(effectiveBand(adjusted), draft.approxBand)
+    assert.equal(laterPending(adjusted), true)
+    assert.equal(aiReferenceFormative(adjusted), formativeForBand(draft.approxBand))
+    assert.notEqual(aiReferenceFormative(adjusted), formativeForBand(effectiveBand(adjusted)))
+    const committed = withCommitted(adjusted)
+    assert.equal(committed.committedBand, effectiveBand(adjusted))
+    assert.equal(aiReferenceFormative(committed), formativeForBand(draft.approxBand))
+    const comment = '主題或意念的探索及發展接近穩固，反思及學習進程仍可再寫清楚。'
+    const model = applyModelComment(draft, { comment, band: 'practice-secure' })
+    assert.equal(model.aiStatus, 'model')
+    assert.equal(model.aiComment, comment)
+    assert.equal(model.committedBand, null)
+    assert.equal(aiReferenceFormative(model), formativeForBand('practice-secure'))
+    const fallback = applyAiFallback(model)
+    assert.equal(fallback.aiStatus, 'fallback')
+    assert.equal(fallback.aiComment, null)
+    assert.equal(aiReferenceFormative(fallback), formativeForBand(draft.stubBand))
+  })
+
+  it('keeps the official not-final sentence and does not invent a substitute', () => {
+    const substitute = /暫定分|预测分|預測分|即時得分|即时得分|5\*\*|公開試結果|公开试结果|artionhk|AI＝公開試預測|AI＝公开试预测/
+    const student = readFileSync(join(root, 'src/components/SchoolScoreLaterStudent.tsx'), 'utf8')
+    assert.equal(substitute.test(student), false)
+    for (const locale of Object.keys(FILES) as (keyof typeof FILES)[]) {
+      const bag = messages(FILES[locale])
+      for (const key of [
+        'score.later.notFinal',
+        'score.later.notFinalNote',
+        'score.later.aiRadar',
+        'score.later.aiRadarHint',
+      ] as const) {
+        assert.equal(substitute.test(bag[key]), false, `${locale} ${key}`)
+      }
+      for (const key of ['score.later.notFinal', 'score.later.notFinalNote', 'score.later.aiRadarHint'] as const) {
+        const value = bag[key]
+        const hasOfficial =
+          value.toLowerCase().includes('not the final score') || value.includes('最終分數') || value.includes('最终分数')
+        assert.equal(hasOfficial, true, `${locale} ${key}`)
+      }
+    }
   })
 })
