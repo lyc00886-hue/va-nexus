@@ -150,7 +150,13 @@ describe('two-edition thin slice', () => {
     assert.match(surface, /ClassicGrades/)
     assert.match(surface, /data-quest-training/)
     assert.match(surface, /data-map-grade/)
+    assert.match(surface, /data-classic-domains/)
+    assert.match(surface, /map\.track\.history/)
+    assert.match(surface, /map\.track\.media/)
+    assert.equal(read('src/components/game/LearningMap.tsx').includes('map.track.f4'), false)
     assert.match(surface, /MapQuest/)
+    assert.equal(read('src/components/game/LearningMap.tsx').includes('<QuestTraining'), false)
+    assert.equal(read('src/components/game/QuestTraining.tsx').includes('[id, true]'), false)
     assert.equal(surface.includes('SoftMapPicker'), false)
     for (const banned of ['ux.map1', 'ux.classic', '拎走', '守則', '唔一次搬晒', 'P0 各', '拔走', '拆走']) {
       assert.equal(surface.includes(banned), false, banned)

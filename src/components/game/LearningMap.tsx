@@ -7,6 +7,7 @@ import { getF4Units } from '../../game/f4Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
 import {
+  F4_CHROME_KEY,
   historyUnitsFor,
   QUEST_ART_UNITS,
   QUEST_MEDIA_UNITS,
@@ -35,7 +36,6 @@ import { ClassicGrades } from './ClassicGrades'
 import { MapPath } from './MapPath'
 import { MapQuest } from './MapQuest'
 import { MapVersionToggle } from './MapVersionToggle'
-import { QuestTraining } from './QuestTraining'
 import { SoftAtlas, SoftMine } from './SoftAtlas'
 
 const TRACK_KEY = 'va-nexus:map-track'
@@ -175,8 +175,6 @@ export function LearningMap() {
     remember('media', null)
   }
 
-  const yearHistory = grade === 'f5' || grade === 'f6' ? historyUnitsFor(history, 'all', grade) : []
-  const yearCurrent = yearHistory.flatMap((unit) => unit.nodes).find((node) => isUnlocked(node.id) && !completed(node.id))
   const gradePath = grade === 'f4' || grade === 'f5' || grade === 'f6'
   const pathOn = !easy.on && (mapOne || track === 'history' || track === 'f4' || selected != null || gradePath)
   useLayoutEffect(() => {
@@ -204,110 +202,79 @@ export function LearningMap() {
   }
 
   if (mapOne) {
+    const onPath = shell !== 'atlas' && shell !== 'mine'
     return (
       <div data-map-shell="one" data-map-scope="quest" data-soft-shell={shell} className="space-y-5">
-        <MapVersionToggle mapOne />
         {easy.preview ? <EasyReadBar /> : null}
-        {shell === 'atlas' ? (
-          <SoftAtlas onShell={onShell} />
-        ) : shell === 'mine' ? (
-          <SoftMine onShell={onShell} />
-        ) : (
-          <>
-            <QuestTraining art={unitsById(history, QUEST_ART_UNITS)} media={unitsById(media, QUEST_MEDIA_UNITS)} />
-            <MapQuest />
-          </>
-        )}
+        <div className={onPath ? 'space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5' : 'space-y-5'}>
+          <MapVersionToggle mapOne />
+          {shell === 'atlas' ? (
+            <SoftAtlas onShell={onShell} />
+          ) : shell === 'mine' ? (
+            <SoftMine onShell={onShell} />
+          ) : (
+            <MapQuest art={unitsById(history, QUEST_ART_UNITS)} media={unitsById(media, QUEST_MEDIA_UNITS)} />
+          )}
+        </div>
       </div>
     )
   }
 
+  const domain: 'history' | 'media' = track === 'media' ? 'media' : 'history'
+  const historyForGrade = historyUnitsFor(historyUnits, 'all', grade)
+  const titledF4 = f4Units.map((unit) => {
+    const key = F4_CHROME_KEY[unit.id]
+    return key ? { ...unit, title: t(key) } : unit
+  })
+  const historyShown = grade === 'f4' ? [...historyForGrade, ...titledF4] : historyForGrade
+  const historyNodes = historyShown.flatMap((unit) => unit.nodes)
+  const historyLesson =
+    historyNodes.find((node) => node.id === currentNodeId) ??
+    historyNodes.find((node) => (node.id.startsWith('F4-') ? f4Unlocked(node.id) : isUnlocked(node.id)) && !completed(node.id))
+  const mediaForGrade = grade === 'f5' || grade === 'f6' ? [] : media
+
   return (
     <div className="space-y-5">
       {easy.preview ? <EasyReadBar /> : null}
-      <MapVersionToggle mapOne={false} />
-      <ClassicGrades grade={grade} onGrade={chooseGrade} />
-      <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
+      <div className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5">
+        <MapVersionToggle mapOne={false} />
+        <ClassicGrades grade={grade} onGrade={chooseGrade} />
+      </div>
 
-      {grade === 'f4' ? (
-        <HistoryTrack
-          units={f4Units}
-          current={f4Current}
-          currentNodeId={f4Current?.id ?? null}
-          isUnlocked={f4Unlocked}
-          completed={completed}
-          masteryOf={(id) => masteryFor(state.nodes[id])}
-          sections={sections}
-          onToggleLesson={toggleLesson}
-          onCloseLesson={(id) => setLesson(id, false)}
-          onSetFold={setFold}
-          onReveal={revealLesson}
-        />
-      ) : grade === 'f5' || grade === 'f6' ? (
-        yearHistory.length === 0 ? (
+      <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')} data-classic-domains>
+        <TrackTab active={domain === 'history'} onClick={() => chooseTrack('history')}>
+          {t('map.track.history')}
+        </TrackTab>
+        <TrackTab active={domain === 'media'} onClick={() => chooseTrack('media')}>
+          {t('map.track.media')}
+        </TrackTab>
+      </div>
+
+      {domain === 'history' ? (
+        historyShown.length === 0 ? (
           <p data-map-grade-empty className="rounded-3xl bg-white px-4 py-6 text-center text-sm font-medium text-slate-700">
             {t('map.grade.empty')}
           </p>
         ) : (
-          <div data-classic-grade={grade}>
-            <HistoryTrack
-              units={yearHistory}
-              current={yearCurrent}
-              currentNodeId={yearCurrent?.id ?? null}
-              isUnlocked={isUnlocked}
-              completed={completed}
-              masteryOf={(id) => masteryFor(state.nodes[id])}
-              sections={sections}
-              onToggleLesson={toggleLesson}
-              onCloseLesson={(id) => setLesson(id, false)}
-              onSetFold={setFold}
-              onReveal={revealLesson}
-            />
-          </div>
+          <HistoryTrack
+            units={historyShown}
+            current={historyLesson}
+            currentNodeId={historyLesson?.id ?? null}
+            isUnlocked={(id) => (id.startsWith('F4-') ? f4Unlocked(id) : isUnlocked(id))}
+            completed={completed}
+            masteryOf={(id) => masteryFor(state.nodes[id])}
+            sections={sections}
+            onToggleLesson={toggleLesson}
+            onCloseLesson={(id) => setLesson(id, false)}
+            onSetFold={setFold}
+            onReveal={revealLesson}
+          />
         )
-      ) : null}
-
-      {grade === 'all' ? <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
-        <TrackTab active={track === 'history'} onClick={() => chooseTrack('history')}>
-          {t('map.track.history')}
-        </TrackTab>
-        <TrackTab active={track === 'media'} onClick={() => chooseTrack('media')}>
-          {t('map.track.media')}
-        </TrackTab>
-        <TrackTab active={track === 'f4'} onClick={() => chooseTrack('f4')}>
-          {t('map.track.f4')}
-        </TrackTab>
-      </div> : null}
-
-      {grade === 'all' && track === 'history' ? (
-        <HistoryTrack
-          units={historyUnits}
-          current={current}
-          currentNodeId={currentNodeId}
-          isUnlocked={isUnlocked}
-          completed={completed}
-          masteryOf={(id) => masteryFor(state.nodes[id])}
-          sections={sections}
-          onToggleLesson={toggleLesson}
-          onCloseLesson={(id) => setLesson(id, false)}
-          onSetFold={setFold}
-          onReveal={revealLesson}
-        />
-      ) : grade === 'all' && track === 'f4' ? (
-        <HistoryTrack
-          units={f4Units}
-          current={f4Current}
-          currentNodeId={f4Current?.id ?? null}
-          isUnlocked={f4Unlocked}
-          completed={completed}
-          masteryOf={(id) => masteryFor(state.nodes[id])}
-          sections={sections}
-          onToggleLesson={toggleLesson}
-          onCloseLesson={(id) => setLesson(id, false)}
-          onSetFold={setFold}
-          onReveal={revealLesson}
-        />
-      ) : grade === 'all' && selected ? (
+      ) : mediaForGrade.length === 0 ? (
+        <p data-map-grade-empty className="rounded-3xl bg-white px-4 py-6 text-center text-sm font-medium text-slate-700">
+          {t('map.grade.empty')}
+        </p>
+      ) : selected && mediaForGrade.some((unit) => unit.id === selected.id) ? (
         <MediaDetail
           unit={selected}
           completed={completed}
@@ -319,9 +286,9 @@ export function LearningMap() {
           onReveal={revealLesson}
           onBack={closeMedia}
         />
-      ) : grade === 'all' ? (
-        <MediaPicker units={media} onOpen={openMedia} />
-      ) : null}
+      ) : (
+        <MediaPicker units={mediaForGrade} onOpen={openMedia} />
+      )}
       <MapCommitments />
     </div>
   )

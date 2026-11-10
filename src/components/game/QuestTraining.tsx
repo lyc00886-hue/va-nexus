@@ -22,20 +22,18 @@ export function QuestTraining({ art, media }: { art: Unit[]; media: Unit[] }) {
     { id: 'art', title: t('map.train.art'), units: art },
     { id: 'media', title: t('map.train.media'), units: media },
   ]
-  const [open, setOpen] = useState<Record<string, boolean>>(() => {
-    const first = [...art, ...media].map((unit) => unit.nodes[0]?.id).filter((id): id is string => Boolean(id))
-    return Object.fromEntries(first.map((id) => [id, true]))
-  })
+  const [open, setOpen] = useState<Record<string, boolean>>({})
+  const visible = tracks.filter((track) => track.units.length > 0)
+  if (visible.length === 0) return null
 
   return (
     <div data-quest-training className="space-y-4">
-      {tracks.map((track) => (
+      {visible.map((track) => (
         <section key={track.id} data-quest-training={track.id} className="space-y-3">
           <h2 className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-bold text-[#FFF9E9]">{track.title}</h2>
           {track.units.map((unit) => (
             <article key={unit.id} data-quest-unit={unit.id} className="rounded-[1.5rem] border border-[#0D9488]/40 bg-white p-4">
-              <p className="text-xs font-semibold tracking-wide text-[#0D9488]">{unit.id}</p>
-              <h3 className="mt-1 text-lg font-bold text-slate-900">{unit.title}</h3>
+              <h3 className="text-lg font-bold text-slate-900">{unit.title}</h3>
               {unit.subtitle ? <p className="mt-1 text-sm leading-relaxed text-slate-600">{unit.subtitle}</p> : null}
               <ul className="mt-3 space-y-3">
                 {unit.nodes.map((lesson) => {
@@ -51,10 +49,7 @@ export function QuestTraining({ art, media }: { art: Unit[]; media: Unit[] }) {
                         onClick={() => setOpen((prev) => ({ ...prev, [lesson.id]: !prev[lesson.id] }))}
                         className="flex w-full items-center justify-between gap-3 rounded-2xl bg-[#e7f7f5] px-3 py-2 text-left disabled:cursor-not-allowed disabled:opacity-60"
                       >
-                        <span>
-                          <span className="block text-xs font-semibold text-[#0D9488]">{lesson.id}</span>
-                          <span className="block text-sm font-bold text-slate-900">{lesson.title}</span>
-                        </span>
+                        <span className="block text-sm font-bold text-slate-900">{lesson.title}</span>
                         <span className="text-xs font-semibold text-[#0D9488]">
                           {completed(lesson.id) ? t('map.status.done') : t('map.media.open')}
                         </span>
