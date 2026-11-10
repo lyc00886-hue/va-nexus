@@ -3,7 +3,7 @@
     {
       "id": "F4-U1-ORIENT",
       "title": "Form 4 VA Intro: Course and SBA Portfolio",
-      "intro": "Form 4 starter unit. Learn the two learning strands (appreciation and making), positive values, and the basic SBA portfolio structure (research workbook + artwork/critical studies). Aligned to Form 4 orientation / SBA criteria notes. No real HKEAA papers or high-score student exemplars.",
+      "intro": "This unit introduces Form 4 visual arts. You will meet the two learning strands (appreciation and making), the values and attitudes the course cares about, and the basic SBA portfolio structure (research workbook + artwork / critical studies). Lessons do not use real public exam papers or high-score student exemplars.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U1-ORIENT.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -37,7 +37,7 @@
               "question": "Appreciation often includes describe, analyse, interpret and ____ artworks.",
               "options": [],
               "answer": "judge",
-              "explain": "A common four-step critical frame is describe–analyse–interpret–judge (Feldman-aligned).",
+              "explain": "A common four steps are describe, analyse, interpret and judge.",
               "wordBank": [
                 "delete",
                 "judge",
@@ -74,14 +74,14 @@
             },
             {
               "type": "order",
-              "question": "Put the four appreciation steps in order: describe → analyse → interpret → evaluate.",
+              "question": "Put the four appreciation steps in order.",
               "options": [
                 "Describe",
                 "Analyse",
                 "Interpret",
-                "Evaluate"
+                "Judge"
               ],
-              "explain": "Describe → Analyse → Interpret → Evaluate"
+              "explain": "Describe → Analyse → Interpret → Judge"
             },
             {
               "type": "dualRead",
@@ -112,7 +112,7 @@
             "Artwork/critical studies: about four pieces under one theme; some may be written critical studies (follow school and official guidance).",
             "The research workbook shows theme exploration, study of related artworks, media experiments and reflection on progress.",
             "Assessment focuses on media skills, visual presentation, relationship with context, creativity/imagination, overall theme communication and progression.",
-            "This lesson covers structure only. It does not provide real HKEAA papers or high-score student exemplars."
+            "This lesson covers structure and learning focus only. It does not provide real public exam papers or high-score student exemplars."
           ],
           "quiz": [
             {
@@ -142,15 +142,15 @@
             },
             {
               "type": "mcq",
-              "question": "Which item should NOT appear in this platform's demo content?",
+              "question": "Which item should not appear in the lesson demonstration?",
               "options": [
                 "Steps for theme exploration",
-                "Full real HKEAA exam papers",
+                "Full real public exam papers",
                 "Tips for media experiments",
                 "Self-review prompt questions"
               ],
-              "answer": "Full real HKEAA exam papers",
-              "explain": "VA-Nexus does not reproduce real HKEAA papers or high-score student exemplars."
+              "answer": "Full real public exam papers",
+              "explain": "The lesson demonstration does not reproduce real public exam papers or high-score student exemplars."
             },
             {
               "type": "match",
@@ -286,7 +286,7 @@
             "An art timeline puts movements in an order you can compare. For each movement note the period, one formal feature, and one way it is presented.",
             "A way of presentation might be a wall painting, a sculpture, a design drawing, a page, or a projection. The point is how the form meets a viewer.",
             "When you compare two movements, write one similarity and one difference. Do not stop at dates.",
-            "A timeline is an intro organiser. It does not fill every week. Use your own card, not a real paper."
+            "A timeline is an intro organiser. Choose the points that matter; you do not need to fill every period. Use your own card, not a real paper."
           ],
           "quiz": [
             {
@@ -364,7 +364,7 @@
     {
       "id": "F4-U2-DRAW-DESIGN",
       "title": "Drawing, Aesthetics and Design Thinking",
-      "intro": "Aligned to F.4 Scheme “Creative Practice 2”: drawing skills, aesthetic/design thinking, material exploration and presentation skills. Builds observation, composition and material foundations for later theme work.",
+      "intro": "This unit practises observational drawing, composition, aesthetics, design thinking and material exploration, and how you present your ideas. It first builds a foundation in looking and materials, then leads into later theme work.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-DRAW-DESIGN.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -472,7 +472,7 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L2.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Aesthetic/design thinking: define a problem → generate options → prototype → test/reflect → improve.",
+            "Aesthetic/design thinking: define a problem → generate several options → prototype → test/reflect → improve.",
             "Material exploration: try the same theme in pencil, charcoal, ink, collage, etc., and note which medium best serves your intention.",
             "Presentation skills: state your theme, why you chose the medium, and how composition and symbols carry meaning.",
             "Practice: pick one everyday object; make it twice in two media; write three sentences comparing which fits your theme better.",
@@ -484,11 +484,11 @@
               "question": "Design thinking is closest to which flow?",
               "options": [
                 "Submit a final once with no reflection",
-                "Ideate → prototype → test → improve",
+                "Propose options → prototype → test → improve",
                 "Only memorise definitions",
                 "Only copy a classmate’s finish"
               ],
-              "answer": "Ideate → prototype → test → improve",
+              "answer": "Propose options → prototype → test → improve",
               "explain": "Design thinking is iterative and reflective."
             },
             {
@@ -592,7 +592,7 @@
             },
             {
               "title": "Classroom practice",
-              "body": "Aligned to Form 4 November design-drawing practice—structure for theme and message; no public exam papers."
+              "body": "This lesson practises design drawing and how a theme is expressed. The lesson does not use real exam papers."
             }
           ],
           "quiz": [
@@ -681,11 +681,11 @@
         },
         {
           "id": "F4-U2-L4",
-          "title": "Creative Practice 4: design drawing, thinking and materials",
+          "title": "Design drawing, design thinking and materials",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L4.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Creative Practice 4 puts design drawing, design thinking, and materials in one exercise: define the problem, draw options, then test a material.",
+            "This exercise brings design drawing, design thinking and materials into one practice: define the problem, draw options, then test how a material presents them.",
             "A drawing should mark the viewpoint, a sense of size, and which element carries the message. It does not have to be a final piece yet.",
             "When you choose a material, write a limit: it folds, it is clear, it is thick, or it is light. The limit changes the presentation.",
             "Close with three lines: the problem, the option you chose, and how the material helps the message."
@@ -693,7 +693,7 @@
           "quiz": [
             {
               "type": "mcq",
-              "question": "A complete Creative Practice 4 round includes:",
+              "question": "A complete round of this exercise includes:",
               "options": [
                 "Only a final picture",
                 "A problem, design drawings, a material test, and three lines",
@@ -733,7 +733,7 @@
             },
             {
               "type": "order",
-              "question": "Order practice 4: define the problem → draw two options → test one material → write three lines.",
+              "question": "Order this exercise: define the problem → draw two options → test one material → write three lines.",
               "options": [
                 "Define the problem",
                 "Draw two options",
@@ -755,7 +755,7 @@
             },
             {
               "type": "short",
-              "question": "Write the three lines for practice 4. Hint: the problem, the option you chose, and how the material helps the message.",
+              "question": "Write the three lines for this exercise. Hint: the problem, the option you chose, and how the material helps the message.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -766,7 +766,7 @@
     {
       "id": "F4-U3-COMMUNITY",
       "title": "Community Looking, Visual Diary and Theme Seeds",
-      "intro": "Community observation, the weekly visual diary, and community-related design and making. Students use photos, objects, or teacher-provided materials in class to grow theme seeds, linking to how Hong Kong artists attend to everyday space. Classroom practice includes photos, interviews, collecting, and sketches.",
+      "intro": "This unit practises community observation and a weekly visual diary, then draws theme seeds from community-related design or making. You can use photos and objects from everyday surroundings, or materials your teacher provides, and develop a theme in the classroom. It also connects to how Hong Kong artists attend to everyday space. Classroom practice includes photos, interviews, collecting and sketches.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-COMMUNITY.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -815,10 +815,10 @@
                 "As material for theme development and the research workbook",
                 "Only torn up and never reused",
                 "To replace all exams",
-                "As an official HKEAA paper"
+                "As a real public exam paper"
               ],
               "answer": "As material for theme development and the research workbook",
-              "explain": "Diaries feed theme work and the RWB."
+              "explain": "Diaries are a store of material for the theme and the research workbook."
             },
             {
               "type": "match",
@@ -993,7 +993,7 @@
             },
             {
               "title": "Classroom practice",
-              "body": "Aligned to Form 4 community-art research—keep the weekly visual diary; no public exam papers."
+              "body": "This lesson is community-art research, and the weekly visual diary continues. The lesson does not use real exam papers."
             }
           ],
           "quiz": [
@@ -1111,7 +1111,7 @@
             },
             {
               "title": "Classroom practice",
-              "body": "Aligned to Form 4 community-art making—reflect on learning; no high-score exemplars."
+              "body": "This lesson is community-art making, and you reflect on the learning. The lesson does not use high-score exemplars."
             }
           ],
           "quiz": [
@@ -1215,7 +1215,7 @@
     {
       "id": "F4-U4-SELF-RESEARCH",
       "title": "Self-Portrait, Artist Research and Theme Development",
-      "intro": "Aligned to F.4 “Theme and Artist research and Presentation I (Self-Portrait)” and discovery prompts Self / Relationship / Story. Use self-portrait to explore identity and practise proper artist research (cite sources, compare views) to start SBA theme development. No high-score student exemplars.",
+      "intro": "This unit uses self-portrait to explore identity, and practises proper artist research (cite sources, compare views) to start SBA theme development. You can begin from three entry points: self, relationship and story. Lessons do not use high-score student exemplars.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-SELF-RESEARCH.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -1226,7 +1226,7 @@
           "coverCredit": "Original · VA-Nexus",
           "cards": [
             "A self-portrait is more than likeness: it can speak about identity, bodily experience, roles and social gaze.",
-            "School prompts can open three doors: Self (a collection of curiosities), Relationship (family objects), Story (conflict or tension).",
+            "A theme can begin from three entry points: self (a curiosity collection), relationship (a family object) and story (conflict or tension).",
             "Frida Kahlo used self-portrait to speak personal experience and cultural identity—the learning goal is how symbols tell a self, not copying a style for marks.",
             "Wilson Shieh paints contemporary figures in gongbi to explore Hong Kong identity; David Hockney often paints family and looking—useful for a “relationship” theme.",
             "Describe contemporary works in words, and note a museum webpage or a reliable encyclopedia as a classroom reference. Add a public-domain historic self-portrait only when the image is rights-cleared. This card does not pretend a missing picture is here."
@@ -1246,7 +1246,7 @@
             },
             {
               "type": "fill",
-              "question": "School theme doors include Self, Relationship and ____.",
+              "question": "Theme entry points include self, relationship and ____.",
               "options": [],
               "answer": "Story",
               "explain": "Story can mean conflict, tension or a narrative line.",
@@ -1335,7 +1335,7 @@
           "cards": [
             "Artist-research steps: choose relevant artists → record basics → study form and context → link to your theme → write a personal view with evidence.",
             "Use reliable sources: museums, galleries, textbooks, teacher notes; separate facts from opinions.",
-            "Presentation I suggested structure: theme question → self/relationship entry → 1–2 artist comparisons → next media experiments.",
+            "A first presentation suggested structure: theme question → self/relationship entry → 1–2 artist comparisons → next media experiments.",
             "The research workbook should show process: drafts, experiments, failures and improvements—not only final pretty photos.",
             "Reminder: no full real exam papers and no “high-score” student exemplars."
           ],
@@ -1372,7 +1372,7 @@
                 "Only finals, hiding all drafts",
                 "Drafts, experiments, reflection and progression",
                 "Only unrelated memes",
-                "Confidential real HKEAA papers"
+                "Confidential real public exam papers"
               ],
               "answer": "Drafts, experiments, reflection and progression",
               "explain": "Progression and reflection matter in SBA."
@@ -1416,7 +1416,7 @@
             },
             {
               "type": "short",
-              "question": "Write the skeleton of presentation one. Hint: one theme question, one artist method, and the medium you will try next.",
+              "question": "Write the skeleton of the first presentation. Hint: one theme question, one artist method, and the medium you will try next.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -1424,11 +1424,11 @@
         },
         {
           "id": "F4-U4-L3",
-          "title": "Theme development and Presentation II",
+          "title": "Theme development and a second presentation",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-L3.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Presentation II is about development. Compared with the first presentation, what question changed, what evidence you added, and what you let go.",
+            "The second presentation is about development. Compared with the first presentation, what question changed, what evidence you added, and what you let go.",
             "The research workbook should show the path: an older draft, a newer test, and one sentence on why you changed it.",
             "A usable shape: the question now → new evidence → how you adapted an artist’s method → the next work.",
             "Speak only about your own development. Do not use a real paper or a high-score exemplar."
@@ -1436,7 +1436,7 @@
           "quiz": [
             {
               "type": "mcq",
-              "question": "What is the main difference in Presentation II?",
+              "question": "What is the main difference in the second presentation?",
               "options": [
                 "Repeating the same sentences",
                 "Showing how the theme developed, what changed, and the new evidence",
@@ -1461,7 +1461,7 @@
             },
             {
               "type": "match",
-              "question": "Match the parts of Presentation II",
+              "question": "Match the parts of the second presentation",
               "options": [
                 "Question now",
                 "New evidence",
@@ -1476,7 +1476,7 @@
             },
             {
               "type": "order",
-              "question": "Order Presentation II: look back at the old question → show the change → add new evidence → name the next work.",
+              "question": "Order the second presentation: look back at the old question → show the change → add new evidence → name the next work.",
               "options": [
                 "Look back at the old question",
                 "Show the change",
@@ -1498,7 +1498,7 @@
             },
             {
               "type": "short",
-              "question": "Write four slots for Presentation II. Hint: the old question, one change, one new piece of evidence, and the next work.",
+              "question": "Write four slots for the second presentation. Hint: the old question, one change, one new piece of evidence, and the next work.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -1509,7 +1509,7 @@
     {
       "id": "F4-U5-ART-HIST",
       "title": "Art History Intro: Ancient West and Chinese Art",
-      "intro": "Aligned to F.4 Orientation / early weeks: ancient cave art, Egypt, Greek and Roman art, plus a Chinese art introduction. Build a compact timeline and keyword sense for form, function and cultural context; briefly introduce calligraphy/painting as visual language (pictographs / oracle bone / silk painting)—not a full-year ink course. No real exam papers.",
+      "intro": "This unit uses a compact timeline and keywords to introduce ancient cave art, Egypt, Greece and Rome, plus an introduction to Chinese art. Practise looking at form, function and cultural context, with a brief introduction to calligraphy and painting as visual language (pictographs, oracle-bone script, silk painting). This is an introduction only, not a complete technique course. Lessons do not use real exam papers.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U5-ART-HIST.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -1533,7 +1533,7 @@
                 "Only memorise dates",
                 "What function and context did the work serve?",
                 "Only count colours",
-                "Demand a real HKEAA paper"
+                "Demand a real public exam paper"
               ],
               "answer": "What function and context did the work serve?",
               "explain": "Form should connect to function, belief and social context."
@@ -1568,7 +1568,7 @@
             },
             {
               "type": "mcq",
-              "question": "An Art Dictionary / Timeline mainly trains you to?",
+              "question": "An art dictionary / timeline mainly trains you to?",
               "options": [
                 "Only copy answer keys",
                 "Organise keywords, period traits and simple presentation",
@@ -1711,7 +1711,7 @@
           "cards": [
             "This is a compact intro only. For Qin and Han, start with narrative scenes in wall painting, and the visual shift of clerical-script strokes from round to square.",
             "For Wei and Jin, three names are enough to start looking: early Dunhuang story scenes, Gu Kaizhi’s outlined figures, and the rhythm of Wang Xizhi’s writing.",
-            "The practice is to describe form: line, density, and how a figure sits in space. It does not become a year-long calligraphy course.",
+            "The practice is to describe form: line, density, and how a figure sits in space. This is an introduction only.",
             "Use your own line study or a written description. A museum webpage is only a classroom reference."
           ],
           "quiz": [
@@ -1719,7 +1719,7 @@
               "type": "mcq",
               "question": "What is this lesson trying to do with Qin–Han to Wei–Jin?",
               "options": [
-                "Turn into a year-long calligraphy course",
+                "Work through every technique from the start",
                 "Use a few examples to practise describing line, space, and narrative",
                 "Copy a full set of stone rubbings as the assignment",
                 "Memorise every reign title"
@@ -1738,7 +1738,7 @@
                 "advert",
                 "seat"
               ],
-              "explain": "Round and square are visible form, not a full-year technique course."
+              "explain": "Round and square are visible form, used as an introductory observation."
             },
             {
               "type": "match",
@@ -1779,7 +1779,7 @@
             },
             {
               "type": "short",
-              "question": "Write one compact note. Hint: the example, one formal feature, and why you will not stretch it into a year-long course.",
+              "question": "Write one compact note. Hint: the example, one formal feature, and one point you see in the form.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -1793,7 +1793,7 @@
           "cards": [
             "A Tang intro can look at figure, landscape, or writing for openness and order: how the composition leaves near and far.",
             "A Five Dynasties intro can start with texture strokes and ink layers: how foreground, middle, and distance separate.",
-            "Keep only a few technique words: line, ink, empty space, near and far. Use them to describe. Do not turn them into a year of drills.",
+            "Keep only a few technique words: line, ink, empty space, near and far. Use them to describe the form you see.",
             "Use words and a small study of your own. Do not copy a famous painting as the assignment."
           ],
           "quiz": [
@@ -1801,7 +1801,7 @@
               "type": "mcq",
               "question": "What does the Tang to Five Dynasties lesson practise?",
               "options": [
-                "Copying every famous painting for a year",
+                "Copy every famous painting, one by one, and hand them in",
                 "Describing composition and ink with a few technique words",
                 "Memorising every reign title",
                 "Handing in a replica that matches a famous painting"
@@ -1820,7 +1820,7 @@
                 "advert",
                 "code"
               ],
-              "explain": "Near and far are composition, not a year of texture-stroke drills."
+              "explain": "Near and far are layers you can see in the composition."
             },
             {
               "type": "match",
@@ -1839,14 +1839,14 @@
             },
             {
               "type": "order",
-              "question": "Order one technique description: read near and far → find one main line → note dark and light ink → sum it up in one sentence.",
+              "question": "Order one technique description: Look at the overall near and far → find one main line → note dark and light ink → sum it up in one sentence.",
               "options": [
-                "Read near and far",
+                "Look at the overall near and far",
                 "Find one main line",
                 "Note dark and light ink",
                 "Sum it up in one sentence"
               ],
-              "explain": "Read near and far → find one main line → note dark and light ink → sum it up in one sentence"
+              "explain": "Look at the overall near and far → find one main line → note dark and light ink → sum it up in one sentence"
             },
             {
               "type": "dualRead",
@@ -1872,7 +1872,7 @@
     {
       "id": "F4-U6-THEME-SEEDS",
       "title": "Theme Seeds: Self, Relationship, Story",
-      "intro": "Aligned to F.4 Discovery / Creative Assignments prompts: Self (curiosity collection), Relationship (family object), Story (conflict or tension). Before self-portrait research (U4), practise turning everyday objects and experiences into developable theme questions; link to the visual diary (U3). No high-score exemplars; no real exam papers.",
+      "intro": "This unit practises drawing a developable theme question from everyday objects and experiences. The three entry points are: self (a curiosity collection), relationship (a family object) and story (conflict or tension). This can sit alongside the visual diary and prepare you for later self-portrait research. Lessons do not use high-score exemplars or real exam papers.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-THEME-SEEDS.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -1979,9 +1979,9 @@
           "cards": [
             "Rewrite the seed as a theme question—e.g. ‘How does this family object define care?’ ‘What tension sits in bodies and space while waiting?’",
             "A strong question opens research and making: observe, interview, test media—not a one-word answer.",
-            "Next links: keep recording in the visual diary (U3), artist comparison and self-portrait trials (U4), material tests (U2).",
+            "Next you can keep writing the visual diary, compare artists and try a self-portrait, and test materials.",
             "Mini presentation shape: my seed → theme question → materials already gathered → media I will try next.",
-            "Reminder: demos teach structure and method only—no real HKEAA papers and no high-score student works."
+            "Reminder: this lesson teaches structure and method only. It does not provide real public exam papers or high-score student works."
           ],
           "quiz": [
             {
@@ -2068,19 +2068,19 @@
         },
         {
           "id": "F4-U6-L3",
-          "title": "Derive, wish and bricolage",
+          "title": "Extend, wish and assemble",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-L3.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Derive: stretch a seed into a surreal or abstract picture that still answers your theme question.",
+            "Extend: stretch a seed into a surreal or abstract picture that still answers your theme question.",
             "Wish and imagination: write an “if” sentence, then decide which visual element carries that wish.",
-            "Bricolage self-portrait: join found scraps, paper, and an image you made, and note why each material is there.",
+            "Assemble a self-portrait: join found scraps, paper, and an image you made, and note why each material is there.",
             "Choose one of the three paths to go deeper. A high-score exemplar is not the only next step."
           ],
           "quiz": [
             {
               "type": "mcq",
-              "question": "How do derive, wish, and bricolage connect to a theme seed?",
+              "question": "How do extend, wish, and assemble connect to a theme seed?",
               "options": [
                 "Drop the original question",
                 "Still answer the original theme question, with a different presentation",
@@ -2107,20 +2107,20 @@
               "type": "match",
               "question": "Match the three paths",
               "options": [
-                "Derive",
+                "Extend",
                 "Wish",
-                "Bricolage"
+                "Assemble"
               ],
               "answer": {
-                "Derive": "Stretch the seed into a surreal or abstract picture",
+                "Extend": "Stretch the seed into a surreal or abstract picture",
                 "Wish": "Use an if-sentence to lead the imagination",
-                "Bricolage": "Join scraps and write why"
+                "Assemble": "Join scraps and write why"
               },
               "explain": "All three serve the same theme question."
             },
             {
               "type": "order",
-              "question": "Order one bricolage: choose scraps → try two arrangements → write why each material is there → look back at the theme question.",
+              "question": "Order one assembly: choose scraps → try two arrangements → write why each material is there → look back at the theme question.",
               "options": [
                 "Choose scraps",
                 "Try two arrangements",
@@ -2131,10 +2131,10 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a wish sentence on the left, a bricolage sample on the right. One line each — what the wish says, and which material carries it.",
+              "question": "Dual-image read: a wish sentence on the left, an assembled sample on the right. One line each — what the wish says, and which material carries it.",
               "options": [
                 "Wish",
-                "Bricolage"
+                "Assemble"
               ],
               "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L3.png",
               "imageCredit": "Original · VA-Nexus",
@@ -2142,7 +2142,7 @@
             },
             {
               "type": "short",
-              "question": "Choose derive, wish, or bricolage and write three lines. Hint: the original theme question, the presentation you changed, and one piece of visible evidence.",
+              "question": "Choose extend, wish, or assemble and write three lines. Hint: the original theme question, the presentation you changed, and one piece of visible evidence.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -2153,7 +2153,7 @@
     {
       "id": "F4-U7-EXAM-STRUCT",
       "title": "Exam practice ground: visual presentation of a theme and appreciation writing",
-      "intro": "The exam practice ground teaches structure only: how appreciation writing is paragraphed, how a theme exploration opens, and how making chooses a medium and a presentation. Use a prompt skeleton you write. Do not use a real paper or a high-score exemplar.",
+      "intro": "The exam practice ground teaches structure only: how appreciation writing is organised, how a theme exploration unfolds, and how making chooses a medium and presentation. Use a question framework you write yourself. No real exam papers or high-score exemplars.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U7-EXAM-STRUCT.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [

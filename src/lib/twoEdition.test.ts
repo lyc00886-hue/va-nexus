@@ -14,9 +14,9 @@ const FIND = '\u6435'
 const LOCK = {
   'f4-demo.json': {
     intro:
-      '對齊社區觀察、每週視覺日記，同「同社區相關嘅設計／創作」。學習由日常環境嘅相片、物件或教師提供嘅材料，在課室變成主題種子；連繫香港藝術家對日常空間嘅關注。課室練習包括相片、訪問、收集同速寫。',
+      '呢個單元練習社區觀察同每週視覺日記，再由同社區有關嘅設計或創作，抽出主題種子。你可以用日常環境嘅相片、物件，或教師提供嘅材料，喺課室入面發展主題。亦會連繫香港藝術家對日常空間嘅關注。課室練習包括相片、訪問、收集同速寫。',
     title: `社區觀察：由環境${FIND}主題`,
-    card0: '課堂觀察：用教師提供或已有嘅相片、短片、物件、速寫，在課室記錄環境同學習。',
+    card0: '課堂觀察：用教師提供或已有嘅相片、短片、物件、速寫，喺課室記錄環境同學習。',
     quiz: '課堂觀察嘅材料可以包括？',
     correct: '教師提供或已有嘅相片、短片、物件、速寫',
     wrong: '只准背一句口號',
@@ -24,7 +24,7 @@ const LOCK = {
   },
   'f4-demo.zh-Hans.json': {
     intro:
-      '对齐社区观察、每周视觉日记，以及与社区相关的设计／创作。学习用日常环境的照片、物件或教师提供的材料，在课室变成主题种子；连系香港艺术家对日常空间的关注。课室练习包括照片、访问、收集与速写。',
+      '这个单元练习社区观察与每周视觉日记，再由与社区有关的设计或创作，抽出主题种子。你可以用日常环境的照片、物件，或教师提供的材料，在课室里面发展主题。也会连系香港艺术家对日常空间的关注。课室练习包括照片、访问、收集与速写。',
     title: '社区观察：由环境找主题',
     card0: '课堂观察：用教师提供或已有的照片、短片、物件、速写，在课室记录环境与学习。',
     quiz: '课堂观察的材料可以包括？',
@@ -34,7 +34,7 @@ const LOCK = {
   },
   'f4-demo.en.json': {
     intro:
-      'Community observation, the weekly visual diary, and community-related design and making. Students use photos, objects, or teacher-provided materials in class to grow theme seeds, linking to how Hong Kong artists attend to everyday space. Classroom practice includes photos, interviews, collecting, and sketches.',
+      'This unit practises community observation and a weekly visual diary, then draws theme seeds from community-related design or making. You can use photos and objects from everyday surroundings, or materials your teacher provides, and develop a theme in the classroom. It also connects to how Hong Kong artists attend to everyday space. Classroom practice includes photos, interviews, collecting and sketches.',
     title: 'Community observation: finding a theme from the environment',
     card0:
       'Classroom observation: use teacher-provided or already available photos, clips, objects, or sketches in class to record the environment and your learning.',
