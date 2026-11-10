@@ -1,5 +1,6 @@
 import { useId } from 'react'
 import { useT } from '../i18n'
+import { FORMATIVE_AI_COMMENT_PLATES } from '../lib/formativeAiCommentScout'
 import { schoolBandRows } from '../lib/schoolScore'
 import { formatFormative, formativeForBand } from '../lib/schoolScoreDual'
 import { SCHOOL_SCORE_LATER_PLATES, laterPending, studentVisibleBand } from '../lib/schoolScoreLater'
@@ -33,7 +34,9 @@ export function SchoolScoreLaterStudent() {
   const named = useId()
   const rows = schoolBandRows()
   const pending = draft ? laterPending(draft) : false
-  const visible = draft ? studentVisibleBand(draft) : null
+  const showComment = Boolean(draft && draft.aiStatus === 'model' && draft.aiComment)
+  const showBand = Boolean(draft && (draft.aiStatus !== 'idle' || draft.committedBand))
+  const visible = draft && showBand ? studentVisibleBand(draft) : null
   const current = rows.find((row) => row.id === visible)
 
   return (
@@ -41,6 +44,7 @@ export function SchoolScoreLaterStudent() {
       data-testid="score-later-student"
       data-readonly="true"
       data-scout-plate={SCHOOL_SCORE_LATER_PLATES.student}
+      data-formative-scout={FORMATIVE_AI_COMMENT_PLATES.student}
       aria-labelledby={headingId}
       className="space-y-4 border-t border-[#0D9488]/20 pt-4"
     >
@@ -72,7 +76,7 @@ export function SchoolScoreLaterStudent() {
           <div className="space-y-3">
             {pending ? (
               <p className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-900">
-                {t('score.later.pending')}
+                {showComment ? t('score.later.commentPending') : t('score.later.pending')}
               </p>
             ) : (
               <p className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-xs font-bold text-white">
@@ -82,6 +86,13 @@ export function SchoolScoreLaterStudent() {
             <p className="text-base font-bold text-slate-900">
               {pending ? t('score.later.submitted') : t('score.later.prevail')}
             </p>
+            {showComment ? (
+              <div data-testid="score-later-student-comment" className="space-y-1">
+                <p className="text-sm font-bold text-slate-900">{t('score.later.aiComment')}</p>
+                <p className="text-sm text-slate-600">{t('score.later.aiCommentHint')}</p>
+                <p className="text-sm leading-relaxed text-slate-800">{draft.aiComment}</p>
+              </div>
+            ) : null}
             <div className="flex gap-3">
               <PageThumb name={draft.fileName} url={previewUrl} mime={draft.mime} />
               <div className="min-w-0 space-y-2">
@@ -96,9 +107,22 @@ export function SchoolScoreLaterStudent() {
                 <p className="text-sm font-semibold text-slate-800">
                   {t('score.later.aboutInformal', { value: formatFormative(formativeForBand(current.id)) })}
                 </p>
+                {draft.aiStatus === 'fallback' ? (
+                  <p className="text-xs leading-relaxed text-slate-500">{t('score.later.stubNote')}</p>
+                ) : null}
                 <p className="text-sm font-semibold text-[#0D9488]">{t('score.later.prevail')}</p>
               </div>
             </div>
+          </div>
+        ) : draft ? (
+          <div className="space-y-3">
+            <p className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-900">
+              {t('score.later.pending')}
+            </p>
+            <p className="text-base font-bold text-slate-900">{t('score.later.submitted')}</p>
+            <p data-testid="score-later-student-band" data-band="unset" className="text-sm font-semibold text-slate-700">
+              {t('score.later.informalRo')}
+            </p>
           </div>
         ) : (
           <p data-testid="score-later-student-band" data-band="unset" className="text-sm font-semibold text-slate-700">

@@ -1,7 +1,10 @@
 import { useSyncExternalStore } from 'react'
+import { FORMATIVE_PAGE_BYTE_MAX, postFormativeComment } from './formativeAiComment'
 import { SCHOOL_SCORE_SLOT } from './schoolScore'
 import {
   SCHOOL_SCORE_LATER_KEY,
+  applyAiFallback,
+  applyModelComment,
   draftFromFile,
   emptyLaterStore,
   isLaterUploadFile,
@@ -12,6 +15,7 @@ import {
   type LaterDraft,
   type LaterStore,
 } from './schoolScoreLater'
+import { supabase } from './supabase'
 import type { PracticeBandId } from './teacherDraftBand'
 import { getDualRadarStore, saveDualAxis } from './useSchoolScoreDual'
 import { saveTeacherDraft } from './useTeacherDraftStore'
@@ -96,6 +100,54 @@ export function setLaterAdjust(band: PracticeBandId | null) {
 
 export function keepLaterAi() {
   setLaterAdjust(null)
+}
+
+async function readAccessToken(): Promise<string | null> {
+  if (!supabase) return null
+  try {
+    const { data } = await supabase.auth.getSession()
+    return data.session?.access_token ?? null
+  } catch {
+    return null
+  }
+}
+
+async function readPreviewBytes(previewUrl: string | null): Promise<Uint8Array | null> {
+  if (!previewUrl) return null
+  try {
+    const res = await fetch(previewUrl)
+    if (!res.ok) return null
+    const buf = new Uint8Array(await res.arrayBuffer())
+    return buf.byteLength > 0 && buf.byteLength <= FORMATIVE_PAGE_BYTE_MAX ? buf : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Staff-only request. A missing model, a missing page, or a non-staff caller
+ * leaves the school reference untouched and keeps the filename/size stub.
+ */
+export async function requestLaterComment(locale: string, staff: boolean): Promise<'idle' | 'model' | 'fallback'> {
+  if (!staff) return 'idle'
+  const draft = snapshot.draft
+  if (!draft) return 'idle'
+  const fileName = draft.fileName
+  const fileSize = draft.fileSize
+  const previewUrl = snapshot.previewUrl
+  const [bytes, accessToken] = await Promise.all([readPreviewBytes(previewUrl), readAccessToken()])
+  const result = await postFormativeComment({
+    locale,
+    fileName,
+    mime: draft.mime,
+    bytes,
+    accessToken,
+  })
+  const current = snapshot.draft
+  if (!current || current.fileName !== fileName || current.fileSize !== fileSize) return 'idle'
+  const next = result.ok ? applyModelComment(current, result) : applyAiFallback(current)
+  publish(next)
+  return next.aiStatus === 'model' ? 'model' : 'fallback'
 }
 
 /** Writes the effective band into the school-score slot and fills empty dual-radar axes. */

@@ -1,9 +1,12 @@
 import { useId, useState } from 'react'
 import { useT } from '../i18n'
+import { formativeAxisLabels } from '../lib/formativeAiComment'
+import { FORMATIVE_AI_COMMENT_PLATES } from '../lib/formativeAiCommentScout'
 import { schoolBandRows } from '../lib/schoolScore'
 import { SCHOOL_SCORE_LATER_PLATES, effectiveBand, laterPending } from '../lib/schoolScoreLater'
 import { formatFormative, formativeForBand } from '../lib/schoolScoreDual'
-import { acceptLaterFile, keepLaterAi, setLaterAdjust, useSchoolScoreLater, writeLaterAdjust } from '../lib/useSchoolScoreLater'
+import { useStaffRole } from '../lib/useStaffRole'
+import { acceptLaterFile, keepLaterAi, requestLaterComment, setLaterAdjust, useSchoolScoreLater, writeLaterAdjust } from '../lib/useSchoolScoreLater'
 
 function DocIcon() {
   return (
@@ -30,19 +33,25 @@ function bandClass(on: boolean): string {
  * Sits beside school-score v1 and the dual radar. One school. Local draft only.
  */
 export function SchoolScoreLaterStaff() {
-  const { t } = useT()
+  const { locale, t } = useT()
+  const role = useStaffRole()
   const { draft, previewUrl } = useSchoolScoreLater()
   const [rejected, setRejected] = useState(false)
+  const [busy, setBusy] = useState(false)
   const titleId = useId()
   const uploadId = useId()
   const flowId = useId()
   const rulesId = useId()
   const inputId = useId()
+  const commentId = useId()
   const rows = schoolBandRows()
+  const axes = formativeAxisLabels(locale)
   const approx = draft?.approxBand ?? null
   const selected = draft ? effectiveBand(draft) : null
   const pending = draft ? laterPending(draft) : false
   const image = Boolean(previewUrl && draft?.mime.startsWith('image/'))
+  const revealed = draft != null && draft.aiStatus !== 'idle'
+  if (!role) return null
 
   function take(file: File | undefined) {
     if (!file) return
@@ -54,6 +63,7 @@ export function SchoolScoreLaterStaff() {
     <div
       data-testid="score-later-staff"
       data-scout-plate={SCHOOL_SCORE_LATER_PLATES.staff}
+      data-formative-scout={FORMATIVE_AI_COMMENT_PLATES.staff}
       className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-6"
     >
       <p className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-xs font-bold text-white">
@@ -131,36 +141,93 @@ export function SchoolScoreLaterStaff() {
         </p>
       </section>
 
-      <section data-testid="score-later-ai-approx" className="space-y-3 rounded-2xl border border-[#0D9488]/35 bg-white px-4 py-4">
+      <section
+        data-testid="score-later-ai-approx"
+        data-ai-status={draft?.aiStatus ?? 'none'}
+        className="space-y-3 rounded-2xl border border-[#0D9488]/35 bg-white px-4 py-4"
+      >
         <h3 className="text-base font-bold text-slate-900">{t('score.later.aiApprox')}</h3>
         <p className="inline-flex rounded-full border border-[#0D9488]/30 px-3 py-1 text-xs font-semibold text-teal-900">
           {t('score.later.informal')}
         </p>
         {draft ? (
           <>
-            <div className="flex flex-wrap gap-1.5">
-              {rows.map((row) => (
-                <span
-                  key={row.id}
-                  data-testid={`score-later-ai-band-${row.id}`}
-                  aria-current={approx === row.id ? 'true' : undefined}
-                  className={bandClass(approx === row.id)}
-                >
-                  {t(row.label)}
-                </span>
-              ))}
-            </div>
-            <p className="text-sm font-bold text-[#0D9488]">
-              {t('score.later.about', { value: formatFormative(formativeForBand(draft.approxBand)) })}
-            </p>
-            <p className="text-sm text-slate-600">
-              {draft.committedBand == null
-                ? t('score.later.aiPendingWrite')
-                : pending
-                  ? t('score.later.pending')
-                  : t('score.later.written')}
-            </p>
-            <p className="text-xs leading-relaxed text-slate-500">{t('score.later.stubNote')}</p>
+            <button
+              type="button"
+              data-testid="score-later-request-ai"
+              disabled={busy}
+              aria-busy={busy}
+              onClick={() => {
+                if (busy) return
+                setBusy(true)
+                void requestLaterComment(locale, true).finally(() => setBusy(false))
+              }}
+              className="w-full rounded-2xl bg-[#0D9488] px-4 py-3 text-sm font-bold text-white disabled:opacity-60"
+            >
+              {t('score.later.requestAi')}
+            </button>
+            {draft.aiStatus === 'model' ? (
+              <div className="space-y-2" data-testid="score-later-ai-comment">
+                <h4 id={commentId} className="text-sm font-bold text-slate-900">
+                  {t('score.later.aiComment')}
+                </h4>
+                <p className="text-sm text-slate-600">{t('score.later.aiCommentHint')}</p>
+                {pending ? (
+                  <p
+                    data-testid="score-later-comment-pending"
+                    className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-900"
+                  >
+                    {t('score.later.commentPending')}
+                  </p>
+                ) : null}
+                <ul className="flex flex-wrap gap-1.5" aria-labelledby={commentId}>
+                  {axes.map((axis) => (
+                    <li
+                      key={axis.id}
+                      data-testid={`score-later-axis-${axis.id}`}
+                      className="rounded-full border border-[#0D9488]/35 bg-[#f4fbfa] px-3 py-1 text-xs font-semibold text-teal-950"
+                    >
+                      {axis.label}
+                    </li>
+                  ))}
+                </ul>
+                <p className="text-sm leading-relaxed text-slate-800">{draft.aiComment}</p>
+                <p className="text-xs leading-relaxed text-slate-500">{t('score.later.modelNote')}</p>
+              </div>
+            ) : null}
+            {draft.aiStatus === 'fallback' ? (
+              <div data-testid="score-later-ai-fallback" className="space-y-2">
+                <p className="text-sm text-slate-700">{t('score.later.aiUnavailable')}</p>
+                <p className="text-xs leading-relaxed text-slate-500">{t('score.later.stubNote')}</p>
+              </div>
+            ) : null}
+            {draft.aiStatus === 'idle' ? <p className="text-sm text-slate-600">{t('score.later.modelNote')}</p> : null}
+            {revealed ? (
+              <>
+                <div className="flex flex-wrap gap-1.5">
+                  {rows.map((row) => (
+                    <span
+                      key={row.id}
+                      data-testid={`score-later-ai-band-${row.id}`}
+                      aria-current={approx === row.id ? 'true' : undefined}
+                      className={bandClass(approx === row.id)}
+                    >
+                      {t(row.label)}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-sm font-bold text-[#0D9488]">
+                  {t('score.later.about', { value: formatFormative(formativeForBand(draft.approxBand)) })}
+                </p>
+                <p className="text-sm text-slate-600">
+                  {draft.committedBand == null
+                    ? t('score.later.aiPendingWrite')
+                    : pending
+                      ? t('score.later.pending')
+                      : t('score.later.written')}
+                </p>
+              </>
+            ) : null}
           </>
         ) : (
           <p className="text-sm text-slate-600">{t('score.later.needFile')}</p>
@@ -174,12 +241,14 @@ export function SchoolScoreLaterStaff() {
         </div>
         {draft ? (
           <>
-            <p className="text-sm text-slate-700">
-              {t('score.later.aiSuggest', {
-                band: t(rows.find((row) => row.id === draft.approxBand)?.label ?? 'score.v1.band.emerging'),
-                value: formatFormative(formativeForBand(draft.approxBand)),
-              })}
-            </p>
+            {revealed ? (
+              <p className="text-sm text-slate-700">
+                {t('score.later.aiSuggest', {
+                  band: t(rows.find((row) => row.id === draft.approxBand)?.label ?? 'score.v1.band.emerging'),
+                  value: formatFormative(formativeForBand(draft.approxBand)),
+                })}
+              </p>
+            ) : null}
             <p className="text-sm font-semibold text-slate-900">{t('score.later.override')}</p>
             <div role="group" aria-label={t('score.later.override')} className="flex flex-wrap gap-1.5">
               {rows.map((row) => {
@@ -234,6 +303,7 @@ export function SchoolScoreLaterStaff() {
         aria-labelledby={flowId}
         data-testid="score-later-flow"
         data-scout-plate={SCHOOL_SCORE_LATER_PLATES.flow}
+        data-formative-flow={FORMATIVE_AI_COMMENT_PLATES.flow}
         className="space-y-3"
       >
         <div>

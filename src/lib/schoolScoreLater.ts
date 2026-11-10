@@ -2,6 +2,9 @@
  * School-score later upload: one-school draft page, approximate reference band,
  * then a teacher adjust that can feed the existing school-score and dual-radar stores.
  * The upload is a local draft. It is not a formal submission and not an official score.
+ * A staff click can replace the filename/size stub with a short formative comment and
+ * band. Until that click, and whenever the model is unavailable, the stub remains.
+ * Nothing here writes the school reference until the teacher confirms.
  * Student self-assessment is not read or written here.
  */
 import {
@@ -34,11 +37,20 @@ export const SCHOOL_SCORE_LATER_SHA256 = {
 
 const BAND_SET = new Set<string>(PRACTICE_BAND_IDS)
 
+export type LaterAiStatus = 'idle' | 'model' | 'fallback'
+
 export type LaterDraft = {
   fileName: string
   fileSize: number
   mime: string
+  /** Band shown as the reference suggestion. The stub until a model result replaces it. */
   approxBand: PracticeBandId
+  /** Filename/size band. Restored when the model is unavailable. */
+  stubBand: PracticeBandId
+  /** Idle until staff request a comment. Model and fallback both leave the school reference unwritten. */
+  aiStatus: LaterAiStatus
+  /** Short formative comment. Present only after a model result. */
+  aiComment: string | null
   /** Null follows the approximate band. */
   adjustBand: PracticeBandId | null
   /** Last band written into the school reference. Null until the teacher writes. */
@@ -81,13 +93,49 @@ export function emptyLaterStore(): LaterStore {
 export function draftFromFile(name: string, size: number, mime: string): LaterDraft {
   const fileName = name.trim().slice(0, 180) || 'page'
   const fileSize = Math.max(0, Math.round(size))
+  const approxBand = approximateBandId(fileName, fileSize)
   return {
     fileName,
     fileSize,
     mime: mime.slice(0, 80),
-    approxBand: approximateBandId(fileName, fileSize),
+    approxBand,
+    stubBand: approxBand,
+    aiStatus: 'idle',
+    aiComment: null,
     adjustBand: null,
     committedBand: null,
+  }
+}
+
+function commentText(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const text = value.replace(/\s+/g, ' ').trim().slice(0, 400)
+  return text.length >= 8 ? text : null
+}
+
+/** Staff confirmed nothing yet. The model result stays off the school reference. */
+export function applyModelComment(
+  draft: LaterDraft,
+  result: { comment: string; band: PracticeBandId },
+): LaterDraft {
+  const text = commentText(result.comment)
+  if (!text || !isPracticeBandId(result.band)) return applyAiFallback(draft)
+  return {
+    ...draft,
+    approxBand: result.band,
+    aiStatus: 'model',
+    aiComment: text,
+  }
+}
+
+/** Filename/size band and the existing stub note. Upload and teacher adjust stay available. */
+export function applyAiFallback(draft: LaterDraft): LaterDraft {
+  if (draft.aiStatus === 'fallback' && draft.aiComment == null && draft.approxBand === draft.stubBand) return draft
+  return {
+    ...draft,
+    approxBand: draft.stubBand,
+    aiStatus: 'fallback',
+    aiComment: null,
   }
 }
 
@@ -142,14 +190,22 @@ export function sanitizeLaterStore(raw: unknown): LaterStore {
   if (typeof draft.fileName !== 'string' || !draft.fileName.trim()) return empty
   if (typeof draft.fileSize !== 'number' || !Number.isFinite(draft.fileSize) || draft.fileSize < 0) return empty
   if (!isPracticeBandId(draft.approxBand)) return empty
-  const adjustBand = isPracticeBandId(draft.adjustBand) && draft.adjustBand !== draft.approxBand ? draft.adjustBand : null
+  const stubBand = isPracticeBandId(draft.stubBand) ? draft.stubBand : draft.approxBand
+  let aiStatus: LaterAiStatus = draft.aiStatus === 'model' || draft.aiStatus === 'fallback' ? draft.aiStatus : 'idle'
+  const aiComment = aiStatus === 'model' ? commentText(draft.aiComment) : null
+  if (aiStatus === 'model' && !aiComment) aiStatus = 'fallback'
+  const approxBand = aiStatus === 'fallback' ? stubBand : draft.approxBand
+  const adjustBand = isPracticeBandId(draft.adjustBand) && draft.adjustBand !== approxBand ? draft.adjustBand : null
   const committedBand = isPracticeBandId(draft.committedBand) ? draft.committedBand : null
   return {
     draft: {
       fileName: draft.fileName.trim().slice(0, 180),
       fileSize: Math.round(draft.fileSize),
       mime: typeof draft.mime === 'string' ? draft.mime.slice(0, 80) : '',
-      approxBand: draft.approxBand,
+      approxBand,
+      stubBand,
+      aiStatus,
+      aiComment,
       adjustBand,
       committedBand,
     },
