@@ -35,7 +35,6 @@ Eleven 16:9 unit tiles, wired 2026-11-04. **自制 · VA-Nexus**. Blank title pl
 | `map-covers/U8-CN-SYMBOLS.png` | U8-CN-SYMBOLS |
 | `map-covers/U9-ROLE-TAKING.png` | U9-ROLE-TAKING |
 | `map-covers/U10-YBA-CN.png` | U10-YBA-CN |
-| `map-covers/U11-EXHIBIT-REVIEW.png` | U11-EXHIBIT-REVIEW |
 
 ## F4 lesson-tile covers (`f4-covers/`)
 
