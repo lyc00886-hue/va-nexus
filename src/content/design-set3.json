@@ -1,0 +1,171 @@
+{
+  "version": 1,
+  "id": "design-set3",
+  "locale": "zh-Hant",
+  "label": "模擬練習卷",
+  "set": "Set 3",
+  "source": "CL school mock 2025–26 (模擬); not HKEAA",
+  "paperLabel": "設計卷模擬練習卷",
+  "examNote": "學校原創模擬卷，非 HKEAA 真題。設計卷可用引導自評。未滿 18／未確認年齡：只提供自我引導，無 AI 試改。",
+  "totalMarks": 100,
+  "timeLimitMinutes": 240,
+  "aiPolicy": {
+    "under18": "self_guide_only",
+    "adultOptionalAi": "v1.1_trial_marking_not_in_skeleton",
+    "note": "未滿 18 或未確認年齡：只用此清單自我引導，不提供 AI 試改／試評。"
+  },
+  "instructions": [
+    "設計卷共五題，目前只開放第 1 題；第 2 至第 5 題尚未開放。",
+    "第 1 題甲部為文字評賞（20 分），乙部為創作骨架（80 分），兩部分都在本卷內。",
+    "學校模擬練習，非 HKEAA 真題；未滿 18／未確認年齡只提供自我引導，無 AI 試改。"
+  ],
+  "primaryQuestionId": "design-set3-q1",
+  "questions": [
+    {
+      "id": "design-set3-q1",
+      "number": 1,
+      "status": "complete",
+      "title": "第1題：社區休憩空間（文字評賞）",
+      "theme": "社區休憩空間",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "label": "甲部 · 評賞",
+          "marks": 20,
+          "prompt": "細閱這段社區休憩空間的設計說明：用色、動線與座椅配置。寫出此設計如何回應不同使用者的需要，並提出一項可改善之處。"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "label": "乙部 · 創作",
+          "marks": 80,
+          "theme": "社區休憩空間",
+          "themePrompt": "為社區休憩空間做一件設計創作，交代用色、動線與座椅如何回應不同使用者，並在本卷寫作品自述。",
+          "mediaConstraints": [
+            "按題目要求交件（設計圖、平面配置或可攜帶的平面呈現）",
+            "乙部創作在本卷內完成",
+            "未提供新授權圖版；請依文字說明構思"
+          ],
+          "checklist": [
+            {
+              "id": "d3-c1",
+              "key": "brief",
+              "text": "已閱讀題目媒介要求。"
+            },
+            {
+              "id": "d3-c2",
+              "key": "proposal",
+              "text": "已草擬設計方案（用色、動線或座椅配置）。"
+            },
+            {
+              "id": "d3-c3",
+              "key": "statement",
+              "text": "已準備作品自述，說明創作意圖及與甲部評賞的關係。"
+            }
+          ],
+          "uploadKeys": [
+            "artwork_image",
+            "sketch_notes_image",
+            "artist_statement_text"
+          ],
+          "timeBoxMinutes": 195,
+          "hint": "骨架練習：核對清單、作品自述與上載位置都在本卷內。完整圖版稍後開放。"
+        }
+      ]
+    },
+    {
+      "id": "design-set3-q2",
+      "number": 2,
+      "status": "stub",
+      "title": "第2題",
+      "theme": "稍後開放",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "稍後開放"
+        }
+      ]
+    },
+    {
+      "id": "design-set3-q3",
+      "number": 3,
+      "status": "stub",
+      "title": "第3題",
+      "theme": "稍後開放",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "稍後開放"
+        }
+      ]
+    },
+    {
+      "id": "design-set3-q4",
+      "number": 4,
+      "status": "stub",
+      "title": "第4題",
+      "theme": "稍後開放",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "稍後開放"
+        }
+      ]
+    },
+    {
+      "id": "design-set3-q5",
+      "number": 5,
+      "status": "stub",
+      "title": "第5題",
+      "theme": "稍後開放",
+      "artworks": [],
+      "parts": [
+        {
+          "id": "part-a",
+          "key": "criticism",
+          "marks": 20,
+          "status": "stub"
+        },
+        {
+          "id": "part-b",
+          "key": "creation",
+          "marks": 80,
+          "status": "stub",
+          "theme": "稍後開放"
+        }
+      ]
+    }
+  ]
+}

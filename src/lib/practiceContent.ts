@@ -1,4 +1,5 @@
 import { contentJson } from '../i18n/content'
+import { DESIGN_PAPER_ID, PAINT_PAPER_ID } from './practiceDraft.ts'
 
 /** Bundled public-domain plates only. Any other image_url is refused. */
 const PRACTICE_PLATES: Record<string, { src: string; width: number; height: number }> = {
@@ -38,6 +39,8 @@ export type PracticeSelfCheck = {
   text: string
 }
 
+export type PracticeCheckItem = { id: string; key: string; text: string }
+
 export type PracticePart = {
   id: string
   key: string
@@ -49,10 +52,15 @@ export type PracticePart = {
   selfCheck?: PracticeSelfCheck[]
   markGuideSummary?: string[]
   hint?: string
-  linkedPaper2Id?: string
   status?: string
   note?: string
   theme?: string
+  themePrompt?: string
+  mediaConstraints?: string[]
+  checklist?: PracticeCheckItem[]
+  uploadKeys?: string[]
+  timeBoxMinutes?: number
+  referenceArtworks?: PracticeArtwork[]
 }
 
 export type PracticeQuestion = {
@@ -66,7 +74,8 @@ export type PracticeQuestion = {
   parts: PracticePart[]
 }
 
-export type Paper1File = {
+/** One practice paper. Part B creation fields live on each question's `part-b`. */
+export type PracticePaperFile = {
   version: number
   id: string
   locale: string
@@ -83,27 +92,7 @@ export type Paper1File = {
   questions: PracticeQuestion[]
 }
 
-export type Paper2Check = { id: string; key: string; text: string }
-
-export type Paper2File = {
-  version: number
-  id: string
-  locale: string
-  label: string
-  set: string
-  sourceQuestionId: string
-  source: string
-  title: string
-  themeTitle: string
-  themePrompt: string
-  mediaConstraints: string[]
-  timeBoxMinutes: number
-  marks: number
-  checklist: Paper2Check[]
-  uploadKeys: string[]
-  aiPolicy: { under18?: string; note: string }
-  referenceArtworks: PracticeArtwork[]
-}
+export { PRACTICE_SPLIT_SCOUT_DIR, PRACTICE_SPLIT_SHA256 } from './practiceScout.ts'
 
 export const DAIE_LAYERS = ['D', 'A', 'I', 'E'] as const
 export type DaieLayer = (typeof DAIE_LAYERS)[number]
@@ -118,10 +107,10 @@ export function plateFor(art: PracticeArtwork): PracticePlate | null {
   return PRACTICE_PLATES[art.image_url] ?? null
 }
 
-export function loadPaper1(): Paper1File {
-  return contentJson<Paper1File>('paper1-set3')
+export function loadPaintPaper(): PracticePaperFile {
+  return contentJson<PracticePaperFile>(PAINT_PAPER_ID)
 }
 
-export function loadPaper2(): Paper2File {
-  return contentJson<Paper2File>('paper2-set3')
+export function loadDesignPaper(): PracticePaperFile {
+  return contentJson<PracticePaperFile>(DESIGN_PAPER_ID)
 }
