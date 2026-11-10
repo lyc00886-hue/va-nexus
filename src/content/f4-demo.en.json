@@ -3,7 +3,7 @@
     {
       "id": "F4-U1-ORIENT",
       "title": "Form 4 VA Intro: Course and SBA Portfolio",
-      "intro": "Form 4 starter unit. Learn the two learning strands (appreciation and making), positive values, and the basic SBA portfolio structure (research workbook + artwork/critical studies). Aligned to Form 4 orientation / SBA criteria notes. No real HKEAA papers or high-score student exemplars. (Content pending teacher review)",
+      "intro": "Form 4 starter unit. Learn the two learning strands (appreciation and making), positive values, and the basic SBA portfolio structure (research workbook + artwork/critical studies). Aligned to Form 4 orientation / SBA criteria notes. No real HKEAA papers or high-score student exemplars.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U1-ORIENT.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -17,7 +17,7 @@
             "Appreciation: learn to look at artworks, understand signs and styles, and the historical, social and cultural contexts of art.",
             "Making: learn to use materials and techniques to express ideas, turning experience and feeling into visual form.",
             "Throughout both strands, build an open and respectful attitude toward different cultures and viewpoints.",
-            "[No cleared image yet] Later: a simple two-strand diagram (self-made / CC0)."
+            "Write the two strands side by side: on the left, the form and situation you see; on the right, a material and a step you will try. This card explains the method in words."
           ],
           "quiz": [
             {
@@ -96,7 +96,7 @@
             },
             {
               "type": "short",
-              "question": "Short answer (structure): in two sentences, how you practise appreciation and making together.",
+              "question": "In two sentences, say how you practise appreciation and making together. Hint: sentence one is what you notice; sentence two is one making action you will try.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -189,7 +189,171 @@
             },
             {
               "type": "short",
-              "question": "Short answer (structure): one theme line + two evidence points — how the workbook serves your artwork／critical study.",
+              "question": "Use one theme sentence plus two pieces of evidence to show how the workbook serves your artwork or critical study. Hint: the theme says what you are exploring; the evidence can be a draft and one material test.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
+        },
+        {
+          "id": "F4-U1-L3",
+          "title": "Art dictionary: keywords and appreciation writing",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U1-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "An art dictionary is a sorting tool. For each keyword write a definition, one example you can see, and how you would use the word in appreciation writing.",
+            "Appreciation writing can start from a keyword. Describe the form first, then use the keyword to explain how you understand the work.",
+            "One keyword can have two examples. Compare which example makes the meaning clearer, and say why.",
+            "This lesson practises structure only. Use a keyword card you write. Do not use a real paper or a high-score exemplar."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What should one dictionary card include at minimum?",
+              "options": [
+                "Only an artist’s birthday",
+                "A definition, one visible example, and how you will use the word",
+                "A full real paper",
+                "A picture that is not actually there"
+              ],
+              "answer": "A definition, one visible example, and how you will use the word",
+              "explain": "A keyword should return to a sentence you can write."
+            },
+            {
+              "type": "fill",
+              "question": "Appreciation writing can describe form first, then explain meaning with a ＿＿.",
+              "options": [],
+              "answer": "keyword",
+              "wordBank": [
+                "keyword",
+                "seat",
+                "advert",
+                "code"
+              ],
+              "explain": "The keyword helps you say what you see."
+            },
+            {
+              "type": "match",
+              "question": "Match the dictionary fields",
+              "options": [
+                "Definition",
+                "Example",
+                "Use"
+              ],
+              "answer": {
+                "Definition": "What the word means",
+                "Example": "One place you see it in a work",
+                "Use": "How you will write it into a critique"
+              },
+              "explain": "The three fields make a usable card."
+            },
+            {
+              "type": "order",
+              "question": "Order one keyword card: choose the word → write a definition → find one example → write one critique sentence.",
+              "options": [
+                "Choose the word",
+                "Write a definition",
+                "Find one example",
+                "Write one critique sentence"
+              ],
+              "explain": "Choose the word → write a definition → find one example → write one critique sentence"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: keyword and definition on the left, the form you see on the right. One line each — what the word means, and which evidence you see.",
+              "options": [
+                "Keyword",
+                "Form"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U1-L3.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write a mini word card. Hint: the keyword, one definition, and one example you can see.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
+        },
+        {
+          "id": "F4-U1-L4",
+          "title": "Art timeline: art movements and ways of presentation",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U1-L4.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "An art timeline puts movements in an order you can compare. For each movement note the period, one formal feature, and one way it is presented.",
+            "A way of presentation might be a wall painting, a sculpture, a design drawing, a page, or a projection. The point is how the form meets a viewer.",
+            "When you compare two movements, write one similarity and one difference. Do not stop at dates.",
+            "A timeline is an intro organiser. It does not fill every week. Use your own card, not a real paper."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What belongs in one useful timeline cell?",
+              "options": [
+                "Only a year",
+                "A period, one formal feature, and one way of presentation",
+                "Only a score",
+                "Only a colour name"
+              ],
+              "answer": "A period, one formal feature, and one way of presentation",
+              "explain": "A movement stays tied to form you can see."
+            },
+            {
+              "type": "fill",
+              "question": "When you compare two movements, write at least one similarity and one ＿＿.",
+              "options": [],
+              "answer": "difference",
+              "wordBank": [
+                "difference",
+                "seat",
+                "advert",
+                "code"
+              ],
+              "explain": "Similarity and difference give the comparison evidence."
+            },
+            {
+              "type": "match",
+              "question": "Match a way of presentation with what you can note",
+              "options": [
+                "Wall painting",
+                "Page",
+                "Design drawing"
+              ],
+              "answer": {
+                "Wall painting": "How the image sits on a building",
+                "Page": "How image and words are read together",
+                "Design drawing": "How a plan becomes clear to someone"
+              },
+              "explain": "Presentation changes how a viewer meets the work."
+            },
+            {
+              "type": "order",
+              "question": "Order one timeline cell: name the movement → note one formal feature → note the presentation → compare it with the next cell.",
+              "options": [
+                "Name the movement",
+                "Note one formal feature",
+                "Note the presentation",
+                "Compare it with the next cell"
+              ],
+              "explain": "Name the movement → note one formal feature → note the presentation → compare it with the next cell"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: one movement on the left, another on the right. One line each — the formal feature, and how the presentation differs.",
+              "options": [
+                "Left",
+                "Right"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U1-L4.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write one timeline cell. Hint: the movement, one formal feature, and one way of presentation.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -200,7 +364,7 @@
     {
       "id": "F4-U2-DRAW-DESIGN",
       "title": "Drawing, Aesthetics and Design Thinking",
-      "intro": "Aligned to F.4 Scheme “Creative Practice 2”: drawing skills, aesthetic/design thinking, material exploration and presentation skills. Builds observation, composition and material foundations for later theme work. (Content pending teacher review)",
+      "intro": "Aligned to F.4 Scheme “Creative Practice 2”: drawing skills, aesthetic/design thinking, material exploration and presentation skills. Builds observation, composition and material foundations for later theme work.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-DRAW-DESIGN.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -214,7 +378,7 @@
             "Basic visual elements: line, shape, colour, texture, space. Organising principles: contrast, rhythm, balance, emphasis.",
             "Try compositions such as rule of thirds, diagonal guides and empty space. Different compositions change where viewers look first.",
             "Wucius Wong brought design principles into ink landscape, showing how structure can organise a picture.",
-            "[No cleared image yet] Later: self-made line/shape drills, or an official museum page about Wucius Wong (text + link)."
+            "Draw your own line-and-shape drill: big shape, proportion, one leading line. Design structure can organise a picture. Use words and your own line study in class."
           ],
           "quiz": [
             {
@@ -293,7 +457,7 @@
             },
             {
               "type": "short",
-              "question": "Short answer (structure): one line on element + one on principle for your next observational drawing.",
+              "question": "Describe your next observational drawing with one sentence on an element and one on a principle. Hint: the element can be line, shape, or composition; the principle can be contrast, focus, or empty space.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -312,7 +476,7 @@
             "Material exploration: try the same theme in pencil, charcoal, ink, collage, etc., and note which medium best serves your intention.",
             "Presentation skills: state your theme, why you chose the medium, and how composition and symbols carry meaning.",
             "Practice: pick one everyday object; make it twice in two media; write three sentences comparing which fits your theme better.",
-            "[No cleared image yet] Later: a self-made material-experiment comparison chart."
+            "Make your own material chart: name, texture, limit, and the feeling it can carry. Record it with your sample and a short note."
           ],
           "quiz": [
             {
@@ -393,7 +557,7 @@
             },
             {
               "type": "short",
-              "question": "Short answer (structure): one line each — problem → prototype → learned.",
+              "question": "Sum up one design cycle in three sentences. Hint: the problem you noticed, what you tried, and which material came closer to your intention.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -468,16 +632,141 @@
                 "password",
                 "bus"
               ]
+            },
+            {
+              "type": "match",
+              "question": "Match the three things a design drawing should make clear",
+              "options": [
+                "Audience",
+                "Function",
+                "Material"
+              ],
+              "answer": {
+                "Audience": "Who uses it",
+                "Function": "What it should do",
+                "Material": "Which texture helps"
+              },
+              "explain": "Name the audience, the job, and the material before the picture can be clear."
+            },
+            {
+              "type": "order",
+              "question": "Order one design drawing: ask who it is for → sketch several options → try two materials → write three critique lines.",
+              "options": [
+                "Ask who it is for",
+                "Sketch several options",
+                "Try two materials",
+                "Write three critique lines"
+              ],
+              "explain": "Ask who it is for → sketch several options → try two materials → write three critique lines"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a plan sketch on the left, a material sample on the right. One line each — what should the plan say, and how does the material help?",
+              "options": [
+                "Plan",
+                "Material"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U2-L3.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write one design decision in three lines. Hint: who it is for, what it should do, and which visual element helps.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ],
           "artistIds": []
+        },
+        {
+          "id": "F4-U2-L4",
+          "title": "Creative Practice 4: design drawing, thinking and materials",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U2-L4.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Creative Practice 4 puts design drawing, design thinking, and materials in one exercise: define the problem, draw options, then test a material.",
+            "A drawing should mark the viewpoint, a sense of size, and which element carries the message. It does not have to be a final piece yet.",
+            "When you choose a material, write a limit: it folds, it is clear, it is thick, or it is light. The limit changes the presentation.",
+            "Close with three lines: the problem, the option you chose, and how the material helps the message."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A complete Creative Practice 4 round includes:",
+              "options": [
+                "Only a final picture",
+                "A problem, design drawings, a material test, and three lines",
+                "Only a memorised definition",
+                "Only a copied classmate piece"
+              ],
+              "answer": "A problem, design drawings, a material test, and three lines",
+              "explain": "Drawing, thinking, and materials belong together."
+            },
+            {
+              "type": "fill",
+              "question": "A design drawing should mark viewpoint, a sense of size, and which element carries the ＿＿.",
+              "options": [],
+              "answer": "message",
+              "wordBank": [
+                "message",
+                "seat",
+                "advert",
+                "code"
+              ],
+              "explain": "The element should serve the message."
+            },
+            {
+              "type": "match",
+              "question": "Match a material limit with a presentation",
+              "options": [
+                "Clear",
+                "Thick",
+                "Light"
+              ],
+              "answer": {
+                "Clear": "Layers can show through",
+                "Thick": "It can make near and far",
+                "Light": "It can hang or fold small"
+              },
+              "explain": "A limit is a reason for the material."
+            },
+            {
+              "type": "order",
+              "question": "Order practice 4: define the problem → draw two options → test one material → write three lines.",
+              "options": [
+                "Define the problem",
+                "Draw two options",
+                "Test one material",
+                "Write three lines"
+              ],
+              "explain": "Define the problem → draw two options → test one material → write three lines"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a design drawing with a viewpoint on the left, a material test on the right. One line each — what the drawing makes clear, and what feeling the material changes.",
+              "options": [
+                "Drawing",
+                "Material"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U2-L4.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write the three lines for practice 4. Hint: the problem, the option you chose, and how the material helps the message.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
         }
       ]
     },
     {
       "id": "F4-U3-COMMUNITY",
       "title": "Community Looking, Visual Diary and Theme Seeds",
-      "intro": "Aligns with F.4 community observation, the weekly visual diary, and community-related design／making. Students use photos, objects, or teacher-provided materials in class to grow theme seeds, linking to how Hong Kong artists attend to everyday space. No outing or exhibition visit is required. (Pending teacher review)",
+      "intro": "Community observation, the weekly visual diary, and community-related design and making. Students use photos, objects, or teacher-provided materials in class to grow theme seeds, linking to how Hong Kong artists attend to everyday space. Classroom practice includes photos, interviews, collecting, and sketches.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-COMMUNITY.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -491,7 +780,7 @@
             "You can include quick compositions, colour notes, tiny material trials, and one “today I noticed…” line.",
             "The point is not perfect pages but steady observation and reflection—later theme work will use these materials.",
             "Tip: keep one small book or digital folder; date + place + one reflection sentence.",
-            "[No cleared image yet] Later: a blank visual-diary layout template (self-made)."
+            "Visual diary — note gently. Four fields: date, place, one observation, a sketch you draw. Lay the page out in your own book. This card names the fields in words."
           ],
           "quiz": [
             {
@@ -572,7 +861,7 @@
             },
             {
               "type": "short",
-              "question": "Short answer (structure): date + place + one observation — a mini diary line (no rush).",
+              "question": "Write a mini diary entry as date + place + one observation. Hint: visual diary — note gently, no rush.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -584,11 +873,11 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L2.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Classroom observation: use teacher-provided or already available photos, clips, objects, or sketches in class to record the environment and your learning. No outing or exhibition visit is required.",
+            "Classroom observation: use teacher-provided or already available photos, clips, objects, or sketches in class to record the environment and your learning.",
             "Making can relate to community: public space, neighbourhood routines, local signs—then reconnect to your theme.",
             "Pak Sheung Chuen often uses everyday actions and ready-mades to make housing/space experiences visible.",
             "Lee Kit often uses household cloth and everyday objects to speak about private feeling and space—community and personal life can be read together.",
-            "Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a theme question. Contemporary works: [no cleared image] — text only."
+            "Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a theme question. Describe contemporary works in words and cite a reliable source."
           ],
           "quiz": [
             {
@@ -596,12 +885,12 @@
               "question": "What can classroom observation materials include?",
               "options": [
                 "Photos, clips, objects, or sketches provided by the teacher or already available",
-                "You must go on an outing or a guided tour",
+                "You may only memorise one slogan",
                 "Only exam essays",
                 "Only one sentence copied from the textbook"
               ],
               "answer": "Photos, clips, objects, or sketches provided by the teacher or already available",
-              "explain": "Use teacher-provided or already available materials in class to record the environment and your learning. No outing or exhibition visit is required."
+              "explain": "Use teacher-provided or already available materials in class to record the environment and your learning."
             },
             {
               "type": "fill",
@@ -665,7 +954,7 @@
             },
             {
               "type": "short",
-              "question": "Short answer (structure): “I notice…”／“I wonder…” — draft one theme question from community material.",
+              "question": "Draft a theme question from classroom community material in two lines: “I notice…” and “I wonder…”. Hint: the first line is only what you see; the second becomes a question you can keep researching.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -744,6 +1033,49 @@
                 "password",
                 "shopping"
               ]
+            },
+            {
+              "type": "match",
+              "question": "Match community-research moves",
+              "options": [
+                "Looking",
+                "Interview",
+                "Insight"
+              ],
+              "answer": {
+                "Looking": "Use classroom materials to note people, places, habits, objects",
+                "Interview": "Short questions, ask first, keep only useful lines",
+                "Insight": "A community detail you had not noticed"
+              },
+              "explain": "All three are classroom research for a theme."
+            },
+            {
+              "type": "order",
+              "question": "Order one classroom study: sort materials you already have → ask before you record a person → hold a short interview → write one insight.",
+              "options": [
+                "Sort materials you already have",
+                "Ask before you record a person",
+                "Hold a short interview",
+                "Write one insight"
+              ],
+              "explain": "Sort materials you already have → ask before you record a person → hold a short interview → write one insight"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a sketch on the left, interview notes on the right. One line each — what you see, and one useful sentence you heard.",
+              "options": [
+                "Sketch",
+                "Interview"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L3.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write one insight. Hint: first the detail you saw in the classroom materials, then how it connects to a community.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ],
           "artistIds": []
@@ -818,6 +1150,62 @@
               ],
               "answer": "Theme, method, viewer feeling",
               "explain": "Clear intent for the viewer."
+            },
+            {
+              "type": "fill",
+              "question": "A development trace should record the ＿＿ for each change.",
+              "options": [],
+              "answer": "reason",
+              "wordBank": [
+                "reason",
+                "weather",
+                "seat",
+                "advert"
+              ],
+              "explain": "The workbook should show why you changed something."
+            },
+            {
+              "type": "match",
+              "question": "Match making traces",
+              "options": [
+                "Sketch",
+                "Material test",
+                "Three lines"
+              ],
+              "answer": {
+                "Sketch": "Show how an idea changed",
+                "Material test": "Compare which medium is clearer",
+                "Three lines": "Theme, method, and what you want a viewer to feel"
+              },
+              "explain": "Traces turn research into visible making."
+            },
+            {
+              "type": "order",
+              "question": "Order research into a work: choose one idea → try one medium → record why you changed it → say the work in three lines.",
+              "options": [
+                "Choose one idea",
+                "Try one medium",
+                "Record why you changed it",
+                "Say the work in three lines"
+              ],
+              "explain": "Choose one idea → try one medium → record why you changed it → say the work in three lines"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: research notes on the left, one work on the right. One line each — what decision the notes keep, and what the work shows.",
+              "options": [
+                "Notes",
+                "Work"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L4.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Say one classroom work in three lines. Hint: theme, method, and what you want a viewer to feel.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ],
           "artistIds": []
@@ -827,7 +1215,7 @@
     {
       "id": "F4-U4-SELF-RESEARCH",
       "title": "Self-Portrait, Artist Research and Theme Development",
-      "intro": "Aligned to F.4 “Theme and Artist research and Presentation I (Self-Portrait)” and discovery prompts Self / Relationship / Story. Use self-portrait to explore identity and practise proper artist research (cite sources, compare views) to start SBA theme development. No high-score student exemplars. (Content pending teacher review)",
+      "intro": "Aligned to F.4 “Theme and Artist research and Presentation I (Self-Portrait)” and discovery prompts Self / Relationship / Story. Use self-portrait to explore identity and practise proper artist research (cite sources, compare views) to start SBA theme development. No high-score student exemplars.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-SELF-RESEARCH.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -841,7 +1229,7 @@
             "School prompts can open three doors: Self (a collection of curiosities), Relationship (family objects), Story (conflict or tension).",
             "Frida Kahlo used self-portrait to speak personal experience and cultural identity—the learning goal is how symbols tell a self, not copying a style for marks.",
             "Wilson Shieh paints contemporary figures in gongbi to explore Hong Kong identity; David Hockney often paints family and looking—useful for a “relationship” theme.",
-            "Copyrighted/contemporary works: [no cleared image] — classroom text + museum/reliable encyclopedia sources; public-domain historic self-portraits can be added later."
+            "Describe contemporary works in words, and note a museum webpage or a reliable encyclopedia as a classroom reference. Add a public-domain historic self-portrait only when the image is rights-cleared. This card does not pretend a missing picture is here."
           ],
           "quiz": [
             {
@@ -895,6 +1283,34 @@
               ],
               "answer": "Understand how they use symbols, then develop your own view",
               "explain": "Research is for dialogue and inspiration, not cloning."
+            },
+            {
+              "type": "order",
+              "question": "Order a self-portrait start: choose a door → draw a draft → mark one symbol → write one identity line.",
+              "options": [
+                "Choose a door",
+                "Draw a draft",
+                "Mark one symbol",
+                "Write one identity line"
+              ],
+              "explain": "Choose a door → draw a draft → mark one symbol → write one identity line"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a self-portrait draft on the left, an object tied to identity on the right. One line each — what the pose says, and what relationship the object holds.",
+              "options": [
+                "Draft",
+                "Object"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L1.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Pick Self, Relationship, or Story and write two lines. Hint: the object or experience you chose, then how it speaks about identity.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ],
           "artistIds": [
@@ -975,6 +1391,116 @@
                 "Link to theme": "State what it sparks for your making"
               },
               "explain": "These steps stop research from becoming a dump of facts."
+            },
+            {
+              "type": "order",
+              "question": "Order one artist study: choose a relevant artist → note a reliable source → describe form and context → link your theme.",
+              "options": [
+                "Choose a relevant artist",
+                "Note a reliable source",
+                "Describe form and context",
+                "Link your theme"
+              ],
+              "explain": "Choose a relevant artist → note a reliable source → describe form and context → link your theme"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: artist notes on the left, your theme question on the right. One line each — their method, and what you will borrow it for.",
+              "options": [
+                "Method",
+                "Your theme"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L2.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write the skeleton of presentation one. Hint: one theme question, one artist method, and the medium you will try next.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
+        },
+        {
+          "id": "F4-U4-L3",
+          "title": "Theme development and Presentation II",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Presentation II is about development. Compared with the first presentation, what question changed, what evidence you added, and what you let go.",
+            "The research workbook should show the path: an older draft, a newer test, and one sentence on why you changed it.",
+            "A usable shape: the question now → new evidence → how you adapted an artist’s method → the next work.",
+            "Speak only about your own development. Do not use a real paper or a high-score exemplar."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What is the main difference in Presentation II?",
+              "options": [
+                "Repeating the same sentences",
+                "Showing how the theme developed, what changed, and the new evidence",
+                "Only reading out a class number",
+                "Pasting a real paper"
+              ],
+              "answer": "Showing how the theme developed, what changed, and the new evidence",
+              "explain": "The second presentation has to show a path."
+            },
+            {
+              "type": "fill",
+              "question": "The workbook should show an older draft, a newer test, and one sentence on why you ＿＿.",
+              "options": [],
+              "answer": "changed",
+              "wordBank": [
+                "changed",
+                "holiday",
+                "advert",
+                "code"
+              ],
+              "explain": "A change needs a reason."
+            },
+            {
+              "type": "match",
+              "question": "Match the parts of Presentation II",
+              "options": [
+                "Question now",
+                "New evidence",
+                "Next step"
+              ],
+              "answer": {
+                "Question now": "What you are chasing",
+                "New evidence": "Material you collected recently",
+                "Next step": "What the next work will try"
+              },
+              "explain": "The three parts show development, not a repeat."
+            },
+            {
+              "type": "order",
+              "question": "Order Presentation II: look back at the old question → show the change → add new evidence → name the next work.",
+              "options": [
+                "Look back at the old question",
+                "Show the change",
+                "Add new evidence",
+                "Name the next work"
+              ],
+              "explain": "Look back at the old question → show the change → add new evidence → name the next work"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: an earlier draft on the left, a current test on the right. One line each — what the old draft chased, and what the new test changed.",
+              "options": [
+                "Earlier draft",
+                "Current test"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L3.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write four slots for Presentation II. Hint: the old question, one change, one new piece of evidence, and the next work.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         }
@@ -983,7 +1509,7 @@
     {
       "id": "F4-U5-ART-HIST",
       "title": "Art History Intro: Ancient West and Chinese Art",
-      "intro": "Aligned to F.4 Orientation / early weeks: ancient cave art, Egypt, Greek and Roman art, plus a Chinese art introduction. Build a compact timeline and keyword sense for form, function and cultural context; briefly introduce calligraphy/painting as visual language (pictographs / oracle bone / silk painting)—not a full-year ink course. No real exam papers. (Content pending teacher review)",
+      "intro": "Aligned to F.4 Orientation / early weeks: ancient cave art, Egypt, Greek and Roman art, plus a Chinese art introduction. Build a compact timeline and keyword sense for form, function and cultural context; briefly introduce calligraphy/painting as visual language (pictographs / oracle bone / silk painting)—not a full-year ink course. No real exam papers.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U5-ART-HIST.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -997,7 +1523,7 @@
             "Prehistoric cave images often show animals and handprints; notice space, repetition and ritual feel—not photo-likeness.",
             "Egyptian art often stresses order, proportional rules and afterlife / sacred hierarchy; profile figures and scale hierarchy are common visual codes.",
             "Greek art often seeks balanced, idealised human proportion; Roman art often emphasises realistic portraiture, public architecture and imperial narrative.",
-            "Task: for each of the four periods, write one keyword + one sentence on function; later turn this into a group Art Dictionary / personal Timeline. [No cleared image yet] Museum open images may be added later with sources."
+            "Task: for each of the four periods, write one keyword plus one sentence on function. Later you can turn that into a group art dictionary or a personal timeline. Organise form, function, and context in words. A museum webpage is only a classroom reference."
           ],
           "quiz": [
             {
@@ -1051,6 +1577,34 @@
               ],
               "answer": "Organise keywords, period traits and simple presentation",
               "explain": "Dictionary and timeline are starter organising tools."
+            },
+            {
+              "type": "order",
+              "question": "Order this intro: cave → Egypt → Greek → Roman.",
+              "options": [
+                "Cave",
+                "Egypt",
+                "Greek",
+                "Roman"
+              ],
+              "explain": "Cave → Egypt → Greek → Roman"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: compare two periods in words. One line each — a formal feature, and a possible use.",
+              "options": [
+                "Form",
+                "Use"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L1.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "For one period, write a keyword plus one function sentence. Hint: the keyword names a form; the sentence says what the work may have been for.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         },
@@ -1064,7 +1618,7 @@
             "Early images such as Warring States silk paintings often link ritual, afterlife and identity—look at line, symbol and spatial layout.",
             "Calligraphy and painting often share language: brush energy, empty space and rhythm structure a surface, not only ‘correct characters’.",
             "Intro goal: recognise a few visual codes (line, symbol, void) and describe one work’s form plus a possible context in short sentences.",
-            "Task: choose one pictograph or vessel motif, copy/draw it once, and write two lines: lines you see + possible meaning. [No cleared image yet] Add museum open images later with credit."
+            "Task: choose one pictograph or vessel motif, draw it once, and write two lines — lines you see, and a possible meaning. Use your own drawing."
           ],
           "quiz": [
             {
@@ -1118,6 +1672,198 @@
                 "Brush energy": "Line and rhythm organise the surface"
               },
               "explain": "Three doors into reading visual language."
+            },
+            {
+              "type": "order",
+              "question": "Order one visual-language drill: name the sign → trace the line → write the form → write a possible meaning.",
+              "options": [
+                "Name the sign",
+                "Trace the line",
+                "Write the form",
+                "Write a possible meaning"
+              ],
+              "explain": "Name the sign → trace the line → write the form → write a possible meaning"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a pictograph on the left, a vessel motif on the right. One line each — how the line moves, and what it might record.",
+              "options": [
+                "Pictograph",
+                "Motif"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L2.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write two lines. Hint: first only the line or empty space you see; second a possible meaning.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
+        },
+        {
+          "id": "F4-U5-L3",
+          "title": "Chinese calligraphy and painting history intro: Qin–Han to Wei–Jin",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U5-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "This is a compact intro only. For Qin and Han, start with narrative scenes in wall painting, and the visual shift of clerical-script strokes from round to square.",
+            "For Wei and Jin, three names are enough to start looking: early Dunhuang story scenes, Gu Kaizhi’s outlined figures, and the rhythm of Wang Xizhi’s writing.",
+            "The practice is to describe form: line, density, and how a figure sits in space. It does not become a year-long calligraphy course.",
+            "Use your own line study or a written description. A museum webpage is only a classroom reference."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What is this lesson trying to do with Qin–Han to Wei–Jin?",
+              "options": [
+                "Turn into a year-long calligraphy course",
+                "Use a few examples to practise describing line, space, and narrative",
+                "Copy a full set of stone rubbings as the assignment",
+                "Memorise every reign title"
+              ],
+              "answer": "Use a few examples to practise describing line, space, and narrative",
+              "explain": "It stays a compact intro."
+            },
+            {
+              "type": "fill",
+              "question": "A clerical-script intro can notice strokes turning from round to ＿＿.",
+              "options": [],
+              "answer": "square",
+              "wordBank": [
+                "square",
+                "code",
+                "advert",
+                "seat"
+              ],
+              "explain": "Round and square are visible form, not a full-year technique course."
+            },
+            {
+              "type": "match",
+              "question": "Match an intro observation",
+              "options": [
+                "Qin–Han wall painting",
+                "Gu Kaizhi",
+                "Wang Xizhi"
+              ],
+              "answer": {
+                "Qin–Han wall painting": "Narrative scene and where figures sit",
+                "Gu Kaizhi": "How outline describes a person",
+                "Wang Xizhi": "Rhythm and density of the stroke"
+              },
+              "explain": "Three starting points, not a complete history of writing."
+            },
+            {
+              "type": "order",
+              "question": "Order one intro note: choose one example → describe line or space → write a possible narrative → stop at the compact range.",
+              "options": [
+                "Choose one example",
+                "Describe line or space",
+                "Write a possible narrative",
+                "Stop at the compact range"
+              ],
+              "explain": "Choose one example → describe line or space → write a possible narrative → stop at the compact range"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a wall-painting scene on the left, the rhythm of a piece of writing on the right. One line each — how the figures or the line are arranged.",
+              "options": [
+                "Wall painting",
+                "Writing"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L3.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write one compact note. Hint: the example, one formal feature, and why you will not stretch it into a year-long course.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
+        },
+        {
+          "id": "F4-U5-L4",
+          "title": "Chinese calligraphy and painting history and technique intro: Tang to Five Dynasties",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U5-L4.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "A Tang intro can look at figure, landscape, or writing for openness and order: how the composition leaves near and far.",
+            "A Five Dynasties intro can start with texture strokes and ink layers: how foreground, middle, and distance separate.",
+            "Keep only a few technique words: line, ink, empty space, near and far. Use them to describe. Do not turn them into a year of drills.",
+            "Use words and a small study of your own. Do not copy a famous painting as the assignment."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the Tang to Five Dynasties lesson practise?",
+              "options": [
+                "Copying every famous painting for a year",
+                "Describing composition and ink with a few technique words",
+                "Memorising every reign title",
+                "Handing in a replica that matches a famous painting"
+              ],
+              "answer": "Describing composition and ink with a few technique words",
+              "explain": "The words serve an intro description."
+            },
+            {
+              "type": "fill",
+              "question": "A Five Dynasties landscape intro can notice how foreground, middle ground, and ＿＿ separate.",
+              "options": [],
+              "answer": "distance",
+              "wordBank": [
+                "distance",
+                "seat",
+                "advert",
+                "code"
+              ],
+              "explain": "Near and far are composition, not a year of texture-stroke drills."
+            },
+            {
+              "type": "match",
+              "question": "Match intro words",
+              "options": [
+                "Line",
+                "Ink",
+                "Empty space"
+              ],
+              "answer": {
+                "Line": "Contour and rhythm",
+                "Ink": "Dark and light layers",
+                "Empty space": "Air in the picture"
+              },
+              "explain": "Three words are enough for a compact description."
+            },
+            {
+              "type": "order",
+              "question": "Order one technique description: read near and far → find one main line → note dark and light ink → sum it up in one sentence.",
+              "options": [
+                "Read near and far",
+                "Find one main line",
+                "Note dark and light ink",
+                "Sum it up in one sentence"
+              ],
+              "explain": "Read near and far → find one main line → note dark and light ink → sum it up in one sentence"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a Tang composition feature on the left, a Five Dynasties ink feature on the right. One line each about the form you see.",
+              "options": [
+                "Tang",
+                "Five Dynasties"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L4.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Describe one work with three words. Hint: choose from line, ink, empty space, and near and far, and give each word one piece of evidence you see.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         }
@@ -1126,7 +1872,7 @@
     {
       "id": "F4-U6-THEME-SEEDS",
       "title": "Theme Seeds: Self, Relationship, Story",
-      "intro": "Aligned to F.4 Discovery / Creative Assignments prompts: Self (curiosity collection), Relationship (family object), Story (conflict or tension). Before self-portrait research (U4), practise turning everyday objects and experiences into developable theme questions; link to the visual diary (U3). No high-score exemplars; no real exam papers. (Content pending teacher review)",
+      "intro": "Aligned to F.4 Discovery / Creative Assignments prompts: Self (curiosity collection), Relationship (family object), Story (conflict or tension). Before self-portrait research (U4), practise turning everyday objects and experiences into developable theme questions; link to the visual diary (U3). No high-score exemplars; no real exam papers.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-THEME-SEEDS.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -1140,7 +1886,7 @@
             "Self: gather a small ‘curiosity collection’ (tickets, stones, packaging, old things). Ask: why keep this? which side of me does it show?",
             "Relationship: choose one family object; note who uses it, when, and any rules or memories—objects can narrate relationships.",
             "Story: use a ‘little person’ viewpoint to spot conflict or tension in an environment (crowding, waiting, rules, misunderstanding); sketch scene and feeling.",
-            "[No cleared image yet] Later: a three-door worksheet template (self-made)."
+            "Draw your own three-door sheet: collection, family object, conflict. Each column gets an object, one question, and a next step. This card lists the columns in words."
           ],
           "quiz": [
             {
@@ -1194,6 +1940,34 @@
               ],
               "answer": "Small, real, and worth sustained exploring",
               "explain": "Sustainable inquiry fits portfolio development."
+            },
+            {
+              "type": "order",
+              "question": "Order a seed: choose a door → name the object → write one question → decide a next step.",
+              "options": [
+                "Choose a door",
+                "Name the object",
+                "Write one question",
+                "Decide a next step"
+              ],
+              "explain": "Choose a door → name the object → write one question → decide a next step"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a curiosity collection on the left, a family object on the right. One line each — does it speak about self or about a relationship?",
+              "options": [
+                "Collection",
+                "Family object"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L1.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write one theme seed. Hint: the door, one real object, and a question you are willing to keep asking.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         },
@@ -1261,6 +2035,289 @@
                 "Material trial": "Test which medium fits"
               },
               "explain": "Three tracks advance the theme together."
+            },
+            {
+              "type": "order",
+              "question": "Order the next move: write the seed → turn it into a theme question → list materials you have → choose the next medium.",
+              "options": [
+                "Write the seed",
+                "Turn it into a theme question",
+                "List materials you have",
+                "Choose the next medium"
+              ],
+              "explain": "Write the seed → turn it into a theme question → list materials you have → choose the next medium"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: the theme question on the left, materials you already have on the right. One line each — what the question chases, and what the materials show.",
+              "options": [
+                "Question",
+                "Materials"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L2.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Turn a seed into one theme question. Hint: it should lead to looking, research, or a material test, not a yes-or-no ending.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
+        },
+        {
+          "id": "F4-U6-L3",
+          "title": "Derive, wish and bricolage",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Derive: stretch a seed into a surreal or abstract picture that still answers your theme question.",
+            "Wish and imagination: write an “if” sentence, then decide which visual element carries that wish.",
+            "Bricolage self-portrait: join found scraps, paper, and an image you made, and note why each material is there.",
+            "Choose one of the three paths to go deeper. A high-score exemplar is not the only next step."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How do derive, wish, and bricolage connect to a theme seed?",
+              "options": [
+                "Drop the original question",
+                "Still answer the original theme question, with a different presentation",
+                "Copy one surrealist painting",
+                "Become decoration with no theme"
+              ],
+              "answer": "Still answer the original theme question, with a different presentation",
+              "explain": "The new presentation returns to the seed."
+            },
+            {
+              "type": "fill",
+              "question": "A wish sentence can start with “if”, then name the visual ＿＿ that carries it.",
+              "options": [],
+              "answer": "element",
+              "wordBank": [
+                "element",
+                "seat",
+                "advert",
+                "code"
+              ],
+              "explain": "Imagination has to land on something you can see."
+            },
+            {
+              "type": "match",
+              "question": "Match the three paths",
+              "options": [
+                "Derive",
+                "Wish",
+                "Bricolage"
+              ],
+              "answer": {
+                "Derive": "Stretch the seed into a surreal or abstract picture",
+                "Wish": "Use an if-sentence to lead the imagination",
+                "Bricolage": "Join scraps and write why"
+              },
+              "explain": "All three serve the same theme question."
+            },
+            {
+              "type": "order",
+              "question": "Order one bricolage: choose scraps → try two arrangements → write why each material is there → look back at the theme question.",
+              "options": [
+                "Choose scraps",
+                "Try two arrangements",
+                "Write why each material is there",
+                "Look back at the theme question"
+              ],
+              "explain": "Choose scraps → try two arrangements → write why each material is there → look back at the theme question"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: a wish sentence on the left, a bricolage sample on the right. One line each — what the wish says, and which material carries it.",
+              "options": [
+                "Wish",
+                "Bricolage"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L3.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Choose derive, wish, or bricolage and write three lines. Hint: the original theme question, the presentation you changed, and one piece of visible evidence.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F4-U7-EXAM-STRUCT",
+      "title": "Exam practice ground: visual presentation of a theme and appreciation writing",
+      "intro": "The exam practice ground teaches structure only: how appreciation writing is paragraphed, how a theme exploration opens, and how making chooses a medium and a presentation. Use a prompt skeleton you write. Do not use a real paper or a high-score exemplar.",
+      "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U7-EXAM-STRUCT.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F4-U7-L1",
+          "title": "Appreciation writing and theme exploration structure",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U7-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Appreciation writing can use four moves: describe the form you see, analyse how it is organised, interpret a possible meaning, then judge with evidence.",
+            "A theme-exploration shape: theme question → materials you already have → one artist method → the visual point you want to present.",
+            "Read the two shapes together. The appreciation paragraphs talk about a work. The exploration slots talk about how your own question opens.",
+            "Structure only. Do not use a real paper or a high-score exemplar. The practice stays on writing structure."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "A steadier order for four appreciation moves is:",
+              "options": [
+                "Judge, copy the prompt, paste a picture, stop",
+                "Describe, analyse, interpret, judge",
+                "Feeling only, with no evidence",
+                "Score first, then describe"
+              ],
+              "answer": "Describe, analyse, interpret, judge",
+              "explain": "A judgement rests on evidence you can see."
+            },
+            {
+              "type": "fill",
+              "question": "Theme exploration can start with the question, then list the ＿＿ you already have.",
+              "options": [],
+              "answer": "materials",
+              "wordBank": [
+                "materials",
+                "seat",
+                "advert",
+                "code"
+              ],
+              "explain": "Materials are evidence you already hold."
+            },
+            {
+              "type": "match",
+              "question": "Match the structures",
+              "options": [
+                "Describe",
+                "Interpret",
+                "Theme question"
+              ],
+              "answer": {
+                "Describe": "The form you see",
+                "Interpret": "How you understand a meaning",
+                "Theme question": "What you still want to chase"
+              },
+              "explain": "Appreciation and exploration use different paragraphs, and both need evidence."
+            },
+            {
+              "type": "order",
+              "question": "Order a short appreciation: describe → analyse → interpret → judge.",
+              "options": [
+                "Describe",
+                "Analyse",
+                "Interpret",
+                "Judge"
+              ],
+              "explain": "Describe → analyse → interpret → judge"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: four appreciation moves on the left, four exploration slots on the right. One line each — which kind of writing that column serves.",
+              "options": [
+                "Appreciation",
+                "Exploration"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U7-L1.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write four headings on a prompt skeleton you invent. Hint: describe, analyse, interpret, judge. Do not use a real paper or a high-score exemplar.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
+            }
+          ]
+        },
+        {
+          "id": "F4-U7-L2",
+          "title": "Making structure practice and media",
+          "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U7-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "A making structure can be four steps: one theme sentence, an audience, a medium, and a way of presentation.",
+            "Media practice: try the same theme sentence in two media, then say which one is clearer.",
+            "Design appreciation writing can borrow the same four steps: audience, function, form, and material.",
+            "Structure only. Do not use a real paper or a high-score exemplar."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "The four steps of a making-structure practice are:",
+              "options": [
+                "A final piece only",
+                "Theme, audience, medium, presentation",
+                "A mood with no medium",
+                "A copied real paper"
+              ],
+              "answer": "Theme, audience, medium, presentation",
+              "explain": "The four steps make the decisions visible."
+            },
+            {
+              "type": "fill",
+              "question": "Trying one theme in two media is a way to compare which is ＿＿.",
+              "options": [],
+              "answer": "clearer",
+              "wordBank": [
+                "clearer",
+                "seat",
+                "advert",
+                "code"
+              ],
+              "explain": "The medium should serve the message."
+            },
+            {
+              "type": "match",
+              "question": "Match making decisions",
+              "options": [
+                "Audience",
+                "Medium",
+                "Presentation"
+              ],
+              "answer": {
+                "Audience": "Who will look",
+                "Medium": "Which material speaks",
+                "Presentation": "How the work meets someone"
+              },
+              "explain": "Each decision needs a reason you can write."
+            },
+            {
+              "type": "order",
+              "question": "Order one media practice: write the theme sentence → choose two media → test each once → say which is clearer.",
+              "options": [
+                "Write the theme sentence",
+                "Choose two media",
+                "Test each once",
+                "Say which is clearer"
+              ],
+              "explain": "Write the theme sentence → choose two media → test each once → say which is clearer"
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: the first material sample on the left, the second on the right. One line each — where it is clear, and where it is limited.",
+              "options": [
+                "Medium one",
+                "Medium two"
+              ],
+              "image": "/content/learning-map-illustrations/f4-dualread/F4-U7-L2.png",
+              "imageCredit": "Original · VA-Nexus",
+              "explain": "Practice structure · not a real paper"
+            },
+            {
+              "type": "short",
+              "question": "Write the four making steps. Hint: the theme sentence, who the audience is, the medium you chose, and the presentation. Do not use a real paper or a high-score exemplar.",
+              "options": [],
+              "explain": "Practice structure · not a real paper"
             }
           ]
         }

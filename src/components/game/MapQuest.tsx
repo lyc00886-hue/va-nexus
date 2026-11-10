@@ -1,5 +1,6 @@
 import { useEffect, useId, useState } from 'react'
 import { Check } from 'lucide-react'
+import { getF4Units } from '../../game/f4Demo'
 import type { Unit } from '../../game/types'
 import { useT, type MessageKey } from '../../i18n'
 import {
@@ -23,8 +24,10 @@ import {
   type QuestBandId,
   type QuestNodeProgress,
 } from '../../lib/questPathLayout'
+import { LessonPlayer } from './LessonPlayer'
 import { QuestPathArt } from './QuestPathArt'
 import { QuestTraining } from './QuestTraining'
+import { QuestionTypeChips } from './QuestionTypeChips'
 
 const BAND_LABEL: Record<QuestBandId, MessageKey> = {
   garden: 'map.band.garden',
@@ -42,27 +45,39 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
   const [calm] = useQuestCalm()
   const motion = useQuestMotionPlay()
   const [openUnitId, setOpenUnitId] = useState<string | null>(null)
+  const [lessonId, setLessonId] = useState<string | null>(null)
   const [popoverId, setPopoverId] = useState<string | null>(null)
   const [enteredId, setEnteredId] = useState<string | null>(null)
   const [seenForm, setSeenForm] = useState(form)
   if (seenForm !== form) {
     setSeenForm(form)
     setOpenUnitId(null)
+    setLessonId(null)
     setPopoverId(null)
     setEnteredId(null)
   }
   const titleId = useId()
   const chrome = QUEST_CHROME[locale]
   const section = questSection(form)
+  const f4Units = form === 's4' ? getF4Units() : []
+  const openF4 = f4Units.find((unit) => unit.id === openUnitId)
   const openUnit = section.units.find((unit) => unit.id === openUnitId)
   const popover = popoverId ? questNode(popoverId) : undefined
   const entered = enteredId ? questNode(enteredId) : undefined
-  const layout = questPathLayout(section.units.length)
-  const currentIndex = questCurrentIndex(0, section.units.length)
-  const bands = section.units.map((_, index) => {
+  const pathCount = form === 's4' ? f4Units.length : section.units.length
+  const layout = questPathLayout(pathCount)
+  const currentIndex = questCurrentIndex(0, pathCount)
+  const bands = Array.from({ length: pathCount }, (_, index) => {
     const id = questBand(index)
     return { id, label: t(BAND_LABEL[id]) }
   })
+  const pathFaces =
+    form === 's4'
+      ? f4Units.map((unit) => ({ id: unit.id, title: unit.title, subtitle: '' }))
+      : section.units.map((unit) => {
+          const face = questUnitFace(unit, locale)
+          return { id: unit.id, title: face.title, subtitle: face.subtitle }
+        })
 
   useEffect(() => {
     if (!popover) return
@@ -78,6 +93,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
   function chooseForm(next: QuestFormId) {
     choose(next)
     setOpenUnitId(null)
+    setLessonId(null)
     setPopoverId(null)
     setEnteredId(null)
   }
@@ -100,7 +116,20 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         <QuestSectionSwitch form={form} onChoose={chooseForm} />
         <QuestMotionButton />
       </div>
-      {openUnit ? (
+      {form === 's4' && openF4 ? (
+        <F4UnitPanel
+          unit={openF4}
+          lessonId={lessonId}
+          art={art}
+          media={media}
+          backLabel={chrome.back}
+          onBack={() => {
+            setOpenUnitId(null)
+            setLessonId(null)
+          }}
+          onLesson={setLessonId}
+        />
+      ) : openUnit && form !== 's4' ? (
         <UnitPanel
           unit={openUnit}
           art={art}
@@ -115,27 +144,26 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         <div data-quest-path="illustrated" data-quest-entry="path" className="relative mx-auto mt-3 w-full max-w-[24rem]">
           <QuestPathArt layout={layout} bands={bands} motion={motion} />
           <ol className="absolute inset-0 m-0 list-none p-0">
-            {section.units.map((unit, index) => {
+            {pathFaces.map((face, index) => {
               const point = layout.points[index]
-              const face = questUnitFace(unit, locale)
               const progress = questNodeProgress(index, currentIndex)
               if (!point) return null
               return (
                 <li
-                  key={unit.id}
-                  className="absolute w-40 -translate-x-1/2 -translate-y-6 text-center"
+                  key={face.id}
+                  className="absolute w-44 -translate-x-1/2 -translate-y-6 text-center"
                   style={{
                     left: `${(point.x / layout.width) * 100}%`,
                     top: `${(point.y / layout.height) * 100}%`,
                   }}
                 >
                   <PathNode
-                    unitId={unit.id}
+                    unitId={face.id}
                     progress={progress}
                     framed={questNodeFramed(index)}
                     motion={motion}
                     label={face.title}
-                    onOpen={() => setOpenUnitId(unit.id)}
+                    onOpen={() => setOpenUnitId(face.id)}
                   />
                   <span className="mt-2 block rounded-xl bg-white/95 px-2 py-1 shadow-sm ring-1 ring-[#d7efe9]">
                     <span className="block text-balance text-xs font-bold leading-snug text-slate-900">{face.title}</span>
@@ -253,6 +281,64 @@ function PathNode({
         />
       )}
     </button>
+  )
+}
+
+function F4UnitPanel({
+  unit,
+  lessonId,
+  art,
+  media,
+  backLabel,
+  onBack,
+  onLesson,
+}: {
+  unit: Unit
+  lessonId: string | null
+  art: Unit[]
+  media: Unit[]
+  backLabel: string
+  onBack: () => void
+  onLesson: (id: string | null) => void
+}) {
+  const lesson = unit.nodes.find((node) => node.id === lessonId)
+  return (
+    <div data-quest-unit={unit.id} className="mt-4">
+      <button type="button" onClick={onBack} className="text-sm font-semibold text-[#0D9488]">
+        {backLabel}
+      </button>
+      <h2 className="mt-3 text-xl font-bold text-slate-900">{unit.title}</h2>
+      <ul className="mt-4 space-y-2">
+        {unit.nodes.map((node) => {
+          const shown = node.id === lessonId
+          return (
+            <li key={node.id} data-f4-lesson={node.id} className="rounded-2xl bg-white px-3 py-2 ring-1 ring-[#b7e4df]">
+              <button
+                type="button"
+                aria-expanded={shown}
+                onClick={() => onLesson(shown ? null : node.id)}
+                className="block w-full text-left text-sm font-bold text-slate-900"
+              >
+                {node.title}
+              </button>
+              <span className="mt-1 block">
+                <QuestionTypeChips types={node.questions.map((question) => question.type)} />
+              </span>
+              {shown && lesson ? (
+                <div className="mt-3">
+                  <LessonPlayer lesson={lesson} kind="lesson" exitLabel={backLabel} onExit={() => onLesson(null)} />
+                </div>
+              ) : null}
+            </li>
+          )
+        })}
+      </ul>
+      {unit.id === 'F4-U1-ORIENT' ? (
+        <div className="mt-5">
+          <QuestTraining art={art} media={media} />
+        </div>
+      ) : null}
+    </div>
   )
 }
 

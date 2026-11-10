@@ -1,12 +1,11 @@
 /**
- * F.4 Learning Map demo slice (PEANUTS) — not a full Form 4 year.
+ * Form 4 learning-map pack.
  * Files: src/content/f4-demo.json (zh-Hant), f4-demo.en.json, f4-demo.zh-Hans.json.
  * Same Learning Map v3 shape as art-history: { units: [{ id, title, intro, lessons }] }.
  * Optional coverImage / coverCredit and per-lesson artistMedia are additive.
- * U1–U6 each ship a local 自制 cover. A unit with no coverImage still renders without one.
- * Every F.4 lesson tile ships a cover on that same path (November lessons plus the
- * early-wire batch). The map overlays that lesson's title for the active locale
- * on the blank plate — not the short goal or optional one-liner.
+ * Each unit ships a local 自制 cover. A unit with no coverImage still renders without one.
+ * Every Form 4 lesson tile ships a cover on that same path. The map overlays that
+ * lesson's title for the active locale on the blank plate — not the short goal.
  * Art-history units use the same coverImage fields under map-covers/.
  * The map chrome and unit cards do not show a syllabus year.
  */
@@ -24,6 +23,7 @@ export const F4_UNIT_IDS = [
   'F4-U4-SELF-RESEARCH',
   'F4-U5-ART-HIST',
   'F4-U6-THEME-SEEDS',
+  'F4-U7-EXAM-STRUCT',
 ] as const
 
 type F4LessonSource = ContentLesson & {
@@ -69,7 +69,7 @@ export function unitsFromF4File(raw: F4File | null | undefined): Unit[] {
       nodes: lessons.map((lesson) => {
         const node = lessonFromContent(lesson, pool)
         const artists = artistsFromLesson(lesson)
-        return { ...node, ...coverFromUnit(lesson), ...(artists ? { artists } : {}) }
+        return { ...node, demo: false, ...coverFromUnit(lesson), ...(artists ? { artists } : {}) }
       }),
     }
   })

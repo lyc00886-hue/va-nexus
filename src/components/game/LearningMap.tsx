@@ -7,7 +7,6 @@ import { getF4Units } from '../../game/f4Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
 import {
-  F4_CHROME_KEY,
   historyUnitsFor,
   QUEST_ART_UNITS,
   QUEST_MEDIA_UNITS,
@@ -33,6 +32,7 @@ import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
 import { softShellFromSearch, type SoftShell } from '../../lib/softAtlas'
 import { ClassicGrades } from './ClassicGrades'
+import { F4YearList } from './F4YearList'
 import { MapPath } from './MapPath'
 import { MapQuest } from './MapQuest'
 import { MapVersionToggle } from './MapVersionToggle'
@@ -222,11 +222,7 @@ export function LearningMap() {
 
   const domain: 'history' | 'media' = track === 'media' ? 'media' : 'history'
   const historyForGrade = historyUnitsFor(historyUnits, 'all', grade)
-  const titledF4 = f4Units.map((unit) => {
-    const key = F4_CHROME_KEY[unit.id]
-    return key ? { ...unit, title: t(key) } : unit
-  })
-  const historyShown = grade === 'f4' ? [...historyForGrade, ...titledF4] : historyForGrade
+  const historyShown = grade === 'f4' ? f4Units : historyForGrade
   const historyNodes = historyShown.flatMap((unit) => unit.nodes)
   const historyLesson =
     historyNodes.find((node) => node.id === currentNodeId) ??
@@ -251,7 +247,9 @@ export function LearningMap() {
       </div>
 
       {domain === 'history' ? (
-        historyShown.length === 0 ? (
+        grade === 'f4' ? (
+          <F4YearList units={f4Units} />
+        ) : historyShown.length === 0 ? (
           <p data-map-grade-empty className="rounded-3xl bg-white px-4 py-6 text-center text-sm font-medium text-slate-700">
             {t('map.grade.empty')}
           </p>
