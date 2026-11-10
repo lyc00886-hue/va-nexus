@@ -1,8 +1,9 @@
 import { Settings } from 'lucide-react'
 import { useGame } from '../../context/GameContext'
+import { useSen } from '../../context/SenContext'
 import { t, useT, type MessageKey } from '../../i18n'
-import { QUEST_CHROME, type QuestFormId } from '../../lib/mapQuest'
-import { useQuestCalm } from '../../lib/useQuestForm'
+import { QUEST_CHROME, questMotionPlay, type QuestFormId } from '../../lib/mapQuest'
+import { usePrefersReducedMotion, useQuestCalm, useQuestMotion } from '../../lib/useQuestForm'
 
 const OTTER = '/content/learning-map-illustrations/moods/motion-v2/otter-map-idle.png'
 
@@ -48,6 +49,25 @@ export function QuestSectionSwitch({ form, onChoose }: { form: QuestFormId; onCh
         })}
       </div>
     </div>
+  )
+}
+
+/** Student path-motion switch. Off until chosen. Reduce-motion keeps the label off. */
+export function QuestMotionButton() {
+  const [pref, setPref] = useQuestMotion()
+  const { settings } = useSen()
+  const prefersReducedMotion = usePrefersReducedMotion()
+  const play = questMotionPlay({ pref, reduceMotion: settings.reduceMotion, prefersReducedMotion })
+  return (
+    <button
+      type="button"
+      data-quest-motion={play ? 'on' : 'off'}
+      aria-pressed={pref}
+      onClick={() => setPref(!pref)}
+      className="mb-0.5 shrink-0 rounded-full border border-[#0D9488] bg-white px-3 py-1 text-xs font-semibold text-[#0D9488] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]"
+    >
+      {t(play ? 'map.motion.on' : 'map.motion.off')}
+    </button>
   )
 }
 
