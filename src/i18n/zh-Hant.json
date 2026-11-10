@@ -1043,7 +1043,7 @@
   "score.later.empty": "未有上傳參考",
   "score.later.fileReject": "只接受影像或 PDF 頁",
   "score.later.notFinal": "唔係最終分數",
-  "score.later.notFinalNote": "你而家見到嘅係大概評級／參考帶同參考評語，亦包括 AI 參考雷達，唔係最終分數。只供校內討論；正式學校參考／雙雷達仍要教師確認或調分後先餵。",
+  "score.later.notFinalNote": "你而家見到嘅係大概評級／參考帶同參考評語，亦包括 AI 參考雷達（作品同研究工作簿），唔係最終分數。只供校內討論。學生面只保留呢兩幅 AI 參考雷達，唔顯示正式學校雙雷達。",
   "score.later.aiRadar": "AI 參考雷達",
-  "score.later.aiRadarHint": "呢幅係 AI 參考雷達，唔係最終分數。正式學校參考／雙雷達仍要教師確認或調分後先餵。"
+  "score.later.aiRadarHint": "呢幅係 AI 參考雷達，唔係最終分數。"
 }
