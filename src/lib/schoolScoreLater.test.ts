@@ -39,7 +39,7 @@ const LOCALE = {
     'score.later.studentRo': 'Learning progress reference (read-only)',
     'score.later.notFinal': 'Not the final score',
     'score.later.notFinalNote':
-      'What you see now is an approximate rating / reference band and comments, including the AI reference radar, not the final score. It is for school discussion only. The formal school reference and dual radar are written only after the teacher confirms or adjusts.',
+      'What you see now is an approximate rating / reference band and comments, including the AI reference radars (artwork and research workbook), not the final score. It is for school discussion only. The student view keeps only these AI reference radars and does not show the formal school dual radar.',
     'score.later.aiRadar': 'AI reference radar',
     'score.later.aiRadarHint':
       'This is the AI reference radar, not the final score. The formal school reference and dual radar are written only after the teacher confirms or adjusts.',
@@ -53,7 +53,7 @@ const LOCALE = {
     'score.later.studentRo': '學習進度參考（只讀）',
     'score.later.notFinal': '唔係最終分數',
     'score.later.notFinalNote':
-      '你而家見到嘅係大概評級／參考帶同參考評語，亦包括 AI 參考雷達，唔係最終分數。只供校內討論；正式學校參考／雙雷達仍要教師確認或調分後先餵。',
+      '你而家見到嘅係大概評級／參考帶同參考評語，亦包括 AI 參考雷達（作品同研究工作簿），唔係最終分數。只供校內討論。學生面只保留呢兩幅 AI 參考雷達，唔顯示正式學校雙雷達。',
     'score.later.aiRadar': 'AI 參考雷達',
     'score.later.aiRadarHint': '呢幅係 AI 參考雷達，唔係最終分數。正式學校參考／雙雷達仍要教師確認或調分後先餵。',
   },
@@ -66,7 +66,7 @@ const LOCALE = {
     'score.later.studentRo': '学习进度参考（只读）',
     'score.later.notFinal': '不是最终分数',
     'score.later.notFinalNote':
-      '你现在见到的是大概评级／参考带和参考评语，也包括 AI 参考雷达，不是最终分数。只供校内讨论；正式学校参考／双雷达仍要教师确认或调分后先写入。',
+      '你现在见到的是大概评级／参考带和参考评语，也包括 AI 参考雷达（作品和研究工作簿），不是最终分数。只供校内讨论。学生面只保留这两幅 AI 参考雷达，不显示正式学校双雷达。',
     'score.later.aiRadar': 'AI 参考雷达',
     'score.later.aiRadarHint': '这幅是 AI 参考雷达，不是最终分数。正式学校参考／双雷达仍要教师确认或调分后先写入。',
   },
@@ -208,14 +208,23 @@ describe('school score later chrome', () => {
     assert.match(student, /score\.later\.disclaimer/)
     assert.match(student, /aiReferenceFormative/)
     assert.match(student, /axisLabelKey/)
+    assert.match(student, /chart\.id === 'artwork'/)
     assert.match(student, /chart\.id === 'research_workbook'/)
-    assert.match(student, /data-testid="score-later-ai-chart-research_workbook"/)
-    assert.doesNotMatch(student, /DUAL_CHARTS\.map|sm:grid-cols-2|score-later-ai-chart-artwork/)
+    assert.ok(student.indexOf("chart.id === 'artwork'") < student.indexOf("chart.id === 'research_workbook'"))
+    assert.match(student, /testId="score-later-ai-chart-artwork"/)
+    assert.match(student, /testId="score-later-ai-chart-research_workbook"/)
+    assert.ok(
+      student.indexOf('testId="score-later-ai-chart-artwork"') <
+        student.indexOf('testId="score-later-ai-chart-research_workbook"'),
+    )
+    assert.match(student, /sm:grid-cols-2/)
+    assert.doesNotMatch(student, /score\.dual\.title|useSchoolScoreDual|SchoolScoreDualStudent/)
     assert.match(student, /disabled/)
     assert.doesNotMatch(student, /score\.later\.pending|score\.later\.submitted|score\.later\.commentPending/)
     assert.doesNotMatch(student, /axisShortKey|effectiveBand|adjustBand/)
     assert.doesNotMatch(student, /type="file"|<select|saveDualAxis|saveTeacherDraft|acceptLaterFile|setLaterAdjust|未達標|\bSoft\b/)
-    assert.match(progress, /compact \? null : <SchoolScoreDualStudent/)
+    assert.doesNotMatch(progress, /SchoolScoreDualStudent/)
+    assert.match(progress, /data-testid="score-current"/)
     assert.match(progress, /compact \? null : <SchoolScoreLaterStudent/)
     assert.match(page, /<SchoolScoreStaff \/>/)
     assert.match(page, /<SchoolScoreDualStaff \/>/)

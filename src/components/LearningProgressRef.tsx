@@ -2,7 +2,6 @@ import { useId } from 'react'
 import { useT } from '../i18n'
 import { schoolBandRows, schoolReferenceBand } from '../lib/schoolScore'
 import { useTeacherDraftStore } from '../lib/useTeacherDraftStore'
-import { SchoolScoreDualStudent } from './SchoolScoreDualStudent'
 import { SchoolScoreLaterStudent } from './SchoolScoreLaterStudent'
 
 /**
@@ -101,7 +100,6 @@ export function LearningProgressRef({ titleId, compact = false }: { titleId?: st
         <span className="mb-1 block text-xs font-bold text-amber-800">{t('score.v1.hintLabel')}</span>
         {t('score.v1.hint')}
       </p>
-      {compact ? null : <SchoolScoreDualStudent />}
       {compact ? null : <SchoolScoreLaterStudent />}
     </div>
   )

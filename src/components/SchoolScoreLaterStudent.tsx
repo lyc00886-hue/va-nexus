@@ -7,6 +7,7 @@ import {
   axisLabelKey,
   dualBandMapRows,
   formatFormative,
+  type DualAxisId,
 } from '../lib/schoolScoreDual'
 import { SCHOOL_SCORE_LATER_PLATES, aiReferenceFormative } from '../lib/schoolScoreLater'
 import { useSchoolScoreLater } from '../lib/useSchoolScoreLater'
@@ -46,10 +47,46 @@ function bandClass(on: boolean): string {
     : 'rounded-full border border-[#0D9488]/35 bg-white px-3 py-1 text-xs font-semibold text-teal-950'
 }
 
+function AiReferenceChart({
+  chart,
+  formative,
+  testId,
+}: {
+  chart: (typeof DUAL_CHARTS)[number]
+  formative: number
+  testId: 'score-later-ai-chart-artwork' | 'score-later-ai-chart-research_workbook'
+}) {
+  const { t } = useT()
+  return (
+    <div data-testid={testId} data-axes={chart.axes.length}>
+      <h5 className="text-center text-base font-bold text-[#0D9488]">{t(chart.title)}</h5>
+      <SchoolScoreDualFigure
+        chartId={`ai-${chart.id}`}
+        labels={chart.axes.map((id) => t(axisLabelKey(id)))}
+        values={chart.axes.map(() => formative)}
+        drawLabels={false}
+      />
+      <ul className="space-y-1">
+        {chart.axes.map((id: DualAxisId) => (
+          <li
+            key={id}
+            data-testid={`score-later-ai-axis-${id}`}
+            data-value={formative}
+            className="text-sm leading-relaxed text-slate-800"
+          >
+            <span className="font-semibold">{t(axisLabelKey(id))}</span>
+            <span className="text-slate-600"> {formatFormative(formative)}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 /**
  * Read-only learning-progress reference.
- * An existing approximate band, comment, and AI reference radar show immediately.
- * Students cannot change them. The formal school reference stays on the dual-radar surface.
+ * An existing approximate band, comment, and both AI reference radars show immediately.
+ * Students cannot change them. The formal school dual radar stays on the staff surface.
  */
 export function SchoolScoreLaterStudent() {
   const { t } = useT()
@@ -63,7 +100,8 @@ export function SchoolScoreLaterStudent() {
   const mapRow = maps.find((row) => row.id === approx)
   const showComment = Boolean(draft && draft.aiStatus === 'model' && draft.aiComment)
   const formative = draft ? aiReferenceFormative(draft) : null
-  const aiChart = DUAL_CHARTS.find((chart) => chart.id === 'research_workbook')
+  const artworkChart = DUAL_CHARTS.find((chart) => chart.id === 'artwork')
+  const workbookChart = DUAL_CHARTS.find((chart) => chart.id === 'research_workbook')
 
   return (
     <section
@@ -187,28 +225,14 @@ export function SchoolScoreLaterStudent() {
           {formative != null ? <NotFinalPill label={t('score.later.notFinal')} /> : null}
         </div>
         <p className="text-sm leading-relaxed text-slate-600">{t('score.later.aiRadarHint')}</p>
-        {draft && formative != null && aiChart ? (
-          <div data-testid="score-later-ai-chart-research_workbook" data-axes={aiChart.axes.length}>
-            <h5 className="text-center text-base font-bold text-[#0D9488]">{t(aiChart.title)}</h5>
-            <SchoolScoreDualFigure
-              chartId="ai-research_workbook"
-              labels={aiChart.axes.map((id) => t(axisLabelKey(id)))}
-              values={aiChart.axes.map(() => formative)}
-              drawLabels={false}
+        {draft && formative != null && artworkChart && workbookChart ? (
+          <div className="grid gap-3 sm:grid-cols-2">
+            <AiReferenceChart chart={artworkChart} formative={formative} testId="score-later-ai-chart-artwork" />
+            <AiReferenceChart
+              chart={workbookChart}
+              formative={formative}
+              testId="score-later-ai-chart-research_workbook"
             />
-            <ul className="space-y-1">
-              {aiChart.axes.map((id) => (
-                <li
-                  key={id}
-                  data-testid={`score-later-ai-axis-${id}`}
-                  data-value={formative}
-                  className="text-sm leading-relaxed text-slate-800"
-                >
-                  <span className="font-semibold">{t(axisLabelKey(id))}</span>
-                  <span className="text-slate-600"> {formatFormative(formative)}</span>
-                </li>
-              ))}
-            </ul>
           </div>
         ) : (
           <p className="text-sm font-semibold text-slate-700">{t('score.dual.unset')}</p>
