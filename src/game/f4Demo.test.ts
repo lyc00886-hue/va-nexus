@@ -16,25 +16,74 @@ const UNIT_IDS = [
   'F4-U4-SELF-RESEARCH',
   'F4-U5-ART-HIST',
   'F4-U6-THEME-SEEDS',
+  'F4-U7-EXAM-STRUCT',
 ]
 const LESSON_IDS = [
   'F4-U1-L1',
   'F4-U1-L2',
+  'F4-U1-L3',
+  'F4-U1-L4',
   'F4-U2-L1',
   'F4-U2-L2',
   'F4-U2-L3',
+  'F4-U2-L4',
   'F4-U3-L1',
   'F4-U3-L2',
   'F4-U3-L3',
   'F4-U3-L4',
   'F4-U4-L1',
   'F4-U4-L2',
+  'F4-U4-L3',
   'F4-U5-L1',
   'F4-U5-L2',
+  'F4-U5-L3',
+  'F4-U5-L4',
   'F4-U6-L1',
   'F4-U6-L2',
+  'F4-U6-L3',
+  'F4-U7-L1',
+  'F4-U7-L2',
 ]
-const LESSONS_PER_UNIT = [2, 3, 4, 2, 2, 2]
+const LESSONS_PER_UNIT = [4, 4, 4, 3, 4, 3, 2]
+const QUESTION_TYPES = ['mcq', 'fill', 'match', 'order', 'dualRead', 'short'] as const
+const NEW_TITLES = {
+  'f4-demo.json': {
+    'F4-U1-L3': '藝術辭典：關鍵字同評賞寫作',
+    'F4-U1-L4': '藝術時間線：藝術運動同呈現方式',
+    'F4-U2-L4': '創意練習四：設計繪圖、思維同物料',
+    'F4-U4-L3': '主題發展同簡報二',
+    'F4-U5-L3': '中國書畫史入門：秦漢至魏晉',
+    'F4-U5-L4': '中國書畫史同技法入門：唐至五代',
+    'F4-U6-L3': '衍生、願望同拼裝',
+    'F4-U7-L1': '評賞寫作同主題探索結構',
+    'F4-U7-L2': '創作結構練習同媒介',
+    'F4-U7-EXAM-STRUCT': '應試練習場：主題視覺呈現同評賞寫作',
+  },
+  'f4-demo.zh-Hans.json': {
+    'F4-U1-L3': '艺术辞典：关键字与评赏写作',
+    'F4-U1-L4': '艺术时间线：艺术运动与呈现方式',
+    'F4-U2-L4': '创意练习四：设计绘图、思维与物料',
+    'F4-U4-L3': '主题发展与简报二',
+    'F4-U5-L3': '中国书画史入门：秦汉至魏晋',
+    'F4-U5-L4': '中国书画史与技法入门：唐至五代',
+    'F4-U6-L3': '衍生、愿望与拼装',
+    'F4-U7-L1': '评赏写作与主题探索结构',
+    'F4-U7-L2': '创作结构练习与媒介',
+    'F4-U7-EXAM-STRUCT': '应试练习场：主题视觉呈现与评赏写作',
+  },
+  'f4-demo.en.json': {
+    'F4-U1-L3': 'Art dictionary: keywords and appreciation writing',
+    'F4-U1-L4': 'Art timeline: art movements and ways of presentation',
+    'F4-U2-L4': 'Creative Practice 4: design drawing, thinking and materials',
+    'F4-U4-L3': 'Theme development and Presentation II',
+    'F4-U5-L3': 'Chinese calligraphy and painting history intro: Qin–Han to Wei–Jin',
+    'F4-U5-L4': 'Chinese calligraphy and painting history and technique intro: Tang to Five Dynasties',
+    'F4-U6-L3': 'Derive, wish and bricolage',
+    'F4-U7-L1': 'Appreciation writing and theme exploration structure',
+    'F4-U7-L2': 'Making structure practice and media',
+    'F4-U7-EXAM-STRUCT': 'Exam practice ground: visual presentation of a theme and appreciation writing',
+  },
+} as const
 const NOVEMBER_LESSONS = ['F4-U2-L3', 'F4-U3-L3', 'F4-U3-L4'] as const
 const NOVEMBER_COPY = {
   'f4-demo.json': {
@@ -86,6 +135,12 @@ const PLACEHOLDER = {
   'f4-demo.en.json': '[No cleared image yet]',
   'f4-demo.zh-Hans.json': '暂无合法图',
 } as const
+const SCOUT_PLATES = {
+  '01-quest-f4-complete-path.png': '5475cea5fdc2',
+  '02-classic-f4-complete.png': 'be729e66b0c7',
+  '03-f4-lesson-cards-safe.png': '0386f338a607',
+  'preview-strip.png': 'e814f2c34337',
+} as const
 
 type Quiz = {
   type: string
@@ -130,7 +185,7 @@ function pack(name: string): { units: Unit[] } {
 }
 
 describe('F.4 demo slice', () => {
-  it('ships the same six units and fifteen lessons in each locale', () => {
+  it('ships the same seven units and twenty-four lessons in each locale', () => {
     for (const name of FILES) {
       const units = pack(name).units
       assert.deepEqual(
@@ -144,21 +199,28 @@ describe('F.4 demo slice', () => {
         LESSON_IDS,
         name,
       )
-      assert.equal(lessons.length, 15, name)
-      assert.equal(
-        lessons.reduce((n, lesson) => n + lesson.cards.length, 0),
-        75,
-        name,
-      )
-      assert.equal(
-        lessons.reduce((n, lesson) => n + lesson.quiz.length, 0),
-        75,
-        name,
-      )
+      assert.equal(lessons.length, 24, name)
+      const titles = NEW_TITLES[name]
+      assert.equal(units.find((unit) => unit.id === 'F4-U7-EXAM-STRUCT')?.title, titles['F4-U7-EXAM-STRUCT'], name)
+      for (const lesson of lessons) {
+        const expected = titles[lesson.id as keyof typeof titles]
+        if (expected) assert.equal(lesson.title, expected, `${name} ${lesson.id}`)
+        assert.ok(lesson.cards.length >= 4, `${name} ${lesson.id}`)
+        for (const type of QUESTION_TYPES) {
+          assert.equal(
+            lesson.quiz.some((quiz) => quiz.type === type),
+            true,
+            `${name} ${lesson.id} ${type}`,
+          )
+        }
+      }
       for (const [index, unit] of units.entries()) {
         assert.equal(typeof unit.title, 'string')
         assert.ok(unit.title.length > 0)
         assert.equal(typeof unit.intro, 'string')
+        assert.equal(unit.intro.includes('內容待老師審閱'), false, `${name} ${unit.id}`)
+        assert.equal(unit.intro.includes('内容待老师审阅'), false, `${name} ${unit.id}`)
+        assert.equal(/pending teacher review/i.test(unit.intro), false, `${name} ${unit.id}`)
         assert.equal(unit.lessons.length, LESSONS_PER_UNIT[index], `${name} ${unit.id}`)
         assert.equal(SYLLABUS_YEAR.test(unit.title), false, `${name} ${unit.id} title`)
         assert.equal(SYLLABUS_YEAR.test(unit.intro), false, `${name} ${unit.id} intro`)
@@ -291,11 +353,12 @@ describe('F.4 demo slice', () => {
     }
   })
 
-  it('keeps image placeholders and does not embed paper or exemplar bodies', () => {
+  it('drops image placeholders and does not embed paper or exemplar bodies', () => {
     for (const name of FILES) {
       const blob = JSON.stringify(pack(name))
-      assert.ok(blob.includes(PLACEHOLDER[name]), name)
+      assert.equal(blob.includes(PLACEHOLDER[name]), false, name)
       assert.equal(blob.includes('past-paper stub'), false)
+      assert.equal(/內容待老師審閱|内容待老师审阅|Pending teacher review/i.test(blob), false, name)
     }
   })
 
@@ -330,7 +393,12 @@ describe('F.4 demo slice', () => {
               assert.equal(new Set(quiz.options).size, quiz.options.length, id)
             } else if (quiz.type === 'dualRead') {
               assert.equal(quiz.options.length, 2, id)
-              assert.match(String(quiz.image), /^\/content\/learning-map-illustrations\/soft-scout\/f4-dualread\//, id)
+              assert.match(
+                String(quiz.image),
+                /^\/content\/learning-map-illustrations\/(?:soft-scout\/f4-dualread|f4-dualread)\//,
+                id,
+              )
+              assert.ok(statSync(resolve(PUBLIC, String(quiz.image).slice(1))).size > 1000, id)
             } else if (quiz.type === 'short') {
               assert.ok(quiz.question.length > 0, id)
             } else {
@@ -342,7 +410,7 @@ describe('F.4 demo slice', () => {
     }
   })
 
-  it('keeps November quizzes at 3 and wires optional P0 card images', () => {
+  it('keeps November card images and gives every lesson the six practice types', () => {
     const player = readFileSync(new URL('../components/game/LessonPlayer.tsx', import.meta.url), 'utf8')
     const one = readFileSync(new URL('../components/game/MapOneLesson.tsx', import.meta.url), 'utf8')
     const adapter = readFileSync(new URL('./content.ts', import.meta.url), 'utf8')
@@ -373,7 +441,9 @@ describe('F.4 demo slice', () => {
           assert.ok(lesson.cards.every((card) => typeof card === 'string'), `${name} ${lesson.id}`)
           continue
         }
-        assert.equal(lesson.quiz.length, 3, `${name} ${lesson.id}`)
+        for (const type of QUESTION_TYPES) {
+          assert.equal(lesson.quiz.some((quiz) => quiz.type === type), true, `${name} ${lesson.id} ${type}`)
+        }
         assert.equal(/CCC|cccklc/i.test(JSON.stringify(lesson)), false, `${name} ${lesson.id}`)
         assert.equal(lesson.cards.length, slots.length, `${name} ${lesson.id}`)
         lesson.cards.forEach((card, index) => {
@@ -392,7 +462,7 @@ describe('F.4 demo slice', () => {
     }
   })
 
-  it('wires U1–U3 order, dual-read, and short practice and keeps later units on the old types', () => {
+  it('keeps the early dual-read frames and gives every lesson order, dual-read, and short practice', () => {
     const p0 = ['F4-U1-L1', 'F4-U1-L2', 'F4-U2-L1', 'F4-U2-L2', 'F4-U3-L1', 'F4-U3-L2']
     const hashes: Record<string, string> = {
       '01-u1-l1-dualread.png': 'f5d98ca741dd',
@@ -417,29 +487,34 @@ describe('F.4 demo slice', () => {
       'F4-U3-L1': '05-u3-l1-dualread.png',
       'F4-U3-L2': '06-u3-l2-dualread.png',
     }
+    const scoutDir = resolve(PUBLIC, 'content/learning-map-illustrations/soft-scout/f4-course-content-2611')
+    for (const [file, prefix] of Object.entries(SCOUT_PLATES)) {
+      const buf = readFileSync(resolve(scoutDir, file))
+      assert.equal(createHash('sha256').update(buf).digest('hex').slice(0, 12), prefix, file)
+    }
     for (const name of FILES) {
       for (const lesson of pack(name).units.flatMap((unit) => unit.lessons)) {
         const types = lesson.quiz.map((quiz) => quiz.type)
-        if (!p0.includes(lesson.id)) {
-          assert.deepEqual(types.filter((type) => type === 'order' || type === 'dualRead' || type === 'short'), [], lesson.id)
-          continue
-        }
-        assert.equal(types.filter((type) => type === 'order').length, 1, lesson.id)
+        assert.equal(types.filter((type) => type === 'order').length >= 1, true, lesson.id)
         assert.equal(types.filter((type) => type === 'dualRead').length, 1, lesson.id)
         assert.equal(types.filter((type) => type === 'short').length, 1, lesson.id)
         const dual = lesson.quiz.find((quiz) => quiz.type === 'dualRead')
-        assert.equal(
-          dual?.image,
-          `/content/learning-map-illustrations/soft-scout/f4-dualread/${frames[lesson.id as keyof typeof frames]}`,
-          `${name} ${lesson.id}`,
-        )
-        const added = lesson.quiz.filter((quiz) => quiz.type === 'order' || quiz.type === 'dualRead' || quiz.type === 'short')
-        if (lesson.id === 'F4-U2-L2' || lesson.id === 'F4-U3-L1') {
-          added.push(...lesson.quiz.filter((quiz) => quiz.type === 'match'))
-        }
-        const blob = JSON.stringify(added)
-        for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim']) {
-          assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
+        if (p0.includes(lesson.id)) {
+          assert.equal(
+            dual?.image,
+            `/content/learning-map-illustrations/soft-scout/f4-dualread/${frames[lesson.id as keyof typeof frames]}`,
+            `${name} ${lesson.id}`,
+          )
+          const added = lesson.quiz.filter((quiz) => quiz.type === 'order' || quiz.type === 'dualRead' || quiz.type === 'short')
+          if (lesson.id === 'F4-U2-L2' || lesson.id === 'F4-U3-L1') {
+            added.push(...lesson.quiz.filter((quiz) => quiz.type === 'match'))
+          }
+          const blob = JSON.stringify(added)
+          for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim']) {
+            assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
+          }
+        } else {
+          assert.match(String(dual?.image), /^\/content\/learning-map-illustrations\/f4-dualread\//, lesson.id)
         }
       }
     }

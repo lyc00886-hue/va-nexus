@@ -55,6 +55,7 @@ import { LessonArtistPanel } from './LessonArtists'
 import { LessonCardArt } from './LessonCardArt'
 import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
+import { QuestionTypeChips } from './QuestionTypeChips'
 import { DualReadBoard, OrderBoard, ShortBoard } from './ThinPractice'
 
 const IDLE_MS = 90_000
@@ -562,6 +563,7 @@ function QuizStage({
               {t('lp.quiz')}
               {showRetry ? t('lp.retry') : ''}
             </p>
+            <QuestionTypeChips types={[question.type]} />
             {mark ? <ExerciseMark id={mark} /> : null}
           </div>
           <ReadAloudButton text={questionSpeech(question)} small />

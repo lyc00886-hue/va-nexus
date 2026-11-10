@@ -14,33 +14,33 @@ const FIND = '\u6435'
 const LOCK = {
   'f4-demo.json': {
     intro:
-      '對齊 F.4 社區觀察、每週視覺日記、同「同社區相關嘅設計／創作」。學習由日常環境嘅相片、物件或教師提供嘅材料，在課室變成主題種子；連繫香港藝術家對日常空間嘅關注。唔要求外出或參觀展覽。（內容待老師審閱）',
+      '對齊社區觀察、每週視覺日記，同「同社區相關嘅設計／創作」。學習由日常環境嘅相片、物件或教師提供嘅材料，在課室變成主題種子；連繫香港藝術家對日常空間嘅關注。課室練習包括相片、訪問、收集同速寫。',
     title: `社區觀察：由環境${FIND}主題`,
-    card0: '課堂觀察：用教師提供或已有嘅相片、短片、物件、速寫，在課室記錄環境同學習。唔要求外出或參觀展覽。',
+    card0: '課堂觀察：用教師提供或已有嘅相片、短片、物件、速寫，在課室記錄環境同學習。',
     quiz: '課堂觀察嘅材料可以包括？',
     correct: '教師提供或已有嘅相片、短片、物件、速寫',
-    wrong: '必須外出／導賞',
+    wrong: '只准背一句口號',
     insight: '由課堂觀察材料拎「洞察」：一件你以前冇留意、但同社區有關嘅細節。',
   },
   'f4-demo.zh-Hans.json': {
     intro:
-      '对齐 F.4 社区观察、每周视觉日记，以及「与社区相关的设计／创作」。学习用日常环境的照片、物件或教师提供的材料，在课室变成主题种子；连系香港艺术家对日常空间的关注。不要求外出或参观展览。（内容待老师审阅）',
+      '对齐社区观察、每周视觉日记，以及与社区相关的设计／创作。学习用日常环境的照片、物件或教师提供的材料，在课室变成主题种子；连系香港艺术家对日常空间的关注。课室练习包括照片、访问、收集与速写。',
     title: '社区观察：由环境找主题',
-    card0: '课堂观察：用教师提供或已有的照片、短片、物件、速写，在课室记录环境与学习。不要求外出或参观展览。',
+    card0: '课堂观察：用教师提供或已有的照片、短片、物件、速写，在课室记录环境与学习。',
     quiz: '课堂观察的材料可以包括？',
     correct: '教师提供或已有的照片、短片、物件、速写',
-    wrong: '必须外出／导赏',
+    wrong: '只准背一句口号',
     insight: '由课堂观察材料拿「洞察」：一件你以前没留意、但与社区有关的细节。',
   },
   'f4-demo.en.json': {
     intro:
-      'Aligns with F.4 community observation, the weekly visual diary, and community-related design／making. Students use photos, objects, or teacher-provided materials in class to grow theme seeds, linking to how Hong Kong artists attend to everyday space. No outing or exhibition visit is required. (Pending teacher review)',
+      'Community observation, the weekly visual diary, and community-related design and making. Students use photos, objects, or teacher-provided materials in class to grow theme seeds, linking to how Hong Kong artists attend to everyday space. Classroom practice includes photos, interviews, collecting, and sketches.',
     title: 'Community observation: finding a theme from the environment',
     card0:
-      'Classroom observation: use teacher-provided or already available photos, clips, objects, or sketches in class to record the environment and your learning. No outing or exhibition visit is required.',
+      'Classroom observation: use teacher-provided or already available photos, clips, objects, or sketches in class to record the environment and your learning.',
     quiz: 'What can classroom observation materials include?',
     correct: 'Photos, clips, objects, or sketches provided by the teacher or already available',
-    wrong: 'You must go on an outing or a guided tour',
+    wrong: 'You may only memorise one slogan',
     insight: 'From classroom observation materials, take one insight: a community-related detail you had not noticed before.',
   },
 } as const
@@ -128,9 +128,8 @@ describe('two-edition thin slice', () => {
       const insight = l3?.cards.map(cardText).find((text) => text.includes(lock.insight.slice(0, 8)))
       assert.equal(insight, lock.insight, name)
       const blob = JSON.stringify(unit)
-      const outside = blob.split(lock.wrong).join('')
-      for (const word of ['導賞', '导赏', '走訪', '走访', 'tour', 'Tour']) {
-        assert.equal(outside.includes(word), false, `${name} ${word}`)
+      for (const word of ['導賞', '导赏', '走訪', '走访', 'tour', 'Tour', '外出', '參觀', '参观', 'outing']) {
+        assert.equal(blob.includes(word), false, `${name} ${word}`)
       }
     }
     const hantTitle = LOCK['f4-demo.json'].title

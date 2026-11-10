@@ -16,6 +16,16 @@ All six covers are **自制 for VA-Nexus** (generated educational illustrations;
 | `f4-covers/F4-U4-SELF-RESEARCH.png` | F4-U4-SELF-RESEARCH · 自畫像、藝術家研究同主題發展 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 | `f4-covers/F4-U5-ART-HIST.png` | F4-U5-ART-HIST · 藝術史入門：古代西方同中國藝術 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 | `f4-covers/F4-U6-THEME-SEEDS.png` | F4-U6-THEME-SEEDS · 主題種子：Self、Relationship、Story | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
+| `f4-covers/F4-U7-EXAM-STRUCT.png` | F4-U7-EXAM-STRUCT · 應試練習場：主題視覺呈現同評賞寫作 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U1-L3.png` | F4-U1-L3 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U1-L4.png` | F4-U1-L4 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U2-L4.png` | F4-U2-L4 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U4-L3.png` | F4-U4-L3 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U5-L3.png` | F4-U5-L3 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U5-L4.png` | F4-U5-L4 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U6-L3.png` | F4-U6-L3 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U7-L1.png` | F4-U7-L1 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
+| `f4-covers/F4-U7-L2.png` | F4-U7-L2 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
 
 Suggested on-screen credit (optional footer / about): 「單元封面插圖 © VA-Nexus（自制）」 / “Unit cover illustrations © VA-Nexus (original).”
 
