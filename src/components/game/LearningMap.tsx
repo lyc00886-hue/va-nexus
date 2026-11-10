@@ -8,7 +8,6 @@ import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
 import {
   F4_CHROME_KEY,
-  GRADE_LABEL,
   historyUnitsFor,
   QUEST_ART_UNITS,
   QUEST_MEDIA_UNITS,
@@ -176,8 +175,6 @@ export function LearningMap() {
     remember('media', null)
   }
 
-  const yearHistory = grade === 'f5' || grade === 'f6' ? historyUnitsFor(history, 'all', grade) : []
-  const yearCurrent = yearHistory.flatMap((unit) => unit.nodes).find((node) => isUnlocked(node.id) && !completed(node.id))
   const gradePath = grade === 'f4' || grade === 'f5' || grade === 'f6'
   const pathOn = !easy.on && (mapOne || track === 'history' || track === 'f4' || selected != null || gradePath)
   useLayoutEffect(() => {
@@ -223,9 +220,18 @@ export function LearningMap() {
     )
   }
 
-  const yearUnits = grade === 'f4' ? f4Units : grade === 'f5' || grade === 'f6' ? yearHistory : []
-  const yearLesson = grade === 'f4' ? f4Current : yearCurrent
-  const yearUnlocked = grade === 'f4' ? f4Unlocked : isUnlocked
+  const domain: 'history' | 'media' = track === 'media' ? 'media' : 'history'
+  const historyForGrade = historyUnitsFor(historyUnits, 'all', grade)
+  const titledF4 = f4Units.map((unit) => {
+    const key = F4_CHROME_KEY[unit.id]
+    return key ? { ...unit, title: t(key) } : unit
+  })
+  const historyShown = grade === 'f4' ? [...historyForGrade, ...titledF4] : historyForGrade
+  const historyNodes = historyShown.flatMap((unit) => unit.nodes)
+  const historyLesson =
+    historyNodes.find((node) => node.id === currentNodeId) ??
+    historyNodes.find((node) => (node.id.startsWith('F4-') ? f4Unlocked(node.id) : isUnlocked(node.id)) && !completed(node.id))
+  const mediaForGrade = grade === 'f5' || grade === 'f6' ? [] : media
 
   return (
     <div className="space-y-5">
@@ -233,17 +239,28 @@ export function LearningMap() {
       <div className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5">
         <MapVersionToggle mapOne={false} />
         <ClassicGrades grade={grade} onGrade={chooseGrade} />
-        {grade === 'all' ? null : yearUnits.length === 0 ? (
+      </div>
+
+      <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')} data-classic-domains>
+        <TrackTab active={domain === 'history'} onClick={() => chooseTrack('history')}>
+          {t('map.track.history')}
+        </TrackTab>
+        <TrackTab active={domain === 'media'} onClick={() => chooseTrack('media')}>
+          {t('map.track.media')}
+        </TrackTab>
+      </div>
+
+      {domain === 'history' ? (
+        historyShown.length === 0 ? (
           <p data-map-grade-empty className="rounded-3xl bg-white px-4 py-6 text-center text-sm font-medium text-slate-700">
             {t('map.grade.empty')}
           </p>
-        ) : grade === 'f4' || grade === 'f5' || grade === 'f6' ? (
-          <ClassicYear
-            grade={grade}
-            units={yearUnits}
-            current={yearLesson}
-            currentNodeId={yearLesson?.id ?? null}
-            isUnlocked={yearUnlocked}
+        ) : (
+          <HistoryTrack
+            units={historyShown}
+            current={historyLesson}
+            currentNodeId={historyLesson?.id ?? null}
+            isUnlocked={(id) => (id.startsWith('F4-') ? f4Unlocked(id) : isUnlocked(id))}
             completed={completed}
             masteryOf={(id) => masteryFor(state.nodes[id])}
             sections={sections}
@@ -252,50 +269,12 @@ export function LearningMap() {
             onSetFold={setFold}
             onReveal={revealLesson}
           />
-        ) : null}
-      </div>
-
-      {grade === 'all' ? <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
-        <TrackTab active={track === 'history'} onClick={() => chooseTrack('history')}>
-          {t('map.track.history')}
-        </TrackTab>
-        <TrackTab active={track === 'media'} onClick={() => chooseTrack('media')}>
-          {t('map.track.media')}
-        </TrackTab>
-        <TrackTab active={track === 'f4'} onClick={() => chooseTrack('f4')}>
-          {t('map.track.f4')}
-        </TrackTab>
-      </div> : null}
-
-      {grade === 'all' && track === 'history' ? (
-        <HistoryTrack
-          units={historyUnits}
-          current={current}
-          currentNodeId={currentNodeId}
-          isUnlocked={isUnlocked}
-          completed={completed}
-          masteryOf={(id) => masteryFor(state.nodes[id])}
-          sections={sections}
-          onToggleLesson={toggleLesson}
-          onCloseLesson={(id) => setLesson(id, false)}
-          onSetFold={setFold}
-          onReveal={revealLesson}
-        />
-      ) : grade === 'all' && track === 'f4' ? (
-        <HistoryTrack
-          units={f4Units}
-          current={f4Current}
-          currentNodeId={f4Current?.id ?? null}
-          isUnlocked={f4Unlocked}
-          completed={completed}
-          masteryOf={(id) => masteryFor(state.nodes[id])}
-          sections={sections}
-          onToggleLesson={toggleLesson}
-          onCloseLesson={(id) => setLesson(id, false)}
-          onSetFold={setFold}
-          onReveal={revealLesson}
-        />
-      ) : grade === 'all' && selected ? (
+        )
+      ) : mediaForGrade.length === 0 ? (
+        <p data-map-grade-empty className="rounded-3xl bg-white px-4 py-6 text-center text-sm font-medium text-slate-700">
+          {t('map.grade.empty')}
+        </p>
+      ) : selected && mediaForGrade.some((unit) => unit.id === selected.id) ? (
         <MediaDetail
           unit={selected}
           completed={completed}
@@ -307,9 +286,9 @@ export function LearningMap() {
           onReveal={revealLesson}
           onBack={closeMedia}
         />
-      ) : grade === 'all' ? (
-        <MediaPicker units={media} onOpen={openMedia} />
-      ) : null}
+      ) : (
+        <MediaPicker units={mediaForGrade} onOpen={openMedia} />
+      )}
       <MapCommitments />
     </div>
   )
@@ -350,75 +329,6 @@ type PathControls = {
   onCloseLesson: (id: string) => void
   onSetFold: (id: LessonFoldId, open: boolean) => void
   onReveal: (lesson: Lesson) => void
-}
-
-function classicTitle(unit: Unit): string {
-  const key = F4_CHROME_KEY[unit.id]
-  return key ? t(key) : unit.title
-}
-
-function ClassicYear({
-  grade,
-  units,
-  current,
-  currentNodeId,
-  isUnlocked,
-  completed,
-  masteryOf,
-  sections,
-  onToggleLesson,
-  onCloseLesson,
-  onSetFold,
-  onReveal,
-}: {
-  grade: 'f4' | 'f5' | 'f6'
-  units: Unit[]
-  current: Lesson | undefined
-  currentNodeId: string | null
-  isUnlocked: (id: string) => boolean
-  completed: (id: string) => boolean
-  masteryOf: (id: string) => Mastery
-} & PathControls) {
-  const [openId, setOpenId] = useState<string | null>(null)
-  const badge = t(GRADE_LABEL[grade])
-  return (
-    <div data-classic-grade={grade} className="space-y-3">
-      {units.map((unit) => {
-        const open = openId === unit.id
-        const unitCurrent = open && current && unit.nodes.some((node) => node.id === current.id) ? current : undefined
-        return (
-          <article key={unit.id} data-classic-unit={unit.id} className="rounded-2xl border border-[#8ecfc9] bg-white px-4 py-3">
-            <button
-              type="button"
-              aria-expanded={open}
-              onClick={() => setOpenId(open ? null : unit.id)}
-              className="w-full text-left"
-            >
-              <span className="inline-flex rounded-full bg-[#0D9488] px-2.5 py-0.5 text-xs font-bold text-[#FFF9E9]">{badge}</span>
-              <span className="mt-2 block text-base font-bold leading-snug text-slate-900">{classicTitle(unit)}</span>
-            </button>
-            {open ? (
-              <div className="mt-3">
-                <HistoryTrack
-                  units={[unit]}
-                  current={unitCurrent}
-                  currentNodeId={unitCurrent ? currentNodeId : null}
-                  isUnlocked={isUnlocked}
-                  completed={completed}
-                  masteryOf={masteryOf}
-                  sections={sections}
-                  onToggleLesson={onToggleLesson}
-                  onCloseLesson={onCloseLesson}
-                  onSetFold={onSetFold}
-                  onReveal={onReveal}
-                />
-              </div>
-            ) : null}
-          </article>
-        )
-      })}
-    </div>
-  )
 }
 
 function HistoryTrack({
