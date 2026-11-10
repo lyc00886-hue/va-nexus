@@ -1025,5 +1025,9 @@
   "score.later.absentBody": "No public-exam result, no student edit of the approximate band, no pressure wording, no product name on the student view, and no school-name callout.",
   "score.later.flowFoot": "From upload to reference · school-internal formative",
   "score.later.empty": "No upload reference yet",
-  "score.later.fileReject": "Only an image or PDF page can be added."
+  "score.later.fileReject": "Only an image or PDF page can be added.",
+  "score.later.notFinal": "Not the final score",
+  "score.later.notFinalNote": "What you see now is an approximate rating / reference band and comments, including the AI reference radar, not the final score. It is for school discussion only. The formal school reference and dual radar are written only after the teacher confirms or adjusts.",
+  "score.later.aiRadar": "AI reference radar",
+  "score.later.aiRadarHint": "This is the AI reference radar, not the final score. The formal school reference and dual radar are written only after the teacher confirms or adjusts."
 }

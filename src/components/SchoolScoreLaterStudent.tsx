@@ -2,9 +2,15 @@ import { useId } from 'react'
 import { useT } from '../i18n'
 import { FORMATIVE_AI_COMMENT_PLATES } from '../lib/formativeAiCommentScout'
 import { schoolBandRows } from '../lib/schoolScore'
-import { formatFormative, formativeForBand } from '../lib/schoolScoreDual'
-import { SCHOOL_SCORE_LATER_PLATES, laterPending, studentVisibleBand } from '../lib/schoolScoreLater'
+import {
+  DUAL_CHARTS,
+  axisLabelKey,
+  dualBandMapRows,
+  formatFormative,
+} from '../lib/schoolScoreDual'
+import { SCHOOL_SCORE_LATER_PLATES, aiReferenceFormative } from '../lib/schoolScoreLater'
 import { useSchoolScoreLater } from '../lib/useSchoolScoreLater'
+import { SchoolScoreDualFigure } from './SchoolScoreDualFigure'
 
 function PageThumb({ name, url, mime }: { name: string; url: string | null; mime: string }) {
   const image = Boolean(url && mime.startsWith('image/'))
@@ -23,9 +29,27 @@ function PageThumb({ name, url, mime }: { name: string; url: string | null; mime
   )
 }
 
+function NotFinalPill({ label }: { label: string }) {
+  return (
+    <span
+      data-testid="score-later-not-final"
+      className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-900"
+    >
+      {label}
+    </span>
+  )
+}
+
+function bandClass(on: boolean): string {
+  return on
+    ? 'rounded-full bg-[#0D9488] px-4 py-2 text-sm font-bold text-white'
+    : 'rounded-full border border-[#0D9488]/35 bg-white px-3 py-1 text-xs font-semibold text-teal-950'
+}
+
 /**
- * Read-only learning-progress reference for an uploaded page.
- * Students cannot change the approximate band or the teacher adjust.
+ * Read-only learning-progress reference.
+ * An existing approximate band, comment, and AI reference radar show immediately.
+ * Students cannot change them. The formal school reference stays on the dual-radar surface.
  */
 export function SchoolScoreLaterStudent() {
   const { t } = useT()
@@ -33,11 +57,13 @@ export function SchoolScoreLaterStudent() {
   const headingId = useId()
   const named = useId()
   const rows = schoolBandRows()
-  const pending = draft ? laterPending(draft) : false
+  const maps = dualBandMapRows()
+  const approx = draft?.approxBand ?? null
+  const current = rows.find((row) => row.id === approx)
+  const mapRow = maps.find((row) => row.id === approx)
   const showComment = Boolean(draft && draft.aiStatus === 'model' && draft.aiComment)
-  const showBand = Boolean(draft && (draft.aiStatus !== 'idle' || draft.committedBand))
-  const visible = draft && showBand ? studentVisibleBand(draft) : null
-  const current = rows.find((row) => row.id === visible)
+  const formative = draft ? aiReferenceFormative(draft) : null
+  const aiChart = DUAL_CHARTS.find((chart) => chart.id === 'research_workbook')
 
   return (
     <section
@@ -71,73 +97,132 @@ export function SchoolScoreLaterStudent() {
         {t('score.later.disclaimer')}
       </p>
 
-      <div className="rounded-2xl border border-[#0D9488]/35 bg-white px-4 py-4">
-        {draft && current ? (
+      <p
+        role="note"
+        data-testid="score-later-not-final-note"
+        className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-relaxed text-amber-950"
+      >
+        <span className="mb-1 block text-xs font-bold text-amber-800">{t('score.later.notFinal')}</span>
+        {t('score.later.notFinalNote')}
+      </p>
+
+      <article className="space-y-3 rounded-2xl border border-[#0D9488]/35 bg-white px-4 py-4">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h4 className="text-base font-bold text-slate-900">{t('score.later.aiApprox')}</h4>
+          {current ? <NotFinalPill label={t('score.later.notFinal')} /> : null}
+        </div>
+        {draft && current && formative != null && mapRow ? (
           <div className="space-y-3">
-            {pending ? (
-              <p className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-900">
-                {showComment ? t('score.later.commentPending') : t('score.later.pending')}
-              </p>
-            ) : (
-              <p className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-xs font-bold text-white">
-                {t('score.later.written')}
-              </p>
-            )}
-            <p className="text-base font-bold text-slate-900">
-              {pending ? t('score.later.submitted') : t('score.later.prevail')}
-            </p>
-            {showComment ? (
-              <div data-testid="score-later-student-comment" className="space-y-1">
-                <p className="text-sm font-bold text-slate-900">{t('score.later.aiComment')}</p>
-                <p className="text-sm text-slate-600">{t('score.later.aiCommentHint')}</p>
-                <p className="text-sm leading-relaxed text-slate-800">{draft.aiComment}</p>
-              </div>
-            ) : null}
             <div className="flex gap-3">
               <PageThumb name={draft.fileName} url={previewUrl} mime={draft.mime} />
               <div className="min-w-0 space-y-2">
                 <p className="text-sm text-slate-600">{t('score.later.informalRo')}</p>
                 <p
                   data-testid="score-later-student-band"
-                  data-band={visible ?? 'unset'}
-                  className="inline-flex rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600"
+                  data-band={approx ?? 'unset'}
+                  className="text-2xl font-bold text-[#0D9488]"
                 >
                   {t(current.label)}
                 </p>
                 <p className="text-sm font-semibold text-slate-800">
-                  {t('score.later.aboutInformal', { value: formatFormative(formativeForBand(current.id)) })}
+                  {t('score.later.aboutInformal', { value: formatFormative(formative) })}
                 </p>
-                {draft.aiStatus === 'fallback' ? (
-                  <p className="text-xs leading-relaxed text-slate-500">{t('score.later.stubNote')}</p>
-                ) : null}
-                <p className="text-sm font-semibold text-[#0D9488]">{t('score.later.prevail')}</p>
+                <p className="text-sm text-slate-600">{t(mapRow.map)}</p>
               </div>
             </div>
-          </div>
-        ) : draft ? (
-          <div className="space-y-3">
-            <p className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-900">
-              {t('score.later.pending')}
-            </p>
-            <p className="text-base font-bold text-slate-900">{t('score.later.submitted')}</p>
-            <p data-testid="score-later-student-band" data-band="unset" className="text-sm font-semibold text-slate-700">
-              {t('score.later.informalRo')}
-            </p>
+            <ul className="flex flex-wrap gap-1.5" aria-label={t('score.later.aiApprox')}>
+              {rows.map((row) => {
+                const on = row.id === approx
+                return (
+                  <li
+                    key={row.id}
+                    data-testid={`score-later-student-choice-${row.id}`}
+                    aria-current={on ? 'true' : undefined}
+                    className={bandClass(on)}
+                  >
+                    {t(row.label)}
+                  </li>
+                )
+              })}
+            </ul>
+            {draft.aiStatus === 'fallback' ? (
+              <p className="text-xs leading-relaxed text-slate-500">{t('score.later.stubNote')}</p>
+            ) : null}
           </div>
         ) : (
           <p data-testid="score-later-student-band" data-band="unset" className="text-sm font-semibold text-slate-700">
             {t('score.later.empty')}
           </p>
         )}
-        <button
-          type="button"
-          disabled
-          data-testid="score-later-student-lock"
-          className="mt-3 rounded-full bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500"
-        >
-          {t('score.later.cannotEdit')}
-        </button>
-      </div>
+      </article>
+
+      <article
+        data-testid="score-later-student-comment"
+        data-present={showComment ? 'true' : 'false'}
+        className="space-y-2 rounded-2xl border border-[#0D9488]/35 bg-white px-4 py-4"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h4 className="text-base font-bold text-slate-900">{t('score.later.aiComment')}</h4>
+          {showComment ? <NotFinalPill label={t('score.later.notFinal')} /> : null}
+        </div>
+        {showComment && draft?.aiComment ? (
+          <>
+            <p className="text-sm text-slate-600">{t('score.later.aiCommentHint')}</p>
+            <p className="text-sm leading-relaxed text-slate-800">{draft.aiComment}</p>
+          </>
+        ) : (
+          <p className="text-sm font-semibold text-slate-700">{t('score.dual.unset')}</p>
+        )}
+      </article>
+
+      <article
+        data-testid="score-later-ai-radar"
+        data-readonly="true"
+        data-band={approx ?? 'unset'}
+        data-value={formative ?? 'unset'}
+        className="space-y-3 rounded-2xl border border-[#0D9488]/35 bg-white px-4 py-4"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h4 className="text-base font-bold text-slate-900">{t('score.later.aiRadar')}</h4>
+          {formative != null ? <NotFinalPill label={t('score.later.notFinal')} /> : null}
+        </div>
+        <p className="text-sm leading-relaxed text-slate-600">{t('score.later.aiRadarHint')}</p>
+        {draft && formative != null && aiChart ? (
+          <div data-testid="score-later-ai-chart-research_workbook" data-axes={aiChart.axes.length}>
+            <h5 className="text-center text-base font-bold text-[#0D9488]">{t(aiChart.title)}</h5>
+            <SchoolScoreDualFigure
+              chartId="ai-research_workbook"
+              labels={aiChart.axes.map((id) => t(axisLabelKey(id)))}
+              values={aiChart.axes.map(() => formative)}
+              drawLabels={false}
+            />
+            <ul className="space-y-1">
+              {aiChart.axes.map((id) => (
+                <li
+                  key={id}
+                  data-testid={`score-later-ai-axis-${id}`}
+                  data-value={formative}
+                  className="text-sm leading-relaxed text-slate-800"
+                >
+                  <span className="font-semibold">{t(axisLabelKey(id))}</span>
+                  <span className="text-slate-600"> {formatFormative(formative)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p className="text-sm font-semibold text-slate-700">{t('score.dual.unset')}</p>
+        )}
+      </article>
+
+      <button
+        type="button"
+        disabled
+        data-testid="score-later-student-lock"
+        className="rounded-full bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500"
+      >
+        {t('score.later.cannotEdit')}
+      </button>
 
       <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
         <span className="rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold">{t('score.later.draftPill')}</span>
