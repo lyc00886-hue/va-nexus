@@ -1029,5 +1029,7 @@
   "score.later.notFinal": "Not the final score",
   "score.later.notFinalNote": "What you see now is an approximate rating / reference band and comments, including the AI reference radars (artwork and research workbook), not the final score. It is for school discussion only. The student view keeps only these AI reference radars and does not show the formal school dual radar.",
   "score.later.aiRadar": "AI reference radar",
-  "score.later.aiRadarHint": "This is the AI reference radar, not the final score."
+  "score.later.aiRadarHint": "This is the AI reference radar, not the final score.",
+  "score.fold.open": "Show",
+  "score.fold.close": "Hide"
 }

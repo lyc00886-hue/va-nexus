@@ -9,9 +9,11 @@ import {
   formatFormative,
   type DualAxisId,
 } from '../lib/schoolScoreDual'
+import { scoreFoldLaterHasResults, useScoreFold } from '../lib/scoreFold'
 import { SCHOOL_SCORE_LATER_PLATES, aiReferenceFormative } from '../lib/schoolScoreLater'
 import { useSchoolScoreLater } from '../lib/useSchoolScoreLater'
 import { SchoolScoreDualFigure } from './SchoolScoreDualFigure'
+import { ScoreFold } from './ScoreFold'
 
 function PageThumb({ name, url, mime }: { name: string; url: string | null; mime: string }) {
   const image = Boolean(url && mime.startsWith('image/'))
@@ -102,6 +104,12 @@ export function SchoolScoreLaterStudent() {
   const formative = draft ? aiReferenceFormative(draft) : null
   const artworkChart = DUAL_CHARTS.find((chart) => chart.id === 'artwork')
   const workbookChart = DUAL_CHARTS.find((chart) => chart.id === 'research_workbook')
+  const hasLater = scoreFoldLaterHasResults({
+    approxBand: draft?.approxBand ?? null,
+    comment: showComment ? (draft?.aiComment ?? null) : null,
+    radarDrawable: Boolean(draft && formative != null && artworkChart && workbookChart),
+  })
+  const laterFold = useScoreFold(hasLater)
 
   return (
     <section
@@ -109,9 +117,17 @@ export function SchoolScoreLaterStudent() {
       data-readonly="true"
       data-scout-plate={SCHOOL_SCORE_LATER_PLATES.student}
       data-formative-scout={FORMATIVE_AI_COMMENT_PLATES.student}
-      aria-labelledby={headingId}
       className="space-y-4 border-t border-[#0D9488]/20 pt-4"
     >
+      <ScoreFold
+        testId="score-fold-later"
+        level="h4"
+        open={laterFold.open}
+        manual={laterFold.manual}
+        hasResults={hasLater}
+        onToggle={laterFold.toggle}
+        titles={[t('score.later.aiApprox'), t('score.later.aiComment'), t('score.later.aiRadar')]}
+      >
       <div>
         <h3 id={headingId} className="text-xl font-bold text-slate-900">
           {t('score.later.studentRo')}
@@ -261,6 +277,7 @@ export function SchoolScoreLaterStudent() {
         {t('score.later.studentHint')}
       </p>
 
+      </ScoreFold>
       <p id={named} className="text-center text-xs text-slate-500">
         {t('island.chip.sba')} · {t('island.chip.exam')} · {t('atlas.card.compare.title')}
       </p>
