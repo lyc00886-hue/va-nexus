@@ -7,6 +7,8 @@ import { getF4Units } from '../../game/f4Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
 import {
+  F4_CHROME_KEY,
+  GRADE_LABEL,
   historyUnitsFor,
   QUEST_ART_UNITS,
   QUEST_MEDIA_UNITS,
@@ -35,7 +37,6 @@ import { ClassicGrades } from './ClassicGrades'
 import { MapPath } from './MapPath'
 import { MapQuest } from './MapQuest'
 import { MapVersionToggle } from './MapVersionToggle'
-import { QuestTraining } from './QuestTraining'
 import { SoftAtlas, SoftMine } from './SoftAtlas'
 
 const TRACK_KEY = 'va-nexus:map-track'
@@ -204,68 +205,55 @@ export function LearningMap() {
   }
 
   if (mapOne) {
+    const onPath = shell !== 'atlas' && shell !== 'mine'
     return (
       <div data-map-shell="one" data-map-scope="quest" data-soft-shell={shell} className="space-y-5">
-        <MapVersionToggle mapOne />
         {easy.preview ? <EasyReadBar /> : null}
-        {shell === 'atlas' ? (
-          <SoftAtlas onShell={onShell} />
-        ) : shell === 'mine' ? (
-          <SoftMine onShell={onShell} />
-        ) : (
-          <>
-            <QuestTraining art={unitsById(history, QUEST_ART_UNITS)} media={unitsById(media, QUEST_MEDIA_UNITS)} />
-            <MapQuest />
-          </>
-        )}
+        <div className={onPath ? 'space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5' : 'space-y-5'}>
+          <MapVersionToggle mapOne />
+          {shell === 'atlas' ? (
+            <SoftAtlas onShell={onShell} />
+          ) : shell === 'mine' ? (
+            <SoftMine onShell={onShell} />
+          ) : (
+            <MapQuest art={unitsById(history, QUEST_ART_UNITS)} media={unitsById(media, QUEST_MEDIA_UNITS)} />
+          )}
+        </div>
       </div>
     )
   }
 
+  const yearUnits = grade === 'f4' ? f4Units : grade === 'f5' || grade === 'f6' ? yearHistory : []
+  const yearLesson = grade === 'f4' ? f4Current : yearCurrent
+  const yearUnlocked = grade === 'f4' ? f4Unlocked : isUnlocked
+
   return (
     <div className="space-y-5">
       {easy.preview ? <EasyReadBar /> : null}
-      <MapVersionToggle mapOne={false} />
-      <ClassicGrades grade={grade} onGrade={chooseGrade} />
-      <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
-
-      {grade === 'f4' ? (
-        <HistoryTrack
-          units={f4Units}
-          current={f4Current}
-          currentNodeId={f4Current?.id ?? null}
-          isUnlocked={f4Unlocked}
-          completed={completed}
-          masteryOf={(id) => masteryFor(state.nodes[id])}
-          sections={sections}
-          onToggleLesson={toggleLesson}
-          onCloseLesson={(id) => setLesson(id, false)}
-          onSetFold={setFold}
-          onReveal={revealLesson}
-        />
-      ) : grade === 'f5' || grade === 'f6' ? (
-        yearHistory.length === 0 ? (
+      <div className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5">
+        <MapVersionToggle mapOne={false} />
+        <ClassicGrades grade={grade} onGrade={chooseGrade} />
+        {grade === 'all' ? null : yearUnits.length === 0 ? (
           <p data-map-grade-empty className="rounded-3xl bg-white px-4 py-6 text-center text-sm font-medium text-slate-700">
             {t('map.grade.empty')}
           </p>
-        ) : (
-          <div data-classic-grade={grade}>
-            <HistoryTrack
-              units={yearHistory}
-              current={yearCurrent}
-              currentNodeId={yearCurrent?.id ?? null}
-              isUnlocked={isUnlocked}
-              completed={completed}
-              masteryOf={(id) => masteryFor(state.nodes[id])}
-              sections={sections}
-              onToggleLesson={toggleLesson}
-              onCloseLesson={(id) => setLesson(id, false)}
-              onSetFold={setFold}
-              onReveal={revealLesson}
-            />
-          </div>
-        )
-      ) : null}
+        ) : grade === 'f4' || grade === 'f5' || grade === 'f6' ? (
+          <ClassicYear
+            grade={grade}
+            units={yearUnits}
+            current={yearLesson}
+            currentNodeId={yearLesson?.id ?? null}
+            isUnlocked={yearUnlocked}
+            completed={completed}
+            masteryOf={(id) => masteryFor(state.nodes[id])}
+            sections={sections}
+            onToggleLesson={toggleLesson}
+            onCloseLesson={(id) => setLesson(id, false)}
+            onSetFold={setFold}
+            onReveal={revealLesson}
+          />
+        ) : null}
+      </div>
 
       {grade === 'all' ? <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
         <TrackTab active={track === 'history'} onClick={() => chooseTrack('history')}>
@@ -362,6 +350,75 @@ type PathControls = {
   onCloseLesson: (id: string) => void
   onSetFold: (id: LessonFoldId, open: boolean) => void
   onReveal: (lesson: Lesson) => void
+}
+
+function classicTitle(unit: Unit): string {
+  const key = F4_CHROME_KEY[unit.id]
+  return key ? t(key) : unit.title
+}
+
+function ClassicYear({
+  grade,
+  units,
+  current,
+  currentNodeId,
+  isUnlocked,
+  completed,
+  masteryOf,
+  sections,
+  onToggleLesson,
+  onCloseLesson,
+  onSetFold,
+  onReveal,
+}: {
+  grade: 'f4' | 'f5' | 'f6'
+  units: Unit[]
+  current: Lesson | undefined
+  currentNodeId: string | null
+  isUnlocked: (id: string) => boolean
+  completed: (id: string) => boolean
+  masteryOf: (id: string) => Mastery
+} & PathControls) {
+  const [openId, setOpenId] = useState<string | null>(null)
+  const badge = t(GRADE_LABEL[grade])
+  return (
+    <div data-classic-grade={grade} className="space-y-3">
+      {units.map((unit) => {
+        const open = openId === unit.id
+        const unitCurrent = open && current && unit.nodes.some((node) => node.id === current.id) ? current : undefined
+        return (
+          <article key={unit.id} data-classic-unit={unit.id} className="rounded-2xl border border-[#8ecfc9] bg-white px-4 py-3">
+            <button
+              type="button"
+              aria-expanded={open}
+              onClick={() => setOpenId(open ? null : unit.id)}
+              className="w-full text-left"
+            >
+              <span className="inline-flex rounded-full bg-[#0D9488] px-2.5 py-0.5 text-xs font-bold text-[#FFF9E9]">{badge}</span>
+              <span className="mt-2 block text-base font-bold leading-snug text-slate-900">{classicTitle(unit)}</span>
+            </button>
+            {open ? (
+              <div className="mt-3">
+                <HistoryTrack
+                  units={[unit]}
+                  current={unitCurrent}
+                  currentNodeId={unitCurrent ? currentNodeId : null}
+                  isUnlocked={isUnlocked}
+                  completed={completed}
+                  masteryOf={masteryOf}
+                  sections={sections}
+                  onToggleLesson={onToggleLesson}
+                  onCloseLesson={onCloseLesson}
+                  onSetFold={onSetFold}
+                  onReveal={onReveal}
+                />
+              </div>
+            ) : null}
+          </article>
+        )
+      })}
+    </div>
+  )
 }
 
 function HistoryTrack({

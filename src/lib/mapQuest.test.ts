@@ -13,6 +13,7 @@ import {
   questFormFromSearch,
   questLane,
   questNodes,
+  questUnitFace,
   questUnits,
   questXpMoves,
   withQuestForm,
@@ -95,6 +96,17 @@ describe('quest map structure', () => {
     assert.equal(units[0].nodes[3].name['zh-Hant'], '單元寶箱')
     assert.equal(questActiveId(QUEST_SECTIONS[0]), 's4-u1-n1')
     assert.deepEqual([0, 1, 2, 3].map(questLane), [22, 50, 78, 50])
+    assert.equal(QUEST_SECTIONS[0].units.length, 5)
+    assert.equal(QUEST_SECTIONS[1].units.length, 5)
+    assert.equal(QUEST_SECTIONS[2].units.length, 5)
+    const face = questUnitFace(QUEST_SECTIONS[0].units[0], 'zh-Hant')
+    assert.equal(face.title, '視覺眼睛開光')
+    assert.equal(face.subtitle, '費德曼四步同詞彙')
+    assert.equal(questUnitFace(QUEST_SECTIONS[0].units[1], 'zh-Hant').title, '素描 · 美感 · 設計思維')
+    assert.equal(questUnitFace(QUEST_SECTIONS[0].units[1], 'zh-Hant').subtitle, '')
+    const s5 = QUEST_SECTIONS[1].units[0].title['zh-Hant']
+    assert.equal(s5, '唔係美感 · 評賞加深')
+    assert.equal(s5.codePointAt(0), 0x5514)
   })
 
   it('keeps the student-safe names and leaves visit nodes out', () => {
@@ -143,12 +155,18 @@ describe('quest map structure', () => {
       .map(read)
       .join('\n')
     assert.match(surface, /pb-32/)
-    assert.match(surface, /border-b-\[7px\]/)
-    assert.match(surface, /active:translate-y-1/)
+    assert.match(surface, /data-quest-path="illustrated"/)
+    assert.match(surface, /data-quest-entry="path"/)
     assert.match(surface, /data-quest-xp="static"/)
     assert.match(surface, /data-quest-slot="empty"/)
     assert.match(surface, /data-quest-drawer/)
     assert.match(surface, /data-quest-gear/)
+    assert.match(surface, /map\.grade\.f4/)
+    assert.match(surface, /map\.grade\.f5/)
+    assert.match(surface, /map\.grade\.f6/)
+    assert.equal(read('src/components/game/MapQuest.tsx').includes('otter-map-idle'), false)
+    assert.equal(surface.includes('{item.chip}'), false)
+    assert.equal(surface.includes('{current.chip}'), false)
     assert.equal(surface.includes('animate-bounce'), false)
     assert.equal(surface.includes('strokeWidth="16"'), false)
     assert.equal(surface.includes('data-illu-legend'), false)

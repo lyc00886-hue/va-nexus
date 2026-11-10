@@ -9,7 +9,7 @@ import { isSupabaseConfigured } from '../lib/supabase'
 import { useMapOneShell } from '../lib/useMapOneShell'
 import { useQuestCalm } from '../lib/useQuestForm'
 import { AuthButton } from './AuthButton'
-import { QuestGearButton, QuestGradeSwitch, QuestOtterMark, QuestStats } from './game/MapQuestChrome'
+import { QuestGearButton, QuestOtterMark, QuestStats } from './game/MapQuestChrome'
 import { ProgressSync } from './ProgressSync'
 import { SenSettingsPanel } from './SenSettingsPanel'
 
@@ -259,7 +259,6 @@ export function Header() {
             />
             <p className={mapOne ? 'sr-only' : 'truncate text-[11px] text-slate-500'}>{t('header.subtitle')}</p>
           </div>
-          {mapOne ? <QuestGradeSwitch /> : null}
         </div>
 
         <div className={mapOne ? 'flex w-full flex-wrap items-center gap-1.5' : 'flex flex-wrap items-center gap-2'}>

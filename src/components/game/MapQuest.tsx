@@ -1,104 +1,46 @@
 import { useEffect, useId, useState } from 'react'
+import type { Unit } from '../../game/types'
 import { useT } from '../../i18n'
 import {
   QUEST_CHROME,
-  QUEST_EDGE,
-  questActiveId,
-  questLane,
   questNode,
   questSection,
+  questUnitFace,
   questXpMoves,
+  type QuestFormId,
   type QuestNode,
   type QuestUnit,
 } from '../../lib/mapQuest'
 import { useQuestCalm, useQuestForm } from '../../lib/useQuestForm'
 import { QuestSectionSwitch } from './MapQuestChrome'
+import { questPathLayout } from '../../lib/questPathLayout'
+import { QuestPathArt } from './QuestPathArt'
+import { QuestTraining } from './QuestTraining'
 
-const OTTER = '/content/learning-map-illustrations/moods/motion-v2/otter-map-idle.png'
+const EMPTY_UNITS: Unit[] = []
 
-function faceStyle(unit: QuestUnit, node: QuestNode, active: boolean): { background: string; color: string; borderColor: string } {
-  if (node.chest) {
-    return { background: '#FFF4E5', color: '#B45309', borderColor: '#B45309' }
-  }
-  if (active) {
-    return { background: unit.color, color: '#FFF9E9', borderColor: QUEST_EDGE[unit.color] ?? unit.color }
-  }
-  return { background: '#ffffff', color: unit.color, borderColor: unit.color }
-}
-
-function UnitPath({ unit }: { unit: QuestUnit }) {
-  const points = unit.nodes.map((_, index) => `${index === 0 ? 'M' : 'L'} ${questLane(index)} ${12 + index * 25}`)
-  return (
-    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden>
-      <path d={points.join(' ')} fill="none" stroke="#99f6e4" strokeWidth="0.7" strokeDasharray="1.6 1.8" strokeLinecap="round" />
-    </svg>
-  )
-}
-
-function QuestNodeButton({
-  unit,
-  node,
-  index,
-  active,
-  label,
-  name,
-  chestReady,
-  onOpen,
-}: {
-  unit: QuestUnit
-  node: QuestNode
-  index: number
-  active: boolean
-  label: string
-  name: string
-  chestReady: string
-  onOpen: (id: string) => void
-}) {
-  const face = faceStyle(unit, node, active)
-  const moves = questXpMoves()
-  return (
-    <div className="absolute top-0 w-28 -translate-x-1/2 text-center" style={{ left: `${questLane(index)}%` }}>
-      {active ? (
-        <span
-          data-quest-xp="static"
-          data-quest-xp-moves={moves ? 'on' : 'off'}
-          className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#0D9488] px-3 py-1 text-xs font-bold text-white"
-        >
-          {label}
-        </span>
-      ) : null}
-      <button
-        type="button"
-        data-quest-node={node.id}
-        data-quest-chest={node.chest ? 'true' : 'false'}
-        data-quest-active={active ? 'true' : 'false'}
-        aria-label={name}
-        onClick={() => onOpen(node.id)}
-        className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border-b-[7px] text-lg font-bold active:translate-y-1 active:border-b-[2px]"
-        style={{ background: face.background, color: face.color, borderColor: face.borderColor }}
-      >
-        {node.chest ? '寶' : active ? '' : String(index + 1)}
-        {active && !node.chest ? <span className="h-3 w-3 rounded-full bg-white" aria-hidden /> : null}
-      </button>
-      <span className="mt-1 block text-sm font-bold leading-tight text-slate-800">{name}</span>
-      {node.chest ? <span className="block text-xs text-[#B45309]">{chestReady}</span> : null}
-    </div>
-  )
-}
-
-export function MapQuest() {
+export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Unit[]; media?: Unit[] }) {
   const { locale } = useT()
   const [form, choose] = useQuestForm()
   const [calm] = useQuestCalm()
-  const [focusId, setFocusId] = useState<string | null>(null)
+  const [openUnitId, setOpenUnitId] = useState<string | null>(null)
   const [popoverId, setPopoverId] = useState<string | null>(null)
   const [enteredId, setEnteredId] = useState<string | null>(null)
+  const [seenForm, setSeenForm] = useState(form)
+  if (seenForm !== form) {
+    setSeenForm(form)
+    setOpenUnitId(null)
+    setPopoverId(null)
+    setEnteredId(null)
+  }
   const titleId = useId()
   const chrome = QUEST_CHROME[locale]
   const section = questSection(form)
-  const activeId = questActiveId(section)
+  const openUnit = section.units.find((unit) => unit.id === openUnitId)
   const popover = popoverId ? questNode(popoverId) : undefined
   const entered = enteredId ? questNode(enteredId) : undefined
+  const layout = questPathLayout(section.units.length)
+  const activeUnitId = section.units[0]?.id
 
   useEffect(() => {
     if (!popover) return
@@ -111,8 +53,11 @@ export function MapQuest() {
     return () => window.removeEventListener('keydown', onKey)
   }, [popover])
 
-  function openNode(id: string) {
-    setPopoverId(id)
+  function chooseForm(next: QuestFormId) {
+    choose(next)
+    setOpenUnitId(null)
+    setPopoverId(null)
+    setEnteredId(null)
   }
 
   if (entered) {
@@ -123,68 +68,60 @@ export function MapQuest() {
         </button>
         <h2 className="mt-4 text-2xl font-bold text-slate-900">{entered.name[locale]}</h2>
         <p className="mt-2 text-sm text-slate-600">{entered.line[locale]}</p>
-        {entered.chest ? <p className="mt-4 text-sm font-semibold text-[#B45309]">{chrome.chestReady}</p> : null}
       </section>
     )
   }
 
   return (
-    <section data-quest-map data-quest-form={form} className="relative rounded-[2rem] bg-[#FFF9E9] px-3 py-4 pb-32 sm:px-5">
-      <QuestSectionSwitch
-        form={form}
-        onChoose={(next) => {
-          choose(next)
-          setFocusId(null)
-          setPopoverId(null)
-        }}
-      />
-      <div className="mt-4 space-y-8">
-        {section.units.map((unit, unitIndex) => (
-          <article key={unit.id} data-quest-unit={unit.id} className="relative">
-            <header className="rounded-2xl px-4 py-3 text-white" style={{ background: unit.color }}>
-              <p className="text-xs font-semibold text-white/80">{unit.code}</p>
-              <h2 className="text-lg font-bold leading-snug">{unit.title[locale]}</h2>
-              <button
-                type="button"
-                data-quest-focus={unit.id}
-                aria-expanded={focusId === unit.id}
-                onClick={() => setFocusId((current) => (current === unit.id ? null : unit.id))}
-                className="mt-2 inline-flex min-h-8 items-center rounded-full bg-white/95 px-3 text-xs font-bold text-slate-800"
-              >
-                {chrome.focus}
-              </button>
-              {focusId === unit.id ? <p className="mt-2 text-sm text-white/95">{unit.focus[locale]}</p> : null}
-            </header>
-            <ol className="relative mt-8">
-              <UnitPath unit={unit} />
-              {unitIndex === 0 ? (
-                <img
-                  src={OTTER}
-                  alt=""
-                  width={96}
-                  height={96}
-                  decoding="async"
-                  className="pointer-events-none absolute left-1 top-28 h-14 w-14 object-contain"
-                />
-              ) : null}
-              {unit.nodes.map((node, index) => (
-                <li key={node.id} className="relative h-28">
-                  <QuestNodeButton
-                    unit={unit}
-                    node={node}
-                    index={index}
-                    active={node.id === activeId}
-                    label={chrome.startXp}
-                    name={node.name[locale]}
-                    chestReady={chrome.chestReady}
-                    onOpen={openNode}
+    <section data-quest-map data-quest-form={form} className="relative pb-32">
+      <QuestSectionSwitch form={form} onChoose={chooseForm} />
+      {openUnit ? (
+        <UnitPanel
+          unit={openUnit}
+          art={art}
+          media={media}
+          locale={locale}
+          backLabel={chrome.back}
+          startLabel={chrome.start}
+          onBack={() => setOpenUnitId(null)}
+          onOpen={setPopoverId}
+        />
+      ) : (
+        <div data-quest-path="illustrated" data-quest-entry="path" className="relative mx-auto mt-3 w-full max-w-[24rem]">
+          <QuestPathArt layout={layout} />
+          <ol className="absolute inset-0 m-0 list-none p-0">
+            {section.units.map((unit, index) => {
+              const point = layout.points[index]
+              const face = questUnitFace(unit, locale)
+              const active = unit.id === activeUnitId
+              if (!point) return null
+              return (
+                <li
+                  key={unit.id}
+                  className="absolute w-40 -translate-x-1/2 -translate-y-6 text-center"
+                  style={{
+                    left: `${(point.x / layout.width) * 100}%`,
+                    top: `${(point.y / layout.height) * 100}%`,
+                  }}
+                >
+                  <PathNode
+                    unitId={unit.id}
+                    active={active}
+                    label={face.title}
+                    onOpen={() => setOpenUnitId(unit.id)}
                   />
+                  <span className="mt-2 block rounded-xl bg-white/95 px-2 py-1 shadow-sm ring-1 ring-[#d7efe9]">
+                    <span className="block text-balance text-xs font-bold leading-snug text-slate-900">{face.title}</span>
+                    {face.subtitle ? (
+                      <span className="mt-0.5 block text-[10px] leading-snug text-slate-500">{face.subtitle}</span>
+                    ) : null}
+                  </span>
                 </li>
-              ))}
-            </ol>
-          </article>
-        ))}
-      </div>
+              )
+            })}
+          </ol>
+        </div>
+      )}
       {popover ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/30 px-4" onClick={() => setPopoverId(null)}>
           <div
@@ -218,5 +155,110 @@ export function MapQuest() {
         </div>
       ) : null}
     </section>
+  )
+}
+
+function PathNode({
+  unitId,
+  active,
+  label,
+  onOpen,
+}: {
+  unitId: string
+  active: boolean
+  label: string
+  onOpen: () => void
+}) {
+  const moves = questXpMoves()
+  return (
+    <button
+      type="button"
+      data-quest-node={unitId}
+      data-quest-active={active ? 'true' : 'false'}
+      aria-current={active ? 'step' : undefined}
+      aria-label={label}
+      onClick={onOpen}
+      className="relative mx-auto flex h-16 w-16 items-center justify-center"
+    >
+      {active ? (
+        <span
+          data-quest-xp="static"
+          data-quest-xp-moves={moves ? 'on' : 'off'}
+          className="absolute h-[4.6rem] w-[4.6rem] rounded-full border-2 border-[#0D9488]"
+          aria-hidden
+        />
+      ) : null}
+      {active ? <span className="absolute h-14 w-14 rounded-full border-2 border-[#0D9488]" aria-hidden /> : null}
+      <span className="relative h-11 w-11 rounded-full border-2 border-[#0D9488] bg-white" aria-hidden />
+    </button>
+  )
+}
+
+function UnitPanel({
+  unit,
+  art,
+  media,
+  locale,
+  backLabel,
+  startLabel,
+  onBack,
+  onOpen,
+}: {
+  unit: QuestUnit
+  art: Unit[]
+  media: Unit[]
+  locale: 'zh-Hant' | 'zh-Hans' | 'en'
+  backLabel: string
+  startLabel: string
+  onBack: () => void
+  onOpen: (id: string) => void
+}) {
+  const face = questUnitFace(unit, locale)
+  const showTraining = unit.id === 's4-u1' && (art.length > 0 || media.length > 0)
+  return (
+    <div data-quest-unit={unit.id} className="mt-4">
+      <button type="button" onClick={onBack} className="text-sm font-semibold text-[#0D9488]">
+        {backLabel}
+      </button>
+      <h2 className="mt-3 text-xl font-bold text-slate-900">{face.title}</h2>
+      {face.subtitle ? <p className="mt-1 text-sm text-slate-500">{face.subtitle}</p> : null}
+      <ul className="mt-4 space-y-2">
+        {unit.nodes.map((node) => (
+          <li key={node.id}>
+            <StepButton node={node} locale={locale} startLabel={startLabel} onOpen={onOpen} />
+          </li>
+        ))}
+      </ul>
+      {showTraining ? (
+        <div className="mt-5">
+          <QuestTraining art={art} media={media} />
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+function StepButton({
+  node,
+  locale,
+  startLabel,
+  onOpen,
+}: {
+  node: QuestNode
+  locale: 'zh-Hant' | 'zh-Hans' | 'en'
+  startLabel: string
+  onOpen: (id: string) => void
+}) {
+  return (
+    <button
+      type="button"
+      data-quest-node={node.id}
+      data-quest-chest={node.chest ? 'true' : 'false'}
+      onClick={() => onOpen(node.id)}
+      className="flex min-h-11 w-full items-center justify-between gap-3 rounded-2xl bg-white px-3 py-2 text-left ring-1 ring-[#b7e4df]"
+    >
+      <span className="text-sm font-bold text-slate-900">{node.name[locale]}</span>
+      <span className="text-xs font-semibold text-[#0D9488]">{startLabel}</span>
+    </button>
   )
 }

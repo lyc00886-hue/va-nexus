@@ -1,9 +1,8 @@
 import { Settings } from 'lucide-react'
-import { useState } from 'react'
 import { useGame } from '../../context/GameContext'
-import { useT } from '../../i18n'
-import { QUEST_CHROME, QUEST_SECTIONS, type QuestFormId } from '../../lib/mapQuest'
-import { useQuestCalm, useQuestForm } from '../../lib/useQuestForm'
+import { t, useT, type MessageKey } from '../../i18n'
+import { QUEST_CHROME, type QuestFormId } from '../../lib/mapQuest'
+import { useQuestCalm } from '../../lib/useQuestForm'
 
 const OTTER = '/content/learning-map-illustrations/moods/motion-v2/otter-map-idle.png'
 
@@ -11,60 +10,43 @@ export function QuestOtterMark({ className = 'h-9 w-9' }: { className?: string }
   return <img src={OTTER} alt="" width={64} height={64} decoding="async" className={`${className} rounded-full object-cover`} />
 }
 
-export function QuestGradeSwitch() {
-  const { locale } = useT()
-  const [form, choose] = useQuestForm()
-  const [open, setOpen] = useState(false)
-  const chrome = QUEST_CHROME[locale]
-  const current = QUEST_SECTIONS.find((item) => item.id === form) ?? QUEST_SECTIONS[0]
+const QUEST_GRADE_OPTIONS: readonly { id: QuestFormId; label: MessageKey; grade: 'f4' | 'f5' | 'f6' }[] = [
+  { id: 's4', label: 'map.grade.f4', grade: 'f4' },
+  { id: 's5', label: 'map.grade.f5', grade: 'f5' },
+  { id: 's6', label: 'map.grade.f6', grade: 'f6' },
+]
+
+const GRADE_CHIP =
+  'rounded-full border font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]'
+
+export function QuestSectionSwitch({ form, onChoose }: { form: QuestFormId; onChoose: (id: QuestFormId) => void }) {
   return (
-    <div className="relative">
-      <button
-        type="button"
-        data-quest-grade={form}
-        aria-haspopup="listbox"
-        aria-expanded={open}
-        aria-label={`${chrome.grade} ${current.chip} ${current.name[locale]}`}
-        onClick={() => setOpen((value) => !value)}
-        className="inline-flex min-h-9 items-center gap-1 rounded-full bg-white px-3 py-1 text-sm font-bold text-[#0D9488] ring-1 ring-[#0D9488]"
-      >
-        <span className="sm:hidden">{current.short[locale]}</span>
-        <span className="hidden sm:inline">
-          {current.chip} {current.name[locale]}
-        </span>
-        <span aria-hidden>{open ? '▴' : '▾'}</span>
-      </button>
-      {open ? (
-        <ul
-          role="listbox"
-          aria-label={chrome.grade}
-          data-quest-grade-menu
-          className="absolute left-0 z-50 mt-1 min-w-44 rounded-2xl bg-white p-1 shadow-lg ring-1 ring-[#b7e4df]"
-        >
-          {QUEST_SECTIONS.map((item) => {
-            const selected = item.id === form
-            return (
-              <li key={item.id}>
-                <button
-                  type="button"
-                  role="option"
-                  aria-selected={selected}
-                  data-quest-grade-option={item.id}
-                  onClick={() => {
-                    choose(item.id)
-                    setOpen(false)
-                  }}
-                  className={`block w-full rounded-xl px-3 py-2 text-left text-sm font-semibold ${
-                    selected ? 'bg-[#0D9488] text-[#FFF9E9]' : 'text-slate-800 hover:bg-teal-50'
-                  }`}
-                >
-                  {item.chip} {item.name[locale]}
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      ) : null}
+    <div data-quest-grades data-quest-grade={form}>
+      <p className="text-xs font-semibold text-teal-800">{t('map.gradeLabel')}</p>
+      <div role="radiogroup" aria-label={t('map.gradeLabel')} className="mt-2 flex flex-wrap gap-1.5">
+        {QUEST_GRADE_OPTIONS.map((item) => {
+          const selected = item.id === form
+          return (
+            <button
+              key={item.id}
+              type="button"
+              role="radio"
+              aria-checked={selected}
+              data-quest-section={item.id}
+              data-map-grade={item.grade}
+              data-selected={selected ? 'true' : 'false'}
+              onClick={() => onChoose(item.id)}
+              className={
+                selected
+                  ? `${GRADE_CHIP} min-h-9 border-[#0D9488] bg-[#0D9488] px-3 py-1 text-sm text-[#FFF9E9]`
+                  : `${GRADE_CHIP} min-h-9 border-[#0D9488] bg-white px-3 py-1 text-sm text-[#0D9488]`
+              }
+            >
+              {t(item.label)}
+            </button>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -124,30 +106,3 @@ export function QuestGearButton({ open, onClick }: { open: boolean; onClick: () 
   )
 }
 
-export function QuestSectionSwitch({ form, onChoose }: { form: QuestFormId; onChoose: (id: QuestFormId) => void }) {
-  const { locale } = useT()
-  const chrome = QUEST_CHROME[locale]
-  return (
-    <div role="radiogroup" aria-label={chrome.sections} data-quest-sections className="flex flex-wrap gap-2">
-      {QUEST_SECTIONS.map((item) => {
-        const selected = item.id === form
-        return (
-          <button
-            key={item.id}
-            type="button"
-            role="radio"
-            aria-checked={selected}
-            data-quest-section={item.id}
-            aria-label={`${item.chip} ${item.name[locale]}`}
-            onClick={() => onChoose(item.id)}
-            className={`min-h-9 rounded-full px-4 py-1 text-sm font-bold ${
-              selected ? 'bg-[#0D9488] text-[#FFF9E9]' : 'bg-white text-[#0D9488] ring-1 ring-[#0D9488]'
-            }`}
-          >
-            {item.chip}
-          </button>
-        )
-      })}
-    </div>
-  )
-}

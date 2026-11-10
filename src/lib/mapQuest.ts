@@ -207,7 +207,7 @@ export const QUEST_SECTIONS: readonly [QuestSection, QuestSection, QuestSection]
       's5',
       1,
       6,
-      ['咩係美感 · 評賞加深', '什么是美感 · 评赏加深', 'What beauty is · critique'],
+      ['唔係美感 · 評賞加深', '不是美感 · 评赏加深', 'Not about prettiness · critique'],
       ['美感同評賞加深', '美感与评赏加深', 'Beauty, then a deeper critique'],
       [
         [['美感觀察', '美感观察', 'Notice beauty'], ['6-1 · 美感觀察', '6-1 · 美感观察', '6-1 · Notice beauty']],
@@ -433,6 +433,19 @@ export const QUEST_CHROME: Record<
     sections: 'Year',
     grade: 'Switch year',
   },
+}
+
+/** Split a unit title only when the tail is the same line as the unit focus. */
+export function questUnitFace(unit: QuestUnit, locale: QuestLocale): { title: string; subtitle: string } {
+  const full = unit.title[locale]
+  const focus = unit.focus[locale]
+  const mark = ' · '
+  const cut = full.indexOf(mark)
+  if (cut > 0) {
+    const tail = full.slice(cut + mark.length)
+    if (tail === focus) return { title: full.slice(0, cut), subtitle: focus }
+  }
+  return { title: full, subtitle: '' }
 }
 
 export function questSection(id: QuestFormId): QuestSection {
