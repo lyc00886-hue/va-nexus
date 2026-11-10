@@ -63,6 +63,7 @@ export function SchoolScoreLaterStudent() {
   const mapRow = maps.find((row) => row.id === approx)
   const showComment = Boolean(draft && draft.aiStatus === 'model' && draft.aiComment)
   const formative = draft ? aiReferenceFormative(draft) : null
+  const aiChart = DUAL_CHARTS.find((chart) => chart.id === 'research_workbook')
 
   return (
     <section
@@ -186,32 +187,28 @@ export function SchoolScoreLaterStudent() {
           {formative != null ? <NotFinalPill label={t('score.later.notFinal')} /> : null}
         </div>
         <p className="text-sm leading-relaxed text-slate-600">{t('score.later.aiRadarHint')}</p>
-        {draft && formative != null ? (
-          <div className="grid gap-3 sm:grid-cols-2">
-            {DUAL_CHARTS.map((chart) => (
-              <div key={chart.id} data-testid={`score-later-ai-chart-${chart.id}`}>
-                <h5 className="text-center text-base font-bold text-[#0D9488]">{t(chart.title)}</h5>
-                <SchoolScoreDualFigure
-                  chartId={`ai-${chart.id}`}
-                  labels={chart.axes.map((id) => t(axisLabelKey(id)))}
-                  values={chart.axes.map(() => formative)}
-                  drawLabels={false}
-                />
-                <ul className="space-y-1">
-                  {chart.axes.map((id) => (
-                    <li
-                      key={id}
-                      data-testid={`score-later-ai-axis-${id}`}
-                      data-value={formative}
-                      className="text-sm leading-relaxed text-slate-800"
-                    >
-                      <span className="font-semibold">{t(axisLabelKey(id))}</span>
-                      <span className="text-slate-600"> {formatFormative(formative)}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+        {draft && formative != null && aiChart ? (
+          <div data-testid="score-later-ai-chart-research_workbook" data-axes={aiChart.axes.length}>
+            <h5 className="text-center text-base font-bold text-[#0D9488]">{t(aiChart.title)}</h5>
+            <SchoolScoreDualFigure
+              chartId="ai-research_workbook"
+              labels={aiChart.axes.map((id) => t(axisLabelKey(id)))}
+              values={aiChart.axes.map(() => formative)}
+              drawLabels={false}
+            />
+            <ul className="space-y-1">
+              {aiChart.axes.map((id) => (
+                <li
+                  key={id}
+                  data-testid={`score-later-ai-axis-${id}`}
+                  data-value={formative}
+                  className="text-sm leading-relaxed text-slate-800"
+                >
+                  <span className="font-semibold">{t(axisLabelKey(id))}</span>
+                  <span className="text-slate-600"> {formatFormative(formative)}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         ) : (
           <p className="text-sm font-semibold text-slate-700">{t('score.dual.unset')}</p>
