@@ -12,12 +12,15 @@ import {
   questCalmFromStored,
   questFormFromSearch,
   questLane,
+  questMotionPlay,
+  questMotionPrefFromStored,
   questNodes,
   questUnitFace,
   questUnits,
   questXpMoves,
   withQuestForm,
 } from './mapQuest.ts'
+import { questBand, questCurrentIndex, questNodeFramed, questNodeProgress, questPathLayout } from './questPathLayout.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -175,5 +178,67 @@ describe('quest map structure', () => {
     for (const banned of ['地圖一開即見', '單元微關', '地圖底距', '稍後開放', '揀地圖', '打開地圖', '真題', '奪星', 'Flame']) {
       assert.equal(surface.includes(banned), false, banned)
     }
+  })
+
+  it('keeps a denser five-band path, map-first entry, and motion off', () => {
+    const art = read('src/components/game/QuestPathArt.tsx')
+    const quest = read('src/components/game/MapQuest.tsx')
+    const chrome = read('src/components/game/MapQuestChrome.tsx')
+    const css = read('src/index.css')
+    for (const band of ['garden', 'studio', 'classroom', 'frames', 'exam']) {
+      assert.match(art, new RegExp(`data-quest-band="${band}"`))
+    }
+    assert.match(art, /data-quest-density="bands"/)
+    assert.equal(art.includes('otter-map-idle'), false)
+    assert.equal(art.includes('world-map-biome-path-concept'), false)
+    assert.equal(quest.includes('useState<string | null>(null)'), true)
+    assert.match(quest, /data-quest-entry="path"/)
+    assert.match(quest, /data-quest-state=\{framed \? 'checkpoint' : progress\}/)
+    assert.match(quest, /questCurrentIndex\(0/)
+    assert.match(chrome, /map\.motion\.off/)
+    assert.match(chrome, /map\.motion\.on/)
+    assert.equal(chrome.includes('SoftMotion'), false)
+    assert.match(css, /prefers-reduced-motion: reduce/)
+    assert.match(css, /\.quest-ring-pulse/)
+    const layout = questPathLayout(5)
+    assert.equal(layout.points.length, 5)
+    assert.deepEqual(
+      [0, 1, 2, 3, 4].map(questBand),
+      ['garden', 'studio', 'classroom', 'frames', 'exam'],
+    )
+    assert.equal(questNodeFramed(3), true)
+    assert.equal(questNodeFramed(0), false)
+    assert.equal(questCurrentIndex(0, 5), 0)
+    assert.equal(questNodeProgress(0, 0), 'current')
+    assert.equal(questNodeProgress(1, 1), 'current')
+    assert.equal(questNodeProgress(0, 1), 'done')
+    assert.equal(questNodeProgress(2, 1), 'locked')
+    assert.equal(questMotionPrefFromStored(null), false)
+    assert.equal(questMotionPrefFromStored('0'), false)
+    assert.equal(questMotionPrefFromStored('1'), true)
+    assert.equal(questMotionPlay({ pref: false, reduceMotion: false, prefersReducedMotion: false }), false)
+    assert.equal(questMotionPlay({ pref: true, reduceMotion: false, prefersReducedMotion: false }), true)
+    assert.equal(questMotionPlay({ pref: true, reduceMotion: true, prefersReducedMotion: false }), false)
+    assert.equal(questMotionPlay({ pref: true, reduceMotion: false, prefersReducedMotion: true }), false)
+    const files = {
+      'zh-Hant': ['動態：關', '動態：開'],
+      'zh-Hans': ['动态：关', '动态：开'],
+      en: ['Motion: Off', 'Motion: On'],
+    } as const
+    for (const [locale, [off, on]] of Object.entries(files)) {
+      const bag = JSON.parse(read(`src/i18n/${locale}.json`)) as Record<string, string>
+      assert.equal(bag['map.motion.off'], off, locale)
+      assert.equal(bag['map.motion.on'], on, locale)
+      assert.equal(bag['map.motion.off'].includes('Soft'), false)
+      assert.equal(bag['map.grade.f4'] === 'S.4', false)
+    }
+    const hant = JSON.parse(read('src/i18n/zh-Hant.json')) as Record<string, string>
+    assert.equal(hant['map.band.garden'], '觀察園')
+    assert.equal(hant['map.band.studio'], '畫室')
+    assert.equal(hant['map.band.classroom'], '課室')
+    assert.equal(hant['map.band.frames'], '像框牆')
+    assert.equal(hant['map.band.exam'], '應試練習場')
+    assert.equal(hant['map.track.history'], '藝術史')
+    assert.equal(hant['map.track.media'], '媒介入門')
   })
 })

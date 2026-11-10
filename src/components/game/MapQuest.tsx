@@ -1,6 +1,7 @@
 import { useEffect, useId, useState } from 'react'
+import { Check } from 'lucide-react'
 import type { Unit } from '../../game/types'
-import { useT } from '../../i18n'
+import { useT, type MessageKey } from '../../i18n'
 import {
   QUEST_CHROME,
   questNode,
@@ -11,18 +12,35 @@ import {
   type QuestNode,
   type QuestUnit,
 } from '../../lib/mapQuest'
-import { useQuestCalm, useQuestForm } from '../../lib/useQuestForm'
-import { QuestSectionSwitch } from './MapQuestChrome'
-import { questPathLayout } from '../../lib/questPathLayout'
+import { useQuestCalm, useQuestForm, useQuestMotionPlay } from '../../lib/useQuestForm'
+import { QuestMotionButton, QuestSectionSwitch } from './MapQuestChrome'
+import {
+  questBand,
+  questCurrentIndex,
+  questNodeFramed,
+  questNodeProgress,
+  questPathLayout,
+  type QuestBandId,
+  type QuestNodeProgress,
+} from '../../lib/questPathLayout'
 import { QuestPathArt } from './QuestPathArt'
 import { QuestTraining } from './QuestTraining'
+
+const BAND_LABEL: Record<QuestBandId, MessageKey> = {
+  garden: 'map.band.garden',
+  studio: 'map.band.studio',
+  classroom: 'map.band.classroom',
+  frames: 'map.band.frames',
+  exam: 'map.band.exam',
+}
 
 const EMPTY_UNITS: Unit[] = []
 
 export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Unit[]; media?: Unit[] }) {
-  const { locale } = useT()
+  const { locale, t } = useT()
   const [form, choose] = useQuestForm()
   const [calm] = useQuestCalm()
+  const motion = useQuestMotionPlay()
   const [openUnitId, setOpenUnitId] = useState<string | null>(null)
   const [popoverId, setPopoverId] = useState<string | null>(null)
   const [enteredId, setEnteredId] = useState<string | null>(null)
@@ -40,7 +58,11 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
   const popover = popoverId ? questNode(popoverId) : undefined
   const entered = enteredId ? questNode(enteredId) : undefined
   const layout = questPathLayout(section.units.length)
-  const activeUnitId = section.units[0]?.id
+  const currentIndex = questCurrentIndex(0, section.units.length)
+  const bands = section.units.map((_, index) => {
+    const id = questBand(index)
+    return { id, label: t(BAND_LABEL[id]) }
+  })
 
   useEffect(() => {
     if (!popover) return
@@ -73,8 +95,11 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
   }
 
   return (
-    <section data-quest-map data-quest-form={form} className="relative pb-32">
-      <QuestSectionSwitch form={form} onChoose={chooseForm} />
+    <section data-quest-map data-quest-form={form} data-quest-motion={motion ? 'on' : 'off'} className="relative pb-32">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <QuestSectionSwitch form={form} onChoose={chooseForm} />
+        <QuestMotionButton />
+      </div>
       {openUnit ? (
         <UnitPanel
           unit={openUnit}
@@ -88,12 +113,12 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         />
       ) : (
         <div data-quest-path="illustrated" data-quest-entry="path" className="relative mx-auto mt-3 w-full max-w-[24rem]">
-          <QuestPathArt layout={layout} />
+          <QuestPathArt layout={layout} bands={bands} motion={motion} />
           <ol className="absolute inset-0 m-0 list-none p-0">
             {section.units.map((unit, index) => {
               const point = layout.points[index]
               const face = questUnitFace(unit, locale)
-              const active = unit.id === activeUnitId
+              const progress = questNodeProgress(index, currentIndex)
               if (!point) return null
               return (
                 <li
@@ -106,7 +131,9 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
                 >
                   <PathNode
                     unitId={unit.id}
-                    active={active}
+                    progress={progress}
+                    framed={questNodeFramed(index)}
+                    motion={motion}
                     label={face.title}
                     onOpen={() => setOpenUnitId(unit.id)}
                   />
@@ -160,27 +187,40 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
 
 function PathNode({
   unitId,
-  active,
+  progress,
+  framed,
+  motion,
   label,
   onOpen,
 }: {
   unitId: string
-  active: boolean
+  progress: QuestNodeProgress
+  framed: boolean
+  motion: boolean
   label: string
   onOpen: () => void
 }) {
   const moves = questXpMoves()
+  const current = progress === 'current'
+  const done = progress === 'done'
+  const locked = progress === 'locked'
   return (
     <button
       type="button"
       data-quest-node={unitId}
-      data-quest-active={active ? 'true' : 'false'}
-      aria-current={active ? 'step' : undefined}
+      data-quest-active={current ? 'true' : 'false'}
+      data-quest-progress={progress}
+      data-quest-state={framed ? 'checkpoint' : progress}
+      data-quest-shape={framed ? 'frame' : 'ring'}
+      aria-current={current ? 'step' : undefined}
       aria-label={label}
       onClick={onOpen}
       className="relative mx-auto flex h-16 w-16 items-center justify-center"
     >
-      {active ? (
+      {current && motion ? (
+        <span className="quest-ring-pulse absolute h-16 w-16 rounded-full border-2 border-[#0D9488]" aria-hidden />
+      ) : null}
+      {current ? (
         <span
           data-quest-xp="static"
           data-quest-xp-moves={moves ? 'on' : 'off'}
@@ -188,8 +228,30 @@ function PathNode({
           aria-hidden
         />
       ) : null}
-      {active ? <span className="absolute h-14 w-14 rounded-full border-2 border-[#0D9488]" aria-hidden /> : null}
-      <span className="relative h-11 w-11 rounded-full border-2 border-[#0D9488] bg-white" aria-hidden />
+      {current ? <span className="absolute h-14 w-14 rounded-full border-2 border-[#0D9488]" aria-hidden /> : null}
+      {framed ? (
+        <span
+          className={`relative flex h-12 w-12 items-center justify-center rounded-xl border-2 bg-white ${
+            locked ? 'border-[#0D9488]/45' : 'border-[#0D9488]'
+          }`}
+          aria-hidden
+        >
+          {done ? (
+            <Check className="h-5 w-5 text-[#0D9488]" strokeWidth={2.6} />
+          ) : (
+            <span className={`h-5 w-5 rounded-md border-2 ${locked ? 'border-[#0D9488]/40' : 'border-[#0D9488]'}`} />
+          )}
+        </span>
+      ) : done ? (
+        <span className="relative flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#0D9488] bg-white" aria-hidden>
+          <Check className="h-5 w-5 text-[#0D9488]" strokeWidth={2.6} />
+        </span>
+      ) : (
+        <span
+          className={`relative h-11 w-11 rounded-full border-2 bg-white ${locked ? 'border-[#0D9488]/35' : 'border-[#0D9488]'}`}
+          aria-hidden
+        />
+      )}
     </button>
   )
 }

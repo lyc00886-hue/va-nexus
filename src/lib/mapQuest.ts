@@ -495,6 +495,25 @@ export function questXpMoves(): boolean {
   return false
 }
 
+/** Student path motion. Missing or any value other than `1` stays off. */
+export const QUEST_MOTION_KEY = 'va-nexus:quest-motion'
+
+export function questMotionPrefFromStored(value: string | null): boolean {
+  return value === '1'
+}
+
+/**
+ * Modest path motion plays only after an explicit opt-in.
+ * The display reduce-motion switch and prefers-reduced-motion both keep it off.
+ */
+export function questMotionPlay(input: {
+  pref: boolean
+  reduceMotion: boolean
+  prefersReducedMotion: boolean
+}): boolean {
+  return input.pref === true && input.reduceMotion !== true && input.prefersReducedMotion !== true
+}
+
 export function questNode(id: string): QuestNode | undefined {
   return questNodes().find((item) => item.id === id)
 }

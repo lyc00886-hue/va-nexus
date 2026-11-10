@@ -464,6 +464,49 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
   }
 }
 
+/* Quest path: modest current-node ring and a light garden hint. Off unless opted in. */
+@keyframes quest-ring-pulse {
+  0% {
+    transform: scale(0.94);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.14);
+    opacity: 0;
+  }
+}
+@keyframes quest-env-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(-4px);
+    opacity: 0.85;
+  }
+}
+.quest-ring-pulse {
+  animation: quest-ring-pulse 2.6s ease-out 90;
+}
+.quest-env-hint {
+  animation: quest-env-hint 3.4s ease-in-out 70;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .quest-ring-pulse,
+  .quest-env-hint {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+.sen-reduce-motion .quest-ring-pulse,
+.sen-reduce-motion .quest-env-hint {
+  animation: none !important;
+  opacity: 0 !important;
+}
+
 @media (min-width: 1024px) {
   .library-browser-side {
     position: sticky;
