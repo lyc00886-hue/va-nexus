@@ -3,6 +3,7 @@ import { useT } from '../i18n'
 import { schoolBandRows, schoolReferenceBand } from '../lib/schoolScore'
 import { useTeacherDraftStore } from '../lib/useTeacherDraftStore'
 import { SchoolScoreDualStudent } from './SchoolScoreDualStudent'
+import { SchoolScoreLaterStudent } from './SchoolScoreLaterStudent'
 
 /**
  * Read-only learning-progress reference. Replaces the student 1–4 self-rate line.
@@ -101,6 +102,7 @@ export function LearningProgressRef({ titleId, compact = false }: { titleId?: st
         {t('score.v1.hint')}
       </p>
       {compact ? null : <SchoolScoreDualStudent />}
+      {compact ? null : <SchoolScoreLaterStudent />}
     </div>
   )
 }
