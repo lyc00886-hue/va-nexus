@@ -5,7 +5,7 @@ export const SOFT_GO_TRACKS = ['islands', 'history-cn', 'history-west', 'media',
 
 export type SoftGoTrack = (typeof SOFT_GO_TRACKS)[number]
 
-/** Grade chips. F.5 / F.6 packs stay out, so those chips open no units. */
+/** Grade chips. Form 5 and Form 6 have no separate demo pack; they hang art-history units. */
 export const SOFT_GO_GRADES = ['all', 'f4', 'f5', 'f6'] as const
 
 export type SoftGoGrade = (typeof SOFT_GO_GRADES)[number]
@@ -48,7 +48,6 @@ const HISTORY_SIDE: Record<string, 'cn' | 'west'> = {
   'U6-MQ-WUMEN': 'cn',
   'U7-SELF-HERITAGE': 'cn',
   'U8-CN-SYMBOLS': 'cn',
-  'U11-EXHIBIT-REVIEW': 'cn',
   'U3-WEST-MODERN': 'west',
   'U5-COMPARE': 'west',
   'U9-ROLE-TAKING': 'west',
@@ -62,12 +61,30 @@ const HISTORY_YEAR: Record<string, 'core' | 'f5' | 'f6'> = {
   'U3-WEST-MODERN': 'core',
   'U4-CN-CONTEMP': 'f5',
   'U5-COMPARE': 'f6',
-  'U6-MQ-WUMEN': 'f6',
+  'U6-MQ-WUMEN': 'f5',
   'U7-SELF-HERITAGE': 'f6',
   'U8-CN-SYMBOLS': 'f6',
   'U9-ROLE-TAKING': 'f6',
   'U10-YBA-CN': 'f6',
-  'U11-EXHIBIT-REVIEW': 'f6',
+}
+
+/**
+ * Thin classic-map entry for this batch.
+ * Form 5 hangs U6. Form 6 hangs U7. Later batches may hang more of U8–U10.
+ * Exhibition unit U11 is not in the bank.
+ */
+export const CLASSIC_GRADE_UNITS: Record<'f5' | 'f6', readonly string[]> = {
+  f5: ['U6-MQ-WUMEN'],
+  f6: ['U7-SELF-HERITAGE'],
+}
+
+/** Thin quest-map training. One art-history unit and one media unit. U11 stays off. */
+export const QUEST_ART_UNITS = ['U1-CN-MODERN'] as const
+export const QUEST_MEDIA_UNITS = ['M1-PAINTING'] as const
+
+export function unitsById<T extends { id: string }>(units: readonly T[], ids: readonly string[]): T[] {
+  const order = new Map(ids.map((id, index) => [id, index]))
+  return units.filter((unit) => order.has(unit.id)).sort((a, b) => (order.get(a.id) ?? 0) - (order.get(b.id) ?? 0))
 }
 
 function searchParams(search: string): URLSearchParams {
@@ -109,7 +126,14 @@ export function historyUnitsFor<T extends { id: string }>(
   side: 'cn' | 'west' | 'all',
   grade: SoftGoGrade,
 ): T[] {
-  if (grade === 'f5' || grade === 'f6') return []
+  if (grade === 'f5' || grade === 'f6') {
+    const allow = new Set<string>(CLASSIC_GRADE_UNITS[grade])
+    return units.filter((unit) => {
+      if (!allow.has(unit.id)) return false
+      if (side === 'all') return true
+      return HISTORY_SIDE[unit.id] === side
+    })
+  }
   return units.filter((unit) => {
     const unitSide = HISTORY_SIDE[unit.id]
     if (side !== 'all' && unitSide !== side) return false
@@ -120,6 +144,7 @@ export function historyUnitsFor<T extends { id: string }>(
   })
 }
 
+/** Separate year files. Form 5 and Form 6 are not a second pack; classic entry uses historyUnitsFor. */
 export function yearUnitsFor<T>(units: readonly T[], grade: SoftGoGrade): T[] {
   if (grade === 'f5' || grade === 'f6') return []
   return [...units]

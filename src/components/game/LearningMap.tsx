@@ -6,6 +6,14 @@ import { getNodeById, getUnits } from '../../game/curriculum'
 import { getF4Units } from '../../game/f4Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
+import {
+  historyUnitsFor,
+  QUEST_ART_UNITS,
+  QUEST_MEDIA_UNITS,
+  softGoGradeFromSearch,
+  unitsById,
+  type SoftGoGrade,
+} from '../../lib/softGoMaps'
 import { masteryFor, masteryLabel } from '../../game/rewards'
 import { t } from '../../i18n'
 import {
@@ -23,9 +31,11 @@ import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
 import { softShellFromSearch, type SoftShell } from '../../lib/softAtlas'
+import { ClassicGrades } from './ClassicGrades'
 import { MapPath } from './MapPath'
 import { MapQuest } from './MapQuest'
 import { MapVersionToggle } from './MapVersionToggle'
+import { QuestTraining } from './QuestTraining'
 import { SoftAtlas, SoftMine } from './SoftAtlas'
 
 const TRACK_KEY = 'va-nexus:map-track'
@@ -72,6 +82,20 @@ export function LearningMap() {
   const [sections, setSections] = useState<LearningMapSections>(loadLearningMapSections)
   const [track, setTrack] = useState<Track>(readTrack)
   const [mediaId, setMediaId] = useState<string | null>(readMediaId)
+  const [grade, setGrade] = useState<SoftGoGrade>(() =>
+    typeof window === 'undefined' ? 'all' : softGoGradeFromSearch(window.location.search),
+  )
+
+  function chooseGrade(next: SoftGoGrade) {
+    setGrade(next)
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams(window.location.search)
+    if (next === 'all') params.delete('grade')
+    else params.set('grade', next)
+    const q = params.toString()
+    const nextUrl = `${window.location.pathname}${q ? `?${q}` : ''}${window.location.hash}`
+    window.history.replaceState(null, '', nextUrl)
+  }
 
   function commitSections(next: LearningMapSections) {
     saveLearningMapSections(next)
@@ -151,7 +175,10 @@ export function LearningMap() {
     remember('media', null)
   }
 
-  const pathOn = !easy.on && (mapOne || track === 'history' || track === 'f4' || selected != null)
+  const yearHistory = grade === 'f5' || grade === 'f6' ? historyUnitsFor(history, 'all', grade) : []
+  const yearCurrent = yearHistory.flatMap((unit) => unit.nodes).find((node) => isUnlocked(node.id) && !completed(node.id))
+  const gradePath = grade === 'f4' || grade === 'f5' || grade === 'f6'
+  const pathOn = !easy.on && (mapOne || track === 'history' || track === 'f4' || selected != null || gradePath)
   useLayoutEffect(() => {
     if (!pathOn) return
     window.dispatchEvent(new Event(PLATFORM_HEADER_PATH_EVENT))
@@ -181,7 +208,16 @@ export function LearningMap() {
       <div data-map-shell="one" data-map-scope="quest" data-soft-shell={shell} className="space-y-5">
         <MapVersionToggle mapOne />
         {easy.preview ? <EasyReadBar /> : null}
-        {shell === 'atlas' ? <SoftAtlas onShell={onShell} /> : shell === 'mine' ? <SoftMine onShell={onShell} /> : <MapQuest />}
+        {shell === 'atlas' ? (
+          <SoftAtlas onShell={onShell} />
+        ) : shell === 'mine' ? (
+          <SoftMine onShell={onShell} />
+        ) : (
+          <>
+            <QuestTraining art={unitsById(history, QUEST_ART_UNITS)} media={unitsById(media, QUEST_MEDIA_UNITS)} />
+            <MapQuest />
+          </>
+        )}
       </div>
     )
   }
@@ -190,35 +226,10 @@ export function LearningMap() {
     <div className="space-y-5">
       {easy.preview ? <EasyReadBar /> : null}
       <MapVersionToggle mapOne={false} />
+      <ClassicGrades grade={grade} onGrade={chooseGrade} />
       <h2 className="text-2xl font-bold text-slate-900">{t('tab.map')}</h2>
 
-      <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
-        <TrackTab active={track === 'history'} onClick={() => chooseTrack('history')}>
-          {t('map.track.history')}
-        </TrackTab>
-        <TrackTab active={track === 'media'} onClick={() => chooseTrack('media')}>
-          {t('map.track.media')}
-        </TrackTab>
-        <TrackTab active={track === 'f4'} onClick={() => chooseTrack('f4')}>
-          {t('map.track.f4')}
-        </TrackTab>
-      </div>
-
-      {track === 'history' ? (
-        <HistoryTrack
-          units={historyUnits}
-          current={current}
-          currentNodeId={currentNodeId}
-          isUnlocked={isUnlocked}
-          completed={completed}
-          masteryOf={(id) => masteryFor(state.nodes[id])}
-          sections={sections}
-          onToggleLesson={toggleLesson}
-          onCloseLesson={(id) => setLesson(id, false)}
-          onSetFold={setFold}
-          onReveal={revealLesson}
-        />
-      ) : track === 'f4' ? (
+      {grade === 'f4' ? (
         <HistoryTrack
           units={f4Units}
           current={f4Current}
@@ -232,7 +243,71 @@ export function LearningMap() {
           onSetFold={setFold}
           onReveal={revealLesson}
         />
-      ) : selected ? (
+      ) : grade === 'f5' || grade === 'f6' ? (
+        yearHistory.length === 0 ? (
+          <p data-map-grade-empty className="rounded-3xl bg-white px-4 py-6 text-center text-sm font-medium text-slate-700">
+            {t('map.grade.empty')}
+          </p>
+        ) : (
+          <div data-classic-grade={grade}>
+            <HistoryTrack
+              units={yearHistory}
+              current={yearCurrent}
+              currentNodeId={yearCurrent?.id ?? null}
+              isUnlocked={isUnlocked}
+              completed={completed}
+              masteryOf={(id) => masteryFor(state.nodes[id])}
+              sections={sections}
+              onToggleLesson={toggleLesson}
+              onCloseLesson={(id) => setLesson(id, false)}
+              onSetFold={setFold}
+              onReveal={revealLesson}
+            />
+          </div>
+        )
+      ) : null}
+
+      {grade === 'all' ? <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')}>
+        <TrackTab active={track === 'history'} onClick={() => chooseTrack('history')}>
+          {t('map.track.history')}
+        </TrackTab>
+        <TrackTab active={track === 'media'} onClick={() => chooseTrack('media')}>
+          {t('map.track.media')}
+        </TrackTab>
+        <TrackTab active={track === 'f4'} onClick={() => chooseTrack('f4')}>
+          {t('map.track.f4')}
+        </TrackTab>
+      </div> : null}
+
+      {grade === 'all' && track === 'history' ? (
+        <HistoryTrack
+          units={historyUnits}
+          current={current}
+          currentNodeId={currentNodeId}
+          isUnlocked={isUnlocked}
+          completed={completed}
+          masteryOf={(id) => masteryFor(state.nodes[id])}
+          sections={sections}
+          onToggleLesson={toggleLesson}
+          onCloseLesson={(id) => setLesson(id, false)}
+          onSetFold={setFold}
+          onReveal={revealLesson}
+        />
+      ) : grade === 'all' && track === 'f4' ? (
+        <HistoryTrack
+          units={f4Units}
+          current={f4Current}
+          currentNodeId={f4Current?.id ?? null}
+          isUnlocked={f4Unlocked}
+          completed={completed}
+          masteryOf={(id) => masteryFor(state.nodes[id])}
+          sections={sections}
+          onToggleLesson={toggleLesson}
+          onCloseLesson={(id) => setLesson(id, false)}
+          onSetFold={setFold}
+          onReveal={revealLesson}
+        />
+      ) : grade === 'all' && selected ? (
         <MediaDetail
           unit={selected}
           completed={completed}
@@ -244,9 +319,9 @@ export function LearningMap() {
           onReveal={revealLesson}
           onBack={closeMedia}
         />
-      ) : (
+      ) : grade === 'all' ? (
         <MediaPicker units={media} onOpen={openMedia} />
-      )}
+      ) : null}
       <MapCommitments />
     </div>
   )

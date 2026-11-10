@@ -1,5 +1,5 @@
 /**
- * Media-intro pack (PEANUTS): separate from art-history U1–U11.
+ * Media-intro pack (PEANUTS): separate from art-history U1–U10.
  * Files: src/content/media-intro.json (zh-Hant), .en.json, .zh-Hans.json.
  * Missing units, including M12-PEN / M13-PHOTO, become pending stubs.
  */

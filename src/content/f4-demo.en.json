@@ -477,7 +477,7 @@
     {
       "id": "F4-U3-COMMUNITY",
       "title": "Community Looking, Visual Diary and Theme Seeds",
-      "intro": "Aligned to F.4 community tour/presentation, weekly visual diary, and community-related design/making. Learn to gather materials from everyday environments as theme seeds; connect to Hong Kong artists who attend to daily space. (Content pending teacher review)",
+      "intro": "Aligns with F.4 community observation, the weekly visual diary, and community-related design／making. Students use photos, objects, or teacher-provided materials in class to grow theme seeds, linking to how Hong Kong artists attend to everyday space. No outing or exhibition visit is required. (Pending teacher review)",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-COMMUNITY.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -580,28 +580,28 @@
         },
         {
           "id": "F4-U3-L2",
-          "title": "Community Tour: Finding a Theme in the Environment",
+          "title": "Community observation: finding a theme from the environment",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L2.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "A community tour can use photos, short video, interviews, collected objects, sketches or actions to record the environment and learning.",
+            "Classroom observation: use teacher-provided or already available photos, clips, objects, or sketches in class to record the environment and your learning. No outing or exhibition visit is required.",
             "Making can relate to community: public space, neighbourhood routines, local signs—then reconnect to your theme.",
             "Pak Sheung Chuen often uses everyday actions and ready-mades to make housing/space experiences visible.",
             "Lee Kit often uses household cloth and everyday objects to speak about private feeling and space—community and personal life can be read together.",
-            "Practice: walk a familiar street; collect three notes on symbol/object/sound; write how each could become a theme question. Contemporary works: [no cleared image] — text + official collection pages only."
+            "Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a theme question. Contemporary works: [no cleared image] — text only."
           ],
           "quiz": [
             {
               "type": "mcq",
-              "question": "Community-tour materials can include:",
+              "question": "What can classroom observation materials include?",
               "options": [
+                "Photos, clips, objects, or sketches provided by the teacher or already available",
+                "You must go on an outing or a guided tour",
                 "Only exam essays",
-                "Photos, interviews, sketches, collected objects, etc.",
-                "Only one textbook sentence",
-                "Imagination with no leaving the classroom ever"
+                "Only one sentence copied from the textbook"
               ],
-              "answer": "Photos, interviews, sketches, collected objects, etc.",
-              "explain": "Diverse sources help theme exploration."
+              "answer": "Photos, clips, objects, or sketches provided by the teacher or already available",
+              "explain": "Use teacher-provided or already available materials in class to record the environment and your learning. No outing or exhibition visit is required."
             },
             {
               "type": "fill",
@@ -643,14 +643,14 @@
             },
             {
               "type": "order",
-              "question": "Order community→theme: gather on-site materials → sort → list possible themes → pick one to deepen.",
+              "question": "Order community to theme: observe with classroom materials → sort → list possible themes → pick one to deepen.",
               "options": [
-                "Gather on-site materials",
+                "Observe with classroom materials",
                 "Sort them",
                 "List possible themes",
                 "Pick one to deepen"
               ],
-              "explain": "Gather on-site materials → Sort them → List possible themes → Pick one to deepen"
+              "explain": "Observe with classroom materials → Sort them → List possible themes → Pick one to deepen"
             },
             {
               "type": "dualRead",
@@ -700,7 +700,7 @@
             },
             {
               "title": "One insight",
-              "body": "From a walk or tour, pick one “insight”—a detail you used to miss that still belongs to the community."
+              "body": "From classroom observation materials, take one insight: a community-related detail you had not noticed before."
             },
             {
               "title": "Classroom practice",

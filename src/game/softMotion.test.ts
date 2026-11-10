@@ -41,7 +41,6 @@ const MAP_UNITS = [
   'U8-CN-SYMBOLS',
   'U9-ROLE-TAKING',
   'U10-YBA-CN',
-  'U11-EXHIBIT-REVIEW',
 ]
 
 function read(path: string): string {
@@ -202,7 +201,7 @@ describe('early wire covers and soft motion', () => {
     assert.match(celebrate, /animation-timing-function: step-start/)
   })
 
-  it('wires eleven art-history unit covers and leaves lesson tiles unwired', () => {
+  it('wires ten art-history unit covers and leaves lesson tiles unwired', () => {
     for (const name of ['art-history-map.json', 'art-history-map.en.json', 'art-history-map.zh-Hans.json']) {
       const pack = JSON.parse(read(`src/content/${name}`)) as {
         units: { id: string; coverImage?: string; coverCredit?: string; lessons: { coverImage?: string }[] }[]
