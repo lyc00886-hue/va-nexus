@@ -1,9 +1,10 @@
 import { useSyncExternalStore } from 'react'
-import { FORMATIVE_PAGE_BYTE_MAX, postFormativeComment } from './formativeAiComment.ts'
+import { postFormativeComment } from './formativeAiComment.ts'
 import { SCHOOL_SCORE_SLOT } from './schoolScore.ts'
 import {
   SCHOOL_SCORE_LATER_KEY,
   applyAiFallback,
+  applyFileNotSent,
   applyModelComment,
   emptyLaterStore,
   isLaterUploadFile,
@@ -155,15 +156,19 @@ async function readPreviewBytes(previewUrl: string | null): Promise<Uint8Array |
     const res = await fetch(previewUrl)
     if (!res.ok) return null
     const buf = new Uint8Array(await res.arrayBuffer())
-    return buf.byteLength > 0 && buf.byteLength <= FORMATIVE_PAGE_BYTE_MAX ? buf : null
+    return buf.byteLength > 0 ? buf : null
   } catch {
     return null
   }
 }
 
-const COMMENT_BYTE_BUDGET = 3_200_000
-
 let inflightKey: string | null = null
+
+/** Clears the in-memory later snapshot. Tests only. */
+export function resetSchoolScoreLaterForTests(): void {
+  inflightKey = null
+  snapshot = { draft: null, previewUrl: null, pagePreviews: [] }
+}
 
 /**
  * Informal later request for the uploaded pages.
@@ -173,7 +178,10 @@ let inflightKey: string | null = null
  * A new upload uses a new draft and starts again.
  * A missing page or a model miss does not invent a visible band and does not write the school reference.
  */
-export async function requestLaterComment(locale: string, staff = false): Promise<'idle' | 'model' | 'fallback'> {
+export async function requestLaterComment(
+  locale: string,
+  staff = false,
+): Promise<'idle' | 'model' | 'fallback' | 'unsent'> {
   void staff
   const draft = snapshot.draft
   if (!draft) return 'idle'
@@ -193,7 +201,7 @@ async function runLaterComment(
   locale: string,
   fileName: string,
   fileSize: number,
-): Promise<'idle' | 'model' | 'fallback'> {
+): Promise<'idle' | 'model' | 'fallback' | 'unsent'> {
   const draft = snapshot.draft
   if (!draft || draft.fileName !== fileName || draft.fileSize !== fileSize) return 'idle'
   const previewUrl = snapshot.previewUrl
@@ -210,28 +218,37 @@ async function runLaterComment(
     ),
     readAccessToken(),
   ])
-  const packed: { side: LaterPageSide; mime: string; bytes: Uint8Array }[] = []
-  let total = 0
+  const packed: { side: LaterPageSide; mime: string; bytes: Uint8Array; fileName: string }[] = []
   for (const item of loaded) {
-    if (!item.bytes || item.bytes.byteLength > FORMATIVE_PAGE_BYTE_MAX) continue
-    if (total > 0 && total + item.bytes.byteLength > COMMENT_BYTE_BUDGET) continue
+    if (!item.bytes) continue
     packed.push({
       side: item.page.side,
       mime: item.page.mime || item.preview?.mime || '',
       bytes: item.bytes,
+      fileName: item.page.fileName,
     })
-    total += item.bytes.byteLength
   }
-  const fallbackBytes = packed.length > 0 ? null : await readPreviewBytes(previewUrl)
+  const side = laterPageSide(fileName)
+  const fallbackBytes = packed.length > 0 || !side ? null : await readPreviewBytes(previewUrl)
   const pages =
     packed.length > 0
       ? packed
-      : fallbackBytes
-        ? [{ side: laterPageSide(fileName) ?? undefined, mime: draft.mime, bytes: fallbackBytes }]
+      : fallbackBytes && side
+        ? [{ side, mime: draft.mime, bytes: fallbackBytes, fileName }]
         : []
+  const currentBefore = snapshot.draft
+  if (!currentBefore || currentBefore.fileName !== fileName || currentBefore.fileSize !== fileSize) return 'idle'
+  if (pages.length === 0) {
+    if (!side) {
+      publish(applyAiFallback(currentBefore))
+      return 'fallback'
+    }
+    publish(applyFileNotSent(currentBefore))
+    return 'unsent'
+  }
   const result = await postFormativeComment({
     locale,
-    fileName: 'page',
+    fileName,
     mime: pages[0]?.mime ?? draft.mime,
     bytes: pages[0]?.bytes ?? null,
     pages,
@@ -239,6 +256,10 @@ async function runLaterComment(
   })
   const current = snapshot.draft
   if (!current || current.fileName !== fileName || current.fileSize !== fileSize) return 'idle'
+  if (!result.ok && result.reason === 'not_sent') {
+    publish(applyFileNotSent(current))
+    return 'unsent'
+  }
   const next = result.ok ? applyModelComment(current, result) : applyAiFallback(current)
   publish(next)
   return next.aiStatus === 'model' ? 'model' : 'fallback'

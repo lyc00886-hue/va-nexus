@@ -82,7 +82,7 @@ function LaterUpload({
         <input
           id={inputId}
           type="file"
-          accept="image/*,application/pdf"
+          accept="image/*,application/pdf,.pdf,.png,.jpg,.jpeg,.webp,.gif"
           multiple
           data-testid="score-later-student-file"
           className="absolute inset-0 cursor-pointer opacity-0"
@@ -348,6 +348,10 @@ export function SchoolScoreLaterStudent() {
             <p className="text-sm text-slate-600">{t('score.later.aiCommentHint')}</p>
             <p className="text-sm leading-relaxed text-slate-800">{draft.aiComment}</p>
           </>
+        ) : draft?.aiStatus === 'unsent' ? (
+          <p data-testid="score-later-file-not-sent" className="text-sm leading-relaxed text-slate-500">
+            {t('score.later.fileNotSent')}
+          </p>
         ) : draft?.aiStatus === 'fallback' ? (
           <p data-testid="score-later-student-unavailable" className="text-sm leading-relaxed text-slate-500">
             {t('score.later.aiUnavailable')}
@@ -383,14 +387,14 @@ export function SchoolScoreLaterStudent() {
             ) : null}
           </div>
         ) : null}
-        {!artworkValues || !workbookValues ? (
+        {draft?.aiStatus !== 'unsent' && (!artworkValues || !workbookValues) ? (
           <p data-testid="score-later-radar-pending" className="text-sm leading-relaxed text-slate-500">
             {t('score.later.radarPending')}
           </p>
         ) : null}
       </article>
 
-      {draft && draft.aiStatus !== 'model' ? (
+      {draft && draft.aiStatus !== 'model' && draft.aiStatus !== 'unsent' ? (
         <p data-testid="score-later-stub-note" className="text-xs leading-relaxed text-slate-500">
           {t('score.later.stubNote')}
         </p>

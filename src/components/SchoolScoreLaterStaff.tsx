@@ -163,7 +163,7 @@ export function SchoolScoreLaterStaff() {
           <input
             id={inputId}
             type="file"
-            accept="image/*,application/pdf"
+            accept="image/*,application/pdf,.pdf,.png,.jpg,.jpeg,.webp,.gif"
             multiple
             data-testid="score-later-upload"
             className="absolute inset-0 cursor-pointer opacity-0"
@@ -262,6 +262,11 @@ export function SchoolScoreLaterStaff() {
                 <p className="text-sm leading-relaxed text-slate-800">{draft.aiComment}</p>
                 <p className="text-xs leading-relaxed text-slate-500">{t('score.later.modelNote')}</p>
               </div>
+            ) : null}
+            {draft.aiStatus === 'unsent' ? (
+              <p data-testid="score-later-file-not-sent" className="text-sm leading-relaxed text-slate-500">
+                {t('score.later.fileNotSent')}
+              </p>
             ) : null}
             {draft.aiStatus === 'fallback' ? (
               <div data-testid="score-later-ai-fallback" className="space-y-2">

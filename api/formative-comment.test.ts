@@ -183,6 +183,61 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.match(source, /formativeRateLimited/)
   })
 
+  it('recognises a PDF or image when the file name is not page', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    const seen: string[] = []
+    setFormativeGeneratorForTests(async (input) => {
+      seen.push(input.mime)
+      return JSON.stringify({ comment: COMMENT, band: 'practice-secure' })
+    })
+    const pdf = Buffer.from('%PDF-1.4\n').toString('base64')
+    const jpeg = Buffer.from([0xff, 0xd8, 0xff, 0xd9]).toString('base64')
+    const emptyMime = await handleFormativeComment(
+      request({ locale: 'zh-Hant', pages: [{ side: 'artwork', mime: '', imageBase64: pdf }] }),
+    )
+    assert.equal(emptyMime.status, 200)
+    assert.equal(seen[0], 'application/pdf')
+    const octet = await handleFormativeComment(
+      request({
+        locale: 'zh-Hant',
+        pages: [{ side: 'artwork', mime: 'application/octet-stream', imageBase64: jpeg }],
+      }),
+    )
+    assert.equal(octet.status, 200)
+    assert.equal(seen[1], 'image/jpeg')
+    const named = await handleFormativeComment(
+      request({
+        locale: 'zh-Hant',
+        pages: [
+          {
+            side: 'artwork',
+            mime: 'application/octet-stream',
+            fileName: 'IMG_5288.jpeg',
+            imageBase64: Buffer.from('not-a-jpeg-but-named').toString('base64'),
+          },
+        ],
+      }),
+    )
+    assert.equal(named.status, 200)
+    assert.equal(seen[2], 'image/jpeg')
+    const before = seen.length
+    const hardcoded = await handleFormativeComment(
+      request({
+        locale: 'zh-Hant',
+        pages: [
+          {
+            side: 'artwork',
+            mime: 'application/octet-stream',
+            fileName: 'page',
+            imageBase64: Buffer.from('not-a-jpeg').toString('base64'),
+          },
+        ],
+      }),
+    )
+    assert.equal(hardcoded.status, 400)
+    assert.equal(seen.length, before)
+  })
+
   it('does not invent a comment when the page is missing', async () => {
     process.env.GEMINI_API_KEY = 'test-key'
     let generated = false

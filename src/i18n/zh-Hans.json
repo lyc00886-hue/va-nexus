@@ -1016,6 +1016,7 @@
   "score.later.requestAi": "生成参考评语／大概带",
   "score.later.modelNote": "参考评语和大概带由模型生成，非正式分；以教师确认后为准。",
   "score.later.aiUnavailable": "暂时未能生成参考评语。你可以稍后再试，或先用教师调分。",
+  "score.later.fileNotSent": "这份档案已上传，但暂时未能交到模型计参考评语。不会用档名或档案大小估分。你可以稍后再试，或先用教师调分。",
   "score.later.commentPending": "参考评语待教师确认",
   "score.later.needFile": "上载影像或 PDF 页后，才显示大概参考带。",
   "score.later.written": "已写入学校参考",

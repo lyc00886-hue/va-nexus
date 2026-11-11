@@ -3,7 +3,21 @@
  * The comment is organised on the existing school criteria labels.
  * It is not an official SBA, HKEAA, or public-exam score.
  */
+import {
+  fitFormativePayload,
+  FORMATIVE_BODY_CHAR_MAX,
+  FORMATIVE_PAGE_BYTE_MAX,
+  FORMATIVE_TOTAL_BYTE_MAX,
+} from './formativePageFit.ts'
 import { CRITERIA_IDS, PRACTICE_BAND_IDS, type PracticeBandId } from './teacherDraftBand.ts'
+
+export {
+  FORMATIVE_BODY_CHAR_MAX,
+  FORMATIVE_PAGE_BYTE_MAX,
+  FORMATIVE_PLATFORM_BODY_MAX,
+  FORMATIVE_TOTAL_BYTE_MAX,
+  formativePageMime,
+} from './formativePageFit.ts'
 
 /** Same observable focus the school-score criteria rows already carry. Not a second rubric. */
 const AXIS_FOCUS: Record<'zh-Hant' | 'zh-Hans' | 'en', Record<(typeof CRITERIA_IDS)[number], string>> = {
@@ -113,9 +127,6 @@ const BLOCKED_COMMENT =
   /5\*\*|97分|96:100|90:100|97:100|全校降分|未達標|未达标|公開試結果|公开试结果|公開試預測|公开试预测|AI＝公開試預測|AI＝公开试预测|正式分數|正式分数|official grade|official score|ArtInSight|洞察藝術|洞察艺术|artionhk|Lindsay|Yuen Hei Yan/i
 
 export const FORMATIVE_COMMENT_PATH = '/api/formative-comment'
-export const FORMATIVE_PAGE_BYTE_MAX = 3_500_000
-
-const PAGE_MIME = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'application/pdf'])
 
 export type FormativeAxis = { id: (typeof CRITERIA_IDS)[number]; label: string; focus: string }
 
@@ -125,11 +136,13 @@ export type FormativePageInput = {
   side?: string
   mime: string
   bytes: Uint8Array
+  /** Used only to recognise a PDF or image. It is not sent to the model. */
+  fileName?: string
 }
 
 export type FormativeModelResult =
   | { ok: true; comment: string; band: PracticeBandId; axes: FormativeAxes }
-  | { ok: false; reason: 'unavailable' }
+  | { ok: false; reason: 'unavailable' | 'not_sent' }
 
 function axisLocale(locale: string): 'zh-Hant' | 'zh-Hans' | 'en' {
   if (locale === 'en') return 'en'
@@ -180,18 +193,6 @@ export function formativeUserPrompt(sides: readonly string[]): string {
   const named = [...new Set(sides.filter((side) => side === 'artwork' || side === 'research_workbook'))]
   const scope = named.length > 0 ? named.join(', ') : 'none'
   return `${FORMATIVE_USER_PROMPT}\nSides to score: ${scope}.`
-}
-
-export function formativePageMime(name: string, mime: string): string | null {
-  const type = mime.toLowerCase().split(';')[0].trim()
-  if (PAGE_MIME.has(type)) return type
-  if (type === 'image/jpg') return 'image/jpeg'
-  if (/\.pdf$/i.test(name)) return 'application/pdf'
-  if (/\.png$/i.test(name)) return 'image/png'
-  if (/\.jpe?g$/i.test(name)) return 'image/jpeg'
-  if (/\.webp$/i.test(name)) return 'image/webp'
-  if (/\.gif$/i.test(name)) return 'image/gif'
-  return null
 }
 
 export function bytesToBase64(bytes: Uint8Array): string {
@@ -264,31 +265,69 @@ export function parseFormativeModelText(raw: string): { comment: string; band: P
   return { comment, band, axes: parseFormativeAxes(record.axes) }
 }
 
-const FORMATIVE_TOTAL_BYTE_MAX = 3_200_000
-
-function packFormativePages(input: {
+async function packFormativePages(input: {
   fileName: string
   mime: string
   bytes: Uint8Array | null
   pages?: readonly FormativePageInput[]
-}): { side: string; mime: string; bytes: Uint8Array }[] {
-  const source: FormativePageInput[] =
+}): Promise<{ side: string; mime: string; bytes: Uint8Array }[]> {
+  const source: FormativePageInput[] = (
     input.pages && input.pages.length > 0
       ? [...input.pages]
       : input.bytes
-        ? [{ mime: input.mime, bytes: input.bytes }]
+        ? [{ mime: input.mime, bytes: input.bytes, fileName: input.fileName }]
         : []
+  ).filter((page) => page.bytes.byteLength > 0)
+  if (source.length === 0) return []
+  const share = Math.min(FORMATIVE_PAGE_BYTE_MAX, Math.floor(FORMATIVE_TOTAL_BYTE_MAX / Math.min(4, source.length)))
   const packed: { side: string; mime: string; bytes: Uint8Array }[] = []
-  let total = 0
   for (const page of source) {
     if (packed.length >= 4) break
-    const mime = formativePageMime(input.fileName, page.mime)
-    if (!mime || page.bytes.byteLength === 0 || page.bytes.byteLength > FORMATIVE_PAGE_BYTE_MAX) continue
-    if (total > 0 && total + page.bytes.byteLength > FORMATIVE_TOTAL_BYTE_MAX) continue
-    packed.push({ side: page.side === 'artwork' || page.side === 'research_workbook' ? page.side : '', mime, bytes: page.bytes })
-    total += page.bytes.byteLength
+    const fitted = await fitFormativePayload({
+      side: page.side,
+      mime: page.mime,
+      bytes: page.bytes,
+      fileName: page.fileName || input.fileName,
+      maxBytes: share,
+    })
+    for (const item of fitted) {
+      if (packed.length >= 4) break
+      if (item.bytes.byteLength === 0 || item.bytes.byteLength > FORMATIVE_PAGE_BYTE_MAX) continue
+      packed.push(item)
+    }
   }
-  return packed
+  const kept: { side: string; mime: string; bytes: Uint8Array }[] = []
+  let total = 0
+  for (const item of packed) {
+    if (kept.length >= 4) break
+    if (item.bytes.byteLength > FORMATIVE_TOTAL_BYTE_MAX) continue
+    if (kept.length > 0 && total + item.bytes.byteLength > FORMATIVE_TOTAL_BYTE_MAX) continue
+    kept.push(item)
+    total += item.bytes.byteLength
+  }
+  return kept
+}
+
+function formativeRequestBody(
+  locale: string,
+  pages: readonly { side: string; mime: string; bytes: Uint8Array }[],
+  asPages: boolean,
+): string {
+  if (asPages) {
+    return JSON.stringify({
+      locale,
+      pages: pages.map((page) => ({
+        side: page.side,
+        mime: page.mime,
+        imageBase64: bytesToBase64(page.bytes),
+      })),
+    })
+  }
+  return JSON.stringify({
+    locale,
+    mime: pages[0].mime,
+    imageBase64: bytesToBase64(pages[0].bytes),
+  })
 }
 
 export async function postFormativeComment(input: {
@@ -300,32 +339,25 @@ export async function postFormativeComment(input: {
   accessToken?: string | null
   fetchImpl?: typeof fetch
 }): Promise<FormativeModelResult> {
-  const pages = packFormativePages(input)
-  if (pages.length === 0) return { ok: false, reason: 'unavailable' }
+  let pages = await packFormativePages(input)
+  if (pages.length === 0) return { ok: false, reason: 'not_sent' }
+  const asPages = Boolean(input.pages && input.pages.length > 0)
+  let body = formativeRequestBody(input.locale, pages, asPages)
+  while (body.length > FORMATIVE_BODY_CHAR_MAX && pages.length > 1) {
+    pages = pages.slice(0, -1)
+    body = formativeRequestBody(input.locale, pages, asPages)
+  }
+  if (body.length > FORMATIVE_BODY_CHAR_MAX) return { ok: false, reason: 'not_sent' }
   const fetchImpl = input.fetchImpl ?? fetch
   try {
     const headers: Record<string, string> = { 'Content-Type': 'application/json' }
     if (input.accessToken) headers.Authorization = `Bearer ${input.accessToken}`
-    const body =
-      input.pages && input.pages.length > 0
-        ? {
-            locale: input.locale,
-            pages: pages.map((page) => ({
-              side: page.side,
-              mime: page.mime,
-              imageBase64: bytesToBase64(page.bytes),
-            })),
-          }
-        : {
-            locale: input.locale,
-            mime: pages[0].mime,
-            imageBase64: bytesToBase64(pages[0].bytes),
-          }
     const res = await fetchImpl(FORMATIVE_COMMENT_PATH, {
       method: 'POST',
       headers,
-      body: JSON.stringify(body),
+      body,
     })
+    if (res.status === 413) return { ok: false, reason: 'not_sent' }
     const data: unknown = await res.json().catch(() => null)
     if (!res.ok || !data || typeof data !== 'object') return { ok: false, reason: 'unavailable' }
     const record = data as { ok?: unknown; comment?: unknown; band?: unknown; axes?: unknown }
