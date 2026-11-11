@@ -414,5 +414,7 @@
   "score.later.notFinal": "不是最终分数",
   "score.later.notFinalNote": "你现在见到的是大概评级／参考带和参考评语，也包括 AI 参考雷达（作品和研究工作簿），不是最终分数。只供校内讨论。学生面只保留这两幅 AI 参考雷达，不显示正式学校双雷达。",
   "score.later.aiRadar": "AI 参考雷达",
-  "score.later.aiRadarHint": "这幅是 AI 参考雷达，不是最终分数。"
+  "score.later.aiRadarHint": "这幅是 AI 参考雷达，不是最终分数。",
+  "score.fold.open": "展开",
+  "score.fold.close": "收起"
 }
