@@ -13,6 +13,7 @@ import { joinList, useT, type MessageKey } from '../i18n'
 import { loadLocalNotes } from './sbaEvidence'
 import { loadSbaArtworkSlots } from './sbaArtworkSlots'
 import { GRADE_LABEL } from './softGoMaps'
+import { laterPageSides } from './schoolScoreLater'
 import { useSchoolScoreLater } from './useSchoolScoreLater'
 import { useTeacherDraftStore } from './useTeacherDraftStore'
 import {
@@ -101,14 +102,14 @@ export function useInspectRows(): InspectView[] {
       }
     }
     for (const page of later.draft?.pages ?? []) {
-      if (page.side === 'artwork') artworkLines.push(page.fileName)
+      if (laterPageSides(page.fileName).includes('artwork')) artworkLines.push(page.fileName)
     }
     for (const note of notes) {
       if (note.note) artworkLines.push(note.note)
     }
     const researchLines: string[] = []
     for (const page of later.draft?.pages ?? []) {
-      if (page.side === 'research_workbook') researchLines.push(page.fileName)
+      if (laterPageSides(page.fileName).includes('research_workbook')) researchLines.push(page.fileName)
     }
     for (const quest of getResearchQuests()) {
       if (game.state.quests[quest.id]?.completed) researchLines.push(quest.title)

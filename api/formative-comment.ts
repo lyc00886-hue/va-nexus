@@ -13,6 +13,8 @@ import {
   formativeAxisLabels,
   formativeCommentSystem,
   formativePageMime,
+  formativePageSideNote,
+  formativeScanSides,
   formativeUserPrompt,
   parseFormativeModelText,
 } from '../src/lib/formativeAiComment.ts'
@@ -22,7 +24,7 @@ export type FormativeGenerator = (input: {
   user: string
   mime: string
   base64: string
-  pages?: { side: string; mime: string; base64: string }[]
+  pages?: { side: string; sides: string[]; mime: string; base64: string }[]
 }) => Promise<string | null>
 
 /** A class can upload together from one school network. Still bounded. */
@@ -134,9 +136,15 @@ function generationConfig(model: string): {
   }
 }
 
-type IncomingPage = { side: string; mime: string; base64: string }
+type IncomingPage = { side: string; sides: string[]; mime: string; base64: string }
 
-function onePage(sideRaw: unknown, mimeRaw: unknown, imageBase64: unknown, fileNameRaw: unknown): IncomingPage | null {
+function onePage(
+  sideRaw: unknown,
+  mimeRaw: unknown,
+  imageBase64: unknown,
+  fileNameRaw: unknown,
+  sidesRaw: unknown,
+): IncomingPage | null {
   if (typeof mimeRaw !== 'string' || typeof imageBase64 !== 'string') return null
   const base64 = imageBase64.replace(/\s/g, '')
   if (!base64 || !/^[A-Za-z0-9+/]+={0,2}$/.test(base64)) return null
@@ -145,8 +153,8 @@ function onePage(sideRaw: unknown, mimeRaw: unknown, imageBase64: unknown, fileN
   const name = typeof fileNameRaw === 'string' ? fileNameRaw : ''
   const mime = formativePageMime(name, mimeRaw, bytes)
   if (!mime) return null
-  const side = sideRaw === 'artwork' || sideRaw === 'research_workbook' ? sideRaw : ''
-  return { side, mime, base64 }
+  const sides = formativeScanSides(sideRaw, sidesRaw)
+  return { side: sides[0] ?? '', sides, mime, base64 }
 }
 
 function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] } | null {
@@ -165,8 +173,8 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
     for (const item of record.pages) {
       if (pages.length >= 4) break
       if (!item || typeof item !== 'object') continue
-      const page = item as { side?: unknown; mime?: unknown; imageBase64?: unknown; fileName?: unknown }
-      const next = onePage(page.side, page.mime, page.imageBase64, page.fileName)
+      const page = item as { side?: unknown; sides?: unknown; mime?: unknown; imageBase64?: unknown; fileName?: unknown }
+      const next = onePage(page.side, page.mime, page.imageBase64, page.fileName, page.sides)
       if (!next) continue
       const bytes = Buffer.from(next.base64, 'base64').length
       if (total > 0 && total + bytes > FORMATIVE_TOTAL_BYTE_MAX) continue
@@ -174,7 +182,7 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
       total += bytes
     }
   } else {
-    const next = onePage('', record.mime, record.imageBase64, record.fileName)
+    const next = onePage('', record.mime, record.imageBase64, record.fileName, undefined)
     if (next) pages.push(next)
   }
   if (pages.length === 0) return null
@@ -189,7 +197,7 @@ async function generateFormative(
 ): Promise<string | null> {
   const parts: { text?: string; inlineData?: { mimeType: string; data: string } }[] = [{ text: user }]
   for (const page of pages) {
-    parts.push({ text: page.side ? `Page side: ${page.side}` : 'Page' })
+    parts.push({ text: formativePageSideNote(page.sides.length > 0 ? page.sides : page.side ? [page.side] : []) })
     parts.push({ inlineData: { mimeType: page.mime, data: page.base64 } })
   }
   for (const model of geminiModels()) {
@@ -238,7 +246,9 @@ export async function handleFormativeComment(request: Request): Promise<Response
 
   const labels = formativeAxisLabels(page.locale).map((axis) => axis.label)
   const system = formativeCommentSystem(labels, page.locale)
-  const user = formativeUserPrompt(page.pages.map((item) => item.side))
+  const user = formativeUserPrompt(
+    page.pages.flatMap((item) => (item.sides.length > 0 ? item.sides : item.side ? [item.side] : [])),
+  )
   let text: string | null = null
   try {
     text = generator

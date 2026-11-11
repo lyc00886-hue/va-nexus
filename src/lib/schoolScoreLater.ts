@@ -11,6 +11,8 @@
  *
  * Full scan reads only already-uploaded artwork pages (藝術作品／評賞研究)
  * and research-workbook pages (研究工作簿). A missing side is skipped.
+ * A file whose full name has both an artwork-side marker and a workbook-side
+ * marker is still one page, and that page is scanned on both sides.
  * Course pages, practice papers, and map cards are not scanned.
  * 自動計出嚟嘅校內學校參考草稿先到教師面。
  * It is not written onto the student surface, and it does not replace the approximate band.
@@ -119,6 +121,7 @@ export function isLaterUploadFile(file: { name: string; type: string }): boolean
 }
 
 const WORKBOOK_NAME = /工作簿|workbook/i
+const ARTWORK_MARKER = /藝術作品|評賞研究|作品|artwork/i
 const EXCLUDED_NAME =
   /練習卷|练习卷|practice[\s._-]*paper|課程|课程|\bcourse\b|地圖|地图|map[\s._-]*card|課卡|课卡/i
 
@@ -128,15 +131,31 @@ export function laterScanExcluded(name: string): boolean {
 }
 
 /**
- * Artwork (藝術作品／評賞研究) or research workbook (研究工作簿).
- * A clearly workbook-named file is the research workbook.
- * Every other later file that is not an excluded name is artwork,
- * including an ordinary photo or PDF name. An excluded name is not a scan side.
+ * Sides named by the full filename. The visible label may be shortened;
+ * callers pass the stored name, not a truncated display string.
+ * An excluded name is neither side.
+ * No workbook marker stays artwork, including an ordinary SBA or photo name.
+ * A workbook marker without an artwork marker stays the research workbook.
+ * Both markers: the same file is artwork and a research workbook.
+ */
+export function laterPageSides(name: string): LaterPageSide[] {
+  if (laterScanExcluded(name)) return []
+  const workbook = WORKBOOK_NAME.test(name)
+  if (workbook && ARTWORK_MARKER.test(name)) return ['artwork', 'research_workbook']
+  if (workbook) return ['research_workbook']
+  return ['artwork']
+}
+
+/**
+ * Single stored label. Workbook-only stays the research workbook.
+ * A combined file stays artwork so the artwork scan is not dropped
+ * when the name also contains 工作簿. Both sides are `laterPageSides`.
  */
 export function laterPageSide(name: string): LaterPageSide | null {
-  if (laterScanExcluded(name)) return null
-  if (WORKBOOK_NAME.test(name)) return 'research_workbook'
-  return 'artwork'
+  const sides = laterPageSides(name)
+  if (sides.includes('artwork')) return 'artwork'
+  if (sides.includes('research_workbook')) return 'research_workbook'
+  return null
 }
 
 export function upsertLaterPage(pages: readonly LaterPage[], page: LaterPage): LaterPage[] {
@@ -152,7 +171,10 @@ export function upsertLaterPage(pages: readonly LaterPage[], page: LaterPage): L
 export function formalAxesForPages(pages: readonly LaterPage[]): Partial<Record<DualAxisId, number>> {
   const axes: Partial<Record<DualAxisId, number>> = {}
   for (const chart of DUAL_CHARTS) {
-    const sidePages = pages.filter((page) => page.side === chart.id && laterPageSide(page.fileName) === chart.id)
+    const sidePages = pages.filter((page) => {
+      const sides = laterPageSides(page.fileName)
+      return sides.includes(chart.id) && sides.includes(page.side)
+    })
     if (sidePages.length === 0) continue
     const body = sidePages
       .map((page) => `${page.fileName}\n${Math.max(0, Math.round(page.fileSize))}`)
@@ -213,7 +235,7 @@ export function draftFromFile(name: string, size: number, mime: string): LaterDr
 export function withUploadedFile(prev: LaterDraft | null, name: string, size: number, mime: string): LaterDraft {
   const head = draftFromFile(name, size, mime)
   const side = laterPageSide(head.fileName)
-  const kept = (prev?.pages ?? []).filter((page) => laterPageSide(page.fileName) === page.side)
+  const kept = (prev?.pages ?? []).filter((page) => laterPageSides(page.fileName).includes(page.side))
   const pages = side
     ? upsertLaterPage(kept, {
         fileName: head.fileName,
@@ -243,7 +265,7 @@ function axesForSides(
   pages: readonly LaterPage[],
   accept: (value: number) => number | null,
 ): Partial<Record<DualAxisId, number>> {
-  const sides = new Set(pages.map((page) => page.side))
+  const sides = new Set(pages.flatMap((page) => laterPageSides(page.fileName)))
   const out: Partial<Record<DualAxisId, number>> = {}
   if (!axes) return out
   for (const id of DUAL_AXIS_IDS) {
@@ -398,9 +420,10 @@ export function formatLaterVisible(value: number): string {
 }
 
 /**
- * Artwork radar draws when its six axes are present.
- * The workbook radar draws only when a workbook file is present and its four axes are present.
- * Pending copy stays in the slot that is actually waiting.
+ * Artwork radar draws when this upload has an artwork side and all six axes are present.
+ * The workbook radar draws when this upload has a workbook side and all four axes are present.
+ * A combined file can draw either radar as soon as that side's axes are complete.
+ * Pending copy stays in the slot that is actually waiting. A missing side stays empty.
  */
 export function laterRadarView(draft: LaterDraft | null): {
   artwork: number[] | null
@@ -410,13 +433,15 @@ export function laterRadarView(draft: LaterDraft | null): {
 } {
   const empty = { artwork: null, workbook: null, artworkPending: false, workbookPending: false }
   if (!draft || draft.aiStatus === 'unsent') return empty
-  const artwork = aiReferenceAxes(draft, ARTWORK_AXIS_IDS)
-  const workbookFile = draft.pages.some((page) => page.side === 'research_workbook')
+  const sides = new Set(draft.pages.flatMap((page) => laterPageSides(page.fileName)))
+  const artworkFile = sides.has('artwork')
+  const workbookFile = sides.has('research_workbook')
+  const artwork = artworkFile ? aiReferenceAxes(draft, ARTWORK_AXIS_IDS) : null
   const workbook = workbookFile ? aiReferenceAxes(draft, RWB_AXIS_IDS) : null
   return {
     artwork,
     workbook,
-    artworkPending: artwork == null,
+    artworkPending: artworkFile && artwork == null,
     workbookPending: workbookFile && workbook == null,
   }
 }
