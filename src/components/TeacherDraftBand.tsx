@@ -1,4 +1,6 @@
 import { useId, useMemo, useState } from 'react'
+import { InspectClassOverview } from './InspectClassOverview'
+import { InspectReport, type InspectPreview } from './InspectReport'
 import { SchoolScoreDualStaff } from './SchoolScoreDualStaff'
 import { SchoolScoreLaterStaff } from './SchoolScoreLaterStaff'
 import { SchoolScoreStaff } from './SchoolScoreStaff'
@@ -248,9 +250,15 @@ function TeacherDraftBandPage({ role }: { role: StaffRole }) {
 
 export default function TeacherDraftBand() {
   const role = useStaffRole()
+  const [preview, setPreview] = useState<InspectPreview | null>(null)
   if (!role) return <StaffDenied />
   return (
     <div className="space-y-8">
+      <InspectClassOverview
+        onPreviewOne={(id) => setPreview({ kind: 'one', id })}
+        onPreviewClass={() => setPreview({ kind: 'class' })}
+      />
+      <InspectReport preview={preview} onClose={() => setPreview(null)} />
       <SchoolScoreStaff />
       <SchoolScoreDualStaff />
       <SchoolScoreLaterStaff />

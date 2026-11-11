@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "id": "inspect-f5",
+  "grade": "f5",
+  "label": "In-school practice",
+  "disclaimer": "These are in-school practice items to review methods from class. They do not use real exam papers or high-score exemplars.",
+  "items": [
+    {
+      "id": "INS-F5-U1-MC",
+      "type": "mcq",
+      "title": "What lessons emphasise about public-exam structure",
+      "question": "When Form 5 opening lessons talk about public-exam structure, what do they emphasise?",
+      "unitId": "F5-U1-ORIENT",
+      "options": [
+        "Memorising the wording of a real exam paper",
+        "Copying sentences from a high-score exemplar",
+        "Matching the school’s term exam timetable",
+        "How the two papers are structured, and what you need to understand when choosing (structure only)"
+      ],
+      "answer": 3,
+      "explain": "Lessons teach the structure and method of the two papers only. They do not use real exam papers or high-score exemplars."
+    },
+    {
+      "id": "INS-F5-U2-MC",
+      "type": "mcq",
+      "title": "What to look at together when discussing beauty",
+      "question": "When discussing how Chinese and Western societies understand beauty, what is sound to look at together?",
+      "unitId": "F5-U2-AESTHETIC",
+      "options": [
+        "Whether you can memorise every technique name at once",
+        "Form, function, and cultural context",
+        "Whether there is a real exam model answer",
+        "Which idea of beauty earns the highest official mark"
+      ],
+      "answer": 1,
+      "explain": "This unit is an introduction: practise looking at form, function and context. It is not a complete technique course."
+    },
+    {
+      "id": "INS-F5-U3-MC",
+      "type": "mcq",
+      "title": "What to do in the strange-stone comparison",
+      "question": "When comparing Wu Bin’s strange-stone images with Surrealist or Cubist approaches, what should you do in class?",
+      "unitId": "F5-U3-HERITAGE",
+      "options": [
+        "Copy a famous painting stroke by stroke",
+        "Treat it as a real exam paper",
+        "Compare methods, rather than copying the picture",
+        "Only write once you have a ready-made picture"
+      ],
+      "answer": 2,
+      "explain": "Comparison is about methods, not copying a picture. All of it happens in class."
+    },
+    {
+      "id": "INS-F5-U4-MC",
+      "type": "mcq",
+      "title": "How to look at traditional colour and pattern",
+      "question": "When looking at signs in traditional colour, pattern or painting, what is a sound approach?",
+      "unitId": "F5-U4-SYMBOL",
+      "options": [
+        "Memorise one official answer and ignore the rest",
+        "Copy a paragraph from a high-score exemplar",
+        "Turn it into a contest about who knows the most symbol names",
+        "Describe the forms you see, then note meanings they might carry"
+      ],
+      "answer": 3,
+      "explain": "Start with the forms you see, then possible meanings. All of it can happen in class."
+    },
+    {
+      "id": "INS-F5-U5-MC",
+      "type": "mcq",
+      "title": "The focus of role-taking practice",
+      "question": "In the role-taking unit, what is the focus of the practice?",
+      "unitId": "F5-U5-ROLE",
+      "options": [
+        "How to copy a real exam question",
+        "How to re-present a person in a Chinese context",
+        "How to wait for someone else to set the topic",
+        "How to rank the class by whose work looks stronger"
+      ],
+      "answer": 1,
+      "explain": "The unit practises role and identity: how to re-present a person in a Chinese context."
+    },
+    {
+      "id": "INS-F5-U6-MC",
+      "type": "mcq",
+      "title": "What lessons emphasise when introducing Xu Bing",
+      "question": "When introducing Xu Bing and contemporary Chinese calligraphy, what do lessons emphasise?",
+      "unitId": "F5-U6-CONTEMP",
+      "options": [
+        "That you must attend an outside talk before it counts",
+        "Copying a whole artwork",
+        "How writing and script can be rethought in contemporary practice (classroom introduction)",
+        "Answering with the wording of a real exam paper"
+      ],
+      "answer": 2,
+      "explain": "This is a classroom introduction to contemporary methods. It is not an outside talk, and it does not copy an artwork."
+    },
+    {
+      "id": "INS-F5-U7-MC",
+      "type": "mcq",
+      "title": "What to write in a portfolio review",
+      "question": "When reviewing a portfolio or looking back over the year, what is sound to write?",
+      "unitId": "F5-U7-PORTFOLIO",
+      "options": [
+        "Copy a high-score exemplar and present it as your overview",
+        "Predict what official public-exam mark you will get",
+        "Write only that it is finished, with no examples",
+        "What went well, what can still improve, and how to write a short overview"
+      ],
+      "answer": 3,
+      "explain": "A review names strengths, next steps and overview structure. It does not use real exam papers or high-score exemplars."
+    },
+    {
+      "id": "INS-F5-LQ-APPREC",
+      "type": "long",
+      "title": "Tradition and everyday life: write what you see",
+      "question": "Starting from how tradition and society shape everyday life, write a short observation: what forms do you see, and what might they mean? Use classwork or everyday notes, and keep it as classroom practice.",
+      "unitId": "F5-U3-HERITAGE",
+      "hint": "You may use notes already in your visual diary. Write only the forms you see and the meanings they might carry."
+    },
+    {
+      "id": "INS-F5-LQ-THEME",
+      "type": "long",
+      "title": "Write the next step for one portfolio piece",
+      "question": "Choose the first or second portfolio piece. Write what you want to try next in ink, wet or dry media, or mixed media, and how that step serves the theme. This is a plan only, not a formal submission.",
+      "unitId": "F5-U5-ROLE",
+      "hint": "Structure and reasons are enough. You do not need to claim the work is finished, and you should not map it to a public-exam grade."
+    },
+    {
+      "id": "INS-F5-SBA-THEME",
+      "type": "sba-process",
+      "title": "Form 5 theme motive",
+      "question": "In two sentences, write your Form 5 theme motive now. If you are starting from heritage and society, or from role-taking, say why that direction matters to you.",
+      "axis": "theme",
+      "hint": "Axis: theme clarity. A concrete personal link is stronger than a vague keyword."
+    },
+    {
+      "id": "INS-F5-SBA-RESEARCH",
+      "type": "sba-process",
+      "title": "Form 5 material and comparison",
+      "question": "Note one class comparison or artist reference, and one piece of material you gathered yourself. In one sentence each, say how it helps your Form 5 theme.",
+      "axis": "research",
+      "hint": "Axis: research depth. You may mention the Wu Bin comparison, Xu Bing or another class example, but do not copy a picture."
+    },
+    {
+      "id": "INS-F5-SBA-MEDIA",
+      "type": "sba-process",
+      "title": "Ink or mixed-media experiment",
+      "question": "Describe one ink, wet-or-dry, or mixed-media experiment: what you tried, what felt difficult, and how you plan to change it.",
+      "axis": "media",
+      "hint": "Axis: media and technique experiments. This is a trial record, not a formal finished piece."
+    },
+    {
+      "id": "INS-F5-SBA-PROCESS",
+      "type": "sba-process",
+      "title": "How the visual diary records progress",
+      "question": "Look back at a recent visual-diary or research page and note three points of progress: what you gathered, what you chose, and what record is still missing.",
+      "axis": "process",
+      "hint": "Axis: completeness of process record. The diary is for gentle noting, not for a streak."
+    },
+    {
+      "id": "INS-F5-SBA-REFLECT",
+      "type": "sba-process",
+      "title": "What improved this year, and what is next",
+      "question": "Write one place where your Form 5 work is clearer than before, and one place you want to improve next. Give one piece of evidence for each.",
+      "axis": "reflect",
+      "hint": "Axis: reflection and learning progress. A short note with evidence is better than empty praise or blame."
+    },
+    {
+      "id": "INS-F5-SBA-VISUAL",
+      "type": "sba-process",
+      "title": "How one research page makes the theme clear",
+      "question": "Choose one Form 5 research or development page. Write what a reader would notice first, and how the layout helps the theme come across.",
+      "axis": "visual",
+      "hint": "Axis: visual expression and structure. You may mention how words and images line up. Do not map this to a public-exam grade."
+    }
+  ]
+}

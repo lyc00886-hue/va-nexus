@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "id": "inspect-f4",
+  "grade": "f4",
+  "label": "In-school practice",
+  "disclaimer": "These are in-school practice items to review methods from class. They do not use real exam papers or high-score exemplars.",
+  "items": [
+    {
+      "id": "INS-F4-U1-MC",
+      "type": "mcq",
+      "title": "Two main parts of a portfolio",
+      "question": "Form 4 introductory lessons described two main parts of an SBA portfolio. What are they?",
+      "unitId": "F4-U1-ORIENT",
+      "options": [
+        "A PE log and a music test",
+        "Real exam-paper wording and high-score exemplars",
+        "A research workbook, and artwork / critical studies",
+        "School admin steps and the year calendar"
+      ],
+      "answer": 2,
+      "explain": "Lessons only teach portfolio structure: the research workbook runs through the process, and artwork / critical studies present the outcome."
+    },
+    {
+      "id": "INS-F4-U2-MC",
+      "type": "mcq",
+      "title": "What to observe first when drawing from life",
+      "question": "In a life-drawing or observation exercise, what is most worth noticing first?",
+      "unitId": "F4-U2-DRAW-DESIGN",
+      "options": [
+        "Whether you can copy a photo exactly in one go",
+        "Whether a real exam paper asks for this method",
+        "Whether you can skip looking and go straight to colour",
+        "Shape, proportion, and how the composition fits together"
+      ],
+      "answer": 3,
+      "explain": "Life drawing starts with looking: shape, proportion and composition, then you test media."
+    },
+    {
+      "id": "INS-F4-U3-MC",
+      "type": "mcq",
+      "title": "What a visual diary helps you do",
+      "question": "What does a weekly visual diary mainly help you do?",
+      "unitId": "F4-U3-COMMUNITY",
+      "options": [
+        "Build a streak and keep a flame going",
+        "Record observations and slowly develop a theme",
+        "Copy wording from a real exam paper",
+        "Replace the teacher’s official mark"
+      ],
+      "answer": 1,
+      "explain": "A visual diary is a classroom record for observation and theme-building, not a streak game."
+    },
+    {
+      "id": "INS-F4-U4-MC",
+      "type": "mcq",
+      "title": "What to bring back from artist research",
+      "question": "When you research an artist, what is most worth bringing back to your own theme?",
+      "unitId": "F4-U4-SELF-RESEARCH",
+      "options": [
+        "Only pasting pictures, with no note about what you see",
+        "Copying whole sentences from a high-score exemplar",
+        "The methods they use, and how those methods connect to your own theme",
+        "Memorising the artist’s biography word for word"
+      ],
+      "answer": 2,
+      "explain": "Research needs interpretation and a turn back into your own making, not pictures alone."
+    },
+    {
+      "id": "INS-F4-U5-MC",
+      "type": "mcq",
+      "title": "What to ask when looking at earlier art",
+      "question": "When looking at introductory examples of earlier Western or Chinese art, what is sound to ask together?",
+      "unitId": "F4-U5-ART-HIST",
+      "options": [
+        "Whether it can be treated as a real exam model answer",
+        "What mark the maker scored at the time",
+        "Only the date, with no need to look further",
+        "Form, function, and cultural context"
+      ],
+      "answer": 3,
+      "explain": "Introductory looking asks about form, function and context, and does not treat the work as an exam answer."
+    },
+    {
+      "id": "INS-F4-U6-MC",
+      "type": "mcq",
+      "title": "How to use the three theme seeds",
+      "question": "What do the three theme seeds “self, relationship, story” mainly help you do?",
+      "unitId": "F4-U6-THEME-SEEDS",
+      "options": [
+        "Force you to copy a particular real exam paper",
+        "Narrow your focus and develop a theme that belongs to you",
+        "Replace the research workbook",
+        "Compare the class to see whose theme is stronger"
+      ],
+      "answer": 1,
+      "explain": "Theme seeds help you narrow and develop a personal direction. They are not a contest or an exam bank."
+    },
+    {
+      "id": "INS-F4-U7-MC",
+      "type": "mcq",
+      "title": "What the exam-practice studio practises",
+      "question": "In the exam-practice studio unit, what do lessons actually practise?",
+      "unitId": "F4-U7-EXAM-STRUCT",
+      "options": [
+        "Memorising the wording of a real exam paper",
+        "Copying a high-score student exemplar",
+        "How to present a theme visually, and how to structure critical writing",
+        "Predicting an official public-exam score"
+      ],
+      "answer": 2,
+      "explain": "The exam-practice studio practises structure and method only. It does not use real exam papers or high-score exemplars."
+    },
+    {
+      "id": "INS-F4-LQ-APPREC",
+      "type": "long",
+      "title": "Write about an image in three short parts",
+      "question": "Choose an image you have seen in class, or a sketch of your own. Write three short parts: what you see; how you understand it; and what evidence you are using. Method only — do not copy a real exam paper.",
+      "unitId": "F4-U7-EXAM-STRUCT",
+      "hint": "Two to four sentences in each part is enough. If you have no image to hand, write about a work discussed in class, and do not invent details you cannot see."
+    },
+    {
+      "id": "INS-F4-LQ-THEME",
+      "type": "long",
+      "title": "Choose one theme seed and write the next step",
+      "question": "Choose one of “self, relationship, story”. Write how you would gather material in class, and what you want to try next. Keep all of it as classroom practice.",
+      "unitId": "F4-U6-THEME-SEEDS",
+      "hint": "You may mention interviews, sketches, photos or collected objects, and keep all of it as classroom practice."
+    },
+    {
+      "id": "INS-F4-SBA-THEME",
+      "type": "sba-process",
+      "title": "Write your theme motive now",
+      "question": "In two sentences, write your theme motive now: what do you care about, and why does it matter to you? If the theme is not fixed yet, write the one thing you most want to make clear.",
+      "axis": "theme",
+      "hint": "Axis: theme clarity. A concrete sentence is more useful than a list of keywords."
+    },
+    {
+      "id": "INS-F4-SBA-RESEARCH",
+      "type": "sba-process",
+      "title": "Write about material you have used",
+      "question": "Note one piece of material you observed or recorded yourself, and one second-hand source you looked at. In one sentence each, say how it helps your current theme.",
+      "axis": "research",
+      "hint": "Axis: research depth. A second-hand source can be a book, class material or a trusted webpage. Do not write a school name."
+    },
+    {
+      "id": "INS-F4-SBA-MEDIA",
+      "type": "sba-process",
+      "title": "Write about one experiment and what you learned",
+      "question": "Describe one media or technique experiment that did not go as expected. What did you do? What did you learn? What would you try next?",
+      "axis": "media",
+      "hint": "Axis: media and technique experiments. A record of what did not work is still useful."
+    },
+    {
+      "id": "INS-F4-SBA-PROCESS",
+      "type": "sba-process",
+      "title": "Write three steps you have changed",
+      "question": "From your first composition to now, write three steps you have changed. For each step, note the problem you saw and how you changed it.",
+      "axis": "process",
+      "hint": "Axis: completeness of process record. Skipping steps, or showing only the finished piece, makes progress harder to see."
+    },
+    {
+      "id": "INS-F4-SBA-REFLECT",
+      "type": "sba-process",
+      "title": "Write a problem, a method, and a next step",
+      "question": "Write one problem you noticed, one method you tried, and one step you want to try next time.",
+      "axis": "reflect",
+      "hint": "Axis: reflection and learning progress. A grounded note is more useful than a slogan."
+    },
+    {
+      "id": "INS-F4-SBA-VISUAL",
+      "type": "sba-process",
+      "title": "Write how one page or work carries the theme",
+      "question": "Choose one workbook page or one work in progress. Write what a reader would notice first, and how that arrangement helps the theme come across.",
+      "axis": "visual",
+      "hint": "Axis: visual expression and structure. You may mention hierarchy, space, or how image and words work together. You do not need to claim the work is finished."
+    }
+  ]
+}
