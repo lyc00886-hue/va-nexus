@@ -1,0 +1,1370 @@
+{
+  "units": [
+    {
+      "id": "F6-U1-ORIENT",
+      "title": "中六視藝起步：視覺日記同作品集整理",
+      "intro": "呢個單元帶你開始中六視藝。你會繼續每週視覺日記，並用結構去檢查同整理作品集。課堂只講方法，唔會放入學校行政程序或學年日程。",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U1-ORIENT.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U1-L1",
+          "title": "中六起步：視覺日記同學習習慣",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U1-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "中六起步係把每週視覺日記繼續落去，並把學習習慣寫得具體：幾時記、記幾多、下週問咩。",
+            "一頁仍然可以有速寫、一句觀察、同一個未解問題。習慣係重複呢三樣，唔係一次寫很長。",
+            "記錄留喺課室，用已有材料就得。",
+            "課堂只講方法。日記慢慢記就得。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "中六視覺日記嘅習慣係咩？",
+              "options": [
+                "一次過寫很長",
+                "重複速寫、觀察同問題",
+                "只貼分數",
+                "收集真實試卷"
+              ],
+              "answer": "重複速寫、觀察同問題",
+              "explain": "習慣係每週重複三樣細記錄。"
+            },
+            {
+              "type": "fill",
+              "question": "學習習慣要寫到＿＿：幾時記、記幾多、下週問咩。",
+              "options": [],
+              "answer": "具體",
+              "explain": "具體先算係習慣，唔係口號。",
+              "wordBank": [
+                "具體",
+                "秘密",
+                "隨機",
+                "空白"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對起步習慣",
+              "options": [
+                "速寫",
+                "觀察",
+                "問題"
+              ],
+              "answer": {
+                "速寫": "記下形式",
+                "觀察": "一句你留意到嘅事",
+                "問題": "留畀下週"
+              },
+              "explain": "三樣一齊先係每週習慣。"
+            },
+            {
+              "type": "order",
+              "question": "將一次中六日記排好。",
+              "options": [
+                "定一個課室記錄時間",
+                "速寫同寫一句觀察",
+                "留一個問題",
+                "下週先答呢個問題"
+              ],
+              "explain": "由時間到記錄，再到問題同下週。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫呢週速寫，右邊寫下週問題。各一句。",
+              "options": [
+                "呢週速寫",
+                "下週問題"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U1-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「時間＋記錄＋下週問題」寫低你嘅中六學習習慣。提示：三項都係課室做得到嘅，而且慢慢記。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U1-L2",
+          "title": "作品集檢查同整理",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U1-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "作品集檢查係用一份清單睇自己有咩、缺咩：主題句、研究證據、媒介試驗、作品／評賞頁。",
+            "整理係把已有材料分組，唔係填一份行政表格，亦唔係抄學年日程。",
+            "缺嘅一項只寫一個補法，而且係課室做得到嘅。",
+            "課堂只講方法，唔會放入學校行政程序。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集檢查主要睇咩？",
+              "options": [
+                "行政表格填完未",
+                "自己有咩、缺咩",
+                "學年日程",
+                "高分示例"
+              ],
+              "answer": "自己有咩、缺咩",
+              "explain": "檢查係清單，唔係行政程序。"
+            },
+            {
+              "type": "fill",
+              "question": "整理係把已有材料＿＿，唔係抄日程。",
+              "options": [],
+              "answer": "分組",
+              "explain": "分組先睇到缺咩。",
+              "wordBank": [
+                "分組",
+                "丟掉",
+                "隱藏",
+                "評分"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對檢查清單",
+              "options": [
+                "主題句",
+                "媒介試驗",
+                "缺項"
+              ],
+              "answer": {
+                "主題句": "你探索緊咩",
+                "媒介試驗": "一次效果記錄",
+                "缺項": "一個課室補法"
+              },
+              "explain": "有同缺都要寫到。"
+            },
+            {
+              "type": "order",
+              "question": "將檢查同整理排好。",
+              "options": [
+                "列出已有材料",
+                "分組",
+                "圈出缺嘅一項",
+                "寫一個課室補法"
+              ],
+              "explain": "由清單到分組，再到缺項同補法。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫你已有嘅一項，右邊寫你缺嘅一項同補法。各一句。",
+              "options": [
+                "已有",
+                "缺少同補法"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U1-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「已有兩項＋缺少一項＋一個補法」檢查作品集。提示：補法係課室做得到嘅，唔寫行政程序。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U2-MINGQING",
+      "title": "明清美學同當代對讀",
+      "intro": "呢個單元用精簡時間線認識明清美學，並對讀英國青年藝術家（YBA）同相關當代做法。你會入門沈周同文徵明。呢度只係入門，唔會把所有名畫逐幅臨摹。課堂唔會用真實試卷。",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-MINGQING.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U2-L1",
+          "title": "明清美學同藝術史入門",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "明清美學入門用精簡時間線：先知道大致先後，再揀一件作品睇形式同可能嘅生活用途。",
+            "美學可以問：筆墨偏疏定偏密、留白多定少、作品更似自娛定更似應酬。",
+            "呢度只係入門，唔會把所有名畫逐幅臨摹。",
+            "課堂唔會用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "明清入門嘅時間線幫你做咩？",
+              "options": [
+                "逐幅臨摹名畫",
+                "把一件作品放喺大致先後",
+                "背晒所有年份",
+                "交一份真實試卷"
+              ],
+              "answer": "把一件作品放喺大致先後",
+              "explain": "精簡時間線係大致位置。"
+            },
+            {
+              "type": "fill",
+              "question": "美學問題可以問筆墨偏疏定偏＿＿。",
+              "options": [],
+              "answer": "密",
+              "explain": "疏同密係形式比較。",
+              "wordBank": [
+                "密",
+                "貴",
+                "遠",
+                "空"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對明清入門",
+              "options": [
+                "時間線",
+                "筆墨",
+                "用途"
+              ],
+              "answer": {
+                "時間線": "大致先後",
+                "筆墨": "疏定密",
+                "用途": "可能更似自娛定應酬"
+              },
+              "explain": "三項夠一次入門。"
+            },
+            {
+              "type": "order",
+              "question": "將明清入門排好。",
+              "options": [
+                "睇精簡時間線",
+                "揀一件作品",
+                "描述筆墨疏密",
+                "寫一個可能嘅用途"
+              ],
+              "explain": "由時間線到作品、筆墨、用途。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫筆墨疏密，右邊寫一個可能嘅生活用途。各一句。",
+              "options": [
+                "筆墨疏密",
+                "可能用途"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U2-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句做明清美學入門。提示：第一句講大致時間位置同筆墨，第二句講一個可能用途。唔使臨摹整幅畫。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U2-L2",
+          "title": "英國青年藝術家（YBA）同當代對讀",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "英國青年藝術家（YBA）喺呢課係當代對讀嘅一方：你睇佢哋點樣用物料、標題同場面去講身份或日常。",
+            "對讀嘅另一邊係你已經開始嘅明清觀察。你比較方法，例如點樣把一件物件放大，或者點樣把日常變成題目。",
+            "要寫全稱「英國青年藝術家（YBA）」。唔好只用三個字母當標題。",
+            "課堂唔會用真實試卷，亦唔抄題。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "寫呢組藝術家時，應該點寫？",
+              "options": [
+                "只寫三個字母",
+                "英國青年藝術家（YBA）",
+                "只寫一個城市名",
+                "寫成試題編號"
+              ],
+              "answer": "英國青年藝術家（YBA）",
+              "explain": "全稱先清楚，三個字母只係附註。"
+            },
+            {
+              "type": "fill",
+              "question": "對讀係比較＿＿，唔係抄題。",
+              "options": [],
+              "answer": "方法",
+              "explain": "方法先可以同明清並排。",
+              "wordBank": [
+                "方法",
+                "價錢",
+                "座位",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對對讀兩邊",
+              "options": [
+                "英國青年藝術家（YBA）",
+                "明清觀察",
+                "方法"
+              ],
+              "answer": {
+                "英國青年藝術家（YBA）": "物料、標題同場面",
+                "明清觀察": "筆墨、留白或用途",
+                "方法": "放大物件或把日常變成題目"
+              },
+              "explain": "兩邊用方法對讀。"
+            },
+            {
+              "type": "order",
+              "question": "將一次當代對讀排好。",
+              "options": [
+                "寫全稱英國青年藝術家（YBA）",
+                "揀一個物料或標題方法",
+                "揀一個明清形式",
+                "寫一個相同或相異"
+              ],
+              "explain": "由全稱到方法，再到明清同比較。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫英國青年藝術家（YBA）嘅一種方法，右邊寫一個明清形式。各一句，唔抄題。",
+              "options": [
+                "青年藝術家方法",
+                "明清形式"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U2-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句做英國青年藝術家（YBA）同明清嘅對讀。提示：第一句寫全稱同一個方法，第二句寫一個明清形式。唔抄題。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U2-L3",
+          "title": "沈周同文徵明",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "沈周同文徵明係明清入門裡兩位你會遇見嘅藝術家。呢課只要求你各寫一個形式觀察。",
+            "觀察可以係：山石點寫、樹木疏密、題字同畫面點樣一齊出現。你講你見到嘅，唔背完整傳記。",
+            "兩位可以比較一個相同點同一個相異點。呢度只係入門。",
+            "課堂唔會用真實試卷，亦唔把名畫逐幅臨摹。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "沈周同文徵明呢課要你交咩？",
+              "options": [
+                "兩篇完整傳記",
+                "每人一個形式觀察",
+                "兩幅臨摹",
+                "一份真實試卷"
+              ],
+              "answer": "每人一個形式觀察",
+              "explain": "入門係形式觀察，唔係傳記。"
+            },
+            {
+              "type": "fill",
+              "question": "比較兩位時寫一個相同點同一個＿＿點。",
+              "options": [],
+              "answer": "相異",
+              "explain": "相同同相異先算比較。",
+              "wordBank": [
+                "相異",
+                "價錢",
+                "座位",
+                "歲數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對形式觀察",
+              "options": [
+                "山石",
+                "樹木",
+                "題字"
+              ],
+              "answer": {
+                "山石": "點寫密定疏",
+                "樹木": "疏定密",
+                "題字": "同畫面點樣一齊出現"
+              },
+              "explain": "三個都係你見到嘅形式。"
+            },
+            {
+              "type": "order",
+              "question": "將沈周同文徵明嘅入門排好。",
+              "options": [
+                "各揀一個形式",
+                "各寫一句觀察",
+                "寫一個相同點",
+                "寫一個相異點"
+              ],
+              "explain": "先各自觀察，再比較。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫沈周嘅一個形式，右邊寫文徵明嘅一個形式。各一句。",
+              "options": [
+                "沈周",
+                "文徵明"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U2-L3.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句入門沈周同文徵明。提示：每人一句形式觀察，唔寫完整傳記，亦唔臨摹整幅畫。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U3-DAILY",
+      "title": "傳統點影響日常生活",
+      "intro": "呢個單元由「傳統點影響日常生活」出發，認識徐渭、陳淳、唐寅，再睇八大山人嘅符號同身份，以及陳洪綬、吳彬等人物畫入門。你會用水墨同混合媒介發展作品集第一件作品。訪問同收集都係課室做法。",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-DAILY.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U3-L1",
+          "title": "傳統點影響日常生活",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "傳統點影響日常生活：由一件你用開嘅物件、一種節慶顏色，或者屋入面嘅擺設開始。",
+            "寫三樣：形式、佢喺一日入面出現嘅位置、同埋你覺得邊個傳統習慣仲在。",
+            "訪問同收集都係課室做法。用對話、已有相片或課室物件。",
+            "呢課唔把生活寫成要離開課室先睇到。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "呢課要你由邊度開始？",
+              "options": [
+                "一份真實試卷",
+                "一件日常物件或一種顏色",
+                "一幅要臨摹嘅名畫",
+                "一張行政表格"
+              ],
+              "answer": "一件日常物件或一種顏色",
+              "explain": "由日常生活入面睇得到嘅形式開始。"
+            },
+            {
+              "type": "fill",
+              "question": "訪問同收集都係＿＿做法。",
+              "options": [],
+              "answer": "課室",
+              "explain": "兩種做法都留喺課室。",
+              "wordBank": [
+                "課室",
+                "比賽",
+                "遠行",
+                "抽獎"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對日常影響",
+              "options": [
+                "形式",
+                "位置",
+                "習慣"
+              ],
+              "answer": {
+                "形式": "物件或顏色點樣出現",
+                "位置": "佢喺一日入面邊度出現",
+                "習慣": "邊個傳統你覺得仲在"
+              },
+              "explain": "三項一齊先講到影響。"
+            },
+            {
+              "type": "order",
+              "question": "將一次日常生活觀察排好。",
+              "options": [
+                "揀物件或顏色",
+                "描述形式",
+                "寫佢喺一日入面嘅位置",
+                "寫一個仍然在嘅習慣"
+              ],
+              "explain": "由物件到形式、位置、習慣。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫形式，右邊寫一個仍然在嘅傳統習慣。各一句。",
+              "options": [
+                "日常形式",
+                "仍然在嘅習慣"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U3-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用三句講傳統點影響你一件日常事物。提示：形式、位置、習慣各一句，而且係課室做得到嘅。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U3-L2",
+          "title": "徐渭、陳淳、唐寅",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "徐渭、陳淳、唐寅係你喺呢課會遇見嘅三位藝術家。每人只寫一個形式觀察。",
+            "觀察可以係用筆快慢、花葉疏密，或者題句同畫面邊個較搶眼。",
+            "三人可以只比較一個共同點。入門唔使寫完整傳記。",
+            "課堂唔用真實試卷，亦唔逐幅臨摹。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "徐渭、陳淳、唐寅呢課要你寫幾多個形式觀察？",
+              "options": [
+                "每人一篇傳記",
+                "每人一個形式觀察",
+                "三人合成一句就得",
+                "三幅完整臨摹"
+              ],
+              "answer": "每人一個形式觀察",
+              "explain": "每人一個形式，先算遇見佢哋。"
+            },
+            {
+              "type": "fill",
+              "question": "入門比較可以只寫一個＿＿點。",
+              "options": [],
+              "answer": "共同",
+              "explain": "一個共同點已經夠入門。",
+              "wordBank": [
+                "共同",
+                "價錢",
+                "座位",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對三位藝術家嘅觀察方向",
+              "options": [
+                "用筆",
+                "花葉",
+                "題句"
+              ],
+              "answer": {
+                "用筆": "快定慢",
+                "花葉": "疏定密",
+                "題句": "同畫面邊個較搶眼"
+              },
+              "explain": "三個方向都可以用喺任何一位。"
+            },
+            {
+              "type": "order",
+              "question": "將三人入門排好。",
+              "options": [
+                "寫徐渭一個形式",
+                "寫陳淳一個形式",
+                "寫唐寅一個形式",
+                "寫一個共同點"
+              ],
+              "explain": "先各自，再一個共同點。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫其中一位嘅用筆，右邊寫另一位嘅花葉或題句。各一句。",
+              "options": [
+                "用筆",
+                "花葉或題句"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U3-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用三句短語加一個共同點，入門徐渭、陳淳、唐寅。提示：每人一句形式，最後一句先比較。唔寫傳記。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U3-L3",
+          "title": "八大山人：符號同身份",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "八大山人呢課睇符號同身份：一隻鳥、一塊石、一個簽名，點樣令你覺得畫者係邊種人。",
+            "符號要寫成「可能」。你描述形式，再估計佢點樣交代身份。",
+            "身份唔等於背生平。你只要講畫面入面邊個細節支撐你嘅估計。",
+            "課堂唔用真實試卷，亦唔抄畫面。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "八大山人呢課要你連接咩？",
+              "options": [
+                "完整生平同分數",
+                "符號同身份",
+                "一幅臨摹",
+                "一份真實試卷"
+              ],
+              "answer": "符號同身份",
+              "explain": "符號同身份一齊睇。"
+            },
+            {
+              "type": "fill",
+              "question": "符號意思要寫成＿＿，唔寫成唯一答案。",
+              "options": [],
+              "answer": "可能",
+              "explain": "可能先係估計，唔係唯一。",
+              "wordBank": [
+                "可能",
+                "定價",
+                "座號",
+                "滿分"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對八大山人觀察",
+              "options": [
+                "鳥或石",
+                "簽名",
+                "估計"
+              ],
+              "answer": {
+                "鳥或石": "你見到嘅形式",
+                "簽名": "一個可能交代身份嘅細節",
+                "估計": "用「可能」寫身份"
+              },
+              "explain": "形式同估計要分開寫。"
+            },
+            {
+              "type": "order",
+              "question": "將一次符號同身份觀察排好。",
+              "options": [
+                "揀鳥、石或簽名",
+                "描述形式",
+                "用「可能」寫身份",
+                "指出支撐估計嘅細節"
+              ],
+              "explain": "由形式到可能身份，再到證據。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊只寫形式，右邊用「可能」寫身份。各一句。",
+              "options": [
+                "形式",
+                "可能嘅身份"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U3-L3.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句講八大山人嘅符號同身份。提示：第一句只講形式，第二句用「可能」講身份，並指出一個細節。唔抄畫面。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U3-L4",
+          "title": "人物畫、水墨同作品集第一件作品",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-L4.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "人物畫入門可以睇陳洪綬、吳彬：人物嘅比例、衣紋線條、同埋表情點樣被誇張。",
+            "水墨試驗仍然一次只改一個條件。你把效果寫低，再決定佢可唔可以用喺人物。",
+            "作品集第一件作品用結構：主題一句、一個人物畫形式、一次水墨或混合媒介試驗、下一步。",
+            "訪問同收集都係課室做法。課堂唔放高分示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集第一件作品要包括邊項？",
+              "options": [
+                "高分示例",
+                "主題一句同一次媒介試驗",
+                "行政表格",
+                "真實試卷"
+              ],
+              "answer": "主題一句同一次媒介試驗",
+              "explain": "第一件作品用主題、形式、試驗同下一步。"
+            },
+            {
+              "type": "fill",
+              "question": "人物畫可以觀察比例、衣紋，同埋表情點樣被＿＿。",
+              "options": [],
+              "answer": "誇張",
+              "explain": "誇張係形式方法。",
+              "wordBank": [
+                "誇張",
+                "出售",
+                "隱藏",
+                "評分"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對第一件作品",
+              "options": [
+                "陳洪綬或吳彬",
+                "水墨試驗",
+                "下一步"
+              ],
+              "answer": {
+                "陳洪綬或吳彬": "比例、衣紋或表情",
+                "水墨試驗": "一次只改一個條件",
+                "下一步": "你跟住想試嘅人物做法"
+              },
+              "explain": "三項服務第一件作品。"
+            },
+            {
+              "type": "order",
+              "question": "將人物畫同第一件作品排好。",
+              "options": [
+                "寫主題一句",
+                "揀一個人物畫形式",
+                "做一次水墨試驗",
+                "寫下一步"
+              ],
+              "explain": "由主題到形式、試驗、下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫一個人物畫形式，右邊寫一次水墨效果。各一句。",
+              "options": [
+                "人物形式",
+                "水墨效果"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U3-L4.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「主題一句＋人物形式＋一次試驗」講作品集第一件作品。提示：試驗要寫改咗邊個條件。唔用高分示例。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U4-LITERATI",
+      "title": "文人畫同傳統符號",
+      "intro": "呢個單元延伸傳統符號觀察，並入門文人畫（包括四僧同相關畫派）。練習描述形式、筆墨同可能嘅象徵。全部喺課室完成，亦唔抄公開試題。",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U4-LITERATI.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U4-L1",
+          "title": "傳統符號：色、紋同畫",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U4-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "傳統符號可以出現喺色、紋同畫。你先描述形式，再寫一個可能嘅意思。",
+            "後現代嘅方法入門只係問：意義可唔可以由觀眾完成、物件可唔可以離開原本用途。你唔抄題。",
+            "全部喺課室完成。用課室示意同你自己嘅句子。",
+            "亦唔抄公開試題。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "講傳統符號時，次序係？",
+              "options": [
+                "先寫唯一正確意思",
+                "先描述形式，再寫可能意思",
+                "先抄一題",
+                "先寫價錢"
+              ],
+              "answer": "先描述形式，再寫可能意思",
+              "explain": "形式先，可能意思後。"
+            },
+            {
+              "type": "fill",
+              "question": "方法入門可以問：意義可唔可以由＿＿完成。",
+              "options": [],
+              "answer": "觀眾",
+              "explain": "觀眾可以參與意思，呢個係方法問題。",
+              "wordBank": [
+                "觀眾",
+                "價錢",
+                "座位",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對符號同方法",
+              "options": [
+                "色或紋",
+                "可能意思",
+                "方法入門"
+              ],
+              "answer": {
+                "色或紋": "你見到嘅形式",
+                "可能意思": "用「可能」寫象徵",
+                "方法入門": "意思可唔可以由觀眾完成"
+              },
+              "explain": "三項都喺課室講，而且唔抄題。"
+            },
+            {
+              "type": "order",
+              "question": "將一次符號描述排好。",
+              "options": [
+                "指出色、紋或畫",
+                "描述形式",
+                "寫一個可能意思",
+                "問觀眾可唔可以參與呢個意思"
+              ],
+              "explain": "由形式到意思，再到方法問題。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫形式，右邊寫一個可能意思。各一句，唔抄題。",
+              "options": [
+                "形式",
+                "可能意思"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U4-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句講一個傳統符號。提示：第一句只講色、紋或畫嘅形式，第二句用「可能」講意思。唔抄公開試題。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U4-L2",
+          "title": "文人畫：四僧同相關畫派",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U4-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "文人畫入門包括四僧同相關畫派。你唔使改寫成另一個固定名單，只要講一個形式同一個可能象徵。",
+            "形式可以係筆墨乾濕、構圖留白，或者題句同畫面嘅關係。",
+            "相關畫派只係話仲有相近嘅做法。你比較方法，唔背一張完整名單。",
+            "全部喺課室完成，亦唔抄公開試題。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "文人畫入門點樣處理四僧同相關畫派？",
+              "options": [
+                "改寫成另一個固定名單",
+                "講一個形式同一個可能象徵",
+                "背完整名單先合格",
+                "抄一題公開試"
+              ],
+              "answer": "講一個形式同一個可能象徵",
+              "explain": "入門係形式同可能象徵，唔係另一張名單。"
+            },
+            {
+              "type": "fill",
+              "question": "筆墨觀察可以問乾定＿＿。",
+              "options": [],
+              "answer": "濕",
+              "explain": "乾濕係形式。",
+              "wordBank": [
+                "濕",
+                "貴",
+                "遠",
+                "滿"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對文人畫入門",
+              "options": [
+                "四僧同相關畫派",
+                "筆墨",
+                "象徵"
+              ],
+              "answer": {
+                "四僧同相關畫派": "唔改寫成另一個固定名單",
+                "筆墨": "乾定濕",
+                "象徵": "用「可能」寫"
+              },
+              "explain": "三項都喺課室完成。"
+            },
+            {
+              "type": "order",
+              "question": "將文人畫入門排好。",
+              "options": [
+                "揀一個筆墨或留白形式",
+                "描述你見到嘅",
+                "用「可能」寫一個象徵",
+                "講明你冇改寫名單"
+              ],
+              "explain": "由形式到象徵，並保持名單唔被改寫。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫筆墨或留白，右邊寫一個可能象徵。各一句。",
+              "options": [
+                "筆墨或留白",
+                "可能象徵"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U4-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句入門文人畫。提示：第一句講四僧同相關畫派入面嘅一個形式，第二句用「可能」講象徵。唔改寫成另一個固定名單，亦唔抄題。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U5-ROLE",
+      "title": "角色代入：喺中國語境再呈現",
+      "intro": "呢個單元練習角色代入同身份再現：點樣喺中國語境再呈現一個人。你可對讀 Cindy Sherman 等藝術家用扮演去討論身份嘅方法（只講方法，唔抄題）。亦會認識揚州八怪、徐悲鴻同齊白石，並用乾濕媒介發展作品集第二件作品。",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U5-ROLE.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U5-L1",
+          "title": "角色代入同身份再現",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U5-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "角色代入同身份再現：你決定一個人點樣再被呈現，包括衣著、姿態、場面同觀看角度。",
+            "Cindy Sherman 等藝術家用扮演去討論身份。呢課只講方法：邊個細節令身份被睇成另一種人。唔抄題。",
+            "喺中國語境再呈現，可以借用一個傳統姿態或符號，但要寫你改咗咩。",
+            "課堂唔放高分示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Cindy Sherman 呢課要你學咩？",
+              "options": [
+                "抄一題考題",
+                "用扮演討論身份嘅方法",
+                "背完整作品目錄",
+                "離開課室先可以扮演"
+              ],
+              "answer": "用扮演討論身份嘅方法",
+              "explain": "只講方法，唔抄題。"
+            },
+            {
+              "type": "fill",
+              "question": "借用傳統姿態之後，要寫你＿＿咗咩。",
+              "options": [],
+              "answer": "改",
+              "explain": "借用同改動一齊先算再呈現。",
+              "wordBank": [
+                "改",
+                "賣",
+                "藏",
+                "評"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對身份再現",
+              "options": [
+                "扮演",
+                "中國語境",
+                "改動"
+              ],
+              "answer": {
+                "扮演": "用細節令身份被睇成另一種人",
+                "中國語境": "一個傳統姿態或符號",
+                "改動": "你自己改咗嘅地方"
+              },
+              "explain": "三項都係方法。"
+            },
+            {
+              "type": "order",
+              "question": "將一次角色代入排好。",
+              "options": [
+                "揀一個想再呈現嘅人",
+                "寫衣著、姿態或場面",
+                "借一個方法或傳統細節",
+                "寫你改咗咩"
+              ],
+              "explain": "由人到呈現，再到借用同改動。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫一個扮演細節，右邊寫你喺中國語境改咗咩。各一句，只講方法。",
+              "options": [
+                "扮演細節",
+                "你嘅改動"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U5-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句講角色代入同身份再現。提示：第一句講一個扮演方法，第二句講中國語境入面你改咗咩。唔抄題。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U5-L2",
+          "title": "揚州八怪、徐悲鴻、齊白石",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U5-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "揚州八怪、徐悲鴻、齊白石係你會遇見嘅幾組名字。每人或每組只寫一個形式觀察。",
+            "觀察可以係題材（花鳥、人物、動物）、用筆乾濕，或者留白多少。",
+            "揚州八怪當一組方法去睇，唔使喺呢課拆成另一張完整名單。",
+            "課堂唔用真實試卷，亦唔逐幅臨摹。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "揚州八怪喺呢課點樣處理？",
+              "options": [
+                "拆成另一張完整名單先合格",
+                "當一組方法，寫一個形式",
+                "每人交一幅臨摹",
+                "抄進真實試卷"
+              ],
+              "answer": "當一組方法，寫一個形式",
+              "explain": "一組一個形式觀察就夠。"
+            },
+            {
+              "type": "fill",
+              "question": "形式觀察可以寫題材、用筆，或者＿＿多少。",
+              "options": [],
+              "answer": "留白",
+              "explain": "留白係形式。",
+              "wordBank": [
+                "留白",
+                "學費",
+                "座位",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對三組名字",
+              "options": [
+                "揚州八怪",
+                "徐悲鴻",
+                "齊白石"
+              ],
+              "answer": {
+                "揚州八怪": "當一組方法睇",
+                "徐悲鴻": "一個人物或動物形式",
+                "齊白石": "一個花鳥或用筆形式"
+              },
+              "explain": "每組一個形式就完成入門。"
+            },
+            {
+              "type": "order",
+              "question": "將三組入門排好。",
+              "options": [
+                "寫揚州八怪一個形式",
+                "寫徐悲鴻一個形式",
+                "寫齊白石一個形式",
+                "寫一個你想再試嘅方法"
+              ],
+              "explain": "先三個形式，再自己嘅方法。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫揚州八怪嘅一個形式，右邊寫徐悲鴻或齊白石嘅一個形式。各一句。",
+              "options": [
+                "揚州八怪",
+                "徐悲鴻或齊白石"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U5-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用三句入門揚州八怪、徐悲鴻、齊白石。提示：每句只講一個形式。揚州八怪唔使拆成另一張完整名單。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U5-L3",
+          "title": "乾濕媒介同作品集第二件作品",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U5-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "乾媒介較易留邊，濕媒介較易滲開。你用呢個分別去發展作品集第二件作品。",
+            "第二件作品結構：主題一句、一個身份細節、一次乾或濕試驗、下一步。",
+            "每次試驗只改一個條件，並寫佢點樣服務你再呈現嘅人。",
+            "課堂唔放高分學生示例，亦唔用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集第二件作品要用邊種試驗？",
+              "options": [
+                "一次真實試卷",
+                "一次乾或濕媒介試驗",
+                "一份高分示例",
+                "一張行政表格"
+              ],
+              "answer": "一次乾或濕媒介試驗",
+              "explain": "第二件作品用媒介試驗同身份細節。"
+            },
+            {
+              "type": "fill",
+              "question": "每次試驗只改一個＿＿。",
+              "options": [],
+              "answer": "條件",
+              "explain": "一次一條件，先知道效果服務邊個身份細節。",
+              "wordBank": [
+                "條件",
+                "校名",
+                "座位",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對第二件作品",
+              "options": [
+                "乾媒介",
+                "濕媒介",
+                "身份細節"
+              ],
+              "answer": {
+                "乾媒介": "較易留清楚邊緣",
+                "濕媒介": "顏色較易滲開",
+                "身份細節": "試驗要服務再呈現嘅人"
+              },
+              "explain": "媒介同身份要寫在一起。"
+            },
+            {
+              "type": "order",
+              "question": "將第二件作品排好。",
+              "options": [
+                "寫主題一句",
+                "揀一個身份細節",
+                "做一次乾或濕試驗",
+                "寫下一步"
+              ],
+              "explain": "由主題到身份、試驗、下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫乾或濕嘅一個效果，右邊寫佢點樣服務身份細節。各一句。",
+              "options": [
+                "媒介效果",
+                "身份細節"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U5-L3.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「主題一句＋身份細節＋一次乾濕試驗」講作品集第二件作品。提示：寫改咗邊個條件。唔用高分示例。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U6-PORTFOLIO",
+      "title": "作品集自評同回顧",
+      "intro": "呢個單元練習回顧中六作品集：分析自己嘅強項同下一步，並寫一段總覽。唔用真實試卷或高分示例。",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U6-PORTFOLIO.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U6-L1",
+          "title": "點樣回顧作品集同下一步",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U6-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "回顧中六作品集：邊一頁研究清楚，邊一件作品仲未講到主題。",
+            "強項要附一件自己嘅證據。下一步只寫一個課室做得到嘅行動。",
+            "唔把回顧寫成行政交件程序，亦唔寫學年日程。",
+            "唔用真實試卷或高分示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "回顧作品集時，強項要附咩？",
+              "options": [
+                "高分示例",
+                "一件自己嘅證據",
+                "學年日程",
+                "行政表格"
+              ],
+              "answer": "一件自己嘅證據",
+              "explain": "證據來自你自己嘅作品集。"
+            },
+            {
+              "type": "fill",
+              "question": "下一步只寫一個課室做得到嘅＿＿。",
+              "options": [],
+              "answer": "行動",
+              "explain": "一個行動就夠。",
+              "wordBank": [
+                "行動",
+                "日程",
+                "表格",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對作品集回顧",
+              "options": [
+                "清楚嘅一頁",
+                "未講到主題",
+                "下一步"
+              ],
+              "answer": {
+                "清楚嘅一頁": "研究講得明嘅地方",
+                "未講到主題": "作品仲缺嘅一句",
+                "下一步": "一個課室行動"
+              },
+              "explain": "三項先算回顧。"
+            },
+            {
+              "type": "order",
+              "question": "將作品集回顧排好。",
+              "options": [
+                "揀一頁清楚嘅研究",
+                "附作證據",
+                "指出一件未講到主題嘅作品",
+                "寫一個細行動"
+              ],
+              "explain": "由強項到證據，再到缺口同行動。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫一個強項同證據，右邊寫一個下一步。各一句。",
+              "options": [
+                "強項同證據",
+                "下一步"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U6-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「強項＋證據＋下一步」回顧中六作品集。提示：唔寫行政程序，亦唔用真實試卷或高分示例。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F6-U6-L2",
+          "title": "作品集總覽寫作結構",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U6-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "作品集總覽用四句：主題一句、研究工作簿做過咩、作品／評賞呈現咩、下一步係咩。",
+            "兩部分要互相支持。總覽講得出工作簿邊一頁對應作品邊一個決定。",
+            "呢課唔鎖字數。四句各做一件事就得。",
+            "唔用真實試卷或高分示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "總覽一定要講到邊部分？",
+              "options": [
+                "學年日程",
+                "研究工作簿同作品／評賞",
+                "高分示例",
+                "行政交件程序"
+              ],
+              "answer": "研究工作簿同作品／評賞",
+              "explain": "總覽連接工作簿同作品。"
+            },
+            {
+              "type": "fill",
+              "question": "總覽要講工作簿邊一頁對應作品邊一個＿＿。",
+              "options": [],
+              "answer": "決定",
+              "explain": "頁同決定互相支持。",
+              "wordBank": [
+                "決定",
+                "座位",
+                "分數",
+                "校徽"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對總覽四句",
+              "options": [
+                "主題一句",
+                "工作簿",
+                "作品／評賞"
+              ],
+              "answer": {
+                "主題一句": "你探索緊咩",
+                "工作簿": "研究做過咩",
+                "作品／評賞": "呈現咗邊個決定"
+              },
+              "explain": "再加下一步就係四句。"
+            },
+            {
+              "type": "order",
+              "question": "將作品集總覽排好。",
+              "options": [
+                "主題一句",
+                "研究工作簿做過咩",
+                "作品／評賞呈現咩",
+                "下一步"
+              ],
+              "explain": "由主題到工作簿、作品、下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫工作簿一頁，右邊寫作品一個決定。各一句，講佢哋點樣對應。",
+              "options": [
+                "工作簿一頁",
+                "作品決定"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U6-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用四句寫作品集總覽。提示：主題、工作簿、作品／評賞、下一步各一句。唔鎖字數，亦唔用真實試卷或高分示例。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -20,7 +20,15 @@ import {
   questXpMoves,
   withQuestForm,
 } from './mapQuest.ts'
-import { questBand, questCurrentIndex, questNodeFramed, questNodeProgress, questPathLayout } from './questPathLayout.ts'
+import {
+  questBand,
+  questCurrentIndex,
+  questLabelBox,
+  questNodeFramed,
+  questNodeProgress,
+  questPathLayout,
+  questSceneBox,
+} from './questPathLayout.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -202,6 +210,21 @@ describe('quest map structure', () => {
     assert.match(css, /\.quest-ring-pulse/)
     const layout = questPathLayout(5)
     assert.equal(layout.points.length, 5)
+    const overlaps = (a: { x: number; y: number; w: number; h: number }, b: { x: number; y: number; w: number; h: number }, margin = 8) =>
+      !(a.x + a.w + margin <= b.x || b.x + b.w + margin <= a.x || a.y + a.h + margin <= b.y || b.y + b.h + margin <= a.y)
+    for (const count of [6, 7]) {
+      const dense = questPathLayout(count)
+      assert.equal(dense.points.length, count)
+      for (let i = 0; i < count; i++) {
+        const label = questLabelBox(dense.points[i])
+        for (let j = 0; j < count; j++) {
+          if (questBand(j) === 'garden') continue
+          assert.equal(overlaps(label, questSceneBox(j, dense.points[j])), false, `label ${i} scene ${j} count ${count}`)
+        }
+      }
+    }
+    const questSource = read('src/components/game/MapQuest.tsx')
+    assert.match(questSource, /QUEST_LABEL_WIDTH_RATIO/)
     assert.deepEqual(
       [0, 1, 2, 3, 4].map(questBand),
       ['garden', 'studio', 'classroom', 'frames', 'exam'],

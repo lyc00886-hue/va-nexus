@@ -473,6 +473,8 @@
   "map.track.f4": "中四",
   "map.track.aria": "選擇學習地圖",
   "map.f4.subtitle": "中四視藝單元。短課卡，然後小測。唔係全年課程。",
+  "map.f5.subtitle": "中五視藝單元。短課卡，然後小測。唔聲稱全日曆每一週完整課。",
+  "map.f6.subtitle": "中六視藝單元。短課卡，然後小測。唔聲稱全日曆每一週完整課。",
   "map.f4.lessonCount": "{n} 課",
   "map.artists.heading": "本課藝術家",
   "map.artists.thumbAlt": "{name}作品縮圖",

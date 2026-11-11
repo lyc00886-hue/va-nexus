@@ -306,11 +306,11 @@ export function QuestPathArt({
         return <Scene key={band.id + point.y} band={band} box={questSceneBox(index, point)} />
       })}
       {points.map((point, index) => {
-        const beside = index % 2 === 0 ? point.x + 46 : point.x - 46
+        const outer = index % 2 === 0 ? 16 : 344
         return (
           <g key={`edge-${point.y}`}>
-            <Bush x={beside} y={point.y + 28} scale={0.72} />
-            <Pebble x={beside + (index % 2 === 0 ? 16 : -16)} y={point.y + 18} />
+            <Bush x={outer} y={point.y + 20} scale={0.58} />
+            <Pebble x={outer + (index % 2 === 0 ? 12 : -12)} y={point.y + 8} />
           </g>
         )
       })}

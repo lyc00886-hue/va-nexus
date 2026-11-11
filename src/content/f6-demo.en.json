@@ -1,0 +1,1370 @@
+{
+  "units": [
+    {
+      "id": "F6-U1-ORIENT",
+      "title": "Form 6 VA start: visual diary and portfolio organisation",
+      "intro": "This unit starts Form 6 visual arts. You will continue a weekly visual diary and use a clear structure to check and organise your portfolio. Lessons teach method only and leave out school admin steps and year calendars.",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U1-ORIENT.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U1-L1",
+          "title": "Form 6 start: visual diary and study habits",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U1-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Form 6 starts by keeping the weekly visual diary, and by making the habit concrete: when you note, how much you note, and what you will ask next week.",
+            "A page can still hold a sketch, one observation, and one open question. The habit is repeating these three, not writing a long piece once.",
+            "Keep the record in class, with materials you already have.",
+            "Lessons teach method only. Note the diary gently."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What is the Form 6 visual-diary habit?",
+              "options": [
+                "Write one very long piece",
+                "Repeat sketch, observation, and question",
+                "Paste scores only",
+                "Collect real exam papers"
+              ],
+              "answer": "Repeat sketch, observation, and question",
+              "explain": "The habit is repeating three small records each week."
+            },
+            {
+              "type": "fill",
+              "question": "The study habit should be ＿＿: when you note, how much, and what you ask next week.",
+              "options": [],
+              "answer": "concrete",
+              "explain": "Concrete detail makes it a habit, not a slogan.",
+              "wordBank": [
+                "concrete",
+                "secret",
+                "random",
+                "blank"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the starting habit",
+              "options": [
+                "Sketch",
+                "Observation",
+                "Question"
+              ],
+              "answer": {
+                "Sketch": "Note the form",
+                "Observation": "One thing you noticed",
+                "Question": "Left for next week"
+              },
+              "explain": "The three together are the weekly habit."
+            },
+            {
+              "type": "order",
+              "question": "Order one Form 6 diary entry.",
+              "options": [
+                "Set a time to record in class",
+                "Sketch and write one observation",
+                "Leave one question",
+                "Answer that question next week"
+              ],
+              "explain": "Time, record, question, then next week."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, this week’s sketch; right, next week’s question.",
+              "options": [
+                "This week’s sketch",
+                "Next week’s question"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U1-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “time + record + next-week question” for your Form 6 study habit. Hint: all three are possible in class, and you note them gently.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U1-L2",
+          "title": "Checking and organising the portfolio",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U1-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Checking the portfolio means a list of what you have and what is missing: theme sentence, research evidence, a medium test, and an artwork or critical-study page.",
+            "Organising means grouping material you already have. It is not an admin form, and it is not copying a year calendar.",
+            "For one missing item, write one way to fill it, and keep that way possible in class.",
+            "Lessons teach method only and leave out school admin steps."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does a portfolio check mainly look at?",
+              "options": [
+                "Whether an admin form is filled",
+                "What you have and what is missing",
+                "A year calendar",
+                "A high-score exemplar"
+              ],
+              "answer": "What you have and what is missing",
+              "explain": "The check is a list, not an admin process."
+            },
+            {
+              "type": "fill",
+              "question": "Organising means you ＿＿ material you already have, not copy a calendar.",
+              "options": [],
+              "answer": "group",
+              "explain": "Grouping shows what is missing.",
+              "wordBank": [
+                "group",
+                "throw away",
+                "hide",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the check list",
+              "options": [
+                "Theme sentence",
+                "Medium test",
+                "A gap"
+              ],
+              "answer": {
+                "Theme sentence": "What you are exploring",
+                "Medium test": "A record of one effect",
+                "A gap": "One classroom way to fill it"
+              },
+              "explain": "Write both what you have and what is missing."
+            },
+            {
+              "type": "order",
+              "question": "Order checking and organising.",
+              "options": [
+                "List the material you have",
+                "Group it",
+                "Circle one missing item",
+                "Write one classroom way to fill it"
+              ],
+              "explain": "List, group, gap, then one way to fill it."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one item you have; right, one gap and how you will fill it.",
+              "options": [
+                "What I have",
+                "A gap and how to fill it"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U1-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “two items you have + one gap + one way to fill it” to check the portfolio. Hint: the way to fill it is possible in class, and you do not write an admin step.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U2-MINGQING",
+      "title": "Ming–Qing aesthetics in contemporary dialogue",
+      "intro": "This unit uses a compact timeline to introduce Ming–Qing aesthetics, and sets them in dialogue with the Young British Artists (YBA) and related contemporary approaches. You will meet Shen Zhou and Wen Zhengming. This is an introduction only, not a course in copying famous paintings one by one. Lessons do not use real exam papers.",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-MINGQING.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U2-L1",
+          "title": "Ming–Qing aesthetics and art-history intro",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "The Ming–Qing introduction uses a compact timeline: learn a rough order, then look at form and a possible everyday use in one work.",
+            "An aesthetic question can ask: is the brushwork open or dense, is there more or less empty space, and does the work feel more private or more social?",
+            "This is an introduction only, not a course in copying famous paintings one by one.",
+            "Lessons do not use real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the Ming–Qing timeline help you do?",
+              "options": [
+                "Copy famous paintings one by one",
+                "Place one work in a rough order",
+                "Memorise every year",
+                "Hand in a real exam paper"
+              ],
+              "answer": "Place one work in a rough order",
+              "explain": "A compact timeline is a rough place."
+            },
+            {
+              "type": "fill",
+              "question": "An aesthetic question can ask whether brushwork is open or ＿＿.",
+              "options": [],
+              "answer": "dense",
+              "explain": "Open and dense is a formal comparison.",
+              "wordBank": [
+                "dense",
+                "costly",
+                "distant",
+                "empty of meaning"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the Ming–Qing introduction",
+              "options": [
+                "Timeline",
+                "Brush and ink",
+                "Use"
+              ],
+              "answer": {
+                "Timeline": "A rough order",
+                "Brush and ink": "Open or dense",
+                "Use": "Whether it feels more private or more social"
+              },
+              "explain": "The three items are enough for one introduction."
+            },
+            {
+              "type": "order",
+              "question": "Order the Ming–Qing introduction.",
+              "options": [
+                "Read the compact timeline",
+                "Choose one work",
+                "Describe whether brushwork is open or dense",
+                "Note one possible use"
+              ],
+              "explain": "Timeline, work, brushwork, then use."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, open or dense brushwork; right, one possible everyday use.",
+              "options": [
+                "Open or dense brushwork",
+                "A possible use"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U2-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, introduce Ming–Qing aesthetics. Hint: sentence one is a rough place in time and the brushwork; sentence two is one possible use. You do not copy a whole painting.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U2-L2",
+          "title": "Young British Artists (YBA) in contemporary dialogue",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "The Young British Artists (YBA) are one side of a contemporary comparison. Look at how they use material, title, and setting to talk about identity or everyday life.",
+            "The other side is the Ming–Qing observation you have started. Compare methods, such as enlarging one object, or turning the everyday into the subject.",
+            "Write the full name Young British Artists (YBA). Do not use the three letters alone as the title.",
+            "Lessons do not use real exam papers, and they do not copy exam prompts."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How should this group of artists be named?",
+              "options": [
+                "Only the three letters",
+                "Young British Artists (YBA)",
+                "Only a city name",
+                "As an exam-question code"
+              ],
+              "answer": "Young British Artists (YBA)",
+              "explain": "The full name is clear. The letters are only a note."
+            },
+            {
+              "type": "fill",
+              "question": "The comparison is about ＿＿, not copied exam prompts.",
+              "options": [],
+              "answer": "method",
+              "explain": "Method is what can sit beside Ming–Qing.",
+              "wordBank": [
+                "method",
+                "price",
+                "seat",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the two sides",
+              "options": [
+                "Young British Artists (YBA)",
+                "Ming–Qing observation",
+                "Method"
+              ],
+              "answer": {
+                "Young British Artists (YBA)": "Material, title, and setting",
+                "Ming–Qing observation": "Brushwork, empty space, or use",
+                "Method": "Enlarge an object, or make the everyday the subject"
+              },
+              "explain": "Both sides are read through method."
+            },
+            {
+              "type": "order",
+              "question": "Order one contemporary comparison.",
+              "options": [
+                "Write Young British Artists (YBA) in full",
+                "Choose one method of material or title",
+                "Choose one Ming–Qing form",
+                "Write one similarity or difference"
+              ],
+              "explain": "Full name, method, Ming–Qing, then the comparison."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one Young British Artists (YBA) method; right, one Ming–Qing form. No copied exam prompt.",
+              "options": [
+                "Young British Artists method",
+                "Ming–Qing form"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U2-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, set the Young British Artists (YBA) beside Ming–Qing work. Hint: sentence one is the full name and one method; sentence two is one Ming–Qing form. Do not copy an exam prompt.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U2-L3",
+          "title": "Shen Zhou and Wen Zhengming",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Shen Zhou and Wen Zhengming are two artists you meet in the Ming–Qing introduction. This lesson asks for one formal note on each.",
+            "A note might cover how rocks are dotted, how dense the trees are, or how an inscription sits with the picture. Say what you see. Do not memorise a full biography.",
+            "Compare one similarity and one difference. This is an introduction only.",
+            "Lessons do not use real exam papers, and they do not copy famous paintings one by one."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What do you hand in for Shen Zhou and Wen Zhengming?",
+              "options": [
+                "Two full biographies",
+                "One formal note on each",
+                "Two copied paintings",
+                "A real exam paper"
+              ],
+              "answer": "One formal note on each",
+              "explain": "The introduction is a formal note, not a biography."
+            },
+            {
+              "type": "fill",
+              "question": "When comparing the two, write one similarity and one ＿＿.",
+              "options": [],
+              "answer": "difference",
+              "explain": "A comparison needs both.",
+              "wordBank": [
+                "difference",
+                "price",
+                "seat",
+                "age list"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match formal notes",
+              "options": [
+                "Rocks",
+                "Trees",
+                "Inscription"
+              ],
+              "answer": {
+                "Rocks": "Whether the dots are dense or open",
+                "Trees": "Open or dense",
+                "Inscription": "How it sits with the picture"
+              },
+              "explain": "All three are forms you can see."
+            },
+            {
+              "type": "order",
+              "question": "Order the introduction to Shen Zhou and Wen Zhengming.",
+              "options": [
+                "Choose one form for each",
+                "Write one note for each",
+                "Write one similarity",
+                "Write one difference"
+              ],
+              "explain": "Note each artist, then compare."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one form in Shen Zhou; right, one form in Wen Zhengming.",
+              "options": [
+                "Shen Zhou",
+                "Wen Zhengming"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U2-L3.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, introduce Shen Zhou and Wen Zhengming. Hint: one formal note each. No full biography, and no copied painting.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U3-DAILY",
+      "title": "How heritage shapes everyday life",
+      "intro": "This unit starts from how heritage shapes everyday life. You will meet Xu Wei, Chen Chun and Tang Yin, then look at symbols and identity in Bada Shanren, and at figure painting through Chen Hongshou and Wu Bin. You will use ink and mixed media to develop the first portfolio piece. Interviews and collecting stay as classroom practice.",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-DAILY.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U3-L1",
+          "title": "How heritage shapes everyday life",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "How heritage shapes everyday life starts from an object you use, a festival colour, or how things are arranged at home.",
+            "Write three things: the form, where it appears in a day, and which habit you think is still there.",
+            "Interviews and collecting stay as classroom practice. Use a conversation, a photo you already have, or a classroom object.",
+            "This lesson does not say that everyday life can be seen only by leaving class."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Where does this lesson ask you to start?",
+              "options": [
+                "A real exam paper",
+                "One everyday object or one colour",
+                "A famous painting to copy",
+                "An admin form"
+              ],
+              "answer": "One everyday object or one colour",
+              "explain": "Start from a form you can see in everyday life."
+            },
+            {
+              "type": "fill",
+              "question": "Interviews and collecting stay as ＿＿ practice.",
+              "options": [],
+              "answer": "classroom",
+              "explain": "Both stay in the classroom.",
+              "wordBank": [
+                "classroom",
+                "contest",
+                "long trip",
+                "raffle"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match everyday influence",
+              "options": [
+                "Form",
+                "Place",
+                "Habit"
+              ],
+              "answer": {
+                "Form": "How the object or colour appears",
+                "Place": "Where it shows up in a day",
+                "Habit": "Which tradition you think is still there"
+              },
+              "explain": "All three together show an influence."
+            },
+            {
+              "type": "order",
+              "question": "Order one everyday observation.",
+              "options": [
+                "Choose an object or a colour",
+                "Describe the form",
+                "Note where it appears in a day",
+                "Name one habit that is still there"
+              ],
+              "explain": "Object, form, place, then habit."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, the form; right, one tradition you think is still there.",
+              "options": [
+                "Everyday form",
+                "A habit still there"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U3-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In three sentences, show how heritage shapes one everyday thing for you. Hint: one sentence each for form, place, and habit, all possible in class.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U3-L2",
+          "title": "Xu Wei, Chen Chun and Tang Yin",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Xu Wei, Chen Chun, and Tang Yin are three artists you meet in this lesson. Write one formal note on each.",
+            "A note might be about fast or slow brushwork, how open the leaves are, or whether the inscription or the picture is more prominent.",
+            "You may compare only one thing they share. An introduction does not need a full biography.",
+            "Lessons do not use real exam papers, and they do not copy paintings one by one."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How many formal notes does this lesson ask for Xu Wei, Chen Chun, and Tang Yin?",
+              "options": [
+                "A biography each",
+                "One formal note each",
+                "One sentence for all three is enough",
+                "Three full copies"
+              ],
+              "answer": "One formal note each",
+              "explain": "One form each is how you meet them."
+            },
+            {
+              "type": "fill",
+              "question": "An introductory comparison can name only one shared ＿＿.",
+              "options": [],
+              "answer": "point",
+              "explain": "One shared point is enough for an introduction.",
+              "wordBank": [
+                "point",
+                "price",
+                "seat",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match a way of looking",
+              "options": [
+                "Brushwork",
+                "Flowers and leaves",
+                "Inscription"
+              ],
+              "answer": {
+                "Brushwork": "Fast or slow",
+                "Flowers and leaves": "Open or dense",
+                "Inscription": "Whether it or the picture is more prominent"
+              },
+              "explain": "Any of the three directions can be used for any of them."
+            },
+            {
+              "type": "order",
+              "question": "Order the introduction to the three artists.",
+              "options": [
+                "One form for Xu Wei",
+                "One form for Chen Chun",
+                "One form for Tang Yin",
+                "Write one shared point"
+              ],
+              "explain": "Each artist first, then one shared point."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one artist’s brushwork; right, another artist’s leaves or inscription.",
+              "options": [
+                "Brushwork",
+                "Leaves or inscription"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U3-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Introduce Xu Wei, Chen Chun, and Tang Yin with three short lines plus one shared point. Hint: one form each, and compare only in the last line. No biography.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U3-L3",
+          "title": "Bada Shanren: symbols and identity",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Bada Shanren is studied here through symbols and identity: how a bird, a rock, or a signature makes you read the maker as a certain kind of person.",
+            "Write the sign as “might”. Describe the form, then suggest how it carries identity.",
+            "Identity is not a memorised life story. Name the detail in the picture that supports your suggestion.",
+            "Lessons do not use real exam papers, and they do not copy a picture."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the Bada Shanren lesson ask you to connect?",
+              "options": [
+                "A full life story and a score",
+                "Symbols and identity",
+                "A copied painting",
+                "A real exam paper"
+              ],
+              "answer": "Symbols and identity",
+              "explain": "Look at symbols and identity together."
+            },
+            {
+              "type": "fill",
+              "question": "Write a sign’s meaning as ＿＿, not as the only answer.",
+              "options": [],
+              "answer": "might",
+              "explain": "“Might” keeps it a suggestion.",
+              "wordBank": [
+                "might",
+                "a price",
+                "a seat number",
+                "full marks"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match a Bada Shanren note",
+              "options": [
+                "Bird or rock",
+                "Signature",
+                "Suggestion"
+              ],
+              "answer": {
+                "Bird or rock": "The form you see",
+                "Signature": "A detail that might carry identity",
+                "Suggestion": "Write identity with “might”"
+              },
+              "explain": "Keep the form and the suggestion apart."
+            },
+            {
+              "type": "order",
+              "question": "Order one look at symbol and identity.",
+              "options": [
+                "Choose a bird, a rock, or a signature",
+                "Describe the form",
+                "Write identity with “might”",
+                "Point to the detail that supports it"
+              ],
+              "explain": "Form, possible identity, then the supporting detail."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, form only; right, identity with “might”.",
+              "options": [
+                "Form",
+                "A possible identity"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U3-L3.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, write about symbols and identity in Bada Shanren. Hint: sentence one is form only; sentence two uses “might” for identity and names one detail. Do not copy a picture.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U3-L4",
+          "title": "Figure painting, ink, and the first portfolio piece",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U3-L4.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Figure-painting introduction can look at Chen Hongshou and Wu Bin: proportion, the lines of clothing, and how an expression is exaggerated.",
+            "Ink tests still change one condition at a time. Record the effect, then decide whether it can serve a figure.",
+            "The first portfolio piece uses a structure: theme sentence, one figure-painting form, one ink or mixed-media test, and a next step.",
+            "Interviews and collecting stay as classroom practice. Lessons do not use high-score exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Which item belongs in the first portfolio piece?",
+              "options": [
+                "A high-score exemplar",
+                "A theme sentence and one medium test",
+                "An admin form",
+                "A real exam paper"
+              ],
+              "answer": "A theme sentence and one medium test",
+              "explain": "The first piece uses theme, form, a test, and a next step."
+            },
+            {
+              "type": "fill",
+              "question": "Figure painting can look at proportion, clothing lines, and how an expression is ＿＿.",
+              "options": [],
+              "answer": "exaggerated",
+              "explain": "Exaggeration is a formal method.",
+              "wordBank": [
+                "exaggerated",
+                "sold",
+                "hidden",
+                "scored"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the first piece",
+              "options": [
+                "Chen Hongshou or Wu Bin",
+                "Ink test",
+                "Next step"
+              ],
+              "answer": {
+                "Chen Hongshou or Wu Bin": "Proportion, clothing lines, or expression",
+                "Ink test": "Change only one condition",
+                "Next step": "The figure method you want to try next"
+              },
+              "explain": "The three items serve the first piece."
+            },
+            {
+              "type": "order",
+              "question": "Order figure painting and the first piece.",
+              "options": [
+                "Write the theme sentence",
+                "Choose one figure-painting form",
+                "Make one ink test",
+                "Write the next step"
+              ],
+              "explain": "Theme, form, test, then next step."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one figure-painting form; right, one ink effect.",
+              "options": [
+                "Figure form",
+                "Ink effect"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U3-L4.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “theme sentence + figure form + one test” for the first portfolio piece. Hint: name the condition you changed. Do not use a high-score exemplar.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U4-LITERATI",
+      "title": "Literati painting and traditional symbols",
+      "intro": "This unit continues traditional symbol study and introduces literati painting, including the Four Monks and related schools. Practise describing form, brush and ink, and possible meanings. All of it happens in class, and it does not copy public exam questions.",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U4-LITERATI.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U4-L1",
+          "title": "Traditional symbols: colour, pattern and painting",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U4-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Traditional symbols can sit in colour, pattern, and painting. Describe the form first, then one possible meaning.",
+            "A first look at postmodern method only asks whether meaning can be completed by the viewer, and whether an object can leave its original use. You do not copy an exam prompt.",
+            "All of it happens in class. Use a classroom diagram and your own sentences.",
+            "It does not copy public exam questions."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "When you talk about a traditional symbol, what comes first?",
+              "options": [
+                "Write the only correct meaning first",
+                "Describe the form, then a possible meaning",
+                "Copy an exam prompt first",
+                "Write the price first"
+              ],
+              "answer": "Describe the form, then a possible meaning",
+              "explain": "Form first, possible meaning second."
+            },
+            {
+              "type": "fill",
+              "question": "A first look at method can ask whether meaning can be completed by the ＿＿.",
+              "options": [],
+              "answer": "viewer",
+              "explain": "A viewer taking part in meaning is a question of method.",
+              "wordBank": [
+                "viewer",
+                "price",
+                "seat",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match symbol and method",
+              "options": [
+                "Colour or pattern",
+                "Possible meaning",
+                "A first look at method"
+              ],
+              "answer": {
+                "Colour or pattern": "The form you see",
+                "Possible meaning": "Write the sign with “might”",
+                "A first look at method": "Whether a viewer can complete the meaning"
+              },
+              "explain": "All three are discussed in class, with no copied prompt."
+            },
+            {
+              "type": "order",
+              "question": "Order one symbol description.",
+              "options": [
+                "Point to colour, pattern, or painting",
+                "Describe the form",
+                "Write one possible meaning",
+                "Ask whether a viewer can take part in that meaning"
+              ],
+              "explain": "Form, meaning, then a question of method."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, form; right, one possible meaning. Do not copy an exam prompt.",
+              "options": [
+                "Form",
+                "Possible meaning"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U4-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, describe one traditional symbol. Hint: sentence one is only the form of colour, pattern, or painting; sentence two uses “might” for meaning. Do not copy a public exam question.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U4-L2",
+          "title": "Literati painting: the Four Monks and related schools",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U4-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Literati painting here includes the Four Monks and related schools. You do not rewrite them as another fixed list. Give one form and one possible meaning.",
+            "Form might be dry or wet brush and ink, empty space in the composition, or how an inscription relates to the picture.",
+            "“Related schools” means there are nearby ways of working. Compare methods. Do not memorise a complete roster.",
+            "All of it happens in class, and it does not copy public exam questions."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How does the literati introduction treat the Four Monks and related schools?",
+              "options": [
+                "Rewrite them as another fixed list",
+                "Give one form and one possible meaning",
+                "A full roster is required to pass",
+                "Copy one public exam question"
+              ],
+              "answer": "Give one form and one possible meaning",
+              "explain": "The introduction is form and a possible meaning, not another roster."
+            },
+            {
+              "type": "fill",
+              "question": "Brush-and-ink looking can ask whether it is dry or ＿＿.",
+              "options": [],
+              "answer": "wet",
+              "explain": "Dry and wet is a matter of form.",
+              "wordBank": [
+                "wet",
+                "costly",
+                "far",
+                "full marks"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the literati introduction",
+              "options": [
+                "Four Monks and related schools",
+                "Brush and ink",
+                "Meaning"
+              ],
+              "answer": {
+                "Four Monks and related schools": "Do not rewrite them as another fixed list",
+                "Brush and ink": "Dry or wet",
+                "Meaning": "Write it with “might”"
+              },
+              "explain": "All three happen in class."
+            },
+            {
+              "type": "order",
+              "question": "Order the literati introduction.",
+              "options": [
+                "Choose one form of brushwork or empty space",
+                "Describe what you see",
+                "Write one meaning with “might”",
+                "Say you did not rewrite the list"
+              ],
+              "explain": "From form to meaning, without rewriting the list."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, brush and ink or empty space; right, one possible meaning.",
+              "options": [
+                "Brushwork or empty space",
+                "A possible meaning"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U4-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, introduce literati painting. Hint: sentence one is one form among the Four Monks and related schools; sentence two uses “might” for meaning. Do not rewrite them as another fixed list, and do not copy an exam prompt.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U5-ROLE",
+      "title": "Role-taking: re-presenting in a Chinese context",
+      "intro": "This unit practises role-taking and re-presenting identity: how to re-present a person in a Chinese context. You may compare methods used by artists such as Cindy Sherman to discuss identity through role-play (method only, no copied exam prompts). You will also meet the Yangzhou Eccentrics, Xu Beihong and Qi Baishi, and use wet and dry media to develop the second portfolio piece.",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U5-ROLE.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U5-L1",
+          "title": "Role-taking and re-presenting identity",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U5-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Role-taking and re-presenting identity means deciding how a person appears again: clothing, pose, setting, and the angle of looking.",
+            "Artists such as Cindy Sherman use role-play to discuss identity. This lesson is method only: which detail makes identity read as another kind of person. No copied exam prompt.",
+            "Re-presenting in a Chinese context may borrow a traditional pose or sign. Write what you changed.",
+            "Lessons do not use high-score exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What do you learn from artists such as Cindy Sherman here?",
+              "options": [
+                "Copy an exam prompt",
+                "A method of discussing identity through role-play",
+                "Memorise a full catalogue",
+                "Role-play is possible only outside class"
+              ],
+              "answer": "A method of discussing identity through role-play",
+              "explain": "Method only, with no copied prompt."
+            },
+            {
+              "type": "fill",
+              "question": "After borrowing a traditional pose, write what you ＿＿.",
+              "options": [],
+              "answer": "changed",
+              "explain": "Borrowing and the change together re-present the person.",
+              "wordBank": [
+                "changed",
+                "sold",
+                "hid",
+                "scored"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match re-presenting identity",
+              "options": [
+                "Role-play",
+                "Chinese context",
+                "Change"
+              ],
+              "answer": {
+                "Role-play": "A detail that makes identity read differently",
+                "Chinese context": "A traditional pose or sign",
+                "Change": "What you yourself changed"
+              },
+              "explain": "All three are method."
+            },
+            {
+              "type": "order",
+              "question": "Order one role-taking practice.",
+              "options": [
+                "Choose a person to re-present",
+                "Note clothing, pose, or setting",
+                "Borrow one method or traditional detail",
+                "Write what you changed"
+              ],
+              "explain": "Person, presentation, borrowing, then the change."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one role-play detail; right, what you change in a Chinese context. Method only.",
+              "options": [
+                "Role-play detail",
+                "Your change"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U5-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, write about role-taking and re-presenting identity. Hint: sentence one is one role-play method; sentence two is what you change in a Chinese context. Do not copy an exam prompt.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U5-L2",
+          "title": "Yangzhou Eccentrics, Xu Beihong and Qi Baishi",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U5-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "The Yangzhou Eccentrics, Xu Beihong, and Qi Baishi are names you meet here. Write one formal note for each.",
+            "A note might be the subject (flowers and birds, figures, animals), dry or wet brushwork, or how much empty space is left.",
+            "Treat the Yangzhou Eccentrics as one group of methods. This lesson does not split them into another full roster.",
+            "Lessons do not use real exam papers, and they do not copy paintings one by one."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How are the Yangzhou Eccentrics treated in this lesson?",
+              "options": [
+                "They must be split into another full roster",
+                "As one group of methods, with one formal note",
+                "One copied painting each",
+                "Copy them into a real exam paper"
+              ],
+              "answer": "As one group of methods, with one formal note",
+              "explain": "One formal note for the group is enough."
+            },
+            {
+              "type": "fill",
+              "question": "A formal note can cover subject, brushwork, or how much ＿＿ is left.",
+              "options": [],
+              "answer": "empty space",
+              "explain": "Empty space is a matter of form.",
+              "wordBank": [
+                "empty space",
+                "tuition",
+                "seating",
+                "scores"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the three names",
+              "options": [
+                "Yangzhou Eccentrics",
+                "Xu Beihong",
+                "Qi Baishi"
+              ],
+              "answer": {
+                "Yangzhou Eccentrics": "Seen as one group of methods",
+                "Xu Beihong": "One figure or animal form",
+                "Qi Baishi": "One flower-and-bird or brushwork form"
+              },
+              "explain": "One form each completes the introduction."
+            },
+            {
+              "type": "order",
+              "question": "Order the three introductions.",
+              "options": [
+                "One form for the Yangzhou Eccentrics",
+                "One form for Xu Beihong",
+                "One form for Qi Baishi",
+                "Write one method you want to try again"
+              ],
+              "explain": "Three forms, then a method of your own."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one form in the Yangzhou Eccentrics; right, one form in Xu Beihong or Qi Baishi.",
+              "options": [
+                "Yangzhou Eccentrics",
+                "Xu Beihong or Qi Baishi"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U5-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In three sentences, introduce the Yangzhou Eccentrics, Xu Beihong, and Qi Baishi. Hint: one form per sentence. Do not split the Yangzhou Eccentrics into another full roster.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U5-L3",
+          "title": "Wet and dry media and the second portfolio piece",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U5-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Dry media keep an edge more easily. Wet media spread more easily. Use that difference to develop the second portfolio piece.",
+            "The second piece is structured as: theme sentence, one identity detail, one dry or wet test, and a next step.",
+            "Each test changes one condition, and you write how it serves the person you are re-presenting.",
+            "Lessons do not use high-score student exemplars or real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Which test belongs in the second portfolio piece?",
+              "options": [
+                "One real exam paper",
+                "One dry or wet medium test",
+                "A high-score exemplar",
+                "An admin form"
+              ],
+              "answer": "One dry or wet medium test",
+              "explain": "The second piece uses a medium test and an identity detail."
+            },
+            {
+              "type": "fill",
+              "question": "Each test changes only one ＿＿.",
+              "options": [],
+              "answer": "condition",
+              "explain": "One condition shows which identity detail the effect serves.",
+              "wordBank": [
+                "condition",
+                "school name",
+                "seat",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the second piece",
+              "options": [
+                "Dry media",
+                "Wet media",
+                "Identity detail"
+              ],
+              "answer": {
+                "Dry media": "A clear edge is easier",
+                "Wet media": "Colour spreads more easily",
+                "Identity detail": "The test serves the person you re-present"
+              },
+              "explain": "Write the medium and the identity together."
+            },
+            {
+              "type": "order",
+              "question": "Order the second piece.",
+              "options": [
+                "Write the theme sentence",
+                "Choose one identity detail",
+                "Make one dry or wet test",
+                "Write the next step"
+              ],
+              "explain": "Theme, identity, test, then next step."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one dry or wet effect; right, how it serves an identity detail.",
+              "options": [
+                "Medium effect",
+                "Identity detail"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U5-L3.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “theme sentence + identity detail + one wet-or-dry test” for the second portfolio piece. Hint: name the condition you changed. Do not use a high-score exemplar.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F6-U6-PORTFOLIO",
+      "title": "Portfolio review and reflection",
+      "intro": "This unit practises reviewing the Form 6 portfolio: looking at strengths and next steps, and writing a short overview. Lessons do not use real exam papers or high-score exemplars.",
+      "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U6-PORTFOLIO.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F6-U6-L1",
+          "title": "How to review the portfolio and next steps",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U6-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Review the Form 6 portfolio: which page of research is clear, and which work does not yet show the theme.",
+            "A strength needs one piece of your own evidence. The next step is one action you can do in class.",
+            "Do not turn the review into an admin handover, and do not write a year calendar.",
+            "Lessons do not use real exam papers or high-score exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "When you review the portfolio, what must a strength include?",
+              "options": [
+                "A high-score exemplar",
+                "One piece of your own evidence",
+                "A year calendar",
+                "An admin form"
+              ],
+              "answer": "One piece of your own evidence",
+              "explain": "The evidence comes from your own portfolio."
+            },
+            {
+              "type": "fill",
+              "question": "The next step is one ＿＿ you can do in class.",
+              "options": [],
+              "answer": "action",
+              "explain": "One action is enough.",
+              "wordBank": [
+                "action",
+                "calendar",
+                "form",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the portfolio review",
+              "options": [
+                "A clear page",
+                "Theme not yet shown",
+                "Next step"
+              ],
+              "answer": {
+                "A clear page": "Where the research is clear",
+                "Theme not yet shown": "The sentence the work still lacks",
+                "Next step": "One classroom action"
+              },
+              "explain": "The three items make the review."
+            },
+            {
+              "type": "order",
+              "question": "Order the portfolio review.",
+              "options": [
+                "Choose one clear research page",
+                "Attach it as evidence",
+                "Name one work that does not yet show the theme",
+                "Write one small action"
+              ],
+              "explain": "Strength, evidence, a gap, then an action."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one strength and its evidence; right, one next step.",
+              "options": [
+                "Strength and evidence",
+                "Next step"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U6-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “strength + evidence + next step” to review the Form 6 portfolio. Hint: do not write an admin step, and do not use a real exam paper or a high-score exemplar.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F6-U6-L2",
+          "title": "Structure for a portfolio overview",
+          "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U6-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "A portfolio overview uses four moves: one theme sentence, what the research workbook did, what the artwork or critical study shows, and the next step.",
+            "The two parts support each other. The overview can say which workbook page matches which decision in the work.",
+            "This lesson does not lock a word count. Each of the four sentences does one job.",
+            "Lessons do not use real exam papers or high-score exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Which part must the overview mention?",
+              "options": [
+                "A year calendar",
+                "The research workbook and the artwork or critical study",
+                "A high-score exemplar",
+                "An admin handover"
+              ],
+              "answer": "The research workbook and the artwork or critical study",
+              "explain": "The overview joins the workbook and the work."
+            },
+            {
+              "type": "fill",
+              "question": "The overview says which workbook page matches which ＿＿ in the work.",
+              "options": [],
+              "answer": "decision",
+              "explain": "The page and the decision support each other.",
+              "wordBank": [
+                "decision",
+                "seat",
+                "score",
+                "crest"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the overview",
+              "options": [
+                "Theme sentence",
+                "Workbook",
+                "Artwork or critical study"
+              ],
+              "answer": {
+                "Theme sentence": "What you are exploring",
+                "Workbook": "What the research did",
+                "Artwork or critical study": "Which decision it shows"
+              },
+              "explain": "Add the next step and the four moves are complete."
+            },
+            {
+              "type": "order",
+              "question": "Order the portfolio overview.",
+              "options": [
+                "One theme sentence",
+                "What the research workbook did",
+                "What the artwork or critical study shows",
+                "The next step"
+              ],
+              "explain": "Theme, workbook, work, then next step."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one workbook page; right, one decision in the work. Say how they match.",
+              "options": [
+                "One workbook page",
+                "A decision in the work"
+              ],
+              "image": "/content/learning-map-illustrations/f6-dualread/F6-U6-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Write a portfolio overview in four sentences. Hint: one each for theme, workbook, artwork or critical study, and next step. There is no word-count lock, and you do not use a real exam paper or a high-score exemplar.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

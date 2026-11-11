@@ -457,6 +457,8 @@
   "map.track.f4": "F.4",
   "map.track.aria": "Choose a learning map",
   "map.f4.subtitle": "Form 4 visual arts units. Short cards, then a quiz. Not the full year.",
+  "map.f5.subtitle": "Form 5 visual arts units. Short cards, then a quiz. This is not a claim that every calendar week has a full lesson.",
+  "map.f6.subtitle": "Form 6 visual arts units. Short cards, then a quiz. This is not a claim that every calendar week has a full lesson.",
   "map.f4.lessonCount": "{n} lessons",
   "map.artists.heading": "Artists in this lesson",
   "map.artists.thumbAlt": "Artwork thumbnail, {name}",

@@ -1,0 +1,1625 @@
+{
+  "units": [
+    {
+      "id": "F5-U1-ORIENT",
+      "title": "中五視藝起步：公開試結構同視覺日記",
+      "intro": "呢個單元帶你開始中五視藝。你會複習兩條學習線（評賞同創作），認識公開試兩卷嘅結構分別，亦會繼續每週視覺日記。課堂只講結構同方法，唔會用真實考評局試卷或高分學生示例。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-ORIENT.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U1-L1",
+          "title": "中五起步：課程複習同公開試兩卷結構",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "中五視藝由複習開始。兩條學習線仍然係評賞同創作，兩邊都要繼續練。",
+            "公開試有兩卷。你選卷一或卷二。卷一先有平面作品嘅規定；卷二按題目要求交設計。",
+            "評賞練習：描述你見到嘅形式，再寫作品可能處身嘅文化情境。創作練習：揀一種媒介，試一個細步驟。",
+            "課堂只講結構同方法。唔會用真實考評局試卷，亦唔放高分學生示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "公開試兩卷，學生要點處理？",
+              "options": [
+                "兩卷都一定要同場交",
+                "選卷一或卷二",
+                "只可以交一份口試",
+                "不用知道兩卷分別"
+              ],
+              "answer": "選卷一或卷二",
+              "explain": "結構係二選一，唔係兩卷齊交。"
+            },
+            {
+              "type": "fill",
+              "question": "卷一先有＿＿作品嘅規定。",
+              "options": [],
+              "answer": "平面",
+              "explain": "卷一先規定平面呈現。",
+              "wordBank": [
+                "平面",
+                "聲音",
+                "隨機",
+                "空白"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對學習線同做法",
+              "options": [
+                "評賞",
+                "創作",
+                "兩卷結構"
+              ],
+              "answer": {
+                "評賞": "描述形式同情境",
+                "創作": "用媒介試一個步驟",
+                "兩卷結構": "選卷一或卷二"
+              },
+              "explain": "兩條線同兩卷結構一齊複習。"
+            },
+            {
+              "type": "order",
+              "question": "將中五起步步驟排好。",
+              "options": [
+                "複習評賞同創作",
+                "分清卷一同卷二",
+                "寫低自己會點選",
+                "繼續每週視覺日記"
+              ],
+              "explain": "先複習，再分卷，再寫選擇，再記日記。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫評賞所見，右邊寫一個創作步驟。各一句。",
+              "options": [
+                "評賞所見",
+                "創作步驟"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U1-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句寫低你點樣同時複習評賞同創作，並分辨卷一、卷二。提示：第一句寫兩條學習線，第二句寫兩卷結構分別。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U1-L2",
+          "title": "每週視覺日記：研究同記錄",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "每週視覺日記係研究同記錄嘅習慣。一頁可以有速寫、一句觀察、同一個未解嘅問題。",
+            "記錄留喺課室：用已有相片、物件或教師提供嘅材料，唔使為咗記一頁而離開課室。",
+            "研究可以係：你見到咩形式、佢可能有咩用途、你下週想試咩媒介。",
+            "日記慢慢記就得。呢度唔用真實試卷做範例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "每週視覺日記最主要係做咩？",
+              "options": [
+                "抄一篇完整文章",
+                "研究同記錄",
+                "只貼分數表",
+                "收集真實試卷"
+              ],
+              "answer": "研究同記錄",
+              "explain": "日記服務研究同記錄。"
+            },
+            {
+              "type": "fill",
+              "question": "一頁日記可以有速寫、觀察，同埋一個＿＿。",
+              "options": [],
+              "answer": "問題",
+              "explain": "未解問題幫你下週繼續。",
+              "wordBank": [
+                "問題",
+                "分數",
+                "校徽",
+                "口號"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對日記內容",
+              "options": [
+                "速寫",
+                "觀察句",
+                "材料"
+              ],
+              "answer": {
+                "速寫": "記下見到嘅形式",
+                "觀察句": "用一句講你留意到咩",
+                "材料": "用課室已有嘅物件或相片"
+              },
+              "explain": "三種記錄都喺課室完成。"
+            },
+            {
+              "type": "order",
+              "question": "將一次視覺日記記錄排好。",
+              "options": [
+                "揀課室入面一件材料",
+                "速寫你見到嘅形式",
+                "寫一句觀察",
+                "留一個下週問題"
+              ],
+              "explain": "由材料到速寫，再到觀察同問題。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊係一頁速寫，右邊係一句研究問題。各寫你會記低咩。",
+              "options": [
+                "速寫記錄",
+                "研究問題"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U1-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「材料＋觀察＋下週問題」寫低你呢週嘅視覺日記會點記。提示：三項都要係課室做得到嘅。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U2-AESTHETIC",
+      "title": "咩係美感：中西美學同宋元藝術入門",
+      "intro": "呢個單元問「美」喺中國同西方社會可以點理解，再用精簡時間線入門宋元藝術。練習睇形式、功能同文化語境。呢度只係入門，唔會由頭教晒每種技法。課堂唔會用真實試卷。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-AESTHETIC.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U2-L1",
+          "title": "咩係美感：中西社會點樣睇美",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "「美」喺中國同西方社會可以有唔同理解。有時重視和諧同品德，有時重視個人感受或形式實驗。",
+            "練習時分開三樣：形式（你見到咩）、功能（佢做咩用）、文化語境（佢喺邊種生活出現）。",
+            "呢課唔會話邊種社會先至「正確」。你要講得出自己用緊邊個角度。",
+            "呢度只係入門，唔會由頭教晒每種技法。課堂唔會用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "呢課要你點樣睇「美」？",
+              "options": [
+                "只背一個標準答案",
+                "分開形式、功能同文化語境",
+                "只比較邊幅畫比較貴",
+                "抄一幅名畫交差"
+              ],
+              "answer": "分開形式、功能同文化語境",
+              "explain": "三個角度幫你講清楚自己點理解美。"
+            },
+            {
+              "type": "fill",
+              "question": "文化語境係指作品出現喺邊種＿＿。",
+              "options": [],
+              "answer": "生活",
+              "explain": "語境係生活同文化，唔係價錢。",
+              "wordBank": [
+                "生活",
+                "價錢",
+                "天氣",
+                "座位"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對三個角度",
+              "options": [
+                "形式",
+                "功能",
+                "文化語境"
+              ],
+              "answer": {
+                "形式": "你見到嘅形狀同色彩",
+                "功能": "物件做咩用",
+                "文化語境": "佢處身嘅生活"
+              },
+              "explain": "三個角度一齊用，先算睇得完整。"
+            },
+            {
+              "type": "order",
+              "question": "將一次美感觀察排好。",
+              "options": [
+                "描述形式",
+                "估計功能",
+                "提出一種文化語境",
+                "寫低你用緊邊個角度"
+              ],
+              "explain": "由見到嘅，到用途，再到語境同角度。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊用「形式」寫一句，右邊用「文化語境」寫一句。唔好話邊邊先正確。",
+              "options": [
+                "形式一句",
+                "語境一句"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U2-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用三句講一件課室物件點樣同時有形式、功能同文化語境。提示：每句只講一個角度。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U2-L2",
+          "title": "宋元藝術入門",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "宋元藝術入門用一條精簡時間線：先知道大概先後，再揀一件作品睇形式。",
+            "宋同元可以並排比較：宮廷、文人、民間嘅視覺選擇可以唔同，你要講得出你比較緊邊一點。",
+            "時間線唔等於背晒每個年份。入門只要你能把一件作品放返大致位置，並描述形式同功能。",
+            "呢度只係入門，唔會由頭教晒每種技法。課堂唔會用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "宋元入門嘅時間線主要幫你做咩？",
+              "options": [
+                "背晒所有年份",
+                "把作品放喺大致先後",
+                "抄一幅完整名畫",
+                "判斷邊幅最貴"
+              ],
+              "answer": "把作品放喺大致先後",
+              "explain": "精簡時間線係大致位置，唔係全集年份。"
+            },
+            {
+              "type": "fill",
+              "question": "比較宋同元之前，先講清楚你比較緊邊一＿＿。",
+              "options": [],
+              "answer": "點",
+              "explain": "比較要有一個清楚嘅點。",
+              "wordBank": [
+                "點",
+                "價",
+                "座",
+                "頁"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對入門做法",
+              "options": [
+                "時間線",
+                "形式",
+                "功能"
+              ],
+              "answer": {
+                "時間線": "大致先後",
+                "形式": "你見到嘅形狀同筆墨",
+                "功能": "作品可能做咩用"
+              },
+              "explain": "先後、形式、功能三步就夠入門。"
+            },
+            {
+              "type": "order",
+              "question": "將宋元入門觀察排好。",
+              "options": [
+                "睇精簡時間線",
+                "揀一件作品",
+                "描述形式",
+                "寫可能嘅功能"
+              ],
+              "explain": "由時間線到一件作品嘅形式同功能。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊放一個宋嘅形式觀察，右邊放一個元嘅形式觀察。各一句，並寫你比較緊邊一點。",
+              "options": [
+                "宋 · 形式",
+                "元 · 形式"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U2-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句把一件宋或元嘅作品放上精簡時間線。提示：第一句講大致位置，第二句講一個形式同一個功能。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U3-HERITAGE",
+      "title": "自我、傳統同社會",
+      "intro": "呢個單元由「傳統同社會點影響日常生活」出發，練習用視覺日記搜集材料、發展主題，並用水墨同混合媒介試作。你會對讀奇石圖像同超現實／立體主義嘅方法，而唔係抄畫面。訪問、觀察同收集都係課室做法。課堂唔放高分示例。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-HERITAGE.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U3-L1",
+          "title": "傳統同社會點影響日常生活",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "傳統同社會會經日常物件、節慶顏色、家裡嘅擺設，影響你點睇一件事物。",
+            "練習由一件日常物件出發：佢嘅形式、佢喺生活入面嘅位置、同埋你自己嘅感受。",
+            "訪問、觀察同收集都係課室做法。用同學對話、已有相片或課室物件就得。",
+            "課堂唔放高分示例。你寫自己見到嘅影響就得。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "呢課要你由邊度開始？",
+              "options": [
+                "一份真實試卷",
+                "一件日常物件",
+                "一幅要臨摹嘅名畫",
+                "一張分數表"
+              ],
+              "answer": "一件日常物件",
+              "explain": "由日常生活入面嘅物件開始。"
+            },
+            {
+              "type": "fill",
+              "question": "訪問、觀察同收集都係＿＿做法。",
+              "options": [],
+              "answer": "課室",
+              "explain": "三種做法都留喺課室。",
+              "wordBank": [
+                "課室",
+                "比賽",
+                "遠行",
+                "抽獎"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對日常影響",
+              "options": [
+                "形式",
+                "生活位置",
+                "自己感受"
+              ],
+              "answer": {
+                "形式": "物件嘅形狀同色彩",
+                "生活位置": "佢通常出現喺邊",
+                "自己感受": "你覺得佢點影響你"
+              },
+              "explain": "三項一齊先算講到影響。"
+            },
+            {
+              "type": "order",
+              "question": "將一次日常觀察排好。",
+              "options": [
+                "揀一件日常物件",
+                "描述形式",
+                "寫佢喺生活嘅位置",
+                "寫你自己嘅感受"
+              ],
+              "explain": "由物件到形式、位置、感受。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫物件形式，右邊寫佢喺生活入面嘅位置。各一句。",
+              "options": [
+                "物件形式",
+                "生活位置"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用三句講傳統或社會點影響你一件日常物件。提示：形式、位置、感受各一句，而且係課室做得到嘅。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L2",
+          "title": "奇石對讀：吳彬同超現實／立體主義",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "奇石對讀用方法，唔係抄畫面。你可以睇吳彬點樣把石頭畫得奇，再睇超現實同立體主義點樣重組所見。",
+            "對讀可以問：邊度誇張、邊度切開、邊度仍然令人認得係石。",
+            "超現實常把唔尋常嘅組合放埋一齊。立體主義常把物件拆成多個面。你要講方法，唔好講成要臨摹某一幅畫。",
+            "圖像只用課室示意。課堂唔放高分示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "奇石對讀要你做咩？",
+              "options": [
+                "抄一幅完整畫面",
+                "比較方法而唔係抄畫面",
+                "背藝術家出生年份",
+                "判斷邊幅最貴"
+              ],
+              "answer": "比較方法而唔係抄畫面",
+              "explain": "對讀係方法，唔係臨摹。"
+            },
+            {
+              "type": "fill",
+              "question": "立體主義常見做法係把物件拆成多個＿＿。",
+              "options": [],
+              "answer": "面",
+              "explain": "多個面係講形式方法。",
+              "wordBank": [
+                "面",
+                "價錢",
+                "座位",
+                "簽名"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對方法",
+              "options": [
+                "吳彬奇石",
+                "超現實",
+                "立體主義"
+              ],
+              "answer": {
+                "吳彬奇石": "把石畫得奇，仍然認得係石",
+                "超現實": "把唔尋常嘅組合放埋一齊",
+                "立體主義": "把物件拆成多個面"
+              },
+              "explain": "三個都係方法，唔係要你抄畫面。"
+            },
+            {
+              "type": "order",
+              "question": "將一次奇石對讀排好。",
+              "options": [
+                "描述石嘅形式",
+                "指出誇張或切開嘅地方",
+                "講一種超現實或立體方法",
+                "寫你自己會試嘅一步"
+              ],
+              "explain": "由所見到方法，再到自己一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫吳彬奇石嘅一種方法，右邊寫超現實或立體主義嘅一種方法。唔好抄畫面。",
+              "options": [
+                "奇石方法",
+                "重組方法"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句比較吳彬同超現實或立體主義。提示：第一句講石嘅形式，第二句講一種方法，而且寫明你唔係抄畫面。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L3",
+          "title": "視覺日記：點樣搜集同發展主題",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "視覺日記可以用嚟搜集材料同發展主題。一頁先收集，下一頁先收窄。",
+            "搜集可以係課室速寫、已有相片、一段訪問筆記，或者一件收集到嘅物件。",
+            "發展主題：由好多材料入面揀一個重複出現嘅興趣，再寫一句主題。",
+            "訪問、觀察同收集都係課室做法。課堂唔放高分示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "發展主題之前，日記先做咩？",
+              "options": [
+                "直接寫結論",
+                "搜集材料",
+                "交一份真實試卷",
+                "只背一句口號"
+              ],
+              "answer": "搜集材料",
+              "explain": "先搜集，再收窄成主題。"
+            },
+            {
+              "type": "fill",
+              "question": "主題句來自材料入面重複出現嘅＿＿。",
+              "options": [],
+              "answer": "興趣",
+              "explain": "重複出現嘅興趣先值得收成主題。",
+              "wordBank": [
+                "興趣",
+                "分數",
+                "座位",
+                "天氣"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對搜集同發展",
+              "options": [
+                "速寫",
+                "訪問筆記",
+                "主題句"
+              ],
+              "answer": {
+                "速寫": "課室入面見到嘅形式",
+                "訪問筆記": "一段課室對話",
+                "主題句": "把重複興趣收成一句"
+              },
+              "explain": "搜集同主題都喺課室發生。"
+            },
+            {
+              "type": "order",
+              "question": "將搜集同發展排好。",
+              "options": [
+                "收集幾種材料",
+                "圈出重複出現嘅興趣",
+                "寫一句主題",
+                "決定下一頁試咩"
+              ],
+              "explain": "由材料到興趣，再到主題同下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊係搜集頁，右邊係主題句。各寫你見到咩同你收窄咗咩。",
+              "options": [
+                "搜集頁",
+                "主題句"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L3.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「兩項材料＋一句主題」寫低你點樣由搜集去到發展。提示：材料要係課室做得到嘅。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L4",
+          "title": "水墨試驗同作品集第一件作品",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L4.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "水墨試驗係用墨、水、紙試幾個細效果，再揀一個適合你主題嘅做法。",
+            "作品集第一件作品用研究同創作結構：主題一句、材料證據、一次媒介試驗、同下一步。",
+            "混合媒介可以同水墨一齊試，但每次只改一個條件，方便你寫低分別。",
+            "課堂唔放高分示例。你交嘅係自己嘅試驗同結構，唔係一份真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集第一件作品嘅結構包括邊項？",
+              "options": [
+                "一份真實試卷全文",
+                "主題一句同一次媒介試驗",
+                "學校行政表格",
+                "高分學生示例"
+              ],
+              "answer": "主題一句同一次媒介試驗",
+              "explain": "第一件作品用主題、證據、試驗同下一步。"
+            },
+            {
+              "type": "fill",
+              "question": "每次混合媒介試驗只改一個＿＿。",
+              "options": [],
+              "answer": "條件",
+              "explain": "一次只改一個條件，先容易比較。",
+              "wordBank": [
+                "條件",
+                "校名",
+                "座位",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對第一件作品結構",
+              "options": [
+                "主題一句",
+                "媒介試驗",
+                "下一步"
+              ],
+              "answer": {
+                "主題一句": "你探索緊咩",
+                "媒介試驗": "水墨或混合媒介嘅一次效果",
+                "下一步": "你跟住想試咩"
+              },
+              "explain": "三部分一齊先算有結構。"
+            },
+            {
+              "type": "order",
+              "question": "將水墨試驗同第一件作品排好。",
+              "options": [
+                "寫主題一句",
+                "做一次水墨試驗",
+                "記錄改咗邊個條件",
+                "寫下一步"
+              ],
+              "explain": "由主題到試驗，再到記錄同下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊係一次水墨效果，右邊係作品集第一件作品嘅主題句。各寫一句。",
+              "options": [
+                "水墨效果",
+                "主題一句"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L4.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「主題一句＋一次試驗＋下一步」說明作品集第一件作品。提示：試驗要寫改咗邊個條件，而且唔用高分示例。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U4-SYMBOL",
+      "title": "傳統符號、色彩同紋樣",
+      "intro": "呢個單元認識傳統色彩、紋樣同繪畫入面嘅符號，再延伸宋元藝術觀察。練習描述你見到嘅形式同可能嘅象徵意思。全部喺課室完成。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-SYMBOL.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U4-L1",
+          "title": "傳統色、紋同畫入面嘅符號",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "傳統色、紋同畫可以帶符號。同一種顏色，喺唔同生活入面可以有唔同意思。",
+            "練習時分開：你見到嘅形式，同你估計嘅象徵意思。估計要寫成「可能」，唔好寫成唯一答案。",
+            "紋樣可以係重複、對稱，或者一個物件被反覆使用。你要指出邊種重複。",
+            "全部喺課室完成。用課室示意同你自己嘅描述就得。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "講象徵意思時要點寫？",
+              "options": [
+                "寫成唯一正確答案",
+                "寫成「可能」嘅意思",
+                "只寫價錢",
+                "抄一段試題"
+              ],
+              "answer": "寫成「可能」嘅意思",
+              "explain": "象徵係可能，唔係唯一。"
+            },
+            {
+              "type": "fill",
+              "question": "紋樣可以係重複、對稱，或者物件被＿＿使用。",
+              "options": [],
+              "answer": "反覆",
+              "explain": "反覆使用係一種紋。",
+              "wordBank": [
+                "反覆",
+                "隱藏",
+                "出售",
+                "刪除"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對符號觀察",
+              "options": [
+                "形式",
+                "象徵",
+                "課室"
+              ],
+              "answer": {
+                "形式": "你見到嘅色同紋",
+                "象徵": "呢種形式可能帶嘅意思",
+                "課室": "描述喺課室完成"
+              },
+              "explain": "先形式，再可能嘅意思。"
+            },
+            {
+              "type": "order",
+              "question": "將一次符號描述排好。",
+              "options": [
+                "指出顏色或紋樣",
+                "描述形式",
+                "寫一個可能嘅意思",
+                "講明呢個係估計"
+              ],
+              "explain": "由見到嘅形式到可能意思。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊只寫形式，右邊只寫一個可能嘅象徵。各一句。",
+              "options": [
+                "見到嘅形式",
+                "可能嘅意思"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U4-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句描述一種傳統色或紋。提示：第一句只講形式，第二句用「可能」講象徵。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U4-L2",
+          "title": "宋元藝術延伸",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "宋元藝術延伸係喺入門之後，再揀一件作品睇多一個形式細節。",
+            "你可以比較兩件作品嘅一個相同點同一個相異點，例如留白、線條疏密，或者人物同景物嘅比例。",
+            "延伸仍然係觀察，唔係把所有技法由頭練起，亦唔係臨摹整幅名畫。",
+            "全部喺課室完成。課堂唔會用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "宋元延伸主要多做咩？",
+              "options": [
+                "背更多年份",
+                "多看一個形式細節",
+                "臨摹整幅名畫",
+                "交一份真實試卷"
+              ],
+              "answer": "多看一個形式細節",
+              "explain": "延伸係多一個形式觀察。"
+            },
+            {
+              "type": "fill",
+              "question": "比較兩件作品時，寫一個相同點同一個＿＿點。",
+              "options": [],
+              "answer": "相異",
+              "explain": "相同同相異先算比較。",
+              "wordBank": [
+                "相異",
+                "價錢",
+                "座位",
+                "簽名"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對延伸觀察",
+              "options": [
+                "留白",
+                "疏密",
+                "比例"
+              ],
+              "answer": {
+                "留白": "畫面邊度留有空間",
+                "疏密": "線條邊度密、邊度疏",
+                "比例": "人物同景物邊個較大"
+              },
+              "explain": "三個都係形式細節。"
+            },
+            {
+              "type": "order",
+              "question": "將一次延伸比較排好。",
+              "options": [
+                "揀兩件宋元作品",
+                "揀一個形式細節",
+                "寫一個相同點",
+                "寫一個相異點"
+              ],
+              "explain": "先選作品同細節，再寫相同同相異。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫一個相同嘅形式，右邊寫一個相異嘅形式。各一句。",
+              "options": [
+                "相同形式",
+                "相異形式"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U4-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句延伸一次宋元觀察。提示：第一句講一個形式細節，第二句講相同或相異。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U5-ROLE",
+      "title": "角色代入：喺中國語境再呈現一個人",
+      "intro": "呢個單元練習角色代入：點樣喺中國語境再呈現一個人。你會試乾濕媒介，並用研究同創作結構去發展作品集嘅第二件作品。課堂唔放高分學生示例。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-ROLE.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U5-L1",
+          "title": "角色同身份：點樣再呈現一個人",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "角色代入係思考一個人點樣再被呈現：身份、衣著、姿態、同埋觀看嘅人會點理解。",
+            "喺中國語境再呈現，可以借用傳統姿態、符號或場面，但你要講得出你借用咗咩，同埋你改咗咩。",
+            "角色唔等於影到似某人。你要寫呢個人喺畫面入面做緊咩，同埋邊個細節交代身份。",
+            "課堂唔放高分學生示例。練習只用方法同你自己嘅句子。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "再呈現一個人，最重要係講咩？",
+              "options": [
+                "畫得似邊張相片",
+                "身份點樣被呈現",
+                "邊個分數最高",
+                "要抄哪一幅名畫"
+              ],
+              "answer": "身份點樣被呈現",
+              "explain": "角色練習講身份點樣被睇到。"
+            },
+            {
+              "type": "fill",
+              "question": "借用傳統姿態之後，要寫低你＿＿咗咩。",
+              "options": [],
+              "answer": "改",
+              "explain": "借用同改動要一齊講。",
+              "wordBank": [
+                "改",
+                "賣",
+                "藏",
+                "背"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對角色元素",
+              "options": [
+                "身份",
+                "姿態",
+                "細節"
+              ],
+              "answer": {
+                "身份": "呢個人係邊種角色",
+                "姿態": "身體點樣放置",
+                "細節": "邊樣物件交代身份"
+              },
+              "explain": "三項一齊先算再呈現。"
+            },
+            {
+              "type": "order",
+              "question": "將一次角色練習排好。",
+              "options": [
+                "揀一個你想呈現嘅人",
+                "寫身份同姿態",
+                "揀一個中國語境嘅細節",
+                "寫你改咗咩"
+              ],
+              "explain": "由人到身份，再到細節同改動。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫你借用嘅姿態或符號，右邊寫你改動嘅地方。各一句。",
+              "options": [
+                "借用",
+                "改動"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句講你點樣喺中國語境再呈現一個人。提示：第一句寫身份同姿態，第二句寫一個細節同你改咗咩。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U5-L2",
+          "title": "乾濕媒介試驗",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "乾媒介例如鉛筆、粉彩、炭筆，筆觸較容易留低清楚邊緣。濕媒介例如墨、水彩，顏色會滲開。",
+            "試驗時每次只改一個條件：乾或濕、用力輕重，或者紙嘅乾濕。",
+            "記錄要寫：你用咗咩、見到咩效果、呢個效果可唔可以用喺角色嘅衣著或背景。",
+            "全部喺課室試。課堂唔放高分學生示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "濕媒介同乾媒介一個明顯分別係？",
+              "options": [
+                "濕媒介一定更正確",
+                "濕媒介較易滲開",
+                "乾媒介不能畫線",
+                "兩種都必須同時用完"
+              ],
+              "answer": "濕媒介較易滲開",
+              "explain": "濕媒介會滲，乾媒介較易留邊。"
+            },
+            {
+              "type": "fill",
+              "question": "每次試驗只改一個＿＿。",
+              "options": [],
+              "answer": "條件",
+              "explain": "一次一條件，先睇到分別。",
+              "wordBank": [
+                "條件",
+                "校名",
+                "座位",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對媒介同效果",
+              "options": [
+                "鉛筆或炭筆",
+                "墨或水彩",
+                "記錄"
+              ],
+              "answer": {
+                "鉛筆或炭筆": "較易留清楚邊緣",
+                "墨或水彩": "顏色較易滲開",
+                "記錄": "寫用咗咩同見到咩"
+              },
+              "explain": "試驗同記錄一齊先有用。"
+            },
+            {
+              "type": "order",
+              "question": "將一次乾濕試驗排好。",
+              "options": [
+                "揀乾或濕其中一種",
+                "只改一個條件",
+                "觀察邊緣或滲開",
+                "寫可唔可以用喺角色"
+              ],
+              "explain": "由選擇到試驗，再到觀察同用途。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫乾媒介嘅一個效果，右邊寫濕媒介嘅一個效果。各一句。",
+              "options": [
+                "乾媒介效果",
+                "濕媒介效果"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句記錄一次乾濕試驗。提示：第一句寫媒介同你改咗邊個條件，第二句寫效果可唔可以用喺角色。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U5-L3",
+          "title": "宋元藝術同作品集第二件作品",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "呢課把宋元觀察收進作品集第二件作品：你仍然描述一個形式細節，再用佢發展角色或畫面。",
+            "第二件作品用研究同創作結構：主題一句、一件研究證據、一次乾或濕媒介試驗、同下一步。",
+            "宋元細節可以係留白、線條或人物比例。你借用方法，唔抄整幅畫面。",
+            "課堂唔放高分學生示例，亦唔用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集第二件作品要連住咩？",
+              "options": [
+                "一份真實試卷",
+                "一個宋元形式細節同你嘅角色",
+                "高分學生示例",
+                "學校行政程序"
+              ],
+              "answer": "一個宋元形式細節同你嘅角色",
+              "explain": "第二件作品用宋元觀察同自己嘅創作結構。"
+            },
+            {
+              "type": "fill",
+              "question": "第二件作品要有主題一句、研究證據、一次媒介試驗，同＿＿。",
+              "options": [],
+              "answer": "下一步",
+              "explain": "下一步令作品集繼續發展。",
+              "wordBank": [
+                "下一步",
+                "校徽",
+                "座位表",
+                "分數榜"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對第二件作品",
+              "options": [
+                "宋元細節",
+                "研究證據",
+                "媒介試驗"
+              ],
+              "answer": {
+                "宋元細節": "留白、線條或比例",
+                "研究證據": "你日記入面嘅一項材料",
+                "媒介試驗": "一次乾或濕效果"
+              },
+              "explain": "三項一齊服務第二件作品。"
+            },
+            {
+              "type": "order",
+              "question": "將第二件作品發展排好。",
+              "options": [
+                "寫主題一句",
+                "揀一個宋元形式細節",
+                "做一次媒介試驗",
+                "寫下一步"
+              ],
+              "explain": "由主題到細節、試驗、下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫一個宋元形式細節，右邊寫佢點樣進入第二件作品。各一句。",
+              "options": [
+                "宋元細節",
+                "第二件作品"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L3.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「主題一句＋一個宋元細節＋下一步」講作品集第二件作品。提示：寫明你借用方法，唔抄整幅畫面。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U6-CONTEMP",
+      "title": "當代中國同創新傳承",
+      "intro": "呢個單元認識徐冰同當代中國書法潮流，以及全球當代藝術嘅入門對讀，再做創新傳承練習：立體拼貼同裝置。全部喺課室完成。亦會收束宋元藝術觀察。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-CONTEMP.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U6-L1",
+          "title": "徐冰同當代中國書法潮流",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "徐冰同當代中國書法潮流喺呢課係課堂認識：你了解佢點樣把文字變成視覺形式。",
+            "可以問：文字仲認唔認得出、筆畫點樣被重複或重組、觀眾要點樣睇。",
+            "呢課留喺課室完成。用課室文字、示意圖同你自己嘅句子就得。",
+            "你認識方法，唔抄某一件作品嘅畫面。課堂唔用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "認識徐冰同當代書法，呢課要你做咩？",
+              "options": [
+                "一定要離開課室先可以學",
+                "喺課室了解文字點樣變成視覺形式",
+                "抄一件完整作品",
+                "背一份真實試卷"
+              ],
+              "answer": "喺課室了解文字點樣變成視覺形式",
+              "explain": "認識留喺課室，而且講方法。"
+            },
+            {
+              "type": "fill",
+              "question": "當代書法練習可以問：文字仲可唔可以＿＿。",
+              "options": [],
+              "answer": "認",
+              "explain": "認得出與否係視覺問題。",
+              "wordBank": [
+                "認",
+                "賣",
+                "藏起校名",
+                "評分"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對書法觀察",
+              "options": [
+                "文字",
+                "筆畫",
+                "觀眾"
+              ],
+              "answer": {
+                "文字": "仲認唔認得出",
+                "筆畫": "點樣重複或重組",
+                "觀眾": "被邀請點樣睇"
+              },
+              "explain": "三個問題都喺課室答。"
+            },
+            {
+              "type": "order",
+              "question": "將一次課堂認識排好。",
+              "options": [
+                "睇文字嘅形式",
+                "問仲認唔認得出",
+                "描述筆畫點樣重組",
+                "寫你自己會試嘅一步"
+              ],
+              "explain": "由所見到方法，再到自己一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫文字仲可唔可以認，右邊寫筆畫點樣被重組。各一句。呢個係課室練習。",
+              "options": [
+                "可唔可以認",
+                "筆畫重組"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句講徐冰或當代書法嘅一種方法。提示：第一句講文字同視覺形式，第二句講你喺課室會試嘅一步，唔使離開課室。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L2",
+          "title": "全球當代藝術入門",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "全球當代藝術入門係一次對讀：你揀一件課室示意，問佢用咩形式同觀眾對話。",
+            "對讀可以睇：物料係咪日常物件、作品係咪要觀眾行近先睇得完整、標題有冇改你嘅理解。",
+            "入門唔等於認識所有地區。你只要講得清一件作品嘅形式同一個觀看方法。",
+            "全部喺課室完成。課堂唔用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "全球當代入門要你做到咩？",
+              "options": [
+                "背晒所有地區",
+                "講清一件作品嘅形式同觀看方法",
+                "抄一幅完整畫面",
+                "交一份真實試卷"
+              ],
+              "answer": "講清一件作品嘅形式同觀看方法",
+              "explain": "入門係一件作品、一個方法。"
+            },
+            {
+              "type": "fill",
+              "question": "對讀可以問：標題有冇改變你嘅＿＿。",
+              "options": [],
+              "answer": "理解",
+              "explain": "標題可以改變你點理解形式。",
+              "wordBank": [
+                "理解",
+                "座位",
+                "價錢",
+                "分數"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對當代觀察",
+              "options": [
+                "物料",
+                "距離",
+                "標題"
+              ],
+              "answer": {
+                "物料": "係咪日常物件",
+                "距離": "要唔要行近先睇得完整",
+                "標題": "有冇改你嘅理解"
+              },
+              "explain": "三個都係觀看方法。"
+            },
+            {
+              "type": "order",
+              "question": "將一次當代入門對讀排好。",
+              "options": [
+                "揀一件課室示意",
+                "描述形式",
+                "問一個觀看方法",
+                "寫標題有冇改理解"
+              ],
+              "explain": "由示意到形式、方法、標題。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫形式，右邊寫一個觀看方法。各一句。",
+              "options": [
+                "形式",
+                "觀看方法"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句做一次全球當代入門。提示：第一句講形式，第二句講觀眾點樣被邀請去睇。全部喺課室講。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L3",
+          "title": "創新傳承：立體拼貼同裝置",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "創新傳承係用立體拼貼同裝置，把你認識過嘅符號或文字方法，變成一件可以行近睇嘅課室作品。",
+            "徐冰嘅文字方法可以做概念參考：文字可唔可以認、部件可唔可以重組。你唔抄某一件作品。",
+            "立體拼貼每次只加一種物料，並寫低佢改變咗邊個觀看角度。",
+            "全部喺課室完成。課堂唔用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "創新傳承呢課主要試咩？",
+              "options": [
+                "抄一件完整裝置",
+                "立體拼貼同裝置嘅課室做法",
+                "離開課室先可以做",
+                "交一份真實試卷"
+              ],
+              "answer": "立體拼貼同裝置嘅課室做法",
+              "explain": "拼貼同裝置留喺課室。"
+            },
+            {
+              "type": "fill",
+              "question": "每次立體拼貼只加一種＿＿。",
+              "options": [],
+              "answer": "物料",
+              "explain": "一次一物料，先知道邊個角度變咗。",
+              "wordBank": [
+                "物料",
+                "校名",
+                "分數",
+                "座位"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對創新傳承",
+              "options": [
+                "概念參考",
+                "拼貼",
+                "裝置"
+              ],
+              "answer": {
+                "概念參考": "文字可唔可以認、部件可唔可以重組",
+                "拼貼": "每次加一種物料",
+                "裝置": "行近先睇得完整"
+              },
+              "explain": "三項都係課室方法。"
+            },
+            {
+              "type": "order",
+              "question": "將一次立體拼貼排好。",
+              "options": [
+                "揀一個符號或文字方法",
+                "加一種物料",
+                "行近睇一個新角度",
+                "寫你冇抄邊件作品"
+              ],
+              "explain": "由方法到物料、角度、同唔抄作品。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫你參考嘅文字方法，右邊寫你加咗嘅一種物料。各一句。",
+              "options": [
+                "文字方法",
+                "一種物料"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L3.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句講你嘅立體拼貼或裝置。提示：第一句講符號或文字方法，第二句講一種物料同一個觀看角度。寫明你唔抄作品。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L4",
+          "title": "宋元藝術收束",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L4.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "宋元藝術收束係回看呢年觀察過嘅一個形式：留白、線條、比例，或者宮廷、文人、民間嘅一個分別。",
+            "收束唔係再背時間線。你把一個細節寫進自己嘅研究工作簿，並講佢點樣幫到創作。",
+            "研究工作簿貫穿學習：主題、證據、試驗、反思可以放喺同一頁。",
+            "全部喺課室完成。課堂唔用真實試卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "宋元收束主要做咩？",
+              "options": [
+                "再背一整條年份表",
+                "把一個形式細節寫進研究工作簿",
+                "臨摹所有名畫",
+                "交一份真實試卷"
+              ],
+              "answer": "把一個形式細節寫進研究工作簿",
+              "explain": "收束係把觀察收進工作簿。"
+            },
+            {
+              "type": "fill",
+              "question": "研究工作簿一頁可以同時有主題、證據、試驗同＿＿。",
+              "options": [],
+              "answer": "反思",
+              "explain": "反思令細節服務創作。",
+              "wordBank": [
+                "反思",
+                "校徽",
+                "座位",
+                "分數榜"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對收束內容",
+              "options": [
+                "形式細節",
+                "工作簿",
+                "創作"
+              ],
+              "answer": {
+                "形式細節": "留白、線條或比例",
+                "工作簿": "放低主題同證據",
+                "創作": "呢個細節點樣幫到你"
+              },
+              "explain": "三項把宋元觀察收束到自己嘅學習。"
+            },
+            {
+              "type": "order",
+              "question": "將宋元收束排好。",
+              "options": [
+                "揀一個今年觀察過嘅形式",
+                "寫入研究工作簿",
+                "講佢點樣幫到創作",
+                "留一句反思"
+              ],
+              "explain": "由細節到工作簿、創作、反思。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫一個宋元形式細節，右邊寫佢喺研究工作簿點樣幫到創作。各一句。",
+              "options": [
+                "宋元細節",
+                "工作簿用途"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L4.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用兩句收束宋元觀察。提示：第一句講一個形式細節，第二句講佢點樣寫進研究工作簿並幫到創作。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U7-PORTFOLIO",
+      "title": "作品集自評同全年回顧",
+      "intro": "呢個單元練習回顧自己一年嘅學習：邊度做得好、邊度仲可以改進，同點樣寫一段作品集總覽。唔用真實試卷或高分示例。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-PORTFOLIO.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U7-L1",
+          "title": "點樣回顧自己嘅強項同下一步",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "回顧係睇自己一年：邊個練習做得穩，邊個步驟仍然亂。",
+            "強項要附一件證據，例如一頁日記、一次水墨試驗，或者一句你寫得清楚嘅主題。",
+            "下一步只寫一個細行動，而且係課室做得到嘅。唔好寫成一份交件時間表。",
+            "唔用真實試卷或高分示例。你評嘅係自己嘅過程。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "回顧強項時要附咩？",
+              "options": [
+                "一份高分示例",
+                "一件自己嘅證據",
+                "一份真實試卷",
+                "一張座位表"
+              ],
+              "answer": "一件自己嘅證據",
+              "explain": "強項要用自己嘅證據支持。"
+            },
+            {
+              "type": "fill",
+              "question": "下一步只寫一個課室做得到嘅細＿＿。",
+              "options": [],
+              "answer": "行動",
+              "explain": "一步就夠，而且要做得到。",
+              "wordBank": [
+                "行動",
+                "校徽",
+                "分數",
+                "座位"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對回顧",
+              "options": [
+                "強項",
+                "證據",
+                "下一步"
+              ],
+              "answer": {
+                "強項": "一個做得穩嘅練習",
+                "證據": "日記、試驗或主題句",
+                "下一步": "一個課室細行動"
+              },
+              "explain": "三項先算完整回顧。"
+            },
+            {
+              "type": "order",
+              "question": "將一次自我回顧排好。",
+              "options": [
+                "揀一個做得穩嘅練習",
+                "附一件證據",
+                "指出一個仍然亂嘅步驟",
+                "寫一個細行動"
+              ],
+              "explain": "由強項到證據，再到弱點同行動。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫一個強項同證據，右邊寫一個下一步。各一句。",
+              "options": [
+                "強項同證據",
+                "下一步"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U7-L1.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用「強項＋證據＋下一步」回顧自己。提示：證據係你自己嘅一頁或一次試驗，下一步係課室做得到嘅。唔用高分示例。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U7-L2",
+          "title": "作品集總覽寫作結構",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "作品集總覽用四句結構：主題一句、研究工作簿做過咩、作品／評賞呈現咩、下一步係咩。",
+            "研究工作簿同作品／評賞係作品集嘅兩部分。總覽要講佢哋點樣互相支持。",
+            "呢課唔鎖字數。你只要四句都在，而且每句只做一件事。",
+            "唔用真實試卷或高分示例。總覽寫你自己嘅結構。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集總覽四句入面，邊句一定要有？",
+              "options": [
+                "學校行政程序",
+                "研究工作簿做過咩",
+                "高分示例全文",
+                "一份真實試卷"
+              ],
+              "answer": "研究工作簿做過咩",
+              "explain": "總覽要講工作簿，亦要講作品。"
+            },
+            {
+              "type": "fill",
+              "question": "總覽要講研究工作簿同作品／評賞點樣互相＿＿。",
+              "options": [],
+              "answer": "支持",
+              "explain": "兩部分係互相支持，唔係互相取代。",
+              "wordBank": [
+                "支持",
+                "取代",
+                "隱藏",
+                "評分"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配對總覽四句",
+              "options": [
+                "主題一句",
+                "工作簿",
+                "作品／評賞"
+              ],
+              "answer": {
+                "主題一句": "你探索緊咩",
+                "工作簿": "研究做過咩",
+                "作品／評賞": "呈現咗咩"
+              },
+              "explain": "再加上下一步，就係四句結構。"
+            },
+            {
+              "type": "order",
+              "question": "將作品集總覽排好。",
+              "options": [
+                "主題一句",
+                "研究工作簿做過咩",
+                "作品／評賞呈現咩",
+                "下一步"
+              ],
+              "explain": "由主題到工作簿、作品、下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "雙圖對讀：左邊寫研究工作簿做過咩，右邊寫作品／評賞呈現咩。各一句。",
+              "options": [
+                "工作簿",
+                "作品／評賞"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U7-L2.png",
+              "imageCredit": "自製 · VA-Nexus",
+              "explain": "練習結構 · 唔用真實試卷"
+            },
+            {
+              "type": "short",
+              "question": "用四句寫一段作品集總覽。提示：主題、工作簿、作品／評賞、下一步各一句。唔鎖字數，亦唔用真實試卷。",
+              "options": [],
+              "explain": "練習結構 · 唔用真實試卷"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

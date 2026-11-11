@@ -473,6 +473,8 @@
   "map.track.f4": "中四",
   "map.track.aria": "选择学习地图",
   "map.f4.subtitle": "中四视艺单元。短课卡，然后小测。不是全年课程。",
+  "map.f5.subtitle": "中五视艺单元。短课卡，然后小测。不声称全日历每一周完整课。",
+  "map.f6.subtitle": "中六视艺单元。短课卡，然后小测。不声称全日历每一周完整课。",
   "map.f4.lessonCount": "{n} 课",
   "map.artists.heading": "本课艺术家",
   "map.artists.thumbAlt": "{name}作品缩图",

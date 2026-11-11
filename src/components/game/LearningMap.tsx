@@ -4,6 +4,8 @@ import { useGame } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { getNodeById, getUnits } from '../../game/curriculum'
 import { getF4Units } from '../../game/f4Demo'
+import { getF5Units } from '../../game/f5Demo'
+import { getF6Units } from '../../game/f6Demo'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import { getMediaUnits, type MediaUnit } from '../../game/mediaIntro'
 import {
@@ -249,6 +251,10 @@ export function LearningMap() {
       {domain === 'history' ? (
         grade === 'f4' ? (
           <F4YearList units={f4Units} />
+        ) : grade === 'f5' ? (
+          <F4YearList units={getF5Units()} gradeKey="map.grade.f5" subtitleKey="map.f5.subtitle" />
+        ) : grade === 'f6' ? (
+          <F4YearList units={getF6Units()} gradeKey="map.grade.f6" subtitleKey="map.f6.subtitle" />
         ) : historyShown.length === 0 ? (
           <p data-map-grade-empty className="rounded-3xl bg-white px-4 py-6 text-center text-sm font-medium text-slate-700">
             {t('map.grade.empty')}
