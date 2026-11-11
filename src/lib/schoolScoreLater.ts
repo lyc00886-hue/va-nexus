@@ -15,8 +15,11 @@
  * 自動計出嚟嘅校內學校參考草稿先到教師面。
  * It is not written onto the student surface, and it does not replace the approximate band.
  */
+import { laterVisibleLevel, tailoredAxisAdvice } from './formativeAiComment.ts'
 import {
+  ARTWORK_AXIS_IDS,
   DUAL_AXIS_IDS,
+  RWB_AXIS_IDS,
   DUAL_CHARTS,
   formativeForBand,
   type DualAxisId,
@@ -72,11 +75,18 @@ export type LaterDraft = {
   /** Short formative comment. Present only after a model result. */
   aiComment: string | null
   /**
+   * Visible unofficial number for a new model result: 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, or 5.
+   * Null on an older stored result, which keeps showing its existing formative number.
+   */
+  approxValue: number | null
+  /**
    * Per-axis unofficial reference for the student radars.
    * Only axes the model returned for a side that was actually uploaded.
    * Missing axes stay missing. They are not filled from `approxBand`.
    */
   aiAxes: Partial<Record<DualAxisId, number>>
+  /** Tailored artwork-axis notes from the model. Missing axes stay missing. */
+  aiAdvice: Partial<Record<DualAxisId, string>>
   /** Null follows the approximate band. */
   adjustBand: PracticeBandId | null
   /** Last band written into the school reference. Null until the teacher writes. */
@@ -185,7 +195,9 @@ export function draftFromFile(name: string, size: number, mime: string): LaterDr
     approxBand: null,
     aiStatus: 'idle',
     aiComment: null,
+    approxValue: null,
     aiAxes: {},
+    aiAdvice: {},
     adjustBand: null,
     committedBand: null,
     pages: [],
@@ -223,19 +235,22 @@ function commentText(value: unknown): string | null {
   return text.length >= 8 ? text : null
 }
 
-const AI_AXIS_VALUES = new Set<number>([1.25, 2.5, 3.5, 4.5])
+/** Levels a stored later result may still show, including the older 1.25 practice value. */
+const STORED_LATER_LEVELS = [1, 1.25, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] as const
 
-/** Keep model axes only for sides that were uploaded, and only on the four practice-band values. */
-export function axesForUploadedSides(
+function axesForSides(
   axes: Partial<Record<DualAxisId, number>> | undefined,
   pages: readonly LaterPage[],
+  accept: (value: number) => number | null,
 ): Partial<Record<DualAxisId, number>> {
   const sides = new Set(pages.map((page) => page.side))
   const out: Partial<Record<DualAxisId, number>> = {}
   if (!axes) return out
   for (const id of DUAL_AXIS_IDS) {
-    const value = axes[id]
-    if (value == null || !AI_AXIS_VALUES.has(value)) continue
+    const raw = axes[id]
+    if (typeof raw !== 'number' || !Number.isFinite(raw)) continue
+    const value = accept(raw)
+    if (value == null) continue
     const side = id.startsWith('aw-') ? 'artwork' : 'research_workbook'
     if (!sides.has(side)) continue
     out[id] = value
@@ -243,19 +258,43 @@ export function axesForUploadedSides(
   return out
 }
 
+/** New model axes: nine-level only, and only for a side that was uploaded. */
+export function axesForUploadedSides(
+  axes: Partial<Record<DualAxisId, number>> | undefined,
+  pages: readonly LaterPage[],
+): Partial<Record<DualAxisId, number>> {
+  return axesForSides(axes, pages, (value) => laterVisibleLevel(value))
+}
+
+function storedAxesForPages(
+  axes: Partial<Record<DualAxisId, number>> | undefined,
+  pages: readonly LaterPage[],
+): Partial<Record<DualAxisId, number>> {
+  return axesForSides(axes, pages, (value) => value)
+}
+
 /** Staff confirmed nothing yet. The model result stays off the school reference. */
 export function applyModelComment(
   draft: LaterDraft,
-  result: { comment: string; band: PracticeBandId; axes?: Partial<Record<DualAxisId, number>> },
+  result: {
+    comment: string
+    band: PracticeBandId
+    axes?: Partial<Record<DualAxisId, number>>
+    advice?: Partial<Record<DualAxisId, string>>
+    score?: number | null
+  },
 ): LaterDraft {
   const text = commentText(result.comment)
   if (!text || !isPracticeBandId(result.band)) return applyAiFallback(draft)
+  const approxValue = laterVisibleLevel(result.score) ?? laterVisibleLevel(formativeForBand(result.band))
   return {
     ...draft,
     approxBand: result.band,
     aiStatus: 'model',
     aiComment: text,
+    approxValue,
     aiAxes: axesForUploadedSides(result.axes, draft.pages),
+    aiAdvice: tailoredAxisAdvice(result.advice),
   }
 }
 
@@ -268,7 +307,9 @@ export function applyFileNotSent(draft: LaterDraft): LaterDraft {
     draft.aiStatus === 'unsent' &&
     draft.aiComment == null &&
     draft.approxBand == null &&
-    Object.keys(draft.aiAxes).length === 0
+    draft.approxValue == null &&
+    Object.keys(draft.aiAxes).length === 0 &&
+    Object.keys(draft.aiAdvice).length === 0
   ) {
     return draft
   }
@@ -277,7 +318,9 @@ export function applyFileNotSent(draft: LaterDraft): LaterDraft {
     approxBand: null,
     aiStatus: 'unsent',
     aiComment: null,
+    approxValue: null,
     aiAxes: {},
+    aiAdvice: {},
   }
 }
 
@@ -287,7 +330,9 @@ export function applyAiFallback(draft: LaterDraft): LaterDraft {
     draft.aiStatus === 'fallback' &&
     draft.aiComment == null &&
     draft.approxBand == null &&
-    Object.keys(draft.aiAxes).length === 0
+    draft.approxValue == null &&
+    Object.keys(draft.aiAxes).length === 0 &&
+    Object.keys(draft.aiAdvice).length === 0
   ) {
     return draft
   }
@@ -296,7 +341,9 @@ export function applyAiFallback(draft: LaterDraft): LaterDraft {
     approxBand: null,
     aiStatus: 'fallback',
     aiComment: null,
+    approxValue: null,
     aiAxes: {},
+    aiAdvice: {},
   }
 }
 
@@ -339,7 +386,39 @@ export function studentVisibleBand(draft: LaterDraft): PracticeBandId | null {
 export function aiReferenceFormative(draft: LaterDraft): number | null {
   const band = studentVisibleBand(draft)
   if (band == null) return null
+  if (draft.approxValue != null) return draft.approxValue
   return formativeForBand(band)
+}
+
+/** Visible later number, using the same fullwidth slash the student radar already uses. */
+export function formatLaterVisible(value: number): string {
+  const rounded = Math.round(value * 100) / 100
+  const text = Number.isInteger(rounded) ? String(rounded) : String(rounded)
+  return `${text}／5`
+}
+
+/**
+ * Artwork radar draws when its six axes are present.
+ * The workbook radar draws only when a workbook file is present and its four axes are present.
+ * Pending copy stays in the slot that is actually waiting.
+ */
+export function laterRadarView(draft: LaterDraft | null): {
+  artwork: number[] | null
+  workbook: number[] | null
+  artworkPending: boolean
+  workbookPending: boolean
+} {
+  const empty = { artwork: null, workbook: null, artworkPending: false, workbookPending: false }
+  if (!draft || draft.aiStatus === 'unsent') return empty
+  const artwork = aiReferenceAxes(draft, ARTWORK_AXIS_IDS)
+  const workbookFile = draft.pages.some((page) => page.side === 'research_workbook')
+  const workbook = workbookFile ? aiReferenceAxes(draft, RWB_AXIS_IDS) : null
+  return {
+    artwork,
+    workbook,
+    artworkPending: artwork == null,
+    workbookPending: workbookFile && workbook == null,
+  }
 }
 
 /**
@@ -423,13 +502,23 @@ export function sanitizeLaterStore(raw: unknown): LaterStore {
       approxBand,
       aiStatus,
       aiComment,
-      aiAxes: aiStatus === 'model' ? axesForUploadedSides(readStoredAxes(draft.aiAxes), pages) : {},
+      approxValue: aiStatus === 'model' ? readStoredVisible(draft.approxValue) : null,
+      aiAxes: aiStatus === 'model' ? storedAxesForPages(readStoredAxes(draft.aiAxes), pages) : {},
+      aiAdvice: aiStatus === 'model' ? tailoredAxisAdvice(draft.aiAdvice) : {},
       adjustBand,
       committedBand,
       pages,
       formalAxes: formalAxesForPages(pages),
     },
   }
+}
+
+function readStoredVisible(raw: unknown): number | null {
+  if (typeof raw !== 'number' || !Number.isFinite(raw)) return null
+  for (const level of STORED_LATER_LEVELS) {
+    if (Math.abs(level - raw) < 0.001) return level
+  }
+  return null
 }
 
 function readStoredAxes(raw: unknown): Partial<Record<DualAxisId, number>> {
@@ -441,7 +530,7 @@ function readStoredAxes(raw: unknown): Partial<Record<DualAxisId, number>> {
     if (typeof value !== 'number' || !Number.isFinite(value)) continue
     let best: number | null = null
     let dist = Number.POSITIVE_INFINITY
-    for (const official of AI_AXIS_VALUES) {
+    for (const official of STORED_LATER_LEVELS) {
       const next = Math.abs(official - value)
       if (next < dist) {
         dist = next

@@ -32,7 +32,7 @@ const COMMENT = '主題或意念的探索及發展接近穩固，反思及學習
 const AXES = {
   'aw-1': 2.5,
   'aw-2': 3.5,
-  'aw-3': 1.25,
+  'aw-3': 1,
   'aw-4': 4.5,
   'aw-5': 3.5,
   'aw-6': 2.5,
@@ -250,7 +250,7 @@ describe('later files still reach the formative comment', { concurrency: false }
     assert.equal(draft?.approxBand, 'practice-secure')
     assert.equal(studentVisibleBand(draft!), 'practice-secure')
     assert.equal(draft?.committedBand, null)
-    assert.deepEqual(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS), [2.5, 3.5, 1.25, 4.5, 3.5, 2.5])
+    assert.deepEqual(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS), [2.5, 3.5, 1, 4.5, 3.5, 2.5])
     assert.equal(new Set(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS)).size > 1, true)
     assert.equal(JSON.stringify(getDualRadarStore()), dualBefore)
     assert.equal(JSON.stringify(getTeacherDraftStore()), teacherBefore)
@@ -293,7 +293,7 @@ describe('later files still reach the formative comment', { concurrency: false }
     assert.equal(draft?.pages[0]?.side, 'artwork')
     assert.equal(draft?.aiComment, COMMENT)
     assert.equal(studentVisibleBand(draft!), 'practice-secure')
-    assert.deepEqual(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS), [2.5, 3.5, 1.25, 4.5, 3.5, 2.5])
+    assert.deepEqual(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS), [2.5, 3.5, 1, 4.5, 3.5, 2.5])
   })
 
   it('posts a large ordinary photo and does not guess from the file name', async () => {
@@ -321,7 +321,7 @@ describe('later files still reach the formative comment', { concurrency: false }
     assert.equal(draft?.aiComment, COMMENT)
     assert.equal(draft?.approxBand, 'practice-secure')
     assert.equal(studentVisibleBand(draft!), 'practice-secure')
-    assert.deepEqual(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS), [2.5, 3.5, 1.25, 4.5, 3.5, 2.5])
+    assert.deepEqual(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS), [2.5, 3.5, 1, 4.5, 3.5, 2.5])
     assert.equal(new Set(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS)).size > 1, true)
 
     resetSchoolScoreLaterForTests()

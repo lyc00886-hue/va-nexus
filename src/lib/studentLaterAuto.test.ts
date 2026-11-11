@@ -17,14 +17,14 @@ const COMMENT_NEXT = '樽同缺口杯有前後層次，工作簿試驗頁見到�
 const AXES = {
   'aw-1': 2.5,
   'aw-2': 3.5,
-  'aw-3': 1.25,
+  'aw-3': 1,
   'aw-4': 4.5,
   'aw-5': 3.5,
   'aw-6': 2.5,
   'rwb-1': 3.5,
   'rwb-2': 2.5,
   'rwb-3': 4.5,
-  'rwb-4': 1.25,
+  'rwb-4': 1,
 } as const
 
 type Sent = {
@@ -140,8 +140,8 @@ describe('student later auto request', { concurrency: false }, () => {
     assert.equal(studentVisibleBand(draft), 'practice-secure')
     assert.equal(draft.committedBand, null)
     assert.equal(draft.adjustBand, null)
-    assert.deepEqual(aiReferenceAxes(draft, ARTWORK_AXIS_IDS), [2.5, 3.5, 1.25, 4.5, 3.5, 2.5])
-    assert.deepEqual(aiReferenceAxes(draft, RWB_AXIS_IDS), [3.5, 2.5, 4.5, 1.25])
+    assert.deepEqual(aiReferenceAxes(draft, ARTWORK_AXIS_IDS), [2.5, 3.5, 1, 4.5, 3.5, 2.5])
+    assert.deepEqual(aiReferenceAxes(draft, RWB_AXIS_IDS), [3.5, 2.5, 4.5, 1])
     assert.equal(new Set(aiReferenceAxes(draft, ARTWORK_AXIS_IDS)).size > 1, true)
     assert.equal(JSON.stringify(getDualRadarStore()), dualBefore)
     assert.equal(JSON.stringify(getTeacherDraftStore()), teacherBefore)
@@ -179,7 +179,7 @@ describe('student later auto request', { concurrency: false }, () => {
     assert.equal(draft?.aiComment, COMMENT_NEXT)
     assert.equal(draft?.approxBand, 'practice-developing')
     assert.equal(studentVisibleBand(draft!), 'practice-developing')
-    assert.deepEqual(aiReferenceAxes(draft!, RWB_AXIS_IDS), [3.5, 2.5, 4.5, 1.25])
+    assert.deepEqual(aiReferenceAxes(draft!, RWB_AXIS_IDS), [3.5, 2.5, 4.5, 1])
     assert.notEqual(draft?.approxBand, 'practice-strong')
     assert.equal(apiCalls, 2)
   })
@@ -231,8 +231,11 @@ describe('student later auto request', { concurrency: false }, () => {
     const progress = readFileSync(join(root, 'src/components/LearningProgressRef.tsx'), 'utf8')
     const chart = readFileSync(join(root, 'src/components/AbilityChart.tsx'), 'utf8')
     const quest = readFileSync(join(root, 'src/components/SbaQuest.tsx'), 'utf8')
+    const app = readFileSync(join(root, 'src/App.tsx'), 'utf8')
     assert.match(chart, /<LearningProgressRef/)
-    assert.match(quest, /<AbilityChart/)
+    assert.equal(quest.includes('AbilityChart'), false)
+    assert.match(app, /data-testid="score-portfolio-card"/)
+    assert.match(app, /<AbilityChart/)
     assert.match(progress, /compact \? null : <SchoolScoreLaterStudent/)
     assert.doesNotMatch(student, /useMapOneShell|ux=map1|ux=classic/)
     assert.match(student, /if \(accepted\) void requestLaterComment\(locale, false\)/)

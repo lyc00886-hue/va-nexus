@@ -255,7 +255,14 @@ export async function handleFormativeComment(request: Request): Promise<Response
   }
   const parsed = text ? parseFormativeModelText(text) : null
   if (!parsed) return unavailable(502)
-  return json(200, { ok: true, comment: parsed.comment, band: parsed.band, axes: parsed.axes })
+  return json(200, {
+    ok: true,
+    comment: parsed.comment,
+    band: parsed.band,
+    axes: parsed.axes,
+    score: parsed.score,
+    advice: parsed.advice,
+  })
 }
 
 export default {

@@ -140,9 +140,36 @@ export type FormativePageInput = {
   fileName?: string
 }
 
+export type FormativeAdvice = Partial<Record<(typeof CRITERIA_IDS)[number], string>>
+
 export type FormativeModelResult =
-  | { ok: true; comment: string; band: PracticeBandId; axes: FormativeAxes }
+  | { ok: true; comment: string; band: PracticeBandId; axes: FormativeAxes; score: number; advice: FormativeAdvice }
   | { ok: false; reason: 'unavailable' | 'not_sent' }
+
+/** Visible unofficial later scale. Practice bands stay on 1.25 / 2.5 / 3.5 / 4.5. */
+export const LATER_VISIBLE_LEVELS = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] as const
+
+/**
+ * Snap a new model number onto the nine-level visible scale.
+ * 1.25 is equidistant from 1 and 1.5 and becomes 1.5, so a new result never shows 1.25.
+ */
+export function laterVisibleLevel(value: unknown): number | null {
+  let n: number
+  if (typeof value === 'number') n = value
+  else if (typeof value === 'string' && /^-?\d+(?:\.\d+)?$/.test(value.trim())) n = Number(value.trim())
+  else return null
+  if (!Number.isFinite(n) || n < 1 || n > 5) return null
+  let best: number = LATER_VISIBLE_LEVELS[0]
+  let dist = Number.POSITIVE_INFINITY
+  for (const level of LATER_VISIBLE_LEVELS) {
+    const next = Math.abs(level - n)
+    if (next < dist || (next === dist && level > best)) {
+      dist = next
+      best = level
+    }
+  }
+  return best
+}
 
 function axisLocale(locale: string): 'zh-Hant' | 'zh-Hans' | 'en' {
   if (locale === 'en') return 'en'
@@ -177,12 +204,17 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
     'That standard is school-internal formative reference only. Do not name samples or students. Do not present this as a public-exam result.',
     'Choose one approximate band id: practice-emerging, practice-developing, practice-secure, or practice-strong.',
     'Those ids are the school practice bands 起步 / 發展中 / 穩固 / 良好, with values 1.25 / 2.5 / 3.5 / 4.5. They are unofficial.',
-    'Score each axis separately on that same map. Do not copy one overall band onto every axis.',
-    'Return an axis value only for sides named in the user message. Use only 1.25, 2.5, 3.5, or 4.5.',
+    'The visible unofficial score and every axis value use only 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, or 5.',
+    'Do not use 1.25 as a visible score or axis value. Do not invent a band name for 5.',
+    'Score each axis separately. Do not copy one overall band onto every axis.',
+    'Return an axis value only for sides named in the user message.',
+    'For each artwork axis aw-1 through aw-6, add advice that is specific to this work and that axis.',
+    'Do not reuse one sentence for more than one axis. Omit an axis from advice when you cannot see a specific improvement.',
+    'Do not write a generic tip, a public-exam result, or an official mark.',
     'This is not an SBA remark, not an HKEAA score, and not a public-exam prediction.',
     'Do not write a generic art-criticism essay. Two to four sentences, tied to what is visible on the pages.',
-    `Write the comment in ${language}.`,
-    'Reply with JSON only: {"comment":"...","band":"practice-secure","axes":{"aw-1":2.5,"rwb-1":3.5}}',
+    `Write the comment and the advice in ${language}.`,
+    'Reply with JSON only: {"comment":"...","band":"practice-secure","score":3.5,"axes":{"aw-1":3.5,"rwb-1":2.5},"advice":{"aw-1":"..."}}',
   ].join('\n')
 }
 
@@ -226,9 +258,37 @@ export function bandFromModel(value: unknown): PracticeBandId | null {
 }
 
 export function axisValueFromModel(value: unknown): number | null {
-  const band = bandFromModel(value)
-  if (!band) return null
-  return FORMATIVE_BAND_VALUE[band]
+  return laterVisibleLevel(value)
+}
+
+const ADVICE_PALE = new Set([
+  '暫時未有跟呢條軸、跟呢份作品嘅改進建議。',
+  '暂时未有跟这条轴、跟这份作品的改进建议。',
+  'A tailored improvement note for this axis and this work is not available yet.',
+])
+
+/** Keep a suggestion only when it is specific to one artwork axis. Shared or empty copy is dropped. */
+export function tailoredAxisAdvice(raw: unknown): FormativeAdvice {
+  if (!raw || typeof raw !== 'object') return {}
+  const bag = raw as Record<string, unknown>
+  const rows: { id: (typeof CRITERIA_IDS)[number]; text: string }[] = []
+  for (const id of CRITERIA_IDS) {
+    if (!id.startsWith('aw-')) continue
+    const value = bag[id]
+    if (typeof value !== 'string') continue
+    const text = value.replace(/\s+/g, ' ').trim()
+    if (text.length < 8 || text.length > 400) continue
+    if (BLOCKED_COMMENT.test(text) || ADVICE_PALE.has(text)) continue
+    rows.push({ id, text })
+  }
+  const counts = new Map<string, number>()
+  for (const row of rows) counts.set(row.text, (counts.get(row.text) ?? 0) + 1)
+  const advice: FormativeAdvice = {}
+  for (const row of rows) {
+    if ((counts.get(row.text) ?? 0) !== 1) continue
+    advice[row.id] = row.text
+  }
+  return advice
 }
 
 export function parseFormativeAxes(raw: unknown): FormativeAxes {
@@ -243,7 +303,9 @@ export function parseFormativeAxes(raw: unknown): FormativeAxes {
   return axes
 }
 
-export function parseFormativeModelText(raw: string): { comment: string; band: PracticeBandId; axes: FormativeAxes } | null {
+export function parseFormativeModelText(
+  raw: string,
+): { comment: string; band: PracticeBandId; axes: FormativeAxes; score: number; advice: FormativeAdvice } | null {
   const trimmed = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
   const start = trimmed.indexOf('{')
   const end = trimmed.lastIndexOf('}')
@@ -255,14 +317,16 @@ export function parseFormativeModelText(raw: string): { comment: string; band: P
     return null
   }
   if (!data || typeof data !== 'object') return null
-  const record = data as { comment?: unknown; band?: unknown; axes?: unknown }
+  const record = data as { comment?: unknown; band?: unknown; axes?: unknown; score?: unknown; advice?: unknown }
   if (typeof record.comment !== 'string') return null
   const comment = record.comment.replace(/\s+/g, ' ').trim()
   if (comment.length < 8 || comment.length > 800) return null
   if (BLOCKED_COMMENT.test(comment)) return null
   const band = bandFromModel(record.band)
   if (!band) return null
-  return { comment, band, axes: parseFormativeAxes(record.axes) }
+  const score = laterVisibleLevel(record.score) ?? laterVisibleLevel(FORMATIVE_BAND_VALUE[band])
+  if (score == null) return null
+  return { comment, band, axes: parseFormativeAxes(record.axes), score, advice: tailoredAxisAdvice(record.advice) }
 }
 
 async function packFormativePages(input: {
@@ -360,11 +424,33 @@ export async function postFormativeComment(input: {
     if (res.status === 413) return { ok: false, reason: 'not_sent' }
     const data: unknown = await res.json().catch(() => null)
     if (!res.ok || !data || typeof data !== 'object') return { ok: false, reason: 'unavailable' }
-    const record = data as { ok?: unknown; comment?: unknown; band?: unknown; axes?: unknown }
+    const record = data as {
+      ok?: unknown
+      comment?: unknown
+      band?: unknown
+      axes?: unknown
+      score?: unknown
+      advice?: unknown
+    }
     if (record.ok !== true) return { ok: false, reason: 'unavailable' }
-    const parsed = parseFormativeModelText(JSON.stringify({ comment: record.comment, band: record.band, axes: record.axes }))
+    const parsed = parseFormativeModelText(
+      JSON.stringify({
+        comment: record.comment,
+        band: record.band,
+        axes: record.axes,
+        score: record.score,
+        advice: record.advice,
+      }),
+    )
     if (!parsed) return { ok: false, reason: 'unavailable' }
-    return { ok: true, comment: parsed.comment, band: parsed.band, axes: parsed.axes }
+    return {
+      ok: true,
+      comment: parsed.comment,
+      band: parsed.band,
+      axes: parsed.axes,
+      score: parsed.score,
+      advice: parsed.advice,
+    }
   } catch {
     return { ok: false, reason: 'unavailable' }
   }

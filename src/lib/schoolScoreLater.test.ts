@@ -136,15 +136,15 @@ describe('school score later locale', () => {
     )
     assert.equal(
       hant['score.later.radarPending'],
-      '未有按各軸分開計嘅模型參考，暫時唔畫雷達，避免每條軸都同一分數。',
+      '未有按呢幅作品各軸分開計嘅模型參考，暫時唔畫呢幅作品雷達，避免每條軸都同一分數。',
     )
     assert.equal(
       hans['score.later.radarPending'],
-      '未有按各轴分开计的模型参考，暂时不画雷达，避免每条轴都同一分数。',
+      '未有按这幅作品各轴分开计的模型参考，暂时不画这幅作品雷达，避免每条轴都同一分数。',
     )
     assert.equal(
       en['score.later.radarPending'],
-      'Per-axis model reference is not available yet, so the radar is not drawn. This avoids painting the same score on every axis.',
+      'Per-axis model reference for this artwork is not available yet, so this artwork radar is not drawn. This avoids painting the same score on every axis.',
     )
   })
 })
@@ -254,8 +254,10 @@ describe('school score later chrome', () => {
     assert.match(student, /score\.later\.aiRadar/)
     assert.match(student, /score\.later\.disclaimer/)
     assert.match(student, /aiReferenceFormative/)
-    assert.match(student, /aiReferenceAxes/)
+    assert.match(student, /laterRadarView/)
     assert.match(student, /score\.later\.radarPending/)
+    assert.match(student, /score\.later\.removeFile/)
+    assert.match(student, /score\.later\.replaceFile/)
     assert.doesNotMatch(student, /chart\.axes\.map\(\(\) => formative\)/)
     assert.match(student, /axisLabelKey/)
     assert.match(student, /chart\.id === 'artwork'/)
@@ -349,18 +351,18 @@ describe('student instant approximate band', () => {
       axes: {
         'aw-1': 2.5,
         'aw-2': 3.5,
-        'aw-3': 1.25,
+        'aw-3': 1,
         'aw-4': 4.5,
         'aw-5': 3.5,
         'aw-6': 2.5,
         'rwb-1': 3.5,
         'rwb-2': 2.5,
         'rwb-3': 4.5,
-        'rwb-4': 1.25,
+        'rwb-4': 1,
       },
     })
-    assert.deepEqual(aiReferenceAxes(model, ARTWORK_AXIS_IDS), [2.5, 3.5, 1.25, 4.5, 3.5, 2.5])
-    assert.deepEqual(aiReferenceAxes(model, RWB_AXIS_IDS), [3.5, 2.5, 4.5, 1.25])
+    assert.deepEqual(aiReferenceAxes(model, ARTWORK_AXIS_IDS), [2.5, 3.5, 1, 4.5, 3.5, 2.5])
+    assert.deepEqual(aiReferenceAxes(model, RWB_AXIS_IDS), [3.5, 2.5, 4.5, 1])
     assert.equal(new Set(aiReferenceAxes(model, ARTWORK_AXIS_IDS)).size > 1, true)
     assert.equal(new Set(aiReferenceAxes(model, RWB_AXIS_IDS)).size > 1, true)
     const artworkOnly = applyModelComment(withUploadedFile(null, '作品頁 1.jpg', 1000, 'image/jpeg'), {
@@ -369,18 +371,18 @@ describe('student instant approximate band', () => {
       axes: {
         'aw-1': 2.5,
         'aw-2': 3.5,
-        'aw-3': 1.25,
+        'aw-3': 1,
         'aw-4': 4.5,
         'aw-5': 3.5,
         'aw-6': 2.5,
         'rwb-1': 3.5,
         'rwb-2': 2.5,
         'rwb-3': 4.5,
-        'rwb-4': 1.25,
+        'rwb-4': 1,
       },
     })
     assert.equal(aiReferenceAxes(artworkOnly, RWB_AXIS_IDS), null)
-    assert.deepEqual(aiReferenceAxes(artworkOnly, ARTWORK_AXIS_IDS), [2.5, 3.5, 1.25, 4.5, 3.5, 2.5])
+    assert.deepEqual(aiReferenceAxes(artworkOnly, ARTWORK_AXIS_IDS), [2.5, 3.5, 1, 4.5, 3.5, 2.5])
     const snapped = sanitizeLaterStore({
       version: 1,
       draft: {

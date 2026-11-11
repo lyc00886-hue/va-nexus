@@ -1,4 +1,5 @@
 import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { AbilityChart } from './components/AbilityChart'
 import { ArtistCompare } from './components/ArtistCompare'
 import { CommitmentFooter } from './components/CommitmentBadges'
 import { FocusTunnel } from './components/FocusTunnel'
@@ -100,6 +101,16 @@ export default function App() {
                       {t('score.v1.studentSurface')}
                     </button>
                   </div>
+                  <section
+                    data-testid="score-portfolio-card"
+                    aria-labelledby="score-portfolio-card-title"
+                    className="overflow-hidden rounded-3xl border border-[#0D9488]/35 bg-[#FFF9E9] shadow-sm"
+                  >
+                    <h2 id="score-portfolio-card-title" className="px-4 pt-4 text-xl font-bold text-[#0D9488] sm:px-5">
+                      {t('tab.staff')}
+                    </h2>
+                    <AbilityChart />
+                  </section>
                   <SbaQuest />
                 </div>
               )}
