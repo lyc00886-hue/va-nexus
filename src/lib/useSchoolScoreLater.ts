@@ -6,6 +6,7 @@ import {
   applyAiFallback,
   applyFileNotSent,
   applyModelComment,
+  draftFromFile,
   emptyLaterStore,
   isLaterUploadFile,
   laterFeed,
@@ -164,6 +165,88 @@ async function readPreviewBytes(previewUrl: string | null): Promise<Uint8Array |
 
 let inflightKey: string | null = null
 
+function requestKey(draft: LaterDraft): string {
+  const pages = draft.pages
+    .map((page) => `${page.side}\u0000${page.fileName}\u0000${page.fileSize}`)
+    .sort()
+    .join('\n')
+  return `${draft.fileName}\u0000${draft.fileSize}\u0000${pages}`
+}
+
+function revokeUrl(url: string | null | undefined) {
+  if (!url || typeof URL === 'undefined' || typeof URL.revokeObjectURL !== 'function') return
+  URL.revokeObjectURL(url)
+}
+
+function dropPreviews(name: string): LaterPagePreview[] {
+  const kept: LaterPagePreview[] = []
+  for (const preview of snapshot.pagePreviews) {
+    if (preview.fileName === name) revokeUrl(preview.url)
+    else kept.push(preview)
+  }
+  return kept
+}
+
+function draftFromRemaining(pages: LaterDraft['pages']): LaterDraft | null {
+  if (pages.length === 0) return null
+  const head = pages[pages.length - 1]
+  const earlier = pages.slice(0, -1)
+  const base = earlier.length
+    ? { ...draftFromFile(earlier[0].fileName, earlier[0].fileSize, earlier[0].mime), pages: earlier }
+    : null
+  return withUploadedFile(base, head.fileName, head.fileSize, head.mime)
+}
+
+/** Take one later file off the list and clear unofficial results mixed with it. */
+export function removeLaterFile(fileName: string): boolean {
+  const draft = snapshot.draft
+  if (!draft) return false
+  const name = trimmedUploadName(fileName)
+  if (!draft.pages.some((page) => page.fileName === name) && draft.fileName !== name) return false
+  const pages = draft.pages.filter((page) => page.fileName !== name)
+  const previews = dropPreviews(name)
+  const next = draftFromRemaining(pages)
+  if (!next) {
+    for (const preview of previews) revokeUrl(preview.url)
+    revokeUrl(snapshot.previewUrl)
+    publish(null, null, [])
+    return true
+  }
+  const previewUrl = previews.length > 0 ? previews[previews.length - 1].url : null
+  if (snapshot.previewUrl && snapshot.previewUrl !== previewUrl) revokeUrl(snapshot.previewUrl)
+  publish(next, previewUrl, previews)
+  return true
+}
+
+/** Replace one later file, clear the old unofficial result, and leave a draft ready to request again. */
+export function replaceLaterFile(fileName: string, file: File): boolean {
+  if (!isLaterUploadFile(file)) return false
+  const draft = snapshot.draft
+  if (!draft) return false
+  const name = trimmedUploadName(fileName)
+  if (!draft.pages.some((page) => page.fileName === name) && draft.fileName !== name) return false
+  const pages = draft.pages.filter((page) => page.fileName !== name)
+  const base = pages.length
+    ? { ...draftFromFile(pages[0].fileName, pages[0].fileSize, pages[0].mime), pages }
+    : null
+  const next = withUploadedFile(base, file.name, file.size, file.type)
+  let previews = dropPreviews(name)
+  const fileLabel = trimmedUploadName(file.name)
+  const side = laterPageSide(fileLabel)
+  let previewUrl = snapshot.previewUrl
+  if (side && typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function') {
+    const url = URL.createObjectURL(file)
+    const prev = previews.find((item) => item.side === side && item.fileName === fileLabel)
+    if (prev && prev.url !== url) revokeUrl(prev.url)
+    previews = previews.filter((item) => !(item.side === side && item.fileName === fileLabel))
+    previews.push({ side, fileName: fileLabel, url, mime: file.type })
+    if (snapshot.previewUrl && snapshot.previewUrl !== url) revokeUrl(snapshot.previewUrl)
+    previewUrl = url
+  }
+  publish(next, previewUrl, previews)
+  return true
+}
+
 /** Clears the in-memory later snapshot. Tests only. */
 export function resetSchoolScoreLaterForTests(): void {
   inflightKey = null
@@ -185,13 +268,11 @@ export async function requestLaterComment(
   void staff
   const draft = snapshot.draft
   if (!draft) return 'idle'
-  const fileName = draft.fileName
-  const fileSize = draft.fileSize
-  const key = `${fileName}\0${fileSize}`
+  const key = requestKey(draft)
   if (inflightKey === key) return 'idle'
   inflightKey = key
   try {
-    return await runLaterComment(locale, fileName, fileSize)
+    return await runLaterComment(locale, key)
   } finally {
     if (inflightKey === key) inflightKey = null
   }
@@ -199,18 +280,17 @@ export async function requestLaterComment(
 
 async function runLaterComment(
   locale: string,
-  fileName: string,
-  fileSize: number,
+  key: string,
 ): Promise<'idle' | 'model' | 'fallback' | 'unsent'> {
   const draft = snapshot.draft
-  if (!draft || draft.fileName !== fileName || draft.fileSize !== fileSize) return 'idle'
+  if (!draft || requestKey(draft) !== key) return 'idle'
+  const fileName = draft.fileName
   const previewUrl = snapshot.previewUrl
   const previews = snapshot.pagePreviews
-  const latest = new Map<LaterPageSide, (typeof draft.pages)[number]>()
-  for (const page of draft.pages) latest.set(page.side, page)
+  const selected = draft.pages.slice(0, 4)
   const [loaded, accessToken] = await Promise.all([
     Promise.all(
-      [...latest.values()].map(async (page) => {
+      selected.map(async (page) => {
         const preview = previews.find((item) => item.side === page.side && item.fileName === page.fileName)
         const bytes = await readPreviewBytes(preview?.url ?? null)
         return { page, preview, bytes }
@@ -237,7 +317,7 @@ async function runLaterComment(
         ? [{ side, mime: draft.mime, bytes: fallbackBytes, fileName }]
         : []
   const currentBefore = snapshot.draft
-  if (!currentBefore || currentBefore.fileName !== fileName || currentBefore.fileSize !== fileSize) return 'idle'
+  if (!currentBefore || requestKey(currentBefore) !== key) return 'idle'
   if (pages.length === 0) {
     if (!side) {
       publish(applyAiFallback(currentBefore))
@@ -255,7 +335,7 @@ async function runLaterComment(
     accessToken,
   })
   const current = snapshot.draft
-  if (!current || current.fileName !== fileName || current.fileSize !== fileSize) return 'idle'
+  if (!current || requestKey(current) !== key) return 'idle'
   if (!result.ok && result.reason === 'not_sent') {
     publish(applyFileNotSent(current))
     return 'unsent'

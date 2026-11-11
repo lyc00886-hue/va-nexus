@@ -147,7 +147,9 @@ describe('score fold wire', () => {
     const invented = /AI 大概參考帶／評語／雷達|AI 大概参考带／评语／雷达/
 
     assert.match(chart, /<LearningProgressRef/)
-    assert.match(quest, /<AbilityChart/)
+    assert.equal(quest.includes('AbilityChart'), false)
+    assert.match(app, /data-testid="score-portfolio-card"/)
+    assert.match(app, /<AbilityChart/)
     assert.match(progress, /data-testid="score-student"/)
     assert.match(progress, /testId="score-fold-now"/)
     assert.match(progress, /score\.v1\.now/)

@@ -66,19 +66,19 @@ const KEPT = {
     'score.later.stubNote':
       'Approximate reference, pending teacher confirm. If the model cannot produce a band or comments from the work, a visible score is not guessed from the file name or size. You can try again later.',
     'score.later.radarPending':
-      'Per-axis model reference is not available yet, so the radar is not drawn. This avoids painting the same score on every axis.',
+      'Per-axis model reference for this artwork is not available yet, so this artwork radar is not drawn. This avoids painting the same score on every axis.',
   },
   'zh-Hant': {
     'score.later.disclaimer': '非公開試／非 HKEAA 正式分數。AI 大概分只供校內討論；以教師調分後為準。',
     'score.later.stubNote':
       '大概參考 · 待教師確認。模型未能按作品計出大概帶或評語時，唔會用檔名或檔案大小估一條可見分數。你可以稍後再試。',
-    'score.later.radarPending': '未有按各軸分開計嘅模型參考，暫時唔畫雷達，避免每條軸都同一分數。',
+    'score.later.radarPending': '未有按呢幅作品各軸分開計嘅模型參考，暫時唔畫呢幅作品雷達，避免每條軸都同一分數。',
   },
   'zh-Hans': {
     'score.later.disclaimer': '非公开试／非 HKEAA 正式分数。AI 大概分只供校内讨论；以教师调分后为准。',
     'score.later.stubNote':
       '大概参考 · 待教师确认。模型未能按作品计出大概带或评语时，不会用档名或档案大小估一条可见分数。你可以稍后再试。',
-    'score.later.radarPending': '未有按各轴分开计的模型参考，暂时不画雷达，避免每条轴都同一分数。',
+    'score.later.radarPending': '未有按这幅作品各轴分开计的模型参考，暂时不画这幅作品雷达，避免每条轴都同一分数。',
   },
 } as const
 
@@ -188,8 +188,11 @@ describe('formative AI comment axes', () => {
     assert.equal(bandFromModel('良好'), 'practice-strong')
     assert.equal(bandFromModel('1.25'), 'practice-emerging')
     assert.equal(bandFromModel('1.2'), 'practice-emerging')
-    assert.equal(axisValueFromModel('1.2'), 1.25)
+    assert.equal(axisValueFromModel('1.2'), 1)
+    assert.equal(axisValueFromModel(1.25), 1.5)
     assert.equal(axisValueFromModel(2.5), 2.5)
+    assert.equal(axisValueFromModel(5), 5)
+    assert.notEqual(axisValueFromModel(1.25), 1.25)
     assert.equal(bandFromModel('5**'), null)
   })
 })

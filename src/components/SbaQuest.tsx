@@ -18,7 +18,6 @@ import {
   X,
 } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { AbilityChart } from './AbilityChart'
 import { SbaAiFeedback } from './SbaAiFeedback'
 import { PortfolioAccordion } from './PortfolioAccordion'
 import { SbaArtworkSlotSwitcher } from './SbaArtworkSlotSwitcher'
@@ -916,7 +915,6 @@ export function SbaQuest() {
                 {guidePanel}
               </section>
             )}
-            <AbilityChart />
           </div>
         }
       />

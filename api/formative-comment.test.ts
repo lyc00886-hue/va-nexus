@@ -138,7 +138,14 @@ describe('formative comment route', { concurrency: false }, () => {
       request({ mime: 'image/png', imageBase64: PNG, locale: 'zh-Hant' }),
     )
     assert.equal(ok.status, 200)
-    assert.deepEqual(await ok.json(), { ok: true, comment: COMMENT, band: 'practice-secure', axes: {} })
+    assert.deepEqual(await ok.json(), {
+      ok: true,
+      comment: COMMENT,
+      band: 'practice-secure',
+      axes: {},
+      score: 3.5,
+      advice: {},
+    })
     assert.match(seen[0].system, /主題或意念的探索及發展/)
     assert.match(seen[0].system, /反思及學習進程/)
     assert.match(seen[0].system, /school-score v1/)
@@ -161,7 +168,7 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.deepEqual((await perAxis.json()).axes, {
       'aw-1': 2.5,
       'aw-2': 3.5,
-      'aw-3': 1.25,
+      'aw-3': 1,
       'aw-4': 4.5,
       'aw-5': 3.5,
       'aw-6': 2.5,
