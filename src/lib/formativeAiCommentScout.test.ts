@@ -195,7 +195,7 @@ describe('formative AI comment axes', () => {
 })
 
 describe('formative AI comment trigger', () => {
-  it('keeps the request on the staff surface and leaves the student read-only', () => {
+  it('starts the informal request from a student upload and keeps the staff button', () => {
     const staff = read('src/components/SchoolScoreLaterStaff.tsx')
     const student = read('src/components/SchoolScoreLaterStudent.tsx')
     const hook = read('src/lib/useSchoolScoreLater.ts')
@@ -209,12 +209,15 @@ describe('formative AI comment trigger', () => {
     assert.match(staff, /useStaffRole/)
     assert.equal(staff.includes('主題清晰度'), false)
     assert.equal(student.includes('requestAi'), false)
-    assert.equal(student.includes('requestLaterComment'), false)
+    assert.equal(student.includes('score-later-request-ai'), false)
+    assert.match(student, /const accepted = acceptLaterFiles\(files\)/)
+    assert.match(student, /if \(accepted\) void requestLaterComment\(locale, false\)/)
     assert.equal(student.includes('postFormativeComment'), false)
     assert.match(student, /data-readonly="true"/)
     assert.match(student, /disabled/)
     assert.doesNotMatch(student, />\s*score\.later\./)
-    assert.match(request, /if \(!staff\) return 'idle'/)
+    assert.doesNotMatch(request, /if \(!staff\) return 'idle'/)
+    assert.match(request, /postFormativeComment/)
     assert.equal(request.includes('saveTeacherDraft'), false)
     assert.equal(request.includes('saveDualAxis'), false)
     assert.equal(request.includes('laterFeed'), false)

@@ -5,7 +5,7 @@ import {
   sanitizeDualRadarStore,
   withDualAxis,
   type DualRadarStore,
-} from './schoolScoreDual'
+} from './schoolScoreDual.ts'
 
 function load(): DualRadarStore {
   if (typeof localStorage === 'undefined') return emptyDualRadarStore()
