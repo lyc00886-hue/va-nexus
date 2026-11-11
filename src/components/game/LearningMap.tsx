@@ -34,6 +34,8 @@ import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
 import { softShellFromSearch, type SoftShell } from '../../lib/softAtlas'
 import { InspectMapEntry } from '../InspectMapEntry'
+import { CropAskEntry } from '../CropAskEntry'
+import { currentUnitFace } from '../../lib/cropAsk'
 import { ClassicGrades } from './ClassicGrades'
 import { F4YearList } from './F4YearList'
 import { MapPath } from './MapPath'
@@ -224,6 +226,15 @@ export function LearningMap() {
   }
 
   const domain: 'history' | 'media' = track === 'media' ? 'media' : 'history'
+  const cropUnits = grade === 'f5' ? getF5Units() : grade === 'f6' ? getF6Units() : f4All
+  const cropOpenId =
+    grade === 'f5' || grade === 'f6'
+      ? null
+      : f4Current
+        ? (cropUnits.find((unit) => unit.nodes.some((node) => node.id === f4Current.id))?.id ?? null)
+        : null
+  const cropUnit = currentUnitFace(cropUnits, cropOpenId)
+  const cropGrade = grade === 'f5' || grade === 'f6' ? grade : 'f4'
   const historyForGrade = historyUnitsFor(historyUnits, 'all', grade)
   const historyShown = grade === 'f4' ? f4Units : historyForGrade
   const historyNodes = historyShown.flatMap((unit) => unit.nodes)
@@ -249,6 +260,8 @@ export function LearningMap() {
           {t('map.track.media')}
         </TrackTab>
       </div>
+
+      {cropUnit ? <CropAskEntry mode="classic" grade={cropGrade} unit={cropUnit} /> : null}
 
       {domain === 'history' ? (
         grade === 'f4' ? (
