@@ -150,6 +150,8 @@
   "ac.filter.region.west": "西方／国际",
   "ac.filter.region.mingqing": "明清",
   "map.f4.subtitle": "中四视艺单元。短课卡，然后小测。不是全年课程。",
+  "map.f5.subtitle": "中五视艺单元。短课卡，然后小测。不声称全日历每一周完整课。",
+  "map.f6.subtitle": "中六视艺单元。短课卡，然后小测。不声称全日历每一周完整课。",
   "qtype.chip.dualRead": "双图对读",
   "map.media.pendingNote": "这个媒介的课文还没到，暂时不能开始。",
   "map.media.kit": "材料与安全",

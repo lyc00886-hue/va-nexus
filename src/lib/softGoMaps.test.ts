@@ -139,7 +139,7 @@ describe('scope maps', () => {
     { id: 'U4-CN-CONTEMP' },
   ]
 
-  it('filters tracks and lets Form 5 and Form 6 enter hung units', () => {
+  it('filters tracks and keeps Form 5 and Form 6 off the art-history hang', () => {
     assert.equal(softGoTrackFromSearch('?ux=map1'), 'islands')
     assert.equal(softGoTrackFromSearch('?track=history-cn'), 'history-cn')
     assert.equal(softGoTrackFromSearch('?track=media'), 'media')
@@ -167,18 +167,26 @@ describe('scope maps', () => {
       { id: 'U7-SELF-HERITAGE' },
       { id: 'U11-EXHIBIT-REVIEW' },
     ]
-    assert.deepEqual(
-      historyUnitsFor(hung, 'all', 'f5').map((unit) => unit.id),
-      ['U6-MQ-WUMEN'],
-    )
-    assert.deepEqual(
-      historyUnitsFor(hung, 'cn', 'f6').map((unit) => unit.id),
-      ['U7-SELF-HERITAGE'],
-    )
+    assert.deepEqual(historyUnitsFor(hung, 'all', 'f5'), [])
+    assert.deepEqual(historyUnitsFor(hung, 'cn', 'f6'), [])
     assert.deepEqual(historyUnitsFor(hung, 'west', 'f5'), [])
-    assert.deepEqual(historyUnitsFor(hung, 'all', 'f6').map((unit) => unit.id), ['U7-SELF-HERITAGE'])
+    assert.deepEqual(historyUnitsFor(hung, 'all', 'f6'), [])
     assert.equal(yearUnitsFor(sample, 'f4').length, sample.length)
     assert.deepEqual(yearUnitsFor(sample, 'f5'), [])
+    assert.deepEqual(
+      yearUnitsFor(
+        ['F5-U1-ORIENT', 'F6-U1-ORIENT', 'U6-MQ-WUMEN'].map((id) => ({ id })),
+        'f5',
+      ).map((unit) => unit.id),
+      ['F5-U1-ORIENT'],
+    )
+    assert.deepEqual(
+      yearUnitsFor(
+        ['F5-U7-PORTFOLIO', 'F6-U6-PORTFOLIO'].map((id) => ({ id })),
+        'f6',
+      ).map((unit) => unit.id),
+      ['F6-U6-PORTFOLIO'],
+    )
     const query = withSoftGoQuery('?ux=map1', 'f4', 'f4')
     const params = new URLSearchParams(query.slice(1))
     assert.equal(params.get('ux'), 'map1')

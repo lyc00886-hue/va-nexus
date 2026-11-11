@@ -1,0 +1,411 @@
+{
+  "f5": [
+    {
+      "id": "F5-U1-ORIENT",
+      "title": {
+        "hk": "中五視藝起步：公開試結構同視覺日記",
+        "hans": "中五视艺起步：公开试结构与视觉日记",
+        "en": "Form 5 VA start: public-exam structure and visual diary"
+      },
+      "intro": {
+        "hk": "呢個單元帶你開始中五視藝。你會複習兩條學習線（評賞同創作），認識公開試兩卷嘅結構分別，亦會繼續每週視覺日記。課堂只講結構同方法，唔會用真實考評局試卷或高分學生示例。",
+        "hans": "这个单元带你开始中五视艺。你会复习两条学习线（评赏与创作），认识公开试两卷的结构分别，也会继续每周视觉日记。课堂只讲结构与方法，不会用真实考评局试卷或高分学生示例。",
+        "en": "This unit starts Form 5 visual arts. You will revisit the two learning strands (appreciation and making), learn how the two public-exam papers are structured, and continue a weekly visual diary. Lessons teach structure and method only. They do not use real public exam papers or high-score student exemplars."
+      },
+      "lessons": [
+        {
+          "id": "F5-U1-L1",
+          "hk": "中五起步：課程複習同公開試兩卷結構",
+          "hans": "中五起步：课程复习与公开试两卷结构",
+          "en": "Form 5 start: course review and the two public-exam papers"
+        },
+        {
+          "id": "F5-U1-L2",
+          "hk": "每週視覺日記：研究同記錄",
+          "hans": "每周视觉日记：研究与记录",
+          "en": "Weekly visual diary: research and record"
+        }
+      ]
+    },
+    {
+      "id": "F5-U2-AESTHETIC",
+      "title": {
+        "hk": "咩係美感：中西美學同宋元藝術入門",
+        "hans": "什么是美感：中西美学与宋元艺术入门",
+        "en": "What is aesthetic: Chinese and Western views, plus Song–Yuan art intro"
+      },
+      "intro": {
+        "hk": "呢個單元問「美」喺中國同西方社會可以點理解，再用精簡時間線入門宋元藝術。練習睇形式、功能同文化語境。呢度只係入門，唔會由頭教晒每種技法。課堂唔會用真實試卷。",
+        "hans": "这个单元问「美」在中国与西方社会可以怎样理解，再用精简时间线入门宋元艺术。练习看形式、功能与文化语境。这里只是入门，不会把每项技法从头练起。课堂不会用真实试卷。",
+        "en": "This unit asks how beauty can be understood in Chinese and Western societies, then uses a compact timeline to introduce Song–Yuan art. Practise looking at form, function and cultural context. This is an introduction only, not a complete technique course. Lessons do not use real exam papers."
+      },
+      "lessons": [
+        {
+          "id": "F5-U2-L1",
+          "hk": "咩係美感：中西社會點樣睇美",
+          "hans": "什么是美感：中西社会怎样看美",
+          "en": "What is aesthetic: how Chinese and Western societies see beauty"
+        },
+        {
+          "id": "F5-U2-L2",
+          "hk": "宋元藝術入門",
+          "hans": "宋元艺术入门",
+          "en": "An introduction to Song–Yuan art"
+        }
+      ]
+    },
+    {
+      "id": "F5-U3-HERITAGE",
+      "title": {
+        "hk": "自我、傳統同社會",
+        "hans": "自我、传统与社会",
+        "en": "Self, heritage and society"
+      },
+      "intro": {
+        "hk": "呢個單元由「傳統同社會點影響日常生活」出發，練習用視覺日記搜集材料、發展主題，並用水墨同混合媒介試作。你會對讀奇石圖像同超現實／立體主義嘅方法，而唔係抄畫面。訪問、觀察同收集都係課室做法。課堂唔放高分示例。",
+        "hans": "这个单元由「传统与社会怎样影响日常生活」出发，练习用视觉日记搜集材料、发展主题，并用水墨与混合媒介试作。你会对读奇石图像与超现实／立体主义的方法，而不是抄画面。访问、观察与收集都是课室做法。课堂不放高分示例。",
+        "en": "This unit starts from how tradition and society shape everyday life. Practise gathering material in a visual journal, developing a theme, and testing ideas in ink and mixed media. You will compare methods in strange-stone images with Surrealism and Cubism, rather than copying a picture. Interviews, observation and collecting stay as classroom practice. Lessons do not use high-score exemplars."
+      },
+      "lessons": [
+        {
+          "id": "F5-U3-L1",
+          "hk": "傳統同社會點影響日常生活",
+          "hans": "传统与社会怎样影响日常生活",
+          "en": "How tradition and society shape everyday life"
+        },
+        {
+          "id": "F5-U3-L2",
+          "hk": "奇石對讀：吳彬同超現實／立體主義",
+          "hans": "奇石对读：吴彬与超现实／立体主义",
+          "en": "Strange stones in dialogue: Wu Bin with Surrealism and Cubism"
+        },
+        {
+          "id": "F5-U3-L3",
+          "hk": "視覺日記：點樣搜集同發展主題",
+          "hans": "视觉日记：怎样搜集与发展主题",
+          "en": "Visual journal: how to gather material and develop a theme"
+        },
+        {
+          "id": "F5-U3-L4",
+          "hk": "水墨試驗同作品集第一件作品",
+          "hans": "水墨试验与作品集第一件作品",
+          "en": "Ink experiments and the first portfolio piece"
+        }
+      ]
+    },
+    {
+      "id": "F5-U4-SYMBOL",
+      "title": {
+        "hk": "傳統符號、色彩同紋樣",
+        "hans": "传统符号、色彩与纹样",
+        "en": "Traditional symbols, colour and pattern"
+      },
+      "intro": {
+        "hk": "呢個單元認識傳統色彩、紋樣同繪畫入面嘅符號，再延伸宋元藝術觀察。練習描述你見到嘅形式同可能嘅象徵意思。全部喺課室完成。",
+        "hans": "这个单元认识传统色彩、纹样与绘画里面的符号，再延伸宋元艺术观察。练习描述你见到的形式与可能的象征意思。全部在课室完成。",
+        "en": "This unit looks at signs and symbols in traditional colour, pattern and painting, then continues Song–Yuan observation. Practise describing the forms you see and the meanings they might carry. All of it happens in class."
+      },
+      "lessons": [
+        {
+          "id": "F5-U4-L1",
+          "hk": "傳統色、紋同畫入面嘅符號",
+          "hans": "传统色、纹与画里面的符号",
+          "en": "Signs and symbols in traditional colour, pattern and painting"
+        },
+        {
+          "id": "F5-U4-L2",
+          "hk": "宋元藝術延伸",
+          "hans": "宋元艺术延伸",
+          "en": "Song–Yuan art, continued"
+        }
+      ]
+    },
+    {
+      "id": "F5-U5-ROLE",
+      "title": {
+        "hk": "角色代入：喺中國語境再呈現一個人",
+        "hans": "角色代入：在中国语境再呈现一个人",
+        "en": "Role-taking: re-presenting a person in a Chinese context"
+      },
+      "intro": {
+        "hk": "呢個單元練習角色代入：點樣喺中國語境再呈現一個人。你會試乾濕媒介，並用研究同創作結構去發展作品集嘅第二件作品。課堂唔放高分學生示例。",
+        "hans": "这个单元练习角色代入：怎样在中国语境再呈现一个人。你会试干湿媒介，并用研究与创作结构去发展作品集的第二件作品。课堂不放高分学生示例。",
+        "en": "This unit practises role-taking: how to re-present a person in a Chinese context. You will try wet and dry media, and use research and making structures to develop the second portfolio piece. Lessons do not use high-score student exemplars."
+      },
+      "lessons": [
+        {
+          "id": "F5-U5-L1",
+          "hk": "角色同身份：點樣再呈現一個人",
+          "hans": "角色与身份：怎样再呈现一个人",
+          "en": "Role and identity: how to re-present a person"
+        },
+        {
+          "id": "F5-U5-L2",
+          "hk": "乾濕媒介試驗",
+          "hans": "干湿媒介试验",
+          "en": "Wet and dry media experiments"
+        },
+        {
+          "id": "F5-U5-L3",
+          "hk": "宋元藝術同作品集第二件作品",
+          "hans": "宋元艺术与作品集第二件作品",
+          "en": "Song–Yuan art and the second portfolio piece"
+        }
+      ]
+    },
+    {
+      "id": "F5-U6-CONTEMP",
+      "title": {
+        "hk": "當代中國同創新傳承",
+        "hans": "当代中国与创新传承",
+        "en": "Contemporary China and innovative heritage"
+      },
+      "intro": {
+        "hk": "呢個單元認識徐冰同當代中國書法潮流，以及全球當代藝術嘅入門對讀，再做創新傳承練習：立體拼貼同裝置。全部喺課室完成。亦會收束宋元藝術觀察。",
+        "hans": "这个单元认识徐冰与当代中国书法潮流，以及全球当代艺术的入门对读，再做创新传承练习：立体拼贴与装置。全部在课室完成。也会收束宋元艺术观察。",
+        "en": "This unit introduces Xu Bing and contemporary Chinese calligraphy, plus a first look at global contemporary art, then practises innovative heritage through three-dimensional collage and installation. All of it happens in class. It also closes the Song–Yuan observation thread."
+      },
+      "lessons": [
+        {
+          "id": "F5-U6-L1",
+          "hk": "徐冰同當代中國書法潮流",
+          "hans": "徐冰与当代中国书法潮流",
+          "en": "Xu Bing and contemporary Chinese calligraphy"
+        },
+        {
+          "id": "F5-U6-L2",
+          "hk": "全球當代藝術入門",
+          "hans": "全球当代艺术入门",
+          "en": "An introduction to global contemporary art"
+        },
+        {
+          "id": "F5-U6-L3",
+          "hk": "創新傳承：立體拼貼同裝置",
+          "hans": "创新传承：立体拼贴与装置",
+          "en": "Innovative heritage: three-dimensional collage and installation"
+        },
+        {
+          "id": "F5-U6-L4",
+          "hk": "宋元藝術收束",
+          "hans": "宋元艺术收束",
+          "en": "Song–Yuan art, closing look"
+        }
+      ]
+    },
+    {
+      "id": "F5-U7-PORTFOLIO",
+      "title": {
+        "hk": "作品集自評同全年回顧",
+        "hans": "作品集自评与全年回顾",
+        "en": "Portfolio review and year reflection"
+      },
+      "intro": {
+        "hk": "呢個單元練習回顧自己一年嘅學習：邊度做得好、邊度仲可以改進，同點樣寫一段作品集總覽。唔用真實試卷或高分示例。",
+        "hans": "这个单元练习回顾自己一年的学习：哪里做得好、哪里还可以改进，以及怎样写一段作品集总览。不用真实试卷或高分示例。",
+        "en": "This unit practises reviewing a year of learning: what went well, what can improve, and how to write a short portfolio overview. Lessons do not use real exam papers or high-score exemplars."
+      },
+      "lessons": [
+        {
+          "id": "F5-U7-L1",
+          "hk": "點樣回顧自己嘅強項同下一步",
+          "hans": "怎样回顾自己的强项与下一步",
+          "en": "How to review your strengths and next steps"
+        },
+        {
+          "id": "F5-U7-L2",
+          "hk": "作品集總覽寫作結構",
+          "hans": "作品集总览写作结构",
+          "en": "Structure for a portfolio overview"
+        }
+      ]
+    }
+  ],
+  "f6": [
+    {
+      "id": "F6-U1-ORIENT",
+      "title": {
+        "hk": "中六視藝起步：視覺日記同作品集整理",
+        "hans": "中六视艺起步：视觉日记与作品集整理",
+        "en": "Form 6 VA start: visual diary and portfolio organisation"
+      },
+      "intro": {
+        "hk": "呢個單元帶你開始中六視藝。你會繼續每週視覺日記，並用結構去檢查同整理作品集。課堂只講方法，唔會把學校行政程序或學年日程寫上學生面。",
+        "hans": "这个单元带你开始中六视艺。你会继续每周视觉日记，并用结构去检查与整理作品集。课堂只讲方法，不会把学校行政程序或学年日程写上学生面。",
+        "en": "This unit starts Form 6 visual arts. You will continue a weekly visual diary and use a clear structure to check and organise your portfolio. Lessons teach method only and do not put school admin steps or a year calendar on the student page."
+      },
+      "lessons": [
+        {
+          "id": "F6-U1-L1",
+          "hk": "中六起步：視覺日記同學習習慣",
+          "hans": "中六起步：视觉日记与学习习惯",
+          "en": "Form 6 start: visual diary and study habits"
+        },
+        {
+          "id": "F6-U1-L2",
+          "hk": "作品集檢查同整理",
+          "hans": "作品集检查与整理",
+          "en": "Checking and organising the portfolio"
+        }
+      ]
+    },
+    {
+      "id": "F6-U2-MINGQING",
+      "title": {
+        "hk": "明清美學同當代對讀",
+        "hans": "明清美学与当代对读",
+        "en": "Ming–Qing aesthetics in contemporary dialogue"
+      },
+      "intro": {
+        "hk": "呢個單元用精簡時間線認識明清美學，並對讀英國青年藝術家（YBA）同相關當代做法。你會入門沈周同文徵明。呢度只係入門，唔會把所有名畫逐幅臨摹。課堂唔會用真實試卷。",
+        "hans": "这个单元用精简时间线认识明清美学，并对读英国青年艺术家（YBA）与相关当代做法。你会入门沈周与文征明。这里只是入门，不会把所有名画逐幅临摹。课堂不会用真实试卷。",
+        "en": "This unit uses a compact timeline to introduce Ming–Qing aesthetics, and sets them in dialogue with the Young British Artists (YBA) and related contemporary approaches. You will meet Shen Zhou and Wen Zhengming. This is an introduction only, not a course in copying famous paintings one by one. Lessons do not use real exam papers."
+      },
+      "lessons": [
+        {
+          "id": "F6-U2-L1",
+          "hk": "明清美學同藝術史入門",
+          "hans": "明清美学与艺术史入门",
+          "en": "Ming–Qing aesthetics and art-history intro"
+        },
+        {
+          "id": "F6-U2-L2",
+          "hk": "英國青年藝術家（YBA）同當代對讀",
+          "hans": "英国青年艺术家（YBA）与当代对读",
+          "en": "Young British Artists (YBA) in contemporary dialogue"
+        },
+        {
+          "id": "F6-U2-L3",
+          "hk": "沈周同文徵明",
+          "hans": "沈周与文征明",
+          "en": "Shen Zhou and Wen Zhengming"
+        }
+      ]
+    },
+    {
+      "id": "F6-U3-DAILY",
+      "title": {
+        "hk": "傳統點影響日常生活",
+        "hans": "传统怎样影响日常生活",
+        "en": "How heritage shapes everyday life"
+      },
+      "intro": {
+        "hk": "呢個單元由「傳統點影響日常生活」出發，認識徐渭、陳淳、唐寅，再睇八大山人嘅符號同身份，以及陳洪綬、吳彬等人物畫入門。你會用水墨同混合媒介發展作品集第一件作品。訪問同收集都係課室做法。",
+        "hans": "这个单元由「传统怎样影响日常生活」出发，认识徐渭、陈淳、唐寅，再看八大山人的符号与身份，以及陈洪绶、吴彬等人物画入门。你会用水墨与混合媒介发展作品集第一件作品。访问与收集都是课室做法。",
+        "en": "This unit starts from how heritage shapes everyday life. You will meet Xu Wei, Chen Chun and Tang Yin, then look at symbols and identity in Bada Shanren, and at figure painting through Chen Hongshou and Wu Bin. You will use ink and mixed media to develop the first portfolio piece. Interviews and collecting stay as classroom practice."
+      },
+      "lessons": [
+        {
+          "id": "F6-U3-L1",
+          "hk": "傳統點影響日常生活",
+          "hans": "传统怎样影响日常生活",
+          "en": "How heritage shapes everyday life"
+        },
+        {
+          "id": "F6-U3-L2",
+          "hk": "徐渭、陳淳、唐寅",
+          "hans": "徐渭、陈淳、唐寅",
+          "en": "Xu Wei, Chen Chun and Tang Yin"
+        },
+        {
+          "id": "F6-U3-L3",
+          "hk": "八大山人：符號同身份",
+          "hans": "八大山人：符号与身份",
+          "en": "Bada Shanren: symbols and identity"
+        },
+        {
+          "id": "F6-U3-L4",
+          "hk": "人物畫、水墨同作品集第一件作品",
+          "hans": "人物画、水墨与作品集第一件作品",
+          "en": "Figure painting, ink, and the first portfolio piece"
+        }
+      ]
+    },
+    {
+      "id": "F6-U4-LITERATI",
+      "title": {
+        "hk": "文人畫同傳統符號",
+        "hans": "文人画与传统符号",
+        "en": "Literati painting and traditional symbols"
+      },
+      "intro": {
+        "hk": "呢個單元延伸傳統符號觀察，並入門文人畫（包括四僧同相關畫派）。練習描述形式、筆墨同可能嘅象徵。全部喺課室完成，亦唔抄公開試題。",
+        "hans": "这个单元延伸传统符号观察，并入门文人画（包括四僧与相关画派）。练习描述形式、笔墨与可能的象征。全部在课室完成，也不抄公开试题。",
+        "en": "This unit continues traditional symbol study and introduces literati painting, including the Four Monks and related schools. Practise describing form, brush and ink, and possible meanings. All of it happens in class, and it does not copy public exam questions."
+      },
+      "lessons": [
+        {
+          "id": "F6-U4-L1",
+          "hk": "傳統符號：色、紋同畫",
+          "hans": "传统符号：色、纹与画",
+          "en": "Traditional symbols: colour, pattern and painting"
+        },
+        {
+          "id": "F6-U4-L2",
+          "hk": "文人畫：四僧同相關畫派",
+          "hans": "文人画：四僧与相关画派",
+          "en": "Literati painting: the Four Monks and related schools"
+        }
+      ]
+    },
+    {
+      "id": "F6-U5-ROLE",
+      "title": {
+        "hk": "角色代入：喺中國語境再呈現",
+        "hans": "角色代入：在中国语境再呈现",
+        "en": "Role-taking: re-presenting in a Chinese context"
+      },
+      "intro": {
+        "hk": "呢個單元練習角色代入同身份再現：點樣喺中國語境再呈現一個人。你可對讀 Cindy Sherman 等藝術家用扮演去討論身份嘅方法（只講方法，唔抄題）。亦會認識揚州八怪、徐悲鴻同齊白石，並用乾濕媒介發展作品集第二件作品。",
+        "hans": "这个单元练习角色代入与身份再现：怎样在中国语境再呈现一个人。你可对读 Cindy Sherman 等艺术家用扮演去讨论身份的方法（只讲方法，不抄题）。也会认识扬州八怪、徐悲鸿与齐白石，并用干湿媒介发展作品集第二件作品。",
+        "en": "This unit practises role-taking and re-presenting identity: how to re-present a person in a Chinese context. You may compare methods used by artists such as Cindy Sherman to discuss identity through role-play (method only, no copied exam prompts). You will also meet the Yangzhou Eccentrics, Xu Beihong and Qi Baishi, and use wet and dry media to develop the second portfolio piece."
+      },
+      "lessons": [
+        {
+          "id": "F6-U5-L1",
+          "hk": "角色代入同身份再現",
+          "hans": "角色代入与身份再现",
+          "en": "Role-taking and re-presenting identity"
+        },
+        {
+          "id": "F6-U5-L2",
+          "hk": "揚州八怪、徐悲鴻、齊白石",
+          "hans": "扬州八怪、徐悲鸿、齐白石",
+          "en": "Yangzhou Eccentrics, Xu Beihong and Qi Baishi"
+        },
+        {
+          "id": "F6-U5-L3",
+          "hk": "乾濕媒介同作品集第二件作品",
+          "hans": "干湿媒介与作品集第二件作品",
+          "en": "Wet and dry media and the second portfolio piece"
+        }
+      ]
+    },
+    {
+      "id": "F6-U6-PORTFOLIO",
+      "title": {
+        "hk": "作品集自評同回顧",
+        "hans": "作品集自评与回顾",
+        "en": "Portfolio review and reflection"
+      },
+      "intro": {
+        "hk": "呢個單元練習回顧中六作品集：分析自己嘅強項同下一步，並寫一段總覽。唔用真實試卷或高分示例。",
+        "hans": "这个单元练习回顾中六作品集：分析自己的强项与下一步，并写一段总览。不用真实试卷或高分示例。",
+        "en": "This unit practises reviewing the Form 6 portfolio: looking at strengths and next steps, and writing a short overview. Lessons do not use real exam papers or high-score exemplars."
+      },
+      "lessons": [
+        {
+          "id": "F6-U6-L1",
+          "hk": "點樣回顧作品集同下一步",
+          "hans": "怎样回顾作品集与下一步",
+          "en": "How to review the portfolio and next steps"
+        },
+        {
+          "id": "F6-U6-L2",
+          "hk": "作品集總覽寫作結構",
+          "hans": "作品集总览写作结构",
+          "en": "Structure for a portfolio overview"
+        }
+      ]
+    }
+  ]
+}

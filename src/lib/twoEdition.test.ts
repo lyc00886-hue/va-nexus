@@ -66,8 +66,23 @@ describe('two-edition thin slice', () => {
   it('keeps the quest and classic hang lists thin and off the exhibition unit', () => {
     assert.deepEqual(QUEST_ART_UNITS, ['U1-CN-MODERN'])
     assert.deepEqual(QUEST_MEDIA_UNITS, ['M1-PAINTING'])
-    assert.deepEqual(CLASSIC_GRADE_UNITS.f5, ['U6-MQ-WUMEN'])
-    assert.deepEqual(CLASSIC_GRADE_UNITS.f6, ['U7-SELF-HERITAGE'])
+    assert.deepEqual(CLASSIC_GRADE_UNITS.f5, [
+      'F5-U1-ORIENT',
+      'F5-U2-AESTHETIC',
+      'F5-U3-HERITAGE',
+      'F5-U4-SYMBOL',
+      'F5-U5-ROLE',
+      'F5-U6-CONTEMP',
+      'F5-U7-PORTFOLIO',
+    ])
+    assert.deepEqual(CLASSIC_GRADE_UNITS.f6, [
+      'F6-U1-ORIENT',
+      'F6-U2-MINGQING',
+      'F6-U3-DAILY',
+      'F6-U4-LITERATI',
+      'F6-U5-ROLE',
+      'F6-U6-PORTFOLIO',
+    ])
     const hung = [...QUEST_ART_UNITS, ...QUEST_MEDIA_UNITS, ...CLASSIC_GRADE_UNITS.f5, ...CLASSIC_GRADE_UNITS.f6]
     for (const id of CUT) assert.equal(hung.includes(id), false, id)
   })
@@ -83,6 +98,12 @@ describe('two-edition thin slice', () => {
       'f4-demo.json',
       'f4-demo.en.json',
       'f4-demo.zh-Hans.json',
+      'f5-demo.json',
+      'f5-demo.en.json',
+      'f5-demo.zh-Hans.json',
+      'f6-demo.json',
+      'f6-demo.en.json',
+      'f6-demo.zh-Hans.json',
     ]
     for (const name of files) {
       const blob = read(`src/content/${name}`)

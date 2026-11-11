@@ -1,0 +1,1625 @@
+{
+  "units": [
+    {
+      "id": "F5-U1-ORIENT",
+      "title": "中五视艺起步：公开试结构与视觉日记",
+      "intro": "这个单元带你开始中五视艺。你会复习两条学习线（评赏与创作），认识公开试两卷的结构分别，也会继续每周视觉日记。课堂只讲结构与方法，不会用真实考评局试卷或高分学生示例。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-ORIENT.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U1-L1",
+          "title": "中五起步：课程复习与公开试两卷结构",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "中五视艺由复习开始。两条学习线仍然是评赏与创作，两边都要继续练。",
+            "公开试有两卷。你选卷一或卷二。卷一先有平面作品的规定；卷二按题目要求交设计。",
+            "评赏练习：描述你见到的形式，再写作品可能身处的文化情境。创作练习：选一种媒介，试一个小步骤。",
+            "课堂只讲结构与方法。不会用真实考评局试卷，也不放高分学生示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "公开试两卷，学生要怎样处理？",
+              "options": [
+                "两卷都一定要同时交",
+                "选卷一或卷二",
+                "只可以交一份口试",
+                "不用知道两卷分别"
+              ],
+              "answer": "选卷一或卷二",
+              "explain": "结构是二选一，不是两卷一起交。"
+            },
+            {
+              "type": "fill",
+              "question": "卷一先有＿＿作品的规定。",
+              "options": [],
+              "answer": "平面",
+              "explain": "卷一先规定平面呈现。",
+              "wordBank": [
+                "平面",
+                "声音",
+                "随机",
+                "空白"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对学习线与做法",
+              "options": [
+                "评赏",
+                "创作",
+                "两卷结构"
+              ],
+              "answer": {
+                "评赏": "描述形式与情境",
+                "创作": "用媒介试一个步骤",
+                "两卷结构": "选卷一或卷二"
+              },
+              "explain": "两条线与两卷结构一起复习。"
+            },
+            {
+              "type": "order",
+              "question": "将中五起步步骤排好。",
+              "options": [
+                "复习评赏与创作",
+                "分清卷一与卷二",
+                "写下自己会怎样选",
+                "继续每周视觉日记"
+              ],
+              "explain": "先复习，再分卷，再写选择，再记日记。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写评赏所见，右边写一个创作步骤。各一句。",
+              "options": [
+                "评赏所见",
+                "创作步骤"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U1-L1.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句写下你怎样同时复习评赏与创作，并分辨卷一、卷二。提示：第一句写两条学习线，第二句写两卷结构分别。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U1-L2",
+          "title": "每周视觉日记：研究与记录",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "每周视觉日记是研究与记录的习惯。一页可以有速写、一句观察，以及一个未解的问题。",
+            "记录留在课室：用已有照片、物件或教师提供的材料，不必为了记一页而离开课室。",
+            "研究可以是：你见到什么形式、它可能有什么用途、你下周想试什么媒介。",
+            "日记慢慢记就可以。这里不用真实试卷做范例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "每周视觉日记最主要是做什么？",
+              "options": [
+                "抄一篇完整文章",
+                "研究与记录",
+                "只贴分数表",
+                "收集真实试卷"
+              ],
+              "answer": "研究与记录",
+              "explain": "日记服务研究与记录。"
+            },
+            {
+              "type": "fill",
+              "question": "一页日记可以有速写、观察，以及一个＿＿。",
+              "options": [],
+              "answer": "问题",
+              "explain": "未解问题帮你下周继续。",
+              "wordBank": [
+                "问题",
+                "分数",
+                "校徽",
+                "口号"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对日记内容",
+              "options": [
+                "速写",
+                "观察句",
+                "材料"
+              ],
+              "answer": {
+                "速写": "记下见到的形式",
+                "观察句": "用一句讲你留意到什么",
+                "材料": "用课室已有的物件或照片"
+              },
+              "explain": "三种记录都在课室完成。"
+            },
+            {
+              "type": "order",
+              "question": "将一次视觉日记记录排好。",
+              "options": [
+                "选课室里面一件材料",
+                "速写你见到的形式",
+                "写一句观察",
+                "留一个下周问题"
+              ],
+              "explain": "由材料到速写，再到观察与问题。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边是一页速写，右边是一句研究问题。各写你会记下什么。",
+              "options": [
+                "速写记录",
+                "研究问题"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U1-L2.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用「材料＋观察＋下周问题」写下你这周的视觉日记会怎样记。提示：三项都要是课室做得到的。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U2-AESTHETIC",
+      "title": "什么是美感：中西美学与宋元艺术入门",
+      "intro": "这个单元问「美」在中国与西方社会可以怎样理解，再用精简时间线入门宋元艺术。练习看形式、功能与文化语境。这里只是入门，不会把每项技法从头练起。课堂不会用真实试卷。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-AESTHETIC.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U2-L1",
+          "title": "什么是美感：中西社会怎样看美",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "「美」在中国与西方社会可以有不同理解。有时重视和谐与品德，有时重视个人感受或形式实验。",
+            "练习时分开三样：形式（你见到什么）、功能（它做什么用）、文化语境（它在哪种生活出现）。",
+            "这课不会说哪种社会才「正确」。你要讲得出自己用着哪个角度。",
+            "这里只是入门，不会把每项技法从头练起。课堂不会用真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "这课要你怎样看「美」？",
+              "options": [
+                "只背一个标准答案",
+                "分开形式、功能与文化语境",
+                "只比较哪幅画比较贵",
+                "抄一幅名画交差"
+              ],
+              "answer": "分开形式、功能与文化语境",
+              "explain": "三个角度帮你讲清楚自己怎样理解美。"
+            },
+            {
+              "type": "fill",
+              "question": "文化语境是指作品出现在哪种＿＿。",
+              "options": [],
+              "answer": "生活",
+              "explain": "语境是生活与文化，不是价钱。",
+              "wordBank": [
+                "生活",
+                "价钱",
+                "天气",
+                "座位"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对三个角度",
+              "options": [
+                "形式",
+                "功能",
+                "文化语境"
+              ],
+              "answer": {
+                "形式": "你见到的形状与色彩",
+                "功能": "物件做什么用",
+                "文化语境": "它身处的生活"
+              },
+              "explain": "三个角度一起用，才算看得完整。"
+            },
+            {
+              "type": "order",
+              "question": "将一次美感观察排好。",
+              "options": [
+                "描述形式",
+                "估计功能",
+                "提出一种文化语境",
+                "写下你用着哪个角度"
+              ],
+              "explain": "由见到的，到用途，再到语境与角度。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边用「形式」写一句，右边用「文化语境」写一句。不要说哪边才正确。",
+              "options": [
+                "形式一句",
+                "语境一句"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U2-L1.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用三句讲一件课室物件怎样同时有形式、功能与文化语境。提示：每句只讲一个角度。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U2-L2",
+          "title": "宋元艺术入门",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "宋元艺术入门用一条精简时间线：先知道大概先后，再选一件作品看形式。",
+            "宋与元可以并排比较：宫廷、文人、民间的视觉选择可以不同，你要讲得出你比较着哪一点。",
+            "时间线不等于背下每个年份。入门只要你能把一件作品放回大致位置，并描述形式与功能。",
+            "这里只是入门，不会把每项技法从头练起。课堂不会用真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "宋元入门的时间线主要帮你做什么？",
+              "options": [
+                "背下所有年份",
+                "把作品放在大致先后",
+                "抄一幅完整名画",
+                "判断哪幅最贵"
+              ],
+              "answer": "把作品放在大致先后",
+              "explain": "精简时间线是大致位置，不是全集年份。"
+            },
+            {
+              "type": "fill",
+              "question": "比较宋与元之前，先讲清楚你比较着哪一＿＿。",
+              "options": [],
+              "answer": "点",
+              "explain": "比较要有一个清楚的点。",
+              "wordBank": [
+                "点",
+                "价",
+                "座",
+                "页"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对入门做法",
+              "options": [
+                "时间线",
+                "形式",
+                "功能"
+              ],
+              "answer": {
+                "时间线": "大致先后",
+                "形式": "你见到的形状与笔墨",
+                "功能": "作品可能做什么用"
+              },
+              "explain": "先后、形式、功能三步就够入门。"
+            },
+            {
+              "type": "order",
+              "question": "将宋元入门观察排好。",
+              "options": [
+                "看精简时间线",
+                "选一件作品",
+                "描述形式",
+                "写可能的功能"
+              ],
+              "explain": "由时间线到一件作品的形式与功能。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边放一个宋的形式观察，右边放一个元的形式观察。各一句，并写你比较着哪一点。",
+              "options": [
+                "宋 · 形式",
+                "元 · 形式"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U2-L2.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句把一件宋或元的作品放上精简时间线。提示：第一句讲大致位置，第二句讲一个形式与一个功能。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U3-HERITAGE",
+      "title": "自我、传统与社会",
+      "intro": "这个单元由「传统与社会怎样影响日常生活」出发，练习用视觉日记搜集材料、发展主题，并用水墨与混合媒介试作。你会对读奇石图像与超现实／立体主义的方法，而不是抄画面。访问、观察与收集都是课室做法。课堂不放高分示例。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-HERITAGE.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U3-L1",
+          "title": "传统与社会怎样影响日常生活",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "传统与社会会经日常物件、节庆颜色、家里的摆设，影响你怎样看一件事物。",
+            "练习由一件日常物件出发：它的形式、它在生活里面的位置，以及你自己的感受。",
+            "访问、观察与收集都是课室做法。用同学对话、已有照片或课室物件就可以。",
+            "课堂不放高分示例。你写自己见到的影响就可以。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "这课要你由哪里开始？",
+              "options": [
+                "一份真实试卷",
+                "一件日常物件",
+                "一幅要临摹的名画",
+                "一张分数表"
+              ],
+              "answer": "一件日常物件",
+              "explain": "由日常生活里面的物件开始。"
+            },
+            {
+              "type": "fill",
+              "question": "访问、观察与收集都是＿＿做法。",
+              "options": [],
+              "answer": "课室",
+              "explain": "三种做法都留在课室。",
+              "wordBank": [
+                "课室",
+                "比赛",
+                "远行",
+                "抽奖"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对日常影响",
+              "options": [
+                "形式",
+                "生活位置",
+                "自己感受"
+              ],
+              "answer": {
+                "形式": "物件的形状与色彩",
+                "生活位置": "它通常出现在哪",
+                "自己感受": "你觉得它怎样影响你"
+              },
+              "explain": "三项一起才算讲到影响。"
+            },
+            {
+              "type": "order",
+              "question": "将一次日常观察排好。",
+              "options": [
+                "选一件日常物件",
+                "描述形式",
+                "写它在生活的位置",
+                "写你自己的感受"
+              ],
+              "explain": "由物件到形式、位置、感受。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写物件形式，右边写它在生活里面的位置。各一句。",
+              "options": [
+                "物件形式",
+                "生活位置"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L1.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用三句讲传统或社会怎样影响你一件日常物件。提示：形式、位置、感受各一句，而且是课室做得到的。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L2",
+          "title": "奇石对读：吴彬与超现实／立体主义",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "奇石对读用方法，不是抄画面。你可以看吴彬怎样把石头画得奇，再看超现实与立体主义怎样重组所见。",
+            "对读可以问：哪里夸张、哪里切开、哪里仍然令人认得是石。",
+            "超现实常把不寻常的组合放在一起。立体主义常把物件拆成多个面。你要讲方法，不要讲成要临摹某一幅画。",
+            "图像只用课室示意。课堂不放高分示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "奇石对读要你做什么？",
+              "options": [
+                "抄一幅完整画面",
+                "比较方法而不是抄画面",
+                "背艺术家出生年份",
+                "判断哪幅最贵"
+              ],
+              "answer": "比较方法而不是抄画面",
+              "explain": "对读是方法，不是临摹。"
+            },
+            {
+              "type": "fill",
+              "question": "立体主义常见做法是把物件拆成多个＿＿。",
+              "options": [],
+              "answer": "面",
+              "explain": "多个面是讲形式方法。",
+              "wordBank": [
+                "面",
+                "价钱",
+                "座位",
+                "签名"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对方法",
+              "options": [
+                "吴彬奇石",
+                "超现实",
+                "立体主义"
+              ],
+              "answer": {
+                "吴彬奇石": "把石画得奇，仍然认得是石",
+                "超现实": "把不寻常的组合放在一起",
+                "立体主义": "把物件拆成多个面"
+              },
+              "explain": "三个都是方法，不是要你抄画面。"
+            },
+            {
+              "type": "order",
+              "question": "将一次奇石对读排好。",
+              "options": [
+                "描述石的形式",
+                "指出夸张或切开的地方",
+                "讲一种超现实或立体方法",
+                "写你自己会试的一步"
+              ],
+              "explain": "由所见到方法，再到自己一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写吴彬奇石的一种方法，右边写超现实或立体主义的一种方法。不要抄画面。",
+              "options": [
+                "奇石方法",
+                "重组方法"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L2.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句比较吴彬与超现实或立体主义。提示：第一句讲石的形式，第二句讲一种方法，而且写明你不是抄画面。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L3",
+          "title": "视觉日记：怎样搜集与发展主题",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "视觉日记可以用来搜集材料与发展主题。一页先收集，下一页先收窄。",
+            "搜集可以是课室速写、已有照片、一段访问笔记，或者一件收集到的物件。",
+            "发展主题：由很多材料里面选一个重复出现的兴趣，再写一句主题。",
+            "访问、观察与收集都是课室做法。课堂不放高分示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "发展主题之前，日记先做什么？",
+              "options": [
+                "直接写结论",
+                "搜集材料",
+                "交一份真实试卷",
+                "只背一句口号"
+              ],
+              "answer": "搜集材料",
+              "explain": "先搜集，再收窄成主题。"
+            },
+            {
+              "type": "fill",
+              "question": "主题句来自材料里面重复出现的＿＿。",
+              "options": [],
+              "answer": "兴趣",
+              "explain": "重复出现的兴趣才值得收成主题。",
+              "wordBank": [
+                "兴趣",
+                "分数",
+                "座位",
+                "天气"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对搜集与发展",
+              "options": [
+                "速写",
+                "访问笔记",
+                "主题句"
+              ],
+              "answer": {
+                "速写": "课室里面见到的形式",
+                "访问笔记": "一段课室对话",
+                "主题句": "把重复兴趣收成一句"
+              },
+              "explain": "搜集与主题都在课室发生。"
+            },
+            {
+              "type": "order",
+              "question": "将搜集与发展排好。",
+              "options": [
+                "收集几种材料",
+                "圈出重复出现的兴趣",
+                "写一句主题",
+                "决定下一页试什么"
+              ],
+              "explain": "由材料到兴趣，再到主题与下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边是搜集页，右边是主题句。各写你见到什么与你收窄了什么。",
+              "options": [
+                "搜集页",
+                "主题句"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L3.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用「两项材料＋一句主题」写下你怎样由搜集去到发展。提示：材料要是课室做得到的。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L4",
+          "title": "水墨试验与作品集第一件作品",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L4.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "水墨试验是用墨、水、纸试几个小效果，再选一个适合你主题的做法。",
+            "作品集第一件作品用研究与创作结构：主题一句、材料证据、一次媒介试验，以及下一步。",
+            "混合媒介可以与水墨一起试，但每次只改一个条件，方便你写下分别。",
+            "课堂不放高分示例。你交的是自己的试验与结构，不是一份真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集第一件作品的结构包括哪项？",
+              "options": [
+                "一份真实试卷全文",
+                "主题一句与一次媒介试验",
+                "学校行政表格",
+                "高分学生示例"
+              ],
+              "answer": "主题一句与一次媒介试验",
+              "explain": "第一件作品用主题、证据、试验与下一步。"
+            },
+            {
+              "type": "fill",
+              "question": "每次混合媒介试验只改一个＿＿。",
+              "options": [],
+              "answer": "条件",
+              "explain": "一次只改一个条件，才容易比较。",
+              "wordBank": [
+                "条件",
+                "校名",
+                "座位",
+                "分数"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对第一件作品结构",
+              "options": [
+                "主题一句",
+                "媒介试验",
+                "下一步"
+              ],
+              "answer": {
+                "主题一句": "你探索着什么",
+                "媒介试验": "水墨或混合媒介的一次效果",
+                "下一步": "你跟着想试什么"
+              },
+              "explain": "三部分一起才算有结构。"
+            },
+            {
+              "type": "order",
+              "question": "将水墨试验与第一件作品排好。",
+              "options": [
+                "写主题一句",
+                "做一次水墨试验",
+                "记录改了哪个条件",
+                "写下一步"
+              ],
+              "explain": "由主题到试验，再到记录与下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边是一次水墨效果，右边是作品集第一件作品的主题句。各写一句。",
+              "options": [
+                "水墨效果",
+                "主题一句"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L4.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用「主题一句＋一次试验＋下一步」说明作品集第一件作品。提示：试验要写改了哪个条件，而且不用高分示例。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U4-SYMBOL",
+      "title": "传统符号、色彩与纹样",
+      "intro": "这个单元认识传统色彩、纹样与绘画里面的符号，再延伸宋元艺术观察。练习描述你见到的形式与可能的象征意思。全部在课室完成。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-SYMBOL.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U4-L1",
+          "title": "传统色、纹与画里面的符号",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "传统色、纹与画可以带符号。同一种颜色，在不同生活里面可以有不同意思。",
+            "练习时分开：你见到的形式，与你估计的象征意思。估计要写成「可能」，不要写成唯一答案。",
+            "纹样可以是重复、对称，或者一个物件被反复使用。你要指出哪种重复。",
+            "全部在课室完成。用课室示意与你自己的描述就可以。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "讲象征意思时要怎样写？",
+              "options": [
+                "写成唯一正确答案",
+                "写成「可能」的意思",
+                "只写价钱",
+                "抄一段试题"
+              ],
+              "answer": "写成「可能」的意思",
+              "explain": "象征是可能，不是唯一。"
+            },
+            {
+              "type": "fill",
+              "question": "纹样可以是重复、对称，或者物件被＿＿使用。",
+              "options": [],
+              "answer": "反复",
+              "explain": "反复使用是一种纹。",
+              "wordBank": [
+                "反复",
+                "隐藏",
+                "出售",
+                "删除"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对符号观察",
+              "options": [
+                "形式",
+                "象征",
+                "课室"
+              ],
+              "answer": {
+                "形式": "你见到的色与纹",
+                "象征": "这种形式可能带的意思",
+                "课室": "描述在课室完成"
+              },
+              "explain": "先形式，再可能的意思。"
+            },
+            {
+              "type": "order",
+              "question": "将一次符号描述排好。",
+              "options": [
+                "指出颜色或纹样",
+                "描述形式",
+                "写一个可能的意思",
+                "讲明这个是估计"
+              ],
+              "explain": "由见到的形式到可能意思。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边只写形式，右边只写一个可能的象征。各一句。",
+              "options": [
+                "见到的形式",
+                "可能的意思"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U4-L1.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句描述一种传统色或纹。提示：第一句只讲形式，第二句用「可能」讲象征。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U4-L2",
+          "title": "宋元艺术延伸",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "宋元艺术延伸是在入门之后，再选一件作品看多一个形式细节。",
+            "你可以比较两件作品的一个相同点与一个相异点，例如留白、线条疏密，或者人物与景物的比例。",
+            "延伸仍然是观察，不是把所有技法从头练起，也不是临摹整幅名画。",
+            "全部在课室完成。课堂不会用真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "宋元延伸主要多做什么？",
+              "options": [
+                "背更多年份",
+                "多看一个形式细节",
+                "临摹整幅名画",
+                "交一份真实试卷"
+              ],
+              "answer": "多看一个形式细节",
+              "explain": "延伸是多一个形式观察。"
+            },
+            {
+              "type": "fill",
+              "question": "比较两件作品时，写一个相同点与一个＿＿点。",
+              "options": [],
+              "answer": "相异",
+              "explain": "相同与相异才算比较。",
+              "wordBank": [
+                "相异",
+                "价钱",
+                "座位",
+                "签名"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对延伸观察",
+              "options": [
+                "留白",
+                "疏密",
+                "比例"
+              ],
+              "answer": {
+                "留白": "画面哪里留有空间",
+                "疏密": "线条哪里密、哪里疏",
+                "比例": "人物与景物哪个较大"
+              },
+              "explain": "三个都是形式细节。"
+            },
+            {
+              "type": "order",
+              "question": "将一次延伸比较排好。",
+              "options": [
+                "选两件宋元作品",
+                "选一个形式细节",
+                "写一个相同点",
+                "写一个相异点"
+              ],
+              "explain": "先选作品与细节，再写相同与相异。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写一个相同的形式，右边写一个相异的形式。各一句。",
+              "options": [
+                "相同形式",
+                "相异形式"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U4-L2.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句延伸一次宋元观察。提示：第一句讲一个形式细节，第二句讲相同或相异。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U5-ROLE",
+      "title": "角色代入：在中国语境再呈现一个人",
+      "intro": "这个单元练习角色代入：怎样在中国语境再呈现一个人。你会试干湿媒介，并用研究与创作结构去发展作品集的第二件作品。课堂不放高分学生示例。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-ROLE.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U5-L1",
+          "title": "角色与身份：怎样再呈现一个人",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "角色代入是思考一个人怎样再被呈现：身份、衣着、姿态，以及观看的人会怎样理解。",
+            "在中国语境再呈现，可以借用传统姿态、符号或场面，但你要讲得出你借用了什么，以及你改了什么。",
+            "角色不等于影到像某人。你要写这个人在画面里面做着什么，以及哪个细节交代身份。",
+            "课堂不放高分学生示例。练习只用方法与你自己的句子。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "再呈现一个人，最重要是讲什么？",
+              "options": [
+                "画得像哪张照片",
+                "身份怎样被呈现",
+                "哪个分数最高",
+                "要抄哪一幅名画"
+              ],
+              "answer": "身份怎样被呈现",
+              "explain": "角色练习讲身份怎样被看到。"
+            },
+            {
+              "type": "fill",
+              "question": "借用传统姿态之后，要写下你＿＿了什么。",
+              "options": [],
+              "answer": "改",
+              "explain": "借用与改动要一起讲。",
+              "wordBank": [
+                "改",
+                "卖",
+                "藏",
+                "背"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对角色元素",
+              "options": [
+                "身份",
+                "姿态",
+                "细节"
+              ],
+              "answer": {
+                "身份": "这个人是哪种角色",
+                "姿态": "身体怎样放置",
+                "细节": "哪样物件交代身份"
+              },
+              "explain": "三项一起才算再呈现。"
+            },
+            {
+              "type": "order",
+              "question": "将一次角色练习排好。",
+              "options": [
+                "选一个你想呈现的人",
+                "写身份与姿态",
+                "选一个中国语境的细节",
+                "写你改了什么"
+              ],
+              "explain": "由人到身份，再到细节与改动。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写你借用的姿态或符号，右边写你改动的地方。各一句。",
+              "options": [
+                "借用",
+                "改动"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L1.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句讲你怎样在中国语境再呈现一个人。提示：第一句写身份与姿态，第二句写一个细节与你改了什么。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U5-L2",
+          "title": "干湿媒介试验",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "干媒介例如铅笔、粉彩、炭笔，笔触较容易留下清楚边缘。湿媒介例如墨、水彩，颜色会渗开。",
+            "试验时每次只改一个条件：干或湿、用力轻重，或者纸的干湿。",
+            "记录要写：你用了什么、见到什么效果、这个效果可不可用在角色的衣着或背景。",
+            "全部在课室试。课堂不放高分学生示例。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "湿媒介与干媒介一个明显分别是？",
+              "options": [
+                "湿媒介一定更正确",
+                "湿媒介较易渗开",
+                "干媒介不能画线",
+                "两种都必须同时用完"
+              ],
+              "answer": "湿媒介较易渗开",
+              "explain": "湿媒介会渗，干媒介较易留边。"
+            },
+            {
+              "type": "fill",
+              "question": "每次试验只改一个＿＿。",
+              "options": [],
+              "answer": "条件",
+              "explain": "一次一条件，才看到分别。",
+              "wordBank": [
+                "条件",
+                "校名",
+                "座位",
+                "分数"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对媒介与效果",
+              "options": [
+                "铅笔或炭笔",
+                "墨或水彩",
+                "记录"
+              ],
+              "answer": {
+                "铅笔或炭笔": "较易留清楚边缘",
+                "墨或水彩": "颜色较易渗开",
+                "记录": "写用了什么与见到什么"
+              },
+              "explain": "试验与记录一起才有用。"
+            },
+            {
+              "type": "order",
+              "question": "将一次干湿试验排好。",
+              "options": [
+                "选干或湿其中一种",
+                "只改一个条件",
+                "观察边缘或渗开",
+                "写可不可用在角色"
+              ],
+              "explain": "由选择到试验，再到观察与用途。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写干媒介的一个效果，右边写湿媒介的一个效果。各一句。",
+              "options": [
+                "干媒介效果",
+                "湿媒介效果"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L2.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句记录一次干湿试验。提示：第一句写媒介与你改了哪个条件，第二句写效果可不可用在角色。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U5-L3",
+          "title": "宋元艺术与作品集第二件作品",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "这课把宋元观察收进作品集第二件作品：你仍然描述一个形式细节，再用它发展角色或画面。",
+            "第二件作品用研究与创作结构：主题一句、一件研究证据、一次干或湿媒介试验，以及下一步。",
+            "宋元细节可以是留白、线条或人物比例。你借用方法，不抄整幅画面。",
+            "课堂不放高分学生示例，也不用真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集第二件作品要连着什么？",
+              "options": [
+                "一份真实试卷",
+                "一个宋元形式细节与你的角色",
+                "高分学生示例",
+                "学校行政程序"
+              ],
+              "answer": "一个宋元形式细节与你的角色",
+              "explain": "第二件作品用宋元观察与自己的创作结构。"
+            },
+            {
+              "type": "fill",
+              "question": "第二件作品要有主题一句、研究证据、一次媒介试验，与＿＿。",
+              "options": [],
+              "answer": "下一步",
+              "explain": "下一步令作品集继续发展。",
+              "wordBank": [
+                "下一步",
+                "校徽",
+                "座位表",
+                "分数榜"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对第二件作品",
+              "options": [
+                "宋元细节",
+                "研究证据",
+                "媒介试验"
+              ],
+              "answer": {
+                "宋元细节": "留白、线条或比例",
+                "研究证据": "你日记里面的一项材料",
+                "媒介试验": "一次干或湿效果"
+              },
+              "explain": "三项一起服务第二件作品。"
+            },
+            {
+              "type": "order",
+              "question": "将第二件作品发展排好。",
+              "options": [
+                "写主题一句",
+                "选一个宋元形式细节",
+                "做一次媒介试验",
+                "写下一步"
+              ],
+              "explain": "由主题到细节、试验、下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写一个宋元形式细节，右边写它怎样进入第二件作品。各一句。",
+              "options": [
+                "宋元细节",
+                "第二件作品"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L3.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用「主题一句＋一个宋元细节＋下一步」讲作品集第二件作品。提示：写明你借用方法，不抄整幅画面。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U6-CONTEMP",
+      "title": "当代中国与创新传承",
+      "intro": "这个单元认识徐冰与当代中国书法潮流，以及全球当代艺术的入门对读，再做创新传承练习：立体拼贴与装置。全部在课室完成。也会收束宋元艺术观察。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-CONTEMP.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U6-L1",
+          "title": "徐冰与当代中国书法潮流",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "徐冰与当代中国书法潮流在这课是课堂认识：你了解他怎样把文字变成视觉形式。",
+            "可以问：文字还认不认得出、笔画怎样被重复或重组、观众要怎样看。",
+            "这课留在课室完成。用课室文字、示意图与你自己的句子就可以。",
+            "你认识方法，不抄某一件作品的画面。课堂不用真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "认识徐冰与当代书法，这课要你做什么？",
+              "options": [
+                "一定要离开课室才可以学",
+                "在课室了解文字怎样变成视觉形式",
+                "抄一件完整作品",
+                "背一份真实试卷"
+              ],
+              "answer": "在课室了解文字怎样变成视觉形式",
+              "explain": "认识留在课室，而且讲方法。"
+            },
+            {
+              "type": "fill",
+              "question": "当代书法练习可以问：文字还可不可以＿＿。",
+              "options": [],
+              "answer": "认",
+              "explain": "认得出与否是视觉问题。",
+              "wordBank": [
+                "认",
+                "卖",
+                "藏起校名",
+                "评分"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对书法观察",
+              "options": [
+                "文字",
+                "笔画",
+                "观众"
+              ],
+              "answer": {
+                "文字": "还认不认得出",
+                "笔画": "怎样重复或重组",
+                "观众": "被邀请怎样看"
+              },
+              "explain": "三个问题都在课室答。"
+            },
+            {
+              "type": "order",
+              "question": "将一次课堂认识排好。",
+              "options": [
+                "看文字的形式",
+                "问还认不认得出",
+                "描述笔画怎样重组",
+                "写你自己会试的一步"
+              ],
+              "explain": "由所见到方法，再到自己一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写文字还可不可以认，右边写笔画怎样被重组。各一句。这个是课室练习。",
+              "options": [
+                "可不可以认",
+                "笔画重组"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L1.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句讲徐冰或当代书法的一种方法。提示：第一句讲文字与视觉形式，第二句讲你在课室会试的一步，不必离开课室。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L2",
+          "title": "全球当代艺术入门",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "全球当代艺术入门是一次对读：你选一件课室示意，问它用什么形式与观众对话。",
+            "对读可以看：物料是不是日常物件、作品是不是要观众走近才看得完整、标题有没有改你的理解。",
+            "入门不等于认识所有地区。你只要讲得清一件作品的形式与一个观看方法。",
+            "全部在课室完成。课堂不用真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "全球当代入门要你做到什么？",
+              "options": [
+                "背下所有地区",
+                "讲清一件作品的形式与观看方法",
+                "抄一幅完整画面",
+                "交一份真实试卷"
+              ],
+              "answer": "讲清一件作品的形式与观看方法",
+              "explain": "入门是一件作品、一个方法。"
+            },
+            {
+              "type": "fill",
+              "question": "对读可以问：标题有没有改变你的＿＿。",
+              "options": [],
+              "answer": "理解",
+              "explain": "标题可以改变你怎样理解形式。",
+              "wordBank": [
+                "理解",
+                "座位",
+                "价钱",
+                "分数"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对当代观察",
+              "options": [
+                "物料",
+                "距离",
+                "标题"
+              ],
+              "answer": {
+                "物料": "是不是日常物件",
+                "距离": "要不要走近才看得完整",
+                "标题": "有没有改你的理解"
+              },
+              "explain": "三个都是观看方法。"
+            },
+            {
+              "type": "order",
+              "question": "将一次当代入门对读排好。",
+              "options": [
+                "选一件课室示意",
+                "描述形式",
+                "问一个观看方法",
+                "写标题有没有改理解"
+              ],
+              "explain": "由示意到形式、方法、标题。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写形式，右边写一个观看方法。各一句。",
+              "options": [
+                "形式",
+                "观看方法"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L2.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句做一次全球当代入门。提示：第一句讲形式，第二句讲观众怎样被邀请去看。全部在课室讲。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L3",
+          "title": "创新传承：立体拼贴与装置",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L3.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "创新传承是用立体拼贴与装置，把你认识过的符号或文字方法，变成一件可以走近看的课室作品。",
+            "徐冰的文字方法可以做概念参考：文字可不可以认、部件可不可以重组。你不抄某一件作品。",
+            "立体拼贴每次只加一种物料，并写下它改变了哪个观看角度。",
+            "全部在课室完成。课堂不用真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "创新传承这课主要试什么？",
+              "options": [
+                "抄一件完整装置",
+                "立体拼贴与装置的课室做法",
+                "离开课室才可以做",
+                "交一份真实试卷"
+              ],
+              "answer": "立体拼贴与装置的课室做法",
+              "explain": "拼贴与装置留在课室。"
+            },
+            {
+              "type": "fill",
+              "question": "每次立体拼贴只加一种＿＿。",
+              "options": [],
+              "answer": "物料",
+              "explain": "一次一物料，才知道哪个角度变了。",
+              "wordBank": [
+                "物料",
+                "校名",
+                "分数",
+                "座位"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对创新传承",
+              "options": [
+                "概念参考",
+                "拼贴",
+                "装置"
+              ],
+              "answer": {
+                "概念参考": "文字可不可以认、部件可不可以重组",
+                "拼贴": "每次加一种物料",
+                "装置": "走近才看得完整"
+              },
+              "explain": "三项都是课室方法。"
+            },
+            {
+              "type": "order",
+              "question": "将一次立体拼贴排好。",
+              "options": [
+                "选一个符号或文字方法",
+                "加一种物料",
+                "走近看一个新角度",
+                "写你没有抄哪件作品"
+              ],
+              "explain": "由方法到物料、角度，以及不抄作品。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写你参考的文字方法，右边写你加了的一种物料。各一句。",
+              "options": [
+                "文字方法",
+                "一种物料"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L3.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句讲你的立体拼贴或装置。提示：第一句讲符号或文字方法，第二句讲一种物料与一个观看角度。写明你不抄作品。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L4",
+          "title": "宋元艺术收束",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L4.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "宋元艺术收束是回看这年观察过的一个形式：留白、线条、比例，或者宫廷、文人、民间的一个分别。",
+            "收束不是再背时间线。你把一个细节写进自己的研究工作簿，并讲它怎样帮到创作。",
+            "研究工作簿贯穿学习：主题、证据、试验、反思可以放在同一页。",
+            "全部在课室完成。课堂不用真实试卷。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "宋元收束主要做什么？",
+              "options": [
+                "再背一整条年份表",
+                "把一个形式细节写进研究工作簿",
+                "临摹所有名画",
+                "交一份真实试卷"
+              ],
+              "answer": "把一个形式细节写进研究工作簿",
+              "explain": "收束是把观察收进工作簿。"
+            },
+            {
+              "type": "fill",
+              "question": "研究工作簿一页可以同时有主题、证据、试验与＿＿。",
+              "options": [],
+              "answer": "反思",
+              "explain": "反思令细节服务创作。",
+              "wordBank": [
+                "反思",
+                "校徽",
+                "座位",
+                "分数榜"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对收束内容",
+              "options": [
+                "形式细节",
+                "工作簿",
+                "创作"
+              ],
+              "answer": {
+                "形式细节": "留白、线条或比例",
+                "工作簿": "放下主题与证据",
+                "创作": "这个细节怎样帮到你"
+              },
+              "explain": "三项把宋元观察收束到自己的学习。"
+            },
+            {
+              "type": "order",
+              "question": "将宋元收束排好。",
+              "options": [
+                "选一个今年观察过的形式",
+                "写入研究工作簿",
+                "讲它怎样帮到创作",
+                "留一句反思"
+              ],
+              "explain": "由细节到工作簿、创作、反思。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写一个宋元形式细节，右边写它在研究工作簿怎样帮到创作。各一句。",
+              "options": [
+                "宋元细节",
+                "工作簿用途"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L4.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用两句收束宋元观察。提示：第一句讲一个形式细节，第二句讲它怎样写进研究工作簿并帮到创作。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U7-PORTFOLIO",
+      "title": "作品集自评与全年回顾",
+      "intro": "这个单元练习回顾自己一年的学习：哪里做得好、哪里还可以改进，以及怎样写一段作品集总览。不用真实试卷或高分示例。",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-PORTFOLIO.png",
+      "coverCredit": "自制 · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U7-L1",
+          "title": "怎样回顾自己的强项与下一步",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-L1.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "回顾是看自己一年：哪个练习做得稳，哪个步骤仍然乱。",
+            "强项要附一件证据，例如一页日记、一次水墨试验，或者一句你写得清楚的主题。",
+            "下一步只写一个小行动，而且是课室做得到的。不要写成一份交件时间表。",
+            "不用真实试卷或高分示例。你评的是自己的过程。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "回顾强项时要附什么？",
+              "options": [
+                "一份高分示例",
+                "一件自己的证据",
+                "一份真实试卷",
+                "一张座位表"
+              ],
+              "answer": "一件自己的证据",
+              "explain": "强项要用自己的证据支持。"
+            },
+            {
+              "type": "fill",
+              "question": "下一步只写一个课室做得到的小＿＿。",
+              "options": [],
+              "answer": "行动",
+              "explain": "一步就够，而且要做得到。",
+              "wordBank": [
+                "行动",
+                "校徽",
+                "分数",
+                "座位"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对回顾",
+              "options": [
+                "强项",
+                "证据",
+                "下一步"
+              ],
+              "answer": {
+                "强项": "一个做得稳的练习",
+                "证据": "日记、试验或主题句",
+                "下一步": "一个课室小行动"
+              },
+              "explain": "三项才算完整回顾。"
+            },
+            {
+              "type": "order",
+              "question": "将一次自我回顾排好。",
+              "options": [
+                "选一个做得稳的练习",
+                "附一件证据",
+                "指出一个仍然乱的步骤",
+                "写一个小行动"
+              ],
+              "explain": "由强项到证据，再到弱点与行动。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写一个强项与证据，右边写一个下一步。各一句。",
+              "options": [
+                "强项与证据",
+                "下一步"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U7-L1.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用「强项＋证据＋下一步」回顾自己。提示：证据是你自己的一页或一次试验，下一步是课室做得到的。不用高分示例。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        },
+        {
+          "id": "F5-U7-L2",
+          "title": "作品集总览写作结构",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-L2.png",
+          "coverCredit": "自制 · VA-Nexus",
+          "cards": [
+            "作品集总览用四句结构：主题一句、研究工作簿做过什么、作品／评赏呈现什么、下一步是什么。",
+            "研究工作簿与作品／评赏是作品集的两部分。总览要讲它们怎样互相支持。",
+            "这课不锁字数。你只要四句都在，而且每句只做一件事。",
+            "不用真实试卷或高分示例。总览写你自己的结构。"
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "作品集总览四句里面，哪句一定要有？",
+              "options": [
+                "学校行政程序",
+                "研究工作簿做过什么",
+                "高分示例全文",
+                "一份真实试卷"
+              ],
+              "answer": "研究工作簿做过什么",
+              "explain": "总览要讲工作簿，也要讲作品。"
+            },
+            {
+              "type": "fill",
+              "question": "总览要讲研究工作簿与作品／评赏怎样互相＿＿。",
+              "options": [],
+              "answer": "支持",
+              "explain": "两部分是互相支持，不是互相取代。",
+              "wordBank": [
+                "支持",
+                "取代",
+                "隐藏",
+                "评分"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "配对总览四句",
+              "options": [
+                "主题一句",
+                "工作簿",
+                "作品／评赏"
+              ],
+              "answer": {
+                "主题一句": "你探索着什么",
+                "工作簿": "研究做过什么",
+                "作品／评赏": "呈现了什么"
+              },
+              "explain": "再加上下一步，就是四句结构。"
+            },
+            {
+              "type": "order",
+              "question": "将作品集总览排好。",
+              "options": [
+                "主题一句",
+                "研究工作簿做过什么",
+                "作品／评赏呈现什么",
+                "下一步"
+              ],
+              "explain": "由主题到工作簿、作品、下一步。"
+            },
+            {
+              "type": "dualRead",
+              "question": "双图对读：左边写研究工作簿做过什么，右边写作品／评赏呈现什么。各一句。",
+              "options": [
+                "工作簿",
+                "作品／评赏"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U7-L2.png",
+              "imageCredit": "自制 · VA-Nexus",
+              "explain": "练习结构 · 不用真实试卷"
+            },
+            {
+              "type": "short",
+              "question": "用四句写一段作品集总览。提示：主题、工作簿、作品／评赏、下一步各一句。不锁字数，也不用真实试卷。",
+              "options": [],
+              "explain": "练习结构 · 不用真实试卷"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

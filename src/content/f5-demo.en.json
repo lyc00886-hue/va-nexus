@@ -1,0 +1,1625 @@
+{
+  "units": [
+    {
+      "id": "F5-U1-ORIENT",
+      "title": "Form 5 VA start: public-exam structure and visual diary",
+      "intro": "This unit starts Form 5 visual arts. You will revisit the two learning strands (appreciation and making), learn how the two public-exam papers are structured, and continue a weekly visual diary. Lessons teach structure and method only. They do not use real public exam papers or high-score student exemplars.",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-ORIENT.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U1-L1",
+          "title": "Form 5 start: course review and the two public-exam papers",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Form 5 visual arts starts with a review. The two strands are still appreciation and making, and you keep practising both.",
+            "The public exam has two papers. You choose Paper 1 or Paper 2. Paper 1 begins with a flat-work requirement; Paper 2 follows the design task as set.",
+            "Appreciation practice: describe the forms you see, then note a possible cultural situation. Making practice: choose one medium and try one small step.",
+            "Lessons teach structure and method only. They do not use real public exam papers or high-score student exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What do you do with the two public-exam papers?",
+              "options": [
+                "Hand in both papers at once",
+                "Choose Paper 1 or Paper 2",
+                "Only an oral exam is allowed",
+                "The difference does not matter"
+              ],
+              "answer": "Choose Paper 1 or Paper 2",
+              "explain": "The structure is a choice of one paper."
+            },
+            {
+              "type": "fill",
+              "question": "Paper 1 begins with a requirement for ＿＿ work.",
+              "options": [],
+              "answer": "flat",
+              "explain": "Paper 1 starts from flat work.",
+              "wordBank": [
+                "flat",
+                "sound-only",
+                "random",
+                "blank"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match each strand to a practice",
+              "options": [
+                "Appreciation",
+                "Making",
+                "Two-paper structure"
+              ],
+              "answer": {
+                "Appreciation": "Describe form and context",
+                "Making": "Try one step in a medium",
+                "Two-paper structure": "Choose Paper 1 or Paper 2"
+              },
+              "explain": "Review both strands and the paper structure together."
+            },
+            {
+              "type": "order",
+              "question": "Order the Form 5 start steps.",
+              "options": [
+                "Review appreciation and making",
+                "Tell Paper 1 from Paper 2",
+                "Note how you would choose",
+                "Continue the weekly visual diary"
+              ],
+              "explain": "Review, distinguish the papers, note a choice, then keep the diary."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one line on what you notice; right, one making step.",
+              "options": [
+                "What I notice",
+                "A making step"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U1-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, say how you review appreciation and making together, and how Paper 1 differs from Paper 2. Hint: sentence one names the strands; sentence two names the structural difference.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U1-L2",
+          "title": "Weekly visual diary: research and record",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U1-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "A weekly visual diary is a habit of research and record. One page can hold a sketch, one observation, and one open question.",
+            "Keep the record in class. Use photos and objects you already have, or materials your teacher provides.",
+            "Research can ask: what forms do you see, what might they be for, and which medium will you try next week?",
+            "Note the diary gently. This page does not use a real exam paper as a model."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What is a weekly visual diary mainly for?",
+              "options": [
+                "Copying out a full essay",
+                "Research and record",
+                "Pasting a score sheet only",
+                "Collecting real exam papers"
+              ],
+              "answer": "Research and record",
+              "explain": "The diary serves research and record."
+            },
+            {
+              "type": "fill",
+              "question": "One diary page can hold a sketch, an observation, and one ＿＿.",
+              "options": [],
+              "answer": "question",
+              "explain": "An open question carries the work into next week.",
+              "wordBank": [
+                "question",
+                "score",
+                "crest",
+                "slogan"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the diary parts",
+              "options": [
+                "Sketch",
+                "Observation",
+                "Materials"
+              ],
+              "answer": {
+                "Sketch": "Note the forms you see",
+                "Observation": "One sentence on what you noticed",
+                "Materials": "Objects or photos already in class"
+              },
+              "explain": "All three records happen in class."
+            },
+            {
+              "type": "order",
+              "question": "Order one visual-diary entry.",
+              "options": [
+                "Choose one material in the classroom",
+                "Sketch the forms you see",
+                "Write one observation",
+                "Leave one question for next week"
+              ],
+              "explain": "Material, sketch, observation, then a question."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left is a sketch page, right is a research question. One note each.",
+              "options": [
+                "Sketch record",
+                "Research question"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U1-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “material + observation + next-week question” to say how you will keep this week’s visual diary. Hint: all three must be possible in class.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U2-AESTHETIC",
+      "title": "What is aesthetic: Chinese and Western views, plus Song–Yuan art intro",
+      "intro": "This unit asks how beauty can be understood in Chinese and Western societies, then uses a compact timeline to introduce Song–Yuan art. Practise looking at form, function and cultural context. This is an introduction only, not a complete technique course. Lessons do not use real exam papers.",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-AESTHETIC.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U2-L1",
+          "title": "What is aesthetic: how Chinese and Western societies see beauty",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Beauty can be understood differently in Chinese and Western societies. One view may stress harmony and character; another may stress personal feeling or experiments with form.",
+            "In practice, separate three things: form (what you see), function (what it is for), and cultural context (the kind of life it belongs to).",
+            "This lesson does not call one society the correct one. You should be able to name the angle you are using.",
+            "This is an introduction only, not a complete technique course. Lessons do not use real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How does this lesson ask you to look at beauty?",
+              "options": [
+                "Memorise one correct answer",
+                "Separate form, function, and cultural context",
+                "Compare prices only",
+                "Copy one famous painting to finish"
+              ],
+              "answer": "Separate form, function, and cultural context",
+              "explain": "The three angles make your view of beauty clear."
+            },
+            {
+              "type": "fill",
+              "question": "Cultural context means the kind of ＿＿ a work belongs to.",
+              "options": [],
+              "answer": "life",
+              "explain": "Context is about life and culture, not price.",
+              "wordBank": [
+                "life",
+                "price",
+                "weather",
+                "seat"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the three angles",
+              "options": [
+                "Form",
+                "Function",
+                "Cultural context"
+              ],
+              "answer": {
+                "Form": "Shapes and colours you see",
+                "Function": "What the object is for",
+                "Cultural context": "The life it sits in"
+              },
+              "explain": "Use all three angles together."
+            },
+            {
+              "type": "order",
+              "question": "Order one observation of beauty.",
+              "options": [
+                "Describe the form",
+                "Suggest a function",
+                "Offer one cultural context",
+                "Name the angle you are using"
+              ],
+              "explain": "From what you see, to use, to context and angle."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one line on form; right, one line on cultural context. Do not call either side the correct society.",
+              "options": [
+                "One line on form",
+                "One line on context"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U2-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In three sentences, show how one classroom object has form, function, and cultural context. Hint: one angle per sentence.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U2-L2",
+          "title": "An introduction to Song–Yuan art",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U2-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "The Song–Yuan introduction uses a compact timeline: learn a rough order first, then look at form in one work.",
+            "Song and Yuan can sit side by side. Court, literati, and popular visual choices can differ. Name the point you are comparing.",
+            "A timeline is not a list of every year to memorise. For an introduction, place one work roughly, then describe form and function.",
+            "This is an introduction only, not a complete technique course. Lessons do not use real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What is the Song–Yuan timeline mainly for?",
+              "options": [
+                "Memorising every year",
+                "Placing a work in a rough order",
+                "Copying one famous painting in full",
+                "Deciding which work costs most"
+              ],
+              "answer": "Placing a work in a rough order",
+              "explain": "A compact timeline is a rough place, not every date."
+            },
+            {
+              "type": "fill",
+              "question": "Before comparing Song and Yuan, name the ＿＿ you are comparing.",
+              "options": [],
+              "answer": "point",
+              "explain": "A comparison needs one clear point.",
+              "wordBank": [
+                "point",
+                "price",
+                "seat",
+                "page number"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the introduction steps",
+              "options": [
+                "Timeline",
+                "Form",
+                "Function"
+              ],
+              "answer": {
+                "Timeline": "A rough order",
+                "Form": "Shape and brushwork you see",
+                "Function": "What the work might be for"
+              },
+              "explain": "Order, form, and function are enough for an introduction."
+            },
+            {
+              "type": "order",
+              "question": "Order a Song–Yuan introduction.",
+              "options": [
+                "Read the compact timeline",
+                "Choose one work",
+                "Describe the form",
+                "Note a possible function"
+              ],
+              "explain": "From the timeline to one work’s form and function."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one formal note on Song; right, one formal note on Yuan. Name the point you compare.",
+              "options": [
+                "Song · form",
+                "Yuan · form"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U2-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, place one Song or Yuan work on the compact timeline. Hint: sentence one is the rough place; sentence two is one form and one function.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U3-HERITAGE",
+      "title": "Self, heritage and society",
+      "intro": "This unit starts from how tradition and society shape everyday life. Practise gathering material in a visual journal, developing a theme, and testing ideas in ink and mixed media. You will compare methods in strange-stone images with Surrealism and Cubism, rather than copying a picture. Interviews, observation and collecting stay as classroom practice. Lessons do not use high-score exemplars.",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-HERITAGE.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U3-L1",
+          "title": "How tradition and society shape everyday life",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Tradition and society reach you through everyday objects, festival colours, and how things are arranged at home.",
+            "Start from one everyday object: its form, its place in daily life, and your own response.",
+            "Interviews, observation, and collecting stay as classroom practice. A conversation, a photo you already have, or a classroom object is enough.",
+            "Lessons do not use high-score exemplars. Write the influence you actually see."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Where does this lesson ask you to start?",
+              "options": [
+                "A real exam paper",
+                "One everyday object",
+                "A famous painting you must copy",
+                "A score sheet"
+              ],
+              "answer": "One everyday object",
+              "explain": "Start from an object in everyday life."
+            },
+            {
+              "type": "fill",
+              "question": "Interviews, observation, and collecting stay as ＿＿ practice.",
+              "options": [],
+              "answer": "classroom",
+              "explain": "All three stay in the classroom.",
+              "wordBank": [
+                "classroom",
+                "contest",
+                "long trip",
+                "raffle"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match everyday influences",
+              "options": [
+                "Form",
+                "Place in life",
+                "Your response"
+              ],
+              "answer": {
+                "Form": "The object’s shape and colour",
+                "Place in life": "Where it usually appears",
+                "Your response": "How you feel it affects you"
+              },
+              "explain": "All three together show an influence."
+            },
+            {
+              "type": "order",
+              "question": "Order one everyday observation.",
+              "options": [
+                "Choose one everyday object",
+                "Describe the form",
+                "Note its place in daily life",
+                "Write your own response"
+              ],
+              "explain": "Object, form, place, then response."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, the object’s form; right, its place in daily life.",
+              "options": [
+                "Object form",
+                "Place in life"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In three sentences, show how tradition or society shapes one everyday object for you. Hint: one sentence each for form, place, and response, all possible in class.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L2",
+          "title": "Strange stones in dialogue: Wu Bin with Surrealism and Cubism",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Strange-stone comparison is about method, not copying a picture. Look at how Wu Bin makes a rock strange, then at how Surrealism and Cubism reassemble what is seen.",
+            "A comparison can ask: where is it exaggerated, where is it cut apart, and where can you still tell it is stone?",
+            "Surrealism often puts unusual combinations together. Cubism often breaks an object into many faces. Talk about the method, not about copying one painting.",
+            "Images stay as classroom diagrams. Lessons do not use high-score exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the strange-stone comparison ask you to do?",
+              "options": [
+                "Copy a whole picture",
+                "Compare methods rather than copy a picture",
+                "Memorise birth years",
+                "Decide which costs most"
+              ],
+              "answer": "Compare methods rather than copy a picture",
+              "explain": "The comparison is about method, not copying."
+            },
+            {
+              "type": "fill",
+              "question": "Cubism often breaks an object into many ＿＿.",
+              "options": [],
+              "answer": "faces",
+              "explain": "Many faces describes a formal method.",
+              "wordBank": [
+                "faces",
+                "prices",
+                "seats",
+                "signatures"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the methods",
+              "options": [
+                "Wu Bin’s strange stones",
+                "Surrealism",
+                "Cubism"
+              ],
+              "answer": {
+                "Wu Bin’s strange stones": "Make the rock strange and still readable as stone",
+                "Surrealism": "Put unusual combinations together",
+                "Cubism": "Break an object into many faces"
+              },
+              "explain": "All three are methods, not pictures to copy."
+            },
+            {
+              "type": "order",
+              "question": "Order one strange-stone comparison.",
+              "options": [
+                "Describe the stone’s form",
+                "Point to exaggeration or a cut",
+                "Name one Surrealist or Cubist method",
+                "Write one step you would try"
+              ],
+              "explain": "From what you see, to a method, to one step of your own."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one method in Wu Bin’s strange stones; right, one Surrealist or Cubist method. Do not copy a picture.",
+              "options": [
+                "Strange-stone method",
+                "A method of reassembling"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, compare Wu Bin with Surrealism or Cubism. Hint: sentence one is the stone’s form; sentence two is a method, and you say you are not copying a picture.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L3",
+          "title": "Visual journal: how to gather material and develop a theme",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "A visual journal gathers material and develops a theme. One page collects; a later page narrows.",
+            "Gathering can be a classroom sketch, a photo you already have, a short interview note, or one collected object.",
+            "To develop a theme, pick an interest that keeps returning in the material, then write it as one sentence.",
+            "Interviews, observation, and collecting stay as classroom practice. Lessons do not use high-score exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the journal do before a theme is developed?",
+              "options": [
+                "Jump to a conclusion",
+                "Gather material",
+                "Hand in a real exam paper",
+                "Memorise one slogan"
+              ],
+              "answer": "Gather material",
+              "explain": "Gather first, then narrow to a theme."
+            },
+            {
+              "type": "fill",
+              "question": "A theme sentence comes from an ＿＿ that keeps returning in the material.",
+              "options": [],
+              "answer": "interest",
+              "explain": "A returning interest is what becomes the theme.",
+              "wordBank": [
+                "interest",
+                "score",
+                "seat",
+                "weather forecast"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match gathering and developing",
+              "options": [
+                "Sketch",
+                "Interview note",
+                "Theme sentence"
+              ],
+              "answer": {
+                "Sketch": "Forms seen in class",
+                "Interview note": "A conversation held in class",
+                "Theme sentence": "One sentence from a returning interest"
+              },
+              "explain": "Gathering and the theme both happen in class."
+            },
+            {
+              "type": "order",
+              "question": "Order gathering and developing.",
+              "options": [
+                "Collect several kinds of material",
+                "Circle an interest that returns",
+                "Write one theme sentence",
+                "Decide what the next page will try"
+              ],
+              "explain": "Material, interest, theme, then a next step."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left is a gathering page, right is a theme sentence. Note what you see and what you narrowed.",
+              "options": [
+                "Gathering page",
+                "Theme sentence"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L3.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “two materials + one theme sentence” to show how you move from gathering to developing. Hint: the materials must be possible in class.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U3-L4",
+          "title": "Ink experiments and the first portfolio piece",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L4.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Ink experiments try a few small effects with ink, water, and paper, then you choose one that fits your theme.",
+            "The first portfolio piece uses a research and making structure: one theme sentence, material evidence, one medium test, and a next step.",
+            "Mixed media can be tested with ink. Change only one condition at a time so you can record the difference.",
+            "Lessons do not use high-score exemplars. You show your own test and structure, not a real exam paper."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Which item belongs in the first portfolio piece?",
+              "options": [
+                "The full text of a real exam paper",
+                "A theme sentence and one medium test",
+                "A school admin form",
+                "A high-score student exemplar"
+              ],
+              "answer": "A theme sentence and one medium test",
+              "explain": "The first piece uses theme, evidence, a test, and a next step."
+            },
+            {
+              "type": "fill",
+              "question": "Each mixed-media test changes only one ＿＿.",
+              "options": [],
+              "answer": "condition",
+              "explain": "One change at a time makes the comparison clear.",
+              "wordBank": [
+                "condition",
+                "school name",
+                "seat",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the first-piece structure",
+              "options": [
+                "Theme sentence",
+                "Medium test",
+                "Next step"
+              ],
+              "answer": {
+                "Theme sentence": "What you are exploring",
+                "Medium test": "One ink or mixed-media effect",
+                "Next step": "What you want to try next"
+              },
+              "explain": "The three parts together make the structure."
+            },
+            {
+              "type": "order",
+              "question": "Order the ink test and the first portfolio piece.",
+              "options": [
+                "Write the theme sentence",
+                "Make one ink test",
+                "Record which condition changed",
+                "Write the next step"
+              ],
+              "explain": "Theme, test, record, then next step."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one ink effect; right, the theme sentence of the first portfolio piece.",
+              "options": [
+                "Ink effect",
+                "Theme sentence"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L4.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “theme sentence + one test + next step” for the first portfolio piece. Hint: name the condition you changed, and do not use a high-score exemplar.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U4-SYMBOL",
+      "title": "Traditional symbols, colour and pattern",
+      "intro": "This unit looks at signs and symbols in traditional colour, pattern and painting, then continues Song–Yuan observation. Practise describing the forms you see and the meanings they might carry. All of it happens in class.",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-SYMBOL.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U4-L1",
+          "title": "Signs and symbols in traditional colour, pattern and painting",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Traditional colour, pattern, and painting can carry signs. The same colour can mean different things in different lives.",
+            "Separate the form you see from a meaning you suggest. Write the meaning as “might”, not as the only answer.",
+            "Pattern can be repetition, symmetry, or an object used again and again. Name which kind of repeat you see.",
+            "All of it happens in class. A classroom diagram and your own description are enough."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "How should you write a symbolic meaning?",
+              "options": [
+                "As the only correct answer",
+                "As a meaning it might carry",
+                "Write the price only",
+                "Copy an exam prompt"
+              ],
+              "answer": "As a meaning it might carry",
+              "explain": "A symbol is a possible meaning, not the only one."
+            },
+            {
+              "type": "fill",
+              "question": "Pattern can be repetition, symmetry, or an object used ＿＿.",
+              "options": [],
+              "answer": "again and again",
+              "explain": "Using something again and again is one kind of pattern.",
+              "wordBank": [
+                "again and again",
+                "hidden away",
+                "sold off",
+                "deleted"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match symbol study",
+              "options": [
+                "Form",
+                "Meaning",
+                "Class"
+              ],
+              "answer": {
+                "Form": "Colour and pattern you see",
+                "Meaning": "A meaning the form might carry",
+                "Class": "The description happens in class"
+              },
+              "explain": "Form first, then a possible meaning."
+            },
+            {
+              "type": "order",
+              "question": "Order one symbol description.",
+              "options": [
+                "Point to a colour or pattern",
+                "Describe the form",
+                "Write one possible meaning",
+                "Say that this is a suggestion"
+              ],
+              "explain": "From the form you see to a possible meaning."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, form only; right, one possible meaning.",
+              "options": [
+                "Form I see",
+                "A meaning it might carry"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U4-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, describe one traditional colour or pattern. Hint: sentence one is form only; sentence two uses “might” for the meaning.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U4-L2",
+          "title": "Song–Yuan art, continued",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U4-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Song–Yuan art, continued, means choosing one more formal detail after the introduction.",
+            "Compare one similarity and one difference, such as empty space, the density of lines, or the proportion of figures to landscape.",
+            "The continuation is still observation. It is not a full technique course, and it is not copying a whole famous painting.",
+            "All of it happens in class. Lessons do not use real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the Song–Yuan continuation mainly add?",
+              "options": [
+                "More years to memorise",
+                "One more formal detail",
+                "Copy a whole famous painting",
+                "Hand in a real exam paper"
+              ],
+              "answer": "One more formal detail",
+              "explain": "The continuation is one more look at form."
+            },
+            {
+              "type": "fill",
+              "question": "When comparing two works, write one similarity and one ＿＿.",
+              "options": [],
+              "answer": "difference",
+              "explain": "A comparison needs a similarity and a difference.",
+              "wordBank": [
+                "difference",
+                "price",
+                "seat",
+                "signature count"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the continued look",
+              "options": [
+                "Empty space",
+                "Density",
+                "Proportion"
+              ],
+              "answer": {
+                "Empty space": "Where the picture leaves space",
+                "Density": "Where lines are dense or open",
+                "Proportion": "Whether figures or landscape take more space"
+              },
+              "explain": "All three are formal details."
+            },
+            {
+              "type": "order",
+              "question": "Order one continued comparison.",
+              "options": [
+                "Choose two Song–Yuan works",
+                "Choose one formal detail",
+                "Write one similarity",
+                "Write one difference"
+              ],
+              "explain": "Choose the works and the detail, then similarity and difference."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one shared form; right, one different form.",
+              "options": [
+                "A shared form",
+                "A different form"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U4-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, continue one Song–Yuan observation. Hint: sentence one is a formal detail; sentence two is a similarity or a difference.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U5-ROLE",
+      "title": "Role-taking: re-presenting a person in a Chinese context",
+      "intro": "This unit practises role-taking: how to re-present a person in a Chinese context. You will try wet and dry media, and use research and making structures to develop the second portfolio piece. Lessons do not use high-score student exemplars.",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-ROLE.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U5-L1",
+          "title": "Role and identity: how to re-present a person",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Role-taking asks how a person can be re-presented: identity, clothing, pose, and how a viewer might read them.",
+            "Re-presenting in a Chinese context may borrow a traditional pose, sign, or setting. Say what you borrowed and what you changed.",
+            "A role is not a likeness contest. Write what the person is doing in the picture, and which detail carries identity.",
+            "Lessons do not use high-score student exemplars. Use the method and your own sentences."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "When you re-present a person, what matters most to say?",
+              "options": [
+                "Which photo it matches",
+                "How identity is shown",
+                "Who scored highest",
+                "Which famous painting to copy"
+              ],
+              "answer": "How identity is shown",
+              "explain": "The practice is about how identity is shown."
+            },
+            {
+              "type": "fill",
+              "question": "After borrowing a traditional pose, write what you ＿＿.",
+              "options": [],
+              "answer": "changed",
+              "explain": "Name both the borrowing and the change.",
+              "wordBank": [
+                "changed",
+                "sold",
+                "hid from class",
+                "memorised only"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match role elements",
+              "options": [
+                "Identity",
+                "Pose",
+                "Detail"
+              ],
+              "answer": {
+                "Identity": "What kind of role the person is",
+                "Pose": "How the body is placed",
+                "Detail": "Which object carries identity"
+              },
+              "explain": "All three together re-present a person."
+            },
+            {
+              "type": "order",
+              "question": "Order one role-taking practice.",
+              "options": [
+                "Choose a person to re-present",
+                "Note identity and pose",
+                "Choose one detail from a Chinese context",
+                "Write what you changed"
+              ],
+              "explain": "Person, identity, detail, then the change."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, a pose or sign you borrow; right, what you change.",
+              "options": [
+                "What I borrow",
+                "What I change"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, say how you re-present a person in a Chinese context. Hint: sentence one is identity and pose; sentence two is one detail and what you change.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U5-L2",
+          "title": "Wet and dry media experiments",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Dry media such as pencil, pastel, and charcoal often keep a clear edge. Wet media such as ink and watercolour spread.",
+            "In a test, change one condition: dry or wet, light or heavy pressure, or whether the paper is damp.",
+            "Record what you used, the effect you saw, and whether that effect could serve the clothing or the setting of a role.",
+            "Try it all in class. Lessons do not use high-score student exemplars."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "One clear difference between wet and dry media is?",
+              "options": [
+                "Wet media are always more correct",
+                "Wet media spread more easily",
+                "Dry media cannot make a line",
+                "You must finish both at the same time"
+              ],
+              "answer": "Wet media spread more easily",
+              "explain": "Wet media spread; dry media keep an edge more easily."
+            },
+            {
+              "type": "fill",
+              "question": "Each test changes only one ＿＿.",
+              "options": [],
+              "answer": "condition",
+              "explain": "One condition at a time shows the difference.",
+              "wordBank": [
+                "condition",
+                "school name",
+                "seat",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match medium and effect",
+              "options": [
+                "Pencil or charcoal",
+                "Ink or watercolour",
+                "Record"
+              ],
+              "answer": {
+                "Pencil or charcoal": "A clear edge is easier to keep",
+                "Ink or watercolour": "Colour spreads more easily",
+                "Record": "Write what you used and what you saw"
+              },
+              "explain": "The test and the record work together."
+            },
+            {
+              "type": "order",
+              "question": "Order one wet-and-dry test.",
+              "options": [
+                "Choose dry or wet",
+                "Change only one condition",
+                "Watch the edge or the spread",
+                "Note whether it can serve the role"
+              ],
+              "explain": "Choice, test, observation, then use."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one dry-media effect; right, one wet-media effect.",
+              "options": [
+                "Dry-media effect",
+                "Wet-media effect"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, record one wet-and-dry test. Hint: sentence one names the medium and the condition you changed; sentence two says whether the effect can serve the role.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U5-L3",
+          "title": "Song–Yuan art and the second portfolio piece",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U5-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "This lesson brings a Song–Yuan observation into the second portfolio piece. You still describe one formal detail, then use it to develop a role or a picture.",
+            "The second piece uses research and making: one theme sentence, one piece of research evidence, one dry or wet test, and a next step.",
+            "A Song–Yuan detail might be empty space, line, or figure proportion. Borrow the method. Do not copy a whole picture.",
+            "Lessons do not use high-score student exemplars or real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the second portfolio piece connect to?",
+              "options": [
+                "A real exam paper",
+                "One Song–Yuan formal detail and your role",
+                "A high-score student exemplar",
+                "A school admin step"
+              ],
+              "answer": "One Song–Yuan formal detail and your role",
+              "explain": "The second piece joins a Song–Yuan observation to your own structure."
+            },
+            {
+              "type": "fill",
+              "question": "The second piece needs a theme sentence, research evidence, one medium test, and a ＿＿.",
+              "options": [],
+              "answer": "next step",
+              "explain": "A next step keeps the portfolio moving.",
+              "wordBank": [
+                "next step",
+                "crest",
+                "seating plan",
+                "score list"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the second piece",
+              "options": [
+                "Song–Yuan detail",
+                "Research evidence",
+                "Medium test"
+              ],
+              "answer": {
+                "Song–Yuan detail": "Empty space, line, or proportion",
+                "Research evidence": "One item from your journal",
+                "Medium test": "One dry or wet effect"
+              },
+              "explain": "The three items serve the second piece."
+            },
+            {
+              "type": "order",
+              "question": "Order the second piece.",
+              "options": [
+                "Write the theme sentence",
+                "Choose one Song–Yuan formal detail",
+                "Make one medium test",
+                "Write the next step"
+              ],
+              "explain": "Theme, detail, test, then next step."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one Song–Yuan formal detail; right, how it enters the second piece.",
+              "options": [
+                "Song–Yuan detail",
+                "Second portfolio piece"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U5-L3.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “theme sentence + one Song–Yuan detail + next step” for the second portfolio piece. Hint: say you borrow a method and do not copy a whole picture.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U6-CONTEMP",
+      "title": "Contemporary China and innovative heritage",
+      "intro": "This unit introduces Xu Bing and contemporary Chinese calligraphy, plus a first look at global contemporary art, then practises innovative heritage through three-dimensional collage and installation. All of it happens in class. It also closes the Song–Yuan observation thread.",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-CONTEMP.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U6-L1",
+          "title": "Xu Bing and contemporary Chinese calligraphy",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Xu Bing and contemporary Chinese calligraphy are studied in class. You look at how writing becomes a visual form.",
+            "Ask: can the writing still be read, how are strokes repeated or reassembled, and how is a viewer asked to look?",
+            "This lesson stays in class. Classroom writing, a diagram, and your own sentences are enough.",
+            "You study the method. You do not copy one artwork’s picture. Lessons do not use real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What do you do when you study Xu Bing and contemporary calligraphy?",
+              "options": [
+                "You can learn it only by leaving class",
+                "In class, see how writing becomes visual form",
+                "Copy one whole artwork",
+                "Memorise a real exam paper"
+              ],
+              "answer": "In class, see how writing becomes visual form",
+              "explain": "The study stays in class and stays with method."
+            },
+            {
+              "type": "fill",
+              "question": "A contemporary-calligraphy question can ask whether the writing can still be ＿＿.",
+              "options": [],
+              "answer": "read",
+              "explain": "Whether it can be read is a visual question.",
+              "wordBank": [
+                "read",
+                "sold",
+                "hidden as a school name",
+                "scored"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match calligraphy looking",
+              "options": [
+                "Writing",
+                "Strokes",
+                "Viewer"
+              ],
+              "answer": {
+                "Writing": "Whether it can still be read",
+                "Strokes": "How they are repeated or reassembled",
+                "Viewer": "How they are invited to look"
+              },
+              "explain": "All three questions are answered in class."
+            },
+            {
+              "type": "order",
+              "question": "Order one in-class study.",
+              "options": [
+                "Look at writing as form",
+                "Ask whether it can still be read",
+                "Describe how strokes are reassembled",
+                "Write one step you would try"
+              ],
+              "explain": "From looking, to method, to one step of your own."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, whether the writing can still be read; right, how strokes are reassembled. This stays in class.",
+              "options": [
+                "Can it be read",
+                "Strokes reassembled"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, describe one method in Xu Bing or contemporary calligraphy. Hint: sentence one links writing and visual form; sentence two is a step you can try in class.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L2",
+          "title": "An introduction to global contemporary art",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "An introduction to global contemporary art is one comparison. Choose a classroom diagram and ask how its form speaks to a viewer.",
+            "A comparison can ask: is the material an everyday object, do you need to move closer to see it whole, and does a title change your reading?",
+            "An introduction is not a survey of every region. Be clear about one work’s form and one way of looking.",
+            "All of it happens in class. Lessons do not use real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the global contemporary introduction ask of you?",
+              "options": [
+                "Memorise every region",
+                "Be clear about one work’s form and one way of looking",
+                "Copy a whole picture",
+                "Hand in a real exam paper"
+              ],
+              "answer": "Be clear about one work’s form and one way of looking",
+              "explain": "The introduction is one work and one method."
+            },
+            {
+              "type": "fill",
+              "question": "A comparison can ask whether a title changes your ＿＿.",
+              "options": [],
+              "answer": "reading",
+              "explain": "A title can change how you read the form.",
+              "wordBank": [
+                "reading",
+                "seat",
+                "price",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match contemporary looking",
+              "options": [
+                "Material",
+                "Distance",
+                "Title"
+              ],
+              "answer": {
+                "Material": "Whether it is an everyday object",
+                "Distance": "Whether you move closer to see it whole",
+                "Title": "Whether it changes your reading"
+              },
+              "explain": "All three are ways of looking."
+            },
+            {
+              "type": "order",
+              "question": "Order one contemporary introduction.",
+              "options": [
+                "Choose a classroom diagram",
+                "Describe the form",
+                "Ask about one way of looking",
+                "Note whether a title changes the reading"
+              ],
+              "explain": "Diagram, form, way of looking, then title."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, form; right, one way of looking.",
+              "options": [
+                "Form",
+                "Way of looking"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, make one introduction to global contemporary art. Hint: sentence one is form; sentence two is how a viewer is invited to look. Keep it in class.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L3",
+          "title": "Innovative heritage: three-dimensional collage and installation",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L3.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "Innovative heritage turns a sign or a writing method you have studied into a classroom piece you can walk around: a three-dimensional collage or an installation.",
+            "Xu Bing’s approach to writing can be a conceptual reference: can the writing be read, and can parts be reassembled? You do not copy one artwork.",
+            "In a three-dimensional collage, add one material at a time and note which viewing angle it changes.",
+            "All of it happens in class. Lessons do not use real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the innovative-heritage lesson mainly try?",
+              "options": [
+                "Copy one whole installation",
+                "Classroom collage and installation",
+                "It can be done only by leaving class",
+                "Hand in a real exam paper"
+              ],
+              "answer": "Classroom collage and installation",
+              "explain": "Collage and installation stay in class."
+            },
+            {
+              "type": "fill",
+              "question": "Each three-dimensional collage adds only one ＿＿.",
+              "options": [],
+              "answer": "material",
+              "explain": "One material at a time shows which angle changed.",
+              "wordBank": [
+                "material",
+                "school name",
+                "score",
+                "seat"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match innovative heritage",
+              "options": [
+                "Conceptual reference",
+                "Collage",
+                "Installation"
+              ],
+              "answer": {
+                "Conceptual reference": "Whether writing can be read and parts reassembled",
+                "Collage": "Add one material at a time",
+                "Installation": "Move closer to see it whole"
+              },
+              "explain": "All three are classroom methods."
+            },
+            {
+              "type": "order",
+              "question": "Order one three-dimensional collage.",
+              "options": [
+                "Choose a sign or a writing method",
+                "Add one material",
+                "Move closer and note a new angle",
+                "Note that you did not copy an artwork"
+              ],
+              "explain": "Method, material, angle, and not copying an artwork."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, the writing method you refer to; right, the one material you add.",
+              "options": [
+                "Writing method",
+                "One material"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L3.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, describe your collage or installation. Hint: sentence one is a sign or writing method; sentence two is one material and one viewing angle. Say you are not copying an artwork.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U6-L4",
+          "title": "Song–Yuan art, closing look",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U6-L4.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "The closing look returns to one form you observed this year: empty space, line, proportion, or one difference among court, literati, and popular work.",
+            "Closing is not another memorised timeline. Write one detail into your research workbook and say how it helps your making.",
+            "The research workbook runs through the learning. Theme, evidence, a test, and a reflection can sit on one page.",
+            "All of it happens in class. Lessons do not use real exam papers."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What does the Song–Yuan closing look mainly do?",
+              "options": [
+                "Memorise the full date list again",
+                "Write one formal detail into the research workbook",
+                "Copy every famous painting",
+                "Hand in a real exam paper"
+              ],
+              "answer": "Write one formal detail into the research workbook",
+              "explain": "Closing puts the observation into the workbook."
+            },
+            {
+              "type": "fill",
+              "question": "One workbook page can hold a theme, evidence, a test, and a ＿＿.",
+              "options": [],
+              "answer": "reflection",
+              "explain": "Reflection shows how the detail serves making.",
+              "wordBank": [
+                "reflection",
+                "crest",
+                "seat",
+                "score list"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the closing page",
+              "options": [
+                "Formal detail",
+                "Workbook",
+                "Making"
+              ],
+              "answer": {
+                "Formal detail": "Empty space, line, or proportion",
+                "Workbook": "Holds the theme and the evidence",
+                "Making": "How the detail helps you"
+              },
+              "explain": "The three items close the Song–Yuan thread into your own learning."
+            },
+            {
+              "type": "order",
+              "question": "Order the Song–Yuan closing look.",
+              "options": [
+                "Choose one form you observed this year",
+                "Write it into the research workbook",
+                "Say how it helps your making",
+                "Leave one reflection"
+              ],
+              "explain": "Detail, workbook, making, then reflection."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one Song–Yuan formal detail; right, how it helps making in the workbook.",
+              "options": [
+                "Song–Yuan detail",
+                "Use in the workbook"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U6-L4.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "In two sentences, close the Song–Yuan observation. Hint: sentence one is one formal detail; sentence two says how it enters the research workbook and helps making.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "F5-U7-PORTFOLIO",
+      "title": "Portfolio review and year reflection",
+      "intro": "This unit practises reviewing a year of learning: what went well, what can improve, and how to write a short portfolio overview. Lessons do not use real exam papers or high-score exemplars.",
+      "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-PORTFOLIO.png",
+      "coverCredit": "Original · VA-Nexus",
+      "lessons": [
+        {
+          "id": "F5-U7-L1",
+          "title": "How to review your strengths and next steps",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-L1.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "A review looks at your year: which practice feels steady, and which step is still messy.",
+            "A strength needs one piece of evidence: a diary page, one ink test, or a theme sentence you wrote clearly.",
+            "The next step is one small action you can do in class. Do not turn it into a submission timetable.",
+            "Lessons do not use real exam papers or high-score exemplars. You review your own process."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "What must a strength in the review include?",
+              "options": [
+                "A high-score exemplar",
+                "One piece of your own evidence",
+                "A real exam paper",
+                "A seating plan"
+              ],
+              "answer": "One piece of your own evidence",
+              "explain": "A strength needs your own evidence."
+            },
+            {
+              "type": "fill",
+              "question": "The next step is one small ＿＿ you can do in class.",
+              "options": [],
+              "answer": "action",
+              "explain": "One doable step is enough.",
+              "wordBank": [
+                "action",
+                "crest",
+                "score",
+                "seat"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the review",
+              "options": [
+                "Strength",
+                "Evidence",
+                "Next step"
+              ],
+              "answer": {
+                "Strength": "A practice that feels steady",
+                "Evidence": "A diary page, a test, or a theme sentence",
+                "Next step": "One small classroom action"
+              },
+              "explain": "The three items make a full review."
+            },
+            {
+              "type": "order",
+              "question": "Order one self-review.",
+              "options": [
+                "Choose a practice that feels steady",
+                "Attach one piece of evidence",
+                "Name one step that is still messy",
+                "Write one small action"
+              ],
+              "explain": "Strength, evidence, a weak step, then an action."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, one strength and its evidence; right, one next step.",
+              "options": [
+                "Strength and evidence",
+                "Next step"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U7-L1.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Use “strength + evidence + next step” to review yourself. Hint: the evidence is your own page or test, and the next step is possible in class. Do not use a high-score exemplar.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        },
+        {
+          "id": "F5-U7-L2",
+          "title": "Structure for a portfolio overview",
+          "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U7-L2.png",
+          "coverCredit": "Original · VA-Nexus",
+          "cards": [
+            "A portfolio overview uses four moves: one theme sentence, what the research workbook did, what the artwork or critical study shows, and the next step.",
+            "The research workbook and the artwork or critical study are the two parts of the portfolio. The overview says how they support each other.",
+            "This lesson does not lock a word count. Keep the four moves, and let each sentence do one job.",
+            "Lessons do not use real exam papers or high-score exemplars. The overview is your own structure."
+          ],
+          "quiz": [
+            {
+              "type": "mcq",
+              "question": "Which move must the portfolio overview include?",
+              "options": [
+                "A school admin step",
+                "What the research workbook did",
+                "The full text of a high-score exemplar",
+                "A real exam paper"
+              ],
+              "answer": "What the research workbook did",
+              "explain": "The overview names the workbook and the work."
+            },
+            {
+              "type": "fill",
+              "question": "The overview says how the workbook and the artwork or critical study ＿＿ each other.",
+              "options": [],
+              "answer": "support",
+              "explain": "The two parts support each other. One does not replace the other.",
+              "wordBank": [
+                "support",
+                "replace",
+                "hide",
+                "score"
+              ]
+            },
+            {
+              "type": "match",
+              "question": "Match the overview",
+              "options": [
+                "Theme sentence",
+                "Workbook",
+                "Artwork or critical study"
+              ],
+              "answer": {
+                "Theme sentence": "What you are exploring",
+                "Workbook": "What the research did",
+                "Artwork or critical study": "What it shows"
+              },
+              "explain": "Add the next step and the four moves are complete."
+            },
+            {
+              "type": "order",
+              "question": "Order the portfolio overview.",
+              "options": [
+                "One theme sentence",
+                "What the research workbook did",
+                "What the artwork or critical study shows",
+                "The next step"
+              ],
+              "explain": "Theme, workbook, work, then next step."
+            },
+            {
+              "type": "dualRead",
+              "question": "Dual-image read: left, what the workbook did; right, what the artwork or critical study shows.",
+              "options": [
+                "Workbook",
+                "Artwork or critical study"
+              ],
+              "image": "/content/learning-map-illustrations/f5-dualread/F5-U7-L2.png",
+              "imageCredit": "Self-made · VA-Nexus",
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            },
+            {
+              "type": "short",
+              "question": "Write a portfolio overview in four sentences. Hint: one each for theme, workbook, artwork or critical study, and next step. There is no word-count lock, and you do not use a real exam paper.",
+              "options": [],
+              "explain": "Practice structure · lessons do not use a real exam paper"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

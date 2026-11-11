@@ -1,27 +1,40 @@
 import { useState } from 'react'
 import type { Unit } from '../../game/types'
-import { t } from '../../i18n'
+import { t, type MessageKey } from '../../i18n'
 import { LessonPlayer } from './LessonPlayer'
 import { QuestionTypeChips } from './QuestionTypeChips'
 
 /**
- * Classic map, Form 4. Every unit in the completed set is listed.
+ * Classic map year list. Every unit in the pack is listed.
  * A unit opens onto its lessons. A lesson opens in the player. Entry does not.
  */
-export function F4YearList({ units }: { units: Unit[] }) {
+export function F4YearList({
+  units,
+  gradeKey = 'map.grade.f4',
+  subtitleKey,
+}: {
+  units: Unit[]
+  gradeKey?: MessageKey
+  subtitleKey?: MessageKey
+}) {
   const [unitId, setUnitId] = useState<string | null>(null)
   const [lessonId, setLessonId] = useState<string | null>(null)
   const open = units.find((unit) => unit.id === unitId) ?? null
   const lesson = open?.nodes.find((node) => node.id === lessonId) ?? null
 
   return (
-    <div data-f4-year-list className="space-y-3">
+    <div data-f4-year-list data-year-grade={gradeKey} className="space-y-3">
+      {subtitleKey ? (
+        <p data-year-subtitle className="px-1 text-sm leading-relaxed text-[#0F766E]">
+          {t(subtitleKey)}
+        </p>
+      ) : null}
       {units.map((unit) => {
         const selected = unit.id === unitId
         return (
           <article key={unit.id} data-f4-unit={unit.id} className="rounded-3xl border border-[#0D9488]/45 bg-white px-4 py-3 shadow-sm">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full bg-[#0D9488] px-2.5 py-0.5 text-xs font-bold text-[#FFF9E9]">{t('map.grade.f4')}</span>
+              <span className="rounded-full bg-[#0D9488] px-2.5 py-0.5 text-xs font-bold text-[#FFF9E9]">{t(gradeKey)}</span>
               <span className="rounded-full bg-[#e7f7f5] px-2.5 py-0.5 text-xs font-semibold text-[#0F766E]">
                 {t('map.f4.lessonCount', { n: unit.nodes.length })}
               </span>

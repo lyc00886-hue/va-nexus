@@ -16,7 +16,14 @@ const NODE_X = [112, 248] as const
 
 const WIDTH = 360
 const TOP = 118
-const GAP = 186
+/** Room under a two-line unit name so the tag clears the next scene card. */
+const GAP = 236
+
+/** Share of the path width used by a unit-name tag. Kept off the scene cards. */
+export const QUEST_LABEL_WIDTH_RATIO = 0.44
+
+const LABEL_TOP = 28
+const LABEL_HEIGHT = 108
 
 export function questBand(index: number): QuestBandId {
   return QUEST_BANDS[index % QUEST_BANDS.length]
@@ -49,11 +56,17 @@ export function questPathLayout(count: number): { width: number; height: number;
   return { width: WIDTH, height, points }
 }
 
-/** Scene card on the side opposite the node, so furniture does not cover the path. */
+/** Scene card on the side opposite the node, inset from the unit-name tag. */
 export function questSceneBox(index: number, point: QuestPathPoint): { x: number; y: number; w: number; h: number } {
-  const w = 148
-  const h = 132
-  const y = point.y - 62
-  const x = index % 2 === 0 ? 206 : 8
+  const w = 128
+  const h = 124
+  const y = point.y - 52
+  const x = index % 2 === 0 ? 226 : 6
   return { x, y, w, h }
+}
+
+/** Unit-name tag under the node. The box stays in the path corridor, clear of scene art. */
+export function questLabelBox(point: QuestPathPoint): { x: number; y: number; w: number; h: number } {
+  const w = WIDTH * QUEST_LABEL_WIDTH_RATIO
+  return { x: point.x - w / 2, y: point.y + LABEL_TOP, w, h: LABEL_HEIGHT }
 }
