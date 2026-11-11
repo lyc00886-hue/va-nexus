@@ -2,6 +2,7 @@ import { Lock, Upload } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { useSen } from '../context/SenContext'
 import { useT, type MessageKey } from '../i18n'
+import { InspectPractice } from './InspectPractice'
 import { useAuth } from '../lib/auth'
 import {
   DAIE_LAYERS,
@@ -29,6 +30,7 @@ import {
   type PracticeDraftV2,
   type PracticeQuestionDraft,
 } from '../lib/practiceDraft'
+import { INSPECT_OPEN_EVENT, isInspectGrade, peekInspectOpen, type InspectGrade } from '../lib/inspectPractice'
 import { isPracticeQuestionOpen } from '../lib/practiceLock'
 import { validateImage } from '../lib/sbaEvidence'
 
@@ -225,6 +227,8 @@ export function PracticePapers() {
     [DESIGN_PAPER_ID]: design,
   }
   const [which, setWhich] = useState<PaperTab>('paint')
+  const [group, setGroup] = useState<'inspect' | 'papers'>('inspect')
+  const [inspectGrade, setInspectGrade] = useState<InspectGrade>(() => peekInspectOpen() ?? 'f4')
   const [narrow, setNarrow] = useState(
     () => typeof window !== 'undefined' && window.matchMedia('(max-width: 359px)').matches,
   )
@@ -237,6 +241,16 @@ export function PracticePapers() {
   useEffect(() => {
     bundleRef.current = bundle
   }, [bundle])
+
+  useEffect(() => {
+    const onOpen = (event: Event) => {
+      const grade = (event as CustomEvent<unknown>).detail
+      if (isInspectGrade(grade)) setInspectGrade(grade)
+      setGroup('inspect')
+    }
+    window.addEventListener(INSPECT_OPEN_EVENT, onOpen)
+    return () => window.removeEventListener(INSPECT_OPEN_EVENT, onOpen)
+  }, [])
 
   useEffect(() => {
     const query = window.matchMedia('(max-width: 359px)')
@@ -299,25 +313,49 @@ export function PracticePapers() {
 
   return (
     <div className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-6" data-practice-root data-soft-motion="off">
-      <div>
-        <p className="text-xs font-semibold text-[#0D9488]">
-          {t('practice.setLabel', { set: paper.set, label: paper.label })}
-        </p>
-        <h2 className="text-2xl font-bold text-slate-900">{t('tab.practice')}</h2>
-        <p className="text-sm text-slate-500">{t('app.practice.subtitle')}</p>
-      </div>
+      {group === 'inspect' ? (
+        <div>
+          <h2 className="text-2xl font-bold text-slate-900">{t('inspect.practice.title')}</h2>
+          <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('inspect.practice.intro')}</p>
+        </div>
+      ) : (
+        <div>
+          <p className="text-xs font-semibold text-[#0D9488]">
+            {t('practice.setLabel', { set: paper.set, label: paper.label })}
+          </p>
+          <h2 className="text-2xl font-bold text-slate-900">{t('tab.practice')}</h2>
+          <p className="text-sm text-slate-500">{t('app.practice.subtitle')}</p>
+        </div>
+      )}
 
-      <div
-        role="note"
-        data-practice-banner
-        className="rounded-2xl border border-[#0D9488]/40 bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-800"
-      >
-        {paper.examNote}
-      </div>
+      {group === 'papers' ? (
+        <div
+          role="note"
+          data-practice-banner
+          className="rounded-2xl border border-[#0D9488]/40 bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-800"
+        >
+          {paper.examNote}
+        </div>
+      ) : null}
 
-      <div role="tablist" aria-label={t('practice.papers')} className="grid grid-cols-2 gap-2">
+      <div role="tablist" aria-label={t('practice.papers')} className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          role="tab"
+          id="practice-tab-inspect"
+          aria-selected={group === 'inspect'}
+          aria-controls="practice-panel"
+          onClick={() => setGroup('inspect')}
+          className={
+            group === 'inspect'
+              ? 'min-h-11 rounded-full bg-[#0D9488] px-3 py-2 text-sm font-semibold leading-snug text-white shadow-sm'
+              : 'min-h-11 rounded-full bg-white px-3 py-2 text-sm font-semibold leading-snug text-[#0D9488] ring-1 ring-[#0D9488] hover:bg-teal-50'
+          }
+        >
+          {t('inspect.practice.label')}
+        </button>
         {TABS.map((tab) => {
-          const on = which === tab.id
+          const on = group === 'papers' && which === tab.id
           const full = t(tab.label)
           const label = tab.short && narrow ? t(tab.short) : full
           return (
@@ -329,6 +367,7 @@ export function PracticePapers() {
               aria-selected={on}
               aria-controls="practice-panel"
               onClick={() => {
+                setGroup('papers')
                 setWhich(tab.id)
                 setUploadError(null)
                 document.querySelector('[data-practice-root]')?.scrollIntoView({ block: 'start' })
@@ -345,7 +384,10 @@ export function PracticePapers() {
         })}
       </div>
 
-      <div role="tabpanel" id="practice-panel" aria-labelledby={`practice-tab-${which}`} className="space-y-4">
+      <div role="tabpanel" id="practice-panel" aria-labelledby={group === 'inspect' ? 'practice-tab-inspect' : `practice-tab-${which}`} className="space-y-4">
+        {group === 'inspect' ? (
+          <InspectPractice key={inspectGrade} initialGrade={inspectGrade} />
+        ) : (
         <PaperPanel
           paper={paper}
           draft={paperDraft}
@@ -355,6 +397,7 @@ export function PracticePapers() {
           onPatch={(questionId, update) => patchQuestion(paper.id, questionId, update)}
           onUploadError={setUploadError}
         />
+        )}
       </div>
     </div>
   )

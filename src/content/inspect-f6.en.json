@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "id": "inspect-f6",
+  "grade": "f6",
+  "label": "In-school practice",
+  "disclaimer": "These are in-school practice items to review methods from class. They do not use real exam papers or high-score exemplars.",
+  "items": [
+    {
+      "id": "INS-F6-U1-MC",
+      "type": "mcq",
+      "title": "What lessons emphasise when organising a portfolio",
+      "question": "When Form 6 opening lessons talk about checking and organising a portfolio, what do they emphasise?",
+      "unitId": "F6-U1-ORIENT",
+      "options": [
+        "Putting school admin steps into the lesson content",
+        "Using a clear structure to check and organise the work",
+        "Waiting for the year exam timetable before starting",
+        "Copying a real exam paper to fill the pages"
+      ],
+      "answer": 1,
+      "explain": "Lessons teach a method for checking and organising. They leave out school admin steps and year calendars."
+    },
+    {
+      "id": "INS-F6-U2-MC",
+      "type": "mcq",
+      "title": "Which two names appear in the Ming–Qing introduction",
+      "question": "Which two painters does the Ming–Qing introduction first ask you to meet as a classroom starting point?",
+      "unitId": "F6-U2-MINGQING",
+      "options": [
+        "Only a list of names from an official exam paper",
+        "Any two names, with no need to look at the work",
+        "Shen Zhou and Wen Zhengming",
+        "No painters yet — only a ready-made name list"
+      ],
+      "answer": 2,
+      "explain": "The introduction meets Shen Zhou and Wen Zhengming, and sets them in dialogue with related contemporary approaches. It is not a course in copying famous paintings."
+    },
+    {
+      "id": "INS-F6-U3-MC",
+      "type": "mcq",
+      "title": "What to notice in the Bada Shanren lesson",
+      "question": "In the Bada Shanren lesson, what does classroom looking emphasise?",
+      "unitId": "F6-U3-DAILY",
+      "options": [
+        "Memorising comments from a real exam paper",
+        "Only counting how many birds were painted",
+        "Replacing your own looking with a high-score exemplar",
+        "How signs and identity can be presented"
+      ],
+      "answer": 3,
+      "explain": "The lesson looks at signs and the presentation of identity, not at memorising exam comments."
+    },
+    {
+      "id": "INS-F6-U4-MC",
+      "type": "mcq",
+      "title": "What the literati-painting introduction includes",
+      "question": "Besides looking at traditional signs, what else does the literati-painting introduction include in class?",
+      "unitId": "F6-U4-LITERATI",
+      "options": [
+        "Copying a long question from a real exam paper",
+        "The Four Monks and related schools, plus practice describing brush, ink and possible meanings",
+        "Waiting for a ready-made prompt before starting",
+        "Only memorising school names, with no looking at form"
+      ],
+      "answer": 1,
+      "explain": "The introduction includes the Four Monks and related schools, and practises describing form, brush and ink, and possible meanings in class."
+    },
+    {
+      "id": "INS-F6-U5-MC",
+      "type": "mcq",
+      "title": "What to learn when comparing role-play methods",
+      "question": "If the role-taking unit compares methods used by artists such as Cindy Sherman, what should you learn in class?",
+      "unitId": "F6-U5-ROLE",
+      "options": [
+        "Copying a prompt from a real exam paper",
+        "Copying another artist’s work in full",
+        "How role-play can be used to discuss identity (method only)",
+        "Predicting whether you will get a high official mark"
+      ],
+      "answer": 2,
+      "explain": "The comparison is about method only. It does not copy an exam prompt or an artwork."
+    },
+    {
+      "id": "INS-F6-U6-MC",
+      "type": "mcq",
+      "title": "What to write in the Form 6 review",
+      "question": "When reviewing a Form 6 portfolio, what is sound to write?",
+      "unitId": "F6-U6-PORTFOLIO",
+      "options": [
+        "The wording of a high-score exemplar",
+        "A prediction of an official public-exam result",
+        "Only that everything has already been handed in",
+        "Strengths, next steps, and a short overview"
+      ],
+      "answer": 3,
+      "explain": "The review names strengths, next steps and an overview. It does not use real exam papers or high-score exemplars."
+    },
+    {
+      "id": "INS-F6-LQ-APPREC",
+      "type": "long",
+      "title": "Ming–Qing looking and a contemporary method",
+      "question": "Choose one Ming–Qing class observation and one related contemporary approach. Write what you learned about method: where comparison helps, and where you should not copy the picture. Do not copy a real exam paper.",
+      "unitId": "F6-U2-MINGQING",
+      "hint": "You may mention Shen Zhou, Wen Zhengming, the Young British Artists (YBA) or another class example, but stay with method."
+    },
+    {
+      "id": "INS-F6-LQ-THEME",
+      "type": "long",
+      "title": "Write how you would check that a portfolio is complete",
+      "question": "Write how you would check whether a portfolio is complete: whether research notes, experiments, finished work and reflection are each visible. This is a checking method only — not a school admin step, and not a formal submission.",
+      "unitId": "F6-U1-ORIENT",
+      "hint": "A checklist style is enough, for example “research pages present / not yet present”. Do not write year calendars or admin steps."
+    },
+    {
+      "id": "INS-F6-SBA-THEME",
+      "type": "sba-process",
+      "title": "Form 6 theme motive",
+      "question": "In two sentences, write your Form 6 theme motive now. If the theme has already grown for a year, say what still holds and what you want to make more precise.",
+      "axis": "theme",
+      "hint": "Axis: theme clarity. Making it more precise does not mean inventing a brand-new slogan."
+    },
+    {
+      "id": "INS-F6-SBA-RESEARCH",
+      "type": "sba-process",
+      "title": "Form 6 material and comparison",
+      "question": "Note one literati, Ming–Qing or related contemporary comparison, and one source you have followed up yourself. In one sentence each, say how it helps you now.",
+      "axis": "research",
+      "hint": "Axis: research depth. Write the turn into your own work, not only a list of names."
+    },
+    {
+      "id": "INS-F6-SBA-MEDIA",
+      "type": "sba-process",
+      "title": "Wet and dry media experiment",
+      "question": "Describe one wet-or-dry or other Form 6 experiment: what you tried, what still needs adjusting, and how it serves the current piece.",
+      "axis": "media",
+      "hint": "Axis: media and technique experiments. Keeping a trial page is more useful than keeping only the finished piece."
+    },
+    {
+      "id": "INS-F6-SBA-PROCESS",
+      "type": "sba-process",
+      "title": "Portfolio organisation record",
+      "question": "In three points, write what you noticed in your latest portfolio tidy: which kinds of pages are complete, which are still scattered, and which stack you will organise next.",
+      "axis": "process",
+      "hint": "Axis: completeness of process record. This is an organising method, not an admin procedure."
+    },
+    {
+      "id": "INS-F6-SBA-REFLECT",
+      "type": "sba-process",
+      "title": "What two pieces have taught you",
+      "question": "For two portfolio pieces still in development, write one sentence about what you learned from each, then one sentence about the progress you can see between them.",
+      "axis": "reflect",
+      "hint": "Axis: reflection and learning progress. Make the change visible, rather than only saying that there was progress."
+    },
+    {
+      "id": "INS-F6-SBA-VISUAL",
+      "type": "sba-process",
+      "title": "How an overview helps a reader follow the theme",
+      "question": "Write how you would use a short overview so a reader can follow your Form 6 theme: what you would say first, and which work or research page you would use as evidence.",
+      "axis": "visual",
+      "hint": "Axis: visual expression and structure. The overview is a structure exercise. It has no fixed word count, and it is not an official result."
+    }
+  ]
+}
