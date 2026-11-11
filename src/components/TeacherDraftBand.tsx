@@ -1,5 +1,6 @@
 import { useId, useMemo, useState } from 'react'
 import { InspectClassOverview } from './InspectClassOverview'
+import { CropAskStaffQueue } from './CropAskStaffQueue'
 import { InspectReport, type InspectPreview } from './InspectReport'
 import { SchoolScoreDualStaff } from './SchoolScoreDualStaff'
 import { SchoolScoreLaterStaff } from './SchoolScoreLaterStaff'
@@ -254,6 +255,7 @@ export default function TeacherDraftBand() {
   if (!role) return <StaffDenied />
   return (
     <div className="space-y-8">
+      <CropAskStaffQueue />
       <InspectClassOverview
         onPreviewOne={(id) => setPreview({ kind: 'one', id })}
         onPreviewClass={() => setPreview({ kind: 'class' })}
