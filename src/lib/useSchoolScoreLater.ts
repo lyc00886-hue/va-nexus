@@ -5,13 +5,13 @@ import {
   SCHOOL_SCORE_LATER_KEY,
   applyAiFallback,
   applyModelComment,
-  draftFromFile,
   emptyLaterStore,
   isLaterUploadFile,
   laterFeed,
   sanitizeLaterStore,
   withAdjustBand,
   withCommitted,
+  withUploadedFile,
   type LaterDraft,
   type LaterStore,
 } from './schoolScoreLater'
@@ -78,16 +78,24 @@ export function getSchoolScoreLater(): LaterSnapshot {
   return snapshot
 }
 
-export function acceptLaterFile(file: File): boolean {
-  if (!isLaterUploadFile(file)) return false
-  const nextUrl = typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function' ? URL.createObjectURL(file) : null
+/** Same later-upload path for one page or several. Pages already stored stay unless replaced by name. */
+export function acceptLaterFiles(files: readonly File[]): boolean {
+  const accepted = files.filter((file) => isLaterUploadFile(file))
+  if (accepted.length === 0) return false
+  let draft = snapshot.draft
+  for (const file of accepted) draft = withUploadedFile(draft, file.name, file.size, file.type)
+  const last = accepted[accepted.length - 1]
+  const nextUrl = typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function' ? URL.createObjectURL(last) : null
   const prevUrl = snapshot.previewUrl
-  snapshot = { ...snapshot, previewUrl: nextUrl }
   if (prevUrl && prevUrl !== nextUrl && typeof URL !== 'undefined' && typeof URL.revokeObjectURL === 'function') {
     URL.revokeObjectURL(prevUrl)
   }
-  publish(draftFromFile(file.name, file.size, file.type), nextUrl)
+  publish(draft, nextUrl)
   return true
+}
+
+export function acceptLaterFile(file: File): boolean {
+  return acceptLaterFiles([file])
 }
 
 export function setLaterAdjust(band: PracticeBandId | null) {
@@ -156,7 +164,7 @@ export function writeLaterAdjust() {
   if (!draft) return
   const plan = laterFeed(draft, getDualRadarStore())
   saveTeacherDraft(SCHOOL_SCORE_SLOT, plan.band)
-  for (const id of plan.axes) saveDualAxis(id, plan.formative)
+  for (const id of plan.axes) saveDualAxis(id, plan.values?.[id] ?? plan.formative)
   const next = withCommitted(draft)
   if (next === draft) return
   publish(next)

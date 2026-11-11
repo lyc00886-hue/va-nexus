@@ -4,7 +4,15 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { DUAL_AXIS_IDS, emptyDualRadarStore, formativeForBand, withDualAxis } from './schoolScoreDual.ts'
+import {
+  ARTWORK_AXIS_IDS,
+  BAND_FORMATIVE,
+  DUAL_AXIS_IDS,
+  RWB_AXIS_IDS,
+  emptyDualRadarStore,
+  formativeForBand,
+  withDualAxis,
+} from './schoolScoreDual.ts'
 import { SCHOOL_SCORE_SLOT } from './schoolScore.ts'
 import {
   SCHOOL_SCORE_LATER_KEY,
@@ -17,12 +25,16 @@ import {
   effectiveBand,
   emptyLaterStore,
   isLaterUploadFile,
+  formalAxesForPages,
   laterFeed,
+  laterPageSide,
   laterPending,
+  laterScanExcluded,
   sanitizeLaterStore,
   studentVisibleBand,
   withAdjustBand,
   withCommitted,
+  withUploadedFile,
 } from './schoolScoreLater.ts'
 import { PRACTICE_BAND_IDS, TEACHER_DRAFT_BAND_KEY } from './teacherDraftBand.ts'
 
@@ -221,7 +233,18 @@ describe('school score later chrome', () => {
     assert.match(student, /disabled/)
     assert.doesNotMatch(student, /score\.later\.pending|score\.later\.submitted|score\.later\.commentPending/)
     assert.doesNotMatch(student, /axisShortKey|effectiveBand|adjustBand/)
-    assert.doesNotMatch(student, /type="file"|<select|saveDualAxis|saveTeacherDraft|acceptLaterFile|setLaterAdjust|未達標|\bSoft\b/)
+    assert.match(student, /data-testid="score-later-student-file"/)
+    assert.match(student, /acceptLaterFiles/)
+    assert.match(student, /score\.later\.upload/)
+    assert.match(student, /score\.later\.draftPill/)
+    assert.match(student, /score\.later\.draftPath/)
+    assert.match(student, /score\.later\.dropNote/)
+    assert.match(staff, /acceptLaterFiles/)
+    assert.match(staff, /data-testid="score-later-formal-draft"/)
+    assert.match(staff, /score\.later\.pending/)
+    assert.match(staff, /score\.later\.teacherAdjust/)
+    assert.doesNotMatch(student, /<select|saveDualAxis|saveTeacherDraft|setLaterAdjust|writeLaterAdjust|formalAxes|score-later-formal|未達標|\bSoft\b/)
+    assert.doesNotMatch(student, /完整掃描|自動計正式分|自動評分|自動計出嚟的|的校內學校參考草稿/)
     assert.doesNotMatch(progress, /SchoolScoreDualStudent/)
     assert.match(progress, /data-testid="score-current"/)
     assert.match(progress, /compact \? null : <SchoolScoreLaterStudent/)
@@ -291,5 +314,124 @@ describe('student instant approximate band', () => {
         assert.equal(hasOfficial, true, `${locale} ${key}`)
       }
     }
+  })
+})
+
+describe('full scan and teacher-first formal draft', () => {
+  const official = new Set(Object.values(BAND_FORMATIVE))
+
+  it('scans artwork and workbook pages only, and skips a missing side', () => {
+    assert.equal(laterScanExcluded('練習卷 1.pdf'), true)
+    assert.equal(laterScanExcluded('练习卷.pdf'), true)
+    assert.equal(laterScanExcluded('practice-paper.pdf'), true)
+    assert.equal(laterScanExcluded('課程頁.pdf'), true)
+    assert.equal(laterScanExcluded('地图课卡.png'), true)
+    assert.equal(laterScanExcluded('地圖課卡.png'), true)
+    assert.equal(laterScanExcluded('map-card.png'), true)
+    assert.equal(laterScanExcluded('course-artwork.pdf'), true)
+    assert.equal(laterPageSide('course artwork.pdf'), null)
+    assert.equal(laterPageSide('練習卷作品.pdf'), null)
+    assert.equal(laterPageSide('作品頁 1.jpg'), 'artwork')
+    assert.equal(laterPageSide('評賞研究.png'), 'artwork')
+    assert.equal(laterPageSide('工作簿頁 1.pdf'), 'research_workbook')
+    assert.equal(laterPageSide('research-workbook.pdf'), 'research_workbook')
+    assert.equal(laterPageSide('page.pdf'), null)
+
+    const artwork = formalAxesForPages([
+      { fileName: '作品頁 1.jpg', fileSize: 1000, mime: 'image/jpeg', side: 'artwork' },
+    ])
+    assert.deepEqual(Object.keys(artwork), [...ARTWORK_AXIS_IDS])
+    for (const id of RWB_AXIS_IDS) assert.equal(artwork[id], undefined)
+    for (const value of Object.values(artwork)) assert.equal(official.has(value), true)
+
+    const workbook = formalAxesForPages([
+      { fileName: '工作簿頁 1.pdf', fileSize: 12000, mime: 'application/pdf', side: 'research_workbook' },
+    ])
+    assert.deepEqual(Object.keys(workbook), [...RWB_AXIS_IDS])
+    for (const id of ARTWORK_AXIS_IDS) assert.equal(workbook[id], undefined)
+
+    const both = formalAxesForPages([
+      { fileName: '作品頁 1.jpg', fileSize: 1000, mime: 'image/jpeg', side: 'artwork' },
+      { fileName: '工作簿頁 1.pdf', fileSize: 12000, mime: 'application/pdf', side: 'research_workbook' },
+    ])
+    assert.deepEqual(Object.keys(both), [...DUAL_AXIS_IDS])
+    const again = formalAxesForPages([
+      { fileName: '工作簿頁 1.pdf', fileSize: 12000, mime: 'application/pdf', side: 'research_workbook' },
+      { fileName: '作品頁 1.jpg', fileSize: 1000, mime: 'image/jpeg', side: 'artwork' },
+    ])
+    assert.deepEqual(again, both)
+    const more = formalAxesForPages([
+      { fileName: '作品頁 1.jpg', fileSize: 1000, mime: 'image/jpeg', side: 'artwork' },
+      { fileName: '作品頁 2.jpg', fileSize: 8000, mime: 'image/jpeg', side: 'artwork' },
+      { fileName: '工作簿頁 1.pdf', fileSize: 12000, mime: 'application/pdf', side: 'research_workbook' },
+    ])
+    assert.notDeepEqual(
+      ARTWORK_AXIS_IDS.map((id) => more[id]),
+      ARTWORK_AXIS_IDS.map((id) => both[id]),
+    )
+    assert.deepEqual(
+      RWB_AXIS_IDS.map((id) => more[id]),
+      RWB_AXIS_IDS.map((id) => both[id]),
+    )
+  })
+
+  it('keeps an existing upload, leaves the approx band in place, and feeds only after confirm', () => {
+    const lib = readFileSync(join(root, 'src/lib/schoolScoreLater.ts'), 'utf8')
+    assert.match(lib, /自動計出嚟嘅校內學校參考草稿先到教師面/)
+    assert.equal(lib.includes('自動計出嚟的'), false)
+    assert.doesNotMatch(lib, /practiceDraft|learningMap|mapQuest|PracticePapers/)
+
+    let draft = withUploadedFile(null, '作品頁 1.jpg', 1000, 'image/jpeg')
+    assert.equal(draft.approxBand, approximateBandId('作品頁 1.jpg', 1000))
+    assert.equal(draft.committedBand, null)
+    assert.equal(laterPending(draft), true)
+    assert.equal(aiReferenceFormative(draft), formativeForBand(draft.approxBand))
+    draft = withUploadedFile(draft, '工作簿頁 1.pdf', 12000, 'application/pdf')
+    assert.equal(draft.pages.length, 2)
+    assert.equal(draft.fileName, '工作簿頁 1.pdf')
+    assert.equal(draft.approxBand, approximateBandId('工作簿頁 1.pdf', 12000))
+    assert.equal(Object.keys(draft.formalAxes).length, 10)
+    assert.notEqual(draft.formalAxes['aw-1'], undefined)
+    const excluded = withUploadedFile(draft, '練習卷 1.pdf', 50, 'application/pdf')
+    assert.equal(excluded.pages.length, 2)
+    assert.equal(excluded.fileName, '練習卷 1.pdf')
+    assert.equal(excluded.approxBand, approximateBandId('練習卷 1.pdf', 50))
+    assert.deepEqual(excluded.formalAxes, draft.formalAxes)
+
+    const stored = sanitizeLaterStore({
+      version: 1,
+      draft: {
+        fileName: '工作簿頁 1.pdf',
+        fileSize: 12000,
+        mime: 'application/pdf',
+        approxBand: 'practice-developing',
+      },
+    })
+    assert.equal(stored.draft?.pages.length, 1)
+    assert.equal(stored.draft?.pages[0]?.side, 'research_workbook')
+    assert.deepEqual(Object.keys(stored.draft?.formalAxes ?? {}), [...RWB_AXIS_IDS])
+    assert.equal(stored.draft?.approxBand, 'practice-developing')
+    assert.equal(stored.draft?.committedBand, null)
+
+    const plan = laterFeed(draft, emptyDualRadarStore())
+    assert.deepEqual(plan.axes, [...DUAL_AXIS_IDS])
+    assert.equal(plan.values?.['rwb-1'], draft.formalAxes['rwb-1'])
+    assert.equal(plan.band, draft.approxBand)
+    const workbookOnly = laterFeed(
+      withUploadedFile(null, '研究工作簿.pdf', 80, 'application/pdf'),
+      emptyDualRadarStore(),
+    )
+    assert.deepEqual(workbookOnly.axes, [...RWB_AXIS_IDS])
+    const adjusted = withAdjustBand(
+      draft,
+      draft.approxBand === 'practice-strong' ? 'practice-emerging' : 'practice-strong',
+    )
+    const override = laterFeed(adjusted, emptyDualRadarStore())
+    assert.equal(override.axes.length, DUAL_AXIS_IDS.length)
+    assert.equal(override.values, undefined)
+    assert.equal(aiReferenceFormative(adjusted), formativeForBand(draft.approxBand))
+    assert.notEqual(aiReferenceFormative(adjusted), formativeForBand(effectiveBand(adjusted)))
+    const skipped = laterFeed(withUploadedFile(null, '地圖課卡.png', 10, 'image/png'), emptyDualRadarStore())
+    assert.deepEqual(skipped.axes, [])
   })
 })

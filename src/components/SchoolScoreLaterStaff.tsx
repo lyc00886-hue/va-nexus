@@ -3,10 +3,17 @@ import { useT } from '../i18n'
 import { formativeAxisLabels } from '../lib/formativeAiComment'
 import { FORMATIVE_AI_COMMENT_PLATES } from '../lib/formativeAiCommentScout'
 import { schoolBandRows } from '../lib/schoolScore'
-import { SCHOOL_SCORE_LATER_PLATES, effectiveBand, laterPending } from '../lib/schoolScoreLater'
-import { formatFormative, formativeForBand } from '../lib/schoolScoreDual'
+import { SCHOOL_SCORE_LATER_PLATES, effectiveBand, laterPending, type LaterDraft } from '../lib/schoolScoreLater'
+import {
+  DUAL_CHARTS,
+  axisLabelKey,
+  axisShortKey,
+  formatFormative,
+  formativeForBand,
+} from '../lib/schoolScoreDual'
 import { useStaffRole } from '../lib/useStaffRole'
-import { acceptLaterFile, keepLaterAi, requestLaterComment, setLaterAdjust, useSchoolScoreLater, writeLaterAdjust } from '../lib/useSchoolScoreLater'
+import { acceptLaterFiles, keepLaterAi, requestLaterComment, setLaterAdjust, useSchoolScoreLater, writeLaterAdjust } from '../lib/useSchoolScoreLater'
+import { SchoolScoreDualFigure } from './SchoolScoreDualFigure'
 
 function DocIcon() {
   return (
@@ -19,6 +26,55 @@ function DocIcon() {
       />
       <path fill="none" stroke="currentColor" strokeWidth="2" d="M28 4v12h12" />
     </svg>
+  )
+}
+
+function FormalDraftPreview({ draft }: { draft: LaterDraft }) {
+  const { t } = useT()
+  const charts = DUAL_CHARTS.filter((chart) => chart.axes.some((id) => draft.formalAxes[id] != null))
+  if (charts.length === 0) return null
+  return (
+    <div
+      data-testid="score-later-formal-draft"
+      data-pending="true"
+      data-sides={charts.map((chart) => chart.id).join(',')}
+      className="space-y-3"
+    >
+      <p
+        data-testid="score-later-formal-pending"
+        className="inline-flex rounded-full border border-amber-300 bg-amber-50 px-3 py-1 text-xs font-bold text-amber-900"
+      >
+        {t('score.later.pending')}
+      </p>
+      <div className="grid gap-3 lg:grid-cols-2">
+        {charts.map((chart) => (
+          <article
+            key={chart.id}
+            data-testid={`score-later-formal-chart-${chart.id}`}
+            data-axes={chart.axes.length}
+            className="rounded-2xl border border-[#0D9488]/25 bg-[#f4fbfa] px-3 py-3"
+          >
+            <h4 className="text-center text-base font-bold text-[#0D9488]">{t(chart.title)}</h4>
+            <SchoolScoreDualFigure
+              chartId={`formal-${chart.id}`}
+              labels={chart.axes.map((id) => t(axisShortKey(id)))}
+              values={chart.axes.map((id) => draft.formalAxes[id] ?? null)}
+            />
+            <ul className="space-y-1">
+              {chart.axes.map((id) => (
+                <li key={id} data-testid={`score-later-formal-axis-${id}`} data-value={draft.formalAxes[id] ?? ''} className="text-sm text-slate-800">
+                  <span className="font-semibold">{t(axisLabelKey(id))}</span>
+                  <span className="text-slate-600">
+                    {' '}
+                    {draft.formalAxes[id] == null ? t('score.dual.unset') : formatFormative(draft.formalAxes[id])}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -53,9 +109,9 @@ export function SchoolScoreLaterStaff() {
   const revealed = draft != null && draft.aiStatus !== 'idle'
   if (!role) return null
 
-  function take(file: File | undefined) {
-    if (!file) return
-    const ok = acceptLaterFile(file)
+  function take(files: File[]) {
+    if (files.length === 0) return
+    const ok = acceptLaterFiles(files)
     setRejected(!ok)
   }
 
@@ -101,7 +157,7 @@ export function SchoolScoreLaterStaff() {
           onDragOver={(event) => event.preventDefault()}
           onDrop={(event) => {
             event.preventDefault()
-            take(event.dataTransfer.files?.[0])
+            take(Array.from(event.dataTransfer.files ?? []))
           }}
           className="relative block cursor-pointer rounded-2xl border border-dashed border-[#0D9488]/50 bg-white px-4 py-8 text-center"
         >
@@ -109,15 +165,16 @@ export function SchoolScoreLaterStaff() {
             id={inputId}
             type="file"
             accept="image/*,application/pdf"
+            multiple
             data-testid="score-later-upload"
             className="absolute inset-0 cursor-pointer opacity-0"
             onDragOver={(event) => event.preventDefault()}
             onDrop={(event) => {
               event.preventDefault()
-              take(event.dataTransfer.files?.[0])
+              take(Array.from(event.dataTransfer.files ?? []))
             }}
             onChange={(event) => {
-              take(event.target.files?.[0])
+              take(Array.from(event.target.files ?? []))
               event.target.value = ''
             }}
           />
@@ -135,6 +192,18 @@ export function SchoolScoreLaterStaff() {
             <span className="rounded-full bg-[#0D9488] px-2.5 py-1 text-xs font-bold text-white">{t('score.later.uploaded')}</span>
             <span className="min-w-0 truncate font-semibold">{draft.fileName}</span>
           </p>
+        ) : null}
+        {draft && draft.pages.length > 0 ? (
+          <ul data-testid="score-later-staff-pages" className="flex flex-wrap gap-2">
+            {draft.pages.map((page) => (
+              <li
+                key={`${page.side}-${page.fileName}`}
+                className="rounded-full bg-[#d7f3ef] px-3 py-1 text-xs font-semibold text-teal-950"
+              >
+                {page.fileName}
+              </li>
+            ))}
+          </ul>
         ) : null}
         <p role="status" data-testid="score-later-file-status" className="min-h-5 text-sm text-slate-600">
           {rejected ? t('score.later.fileReject') : ''}
@@ -239,6 +308,7 @@ export function SchoolScoreLaterStaff() {
           <h3 className="text-base font-bold text-slate-900">{t('score.later.teacherAdjust')}</h3>
           <span className="rounded-full bg-[#0D9488] px-2.5 py-1 text-xs font-bold text-white">{t('score.later.staffOnly')}</span>
         </div>
+        {draft && draft.adjustBand == null && pending ? <FormalDraftPreview draft={draft} /> : null}
         {draft ? (
           <>
             {revealed ? (

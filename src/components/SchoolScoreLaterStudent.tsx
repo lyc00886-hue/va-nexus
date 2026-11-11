@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useId, useState } from 'react'
 import { useT } from '../i18n'
 import { FORMATIVE_AI_COMMENT_PLATES } from '../lib/formativeAiCommentScout'
 import { schoolBandRows } from '../lib/schoolScore'
@@ -10,8 +10,8 @@ import {
   type DualAxisId,
 } from '../lib/schoolScoreDual'
 import { scoreFoldLaterHasResults, useScoreFold } from '../lib/scoreFold'
-import { SCHOOL_SCORE_LATER_PLATES, aiReferenceFormative } from '../lib/schoolScoreLater'
-import { useSchoolScoreLater } from '../lib/useSchoolScoreLater'
+import { SCHOOL_SCORE_LATER_PLATES, aiReferenceFormative, type LaterDraft } from '../lib/schoolScoreLater'
+import { acceptLaterFiles, useSchoolScoreLater } from '../lib/useSchoolScoreLater'
 import { SchoolScoreDualFigure } from './SchoolScoreDualFigure'
 import { ScoreFold } from './ScoreFold'
 
@@ -28,6 +28,77 @@ function PageThumb({ name, url, mime }: { name: string; url: string | null; mime
         </svg>
       )}
       <span className="sr-only">{name}</span>
+    </div>
+  )
+}
+
+function uploadNames(draft: LaterDraft | null): string[] {
+  if (!draft) return []
+  const names = draft.pages.map((page) => page.fileName)
+  if (!names.includes(draft.fileName)) names.unshift(draft.fileName)
+  return names
+}
+
+function LaterUpload({
+  draft,
+  rejected,
+  onFiles,
+}: {
+  draft: LaterDraft | null
+  rejected: boolean
+  onFiles: (files: File[]) => void
+}) {
+  const { t } = useT()
+  const inputId = useId()
+  const names = uploadNames(draft)
+  return (
+    <div data-testid="score-later-student-upload" className="space-y-3 rounded-2xl border border-[#0D9488]/35 bg-white px-4 py-4">
+      <div className="flex flex-wrap items-center gap-2 text-sm text-slate-600">
+        <span className="rounded-full border border-[#0D9488]/40 bg-[#f4fbfa] px-3 py-1 text-xs font-semibold text-[#0D9488]">
+          {t('score.later.draftPill')}
+        </span>
+        <span>{t('score.later.draftPath')}</span>
+      </div>
+      <label
+        htmlFor={inputId}
+        onDragOver={(event) => event.preventDefault()}
+        onDrop={(event) => {
+          event.preventDefault()
+          onFiles(Array.from(event.dataTransfer.files ?? []))
+        }}
+        className="relative block cursor-pointer rounded-2xl border border-dashed border-[#0D9488]/50 bg-[#f4fbfa] px-4 py-6 text-center"
+      >
+        <input
+          id={inputId}
+          type="file"
+          accept="image/*,application/pdf"
+          multiple
+          data-testid="score-later-student-file"
+          className="absolute inset-0 cursor-pointer opacity-0"
+          onChange={(event) => {
+            onFiles(Array.from(event.target.files ?? []))
+            event.target.value = ''
+          }}
+        />
+        <span className="pointer-events-none flex flex-col items-center gap-2">
+          <span className="rounded-full bg-[#0D9488] px-4 py-2 text-sm font-bold text-white">{t('score.later.upload')}</span>
+          <span className="text-sm font-semibold text-[#0D9488]">{t('score.later.dropHint')}</span>
+          <span className="text-xs text-slate-500">{t('score.later.dropNote')}</span>
+        </span>
+      </label>
+      {names.length > 0 ? (
+        <ul className="flex flex-wrap gap-2" data-testid="score-later-student-files">
+          {names.map((name) => (
+            <li key={name} className="rounded-full bg-[#d7f3ef] px-3 py-1 text-xs font-semibold text-teal-950">
+              <span className="sr-only">{t('score.later.uploaded')}</span>
+              {name}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      <p role="status" data-testid="score-later-student-file-status" className="min-h-5 text-sm text-slate-600">
+        {rejected ? t('score.later.fileReject') : ''}
+      </p>
     </div>
   )
 }
@@ -93,6 +164,7 @@ function AiReferenceChart({
 export function SchoolScoreLaterStudent() {
   const { t } = useT()
   const { draft, previewUrl } = useSchoolScoreLater()
+  const [rejected, setRejected] = useState(false)
   const headingId = useId()
   const named = useId()
   const rows = schoolBandRows()
@@ -119,6 +191,14 @@ export function SchoolScoreLaterStudent() {
       data-formative-scout={FORMATIVE_AI_COMMENT_PLATES.student}
       className="space-y-4 border-t border-[#0D9488]/20 pt-4"
     >
+      <LaterUpload
+        draft={draft}
+        rejected={rejected}
+        onFiles={(files) => {
+          if (files.length === 0) return
+          setRejected(!acceptLaterFiles(files))
+        }}
+      />
       <ScoreFold
         testId="score-fold-later"
         level="h4"
@@ -263,11 +343,6 @@ export function SchoolScoreLaterStudent() {
       >
         {t('score.later.cannotEdit')}
       </button>
-
-      <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500">
-        <span className="rounded-full bg-slate-200 px-3 py-1 text-xs font-semibold">{t('score.later.draftPill')}</span>
-        <span>{t('score.later.draftPath')}</span>
-      </div>
 
       <p
         role="note"

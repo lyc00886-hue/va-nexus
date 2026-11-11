@@ -6,9 +6,16 @@
  * band. Until that click, and whenever the model is unavailable, the stub remains.
  * Nothing here writes the school reference until the teacher confirms.
  * Student self-assessment is not read or written here.
+ *
+ * Full scan reads only already-uploaded artwork pages (藝術作品／評賞研究)
+ * and research-workbook pages (研究工作簿). A missing side is skipped.
+ * Course pages, practice papers, and map cards are not scanned.
+ * 自動計出嚟嘅校內學校參考草稿先到教師面。
+ * It is not written onto the student surface, and it does not replace the approximate band.
  */
 import {
   DUAL_AXIS_IDS,
+  DUAL_CHARTS,
   formativeForBand,
   type DualAxisId,
   type DualRadarStore,
@@ -39,6 +46,16 @@ const BAND_SET = new Set<string>(PRACTICE_BAND_IDS)
 
 export type LaterAiStatus = 'idle' | 'model' | 'fallback'
 
+/** The two scan sides. There is no third category. */
+export type LaterPageSide = 'artwork' | 'research_workbook'
+
+export type LaterPage = {
+  fileName: string
+  fileSize: number
+  mime: string
+  side: LaterPageSide
+}
+
 export type LaterDraft = {
   fileName: string
   fileSize: number
@@ -55,6 +72,14 @@ export type LaterDraft = {
   adjustBand: PracticeBandId | null
   /** Last band written into the school reference. Null until the teacher writes. */
   committedBand: PracticeBandId | null
+  /** Artwork and research-workbook pages already on this upload path. */
+  pages: LaterPage[]
+  /**
+   * School-internal formal draft on the official /5 map.
+   * Teacher surface only, until confirm or adjust feeds it.
+   * Derived from `pages`. Never replaces `approxBand`.
+   */
+  formalAxes: Partial<Record<DualAxisId, number>>
 }
 
 export type LaterStore = {
@@ -70,6 +95,54 @@ export function isLaterUploadFile(file: { name: string; type: string }): boolean
   if (type.startsWith('image/')) return true
   if (type === 'application/pdf') return true
   return /\.pdf$/i.test(file.name) && (type === '' || type === 'application/octet-stream')
+}
+
+const WORKBOOK_NAME = /工作簿|workbook/i
+const ARTWORK_NAME = /作品|評賞|评赏|artwork/i
+const EXCLUDED_NAME =
+  /練習卷|练习卷|practice[\s._-]*paper|課程|课程|\bcourse\b|地圖|地图|map[\s._-]*card|課卡|课卡/i
+
+/** Practice papers, course pages, and map cards stay out of the scan. */
+export function laterScanExcluded(name: string): boolean {
+  return EXCLUDED_NAME.test(name)
+}
+
+/**
+ * Artwork (藝術作品／評賞研究) or research workbook (研究工作簿).
+ * Anything else, including an excluded page, is not a scan side.
+ */
+export function laterPageSide(name: string): LaterPageSide | null {
+  if (laterScanExcluded(name)) return null
+  if (WORKBOOK_NAME.test(name)) return 'research_workbook'
+  if (ARTWORK_NAME.test(name)) return 'artwork'
+  return null
+}
+
+export function upsertLaterPage(pages: readonly LaterPage[], page: LaterPage): LaterPage[] {
+  const next = pages.filter((item) => !(item.side === page.side && item.fileName === page.fileName))
+  next.push(page)
+  return next
+}
+
+/**
+ * Official 10-axis draft (artwork 6 + research workbook 4) on the existing /5 map.
+ * A side with no pages is omitted. Axis values use only the pages of that side.
+ */
+export function formalAxesForPages(pages: readonly LaterPage[]): Partial<Record<DualAxisId, number>> {
+  const axes: Partial<Record<DualAxisId, number>> = {}
+  for (const chart of DUAL_CHARTS) {
+    const sidePages = pages.filter((page) => page.side === chart.id && laterPageSide(page.fileName) === chart.id)
+    if (sidePages.length === 0) continue
+    const body = sidePages
+      .map((page) => `${page.fileName}\n${Math.max(0, Math.round(page.fileSize))}`)
+      .sort()
+      .join('\n')
+    const size = sidePages.reduce((sum, page) => sum + Math.max(0, Math.round(page.fileSize)), 0)
+    for (const id of chart.axes) {
+      axes[id] = formativeForBand(approximateBandId(`${body}\n${id}`, size))
+    }
+  }
+  return axes
 }
 
 /**
@@ -104,6 +177,32 @@ export function draftFromFile(name: string, size: number, mime: string): LaterDr
     aiComment: null,
     adjustBand: null,
     committedBand: null,
+    pages: [],
+    formalAxes: {},
+  }
+}
+
+/**
+ * Same later-upload path. Keeps pages already stored for the other side.
+ * An excluded name does not join the scan and does not erase pages already there.
+ * The approximate band stays the latest file's own band.
+ */
+export function withUploadedFile(prev: LaterDraft | null, name: string, size: number, mime: string): LaterDraft {
+  const head = draftFromFile(name, size, mime)
+  const side = laterPageSide(head.fileName)
+  const kept = (prev?.pages ?? []).filter((page) => laterPageSide(page.fileName) === page.side)
+  const pages = side
+    ? upsertLaterPage(kept, {
+        fileName: head.fileName,
+        fileSize: head.fileSize,
+        mime: head.mime,
+        side,
+      })
+    : kept
+  return {
+    ...head,
+    pages,
+    formalAxes: formalAxesForPages(pages),
   }
 }
 
@@ -174,20 +273,36 @@ export function aiReferenceFormative(draft: LaterDraft): number {
 }
 
 /**
- * School reference takes the effective band. Dual-radar axes that are still empty
- * receive the same formative number the practice-band buttons already write.
+ * School reference takes the effective band.
+ * With no teacher adjust and a formal draft, empty axes on the scanned sides
+ * receive that draft. Otherwise empty axes receive the band's formative number.
  * Axes that already have a staff value stay as they are.
+ * An excluded page with nothing to scan does not fill axes.
  */
 export function laterFeed(
   draft: LaterDraft,
   dual: DualRadarStore,
-): { band: PracticeBandId; formative: number; axes: DualAxisId[] } {
+): {
+  band: PracticeBandId
+  formative: number
+  axes: DualAxisId[]
+  /** Per-axis formal draft. Absent when the teacher adjust band is what gets fed. */
+  values?: Partial<Record<DualAxisId, number>>
+} {
   const band = effectiveBand(draft)
-  return {
-    band,
-    formative: formativeForBand(band),
-    axes: DUAL_AXIS_IDS.filter((id) => dual.axes[id] == null),
+  const formative = formativeForBand(band)
+  const empty = DUAL_AXIS_IDS.filter((id) => dual.axes[id] == null)
+  const formalIds = DUAL_AXIS_IDS.filter((id) => draft.formalAxes[id] != null)
+  if (draft.adjustBand == null && formalIds.length > 0) {
+    const axes = formalIds.filter((id) => dual.axes[id] == null)
+    const values: Partial<Record<DualAxisId, number>> = {}
+    for (const id of axes) values[id] = draft.formalAxes[id]
+    return { band, formative, axes, values }
   }
+  if (draft.adjustBand == null && laterScanExcluded(draft.fileName) && formalIds.length === 0) {
+    return { band, formative, axes: [] }
+  }
+  return { band, formative, axes: empty }
 }
 
 export function sanitizeLaterStore(raw: unknown): LaterStore {
@@ -206,17 +321,52 @@ export function sanitizeLaterStore(raw: unknown): LaterStore {
   const approxBand = aiStatus === 'fallback' ? stubBand : draft.approxBand
   const adjustBand = isPracticeBandId(draft.adjustBand) && draft.adjustBand !== approxBand ? draft.adjustBand : null
   const committedBand = isPracticeBandId(draft.committedBand) ? draft.committedBand : null
+  const fileName = draft.fileName.trim().slice(0, 180)
+  const fileSize = Math.round(draft.fileSize)
+  const mime = typeof draft.mime === 'string' ? draft.mime.slice(0, 80) : ''
+  const pages = pagesForDraft(draft, fileName, fileSize, mime)
   return {
     draft: {
-      fileName: draft.fileName.trim().slice(0, 180),
-      fileSize: Math.round(draft.fileSize),
-      mime: typeof draft.mime === 'string' ? draft.mime.slice(0, 80) : '',
+      fileName,
+      fileSize,
+      mime,
       approxBand,
       stubBand,
       aiStatus,
       aiComment,
       adjustBand,
       committedBand,
+      pages,
+      formalAxes: formalAxesForPages(pages),
     },
   }
+}
+
+function sanitizePages(raw: unknown): LaterPage[] {
+  if (!Array.isArray(raw)) return []
+  let pages: LaterPage[] = []
+  for (const item of raw) {
+    if (!item || typeof item !== 'object') continue
+    const record = item as Record<string, unknown>
+    if (typeof record.fileName !== 'string' || !record.fileName.trim()) continue
+    if (typeof record.fileSize !== 'number' || !Number.isFinite(record.fileSize) || record.fileSize < 0) continue
+    const fileName = record.fileName.trim().slice(0, 180)
+    const side = laterPageSide(fileName)
+    if (side == null) continue
+    pages = upsertLaterPage(pages, {
+      fileName,
+      fileSize: Math.round(record.fileSize),
+      mime: typeof record.mime === 'string' ? record.mime.slice(0, 80) : '',
+      side,
+    })
+  }
+  return pages
+}
+
+/** Older drafts have no page list. A classifiable file is the scan page, so nobody re-uploads it. */
+function pagesForDraft(draft: Record<string, unknown>, fileName: string, fileSize: number, mime: string): LaterPage[] {
+  if (Array.isArray(draft.pages)) return sanitizePages(draft.pages)
+  const side = laterPageSide(fileName)
+  if (!side) return []
+  return [{ fileName, fileSize, mime, side }]
 }
