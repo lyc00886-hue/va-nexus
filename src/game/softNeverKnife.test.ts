@@ -51,7 +51,7 @@ describe('soft never knife', () => {
     assert.equal(hant['badge.unit-done'], '單元完成')
     assert.equal(hant['badge.xp-500'], '學習點')
     assert.equal(hant['badge.explorer'], '探索者')
-    assert.equal(hant['badge.dualread'], '對讀入門')
+    assert.equal(hant['badge.dualread'], '評賞比較入門')
     assert.equal(hant['badge.sba-starter'], '實驗室起步')
     assert.equal(hant['ach.pace'].includes('慢慢學就得'), true)
     assert.equal(/收斂|Soft/.test(hant['ach.pace']), false)

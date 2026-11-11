@@ -62,8 +62,8 @@
         "en": "Self, heritage and society"
       },
       "intro": {
-        "hk": "呢個單元由「傳統同社會點影響日常生活」出發，練習用視覺日記搜集材料、發展主題，並用水墨同混合媒介試作。你會對讀奇石圖像同超現實／立體主義嘅方法，而唔係抄畫面。訪問、觀察同收集都係課室做法。課堂唔放高分示例。",
-        "hans": "这个单元由「传统与社会怎样影响日常生活」出发，练习用视觉日记搜集材料、发展主题，并用水墨与混合媒介试作。你会对读奇石图像与超现实／立体主义的方法，而不是抄画面。访问、观察与收集都是课室做法。课堂不放高分示例。",
+        "hk": "呢個單元由「傳統同社會點影響日常生活」出發，練習用視覺日記搜集材料、發展主題，並用水墨同混合媒介試作。你會比較奇石圖像同超現實／立體主義嘅方法，而唔係抄畫面。訪問、觀察同收集都係課室做法。課堂唔放高分示例。",
+        "hans": "这个单元由「传统与社会怎样影响日常生活」出发，练习用视觉日记搜集材料、发展主题，并用水墨与混合媒介试作。你会比较奇石图像与超现实／立体主义的方法，而不是抄画面。访问、观察与收集都是课室做法。课堂不放高分示例。",
         "en": "This unit starts from how tradition and society shape everyday life. Practise gathering material in a visual journal, developing a theme, and testing ideas in ink and mixed media. You will compare methods in strange-stone images with Surrealism and Cubism, rather than copying a picture. Interviews, observation and collecting stay as classroom practice. Lessons do not use high-score exemplars."
       },
       "lessons": [
@@ -75,9 +75,9 @@
         },
         {
           "id": "F5-U3-L2",
-          "hk": "奇石對讀：吳彬同超現實／立體主義",
-          "hans": "奇石对读：吴彬与超现实／立体主义",
-          "en": "Strange stones in dialogue: Wu Bin with Surrealism and Cubism"
+          "hk": "奇石比較：吳彬同超現實／立體主義",
+          "hans": "奇石比较：吴彬与超现实／立体主义",
+          "en": "Strange-stone comparison: Wu Bin with Surrealism and Cubism"
         },
         {
           "id": "F5-U3-L3",
@@ -161,8 +161,8 @@
         "en": "Contemporary China and innovative heritage"
       },
       "intro": {
-        "hk": "呢個單元認識徐冰同當代中國書法潮流，以及全球當代藝術嘅入門對讀，再做創新傳承練習：立體拼貼同裝置。全部喺課室完成。亦會收束宋元藝術觀察。",
-        "hans": "这个单元认识徐冰与当代中国书法潮流，以及全球当代艺术的入门对读，再做创新传承练习：立体拼贴与装置。全部在课室完成。也会收束宋元艺术观察。",
+        "hk": "呢個單元認識徐冰同當代中國書法潮流，以及全球當代藝術嘅入門比較，再做創新傳承練習：立體拼貼同裝置。全部喺課室完成。亦會收束宋元藝術觀察。",
+        "hans": "这个单元认识徐冰与当代中国书法潮流，以及全球当代艺术的入门比较，再做创新传承练习：立体拼贴与装置。全部在课室完成。也会收束宋元艺术观察。",
         "en": "This unit introduces Xu Bing and contemporary Chinese calligraphy, plus a first look at global contemporary art, then practises innovative heritage through three-dimensional collage and installation. All of it happens in class. It also closes the Song–Yuan observation thread."
       },
       "lessons": [
@@ -251,14 +251,14 @@
     {
       "id": "F6-U2-MINGQING",
       "title": {
-        "hk": "明清美學同當代對讀",
-        "hans": "明清美学与当代对读",
-        "en": "Ming–Qing aesthetics in contemporary dialogue"
+        "hk": "明清美學同當代評賞比較",
+        "hans": "明清美学与当代评赏比较",
+        "en": "Ming–Qing aesthetics and contemporary comparison"
       },
       "intro": {
-        "hk": "呢個單元用精簡時間線認識明清美學，並對讀英國青年藝術家（YBA）同相關當代做法。你會入門沈周同文徵明。呢度只係入門，唔會把所有名畫逐幅臨摹。課堂唔會用真實試卷。",
-        "hans": "这个单元用精简时间线认识明清美学，并对读英国青年艺术家（YBA）与相关当代做法。你会入门沈周与文征明。这里只是入门，不会把所有名画逐幅临摹。课堂不会用真实试卷。",
-        "en": "This unit uses a compact timeline to introduce Ming–Qing aesthetics, and sets them in dialogue with the Young British Artists (YBA) and related contemporary approaches. You will meet Shen Zhou and Wen Zhengming. This is an introduction only, not a course in copying famous paintings one by one. Lessons do not use real exam papers."
+        "hk": "呢個單元用精簡時間線認識明清美學，並比較英國青年藝術家（YBA）同相關當代做法。你會入門沈周同文徵明。呢度只係入門，唔會把所有名畫逐幅臨摹。課堂唔會用真實試卷。",
+        "hans": "这个单元用精简时间线认识明清美学，并比较英国青年艺术家（YBA）与相关当代做法。你会入门沈周与文征明。这里只是入门，不会把所有名画逐幅临摹。课堂不会用真实试卷。",
+        "en": "This unit uses a compact timeline to introduce Ming–Qing aesthetics, and compares them with the Young British Artists (YBA) and related contemporary approaches. You will meet Shen Zhou and Wen Zhengming. This is an introduction only, not a course in copying famous paintings one by one. Lessons do not use real exam papers."
       },
       "lessons": [
         {
@@ -269,9 +269,9 @@
         },
         {
           "id": "F6-U2-L2",
-          "hk": "英國青年藝術家（YBA）同當代對讀",
-          "hans": "英国青年艺术家（YBA）与当代对读",
-          "en": "Young British Artists (YBA) in contemporary dialogue"
+          "hk": "英國青年藝術家（YBA）同當代評賞比較",
+          "hans": "英国青年艺术家（YBA）与当代评赏比较",
+          "en": "Young British Artists (YBA) and contemporary comparison"
         },
         {
           "id": "F6-U2-L3",
@@ -355,8 +355,8 @@
         "en": "Role-taking: re-presenting in a Chinese context"
       },
       "intro": {
-        "hk": "呢個單元練習角色代入同身份再現：點樣喺中國語境再呈現一個人。你可對讀 Cindy Sherman 等藝術家用扮演去討論身份嘅方法（只講方法，唔抄題）。亦會認識揚州八怪、徐悲鴻同齊白石，並用乾濕媒介發展作品集第二件作品。",
-        "hans": "这个单元练习角色代入与身份再现：怎样在中国语境再呈现一个人。你可对读 Cindy Sherman 等艺术家用扮演去讨论身份的方法（只讲方法，不抄题）。也会认识扬州八怪、徐悲鸿与齐白石，并用干湿媒介发展作品集第二件作品。",
+        "hk": "呢個單元練習角色代入同身份再現：點樣喺中國語境再呈現一個人。你可比較 Cindy Sherman 等藝術家用扮演去討論身份嘅方法（只講方法，唔抄題）。亦會認識揚州八怪、徐悲鴻同齊白石，並用乾濕媒介發展作品集第二件作品。",
+        "hans": "这个单元练习角色代入与身份再现：怎样在中国语境再呈现一个人。你可比较 Cindy Sherman 等艺术家用扮演去讨论身份的方法（只讲方法，不抄题）。也会认识扬州八怪、徐悲鸿与齐白石，并用干湿媒介发展作品集第二件作品。",
         "en": "This unit practises role-taking and re-presenting identity: how to re-present a person in a Chinese context. You may compare methods used by artists such as Cindy Sherman to discuss identity through role-play (method only, no copied exam prompts). You will also meet the Yangzhou Eccentrics, Xu Beihong and Qi Baishi, and use wet and dry media to develop the second portfolio piece."
       },
       "lessons": [

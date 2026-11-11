@@ -1310,10 +1310,10 @@
         },
         {
           "id": "U5-L3",
-          "title": "角色扮演对读：Sherman 与香港／人物传统",
+          "title": "角色扮演比较：Sherman 与香港／人物传统",
           "cards": [
             "Cindy Sherman 用摄影扮演类型角色，揭示身份如何被媒体与凝视塑造。",
-            "石家豪用工笔人物探讨当代身份与性别角色；可对读「再呈现某人」的策略。",
+            "石家豪用工笔人物探讨当代身份与性别角色；可对照「再呈现某人」的策略。",
             "陈洪绶、吴彬等人物画传统提供另一套「角色／奇幻／变形」资源，本单元用来讨论 identity through portrait。",
             "练习：选一位身边人物，用中国媒介（水墨／工笔元素）做 role-taking，并写视觉日记。",
             "（内容待老师审阅）对齐 F.6 题目：Reappear someone in Chinese context。"
@@ -1367,7 +1367,7 @@
                 "Cindy Sherman": "摄影角色扮演",
                 "石家豪": "工笔当代人物"
               },
-              "explain": "东西方再现策略对读。"
+              "explain": "东西方再现策略比较。"
             }
           ],
           "artistIds": [
@@ -2771,7 +2771,7 @@
     {
       "id": "U10-YBA-CN",
       "title": "英国 YBA 与当代艺术：怎样联系中国艺术",
-      "intro": "选修单元。认识 1990 年代的英国「青年英国艺术家」（YBA），再和中国及香港当代艺术家对读。对应 F.6 Contextual Studies「British YBA Art」及「how YBA, American art relate to Chinese Art」。本单元全部是当代作品，不放图片，只用文字描述和官方美术馆链接。（内容待老师审阅）",
+      "intro": "选修单元。认识 1990 年代的英国「青年英国艺术家」（YBA），再和中国及香港当代艺术家比较。对应 F.6 Contextual Studies「British YBA Art」及「how YBA, American art relate to Chinese Art」。本单元全部是当代作品，不放图片，只用文字描述和官方美术馆链接。（内容待老师审阅）",
       "coverImage": "/content/learning-map-illustrations/map-covers/U10-YBA-CN.png",
       "coverCredit": "自制 · VA-Nexus",
       "lessons": [
@@ -2914,7 +2914,7 @@
             "Rachel Whiteread 把「空间」翻模：例如把衣柜、浴缸下面、楼梯的空位倒成实心雕塑，令看不见的空间变成看得见。",
             "她的《House》（1993）把伦敦东区一栋即将拆除的房子的内部用混凝土翻模出来，1994 年被拆走。同年（1993）Whiteread 成为第一位获得特纳奖的女性。",
             "Gillian Wearing 在 1992–1993 年请街上的陌生人在白纸上写出自己想说的话，再拍照（Signs that say what you want them to say…），让普通人说出真实心声。她在 1997 年获得特纳奖。",
-            "Wearing 后来用面具「扮演」家人和自己不同年纪的样子，和 Cindy Sherman 的角色扮演可以对读。",
+            "Wearing 后来用面具「扮演」家人和自己不同年纪的样子，和 Cindy Sherman 的角色扮演可以比较。",
             "思考：Whiteread 让我们看见「空」；Wearing 让我们看见「真心话」。你的作品想让观众看见什么？"
           ],
           "quiz": [
@@ -2972,7 +2972,7 @@
         },
         {
           "id": "U10-L4",
-          "title": "YBA、美国艺术与中国艺术对读",
+          "title": "YBA、美国艺术与中国艺术比较",
           "cards": [
             "Hirst ↔ 黄永砅：两位都用真实动物或生命做作品。黄永砅的《世界剧场》（1993）把昆虫和爬虫放在同一个笼中互相生存，比喻世界的冲突。",
             "Emin ↔ 宋冬：Emin 公开自己的床；宋冬的《物尽其用》（2005）展出母亲数十年保存的一万多件日常物件。两位都用私人生活物件讲述身份和记忆。",
@@ -2983,7 +2983,7 @@
           "quiz": [
             {
               "type": "match",
-              "question": "配对可以对读的艺术家",
+              "question": "配对可以比较的艺术家",
               "options": [
                 "Damien Hirst",
                 "Tracey Emin",

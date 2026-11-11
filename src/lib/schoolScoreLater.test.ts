@@ -51,7 +51,7 @@ const LOCALE = {
     'score.later.studentRo': 'Learning progress reference (read-only)',
     'score.later.notFinal': 'Not the final score',
     'score.later.notFinalNote':
-      'What you see now is an approximate rating / reference band and comments, including the AI reference radars (artwork and research workbook), not the final score. It is for school discussion only. The student view keeps only these AI reference radars and does not show the formal school dual radar.',
+      'What you see now is an approximate rating / reference band and comments, including the AI reference radars (artwork and research workbook), not the final score. It is for school discussion only. What students see keeps only these AI reference radars and does not show the formal school dual radar.',
     'score.later.aiRadar': 'AI reference radar',
     'score.later.aiRadarHint': 'This is the AI reference radar, not the final score.',
   },
@@ -64,7 +64,7 @@ const LOCALE = {
     'score.later.studentRo': '學習進度參考（只讀）',
     'score.later.notFinal': '唔係最終分數',
     'score.later.notFinalNote':
-      '你而家見到嘅係大概評級／參考帶同參考評語，亦包括 AI 參考雷達（作品同研究工作簿），唔係最終分數。只供校內討論。學生面只保留呢兩幅 AI 參考雷達，唔顯示正式學校雙雷達。',
+      '你而家見到嘅係大概評級／參考帶同參考評語，亦包括 AI 參考雷達（作品同研究工作簿），唔係最終分數。只供校內討論。學生見到嘅畫面只保留呢兩幅 AI 參考雷達，唔顯示正式學校雙雷達。',
     'score.later.aiRadar': 'AI 參考雷達',
     'score.later.aiRadarHint': '呢幅係 AI 參考雷達，唔係最終分數。',
   },
@@ -77,7 +77,7 @@ const LOCALE = {
     'score.later.studentRo': '学习进度参考（只读）',
     'score.later.notFinal': '不是最终分数',
     'score.later.notFinalNote':
-      '你现在见到的是大概评级／参考带和参考评语，也包括 AI 参考雷达（作品和研究工作簿），不是最终分数。只供校内讨论。学生面只保留这两幅 AI 参考雷达，不显示正式学校双雷达。',
+      '你现在见到的是大概评级／参考带和参考评语，也包括 AI 参考雷达（作品和研究工作簿），不是最终分数。只供校内讨论。学生见到的画面只保留这两幅 AI 参考雷达，不显示正式学校双雷达。',
     'score.later.aiRadar': 'AI 参考雷达',
     'score.later.aiRadarHint': '这幅是 AI 参考雷达，不是最终分数。',
   },

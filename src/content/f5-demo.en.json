@@ -72,7 +72,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one line on what you notice; right, one making step.",
+              "question": "Compare works: left, one line on what you notice; right, one making step.",
               "options": [
                 "What I notice",
                 "A making step"
@@ -154,7 +154,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left is a sketch page, right is a research question. One note each.",
+              "question": "Compare works: left is a sketch page, right is a research question. One note each.",
               "options": [
                 "Sketch record",
                 "Research question"
@@ -245,7 +245,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one line on form; right, one line on cultural context. Do not call either side the correct society.",
+              "question": "Compare works: left, one line on form; right, one line on cultural context. Do not call either side the correct society.",
               "options": [
                 "One line on form",
                 "One line on context"
@@ -327,7 +327,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one formal note on Song; right, one formal note on Yuan. Name the point you compare.",
+              "question": "Compare works: left, one formal note on Song; right, one formal note on Yuan. Name the point you compare.",
               "options": [
                 "Song · form",
                 "Yuan · form"
@@ -418,7 +418,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, the object’s form; right, its place in daily life.",
+              "question": "Compare works: left, the object’s form; right, its place in daily life.",
               "options": [
                 "Object form",
                 "Place in life"
@@ -437,7 +437,7 @@
         },
         {
           "id": "F5-U3-L2",
-          "title": "Strange stones in dialogue: Wu Bin with Surrealism and Cubism",
+          "title": "Strange-stone comparison: Wu Bin with Surrealism and Cubism",
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L2.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
@@ -500,7 +500,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one method in Wu Bin’s strange stones; right, one Surrealist or Cubist method. Do not copy a picture.",
+              "question": "Compare works: left, one method in Wu Bin’s strange stones; right, one Surrealist or Cubist method. Do not copy a picture.",
               "options": [
                 "Strange-stone method",
                 "A method of reassembling"
@@ -582,7 +582,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left is a gathering page, right is a theme sentence. Note what you see and what you narrowed.",
+              "question": "Compare works: left is a gathering page, right is a theme sentence. Note what you see and what you narrowed.",
               "options": [
                 "Gathering page",
                 "Theme sentence"
@@ -664,7 +664,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one ink effect; right, the theme sentence of the first portfolio piece.",
+              "question": "Compare works: left, one ink effect; right, the theme sentence of the first portfolio piece.",
               "options": [
                 "Ink effect",
                 "Theme sentence"
@@ -755,7 +755,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, form only; right, one possible meaning.",
+              "question": "Compare works: left, form only; right, one possible meaning.",
               "options": [
                 "Form I see",
                 "A meaning it might carry"
@@ -837,7 +837,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one shared form; right, one different form.",
+              "question": "Compare works: left, one shared form; right, one different form.",
               "options": [
                 "A shared form",
                 "A different form"
@@ -928,7 +928,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, a pose or sign you borrow; right, what you change.",
+              "question": "Compare works: left, a pose or sign you borrow; right, what you change.",
               "options": [
                 "What I borrow",
                 "What I change"
@@ -1010,7 +1010,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one dry-media effect; right, one wet-media effect.",
+              "question": "Compare works: left, one dry-media effect; right, one wet-media effect.",
               "options": [
                 "Dry-media effect",
                 "Wet-media effect"
@@ -1092,7 +1092,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one Song–Yuan formal detail; right, how it enters the second piece.",
+              "question": "Compare works: left, one Song–Yuan formal detail; right, how it enters the second piece.",
               "options": [
                 "Song–Yuan detail",
                 "Second portfolio piece"
@@ -1183,7 +1183,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, whether the writing can still be read; right, how strokes are reassembled. This stays in class.",
+              "question": "Compare works: left, whether the writing can still be read; right, how strokes are reassembled. This stays in class.",
               "options": [
                 "Can it be read",
                 "Strokes reassembled"
@@ -1265,7 +1265,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, form; right, one way of looking.",
+              "question": "Compare works: left, form; right, one way of looking.",
               "options": [
                 "Form",
                 "Way of looking"
@@ -1347,7 +1347,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, the writing method you refer to; right, the one material you add.",
+              "question": "Compare works: left, the writing method you refer to; right, the one material you add.",
               "options": [
                 "Writing method",
                 "One material"
@@ -1429,7 +1429,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one Song–Yuan formal detail; right, how it helps making in the workbook.",
+              "question": "Compare works: left, one Song–Yuan formal detail; right, how it helps making in the workbook.",
               "options": [
                 "Song–Yuan detail",
                 "Use in the workbook"
@@ -1520,7 +1520,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one strength and its evidence; right, one next step.",
+              "question": "Compare works: left, one strength and its evidence; right, one next step.",
               "options": [
                 "Strength and evidence",
                 "Next step"
@@ -1602,7 +1602,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, what the workbook did; right, what the artwork or critical study shows.",
+              "question": "Compare works: left, what the workbook did; right, what the artwork or critical study shows.",
               "options": [
                 "Workbook",
                 "Artwork or critical study"

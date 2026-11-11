@@ -72,7 +72,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, this week’s sketch; right, next week’s question.",
+              "question": "Compare works: left, this week’s sketch; right, next week’s question.",
               "options": [
                 "This week’s sketch",
                 "Next week’s question"
@@ -154,7 +154,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one item you have; right, one gap and how you will fill it.",
+              "question": "Compare works: left, one item you have; right, one gap and how you will fill it.",
               "options": [
                 "What I have",
                 "A gap and how to fill it"
@@ -175,8 +175,8 @@
     },
     {
       "id": "F6-U2-MINGQING",
-      "title": "Ming–Qing aesthetics in contemporary dialogue",
-      "intro": "This unit uses a compact timeline to introduce Ming–Qing aesthetics, and sets them in dialogue with the Young British Artists (YBA) and related contemporary approaches. You will meet Shen Zhou and Wen Zhengming. This is an introduction only, not a course in copying famous paintings one by one. Lessons do not use real exam papers.",
+      "title": "Ming–Qing aesthetics and contemporary comparison",
+      "intro": "This unit uses a compact timeline to introduce Ming–Qing aesthetics, and compares them with the Young British Artists (YBA) and related contemporary approaches. You will meet Shen Zhou and Wen Zhengming. This is an introduction only, not a course in copying famous paintings one by one. Lessons do not use real exam papers.",
       "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-MINGQING.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -245,7 +245,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, open or dense brushwork; right, one possible everyday use.",
+              "question": "Compare works: left, open or dense brushwork; right, one possible everyday use.",
               "options": [
                 "Open or dense brushwork",
                 "A possible use"
@@ -264,7 +264,7 @@
         },
         {
           "id": "F6-U2-L2",
-          "title": "Young British Artists (YBA) in contemporary dialogue",
+          "title": "Young British Artists (YBA) and contemporary comparison",
           "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U2-L2.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
@@ -312,7 +312,7 @@
                 "Ming–Qing observation": "Brushwork, empty space, or use",
                 "Method": "Enlarge an object, or make the everyday the subject"
               },
-              "explain": "Both sides are read through method."
+              "explain": "Both sides are compared through method."
             },
             {
               "type": "order",
@@ -327,7 +327,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one Young British Artists (YBA) method; right, one Ming–Qing form. No copied exam prompt.",
+              "question": "Compare works: left, one Young British Artists (YBA) method; right, one Ming–Qing form. No copied exam prompt.",
               "options": [
                 "Young British Artists method",
                 "Ming–Qing form"
@@ -409,7 +409,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one form in Shen Zhou; right, one form in Wen Zhengming.",
+              "question": "Compare works: left, one form in Shen Zhou; right, one form in Wen Zhengming.",
               "options": [
                 "Shen Zhou",
                 "Wen Zhengming"
@@ -500,7 +500,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, the form; right, one tradition you think is still there.",
+              "question": "Compare works: left, the form; right, one tradition you think is still there.",
               "options": [
                 "Everyday form",
                 "A habit still there"
@@ -582,7 +582,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one artist’s brushwork; right, another artist’s leaves or inscription.",
+              "question": "Compare works: left, one artist’s brushwork; right, another artist’s leaves or inscription.",
               "options": [
                 "Brushwork",
                 "Leaves or inscription"
@@ -664,7 +664,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, form only; right, identity with “might”.",
+              "question": "Compare works: left, form only; right, identity with “might”.",
               "options": [
                 "Form",
                 "A possible identity"
@@ -746,7 +746,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one figure-painting form; right, one ink effect.",
+              "question": "Compare works: left, one figure-painting form; right, one ink effect.",
               "options": [
                 "Figure form",
                 "Ink effect"
@@ -837,7 +837,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, form; right, one possible meaning. Do not copy an exam prompt.",
+              "question": "Compare works: left, form; right, one possible meaning. Do not copy an exam prompt.",
               "options": [
                 "Form",
                 "Possible meaning"
@@ -919,7 +919,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, brush and ink or empty space; right, one possible meaning.",
+              "question": "Compare works: left, brush and ink or empty space; right, one possible meaning.",
               "options": [
                 "Brushwork or empty space",
                 "A possible meaning"
@@ -1010,7 +1010,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one role-play detail; right, what you change in a Chinese context. Method only.",
+              "question": "Compare works: left, one role-play detail; right, what you change in a Chinese context. Method only.",
               "options": [
                 "Role-play detail",
                 "Your change"
@@ -1092,7 +1092,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one form in the Yangzhou Eccentrics; right, one form in Xu Beihong or Qi Baishi.",
+              "question": "Compare works: left, one form in the Yangzhou Eccentrics; right, one form in Xu Beihong or Qi Baishi.",
               "options": [
                 "Yangzhou Eccentrics",
                 "Xu Beihong or Qi Baishi"
@@ -1174,7 +1174,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one dry or wet effect; right, how it serves an identity detail.",
+              "question": "Compare works: left, one dry or wet effect; right, how it serves an identity detail.",
               "options": [
                 "Medium effect",
                 "Identity detail"
@@ -1265,7 +1265,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one strength and its evidence; right, one next step.",
+              "question": "Compare works: left, one strength and its evidence; right, one next step.",
               "options": [
                 "Strength and evidence",
                 "Next step"
@@ -1347,7 +1347,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left, one workbook page; right, one decision in the work. Say how they match.",
+              "question": "Compare works: left, one workbook page; right, one decision in the work. Say how they match.",
               "options": [
                 "One workbook page",
                 "A decision in the work"

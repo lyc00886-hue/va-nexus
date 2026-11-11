@@ -293,7 +293,7 @@ describe('practice paper split', () => {
     assert.equal(hant['qtype.practiceOnly'], '練習結構 · 唔係真題')
     assert.equal(hant['island.chip.sba'], 'SBA 實驗室')
     assert.equal(hant['island.chip.exam'], '應試練習場')
-    assert.equal(hant['atlas.card.compare.title'], '雙圖對讀')
+    assert.equal(hant['atlas.card.compare.title'], '藝術評賞比較')
   })
 
   it('gives each paper Part A criticism and Part B creation, with no fake second paper', () => {

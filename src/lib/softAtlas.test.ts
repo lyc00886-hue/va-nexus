@@ -27,7 +27,7 @@ const COPY = {
     'atlas.card.feldman.title': '費德曼四步',
     'atlas.card.observe.title': '一手觀察',
     'atlas.card.sketch.title': '草圖捨棄',
-    'atlas.card.compare.title': '雙圖對讀',
+    'atlas.card.compare.title': '藝術評賞比較',
     'atlas.card.compare.sub': '應試・練習',
     'atlas.nav.map': '地圖',
     'atlas.nav.path': '闖關',
@@ -37,7 +37,7 @@ const COPY = {
   en: {
     'atlas.chip.sba': 'SBA lab',
     'atlas.chip.exam': 'Exam skills',
-    'atlas.card.compare.title': 'Read two works',
+    'atlas.card.compare.title': 'Compare works',
     'atlas.card.compare.sub': 'Exam · practice',
     'atlas.locked': 'Later',
     'atlas.unlocked': 'Unlocked',
@@ -46,7 +46,7 @@ const COPY = {
   'zh-Hans': {
     'atlas.chip.sba': 'SBA 实验室',
     'atlas.chip.exam': '应试练习场',
-    'atlas.card.compare.title': '双图对读',
+    'atlas.card.compare.title': '艺术评赏比较',
     'atlas.card.compare.sub': '应试・练习',
     'atlas.card.lingnan.tip': '撞水撞粉和折衷中西——看怎样用湿润过渡解决空气感。传统笔墨 × 西方透视／光影。\n慢慢读就好——重点是解题方法，不用一次记完。',
     'atlas.card.feldman.title': '费德曼四步',
@@ -95,7 +95,7 @@ function messages(file: string): Record<string, string> {
 }
 
 describe('soft atlas cards', () => {
-  it('locks 雙圖對讀 on the exam topic and keeps the other five cards', () => {
+  it('locks 藝術評賞比較 on the exam topic and keeps the other five cards', () => {
     assert.deepEqual(
       ATLAS_CARDS.map((card) => card.id),
       ['lingnan', 'expression', 'feldman', 'observe', 'sketch', 'compare'],

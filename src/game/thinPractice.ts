@@ -1,5 +1,5 @@
 /**
- * Open practice for order / dual-image read / short answer.
+ * Open practice for order / compare works / short answer.
  * Order is graded against the listed sequence. The two writing types
  * are structure practice: a line counts when it is not blank.
  */
