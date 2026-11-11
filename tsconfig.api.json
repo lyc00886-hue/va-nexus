@@ -16,6 +16,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
-  "include": ["api"],
+  "include": ["api", "src/types/jpeg-js.d.ts"],
   "exclude": ["api/**/*.test.ts"]
 }

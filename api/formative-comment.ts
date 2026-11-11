@@ -7,7 +7,9 @@
  */
 import { geminiModels } from './feedback.ts'
 import {
+  FORMATIVE_BODY_CHAR_MAX,
   FORMATIVE_PAGE_BYTE_MAX,
+  FORMATIVE_TOTAL_BYTE_MAX,
   formativeAxisLabels,
   formativeCommentSystem,
   formativePageMime,
@@ -22,8 +24,6 @@ export type FormativeGenerator = (input: {
   base64: string
   pages?: { side: string; mime: string; base64: string }[]
 }) => Promise<string | null>
-
-const BODY_CHAR_MAX = 5_500_000
 
 /** A class can upload together from one school network. Still bounded. */
 const RATE_WINDOW_MS = 10 * 60 * 1000
@@ -134,25 +134,30 @@ function generationConfig(model: string): {
   }
 }
 
-const TOTAL_BYTE_MAX = 3_200_000
-
 type IncomingPage = { side: string; mime: string; base64: string }
 
-function onePage(sideRaw: unknown, mimeRaw: unknown, imageBase64: unknown): IncomingPage | null {
+function onePage(sideRaw: unknown, mimeRaw: unknown, imageBase64: unknown, fileNameRaw: unknown): IncomingPage | null {
   if (typeof mimeRaw !== 'string' || typeof imageBase64 !== 'string') return null
-  const mime = formativePageMime('page', mimeRaw)
-  if (!mime) return null
   const base64 = imageBase64.replace(/\s/g, '')
   if (!base64 || !/^[A-Za-z0-9+/]+={0,2}$/.test(base64)) return null
   const bytes = Buffer.from(base64, 'base64')
   if (bytes.length === 0 || bytes.length > FORMATIVE_PAGE_BYTE_MAX) return null
+  const name = typeof fileNameRaw === 'string' ? fileNameRaw : ''
+  const mime = formativePageMime(name, mimeRaw, bytes)
+  if (!mime) return null
   const side = sideRaw === 'artwork' || sideRaw === 'research_workbook' ? sideRaw : ''
   return { side, mime, base64 }
 }
 
 function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] } | null {
   if (!body || typeof body !== 'object') return null
-  const record = body as { locale?: unknown; mime?: unknown; imageBase64?: unknown; pages?: unknown }
+  const record = body as {
+    locale?: unknown
+    mime?: unknown
+    imageBase64?: unknown
+    fileName?: unknown
+    pages?: unknown
+  }
   const locale = record.locale === 'en' || record.locale === 'zh-Hans' || record.locale === 'zh-Hant' ? record.locale : 'zh-Hant'
   const pages: IncomingPage[] = []
   let total = 0
@@ -160,16 +165,16 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
     for (const item of record.pages) {
       if (pages.length >= 4) break
       if (!item || typeof item !== 'object') continue
-      const page = item as { side?: unknown; mime?: unknown; imageBase64?: unknown }
-      const next = onePage(page.side, page.mime, page.imageBase64)
+      const page = item as { side?: unknown; mime?: unknown; imageBase64?: unknown; fileName?: unknown }
+      const next = onePage(page.side, page.mime, page.imageBase64, page.fileName)
       if (!next) continue
       const bytes = Buffer.from(next.base64, 'base64').length
-      if (total > 0 && total + bytes > TOTAL_BYTE_MAX) continue
+      if (total > 0 && total + bytes > FORMATIVE_TOTAL_BYTE_MAX) continue
       pages.push(next)
       total += bytes
     }
   } else {
-    const next = onePage('', record.mime, record.imageBase64)
+    const next = onePage('', record.mime, record.imageBase64, record.fileName)
     if (next) pages.push(next)
   }
   if (pages.length === 0) return null
@@ -220,7 +225,7 @@ export async function handleFormativeComment(request: Request): Promise<Response
   if (!sameOriginAllowed(request)) return unavailable(403)
 
   const raw = await request.text()
-  if (raw.length === 0 || raw.length > BODY_CHAR_MAX) return unavailable(400)
+  if (raw.length === 0 || raw.length > FORMATIVE_BODY_CHAR_MAX) return unavailable(400)
   let body: unknown
   try {
     body = JSON.parse(raw)

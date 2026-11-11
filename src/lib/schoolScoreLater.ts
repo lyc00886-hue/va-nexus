@@ -46,7 +46,7 @@ export const SCHOOL_SCORE_LATER_SHA256 = {
 
 const BAND_SET = new Set<string>(PRACTICE_BAND_IDS)
 
-export type LaterAiStatus = 'idle' | 'model' | 'fallback'
+export type LaterAiStatus = 'idle' | 'model' | 'fallback' | 'unsent'
 
 /** The two scan sides. There is no third category. */
 export type LaterPageSide = 'artwork' | 'research_workbook'
@@ -99,15 +99,16 @@ export function isPracticeBandId(value: unknown): value is PracticeBandId {
   return typeof value === 'string' && BAND_SET.has(value)
 }
 
+const LATER_FILE_EXT = /\.(?:pdf|png|jpe?g|webp|gif)$/i
+
 export function isLaterUploadFile(file: { name: string; type: string }): boolean {
-  const type = file.type.toLowerCase()
+  const type = file.type.toLowerCase().split(';')[0].trim()
   if (type.startsWith('image/')) return true
   if (type === 'application/pdf') return true
-  return /\.pdf$/i.test(file.name) && (type === '' || type === 'application/octet-stream')
+  return (type === '' || type === 'application/octet-stream') && LATER_FILE_EXT.test(file.name)
 }
 
 const WORKBOOK_NAME = /工作簿|workbook/i
-const ARTWORK_NAME = /作品|評賞|评赏|artwork/i
 const EXCLUDED_NAME =
   /練習卷|练习卷|practice[\s._-]*paper|課程|课程|\bcourse\b|地圖|地图|map[\s._-]*card|課卡|课卡/i
 
@@ -118,13 +119,14 @@ export function laterScanExcluded(name: string): boolean {
 
 /**
  * Artwork (藝術作品／評賞研究) or research workbook (研究工作簿).
- * Anything else, including an excluded page, is not a scan side.
+ * A clearly workbook-named file is the research workbook.
+ * Every other later file that is not an excluded name is artwork,
+ * including an ordinary photo or PDF name. An excluded name is not a scan side.
  */
 export function laterPageSide(name: string): LaterPageSide | null {
   if (laterScanExcluded(name)) return null
   if (WORKBOOK_NAME.test(name)) return 'research_workbook'
-  if (ARTWORK_NAME.test(name)) return 'artwork'
-  return null
+  return 'artwork'
 }
 
 export function upsertLaterPage(pages: readonly LaterPage[], page: LaterPage): LaterPage[] {
@@ -257,6 +259,28 @@ export function applyModelComment(
   }
 }
 
+/**
+ * The file is already in the portfolio, but it could not be sent to the model.
+ * No visible band and no per-axis values. This is not a model miss.
+ */
+export function applyFileNotSent(draft: LaterDraft): LaterDraft {
+  if (
+    draft.aiStatus === 'unsent' &&
+    draft.aiComment == null &&
+    draft.approxBand == null &&
+    Object.keys(draft.aiAxes).length === 0
+  ) {
+    return draft
+  }
+  return {
+    ...draft,
+    approxBand: null,
+    aiStatus: 'unsent',
+    aiComment: null,
+    aiAxes: {},
+  }
+}
+
 /** No visible band and no per-axis values. Upload and teacher adjust stay available. */
 export function applyAiFallback(draft: LaterDraft): LaterDraft {
   if (
@@ -376,7 +400,8 @@ export function sanitizeLaterStore(raw: unknown): LaterStore {
   const draft = record.draft as Record<string, unknown>
   if (typeof draft.fileName !== 'string' || !draft.fileName.trim()) return empty
   if (typeof draft.fileSize !== 'number' || !Number.isFinite(draft.fileSize) || draft.fileSize < 0) return empty
-  let aiStatus: LaterAiStatus = draft.aiStatus === 'model' || draft.aiStatus === 'fallback' ? draft.aiStatus : 'idle'
+  let aiStatus: LaterAiStatus =
+    draft.aiStatus === 'model' || draft.aiStatus === 'fallback' || draft.aiStatus === 'unsent' ? draft.aiStatus : 'idle'
   let aiComment = aiStatus === 'model' ? commentText(draft.aiComment) : null
   let approxBand = aiStatus === 'model' && isPracticeBandId(draft.approxBand) ? draft.approxBand : null
   if (aiStatus === 'model' && (!aiComment || approxBand == null)) {

@@ -264,7 +264,7 @@ describe('formative AI comment trigger', () => {
         return new Response(null, { status: 503 })
       },
     })
-    assert.deepEqual(missed, { ok: false, reason: 'unavailable' })
+    assert.deepEqual(missed, { ok: false, reason: 'not_sent' })
     assert.equal(called, false)
 
     const down = await postFormativeComment({

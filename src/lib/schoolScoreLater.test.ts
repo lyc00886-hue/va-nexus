@@ -434,7 +434,7 @@ describe('full scan and teacher-first formal draft', () => {
     assert.equal(laterPageSide('評賞研究.png'), 'artwork')
     assert.equal(laterPageSide('工作簿頁 1.pdf'), 'research_workbook')
     assert.equal(laterPageSide('research-workbook.pdf'), 'research_workbook')
-    assert.equal(laterPageSide('page.pdf'), null)
+    assert.equal(laterPageSide('page.pdf'), 'artwork')
 
     const artwork = formalAxesForPages([
       { fileName: '作品頁 1.jpg', fileSize: 1000, mime: 'image/jpeg', side: 'artwork' },
