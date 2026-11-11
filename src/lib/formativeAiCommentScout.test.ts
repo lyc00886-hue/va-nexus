@@ -11,6 +11,7 @@ import {
   bandFromModel,
   formativeAxisLabels,
   formativeCommentSystem,
+  axisValueFromModel,
   parseFormativeModelText,
   postFormativeComment,
 } from './formativeAiComment.ts'
@@ -63,15 +64,21 @@ const KEPT = {
     'score.later.disclaimer':
       'Not a public-exam or HKEAA result. AI approx is school-internal only; teacher-adjusted values prevail.',
     'score.later.stubNote':
-      'Approximate reference, pending teacher confirm. Without a live vision model, the band comes from the file name and size.',
+      'Approximate reference, pending teacher confirm. If the model cannot produce a band or comments from the work, a visible score is not guessed from the file name or size. You can try again later.',
+    'score.later.radarPending':
+      'Per-axis model reference is not available yet, so the radar is not drawn. This avoids painting the same score on every axis.',
   },
   'zh-Hant': {
     'score.later.disclaimer': '非公開試／非 HKEAA 正式分數。AI 大概分只供校內討論；以教師調分後為準。',
-    'score.later.stubNote': '大概參考 · 待教師確認。未接實時影像模型時，以檔名與大小給一條參考帶。',
+    'score.later.stubNote':
+      '大概參考 · 待教師確認。模型未能按作品計出大概帶或評語時，唔會用檔名或檔案大小估一條可見分數。你可以稍後再試。',
+    'score.later.radarPending': '未有按各軸分開計嘅模型參考，暫時唔畫雷達，避免每條軸都同一分數。',
   },
   'zh-Hans': {
     'score.later.disclaimer': '非公开试／非 HKEAA 正式分数。AI 大概分只供校内讨论；以教师调分后为准。',
-    'score.later.stubNote': '大概参考 · 待教师确认。未接实时影像模型时，以档名与大小给一条参考带。',
+    'score.later.stubNote':
+      '大概参考 · 待教师确认。模型未能按作品计出大概带或评语时，不会用档名或档案大小估一条可见分数。你可以稍后再试。',
+    'score.later.radarPending': '未有按各轴分开计的模型参考，暂时不画雷达，避免每条轴都同一分数。',
   },
 } as const
 
@@ -158,16 +165,31 @@ describe('formative AI comment axes', () => {
         axes.map((axis) => axis.label),
         copy.criteria.rows.map((row) => row.label),
       )
+      assert.deepEqual(
+        axes.map((axis) => axis.focus),
+        copy.criteria.rows.map((row) => row.focusHint),
+      )
     }
     const labels = formativeAxisLabels('zh-Hant').map((axis) => axis.label)
     assert.equal(labels.includes('主題清晰度'), false)
     const system = formativeCommentSystem(labels, 'zh-Hant')
     for (const label of labels) assert.match(system, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
+    assert.match(system, /school-score v1/)
+    assert.match(system, /Do not use the file name/)
+    assert.match(system, /Do not copy one overall band onto every axis/)
     assert.equal(system.includes('洞察藝術'), false)
+    assert.equal(system.includes('主題清晰度'), false)
+    assert.equal(system.includes('5**'), false)
+    assert.equal(system.includes('Lindsay'), false)
     assert.match(FORMATIVE_USER_PROMPT, /Do not award an official mark/)
+    assert.match(FORMATIVE_USER_PROMPT, /Do not use the file name or file size/)
     for (const id of PRACTICE_BAND_IDS) assert.equal(FORMATIVE_BAND_VALUE[id], BAND_FORMATIVE[id])
     assert.equal(bandFromModel(3.5), 'practice-secure')
     assert.equal(bandFromModel('良好'), 'practice-strong')
+    assert.equal(bandFromModel('1.25'), 'practice-emerging')
+    assert.equal(bandFromModel('1.2'), 'practice-emerging')
+    assert.equal(axisValueFromModel('1.2'), 1.25)
+    assert.equal(axisValueFromModel(2.5), 2.5)
     assert.equal(bandFromModel('5**'), null)
   })
 })
@@ -207,23 +229,24 @@ describe('formative AI comment trigger', () => {
     assert.equal(next.approxBand, 'practice-secure')
     assert.equal(next.committedBand, null)
     assert.equal(laterPending(next), true)
-    assert.equal(next.stubBand, approximateBandId('工作簿頁 1.pdf', 12000))
+    assert.deepEqual(next.aiAxes, {})
     const written = withCommitted(next)
     assert.equal(written.committedBand, 'practice-secure')
     assert.equal(laterPending(written), false)
     assert.equal(written.aiComment, COMMENT)
   })
 
-  it('falls back to the filename stub when the model is unavailable', async () => {
+  it('does not restore a filename stub when the model is unavailable', async () => {
     const draft = draftFromFile('工作簿頁 1.pdf', 12000, 'application/pdf')
-    const stub = approximateBandId('工作簿頁 1.pdf', 12000)
     const model = applyModelComment(draft, { comment: COMMENT, band: 'practice-strong' })
     const fallback = applyAiFallback(model)
     assert.equal(fallback.aiStatus, 'fallback')
     assert.equal(fallback.aiComment, null)
-    assert.equal(fallback.approxBand, stub)
+    assert.equal(fallback.approxBand, null)
+    assert.deepEqual(fallback.aiAxes, {})
     assert.equal(fallback.committedBand, null)
     assert.equal(laterPending(fallback), true)
+    assert.notEqual(fallback.approxBand, approximateBandId('工作簿頁 1.pdf', 12000))
     assert.equal(parseFormativeModelText('{"comment":"這頁係 5** 公開試結果。","band":"practice-strong"}'), null)
     assert.equal(parseFormativeModelText(`{"comment":"${COMMENT}","band":"practice-developing"}`)?.band, 'practice-developing')
 

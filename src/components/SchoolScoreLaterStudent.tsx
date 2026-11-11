@@ -5,13 +5,20 @@ import { schoolBandRows } from '../lib/schoolScore'
 import {
   DUAL_CHARTS,
   axisLabelKey,
+  bandForFormative,
   dualBandMapRows,
   formatFormative,
   type DualAxisId,
 } from '../lib/schoolScoreDual'
 import { scoreFoldLaterHasResults, useScoreFold } from '../lib/scoreFold'
-import { SCHOOL_SCORE_LATER_PLATES, aiReferenceFormative, type LaterDraft } from '../lib/schoolScoreLater'
-import { acceptLaterFiles, useSchoolScoreLater } from '../lib/useSchoolScoreLater'
+import {
+  SCHOOL_SCORE_LATER_PLATES,
+  aiReferenceAxes,
+  aiReferenceFormative,
+  studentVisibleBand,
+  type LaterDraft,
+} from '../lib/schoolScoreLater'
+import { acceptLaterFiles, useSchoolScoreLater, type LaterPagePreview } from '../lib/useSchoolScoreLater'
 import { SchoolScoreDualFigure } from './SchoolScoreDualFigure'
 import { ScoreFold } from './ScoreFold'
 
@@ -41,10 +48,14 @@ function uploadNames(draft: LaterDraft | null): string[] {
 
 function LaterUpload({
   draft,
+  previews,
+  pale,
   rejected,
   onFiles,
 }: {
   draft: LaterDraft | null
+  previews: LaterPagePreview[]
+  pale: boolean
   rejected: boolean
   onFiles: (files: File[]) => void
 }) {
@@ -86,6 +97,13 @@ function LaterUpload({
           <span className="text-xs text-slate-500">{t('score.later.dropNote')}</span>
         </span>
       </label>
+      {previews.length > 0 ? (
+        <div data-testid="score-later-student-previews" className={`flex flex-wrap gap-3 ${pale ? 'opacity-60' : ''}`}>
+          {previews.map((page) => (
+            <PageThumb key={`${page.side}-${page.fileName}`} name={page.fileName} url={page.url} mime={page.mime} />
+          ))}
+        </div>
+      ) : null}
       {names.length > 0 ? (
         <ul className="flex flex-wrap gap-2" data-testid="score-later-student-files">
           {names.map((name) => (
@@ -120,37 +138,49 @@ function bandClass(on: boolean): string {
     : 'rounded-full border border-[#0D9488]/35 bg-white px-3 py-1 text-xs font-semibold text-teal-950'
 }
 
+function formatAiReadout(value: number): string {
+  return formatFormative(value).replace('/', '／')
+}
+
 function AiReferenceChart({
   chart,
-  formative,
+  values,
   testId,
 }: {
   chart: (typeof DUAL_CHARTS)[number]
-  formative: number
+  values: number[]
   testId: 'score-later-ai-chart-artwork' | 'score-later-ai-chart-research_workbook'
 }) {
   const { t } = useT()
+  const rows = schoolBandRows()
   return (
     <div data-testid={testId} data-axes={chart.axes.length}>
       <h5 className="text-center text-base font-bold text-[#0D9488]">{t(chart.title)}</h5>
       <SchoolScoreDualFigure
         chartId={`ai-${chart.id}`}
         labels={chart.axes.map((id) => t(axisLabelKey(id)))}
-        values={chart.axes.map(() => formative)}
+        values={values}
         drawLabels={false}
       />
       <ul className="space-y-1">
-        {chart.axes.map((id: DualAxisId) => (
-          <li
-            key={id}
-            data-testid={`score-later-ai-axis-${id}`}
-            data-value={formative}
-            className="text-sm leading-relaxed text-slate-800"
-          >
-            <span className="font-semibold">{t(axisLabelKey(id))}</span>
-            <span className="text-slate-600"> {formatFormative(formative)}</span>
-          </li>
-        ))}
+        {chart.axes.map((id: DualAxisId, index) => {
+          const value = values[index]
+          const band = rows.find((row) => row.id === bandForFormative(value))
+          return (
+            <li
+              key={id}
+              data-testid={`score-later-ai-axis-${id}`}
+              data-value={value}
+              className="text-sm leading-relaxed text-slate-800"
+            >
+              <span className="block font-semibold">{t(axisLabelKey(id))}</span>
+              <span className="text-slate-600">
+                {formatAiReadout(value)}
+                {band ? ` · ${t(band.label)}` : ''}
+              </span>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )
@@ -158,28 +188,33 @@ function AiReferenceChart({
 
 /**
  * Read-only learning-progress reference.
- * An existing approximate band, comment, and both AI reference radars show immediately.
- * Students cannot change them. The formal school dual radar stays on the staff surface.
+ * The unofficial band, comment, and per-axis radars appear only after a model
+ * result read from the uploaded pages. Students cannot change them.
+ * The formal school dual radar stays on the staff surface.
  */
 export function SchoolScoreLaterStudent() {
   const { t } = useT()
-  const { draft, previewUrl } = useSchoolScoreLater()
+  const { draft, pagePreviews } = useSchoolScoreLater()
   const [rejected, setRejected] = useState(false)
   const headingId = useId()
   const named = useId()
   const rows = schoolBandRows()
   const maps = dualBandMapRows()
-  const approx = draft?.approxBand ?? null
+  const approx = draft ? studentVisibleBand(draft) : null
   const current = rows.find((row) => row.id === approx)
   const mapRow = maps.find((row) => row.id === approx)
   const showComment = Boolean(draft && draft.aiStatus === 'model' && draft.aiComment)
   const formative = draft ? aiReferenceFormative(draft) : null
   const artworkChart = DUAL_CHARTS.find((chart) => chart.id === 'artwork')
   const workbookChart = DUAL_CHARTS.find((chart) => chart.id === 'research_workbook')
+  const previews = [...pagePreviews].sort((a, b) => (a.side === b.side ? 0 : a.side === 'artwork' ? -1 : 1))
+  const artworkValues = draft && artworkChart ? aiReferenceAxes(draft, artworkChart.axes) : null
+  const workbookValues = draft && workbookChart ? aiReferenceAxes(draft, workbookChart.axes) : null
+  const radarDrawable = Boolean(artworkValues || workbookValues)
   const hasLater = scoreFoldLaterHasResults({
-    approxBand: draft?.approxBand ?? null,
+    approxBand: approx,
     comment: showComment ? (draft?.aiComment ?? null) : null,
-    radarDrawable: Boolean(draft && formative != null && artworkChart && workbookChart),
+    radarDrawable,
   })
   const laterFold = useScoreFold(hasLater)
 
@@ -193,6 +228,8 @@ export function SchoolScoreLaterStudent() {
     >
       <LaterUpload
         draft={draft}
+        previews={previews}
+        pale={draft?.aiStatus !== 'model'}
         rejected={rejected}
         onFiles={(files) => {
           if (files.length === 0) return
@@ -243,27 +280,22 @@ export function SchoolScoreLaterStudent() {
       <article className="space-y-3 rounded-2xl border border-[#0D9488]/35 bg-white px-4 py-4">
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h4 className="text-base font-bold text-slate-900">{t('score.later.aiApprox')}</h4>
-          {current ? <NotFinalPill label={t('score.later.notFinal')} /> : null}
+          <NotFinalPill label={t('score.later.notFinal')} />
         </div>
         {draft && current && formative != null && mapRow ? (
           <div className="space-y-3">
-            <div className="flex gap-3">
-              <PageThumb name={draft.fileName} url={previewUrl} mime={draft.mime} />
-              <div className="min-w-0 space-y-2">
-                <p className="text-sm text-slate-600">{t('score.later.informalRo')}</p>
-                <p
-                  data-testid="score-later-student-band"
-                  data-band={approx ?? 'unset'}
-                  className="text-2xl font-bold text-[#0D9488]"
-                >
-                  {t(current.label)}
-                </p>
-                <p className="text-sm font-semibold text-slate-800">
-                  {t('score.later.aboutInformal', { value: formatFormative(formative) })}
-                </p>
-                <p className="text-sm text-slate-600">{t(mapRow.map)}</p>
-              </div>
-            </div>
+            <p className="text-sm text-slate-600">{t('score.later.informalRo')}</p>
+            <p
+              data-testid="score-later-student-band"
+              data-band={approx ?? 'unset'}
+              className="text-2xl font-bold text-[#0D9488]"
+            >
+              {t(current.label)}
+            </p>
+            <p className="text-sm font-semibold text-slate-800">
+              {t('score.later.aboutInformal', { value: formatFormative(formative) })}
+            </p>
+            <p className="text-sm text-slate-600">{t(mapRow.map)}</p>
             <ul className="flex flex-wrap gap-1.5" aria-label={t('score.later.aiApprox')}>
               {rows.map((row) => {
                 const on = row.id === approx
@@ -279,15 +311,24 @@ export function SchoolScoreLaterStudent() {
                 )
               })}
             </ul>
-            {draft.aiStatus === 'fallback' ? (
-              <p className="text-xs leading-relaxed text-slate-500">{t('score.later.stubNote')}</p>
-            ) : null}
           </div>
         ) : (
-          <p data-testid="score-later-student-band" data-band="unset" className="text-sm font-semibold text-slate-700">
-            {t('score.later.empty')}
+          <p
+            data-testid="score-later-student-band"
+            data-band="unset"
+            className="text-sm font-semibold text-slate-500"
+          >
+            {draft ? t('score.dual.unset') : t('score.later.empty')}
           </p>
         )}
+        <button
+          type="button"
+          disabled
+          data-testid="score-later-student-lock"
+          className="rounded-full bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500"
+        >
+          {t('score.later.cannotEdit')}
+        </button>
       </article>
 
       <article
@@ -297,15 +338,19 @@ export function SchoolScoreLaterStudent() {
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h4 className="text-base font-bold text-slate-900">{t('score.later.aiComment')}</h4>
-          {showComment ? <NotFinalPill label={t('score.later.notFinal')} /> : null}
+          <NotFinalPill label={t('score.later.notFinal')} />
         </div>
         {showComment && draft?.aiComment ? (
           <>
             <p className="text-sm text-slate-600">{t('score.later.aiCommentHint')}</p>
             <p className="text-sm leading-relaxed text-slate-800">{draft.aiComment}</p>
           </>
+        ) : draft?.aiStatus === 'fallback' ? (
+          <p data-testid="score-later-student-unavailable" className="text-sm leading-relaxed text-slate-500">
+            {t('score.later.aiUnavailable')}
+          </p>
         ) : (
-          <p className="text-sm font-semibold text-slate-700">{t('score.dual.unset')}</p>
+          <p className="text-sm font-semibold text-slate-500">{t('score.dual.unset')}</p>
         )}
       </article>
 
@@ -318,31 +363,35 @@ export function SchoolScoreLaterStudent() {
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <h4 className="text-base font-bold text-slate-900">{t('score.later.aiRadar')}</h4>
-          {formative != null ? <NotFinalPill label={t('score.later.notFinal')} /> : null}
+          <NotFinalPill label={t('score.later.notFinal')} />
         </div>
         <p className="text-sm leading-relaxed text-slate-600">{t('score.later.aiRadarHint')}</p>
-        {draft && formative != null && artworkChart && workbookChart ? (
+        {radarDrawable && artworkChart && workbookChart ? (
           <div className="grid gap-3 sm:grid-cols-2">
-            <AiReferenceChart chart={artworkChart} formative={formative} testId="score-later-ai-chart-artwork" />
-            <AiReferenceChart
-              chart={workbookChart}
-              formative={formative}
-              testId="score-later-ai-chart-research_workbook"
-            />
+            {artworkValues ? (
+              <AiReferenceChart chart={artworkChart} values={artworkValues} testId="score-later-ai-chart-artwork" />
+            ) : null}
+            {workbookValues ? (
+              <AiReferenceChart
+                chart={workbookChart}
+                values={workbookValues}
+                testId="score-later-ai-chart-research_workbook"
+              />
+            ) : null}
           </div>
-        ) : (
-          <p className="text-sm font-semibold text-slate-700">{t('score.dual.unset')}</p>
-        )}
+        ) : null}
+        {!artworkValues || !workbookValues ? (
+          <p data-testid="score-later-radar-pending" className="text-sm leading-relaxed text-slate-500">
+            {t('score.later.radarPending')}
+          </p>
+        ) : null}
       </article>
 
-      <button
-        type="button"
-        disabled
-        data-testid="score-later-student-lock"
-        className="rounded-full bg-slate-200 px-4 py-2 text-sm font-semibold text-slate-500"
-      >
-        {t('score.later.cannotEdit')}
-      </button>
+      {draft && draft.aiStatus !== 'model' ? (
+        <p data-testid="score-later-stub-note" className="text-xs leading-relaxed text-slate-500">
+          {t('score.later.stubNote')}
+        </p>
+      ) : null}
 
       <p
         role="note"
