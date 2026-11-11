@@ -8,7 +8,7 @@ import {
   withSavedBand,
   type PracticeBandId,
   type TeacherDraftStore,
-} from './teacherDraftBand'
+} from './teacherDraftBand.ts'
 
 function load(): TeacherDraftStore {
   if (typeof localStorage === 'undefined') return emptyTeacherDraftStore()

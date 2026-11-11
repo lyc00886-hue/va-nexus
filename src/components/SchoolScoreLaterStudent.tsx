@@ -18,7 +18,7 @@ import {
   studentVisibleBand,
   type LaterDraft,
 } from '../lib/schoolScoreLater'
-import { acceptLaterFiles, useSchoolScoreLater, type LaterPagePreview } from '../lib/useSchoolScoreLater'
+import { acceptLaterFiles, requestLaterComment, useSchoolScoreLater, type LaterPagePreview } from '../lib/useSchoolScoreLater'
 import { SchoolScoreDualFigure } from './SchoolScoreDualFigure'
 import { ScoreFold } from './ScoreFold'
 
@@ -188,12 +188,13 @@ function AiReferenceChart({
 
 /**
  * Read-only learning-progress reference.
- * The unofficial band, comment, and per-axis radars appear only after a model
- * result read from the uploaded pages. Students cannot change them.
+ * A successful upload starts the unofficial comment, band, and per-axis request.
+ * Those appear only after a model result read from the uploaded pages.
+ * Students cannot change them.
  * The formal school dual radar stays on the staff surface.
  */
 export function SchoolScoreLaterStudent() {
-  const { t } = useT()
+  const { locale, t } = useT()
   const { draft, pagePreviews } = useSchoolScoreLater()
   const [rejected, setRejected] = useState(false)
   const headingId = useId()
@@ -233,7 +234,9 @@ export function SchoolScoreLaterStudent() {
         rejected={rejected}
         onFiles={(files) => {
           if (files.length === 0) return
-          setRejected(!acceptLaterFiles(files))
+          const accepted = acceptLaterFiles(files)
+          setRejected(!accepted)
+          if (accepted) void requestLaterComment(locale, false)
         }}
       />
       <ScoreFold

@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react'
-import { FORMATIVE_PAGE_BYTE_MAX, postFormativeComment } from './formativeAiComment'
-import { SCHOOL_SCORE_SLOT } from './schoolScore'
+import { FORMATIVE_PAGE_BYTE_MAX, postFormativeComment } from './formativeAiComment.ts'
+import { SCHOOL_SCORE_SLOT } from './schoolScore.ts'
 import {
   SCHOOL_SCORE_LATER_KEY,
   applyAiFallback,
@@ -16,11 +16,10 @@ import {
   type LaterDraft,
   type LaterPageSide,
   type LaterStore,
-} from './schoolScoreLater'
-import { supabase } from './supabase'
-import type { PracticeBandId } from './teacherDraftBand'
-import { getDualRadarStore, saveDualAxis } from './useSchoolScoreDual'
-import { saveTeacherDraft } from './useTeacherDraftStore'
+} from './schoolScoreLater.ts'
+import type { PracticeBandId } from './teacherDraftBand.ts'
+import { getDualRadarStore, saveDualAxis } from './useSchoolScoreDual.ts'
+import { saveTeacherDraft } from './useTeacherDraftStore.ts'
 
 export type LaterPagePreview = {
   side: LaterPageSide
@@ -140,8 +139,9 @@ export function keepLaterAi() {
 }
 
 async function readAccessToken(): Promise<string | null> {
-  if (!supabase) return null
   try {
+    const { supabase } = await import('./supabase')
+    if (!supabase) return null
     const { data } = await supabase.auth.getSession()
     return data.session?.access_token ?? null
   } catch {
@@ -163,17 +163,39 @@ async function readPreviewBytes(previewUrl: string | null): Promise<Uint8Array |
 
 const COMMENT_BYTE_BUDGET = 3_200_000
 
+let inflightKey: string | null = null
+
 /**
- * Staff-only request. Reads the uploaded pages, not the file name or size.
- * A missing model, a missing page, or a non-staff caller leaves the school
- * reference untouched and does not invent a visible band.
+ * Informal later request for the uploaded pages.
+ * The student shell starts this after a valid upload. The staff button can start it too.
+ * `staff` is accepted so that button can keep its call. It does not gate the request.
+ * A second call for the same draft waits out the one already running.
+ * A new upload uses a new draft and starts again.
+ * A missing page or a model miss does not invent a visible band and does not write the school reference.
  */
-export async function requestLaterComment(locale: string, staff: boolean): Promise<'idle' | 'model' | 'fallback'> {
-  if (!staff) return 'idle'
+export async function requestLaterComment(locale: string, staff = false): Promise<'idle' | 'model' | 'fallback'> {
+  void staff
   const draft = snapshot.draft
   if (!draft) return 'idle'
   const fileName = draft.fileName
   const fileSize = draft.fileSize
+  const key = `${fileName}\0${fileSize}`
+  if (inflightKey === key) return 'idle'
+  inflightKey = key
+  try {
+    return await runLaterComment(locale, fileName, fileSize)
+  } finally {
+    if (inflightKey === key) inflightKey = null
+  }
+}
+
+async function runLaterComment(
+  locale: string,
+  fileName: string,
+  fileSize: number,
+): Promise<'idle' | 'model' | 'fallback'> {
+  const draft = snapshot.draft
+  if (!draft || draft.fileName !== fileName || draft.fileSize !== fileSize) return 'idle'
   const previewUrl = snapshot.previewUrl
   const previews = snapshot.pagePreviews
   const latest = new Map<LaterPageSide, (typeof draft.pages)[number]>()

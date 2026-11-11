@@ -1,8 +1,9 @@
 /**
- * Staff-only formative reference comment for uploaded artwork and workbook pages.
- * No key, no staff session, or a model miss returns unavailable. The client
- * then leaves the visible band unset. This route does not write a school
- * reference and does not award an official mark.
+ * Informal formative reference comment for uploaded artwork and workbook pages.
+ * The student later path and the staff button share this route.
+ * A staff session is not required. A cross-origin browser call is refused.
+ * A modest per-IP limit applies. No key or a model miss returns unavailable.
+ * This route does not write a school reference and does not award an official mark.
  */
 import { geminiModels } from './feedback.ts'
 import {
@@ -13,7 +14,6 @@ import {
   formativeUserPrompt,
   parseFormativeModelText,
 } from '../src/lib/formativeAiComment.ts'
-import { parseStaffEmailAllowlist, resolveStaffRole } from '../src/lib/staffRole.ts'
 
 export type FormativeGenerator = (input: {
   system: string
@@ -23,30 +23,23 @@ export type FormativeGenerator = (input: {
   pages?: { side: string; mime: string; base64: string }[]
 }) => Promise<string | null>
 
-type StaffCheck = (request: Request) => Promise<boolean>
-
 const BODY_CHAR_MAX = 5_500_000
 
-let staffCheck: StaffCheck | null = null
-let generator: FormativeGenerator | null = null
+/** A class can upload together from one school network. Still bounded. */
+const RATE_WINDOW_MS = 10 * 60 * 1000
+const RATE_MAX_DEFAULT = 120
 
-export function setFormativeStaffCheckForTests(check: StaffCheck | null): void {
-  staffCheck = check
-}
+let generator: FormativeGenerator | null = null
+let rateMax = RATE_MAX_DEFAULT
+const rateHits = new Map<string, number[]>()
 
 export function setFormativeGeneratorForTests(next: FormativeGenerator | null): void {
   generator = next
 }
 
-export function formativeStaffAllowed(appMetadata: object | null, email: string | null): boolean {
-  return (
-    resolveStaffRole({
-      appMetadata,
-      email,
-      allowlist: parseStaffEmailAllowlist(process.env.VITE_STAFF_EMAILS ?? process.env.STAFF_EMAILS),
-      previewEnabled: false,
-    }) != null
-  )
+export function setFormativeRateLimitForTests(max: number | null): void {
+  rateMax = max == null || max < 1 ? RATE_MAX_DEFAULT : max
+  rateHits.clear()
 }
 
 function json(status: number, body: unknown): Response {
@@ -63,31 +56,49 @@ function unavailable(status: number): Response {
   return json(status, { ok: false, reason: 'unavailable' })
 }
 
-async function defaultStaffAllowed(request: Request): Promise<boolean> {
-  const match = /^Bearer\s+(\S+)$/i.exec((request.headers.get('authorization') ?? '').trim())
-  if (!match) return false
-  const token = match[1]
-  const url = (process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '').replace(/\/+$/, '')
-  const anon = process.env.SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_ANON_KEY || ''
-  if (!url || !anon) return false
+function hostOf(value: string): string | null {
   try {
-    const { createClient } = await import('@supabase/supabase-js')
-    const supabase = createClient(url, anon, {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-        detectSessionInUrl: false,
-        skipAutoInitialize: true,
-      },
-      global: { headers: { Authorization: `Bearer ${token}` } },
-    })
-    const { data, error } = await supabase.auth.getUser(token)
-    if (error || !data.user) return false
-    const meta = data.user.app_metadata
-    return formativeStaffAllowed(meta && typeof meta === 'object' ? meta : null, data.user.email ?? null)
+    return new URL(value).host.toLowerCase()
   } catch {
-    return false
+    return null
   }
+}
+
+function requestHosts(request: Request): Set<string> {
+  const hosts = new Set<string>()
+  const fromUrl = hostOf(request.url)
+  if (fromUrl) hosts.add(fromUrl)
+  const host = request.headers.get('host')?.trim().toLowerCase()
+  if (host) hosts.add(host)
+  return hosts
+}
+
+/** A browser call with a foreign Origin or Referer is refused. A missing one is allowed. */
+function sameOriginAllowed(request: Request): boolean {
+  const declared = request.headers.get('origin') || request.headers.get('referer')
+  if (!declared) return true
+  const host = hostOf(declared)
+  if (!host) return false
+  return requestHosts(request).has(host)
+}
+
+function rateClientKey(request: Request): string {
+  const forwarded = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+  if (forwarded) return forwarded
+  return request.headers.get('x-real-ip')?.trim() || 'local'
+}
+
+/** True when this request is over the cap and must not call the model. */
+function formativeRateLimited(request: Request, now = Date.now()): boolean {
+  const key = rateClientKey(request)
+  const recent = (rateHits.get(key) ?? []).filter((at) => now - at < RATE_WINDOW_MS)
+  if (recent.length >= rateMax) {
+    rateHits.set(key, recent)
+    return true
+  }
+  recent.push(now)
+  rateHits.set(key, recent)
+  return false
 }
 
 function modelText(payload: unknown): string {
@@ -206,8 +217,7 @@ export async function handleFormativeComment(request: Request): Promise<Response
   if (request.method !== 'POST') return unavailable(405)
   const apiKey = process.env.GEMINI_API_KEY?.trim() ?? ''
   if (!apiKey) return unavailable(503)
-  const allowed = await (staffCheck ?? defaultStaffAllowed)(request)
-  if (!allowed) return unavailable(403)
+  if (!sameOriginAllowed(request)) return unavailable(403)
 
   const raw = await request.text()
   if (raw.length === 0 || raw.length > BODY_CHAR_MAX) return unavailable(400)
@@ -219,6 +229,7 @@ export async function handleFormativeComment(request: Request): Promise<Response
   }
   const page = pagesFromBody(body)
   if (!page) return unavailable(400)
+  if (formativeRateLimited(request)) return unavailable(429)
 
   const labels = formativeAxisLabels(page.locale).map((axis) => axis.label)
   const system = formativeCommentSystem(labels, page.locale)
