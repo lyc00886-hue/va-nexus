@@ -1,6 +1,11 @@
 import assert from 'node:assert/strict'
 import { afterEach, describe, it } from 'node:test'
-import { handleCropAsk, setCropAskGeneratorForTests, type CropAskGenerator } from './crop-ask.ts'
+import {
+  handleCropAsk,
+  setCropAskBackgroundFinderForTests,
+  setCropAskGeneratorForTests,
+  type CropAskGenerator,
+} from './crop-ask.ts'
 
 const JPEG =
   '/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBUQEBIVEBUQFREVFRUVFRUVFRUVFRUWFhUVFRUYHSggGBolHRUVITEhJSsrLi4uFx8zODMtNygtLisBCgoKDg0OGhAQGi0fHyUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAAEAAQMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAADBAECBQYAB//EABQBAQAAAAAAAAAAAAAAAAAAAAD/xAAAEQEBAQEBAQEBAQEAAAAAAAAAAQIDEQQSITFBURMiYf/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AJrS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tP/2Q=='
@@ -26,6 +31,7 @@ describe('crop ask route', { concurrency: false }, () => {
     if (previousKey === undefined) delete process.env.GEMINI_API_KEY
     else process.env.GEMINI_API_KEY = previousKey
     setCropAskGeneratorForTests(null)
+    setCropAskBackgroundFinderForTests(null)
   })
 
   it('stays unavailable when no model key is configured and does not invent a draft', async () => {
@@ -77,8 +83,10 @@ describe('crop ask route', { concurrency: false }, () => {
     assert.equal(body.seen, SECTIONS.seen)
     assert.equal(body.understood, SECTIONS.understood)
     assert.equal(body.evidence, SECTIONS.evidence)
+    assert.equal(body.background, 'notFound')
     assert.equal('band' in body, false)
     assert.match(seen[0].system, /selected region only/)
+    assert.match(seen[0].system, /Do not invent a title/)
     assert.match(seen[0].system, /寫生、美感同設計思維/)
     assert.equal(seen[0].system.includes('practice-secure'), false)
     assert.equal(seen[0].user.includes('only the cropped region'), true)
@@ -91,9 +99,88 @@ describe('crop ask route', { concurrency: false }, () => {
       generated = true
       return JSON.stringify(SECTIONS)
     })
+    let looked = false
+    setCropAskBackgroundFinderForTests(async () => {
+      looked = true
+      return { status: 'notFound' }
+    })
     const res = await handleCropAsk(request({ mime: 'image/png', imageBase64: JPEG, locale: 'zh-Hant', unitTitle: '寫生、美感同設計思維' }))
     assert.equal(res.status, 400)
     assert.equal(generated, false)
+    assert.equal(looked, false)
     assert.deepEqual(await res.json(), { ok: false, reason: 'failed' })
+  })
+
+  it('checks the whole image first and still writes the cropped region', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    const lookup: { mime?: string; base64?: string }[] = []
+    setCropAskBackgroundFinderForTests(async (input) => {
+      lookup.push(input)
+      return {
+        status: 'found',
+        title: 'Starry Night',
+        artist: 'Vincent van Gogh',
+        background: 'Painted in 1889 at Saint-Rémy.',
+        meaning: 'A swirling night sky over a quiet town.',
+      }
+    })
+    let sectionImage = ''
+    let system = ''
+    setCropAskGeneratorForTests(async (input) => {
+      sectionImage = input.base64
+      system = input.system
+      return JSON.stringify(SECTIONS)
+    })
+    const res = await handleCropAsk(
+      request({
+        mime: 'image/jpeg',
+        imageBase64: JPEG,
+        sourceImageBase64: 'AAAA',
+        locale: 'zh-Hant',
+        unitTitle: '寫生、美感同設計思維',
+        studentId: 'S123456',
+        studentName: '陳同學',
+        school: '某中學',
+      }),
+    )
+    assert.equal(res.status, 200)
+    const body = (await res.json()) as Record<string, unknown>
+    assert.equal(body.background, 'found')
+    assert.equal(body.understood, SECTIONS.understood)
+    assert.equal('studentId' in body, false)
+    assert.equal('title' in body, false)
+    assert.equal(lookup[0].base64, 'AAAA')
+    assert.deepEqual(Object.keys(lookup[0]).sort(), ['base64', 'mime'])
+    assert.equal(sectionImage, JPEG)
+    assert.match(system, /Starry Night/)
+    assert.match(system, /selected region only/)
+    assert.equal(system.includes('陳同學'), false)
+    assert.equal(system.includes('S123456'), false)
+    assert.equal(system.includes('某中學'), false)
+  })
+
+  it('keeps a pale miss when the work is not confirmed and still returns the crop note', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    setCropAskBackgroundFinderForTests(async () => ({ status: 'notFound', title: 'Starry Night' }) as { status: 'notFound' })
+    let system = ''
+    setCropAskGeneratorForTests(async (input) => {
+      system = input.system
+      return JSON.stringify(SECTIONS)
+    })
+    const missed = await handleCropAsk(
+      request({ mime: 'image/jpeg', imageBase64: JPEG, locale: 'en', unitTitle: 'Drawing and design' }),
+    )
+    assert.equal(missed.status, 200)
+    const missedBody = (await missed.json()) as Record<string, unknown>
+    assert.equal(missedBody.background, 'notFound')
+    assert.equal(system.includes('Starry Night'), false)
+    assert.match(system, /Do not invent a title/)
+
+    setCropAskBackgroundFinderForTests(async () => ({ status: 'failed' }))
+    const failed = await handleCropAsk(
+      request({ mime: 'image/jpeg', imageBase64: JPEG, locale: 'zh-Hant', unitTitle: '寫生、美感同設計思維' }),
+    )
+    assert.equal(failed.status, 200)
+    assert.equal(((await failed.json()) as { background: string }).background, 'failed')
   })
 })

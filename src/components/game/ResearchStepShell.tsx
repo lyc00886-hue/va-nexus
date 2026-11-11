@@ -42,6 +42,8 @@ type Props = {
   onDisableAi: () => void
   onSignIn: () => void
   onLater?: () => void
+  workImage?: string | null
+  onLookClosely?: () => void
 }
 
 /**
@@ -71,6 +73,8 @@ export function ResearchStepShell({
   onDisableAi,
   onSignIn,
   onLater,
+  workImage,
+  onLookClosely,
 }: Props) {
   const [phase, setPhase] = useState<ResearchStepPhase>('write')
   const [listIndex, setListIndex] = useState(0)
@@ -222,6 +226,19 @@ export function ResearchStepShell({
               placeholder={t('fw.artwork.ph')}
               className="mt-1 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
             />
+            <div className="mt-2 flex flex-wrap items-center gap-3">
+              {workImage ? <img src={workImage} alt="" className="h-16 w-24 rounded-xl object-cover" /> : null}
+              {onLookClosely ? (
+                <button
+                  type="button"
+                  data-testid="fw-to-look-closely"
+                  onClick={onLookClosely}
+                  className="rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-sm font-semibold text-[#0D9488]"
+                >
+                  {t('fw.toLookClosely')}
+                </button>
+              ) : null}
+            </div>
           </label>
         </div>
       )}

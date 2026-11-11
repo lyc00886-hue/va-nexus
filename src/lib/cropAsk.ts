@@ -35,6 +35,15 @@ export type CropAskSections = {
   evidence: string
 }
 
+/** Result of checking the uploaded image before the three sections are written. */
+export type CropAskBackgroundStatus = 'found' | 'notFound' | 'failed'
+
+export type GroundingChunk = { uri: string; title: string }
+
+export type CropAskBackgroundLookup =
+  | { status: 'found'; title: string; artist: string; background: string; meaning: string }
+  | { status: 'notFound' | 'failed' }
+
 export type CropAskDraft = {
   id: string
   unitId: string
@@ -47,6 +56,8 @@ export type CropAskDraft = {
   crop: CropRect | null
   sections: CropAskSections | null
   modelSections: CropAskSections | null
+  /** How the uploaded image's background check ended. Null on older drafts. */
+  background: CropAskBackgroundStatus | null
   axes: CropAskAxis[]
   status: CropAskPhase
   failReason: 'failed' | 'unavailable' | null
@@ -70,7 +81,7 @@ export type CropAskMeta = {
 }
 
 export type CropAskResult =
-  | { ok: true; sections: CropAskSections }
+  | { ok: true; sections: CropAskSections; background: CropAskBackgroundStatus | null }
   | { ok: false; reason: 'failed' | 'unavailable' | 'aborted' }
 
 const AXIS_SET = new Set<string>(CROP_ASK_AXES)
@@ -252,10 +263,31 @@ export function teacherSectionText(value: unknown): string | null {
   return text
 }
 
-export function cropAskSystem(locale: string, unitTitle: string): string {
+const BACKGROUND_MISS = [
+  'Background check: this uploaded image was not confirmed as a known artwork that can be found online, or it looks like a student exercise or a private photo.',
+  'In the understood section, write only from what is visible in the cropped region and the current unit.',
+  'Do not invent a title, an artist, or a hidden meaning.',
+  'Do not guess.',
+].join('\n')
+
+function backgroundClause(background: CropAskBackgroundLookup): string {
+  if (background.status !== 'found') return BACKGROUND_MISS
+  return [
+    'Background check: web search confirmed the whole uploaded image matches a publicly listed artwork.',
+    `Title: ${background.title}`,
+    `Artist: ${background.artist}`,
+    `Background: ${background.background}`,
+    `Meaning: ${background.meaning}`,
+    'In the understood section only, add this background and this meaning, and still write about the cropped region and the current unit.',
+    'The attached image for these three sections is still the cropped region only.',
+    'This is learning support, not a formal identification and not a mark.',
+  ].join('\n')
+}
+
+export function cropAskSystem(locale: string, unitTitle: string, background?: CropAskBackgroundLookup): string {
   const language = locale === 'en' ? 'English' : locale === 'zh-Hans' ? 'Simplified Chinese' : 'Traditional Chinese (Hong Kong)'
   const unit = cleanLine(unitTitle).slice(0, 200) || 'the current unit'
-  return [
+  const base = [
     'You write a structured learning-support note about one cropped region of a student artwork.',
     'The attached image is the selected region only. Do not describe anything outside it, and do not switch to the whole artwork.',
     `The student's current unit is: ${unit}.`,
@@ -269,43 +301,112 @@ export function cropAskSystem(locale: string, unitTitle: string): string {
     `Write in ${language}.`,
     'Reply with JSON only: {"seen":"...","understood":"...","evidence":"..."}',
   ].join('\n')
+  if (!background) return base
+  return `${base}\n${backgroundClause(background)}`
+}
+
+function normBackground(value: string): string {
+  return value.normalize('NFKC').replace(/\s+/g, ' ').trim().toLowerCase()
+}
+
+function decodeUri(value: string): string {
+  try {
+    return decodeURIComponent(value)
+  } catch {
+    return value
+  }
+}
+
+function backgroundField(value: unknown, max: number, min: number): string | null {
+  if (typeof value !== 'string') return null
+  const text = cleanLine(value).slice(0, max)
+  if (text.length < min || BLOCKED_ANALYSIS.test(text)) return null
+  if (/^(unknown|n\/a|none|不詳|不详|未知)$/i.test(text)) return null
+  return text
+}
+
+/**
+ * A known work is accepted only when search results actually name it.
+ * A model title with no matching public source is treated as unconfirmed.
+ */
+export function readBackgroundDecision(text: string, chunks: readonly GroundingChunk[]): CropAskBackgroundLookup {
+  const trimmed = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
+  const start = trimmed.indexOf('{')
+  const end = trimmed.lastIndexOf('}')
+  if (start < 0 || end <= start) return { status: 'failed' }
+  let record: Record<string, unknown>
+  try {
+    const parsed: unknown = JSON.parse(trimmed.slice(start, end + 1))
+    if (!parsed || typeof parsed !== 'object') return { status: 'failed' }
+    record = parsed as Record<string, unknown>
+  } catch {
+    return { status: 'failed' }
+  }
+  if (record.known !== true) return { status: 'notFound' }
+  const title = backgroundField(record.title, 120, 2)
+  const artist = backgroundField(record.artist, 120, 2)
+  const background = backgroundField(record.background, 400, 8)
+  const meaning = backgroundField(record.meaning, 400, 8)
+  if (!title || !artist || !background || !meaning) return { status: 'notFound' }
+  const https = chunks.some((chunk) => /^https:\/\//i.test(chunk.uri))
+  if (!https) return { status: 'notFound' }
+  const needle = normBackground(title).replace(/^(the|a|an)\s+/, '')
+  const hay = chunks
+    .map((chunk) => normBackground(`${chunk.title} ${decodeUri(chunk.uri)}`))
+    .join('\n')
+  if (needle.length < 2 || !hay.includes(needle)) return { status: 'notFound' }
+  return { status: 'found', title, artist, background, meaning }
 }
 
 export const CROP_ASK_USER_PROMPT =
   'The attached image is only the cropped region. Describe that region in the three sections. Do not award a grade.'
 
+function backgroundStatus(value: unknown): CropAskBackgroundStatus | null {
+  return value === 'found' || value === 'notFound' || value === 'failed' ? value : null
+}
+
 export async function postCropAsk(input: {
   locale: string
   unitTitle: string
   imageBase64: string
+  sourceImageBase64?: string
   signal?: AbortSignal
   fetchImpl?: typeof fetch
 }): Promise<CropAskResult> {
   const imageBase64 = input.imageBase64.replace(/\s/g, '')
   if (!imageBase64 || imageBase64.length > 2_000_000) return { ok: false, reason: 'failed' }
+  const sourceImageBase64 = input.sourceImageBase64?.replace(/\s/g, '') ?? ''
   if (input.signal?.aborted) return { ok: false, reason: 'aborted' }
   const fetchImpl = input.fetchImpl ?? fetch
+  const body: {
+    locale: string
+    unitTitle: string
+    mime: 'image/jpeg'
+    imageBase64: string
+    sourceImageBase64?: string
+  } = {
+    locale: input.locale,
+    unitTitle: cleanLine(input.unitTitle).slice(0, 200),
+    mime: 'image/jpeg',
+    imageBase64,
+  }
+  if (sourceImageBase64 && sourceImageBase64.length <= 2_000_000) body.sourceImageBase64 = sourceImageBase64
   try {
     const res = await fetchImpl(CROP_ASK_PATH, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        locale: input.locale,
-        unitTitle: cleanLine(input.unitTitle).slice(0, 200),
-        mime: 'image/jpeg',
-        imageBase64,
-      }),
+      body: JSON.stringify(body),
       signal: input.signal,
     })
     if (input.signal?.aborted) return { ok: false, reason: 'aborted' }
     const data: unknown = await res.json().catch(() => null)
     if (res.status === 503) return { ok: false, reason: 'unavailable' }
     if (!res.ok || !data || typeof data !== 'object') return { ok: false, reason: 'failed' }
-    const record = data as { ok?: unknown; band?: unknown }
+    const record = data as { ok?: unknown; band?: unknown; background?: unknown }
     if (record.ok !== true || 'band' in record) return { ok: false, reason: 'failed' }
     const sections = parseCropAskSections(data)
     if (!sections) return { ok: false, reason: 'failed' }
-    return { ok: true, sections }
+    return { ok: true, sections, background: backgroundStatus(record.background) }
   } catch (error) {
     const name = error && typeof error === 'object' && 'name' in error ? String(error.name) : ''
     if (input.signal?.aborted || name === 'AbortError') return { ok: false, reason: 'aborted' }
@@ -371,6 +472,7 @@ function sanitizeDraft(raw: unknown): CropAskDraft | null {
   const crop = normalizeCrop(item.crop as CropRect | null)
   const sections = storedSections(item.sections)
   const modelSections = storedSections(item.modelSections)
+  const background = backgroundStatus(item.background)
   let status: CropAskPhase = isPhase(item.status) ? item.status : 'ready'
   if (status === 'generating') status = sections ? 'pending' : crop ? 'ready' : 'needCrop'
   if ((status === 'pending' || status === 'edited' || status === 'confirmed') && !sections) status = crop ? 'ready' : 'needCrop'
@@ -387,6 +489,7 @@ function sanitizeDraft(raw: unknown): CropAskDraft | null {
     crop,
     sections,
     modelSections,
+    background,
     axes: storedAxes(item.axes, unitId),
     status,
     failReason,
@@ -448,6 +551,7 @@ function blank(meta: CropAskMeta): CropAskDraft {
     crop: null,
     sections: null,
     modelSections: null,
+    background: null,
     axes: referenceAxesForUnit(meta.unitId),
     status: 'noImage',
     failReason: null,
@@ -498,6 +602,7 @@ export function withCropAskImage(store: CropAskStore, meta: CropAskMeta, dataUrl
     next.crop = null
     next.sections = null
     next.modelSections = null
+    next.background = null
     next.status = 'needCrop'
     next.axes = referenceAxesForUnit(meta.unitId)
   }
@@ -517,6 +622,7 @@ export function withCropAskCrop(store: CropAskStore, meta: CropAskMeta, crop: Cr
   next.crop = norm
   next.sections = null
   next.modelSections = null
+  next.background = null
   next.status = 'ready'
   next.failReason = null
   return upsert(store, next)
@@ -529,6 +635,7 @@ export function withCropAskCleared(store: CropAskStore, meta: CropAskMeta): Crop
   next.crop = null
   next.sections = null
   next.modelSections = null
+  next.background = null
   next.status = current.imageDataUrl ? 'needCrop' : 'noImage'
   next.failReason = null
   return upsert(store, next)
@@ -544,13 +651,19 @@ export function withCropAskGenerating(store: CropAskStore, meta: CropAskMeta): C
   return upsert(store, next)
 }
 
-export function withCropAskAnalysis(store: CropAskStore, meta: CropAskMeta, sections: CropAskSections): CropAskStore {
+export function withCropAskAnalysis(
+  store: CropAskStore,
+  meta: CropAskMeta,
+  sections: CropAskSections,
+  background: CropAskBackgroundStatus | null = null,
+): CropAskStore {
   const current = find(store, meta)
   const parsed = parseCropAskSections(sections)
   if (!current?.imageDataUrl || !current.crop || !parsed) return store
   const next = retitle(current, meta)
   next.sections = parsed
   next.modelSections = parsed
+  next.background = backgroundStatus(background)
   next.status = 'pending'
   next.failReason = null
   next.axes = referenceAxesForUnit(meta.unitId)
@@ -572,6 +685,7 @@ export function withCropAskFailure(
   else {
     next.status = 'failed'
     next.sections = null
+    next.background = null
   }
   return upsert(store, next)
 }
@@ -646,6 +760,7 @@ export type CropAskReview = {
   axes: CropAskAxis[]
   crop: CropRect | null
   imageDataUrl: string | null
+  background: CropAskBackgroundStatus | null
 }
 
 export function reviewDrafts(store: CropAskStore): CropAskReview[] {
@@ -665,6 +780,7 @@ export function reviewDrafts(store: CropAskStore): CropAskReview[] {
       axes: draft.axes,
       crop: draft.crop,
       imageDataUrl: draft.imageDataUrl,
+      background: draft.background,
     })
   }
   return rows

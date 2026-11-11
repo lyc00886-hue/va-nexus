@@ -16,9 +16,14 @@ import {
 } from '../lib/content'
 import type { FeldmanStageId, FeldmanVocabEntry } from '../types'
 import { getLocale, joinList, t } from '../i18n'
+import { findCropAskDraft } from '../lib/cropAsk'
+import { setFeldmanArtwork, updateFeldmanStep, useFeldmanDraft } from '../lib/useFeldmanDraft'
+import { useResearchToolFace } from '../lib/useResearchToolFace'
+import { useCropAskStore, useCropAskStudent } from '../lib/useCropAsk'
 import { ExerciseMark } from './game/ExerciseMark'
 import { LearningProgressRef } from './LearningProgressRef'
 import { ResearchStepShell } from './game/ResearchStepShell'
+import { CropAskWork } from './CropAskWork'
 
 type StepKey = FeldmanStageId
 
@@ -48,9 +53,25 @@ function emptyRecord<T>(v: () => T): Record<StepKey, T> {
   return { describe: v(), analyse: v(), interpret: v(), judge: v() }
 }
 
-export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: () => void }) {
+export function FeldmanWriter({
+  shell,
+  onLater,
+  onLookClosely,
+}: {
+  shell?: 'steps'
+  onLater?: () => void
+  onLookClosely?: () => void
+}) {
   const { cardPadding } = useSen()
   const { awardOnce } = useGame()
+  const writing = useFeldmanDraft()
+  const texts = writing.steps
+  const artwork = writing.artwork
+  const face = useResearchToolFace()
+  const cropStore = useCropAskStore()
+  const binding = useCropAskStudent()
+  const workImage = face ? (findCropAskDraft(cropStore, face.id, binding.studentId)?.imageDataUrl ?? null) : null
+  const [showLook, setShowLook] = useState(false)
   const {
     canUseAi,
     userId,
@@ -64,13 +85,16 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
     onSignIn,
   } = useAiAgeGate()
   const STEPS = useMemo(buildSteps, [])
-  const [texts, setTexts] = useState<Record<StepKey, string>>(() => emptyRecord(() => ''))
   const [checked, setChecked] = useState<Record<StepKey, string[]>>(() => emptyRecord(() => []))
   const [active, setActive] = useState<StepKey>('describe')
   const [boostRan, setBoostRan] = useState(false)
   const [hits, setHits] = useState<FeldmanVocabEntry[]>([])
-  const [artwork, setArtwork] = useState('')
   const [ai, setAi] = useState<Record<StepKey, AiState>>(() => emptyRecord(() => AI_IDLE))
+
+  function openLook() {
+    if (onLookClosely) onLookClosely()
+    else setShowLook(true)
+  }
 
   const draft = useMemo(
     () => STEPS.map((s) => `【${s.title}】\n${texts[s.key] || t('fw.unwritten')}`).join('\n\n'),
@@ -81,16 +105,11 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
     const result = boostOralText(texts[active])
     setBoostRan(true)
     setHits(result.hits)
-    if (result.hits.length) {
-      setTexts((prev) => ({ ...prev, [active]: result.boosted }))
-    }
+    if (result.hits.length) updateFeldmanStep(active, () => result.boosted)
   }
 
   function insertFrame(key: StepKey, frame: string) {
-    setTexts((prev) => {
-      const cur = prev[key]
-      return { ...prev, [key]: (cur && !cur.endsWith('\n') ? `${cur}\n` : cur) + frame }
-    })
+    updateFeldmanStep(key, (cur) => (cur && !cur.endsWith('\n') ? `${cur}\n` : cur) + frame)
   }
 
   function toggleCheck(key: StepKey, item: string) {
@@ -142,9 +161,11 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
           setHits([])
         }}
         text={texts[active]}
-        onText={(value) => setTexts((prev) => ({ ...prev, [active]: value }))}
+        onText={(value) => updateFeldmanStep(active, () => value)}
         artwork={artwork}
-        onArtwork={setArtwork}
+        onArtwork={setFeldmanArtwork}
+        workImage={workImage}
+        onLookClosely={openLook}
         checked={checked[active]}
         onToggle={(item) => toggleCheck(active, item)}
         ai={ai[active]}
@@ -161,6 +182,13 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
         onSignIn={onSignIn}
         onLater={onLater}
       />
+      {showLook && !onLookClosely && face ? (
+        <CropAskWork
+          grade={face.grade}
+          unit={{ id: face.id, title: face.title }}
+          onOpenWriting={() => setShowLook(false)}
+        />
+      ) : null}
       </div>
     )
   }
@@ -248,10 +276,11 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
           type="text"
           value={artwork}
           maxLength={200}
-          onChange={(e) => setArtwork(e.target.value)}
+          onChange={(e) => setFeldmanArtwork(e.target.value)}
           placeholder={t('fw.artwork.ph')}
           className="mt-1 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
         />
+        <WorkLook image={workImage} onLook={openLook} />
       </label>
 
       <LearningProgressRef compact />
@@ -314,10 +343,13 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
               className="mt-3 w-full rounded-xl border border-teal-200 px-3 py-2 text-sm shadow-sm focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-200"
               rows={5}
               value={texts[s.key]}
-              onChange={(e) => setTexts((prev) => ({ ...prev, [s.key]: e.target.value }))}
+              onChange={(e) => updateFeldmanStep(s.key, () => e.target.value)}
               placeholder={t('fw.textarea.ph')}
               maxLength={2000}
             />
+            <div className="mt-2">
+              <LookCloselyButton onClick={openLook} />
+            </div>
 
             <fieldset className="mt-3">
               <legend className="text-xs font-semibold text-teal-700">{t('fw.checklist')}</legend>
@@ -454,6 +486,35 @@ export function FeldmanWriter({ shell, onLater }: { shell?: 'steps'; onLater?: (
         <summary className="cursor-pointer font-semibold text-teal-950">{t('fw.draft')}</summary>
         <pre className="mt-3 whitespace-pre-wrap font-sans text-teal-900/90">{draft}</pre>
       </details>
+      {showLook && !onLookClosely && face ? (
+        <CropAskWork
+          grade={face.grade}
+          unit={{ id: face.id, title: face.title }}
+          onOpenWriting={() => setShowLook(false)}
+        />
+      ) : null}
+    </div>
+  )
+}
+
+function LookCloselyButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      data-testid="fw-to-look-closely"
+      onClick={onClick}
+      className="rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-sm font-semibold text-[#0D9488] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]"
+    >
+      {t('fw.toLookClosely')}
+    </button>
+  )
+}
+
+function WorkLook({ image, onLook }: { image: string | null; onLook: () => void }) {
+  return (
+    <div className="mt-2 flex flex-wrap items-center gap-3">
+      {image ? <img src={image} alt="" className="h-16 w-24 rounded-xl object-cover" /> : null}
+      <LookCloselyButton onClick={onLook} />
     </div>
   )
 }
