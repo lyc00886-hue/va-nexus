@@ -102,11 +102,10 @@ export function SchoolScoreLaterStaff() {
   const commentId = useId()
   const rows = schoolBandRows()
   const axes = formativeAxisLabels(locale)
-  const approx = draft?.approxBand ?? null
+  const modelBand = draft?.aiStatus === 'model' ? draft.approxBand : null
   const selected = draft ? effectiveBand(draft) : null
   const pending = draft ? laterPending(draft) : false
   const image = Boolean(previewUrl && draft?.mime.startsWith('image/'))
-  const revealed = draft != null && draft.aiStatus !== 'idle'
   if (!role) return null
 
   function take(files: File[]) {
@@ -271,22 +270,22 @@ export function SchoolScoreLaterStaff() {
               </div>
             ) : null}
             {draft.aiStatus === 'idle' ? <p className="text-sm text-slate-600">{t('score.later.modelNote')}</p> : null}
-            {revealed ? (
+            {modelBand ? (
               <>
                 <div className="flex flex-wrap gap-1.5">
                   {rows.map((row) => (
                     <span
                       key={row.id}
                       data-testid={`score-later-ai-band-${row.id}`}
-                      aria-current={approx === row.id ? 'true' : undefined}
-                      className={bandClass(approx === row.id)}
+                      aria-current={modelBand === row.id ? 'true' : undefined}
+                      className={bandClass(modelBand === row.id)}
                     >
                       {t(row.label)}
                     </span>
                   ))}
                 </div>
                 <p className="text-sm font-bold text-[#0D9488]">
-                  {t('score.later.about', { value: formatFormative(formativeForBand(draft.approxBand)) })}
+                  {t('score.later.about', { value: formatFormative(formativeForBand(modelBand)) })}
                 </p>
                 <p className="text-sm text-slate-600">
                   {draft.committedBand == null
@@ -296,7 +295,11 @@ export function SchoolScoreLaterStaff() {
                       : t('score.later.written')}
                 </p>
               </>
-            ) : null}
+            ) : (
+              <p data-testid="score-later-ai-band-unset" className="text-sm font-semibold text-slate-500">
+                {t('score.dual.unset')}
+              </p>
+            )}
           </>
         ) : (
           <p className="text-sm text-slate-600">{t('score.later.needFile')}</p>
@@ -311,11 +314,11 @@ export function SchoolScoreLaterStaff() {
         {draft && draft.adjustBand == null && pending ? <FormalDraftPreview draft={draft} /> : null}
         {draft ? (
           <>
-            {revealed ? (
+            {modelBand ? (
               <p className="text-sm text-slate-700">
                 {t('score.later.aiSuggest', {
-                  band: t(rows.find((row) => row.id === draft.approxBand)?.label ?? 'score.v1.band.emerging'),
-                  value: formatFormative(formativeForBand(draft.approxBand)),
+                  band: t(rows.find((row) => row.id === modelBand)?.label ?? 'score.v1.band.emerging'),
+                  value: formatFormative(formativeForBand(modelBand)),
                 })}
               </p>
             ) : null}
@@ -338,7 +341,9 @@ export function SchoolScoreLaterStaff() {
               })}
             </div>
             <p className="text-sm font-bold text-[#0D9488]">
-              {t('score.later.about', { value: formatFormative(formativeForBand(effectiveBand(draft))) })}
+              {selected
+                ? t('score.later.about', { value: formatFormative(formativeForBand(selected)) })
+                : t('score.dual.unset')}
             </p>
             <p className="text-sm text-slate-600">{t('score.later.feedNote')}</p>
             <div className="grid gap-2 sm:grid-cols-2">

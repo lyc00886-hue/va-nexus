@@ -2,8 +2,10 @@
  * School-score later upload: one-school draft page, approximate reference band,
  * then a teacher adjust that can feed the existing school-score and dual-radar stores.
  * The upload is a local draft. It is not a formal submission and not an official score.
- * A staff click can replace the filename/size stub with a short formative comment and
- * band. Until that click, and whenever the model is unavailable, the stub remains.
+ * A staff click can replace the empty unofficial band with a short formative comment,
+ * one visible band, and per-axis values read from the uploaded pages against the
+ * locked school-score v1 criteria. Until that result, and whenever it is missing or
+ * invalid, the visible band stays unset. A filename or file size is never a visible score.
  * Nothing here writes the school reference until the teacher confirms.
  * Student self-assessment is not read or written here.
  *
@@ -60,14 +62,21 @@ export type LaterDraft = {
   fileName: string
   fileSize: number
   mime: string
-  /** Band shown as the reference suggestion. The stub until a model result replaces it. */
-  approxBand: PracticeBandId
-  /** Filename/size band. Restored when the model is unavailable. */
-  stubBand: PracticeBandId
+  /**
+   * Visible unofficial band. Null until a model result read from the pages.
+   * Never a filename or file-size hash.
+   */
+  approxBand: PracticeBandId | null
   /** Idle until staff request a comment. Model and fallback both leave the school reference unwritten. */
   aiStatus: LaterAiStatus
   /** Short formative comment. Present only after a model result. */
   aiComment: string | null
+  /**
+   * Per-axis unofficial reference for the student radars.
+   * Only axes the model returned for a side that was actually uploaded.
+   * Missing axes stay missing. They are not filled from `approxBand`.
+   */
+  aiAxes: Partial<Record<DualAxisId, number>>
   /** Null follows the approximate band. */
   adjustBand: PracticeBandId | null
   /** Last band written into the school reference. Null until the teacher writes. */
@@ -146,8 +155,9 @@ export function formalAxesForPages(pages: readonly LaterPage[]): Partial<Record<
 }
 
 /**
- * Deterministic stand-in when no live vision model is wired.
+ * Teacher formal-draft stand-in only.
  * Same file name and size always return the same practice band.
+ * Not a visible unofficial band, and not a student radar axis.
  */
 export function approximateBandId(name: string, size: number): PracticeBandId {
   const input = `${name}\n${Math.max(0, Math.round(size))}`
@@ -166,15 +176,14 @@ export function emptyLaterStore(): LaterStore {
 export function draftFromFile(name: string, size: number, mime: string): LaterDraft {
   const fileName = name.trim().slice(0, 180) || 'page'
   const fileSize = Math.max(0, Math.round(size))
-  const approxBand = approximateBandId(fileName, fileSize)
   return {
     fileName,
     fileSize,
     mime: mime.slice(0, 80),
-    approxBand,
-    stubBand: approxBand,
+    approxBand: null,
     aiStatus: 'idle',
     aiComment: null,
+    aiAxes: {},
     adjustBand: null,
     committedBand: null,
     pages: [],
@@ -208,14 +217,34 @@ export function withUploadedFile(prev: LaterDraft | null, name: string, size: nu
 
 function commentText(value: unknown): string | null {
   if (typeof value !== 'string') return null
-  const text = value.replace(/\s+/g, ' ').trim().slice(0, 400)
+  const text = value.replace(/\s+/g, ' ').trim().slice(0, 800)
   return text.length >= 8 ? text : null
+}
+
+const AI_AXIS_VALUES = new Set<number>([1.25, 2.5, 3.5, 4.5])
+
+/** Keep model axes only for sides that were uploaded, and only on the four practice-band values. */
+export function axesForUploadedSides(
+  axes: Partial<Record<DualAxisId, number>> | undefined,
+  pages: readonly LaterPage[],
+): Partial<Record<DualAxisId, number>> {
+  const sides = new Set(pages.map((page) => page.side))
+  const out: Partial<Record<DualAxisId, number>> = {}
+  if (!axes) return out
+  for (const id of DUAL_AXIS_IDS) {
+    const value = axes[id]
+    if (value == null || !AI_AXIS_VALUES.has(value)) continue
+    const side = id.startsWith('aw-') ? 'artwork' : 'research_workbook'
+    if (!sides.has(side)) continue
+    out[id] = value
+  }
+  return out
 }
 
 /** Staff confirmed nothing yet. The model result stays off the school reference. */
 export function applyModelComment(
   draft: LaterDraft,
-  result: { comment: string; band: PracticeBandId },
+  result: { comment: string; band: PracticeBandId; axes?: Partial<Record<DualAxisId, number>> },
 ): LaterDraft {
   const text = commentText(result.comment)
   if (!text || !isPracticeBandId(result.band)) return applyAiFallback(draft)
@@ -224,26 +253,37 @@ export function applyModelComment(
     approxBand: result.band,
     aiStatus: 'model',
     aiComment: text,
+    aiAxes: axesForUploadedSides(result.axes, draft.pages),
   }
 }
 
-/** Filename/size band and the existing stub note. Upload and teacher adjust stay available. */
+/** No visible band and no per-axis values. Upload and teacher adjust stay available. */
 export function applyAiFallback(draft: LaterDraft): LaterDraft {
-  if (draft.aiStatus === 'fallback' && draft.aiComment == null && draft.approxBand === draft.stubBand) return draft
+  if (
+    draft.aiStatus === 'fallback' &&
+    draft.aiComment == null &&
+    draft.approxBand == null &&
+    Object.keys(draft.aiAxes).length === 0
+  ) {
+    return draft
+  }
   return {
     ...draft,
-    approxBand: draft.stubBand,
+    approxBand: null,
     aiStatus: 'fallback',
     aiComment: null,
+    aiAxes: {},
   }
 }
 
-export function effectiveBand(draft: LaterDraft): PracticeBandId {
+export function effectiveBand(draft: LaterDraft): PracticeBandId | null {
   return draft.adjustBand ?? draft.approxBand
 }
 
 export function laterPending(draft: LaterDraft): boolean {
-  return draft.committedBand == null || draft.committedBand !== effectiveBand(draft)
+  const band = effectiveBand(draft)
+  if (band == null) return true
+  return draft.committedBand == null || draft.committedBand !== band
 }
 
 export function withAdjustBand(draft: LaterDraft, band: PracticeBandId | null): LaterDraft {
@@ -254,22 +294,44 @@ export function withAdjustBand(draft: LaterDraft, band: PracticeBandId | null): 
 
 export function withCommitted(draft: LaterDraft): LaterDraft {
   const band = effectiveBand(draft)
-  if (draft.committedBand === band) return draft
+  if (band == null || draft.committedBand === band) return draft
   return { ...draft, committedBand: band }
 }
 
-/** Student-visible band: the last teacher write, or the approximate band while it is still pending. */
-export function studentVisibleBand(draft: LaterDraft): PracticeBandId {
-  return draft.committedBand ?? draft.approxBand
+/**
+ * Unofficial band on the student shell.
+ * A model result only. A teacher write stays on the school reference.
+ * A filename or file size never becomes this band.
+ */
+export function studentVisibleBand(draft: LaterDraft): PracticeBandId | null {
+  if (draft.aiStatus !== 'model') return null
+  return draft.approxBand
 }
 
 /**
- * Formative value for the read-only AI reference radar.
- * Uses the approximate band (model, fallback, or post-upload stub) only.
- * A teacher adjust that has not been written does not change this value.
+ * Formative value for the visible unofficial band.
+ * Null until a model result. A teacher adjust does not change this value.
  */
-export function aiReferenceFormative(draft: LaterDraft): number {
-  return formativeForBand(draft.approxBand)
+export function aiReferenceFormative(draft: LaterDraft): number | null {
+  const band = studentVisibleBand(draft)
+  if (band == null) return null
+  return formativeForBand(band)
+}
+
+/**
+ * Per-axis values for one student radar.
+ * Null unless every axis on that chart came back from the model.
+ * Does not copy the overall band onto a missing axis.
+ */
+export function aiReferenceAxes(draft: LaterDraft, ids: readonly DualAxisId[]): number[] | null {
+  if (draft.aiStatus !== 'model' || ids.length < 3) return null
+  const values: number[] = []
+  for (const id of ids) {
+    const value = draft.aiAxes[id]
+    if (value == null) return null
+    values.push(value)
+  }
+  return values
 }
 
 /**
@@ -283,13 +345,14 @@ export function laterFeed(
   draft: LaterDraft,
   dual: DualRadarStore,
 ): {
-  band: PracticeBandId
-  formative: number
+  band: PracticeBandId | null
+  formative: number | null
   axes: DualAxisId[]
   /** Per-axis formal draft. Absent when the teacher adjust band is what gets fed. */
   values?: Partial<Record<DualAxisId, number>>
 } {
   const band = effectiveBand(draft)
+  if (band == null) return { band: null, formative: null, axes: [] }
   const formative = formativeForBand(band)
   const empty = DUAL_AXIS_IDS.filter((id) => dual.axes[id] == null)
   const formalIds = DUAL_AXIS_IDS.filter((id) => draft.formalAxes[id] != null)
@@ -313,12 +376,14 @@ export function sanitizeLaterStore(raw: unknown): LaterStore {
   const draft = record.draft as Record<string, unknown>
   if (typeof draft.fileName !== 'string' || !draft.fileName.trim()) return empty
   if (typeof draft.fileSize !== 'number' || !Number.isFinite(draft.fileSize) || draft.fileSize < 0) return empty
-  if (!isPracticeBandId(draft.approxBand)) return empty
-  const stubBand = isPracticeBandId(draft.stubBand) ? draft.stubBand : draft.approxBand
   let aiStatus: LaterAiStatus = draft.aiStatus === 'model' || draft.aiStatus === 'fallback' ? draft.aiStatus : 'idle'
-  const aiComment = aiStatus === 'model' ? commentText(draft.aiComment) : null
-  if (aiStatus === 'model' && !aiComment) aiStatus = 'fallback'
-  const approxBand = aiStatus === 'fallback' ? stubBand : draft.approxBand
+  let aiComment = aiStatus === 'model' ? commentText(draft.aiComment) : null
+  let approxBand = aiStatus === 'model' && isPracticeBandId(draft.approxBand) ? draft.approxBand : null
+  if (aiStatus === 'model' && (!aiComment || approxBand == null)) {
+    aiStatus = 'fallback'
+    aiComment = null
+    approxBand = null
+  }
   const adjustBand = isPracticeBandId(draft.adjustBand) && draft.adjustBand !== approxBand ? draft.adjustBand : null
   const committedBand = isPracticeBandId(draft.committedBand) ? draft.committedBand : null
   const fileName = draft.fileName.trim().slice(0, 180)
@@ -331,15 +396,37 @@ export function sanitizeLaterStore(raw: unknown): LaterStore {
       fileSize,
       mime,
       approxBand,
-      stubBand,
       aiStatus,
       aiComment,
+      aiAxes: aiStatus === 'model' ? axesForUploadedSides(readStoredAxes(draft.aiAxes), pages) : {},
       adjustBand,
       committedBand,
       pages,
       formalAxes: formalAxesForPages(pages),
     },
   }
+}
+
+function readStoredAxes(raw: unknown): Partial<Record<DualAxisId, number>> {
+  if (!raw || typeof raw !== 'object') return {}
+  const bag = raw as Record<string, unknown>
+  const out: Partial<Record<DualAxisId, number>> = {}
+  for (const id of DUAL_AXIS_IDS) {
+    const value = bag[id]
+    if (typeof value !== 'number' || !Number.isFinite(value)) continue
+    let best: number | null = null
+    let dist = Number.POSITIVE_INFINITY
+    for (const official of AI_AXIS_VALUES) {
+      const next = Math.abs(official - value)
+      if (next < dist) {
+        dist = next
+        best = official
+      }
+    }
+    if (best == null || dist > 0.5) continue
+    out[id] = best
+  }
+  return out
 }
 
 function sanitizePages(raw: unknown): LaterPage[] {

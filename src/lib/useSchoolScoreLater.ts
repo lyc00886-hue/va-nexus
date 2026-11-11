@@ -8,11 +8,13 @@ import {
   emptyLaterStore,
   isLaterUploadFile,
   laterFeed,
+  laterPageSide,
   sanitizeLaterStore,
   withAdjustBand,
   withCommitted,
   withUploadedFile,
   type LaterDraft,
+  type LaterPageSide,
   type LaterStore,
 } from './schoolScoreLater'
 import { supabase } from './supabase'
@@ -20,8 +22,16 @@ import type { PracticeBandId } from './teacherDraftBand'
 import { getDualRadarStore, saveDualAxis } from './useSchoolScoreDual'
 import { saveTeacherDraft } from './useTeacherDraftStore'
 
+export type LaterPagePreview = {
+  side: LaterPageSide
+  fileName: string
+  url: string
+  mime: string
+}
+
 export type LaterSnapshot = LaterStore & {
   previewUrl: string | null
+  pagePreviews: LaterPagePreview[]
 }
 
 function load(): LaterStore {
@@ -35,7 +45,7 @@ function load(): LaterStore {
   }
 }
 
-let snapshot: LaterSnapshot = { ...load(), previewUrl: null }
+let snapshot: LaterSnapshot = { ...load(), previewUrl: null, pagePreviews: [] }
 const listeners = new Set<() => void>()
 
 function persist() {
@@ -50,8 +60,12 @@ function persist() {
   }
 }
 
-function publish(draft: LaterDraft | null, previewUrl: string | null = snapshot.previewUrl) {
-  snapshot = { draft, previewUrl }
+function publish(
+  draft: LaterDraft | null,
+  previewUrl: string | null = snapshot.previewUrl,
+  pagePreviews: LaterPagePreview[] = snapshot.pagePreviews,
+) {
+  snapshot = { draft, previewUrl, pagePreviews }
   persist()
   listeners.forEach((listener) => listener())
 }
@@ -66,9 +80,9 @@ if (typeof window !== 'undefined') {
     if (event.key !== SCHOOL_SCORE_LATER_KEY) return
     try {
       const next = event.newValue ? sanitizeLaterStore(JSON.parse(event.newValue)) : emptyLaterStore()
-      snapshot = { draft: next.draft, previewUrl: snapshot.previewUrl }
+      snapshot = { draft: next.draft, previewUrl: snapshot.previewUrl, pagePreviews: snapshot.pagePreviews }
     } catch {
-      snapshot = { draft: null, previewUrl: snapshot.previewUrl }
+      snapshot = { draft: null, previewUrl: snapshot.previewUrl, pagePreviews: snapshot.pagePreviews }
     }
     listeners.forEach((listener) => listener())
   })
@@ -78,19 +92,34 @@ export function getSchoolScoreLater(): LaterSnapshot {
   return snapshot
 }
 
+function trimmedUploadName(name: string): string {
+  return name.trim().slice(0, 180) || 'page'
+}
+
 /** Same later-upload path for one page or several. Pages already stored stay unless replaced by name. */
 export function acceptLaterFiles(files: readonly File[]): boolean {
   const accepted = files.filter((file) => isLaterUploadFile(file))
   if (accepted.length === 0) return false
   let draft = snapshot.draft
-  for (const file of accepted) draft = withUploadedFile(draft, file.name, file.size, file.type)
+  let previews = snapshot.pagePreviews.slice()
+  for (const file of accepted) {
+    draft = withUploadedFile(draft, file.name, file.size, file.type)
+    const fileName = trimmedUploadName(file.name)
+    const side = laterPageSide(fileName)
+    if (!side || typeof URL === 'undefined' || typeof URL.createObjectURL !== 'function') continue
+    const url = URL.createObjectURL(file)
+    const prev = previews.find((item) => item.side === side && item.fileName === fileName)
+    if (prev && prev.url !== url && typeof URL.revokeObjectURL === 'function') URL.revokeObjectURL(prev.url)
+    previews = previews.filter((item) => !(item.side === side && item.fileName === fileName))
+    previews.push({ side, fileName, url, mime: file.type })
+  }
   const last = accepted[accepted.length - 1]
   const nextUrl = typeof URL !== 'undefined' && typeof URL.createObjectURL === 'function' ? URL.createObjectURL(last) : null
   const prevUrl = snapshot.previewUrl
   if (prevUrl && prevUrl !== nextUrl && typeof URL !== 'undefined' && typeof URL.revokeObjectURL === 'function') {
     URL.revokeObjectURL(prevUrl)
   }
-  publish(draft, nextUrl)
+  publish(draft, nextUrl, previews)
   return true
 }
 
@@ -132,9 +161,12 @@ async function readPreviewBytes(previewUrl: string | null): Promise<Uint8Array |
   }
 }
 
+const COMMENT_BYTE_BUDGET = 3_200_000
+
 /**
- * Staff-only request. A missing model, a missing page, or a non-staff caller
- * leaves the school reference untouched and keeps the filename/size stub.
+ * Staff-only request. Reads the uploaded pages, not the file name or size.
+ * A missing model, a missing page, or a non-staff caller leaves the school
+ * reference untouched and does not invent a visible band.
  */
 export async function requestLaterComment(locale: string, staff: boolean): Promise<'idle' | 'model' | 'fallback'> {
   if (!staff) return 'idle'
@@ -143,12 +175,44 @@ export async function requestLaterComment(locale: string, staff: boolean): Promi
   const fileName = draft.fileName
   const fileSize = draft.fileSize
   const previewUrl = snapshot.previewUrl
-  const [bytes, accessToken] = await Promise.all([readPreviewBytes(previewUrl), readAccessToken()])
+  const previews = snapshot.pagePreviews
+  const latest = new Map<LaterPageSide, (typeof draft.pages)[number]>()
+  for (const page of draft.pages) latest.set(page.side, page)
+  const [loaded, accessToken] = await Promise.all([
+    Promise.all(
+      [...latest.values()].map(async (page) => {
+        const preview = previews.find((item) => item.side === page.side && item.fileName === page.fileName)
+        const bytes = await readPreviewBytes(preview?.url ?? null)
+        return { page, preview, bytes }
+      }),
+    ),
+    readAccessToken(),
+  ])
+  const packed: { side: LaterPageSide; mime: string; bytes: Uint8Array }[] = []
+  let total = 0
+  for (const item of loaded) {
+    if (!item.bytes || item.bytes.byteLength > FORMATIVE_PAGE_BYTE_MAX) continue
+    if (total > 0 && total + item.bytes.byteLength > COMMENT_BYTE_BUDGET) continue
+    packed.push({
+      side: item.page.side,
+      mime: item.page.mime || item.preview?.mime || '',
+      bytes: item.bytes,
+    })
+    total += item.bytes.byteLength
+  }
+  const fallbackBytes = packed.length > 0 ? null : await readPreviewBytes(previewUrl)
+  const pages =
+    packed.length > 0
+      ? packed
+      : fallbackBytes
+        ? [{ side: laterPageSide(fileName) ?? undefined, mime: draft.mime, bytes: fallbackBytes }]
+        : []
   const result = await postFormativeComment({
     locale,
-    fileName,
-    mime: draft.mime,
-    bytes,
+    fileName: 'page',
+    mime: pages[0]?.mime ?? draft.mime,
+    bytes: pages[0]?.bytes ?? null,
+    pages,
     accessToken,
   })
   const current = snapshot.draft
@@ -163,6 +227,7 @@ export function writeLaterAdjust() {
   const draft = snapshot.draft
   if (!draft) return
   const plan = laterFeed(draft, getDualRadarStore())
+  if (plan.band == null || plan.formative == null) return
   saveTeacherDraft(SCHOOL_SCORE_SLOT, plan.band)
   for (const id of plan.axes) saveDualAxis(id, plan.values?.[id] ?? plan.formative)
   const next = withCommitted(draft)

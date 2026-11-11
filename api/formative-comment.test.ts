@@ -79,12 +79,34 @@ describe('formative comment route', { concurrency: false }, () => {
       request({ mime: 'image/png', imageBase64: PNG, locale: 'zh-Hant' }),
     )
     assert.equal(ok.status, 200)
-    assert.deepEqual(await ok.json(), { ok: true, comment: COMMENT, band: 'practice-secure' })
+    assert.deepEqual(await ok.json(), { ok: true, comment: COMMENT, band: 'practice-secure', axes: {} })
     assert.match(seen[0].system, /主題或意念的探索及發展/)
     assert.match(seen[0].system, /反思及學習進程/)
+    assert.match(seen[0].system, /school-score v1/)
+    assert.match(seen[0].system, /Do not copy one overall band onto every axis/)
     assert.equal(seen[0].system.includes('主題清晰度'), false)
     assert.equal(seen[0].system.includes('洞察藝術'), false)
+    assert.equal(seen[0].system.includes('5**'), false)
     assert.match(seen[0].user, /Do not award an official mark/)
+    assert.match(seen[0].user, /Do not use the file name or file size/)
+
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({
+        comment: COMMENT,
+        band: 'practice-secure',
+        axes: { 'aw-1': 2.5, 'aw-2': 3.5, 'aw-3': 1.2, 'aw-4': 4.5, 'aw-5': 3.5, 'aw-6': 2.5 },
+      }),
+    )
+    const perAxis = await handleFormativeComment(request({ mime: 'image/png', imageBase64: PNG, locale: 'zh-Hant' }))
+    assert.equal(perAxis.status, 200)
+    assert.deepEqual((await perAxis.json()).axes, {
+      'aw-1': 2.5,
+      'aw-2': 3.5,
+      'aw-3': 1.25,
+      'aw-4': 4.5,
+      'aw-5': 3.5,
+      'aw-6': 2.5,
+    })
 
     setFormativeGeneratorForTests(async () => JSON.stringify({ comment: '這頁可達 5** 公開試結果。', band: 'practice-strong' }))
     const blocked = await handleFormativeComment(request({ mime: 'image/png', imageBase64: PNG }))

@@ -17,6 +17,7 @@ import { SCHOOL_SCORE_SLOT } from './schoolScore.ts'
 import {
   SCHOOL_SCORE_LATER_KEY,
   SCHOOL_SCORE_LATER_SHA256,
+  aiReferenceAxes,
   aiReferenceFormative,
   applyAiFallback,
   applyModelComment,
@@ -113,8 +114,38 @@ describe('school score later locale', () => {
       for (const [key, value] of Object.entries(bag)) {
         if (!key.startsWith('score.later.')) continue
         assert.equal(BANNED.test(value), false, `${locale} ${key} ${value}`)
+        assert.equal(value.includes('以檔名與大小給一條參考帶'), false, `${locale} ${key}`)
+        assert.equal(value.includes('以档名与大小给一条参考带'), false, `${locale} ${key}`)
+        assert.equal(value.includes('Without a live vision model, the band comes from the file name and size.'), false, `${locale} ${key}`)
       }
     }
+    const hant = messages(FILES['zh-Hant'])
+    const hans = messages(FILES['zh-Hans'])
+    const en = messages(FILES.en)
+    assert.equal(
+      hant['score.later.stubNote'],
+      '大概參考 · 待教師確認。模型未能按作品計出大概帶或評語時，唔會用檔名或檔案大小估一條可見分數。你可以稍後再試。',
+    )
+    assert.equal(
+      hans['score.later.stubNote'],
+      '大概参考 · 待教师确认。模型未能按作品计出大概带或评语时，不会用档名或档案大小估一条可见分数。你可以稍后再试。',
+    )
+    assert.equal(
+      en['score.later.stubNote'],
+      'Approximate reference, pending teacher confirm. If the model cannot produce a band or comments from the work, a visible score is not guessed from the file name or size. You can try again later.',
+    )
+    assert.equal(
+      hant['score.later.radarPending'],
+      '未有按各軸分開計嘅模型參考，暫時唔畫雷達，避免每條軸都同一分數。',
+    )
+    assert.equal(
+      hans['score.later.radarPending'],
+      '未有按各轴分开计的模型参考，暂时不画雷达，避免每条轴都同一分数。',
+    )
+    assert.equal(
+      en['score.later.radarPending'],
+      'Per-axis model reference is not available yet, so the radar is not drawn. This avoids painting the same score on every axis.',
+    )
   })
 })
 
@@ -132,7 +163,7 @@ describe('school score later plates', () => {
 })
 
 describe('school score later band', () => {
-  it('maps a file to one practice band and the existing formative value', () => {
+  it('does not use a filename hash as the visible unofficial band', () => {
     assert.equal(isLaterUploadFile({ name: 'page.png', type: 'image/png' }), true)
     assert.equal(isLaterUploadFile({ name: 'page.pdf', type: 'application/pdf' }), true)
     assert.equal(isLaterUploadFile({ name: 'page.pdf', type: '' }), true)
@@ -142,12 +173,14 @@ describe('school score later band', () => {
     assert.equal(approximateBandId('工作簿頁 1.pdf', 12000), band)
     assert.equal(formativeForBand(band) > 0 && formativeForBand(band) <= 5, true)
     const draft = draftFromFile('工作簿頁 1.pdf', 12000, 'application/pdf')
-    assert.equal(draft.approxBand, band)
+    assert.equal(draft.approxBand, null)
+    assert.equal(draft.aiStatus, 'idle')
+    assert.deepEqual(draft.aiAxes, {})
     assert.equal(draft.adjustBand, null)
     assert.equal(draft.committedBand, null)
     assert.equal(laterPending(draft), true)
-    assert.equal(studentVisibleBand(draft), band)
-    assert.equal(formativeForBand(draft.approxBand), formativeForBand(band))
+    assert.equal(studentVisibleBand(draft), null)
+    assert.equal(aiReferenceFormative(draft), null)
   })
 
   it('lets a teacher override feed the school slot and only empty dual axes', () => {
@@ -156,23 +189,24 @@ describe('school score later band', () => {
     assert.notEqual(SCHOOL_SCORE_LATER_KEY, selfKey)
     assert.notEqual(SCHOOL_SCORE_LATER_KEY, TEACHER_DRAFT_BAND_KEY)
     const draft = draftFromFile('page.pdf', 42, 'application/pdf')
-    const adjusted = withAdjustBand(draft, draft.approxBand === 'practice-strong' ? 'practice-emerging' : 'practice-strong')
-    assert.notEqual(effectiveBand(adjusted), draft.approxBand)
+    const adjusted = withAdjustBand(draft, 'practice-strong')
+    assert.equal(effectiveBand(adjusted), 'practice-strong')
     assert.equal(laterPending(adjusted), true)
-    assert.equal(studentVisibleBand(adjusted), draft.approxBand)
+    assert.equal(studentVisibleBand(adjusted), null)
     const committed = withCommitted(adjusted)
-    assert.equal(committed.committedBand, effectiveBand(adjusted))
+    assert.equal(committed.committedBand, 'practice-strong')
     assert.equal(laterPending(committed), false)
-    assert.equal(studentVisibleBand(committed), effectiveBand(adjusted))
+    assert.equal(studentVisibleBand(committed), null)
     assert.equal(withAdjustBand(committed, null).adjustBand, null)
     const dual = withDualAxis(emptyDualRadarStore(), 'rwb-1', 1.25)
     const plan = laterFeed(adjusted, dual)
-    assert.equal(plan.band, effectiveBand(adjusted))
-    assert.equal(plan.formative, formativeForBand(plan.band))
+    assert.equal(plan.band, 'practice-strong')
+    assert.equal(plan.formative, formativeForBand('practice-strong'))
     assert.equal(plan.axes.includes('rwb-1'), false)
     assert.equal(plan.axes.length, DUAL_AXIS_IDS.length - 1)
     const fresh = laterFeed(draft, emptyDualRadarStore())
-    assert.equal(fresh.axes.length, DUAL_AXIS_IDS.length)
+    assert.equal(fresh.band, null)
+    assert.deepEqual(fresh.axes, [])
     assert.deepEqual(sanitizeLaterStore({ version: 2, draft }), emptyLaterStore())
     const clean = sanitizeLaterStore({
       version: 1,
@@ -181,15 +215,17 @@ describe('school score later band', () => {
         fileSize: 42,
         mime: 'application/pdf',
         approxBand: 'practice-developing',
+        aiStatus: 'idle',
         adjustBand: 'practice-strong',
         committedBand: 'nope',
       },
     })
     assert.equal(clean.draft?.fileName, 'page.pdf')
-    assert.equal(clean.draft?.approxBand, 'practice-developing')
+    assert.equal(clean.draft?.approxBand, null)
     assert.equal(clean.draft?.adjustBand, 'practice-strong')
     assert.equal(clean.draft?.committedBand, null)
-    assert.equal(sanitizeLaterStore({ version: 1, draft: { ...draft, approxBand: '1-4' } }).draft, null)
+    assert.equal(sanitizeLaterStore({ version: 1, draft: { ...draft, approxBand: '1-4' } }).draft?.approxBand, null)
+    assert.equal(sanitizeLaterStore({ version: 1, draft: { ...draft, fileName: '  ' } }).draft, null)
   })
 })
 
@@ -218,6 +254,9 @@ describe('school score later chrome', () => {
     assert.match(student, /score\.later\.aiRadar/)
     assert.match(student, /score\.later\.disclaimer/)
     assert.match(student, /aiReferenceFormative/)
+    assert.match(student, /aiReferenceAxes/)
+    assert.match(student, /score\.later\.radarPending/)
+    assert.doesNotMatch(student, /chart\.axes\.map\(\(\) => formative\)/)
     assert.match(student, /axisLabelKey/)
     assert.match(student, /chart\.id === 'artwork'/)
     assert.match(student, /chart\.id === 'research_workbook'/)
@@ -267,30 +306,90 @@ describe('school score later chrome', () => {
 })
 
 describe('student instant approximate band', () => {
-  it('maps the AI radar from the approximate band and leaves an unwritten teacher adjust off it', () => {
-    const draft = draftFromFile('工作簿頁 1.pdf', 12000, 'application/pdf')
+  it('keeps the unofficial band and radars off a filename hash, including after a teacher adjust', () => {
+    const draft = withUploadedFile(null, '工作簿頁 1.pdf', 12000, 'application/pdf')
     assert.equal(draft.aiStatus, 'idle')
     assert.equal(draft.aiComment, null)
-    assert.equal(aiReferenceFormative(draft), formativeForBand(draft.approxBand))
-    const other = draft.approxBand === 'practice-strong' ? 'practice-emerging' : 'practice-strong'
-    const adjusted = withAdjustBand(draft, other)
-    assert.notEqual(effectiveBand(adjusted), draft.approxBand)
+    assert.equal(draft.approxBand, null)
+    assert.equal(aiReferenceFormative(draft), null)
+    assert.equal(aiReferenceAxes(draft, RWB_AXIS_IDS), null)
+    const adjusted = withAdjustBand(draft, 'practice-strong')
+    assert.equal(effectiveBand(adjusted), 'practice-strong')
     assert.equal(laterPending(adjusted), true)
-    assert.equal(aiReferenceFormative(adjusted), formativeForBand(draft.approxBand))
-    assert.notEqual(aiReferenceFormative(adjusted), formativeForBand(effectiveBand(adjusted)))
+    assert.equal(aiReferenceFormative(adjusted), null)
+    assert.equal(studentVisibleBand(adjusted), null)
     const committed = withCommitted(adjusted)
-    assert.equal(committed.committedBand, effectiveBand(adjusted))
-    assert.equal(aiReferenceFormative(committed), formativeForBand(draft.approxBand))
+    assert.equal(committed.committedBand, 'practice-strong')
+    assert.equal(aiReferenceFormative(committed), null)
     const comment = '主題或意念的探索及發展接近穩固，反思及學習進程仍可再寫清楚。'
     const model = applyModelComment(draft, { comment, band: 'practice-secure' })
     assert.equal(model.aiStatus, 'model')
     assert.equal(model.aiComment, comment)
     assert.equal(model.committedBand, null)
+    assert.equal(model.approxBand, 'practice-secure')
     assert.equal(aiReferenceFormative(model), formativeForBand('practice-secure'))
+    assert.equal(aiReferenceAxes(model, RWB_AXIS_IDS), null)
+    assert.equal(aiReferenceAxes(model, ARTWORK_AXIS_IDS), null)
     const fallback = applyAiFallback(model)
     assert.equal(fallback.aiStatus, 'fallback')
     assert.equal(fallback.aiComment, null)
-    assert.equal(aiReferenceFormative(fallback), formativeForBand(draft.stubBand))
+    assert.equal(fallback.approxBand, null)
+    assert.deepEqual(fallback.aiAxes, {})
+    assert.equal(aiReferenceFormative(fallback), null)
+    assert.equal(aiReferenceAxes(fallback, RWB_AXIS_IDS), null)
+  })
+
+  it('draws each student radar from per-axis model values and does not copy one band across them', () => {
+    let draft = withUploadedFile(null, '作品頁 1.jpg', 1000, 'image/jpeg')
+    draft = withUploadedFile(draft, '工作簿頁 1.pdf', 12000, 'application/pdf')
+    const comment = '樽同缺口杯有前後層次，工作簿試驗頁見到媒介試驗，反思仍然短。'
+    const model = applyModelComment(draft, {
+      comment,
+      band: 'practice-secure',
+      axes: {
+        'aw-1': 2.5,
+        'aw-2': 3.5,
+        'aw-3': 1.25,
+        'aw-4': 4.5,
+        'aw-5': 3.5,
+        'aw-6': 2.5,
+        'rwb-1': 3.5,
+        'rwb-2': 2.5,
+        'rwb-3': 4.5,
+        'rwb-4': 1.25,
+      },
+    })
+    assert.deepEqual(aiReferenceAxes(model, ARTWORK_AXIS_IDS), [2.5, 3.5, 1.25, 4.5, 3.5, 2.5])
+    assert.deepEqual(aiReferenceAxes(model, RWB_AXIS_IDS), [3.5, 2.5, 4.5, 1.25])
+    assert.equal(new Set(aiReferenceAxes(model, ARTWORK_AXIS_IDS)).size > 1, true)
+    assert.equal(new Set(aiReferenceAxes(model, RWB_AXIS_IDS)).size > 1, true)
+    const artworkOnly = applyModelComment(withUploadedFile(null, '作品頁 1.jpg', 1000, 'image/jpeg'), {
+      comment,
+      band: 'practice-secure',
+      axes: {
+        'aw-1': 2.5,
+        'aw-2': 3.5,
+        'aw-3': 1.25,
+        'aw-4': 4.5,
+        'aw-5': 3.5,
+        'aw-6': 2.5,
+        'rwb-1': 3.5,
+        'rwb-2': 2.5,
+        'rwb-3': 4.5,
+        'rwb-4': 1.25,
+      },
+    })
+    assert.equal(aiReferenceAxes(artworkOnly, RWB_AXIS_IDS), null)
+    assert.deepEqual(aiReferenceAxes(artworkOnly, ARTWORK_AXIS_IDS), [2.5, 3.5, 1.25, 4.5, 3.5, 2.5])
+    const snapped = sanitizeLaterStore({
+      version: 1,
+      draft: {
+        ...artworkOnly,
+        aiAxes: { ...artworkOnly.aiAxes, 'aw-3': 1.2 },
+      },
+    })
+    assert.equal(snapped.draft?.aiAxes['aw-3'], 1.25)
+    assert.equal(snapped.draft?.aiAxes['rwb-1'], undefined)
   })
 
   it('keeps the official not-final sentence and does not invent a substitute', () => {
@@ -382,20 +481,20 @@ describe('full scan and teacher-first formal draft', () => {
     assert.doesNotMatch(lib, /practiceDraft|learningMap|mapQuest|PracticePapers/)
 
     let draft = withUploadedFile(null, '作品頁 1.jpg', 1000, 'image/jpeg')
-    assert.equal(draft.approxBand, approximateBandId('作品頁 1.jpg', 1000))
+    assert.equal(draft.approxBand, null)
     assert.equal(draft.committedBand, null)
     assert.equal(laterPending(draft), true)
-    assert.equal(aiReferenceFormative(draft), formativeForBand(draft.approxBand))
+    assert.equal(aiReferenceFormative(draft), null)
     draft = withUploadedFile(draft, '工作簿頁 1.pdf', 12000, 'application/pdf')
     assert.equal(draft.pages.length, 2)
     assert.equal(draft.fileName, '工作簿頁 1.pdf')
-    assert.equal(draft.approxBand, approximateBandId('工作簿頁 1.pdf', 12000))
+    assert.equal(draft.approxBand, null)
     assert.equal(Object.keys(draft.formalAxes).length, 10)
     assert.notEqual(draft.formalAxes['aw-1'], undefined)
     const excluded = withUploadedFile(draft, '練習卷 1.pdf', 50, 'application/pdf')
     assert.equal(excluded.pages.length, 2)
     assert.equal(excluded.fileName, '練習卷 1.pdf')
-    assert.equal(excluded.approxBand, approximateBandId('練習卷 1.pdf', 50))
+    assert.equal(excluded.approxBand, null)
     assert.deepEqual(excluded.formalAxes, draft.formalAxes)
 
     const stored = sanitizeLaterStore({
@@ -405,32 +504,38 @@ describe('full scan and teacher-first formal draft', () => {
         fileSize: 12000,
         mime: 'application/pdf',
         approxBand: 'practice-developing',
+        aiStatus: 'idle',
       },
     })
     assert.equal(stored.draft?.pages.length, 1)
     assert.equal(stored.draft?.pages[0]?.side, 'research_workbook')
     assert.deepEqual(Object.keys(stored.draft?.formalAxes ?? {}), [...RWB_AXIS_IDS])
-    assert.equal(stored.draft?.approxBand, 'practice-developing')
+    assert.equal(stored.draft?.approxBand, null)
     assert.equal(stored.draft?.committedBand, null)
+    assert.deepEqual(stored.draft?.aiAxes, {})
 
-    const plan = laterFeed(draft, emptyDualRadarStore())
+    const quiet = laterFeed(draft, emptyDualRadarStore())
+    assert.equal(quiet.band, null)
+    assert.deepEqual(quiet.axes, [])
+    const comment = '主題或意念的探索及發展接近穩固，反思及學習進程仍可再寫清楚。'
+    const modeled = applyModelComment(draft, { comment, band: 'practice-developing' })
+    const plan = laterFeed(modeled, emptyDualRadarStore())
     assert.deepEqual(plan.axes, [...DUAL_AXIS_IDS])
     assert.equal(plan.values?.['rwb-1'], draft.formalAxes['rwb-1'])
-    assert.equal(plan.band, draft.approxBand)
+    assert.equal(plan.band, 'practice-developing')
+    const workbook = withUploadedFile(null, '研究工作簿.pdf', 80, 'application/pdf')
     const workbookOnly = laterFeed(
-      withUploadedFile(null, '研究工作簿.pdf', 80, 'application/pdf'),
+      applyModelComment(workbook, { comment, band: 'practice-secure' }),
       emptyDualRadarStore(),
     )
     assert.deepEqual(workbookOnly.axes, [...RWB_AXIS_IDS])
-    const adjusted = withAdjustBand(
-      draft,
-      draft.approxBand === 'practice-strong' ? 'practice-emerging' : 'practice-strong',
-    )
+    const adjusted = withAdjustBand(draft, 'practice-strong')
     const override = laterFeed(adjusted, emptyDualRadarStore())
+    assert.equal(override.band, 'practice-strong')
     assert.equal(override.axes.length, DUAL_AXIS_IDS.length)
     assert.equal(override.values, undefined)
-    assert.equal(aiReferenceFormative(adjusted), formativeForBand(draft.approxBand))
-    assert.notEqual(aiReferenceFormative(adjusted), formativeForBand(effectiveBand(adjusted)))
+    assert.equal(aiReferenceFormative(adjusted), null)
+    assert.notEqual(aiReferenceFormative(adjusted), formativeForBand('practice-strong'))
     const skipped = laterFeed(withUploadedFile(null, '地圖課卡.png', 10, 'image/png'), emptyDualRadarStore())
     assert.deepEqual(skipped.axes, [])
   })
