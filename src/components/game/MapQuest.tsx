@@ -19,8 +19,6 @@ import {
   type QuestNodeProgress,
 } from '../../lib/questPathLayout'
 import { InspectMapEntry } from '../InspectMapEntry'
-import { CropAskEntry } from '../CropAskEntry'
-import { currentUnitFace } from '../../lib/cropAsk'
 import { LessonPlayer } from './LessonPlayer'
 import { QuestPathArt } from './QuestPathArt'
 import { QuestTraining } from './QuestTraining'
@@ -72,11 +70,6 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         <QuestMotionButton />
       </div>
       <InspectMapEntry grade={form === 's5' ? 'f5' : form === 's6' ? 'f6' : 'f4'} />
-      {(() => {
-        const cropUnit = currentUnitFace(yearUnits, openUnitId)
-        const cropGrade = form === 's5' ? 'f5' : form === 's6' ? 'f6' : 'f4'
-        return cropUnit ? <CropAskEntry mode="map1" grade={cropGrade} unit={cropUnit} /> : null
-      })()}
       {openYear ? (
         <F4UnitPanel
           unit={openYear}

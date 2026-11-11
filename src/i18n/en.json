@@ -1146,5 +1146,19 @@
   "cropask.staff.noNames": "No class list yet. Add an in-school name before you can match a draft.",
   "cropask.close": "Close",
   "cropask.back": "Back",
-  "cropask.done": "Done"
+  "cropask.done": "Done",
+  "cropask.background.hint": "If this is a known work, background and meaning are added; if not, only what is seen in the region is written, with no guessing.",
+  "cropask.background.checking": "Checking the background of this uploaded image first…",
+  "cropask.background.foundNote": "This “How it is understood” draws on publicly available background. It is still learning support, not a formal identification.",
+  "cropask.background.notFound": "This could not be confirmed as a known work that can be found online. “How it is understood” only describes what is seen in the region, and does not guess a title or hidden meaning.",
+  "cropask.background.failed": "The background check is unavailable for now. “How it is understood” only describes what is seen in the region, with no invented claims. You can try again.",
+  "cropask.toWriting": "Go to Feldman four-step writing",
+  "cropask.bringInto": "Add to “{step}”",
+  "cropask.bringIntoOther": "Choose a different step",
+  "cropask.bringIntoConfirm": "“{step}” already has text. It is added only after you confirm, and is not silently overwritten.",
+  "cropask.bringIntoDone": "Added to “{step}”",
+  "cropask.bringIntoEmpty": "This part is still empty, so it cannot be added yet.",
+  "research.pair.hint": "Look closely and Feldman four-step writing are here together. You can crop a region, then bring those observations into the four steps.",
+  "research.pair.writingCta": "Start Feldman four-step writing",
+  "fw.toLookClosely": "Look closely at this work"
 }

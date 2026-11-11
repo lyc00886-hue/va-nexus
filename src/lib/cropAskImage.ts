@@ -50,6 +50,13 @@ export function resizeImageToDataUrl(img: HTMLImageElement): string | null {
   return paint(img, img.naturalWidth, img.naturalHeight)
 }
 
+export function fullJpegBase64(img: HTMLImageElement): string | null {
+  if (img.naturalWidth < 2 || img.naturalHeight < 2) return null
+  const url = paint(img, img.naturalWidth, img.naturalHeight)
+  const match = /^data:image\/jpeg;base64,(.+)$/.exec(url ?? '')
+  return match?.[1] ?? null
+}
+
 export function regionJpegBase64(img: HTMLImageElement, crop: CropRect): string | null {
   const rect = cropSourceRect(img.naturalWidth, img.naturalHeight, crop)
   if (!rect) return null

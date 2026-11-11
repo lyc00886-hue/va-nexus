@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { imageFileIssue } from './cropAskImage.ts'
 import {
   bindCropAskStudent,
+  cropAskSystem,
   cropSourceRect,
   currentUnitFace,
   displayPhase,
@@ -16,6 +17,7 @@ import {
   parseCropAskSections,
   pendingReviewCount,
   postCropAsk,
+  readBackgroundDecision,
   referenceAxesForUnit,
   requestGuard,
   reviewDrafts,
@@ -401,6 +403,11 @@ describe('draft library', () => {
     assert.equal(body.mime, 'image/jpeg')
     assert.equal(body.imageBase64, 'aaaa')
     assert.equal('band' in body, false)
+    assert.equal('studentId' in body, false)
+    assert.equal('studentName' in body, false)
+    assert.equal('sourceImageBase64' in body, false)
+    assert.equal(ok.ok, true)
+    if (ok.ok) assert.equal(ok.background, null)
     const down = await postCropAsk({
       locale: 'zh-Hant',
       unitTitle: '寫生、美感同設計思維',
@@ -451,7 +458,7 @@ describe('locale and wiring', () => {
     assert.equal(bags.hant['map.mode.quest'] ?? bags.hant['ux.map1'], '闖關地圖')
   })
 
-  it('puts one tool on both maps and the queue on the existing staff page', () => {
+  it('puts both tools in the research lab and keeps the queue on the existing staff page', () => {
     const quest = read('src/components/game/MapQuest.tsx')
     const classic = read('src/components/game/LearningMap.tsx')
     const entry = read('src/components/CropAskEntry.tsx')
@@ -460,8 +467,24 @@ describe('locale and wiring', () => {
     const page = read('src/components/TeacherDraftBand.tsx')
     const store = read('src/lib/useCropAsk.ts')
     const app = read('src/App.tsx')
-    assert.match(quest, /<CropAskEntry mode="map1"/)
-    assert.match(classic, /<CropAskEntry mode="classic"/)
+    const lab = read('src/components/game/ResearchLab.tsx')
+    const pair = read('src/components/game/ResearchToolPair.tsx')
+    const writer = read('src/components/FeldmanWriter.tsx')
+    const easy = read('src/components/easy-read/StepPath.tsx')
+    assert.equal(quest.includes('CropAskEntry'), false)
+    assert.equal(classic.includes('CropAskEntry'), false)
+    assert.equal(quest.includes('cropask.'), false)
+    assert.equal(classic.includes('cropask.'), false)
+    assert.match(lab, /<ResearchToolPair \/>/)
+    assert.match(easy, /<ResearchToolPair \/>/)
+    assert.match(pair, /cropask\.title/)
+    assert.match(pair, /fw\.title/)
+    assert.match(pair, /research\.pair\.hint/)
+    assert.match(pair, /cropask\.entry\.cta/)
+    assert.match(pair, /research\.pair\.writingCta/)
+    assert.equal(pair.includes('評賞工作室'), false)
+    assert.equal(pair.includes('評賞空間'), false)
+    assert.equal(pair.includes('藝術評賞'), false)
     assert.match(entry, /cropask\.title/)
     assert.match(work, /regionJpegBase64/)
     assert.equal(work.includes('drawImage(img, 0, 0'), false)
@@ -486,11 +509,177 @@ describe('locale and wiring', () => {
     assert.ok(queue >= 0 && overview > queue && score > overview && dual > score && later > dual && draft > later)
     assert.match(page, /if \(!role\) return <StaffDenied \/>/)
     assert.equal(app.includes('CropAsk'), false)
-    const surface = [entry, work, quest, classic].join('\n')
-    for (const banned of ['crop-and-ask', '學生面', '教師面', '雙圖對讀', '双图对读', 'S.4', 'hearts', 'ArtInSight', 'ArtGPT']) {
+    assert.match(work, /cropask\.bringIntoConfirm/)
+    assert.match(work, /cropask\.background\.notFound/)
+    assert.match(work, /cropask\.background\.foundNote/)
+    assert.match(work, /fullJpegBase64/)
+    assert.ok(work.indexOf('requestGuard(') < work.lastIndexOf('postCropAsk('))
+    assert.equal(work.includes('postFeldmanFeedback'), false)
+    assert.equal(work.includes('/api/feedback'), false)
+    assert.match(writer, /fw\.toLookClosely/)
+    assert.match(writer, /fw\.ai\.gated/)
+    assert.match(writer, /fw\.ai\.enable/)
+    assert.match(writer, /canUseAi/)
+    assert.match(writer, /postFeldmanFeedback/)
+    assert.match(writer, /t\('fw\.artwork'\)/)
+    assert.equal(writer.includes('cropask.section.seen'), false)
+    const surface = [entry, work, pair, writer, quest, classic].join('\n')
+    for (const banned of ['crop-and-ask', '學生面', '教師面', '雙圖對讀', '双图对读', 'S.4', 'hearts', 'ArtInSight', 'ArtGPT', 'Lindsay', '96:100']) {
       assert.equal(surface.includes(banned), false, banned)
     }
     assert.equal(work.includes('animate-'), false)
     assert.match(entry, /data-soft-motion="off"/)
+    assert.match(pair, /data-soft-motion="off"/)
+  })
+})
+
+const ADDED = {
+  hant: {
+    'cropask.background.hint': '若認到呢幅係已知作品，會補背景同作品背後意思；認唔到就只寫框入面見到嘅，唔會估。',
+    'cropask.background.checking': '而家先查呢幅上傳圖嘅背景…',
+    'cropask.background.foundNote': '呢段「點樣理解」有參考已公開資料嘅作品背景，仍然只係學習支援，唔係正式鑑定。',
+    'cropask.background.notFound': '未能確認呢幅係可喺網上搵到嘅已知作品。「點樣理解」只寫框入面見到嘅內容，唔會估作品名或背後意思。',
+    'cropask.background.failed': '暫時未能查背景。「點樣理解」只寫框入面見到嘅內容，唔會造假。你可以再試一次。',
+    'cropask.toWriting': '去費德曼四步寫作',
+    'cropask.bringInto': '帶入「{step}」',
+    'cropask.bringIntoOther': '改去其他一步',
+    'cropask.bringIntoConfirm': '「{step}」已有文字。確認之後先會寫入，唔會默默覆蓋。',
+    'cropask.bringIntoDone': '已帶入「{step}」',
+    'cropask.bringIntoEmpty': '呢一截仲未有內容，暫時未能帶入。',
+    'research.pair.hint': '局部觀察同費德曼四步寫作放喺呢度一齊用。你可以框選作品局部，再將觀察帶入四步寫作。',
+    'research.pair.writingCta': '開始費德曼四步寫作',
+    'fw.toLookClosely': '用局部觀察睇呢件作品',
+  },
+  hans: {
+    'cropask.background.hint': '若认到这幅是已知作品，会补背景和作品背后意思；认不到就只写框里面见到的，不会猜。',
+    'cropask.background.checking': '现在先查这幅上传图的背景…',
+    'cropask.background.foundNote': '这段「怎样理解」有参考已公开资料的作品背景，仍然只是学习支援，不是正式鉴定。',
+    'cropask.background.notFound': '未能确认这幅是可在网上找到的已知作品。「怎样理解」只写框里面见到的内容，不会猜作品名或背后意思。',
+    'cropask.background.failed': '暂时未能查背景。「怎样理解」只写框里面见到的内容，不会造假。你可以再试一次。',
+    'cropask.toWriting': '去费德曼四步写作',
+    'cropask.bringInto': '带入「{step}」',
+    'cropask.bringIntoOther': '改去其他一步',
+    'cropask.bringIntoConfirm': '「{step}」已有文字。确认之后才会写入，不会默默覆盖。',
+    'cropask.bringIntoDone': '已带入「{step}」',
+    'cropask.bringIntoEmpty': '这一截还没有内容，暂时不能带入。',
+    'research.pair.hint': '局部观察和费德曼四步写作放在这里一起用。你可以框选作品局部，再把观察带入四步写作。',
+    'research.pair.writingCta': '开始费德曼四步写作',
+    'fw.toLookClosely': '用局部观察看这件作品',
+  },
+  en: {
+    'cropask.background.hint': 'If this is a known work, background and meaning are added; if not, only what is seen in the region is written, with no guessing.',
+    'cropask.background.checking': 'Checking the background of this uploaded image first…',
+    'cropask.background.foundNote': 'This “How it is understood” draws on publicly available background. It is still learning support, not a formal identification.',
+    'cropask.background.notFound': 'This could not be confirmed as a known work that can be found online. “How it is understood” only describes what is seen in the region, and does not guess a title or hidden meaning.',
+    'cropask.background.failed': 'The background check is unavailable for now. “How it is understood” only describes what is seen in the region, with no invented claims. You can try again.',
+    'cropask.toWriting': 'Go to Feldman four-step writing',
+    'cropask.bringInto': 'Add to “{step}”',
+    'cropask.bringIntoOther': 'Choose a different step',
+    'cropask.bringIntoConfirm': '“{step}” already has text. It is added only after you confirm, and is not silently overwritten.',
+    'cropask.bringIntoDone': 'Added to “{step}”',
+    'cropask.bringIntoEmpty': 'This part is still empty, so it cannot be added yet.',
+    'research.pair.hint': 'Look closely and Feldman four-step writing are here together. You can crop a region, then bring those observations into the four steps.',
+    'research.pair.writingCta': 'Start Feldman four-step writing',
+    'fw.toLookClosely': 'Look closely at this work',
+  },
+} as const
+
+describe('research pair locale', () => {
+  it('adds only the new sentences and leaves the closed contracts in place', () => {
+    const bags = {
+      hant: JSON.parse(read('src/i18n/zh-Hant.json')) as Record<string, string>,
+      hans: JSON.parse(read('src/i18n/zh-Hans.json')) as Record<string, string>,
+      en: JSON.parse(read('src/i18n/en.json')) as Record<string, string>,
+    }
+    for (const locale of ['hant', 'hans', 'en'] as const) {
+      for (const [key, value] of Object.entries(ADDED[locale])) {
+        assert.equal(bags[locale][key], value, `${locale} ${key}`)
+      }
+    }
+    assert.equal(bags.hant['cropask.section.understood'], '點樣理解')
+    assert.equal(bags.hans['cropask.section.understood'], '怎样理解')
+    assert.equal(bags.en['cropask.section.understood'], 'How it is understood')
+    assert.equal(bags.hant['fw.title'], '費德曼四步寫作')
+    assert.equal(bags.hant['fw.artwork'], '評賞作品（選填）')
+    assert.equal(bags.hant['fw.ai.title'], 'AI 學習建議')
+    assert.equal(bags.hant['fw.ai.enable'], '啟用 AI 學習建議（僅限 18+）')
+    assert.equal(bags.hant['fw.ai.gated'], 'AI 學習建議只開放畀已核實 18 歲或以上嘅用戶。寫作框架、檢查清單同術語助推仍然可以用。')
+    assert.equal(bags.hant['fw.ai.confirm18'], '我明白評賞文字會傳去 Google Gemini 處理（僅限 18+）。')
+    assert.equal(bags.en['fw.ai.gated'], 'AI learning tip is for verified 18+ users. Framework, checklist and terms still work.')
+    assert.equal(bags.hant['practice.layer.D'], '描述')
+    assert.equal(bags.hant['practice.layer.A'], '分析')
+    assert.equal(bags.hant['practice.layer.I'], '詮釋')
+    assert.equal(bags.hant['practice.layer.E'], '評價')
+    assert.equal(bags.hant['practice.layer.E'].codePointAt(0), 0x8a55)
+    assert.equal(bags.hant['practice.layer.E'].codePointAt(1), 0x50f9)
+    assert.match(bags.hant['atlas.card.feldman.tip'], /判斷/)
+    assert.equal(bags.hant['island.mq.critique.tag'], '費德曼 · 形式分析')
+    assert.equal(bags.hant['tab.research'], '研究室')
+    assert.equal(bags.en['research.socratic.gateTitle'], undefined)
+    assert.equal(bags.en['research.pair.lookCloselyCta'], undefined)
+  })
+})
+
+const KNOWN = {
+  known: true,
+  title: 'Starry Night',
+  artist: 'Vincent van Gogh',
+  background: 'Painted in 1889 at Saint-Rémy.',
+  meaning: 'A swirling night sky over a quiet town.',
+}
+
+describe('uploaded image background', () => {
+  it('keeps a found note only when search results name the work', () => {
+    const chunks = [{ uri: 'https://example.test/starry-night', title: 'Starry Night, Vincent van Gogh' }]
+    const found = readBackgroundDecision(JSON.stringify(KNOWN), chunks)
+    assert.equal(found.status, 'found')
+    if (found.status === 'found') assert.equal(found.title, 'Starry Night')
+    const unconfirmed = readBackgroundDecision(JSON.stringify(KNOWN), [])
+    assert.deepEqual(unconfirmed, { status: 'notFound' })
+    const exercise = readBackgroundDecision(
+      JSON.stringify({ ...KNOWN, known: false }),
+      chunks,
+    )
+    assert.deepEqual(exercise, { status: 'notFound' })
+    assert.deepEqual(readBackgroundDecision('', chunks), { status: 'failed' })
+    const blocked = readBackgroundDecision(
+      JSON.stringify({ ...KNOWN, meaning: 'This earns a practice-secure band.' }),
+      chunks,
+    )
+    assert.deepEqual(blocked, { status: 'notFound' })
+  })
+
+  it('writes background into the understood prompt and refuses invented names when unconfirmed', () => {
+    const found = cropAskSystem('en', 'Drawing and design', {
+      status: 'found',
+      title: 'Starry Night',
+      artist: 'Vincent van Gogh',
+      background: 'Painted in 1889 at Saint-Rémy.',
+      meaning: 'A swirling night sky over a quiet town.',
+    })
+    assert.match(found, /selected region only/)
+    assert.match(found, /Starry Night/)
+    assert.match(found, /not a formal identification/)
+    assert.match(found, /Drawing and design/)
+    const missed = cropAskSystem('zh-Hant', '寫生、美感同設計思維', { status: 'notFound' })
+    assert.match(missed, /Do not invent a title/)
+    assert.equal(missed.includes('Starry Night'), false)
+    assert.match(missed, /cropped region/)
+    const failed = cropAskSystem('zh-Hans', '写生', { status: 'failed' })
+    assert.match(failed, /Do not invent a title/)
+    assert.equal(failed.includes('Vincent van Gogh'), false)
+  })
+
+  it('stores the background status on the shared draft and drops it when the region changes', () => {
+    let store = withPicture()
+    store = withCropAskCrop(store, META, { x: 0.2, y: 0.2, w: 0.3, h: 0.3 })
+    store = withCropAskAnalysis(store, META, SECTIONS, 'found')
+    assert.equal(store.drafts[0].background, 'found')
+    assert.equal(store.drafts[0].status, 'pending')
+    const kept = sanitizeCropAskStore(store)
+    assert.equal(kept.drafts[0].background, 'found')
+    store = withCropAskCrop(store, META, { x: 0.3, y: 0.3, w: 0.3, h: 0.3 })
+    assert.equal(store.drafts[0].background, null)
+    assert.equal(store.drafts[0].sections, null)
   })
 })

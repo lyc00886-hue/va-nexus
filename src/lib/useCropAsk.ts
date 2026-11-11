@@ -1,5 +1,8 @@
-import { useSyncExternalStore } from 'react'
+import { useMemo, useSyncExternalStore } from 'react'
+import { useInspectClassStore } from './inspectClass'
+import { useTeacherDraftStore } from './useTeacherDraftStore'
 import {
+  bindCropAskStudent,
   emptyCropAskStore,
   sanitizeCropAskStore,
   withCropAskAnalysis,
@@ -14,6 +17,7 @@ import {
   withCropAskUnconfirmed,
   withTeacherSections,
   CROP_ASK_KEY,
+  type CropAskBackgroundStatus,
   type CropAskMeta,
   type CropAskPhase,
   type CropAskSections,
@@ -96,8 +100,12 @@ export function cancelCropAskRequest(meta: CropAskMeta, resume: CropAskPhase) {
   publish(withCropAskCancel(snapshot, meta, resume))
 }
 
-export function commitCropAskAnalysis(meta: CropAskMeta, sections: CropAskSections) {
-  publish(withCropAskAnalysis(snapshot, meta, sections))
+export function commitCropAskAnalysis(
+  meta: CropAskMeta,
+  sections: CropAskSections,
+  background: CropAskBackgroundStatus | null = null,
+) {
+  publish(withCropAskAnalysis(snapshot, meta, sections, background))
 }
 
 export function failCropAsk(meta: CropAskMeta, reason: 'failed' | 'unavailable', resume: CropAskPhase) {
@@ -118,4 +126,17 @@ export function unconfirmCropAsk(id: string) {
 
 export function useCropAskStore(): CropAskStore {
   return useSyncExternalStore(subscribe, getCropAskStore, getCropAskStore)
+}
+
+export function useCropAskStudent() {
+  const teacher = useTeacherDraftStore()
+  const roster = useInspectClassStore()
+  return useMemo(
+    () =>
+      bindCropAskStudent({
+        activePortfolio: teacher.activePortfolio,
+        students: roster.students,
+      }),
+    [teacher.activePortfolio, roster.students],
+  )
 }

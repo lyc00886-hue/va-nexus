@@ -1162,5 +1162,19 @@
   "cropask.staff.noNames": "未有課室名單。加入校內名稱之後，先可以對稿。",
   "cropask.close": "關閉",
   "cropask.back": "返回",
-  "cropask.done": "完成"
+  "cropask.done": "完成",
+  "cropask.background.hint": "若認到呢幅係已知作品，會補背景同作品背後意思；認唔到就只寫框入面見到嘅，唔會估。",
+  "cropask.background.checking": "而家先查呢幅上傳圖嘅背景…",
+  "cropask.background.foundNote": "呢段「點樣理解」有參考已公開資料嘅作品背景，仍然只係學習支援，唔係正式鑑定。",
+  "cropask.background.notFound": "未能確認呢幅係可喺網上搵到嘅已知作品。「點樣理解」只寫框入面見到嘅內容，唔會估作品名或背後意思。",
+  "cropask.background.failed": "暫時未能查背景。「點樣理解」只寫框入面見到嘅內容，唔會造假。你可以再試一次。",
+  "cropask.toWriting": "去費德曼四步寫作",
+  "cropask.bringInto": "帶入「{step}」",
+  "cropask.bringIntoOther": "改去其他一步",
+  "cropask.bringIntoConfirm": "「{step}」已有文字。確認之後先會寫入，唔會默默覆蓋。",
+  "cropask.bringIntoDone": "已帶入「{step}」",
+  "cropask.bringIntoEmpty": "呢一截仲未有內容，暫時未能帶入。",
+  "research.pair.hint": "局部觀察同費德曼四步寫作放喺呢度一齊用。你可以框選作品局部，再將觀察帶入四步寫作。",
+  "research.pair.writingCta": "開始費德曼四步寫作",
+  "fw.toLookClosely": "用局部觀察睇呢件作品"
 }

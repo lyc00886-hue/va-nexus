@@ -7,6 +7,7 @@ import { getBadgeById } from '../../game/rewards'
 import { getLocale, t } from '../../i18n'
 import type { ResearchQuest } from '../../game/types'
 import { FeldmanWriter } from '../FeldmanWriter'
+import { ResearchToolPair } from './ResearchToolPair'
 import { useEasyRead } from '../../context/EasyReadContext'
 import { useResearchStepsShell } from '../../lib/useResearchStepsShell'
 import { EasyReadBar } from '../easy-read/EasyReadBar'
@@ -68,6 +69,8 @@ export function ResearchLab() {
         <h2 className="text-2xl font-bold text-slate-900">{t('tab.research')}</h2>
         <p className="text-sm text-slate-500">{t('research.subtitle', { done, total: RESEARCH_QUESTS.length })}</p>
       </div>
+
+      <ResearchToolPair />
 
       <div className="grid gap-4 sm:grid-cols-2">
         {RESEARCH_QUESTS.map((q) => {

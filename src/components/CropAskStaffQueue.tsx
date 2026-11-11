@@ -174,7 +174,20 @@ export function CropAskStaffQueue() {
                   ) : (
                     <div className="space-y-3">
                       <ReadSection title={t('cropask.section.seen')} body={row.sections.seen} />
-                      <ReadSection title={t('cropask.section.understood')} body={row.sections.understood} />
+                      <ReadSection
+                        title={t('cropask.section.understood')}
+                        body={row.sections.understood}
+                        note={
+                          row.background === 'found'
+                            ? t('cropask.background.foundNote')
+                            : row.background === 'notFound'
+                              ? t('cropask.background.notFound')
+                              : row.background === 'failed'
+                                ? t('cropask.background.failed')
+                                : null
+                        }
+                        pale={row.background === 'notFound' || row.background === 'failed'}
+                      />
                       <ReadSection title={t('cropask.section.evidence')} body={row.sections.evidence} />
                       <div>
                         <p className="text-sm font-semibold text-slate-800">{t('cropask.axisHint')}</p>
@@ -230,10 +243,21 @@ export function CropAskStaffQueue() {
   )
 }
 
-function ReadSection({ title, body }: { title: string; body: string }) {
+function ReadSection({
+  title,
+  body,
+  note,
+  pale,
+}: {
+  title: string
+  body: string
+  note?: string | null
+  pale?: boolean
+}) {
   return (
-    <section className="rounded-2xl border border-[#0D9488]/30 bg-white px-4 py-3">
-      <h3 className="font-bold text-[#0D9488]">{title}</h3>
+    <section className={pale ? 'rounded-2xl border border-[#E7D7A8] bg-[#FFF9E9] px-4 py-3' : 'rounded-2xl border border-[#0D9488]/30 bg-white px-4 py-3'}>
+      <h3 className={pale ? 'font-bold text-slate-600' : 'font-bold text-[#0D9488]'}>{title}</h3>
+      {note ? <p className="mt-1 text-sm leading-relaxed text-slate-600">{note}</p> : null}
       <p className="mt-1 text-sm leading-relaxed text-slate-800">{body}</p>
     </section>
   )

@@ -1,8 +1,7 @@
 import { Camera, Upload } from 'lucide-react'
-import { useEffect, useId, useMemo, useRef, useState, type PointerEvent } from 'react'
+import { useEffect, useId, useMemo, useRef, useState, type PointerEvent, type ReactNode } from 'react'
 import { useT, type MessageKey } from '../i18n'
 import {
-  bindCropAskStudent,
   displayPhase,
   existingUploadedImage,
   findCropAskDraft,
@@ -10,13 +9,15 @@ import {
   postCropAsk,
   requestGuard,
   type CropAskAxis,
+  type CropAskBackgroundStatus,
   type CropAskGrade,
   type CropAskMeta,
   type CropAskPhase,
   type CropRect,
 } from '../lib/cropAsk'
-import { captureFrameDataUrl, fileToDataUrl, regionJpegBase64, resizeImageToDataUrl } from '../lib/cropAskImage'
-import { useInspectClassStore } from '../lib/inspectClass'
+import { captureFrameDataUrl, fileToDataUrl, fullJpegBase64, regionJpegBase64, resizeImageToDataUrl } from '../lib/cropAskImage'
+import { BRING_CHOICES, type CropSectionId, type FeldmanStepId } from '../lib/feldmanDraft'
+import { bringFeldmanStep } from '../lib/useFeldmanDraft'
 import {
   cancelCropAskRequest,
   clearCropAskRegion,
@@ -27,9 +28,9 @@ import {
   saveCropAskCrop,
   saveCropAskImage,
   useCropAskStore,
+  useCropAskStudent,
 } from '../lib/useCropAsk'
 import { useSchoolScoreLater } from '../lib/useSchoolScoreLater'
-import { useTeacherDraftStore } from '../lib/useTeacherDraftStore'
 
 const AXIS_LABEL: Record<CropAskAxis, MessageKey> = {
   theme: 'inspect.axis.theme',
@@ -48,6 +49,13 @@ const STATUS_LABEL: Partial<Record<CropAskPhase, MessageKey>> = {
   edited: 'cropask.status.edited',
   confirmed: 'cropask.status.confirmed',
   failed: 'cropask.status.failed',
+}
+
+const STEP_LABEL: Record<FeldmanStepId, MessageKey> = {
+  describe: 'practice.layer.D',
+  analyse: 'practice.layer.A',
+  interpret: 'practice.layer.I',
+  judge: 'practice.layer.E',
 }
 
 const BUTTON = 'rounded-full px-4 py-2 text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]'
@@ -83,20 +91,19 @@ function pointerPoint(event: PointerEvent<HTMLDivElement>): { x: number; y: numb
   return { x: Math.min(1, Math.max(0, x)), y: Math.min(1, Math.max(0, y)) }
 }
 
-export function CropAskWork({ grade, unit }: { grade: CropAskGrade; unit: { id: string; title: string } }) {
+export function CropAskWork({
+  grade,
+  unit,
+  onOpenWriting,
+}: {
+  grade: CropAskGrade
+  unit: { id: string; title: string }
+  onOpenWriting?: () => void
+}) {
   const { locale, t } = useT()
   const store = useCropAskStore()
-  const teacher = useTeacherDraftStore()
-  const roster = useInspectClassStore()
   const later = useSchoolScoreLater()
-  const binding = useMemo(
-    () =>
-      bindCropAskStudent({
-        activePortfolio: teacher.activePortfolio,
-        students: roster.students,
-      }),
-    [teacher.activePortfolio, roster.students],
-  )
+  const binding = useCropAskStudent()
   const meta: CropAskMeta = useMemo(
     () => ({
       unitId: unit.id,
@@ -227,6 +234,7 @@ export function CropAskWork({ grade, unit }: { grade: CropAskGrade; unit: { id: 
       setNote('required')
       return
     }
+    const source = fullJpegBase64(img)
     const resume = live?.status ?? 'ready'
     setNote(null)
     markCropAskGenerating(current)
@@ -236,11 +244,12 @@ export function CropAskWork({ grade, unit }: { grade: CropAskGrade; unit: { id: 
       locale,
       unitTitle: current.unitTitle,
       imageBase64: bytes,
+      sourceImageBase64: source ?? undefined,
       signal: controller.signal,
     })
     abortRef.current = null
     if (result.ok) {
-      commitCropAskAnalysis(current, result.sections)
+      commitCropAskAnalysis(current, result.sections, result.background)
       return
     }
     if (result.reason === 'aborted') {
@@ -428,10 +437,18 @@ export function CropAskWork({ grade, unit }: { grade: CropAskGrade; unit: { id: 
           {noteText}
         </p>
       ) : null}
-      {phase === 'generating' ? (
-        <p role="status" className="text-sm text-slate-700">
-          {t('cropask.generating')}
+      {shown && !showSections ? (
+        <p data-testid="crop-ask-background-hint" className="text-sm leading-relaxed text-slate-600">
+          {t('cropask.background.hint')}
         </p>
+      ) : null}
+      {phase === 'generating' ? (
+        <div role="status" className="space-y-1">
+          <p data-testid="crop-ask-background-checking" className="text-sm leading-relaxed text-slate-600">
+            {t('cropask.background.checking')}
+          </p>
+          <p className="text-sm text-slate-700">{t('cropask.generating')}</p>
+        </div>
       ) : null}
       {draft?.failReason ? (
         <div className="space-y-2" data-testid="crop-ask-failure">
@@ -450,9 +467,27 @@ export function CropAskWork({ grade, unit }: { grade: CropAskGrade; unit: { id: 
           <p className="text-sm leading-relaxed text-slate-700">
             {phase === 'confirmed' ? t('cropask.confirmedNote') : t('cropask.pendingNote')}
           </p>
-          <Section title={t('cropask.section.seen')} body={draft.sections.seen} />
-          <Section title={t('cropask.section.understood')} body={draft.sections.understood} />
-          <Section title={t('cropask.section.evidence')} body={draft.sections.evidence} />
+          <Section
+            title={t('cropask.section.seen')}
+            body={draft.sections.seen}
+            extra={canBring(phase) ? <BringInto section="seen" text={draft.sections.seen} /> : null}
+          />
+          <UnderstoodSection
+            title={t('cropask.section.understood')}
+            body={draft.sections.understood}
+            background={draft.background}
+            extra={canBring(phase) ? <BringInto section="understood" text={draft.sections.understood} /> : null}
+          />
+          <Section
+            title={t('cropask.section.evidence')}
+            body={draft.sections.evidence}
+            extra={canBring(phase) ? <BringInto section="evidence" text={draft.sections.evidence} /> : null}
+          />
+          {onOpenWriting ? (
+            <button type="button" data-testid="crop-to-writing" className={OUTLINE} onClick={onOpenWriting}>
+              {t('cropask.toWriting')}
+            </button>
+          ) : null}
           <div>
             <p className="text-sm font-semibold text-slate-800">{t('cropask.axisHint')}</p>
             <ul className="mt-2 flex flex-wrap gap-2">
@@ -471,11 +506,131 @@ export function CropAskWork({ grade, unit }: { grade: CropAskGrade; unit: { id: 
   )
 }
 
-function Section({ title, body }: { title: string; body: string }) {
+function canBring(phase: CropAskPhase): boolean {
+  return phase === 'pending' || phase === 'edited' || phase === 'confirmed'
+}
+
+function Section({ title, body, extra }: { title: string; body: string; extra?: ReactNode }) {
   return (
     <section className="rounded-2xl border border-[#0D9488]/30 bg-white px-4 py-3">
       <h3 className="font-bold text-[#0D9488]">{title}</h3>
       <p className="mt-1 text-sm leading-relaxed text-slate-800">{body}</p>
+      {extra}
     </section>
+  )
+}
+
+function UnderstoodSection({
+  title,
+  body,
+  background,
+  extra,
+}: {
+  title: string
+  body: string
+  background: CropAskBackgroundStatus | null
+  extra?: ReactNode
+}) {
+  const { t } = useT()
+  const pale = background === 'notFound' || background === 'failed'
+  const note =
+    background === 'found'
+      ? t('cropask.background.foundNote')
+      : background === 'notFound'
+        ? t('cropask.background.notFound')
+        : background === 'failed'
+          ? t('cropask.background.failed')
+          : null
+  return (
+    <section
+      data-testid="crop-ask-understood"
+      data-background={background ?? 'none'}
+      className={
+        pale
+          ? 'rounded-2xl border border-[#E7D7A8] bg-[#FFF9E9] px-4 py-3'
+          : 'rounded-2xl border border-[#0D9488]/30 bg-white px-4 py-3'
+      }
+    >
+      <h3 className={pale ? 'font-bold text-slate-600' : 'font-bold text-[#0D9488]'}>{title}</h3>
+      <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('cropask.background.hint')}</p>
+      {note ? <p className="mt-2 text-sm leading-relaxed text-slate-600">{note}</p> : null}
+      <p className="mt-2 text-sm leading-relaxed text-slate-800">{body}</p>
+      {extra}
+    </section>
+  )
+}
+
+function BringInto({ section, text }: { section: CropSectionId; text: string }) {
+  const { t } = useT()
+  const choices = BRING_CHOICES[section]
+  const [step, setStep] = useState<FeldmanStepId>(choices[0])
+  const [armed, setArmed] = useState(false)
+  const [notice, setNotice] = useState<'done' | 'empty' | null>(null)
+  const [openChoices, setOpenChoices] = useState(false)
+  const stepLabel = t(STEP_LABEL[step])
+
+  function run(confirm: boolean) {
+    const result = bringFeldmanStep(step, text, confirm)
+    if (result === 'empty') {
+      setArmed(false)
+      setNotice('empty')
+      return
+    }
+    if (result === 'needConfirm') {
+      setNotice(null)
+      setArmed(true)
+      return
+    }
+    setArmed(false)
+    setNotice('done')
+  }
+
+  return (
+    <div data-bring-section={section} className="mt-3 space-y-2">
+      <div className="flex flex-wrap gap-2">
+        <button type="button" data-testid={`crop-bring-${section}`} className={FILLED} onClick={() => run(armed)}>
+          {t('cropask.bringInto', { step: stepLabel })}
+        </button>
+        {choices.length > 1 ? (
+          <button type="button" className={OUTLINE} onClick={() => setOpenChoices((open) => !open)}>
+            {t('cropask.bringIntoOther')}
+          </button>
+        ) : null}
+      </div>
+      {openChoices ? (
+        <div className="flex flex-wrap gap-2">
+          {choices.map((choice) => (
+            <button
+              key={choice}
+              type="button"
+              className={OUTLINE}
+              onClick={() => {
+                setStep(choice)
+                setArmed(false)
+                setNotice(null)
+                setOpenChoices(false)
+              }}
+            >
+              {t('cropask.bringInto', { step: t(STEP_LABEL[choice]) })}
+            </button>
+          ))}
+        </div>
+      ) : null}
+      {armed ? (
+        <p
+          role="status"
+          data-testid={`crop-bring-confirm-${section}`}
+          className="rounded-2xl bg-[#FFF9E9] px-3 py-2 text-sm leading-relaxed text-slate-700"
+        >
+          {t('cropask.bringIntoConfirm', { step: stepLabel })}
+        </p>
+      ) : null}
+      {notice === 'done' ? (
+        <p role="status" className="text-sm text-slate-700">
+          {t('cropask.bringIntoDone', { step: stepLabel })}
+        </p>
+      ) : null}
+      {notice === 'empty' ? <p role="status" className="text-sm text-slate-600">{t('cropask.bringIntoEmpty')}</p> : null}
+    </div>
   )
 }

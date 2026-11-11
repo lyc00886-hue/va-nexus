@@ -9,6 +9,7 @@ import type { Unit } from '../../game/types'
 import { t } from '../../i18n'
 import { pickEasyEmpty, showOfflineNote } from '../../lib/easyReadMode'
 import { FeldmanWriter } from '../FeldmanWriter'
+import { ResearchToolPair } from '../game/ResearchToolPair'
 import { MapOneLesson } from '../game/MapOneLesson'
 import { EasyReadBar } from './EasyReadBar'
 import { EasyReadEmpty } from './EasyReadEmpty'
@@ -208,6 +209,7 @@ export function StepResearch() {
         </p>
       ) : null}
       <h2 className="text-2xl font-bold text-slate-900">{t('tab.research')}</h2>
+      <ResearchToolPair />
       {showEmpty && empty ? (
         <EasyReadEmpty kind={empty === 'next-lesson' ? 'no-content' : empty} />
       ) : (
