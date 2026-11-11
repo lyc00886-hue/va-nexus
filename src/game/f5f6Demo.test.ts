@@ -191,6 +191,63 @@ describe('Form 5 and Form 6 course packs', () => {
     }
   })
 
+  it('does not put internal student-surface wording into the new packs', () => {
+    for (const grade of ['f5', 'f6'] as const) {
+      for (const locale of Object.keys(FILES) as (keyof typeof FILES)[]) {
+        const name = localeFile(grade, locale)
+        const blob = JSON.stringify(pack(name))
+        for (const word of ['學生面', '学生面', 'student page']) {
+          assert.equal(blob.includes(word), false, `${name} ${word}`)
+        }
+      }
+    }
+    const hant = pack('f6-demo.json')
+    const hans = pack('f6-demo.zh-Hans.json')
+    const en = pack('f6-demo.en.json')
+    const orient = (units: { id: string; intro: string; lessons: { cards: unknown[]; quiz: { question: string }[] }[] }[]) =>
+      units.find((unit) => unit.id === 'F6-U1-ORIENT')
+    assert.equal(
+      orient(hant.units)?.intro.endsWith('課堂只講方法，唔會放入學校行政程序或學年日程。'),
+      true,
+    )
+    assert.equal(
+      orient(hans.units)?.intro.endsWith('课堂只讲方法，不会放入学校行政程序或学年日程。'),
+      true,
+    )
+    assert.equal(
+      orient(en.units)?.intro.endsWith('Lessons teach method only and leave out school admin steps and year calendars.'),
+      true,
+    )
+    const cardText = (card: unknown) => (typeof card === 'string' ? card : '')
+    assert.equal(
+      orient(hant.units)?.lessons[1].cards.map(cardText).includes('課堂只講方法，唔會放入學校行政程序。'),
+      true,
+    )
+    assert.equal(
+      orient(hans.units)?.lessons[1].cards.map(cardText).includes('课堂只讲方法，不会放入学校行政程序。'),
+      true,
+    )
+    assert.equal(
+      orient(en.units)?.lessons[1].cards.map(cardText).includes('Lessons teach method only and leave out school admin steps.'),
+      true,
+    )
+    const yba = (units: { lessons: { quiz: { question: string }[] }[] }[]) =>
+      units.flatMap((unit) => unit.lessons).flatMap((lesson) => lesson.quiz.map((quiz) => quiz.question))
+    assert.equal(yba(hant.units).includes('寫呢組藝術家時，應該點寫？'), true)
+    assert.equal(yba(hans.units).includes('写这组艺术家时，应该怎样写？'), true)
+    assert.equal(yba(en.units).includes('How should this group of artists be named?'), true)
+    for (const name of ['f5-demo.json', 'f6-demo.json']) {
+      const blob = JSON.stringify(pack(name))
+      assert.equal(blob.includes('"imageCredit":"自製 · VA-Nexus"') || blob.includes('自製 · VA-Nexus'), true, name)
+      assert.equal(blob.includes('"imageCredit":"自制 · VA-Nexus"'), false, name)
+    }
+    for (const name of ['f5-demo.zh-Hans.json', 'f6-demo.zh-Hans.json']) {
+      const raw = readFileSync(new URL(`../content/${name}`, import.meta.url), 'utf8')
+      assert.equal(raw.includes('自製'), false, name)
+      assert.equal(raw.includes('"imageCredit": "自制 · VA-Nexus"'), true, name)
+    }
+  })
+
   it('keeps forbidden words off the new student copy', () => {
     for (const grade of ['f5', 'f6'] as const) {
       for (const locale of Object.keys(FILES) as (keyof typeof FILES)[]) {

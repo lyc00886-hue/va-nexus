@@ -3,7 +3,7 @@
     {
       "id": "F6-U1-ORIENT",
       "title": "Form 6 VA start: visual diary and portfolio organisation",
-      "intro": "This unit starts Form 6 visual arts. You will continue a weekly visual diary and use a clear structure to check and organise your portfolio. Lessons teach method only and do not put school admin steps or a year calendar on the student page.",
+      "intro": "This unit starts Form 6 visual arts. You will continue a weekly visual diary and use a clear structure to check and organise your portfolio. Lessons teach method only and leave out school admin steps and year calendars.",
       "coverImage": "/content/learning-map-illustrations/f6-covers/F6-U1-ORIENT.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -98,7 +98,7 @@
             "Checking the portfolio means a list of what you have and what is missing: theme sentence, research evidence, a medium test, and an artwork or critical-study page.",
             "Organising means grouping material you already have. It is not an admin form, and it is not copying a year calendar.",
             "For one missing item, write one way to fill it, and keep that way possible in class.",
-            "Lessons teach method only and do not put school admin steps on the student page."
+            "Lessons teach method only and leave out school admin steps."
           ],
           "quiz": [
             {
@@ -276,7 +276,7 @@
           "quiz": [
             {
               "type": "mcq",
-              "question": "How should this group of artists be named on the student page?",
+              "question": "How should this group of artists be named?",
               "options": [
                 "Only the three letters",
                 "Young British Artists (YBA)",
