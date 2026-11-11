@@ -28,12 +28,12 @@ const LOCALE = {
   en: {
     'score.dual.title': 'School reference scoring (dual radar)',
     'score.dual.disclaimer':
-      'Not a public-exam or HKEAA result. School-internal formative reference only. Radar values come from staff reference bands, not student self-rating.',
+      'Not a public-exam or HKEAA result. School-internal reference only. Radar values come from staff reference bands, not student self-rating.',
     'score.dual.staffNav': 'Dual-radar reference (staff)',
     'score.dual.studentSurface': 'Learning progress reference',
     'score.dual.replaceSelfKeep': 'Keeps school scoring reference (no student 1–4 self-rate)',
     'score.dual.unset': 'No reference result yet',
-    'score.dual.bandSource': 'Reference bands: Starting / Developing / Steady / Strong (or 0–5 school formative)',
+    'score.dual.bandSource': 'Reference bands: Starting / Developing / Steady / Strong (or 0–5 school-internal reference)',
     'score.dual.chart.rwb': 'Research workbook',
     'score.dual.chart.artwork': 'Artwork / critical studies',
     'score.dual.readonlyNote': 'Read-only reference chart (not self-rated)',

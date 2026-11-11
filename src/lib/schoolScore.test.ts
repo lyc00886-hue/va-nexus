@@ -12,7 +12,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 const LOCALE = {
   en: {
     'score.v1.title': 'School scoring reference',
-    'score.v1.disclaimer': 'Not a public-exam or HKEAA result. School-internal formative reference only.',
+    'score.v1.disclaimer': 'Not a public-exam or HKEAA result. School-internal reference only.',
     'score.v1.sampleStd': 'Reference standard: school samples',
     'score.v1.staffNav': 'Scoring reference (staff)',
     'score.v1.studentSurface': 'Learning progress reference',

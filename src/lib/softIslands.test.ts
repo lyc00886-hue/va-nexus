@@ -196,7 +196,7 @@ describe('soft island plates', () => {
     assert.equal(hant['island.short.sba'], 'SBA 實驗室')
     assert.equal(hant['island.chip.sba'], 'SBA 實驗室')
     assert.equal(hant['island.chip.exam'], '應試練習場')
-    assert.equal(hant['island.exam.form'], '雙圖對讀')
+    assert.equal(hant['island.exam.form'], '藝術評賞比較')
     assert.equal(hant['island.mq.research.title'], '邊組先算一手證據？')
     assert.equal(hant['island.mq.critique.b'], '用低明度、低彩度冷色，配合急促交錯筆觸，構圖逼近，加強壓抑感。')
     assert.equal(hant['island.mq.sba.b'].includes('熱熔膠'), true)

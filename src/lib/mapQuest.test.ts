@@ -127,7 +127,7 @@ describe('quest map structure', () => {
     assert.equal(QUEST_SECTIONS[2].name['zh-Hant'], '中六練習')
     assert.match(blob, /SBA 實驗室/)
     assert.match(blob, /應試練習場/)
-    assert.match(blob, /雙圖對讀/)
+    assert.match(blob, /藝術評賞比較/)
     assert.equal(QUEST_CHROME['zh-Hant'].startXp, '開始 +10 XP')
     assert.equal(QUEST_CHROME['zh-Hant'].streak, '連勝')
     assert.equal(QUEST_CHROME['zh-Hant'].inspiration, '靈感')

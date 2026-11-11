@@ -16,14 +16,14 @@
     ],
     "locale": "en"
   },
-  "pageTitle": "Teacher draft band (school-internal)",
-  "pageIntro": "Pick a formative practice band for a school-internal name stored on this device, using your school rubric. This page does not list or show student-uploaded photos or notes. Teacher / coordinator coaching only — never presented as an HKEAA result.",
-  "disclaimer": "Not official. Not an HKEAA / public-exam result. These “practice / performance-reference” bands are for school-internal formative discussion only. Formal SBA marks follow the HKEAA Teachers’ Handbook and moderation. Do not upload student 5** exemplars to the public app.",
+  "pageTitle": "Teacher reference band (school-internal)",
+  "pageIntro": "Pick a school-internal reference practice band for a school-internal name stored on this device, using your school rubric. This page does not list or show student-uploaded photos or notes. Teacher / coordinator coaching only — never presented as an HKEAA result.",
+  "disclaimer": "Not official. Not an HKEAA / public-exam result. These “practice / performance-reference” bands are for school-internal reference discussion only. Formal SBA marks follow the HKEAA Teachers’ Handbook and moderation. Do not upload student 5** exemplars to the public app.",
   "bandPicker": {
     "title": "Practice band (performance reference)",
     "help": "Soft four-step scale for in-school coaching. Do not label options as official “5** / public-exam grades”.",
     "schoolMappingNote": "Coordinators may map these practice bands to school house bands / descriptors. Mapping is school-owned; the app does not preset official grades.",
-    "saveCta": "Save draft band",
+    "saveCta": "Save reference band",
     "clearCta": "Clear draft",
     "bands": [
       {
@@ -39,12 +39,12 @@
       {
         "id": "practice-secure",
         "label": "Practice band · Secure",
-        "hint": "School formative band: solid baseline"
+        "hint": "School-internal reference band: solid baseline"
       },
       {
         "id": "practice-strong",
         "label": "Practice band · Strong",
-        "hint": "School formative high band — not an official 5** / public exam grade"
+        "hint": "School-internal reference high band — not an official 5** / public exam grade"
       }
     ]
   },
@@ -135,11 +135,11 @@
     },
     {
       "id": "formative_only",
-      "text": "Bands are school formative / coaching reference — mappable to house bands, not a submitted mark."
+      "text": "Bands are school-internal reference / coaching reference — mappable to house bands, not a submitted mark."
     },
     {
       "id": "student_path_separate",
-      "text": "Student path stays self-rating 1–4 / text feedback; do not sync teacher draft bands as student “scores”."
+      "text": "Student path stays self-rating 1–4 / text feedback; do not sync teacher reference bands as student “scores”."
     }
   ]
 }

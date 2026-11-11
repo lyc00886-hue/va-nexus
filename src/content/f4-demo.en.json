@@ -85,7 +85,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left leans “describe what you see”, right leans “making experiment”. One line each.",
+              "question": "Compare works: left leans “describe what you see”, right leans “making experiment”. One line each.",
               "options": [
                 "I see…",
                 "I want to try…"
@@ -178,7 +178,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: left = workbook page, right = artwork photo. One line each on process vs decision.",
+              "question": "Compare works: left = workbook page, right = artwork photo. One line each on process vs decision.",
               "options": [
                 "Workbook process",
                 "Artwork decision"
@@ -260,7 +260,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: keyword and definition on the left, the form you see on the right. One line each — what the word means, and which evidence you see.",
+              "question": "Compare works: keyword and definition on the left, the form you see on the right. One line each — what the word means, and which evidence you see.",
               "options": [
                 "Keyword",
                 "Form"
@@ -342,7 +342,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: one movement on the left, another on the right. One line each — the formal feature, and how the presentation differs.",
+              "question": "Compare works: one movement on the left, another on the right. One line each — the formal feature, and how the presentation differs.",
               "options": [
                 "Left",
                 "Right"
@@ -446,7 +446,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: dense line vs big colour blocks — where is the visual weight, and why?",
+              "question": "Compare works: dense line vs big colour blocks — where is the visual weight, and why?",
               "options": [
                 "Which side feels heavier",
                 "Why"
@@ -546,7 +546,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: two material swatches — which texture fits the feeling you mean, and why (one line)?",
+              "question": "Compare works: two material swatches — which texture fits the feeling you mean, and why (one line)?",
               "options": [
                 "Which texture",
                 "One reason"
@@ -661,7 +661,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a plan sketch on the left, a material sample on the right. One line each — what should the plan say, and how does the material help?",
+              "question": "Compare works: a plan sketch on the left, a material sample on the right. One line each — what should the plan say, and how does the material help?",
               "options": [
                 "Plan",
                 "Material"
@@ -744,7 +744,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a design drawing with a viewpoint on the left, a material test on the right. One line each — what the drawing makes clear, and what feeling the material changes.",
+              "question": "Compare works: a design drawing with a viewpoint on the left, a material test on the right. One line each — what the drawing makes clear, and what feeling the material changes.",
               "options": [
                 "Drawing",
                 "Material"
@@ -850,7 +850,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: same corner, day vs night — one line each on light／people flow.",
+              "question": "Compare works: same corner, day vs night — one line each on light／people flow.",
               "options": [
                 "Day",
                 "Night"
@@ -876,7 +876,7 @@
             "Classroom observation: use teacher-provided or already available photos, clips, objects, or sketches in class to record the environment and your learning.",
             "Making can relate to community: public space, neighbourhood routines, local signs—then reconnect to your theme.",
             "Pak Sheung Chuen often uses everyday actions and ready-mades to make housing/space experiences visible.",
-            "Lee Kit often uses household cloth and everyday objects to speak about private feeling and space—community and personal life can be read together.",
+            "Lee Kit often uses household cloth and everyday objects to speak about private feeling and space—community and personal life can be compared.",
             "Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a theme question. Describe contemporary works in words and cite a reliable source."
           ],
           "quiz": [
@@ -943,7 +943,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: shop-sign detail vs whole corner — which better seeds a theme, and why (one line)?",
+              "question": "Compare works: shop-sign detail vs whole corner — which better seeds a theme, and why (one line)?",
               "options": [
                 "Which one seeds the theme",
                 "Why"
@@ -1062,7 +1062,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a sketch on the left, interview notes on the right. One line each — what you see, and one useful sentence you heard.",
+              "question": "Compare works: a sketch on the left, interview notes on the right. One line each — what you see, and one useful sentence you heard.",
               "options": [
                 "Sketch",
                 "Interview"
@@ -1192,7 +1192,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: research notes on the left, one work on the right. One line each — what decision the notes keep, and what the work shows.",
+              "question": "Compare works: research notes on the left, one work on the right. One line each — what decision the notes keep, and what the work shows.",
               "options": [
                 "Notes",
                 "Work"
@@ -1297,7 +1297,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a self-portrait draft on the left, an object tied to identity on the right. One line each — what the pose says, and what relationship the object holds.",
+              "question": "Compare works: a self-portrait draft on the left, an object tied to identity on the right. One line each — what the pose says, and what relationship the object holds.",
               "options": [
                 "Draft",
                 "Object"
@@ -1405,7 +1405,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: artist notes on the left, your theme question on the right. One line each — their method, and what you will borrow it for.",
+              "question": "Compare works: artist notes on the left, your theme question on the right. One line each — their method, and what you will borrow it for.",
               "options": [
                 "Method",
                 "Your theme"
@@ -1487,7 +1487,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: an earlier draft on the left, a current test on the right. One line each — what the old draft chased, and what the new test changed.",
+              "question": "Compare works: an earlier draft on the left, a current test on the right. One line each — what the old draft chased, and what the new test changed.",
               "options": [
                 "Earlier draft",
                 "Current test"
@@ -1591,7 +1591,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: compare two periods in words. One line each — a formal feature, and a possible use.",
+              "question": "Compare works: compare two periods in words. One line each — a formal feature, and a possible use.",
               "options": [
                 "Form",
                 "Use"
@@ -1686,7 +1686,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a pictograph on the left, a vessel motif on the right. One line each — how the line moves, and what it might record.",
+              "question": "Compare works: a pictograph on the left, a vessel motif on the right. One line each — how the line moves, and what it might record.",
               "options": [
                 "Pictograph",
                 "Motif"
@@ -1768,7 +1768,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a wall-painting scene on the left, the rhythm of a piece of writing on the right. One line each — how the figures or the line are arranged.",
+              "question": "Compare works: a wall-painting scene on the left, the rhythm of a piece of writing on the right. One line each — how the figures or the line are arranged.",
               "options": [
                 "Wall painting",
                 "Writing"
@@ -1850,7 +1850,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a Tang composition feature on the left, a Five Dynasties ink feature on the right. One line each about the form you see.",
+              "question": "Compare works: a Tang composition feature on the left, a Five Dynasties ink feature on the right. One line each about the form you see.",
               "options": [
                 "Tang",
                 "Five Dynasties"
@@ -1954,7 +1954,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a curiosity collection on the left, a family object on the right. One line each — does it speak about self or about a relationship?",
+              "question": "Compare works: a curiosity collection on the left, a family object on the right. One line each — does it speak about self or about a relationship?",
               "options": [
                 "Collection",
                 "Family object"
@@ -2049,7 +2049,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: the theme question on the left, materials you already have on the right. One line each — what the question chases, and what the materials show.",
+              "question": "Compare works: the theme question on the left, materials you already have on the right. One line each — what the question chases, and what the materials show.",
               "options": [
                 "Question",
                 "Materials"
@@ -2131,7 +2131,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: a wish sentence on the left, an assembled sample on the right. One line each — what the wish says, and which material carries it.",
+              "question": "Compare works: a wish sentence on the left, an assembled sample on the right. One line each — what the wish says, and which material carries it.",
               "options": [
                 "Wish",
                 "Assemble"
@@ -2165,7 +2165,7 @@
           "cards": [
             "Appreciation writing can use four moves: describe the form you see, analyse how it is organised, interpret a possible meaning, then judge with evidence.",
             "A theme-exploration shape: theme question → materials you already have → one artist method → the visual point you want to present.",
-            "Read the two shapes together. The appreciation paragraphs talk about a work. The exploration slots talk about how your own question opens.",
+            "Compare the two shapes. The appreciation paragraphs talk about a work. The exploration slots talk about how your own question opens.",
             "Structure only. Do not use a real paper or a high-score exemplar. The practice stays on writing structure."
           ],
           "quiz": [
@@ -2222,7 +2222,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: four appreciation moves on the left, four exploration slots on the right. One line each — which kind of writing that column serves.",
+              "question": "Compare works: four appreciation moves on the left, four exploration slots on the right. One line each — which kind of writing that column serves.",
               "options": [
                 "Appreciation",
                 "Exploration"
@@ -2304,7 +2304,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Dual-image read: the first material sample on the left, the second on the right. One line each — where it is clear, and where it is limited.",
+              "question": "Compare works: the first material sample on the left, the second on the right. One line each — where it is clear, and where it is limited.",
               "options": [
                 "Medium one",
                 "Medium two"

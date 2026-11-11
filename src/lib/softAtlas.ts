@@ -40,7 +40,7 @@ export const ATLAS_CHIP: Record<AtlasFilter, MessageKey> = {
 
 /**
  * Six educational cards. The first three stay open.
- * 雙圖對讀 stays locked. Nothing here is bought or claimed.
+ * 藝術評賞比較 stays locked. Nothing here is bought or claimed.
  */
 export const ATLAS_CARDS: readonly AtlasCard[] = [
   {
