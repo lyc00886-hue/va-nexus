@@ -8,10 +8,26 @@ import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { pathToFileURL } from 'node:url'
+import { inflateSync } from 'node:zlib'
 import type { FormativeAxes } from './formativeAiComment.ts'
+import { dhashDistance, dhashFromJpegBytes, dhashFromRgba, embeddedJpegDhashes } from './pageDhash.ts'
 import type { PracticeBandId } from './teacherDraftBand.ts'
 
 export const LOCKED_LOW_A_SHA256 = '823bc0569f8a34bcaad92b1b8b2c40a9619f0a66121f9b5e2d5632a3319ce2b3'
+
+/**
+ * Whole-file sha256 of the 23-page cover-removed re-export of 待改進示例 A.
+ * Extra hit only. It is not one of the nine catalog rows.
+ */
+export const LOCKED_LOW_A_REEXPORT_SHA256 = '4dd7ccb4978b91576392e169a292439a8fd2e161a324da1a5c08defd1976359d'
+
+export const LOCKED_LOW_A_REEXPORT_LABEL = '待改進示例 A 再匯出本'
+
+/**
+ * Same-page distance after a JPEG re-save or a modest rescale stays at or below this.
+ * Other locked excerpt pages sit well above it. This is not a match across every upload.
+ */
+export const DEVELOPING_PAGE_DISTANCE_MAX = 12
 
 export type LockedSampleRole = 'high' | 'low' | 'rubric'
 
@@ -101,6 +117,20 @@ export const LOCKED_SAMPLES: readonly LockedSample[] = [
   },
 ]
 
+/** Same band as 待改進示例 A. Not part of the nine-row catalog and not a separate excerpt. */
+const LOCKED_LOW_A_REEXPORT: LockedSample = {
+  label: LOCKED_LOW_A_REEXPORT_LABEL,
+  sampleSha256: LOCKED_LOW_A_REEXPORT_SHA256,
+  bandHint: '發展中',
+  role: 'low',
+  excerptSha256: null,
+  excerptBytes: null,
+}
+
+function hitCatalog(): readonly LockedSample[] {
+  return [...LOCKED_SAMPLES, LOCKED_LOW_A_REEXPORT]
+}
+
 export type LockedComparisonImage = {
   label: string
   sampleSha256: string
@@ -126,6 +156,7 @@ export function lockedComparisonPrompt(): string {
     'A weak or missing path must not receive a high unofficial score only because the finished work looks complete, because an artist is cited, or because a cover teacher mark is high.',
     'Artist reference is not score authority. A cover teacher mark is not authority for this unofficial result.',
     'Band hint 發展中 is about 2.5 and is not 良好. Band hint 良好 may be an honest 4.5 or an unofficial 5. Do not cap an unofficial 5 at 4.5.',
+    'A re-export, rescan, or cover-removed copy of a locked developing sample follows that sample\'s band hint even when the whole-file sha256 differs.',
   ]
   for (const sample of LOCKED_SAMPLES) {
     lines.push(
@@ -137,6 +168,15 @@ export function lockedComparisonPrompt(): string {
       ].join('\n'),
     )
   }
+  lines.push(
+    [
+      `Label: ${LOCKED_LOW_A_REEXPORT_LABEL}`,
+      `Sample sha256: ${LOCKED_LOW_A_REEXPORT_SHA256}`,
+      'Band hint: 發展中',
+      'Same locked work as 待改進示例 A after a re-export, a rescan, or removal of the cover scoresheet. The excerpt image for 待改進示例 A is the comparison image.',
+      'Follow that band hint, about 2.5. Do not score this locked work as 4.5 or 良好. A different whole-file sha256 of this same work does not make it an ordinary non-hit.',
+    ].join('\n'),
+  )
   return lines.join('\n')
 }
 
@@ -203,9 +243,204 @@ function strictness(sample: LockedSample): number {
 /** The locked sample this request must follow. A rubric-only match does not set a score. */
 export function strictestLockedHit(hashes: readonly string[]): LockedSample | null {
   const wanted = new Set(hashes)
-  const hits = LOCKED_SAMPLES.filter((sample) => sample.role !== 'rubric' && wanted.has(sample.sampleSha256))
+  const hits = hitCatalog().filter((sample) => sample.role !== 'rubric' && wanted.has(sample.sampleSha256))
   if (hits.length === 0) return null
   return hits.reduce((best, hit) => (strictness(hit) < strictness(best) ? hit : best))
+}
+
+export type DevelopingPageAnchor = {
+  sampleSha256: string
+  dhash: string
+}
+
+function readU32(bytes: Uint8Array, offset: number): number {
+  return new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength).getUint32(offset)
+}
+
+/** 8-bit non-interlaced PNG to RGBA. Returns null for any other file. */
+export function rgbaFromPng(bytes: Uint8Array): { width: number; height: number; data: Uint8Array } | null {
+  if (
+    bytes.length < 8 ||
+    bytes[0] !== 0x89 ||
+    bytes[1] !== 0x50 ||
+    bytes[2] !== 0x4e ||
+    bytes[3] !== 0x47 ||
+    bytes[4] !== 0x0d ||
+    bytes[5] !== 0x0a ||
+    bytes[6] !== 0x1a ||
+    bytes[7] !== 0x0a
+  ) {
+    return null
+  }
+  try {
+    let pos = 8
+    let width = 0
+    let height = 0
+    let bitDepth = 0
+    let colorType = -1
+    let interlace = 0
+    const idat: Uint8Array[] = []
+    let palette: Uint8Array | null = null
+    while (pos + 8 <= bytes.length) {
+      const length = readU32(bytes, pos)
+      const type = String.fromCharCode(bytes[pos + 4], bytes[pos + 5], bytes[pos + 6], bytes[pos + 7])
+      const start = pos + 8
+      const end = start + length
+      if (end + 4 > bytes.length) return null
+      const data = bytes.subarray(start, end)
+      if (type === 'IHDR') {
+        width = readU32(data, 0)
+        height = readU32(data, 4)
+        bitDepth = data[8]
+        colorType = data[9]
+        interlace = data[12]
+      } else if (type === 'PLTE') palette = data
+      else if (type === 'IDAT') idat.push(data)
+      else if (type === 'IEND') break
+      pos = end + 4
+    }
+    if (interlace !== 0 || bitDepth !== 8 || width < 1 || height < 1 || idat.length === 0) return null
+    const channels = colorType === 0 ? 1 : colorType === 2 ? 3 : colorType === 3 ? 1 : colorType === 4 ? 2 : colorType === 6 ? 4 : 0
+    if (channels === 0 || (colorType === 3 && !palette)) return null
+    const raw = inflateSync(Buffer.concat(idat))
+    const stride = width * channels
+    if (raw.length < height * (stride + 1)) return null
+    const out = new Uint8Array(width * height * 4)
+    let src = 0
+    let prev = new Uint8Array(stride)
+    const paeth = (left: number, up: number, upLeft: number) => {
+      const estimate = left + up - upLeft
+      const leftDistance = Math.abs(estimate - left)
+      const upDistance = Math.abs(estimate - up)
+      const diagonal = Math.abs(estimate - upLeft)
+      if (leftDistance <= upDistance && leftDistance <= diagonal) return left
+      if (upDistance <= diagonal) return up
+      return upLeft
+    }
+    for (let y = 0; y < height; y += 1) {
+      const filter = raw[src]
+      src += 1
+      const row = new Uint8Array(stride)
+      for (let i = 0; i < stride; i += 1) {
+        const left = i >= channels ? row[i - channels] : 0
+        const up = prev[i]
+        const upLeft = i >= channels ? prev[i - channels] : 0
+        const value = raw[src]
+        src += 1
+        let next = value
+        if (filter === 1) next = (value + left) & 255
+        else if (filter === 2) next = (value + up) & 255
+        else if (filter === 3) next = (value + ((left + up) >> 1)) & 255
+        else if (filter === 4) next = (value + paeth(left, up, upLeft)) & 255
+        else if (filter !== 0) return null
+        row[i] = next
+      }
+      prev = row
+      for (let x = 0; x < width; x += 1) {
+        const dest = (y * width + x) * 4
+        if (colorType === 2) {
+          const source = x * 3
+          out[dest] = row[source]
+          out[dest + 1] = row[source + 1]
+          out[dest + 2] = row[source + 2]
+          out[dest + 3] = 255
+        } else if (colorType === 6) {
+          const source = x * 4
+          out[dest] = row[source]
+          out[dest + 1] = row[source + 1]
+          out[dest + 2] = row[source + 2]
+          out[dest + 3] = row[source + 3]
+        } else if (colorType === 0) {
+          out[dest] = row[x]
+          out[dest + 1] = row[x]
+          out[dest + 2] = row[x]
+          out[dest + 3] = 255
+        } else if (colorType === 4) {
+          out[dest] = row[x * 2]
+          out[dest + 1] = row[x * 2]
+          out[dest + 2] = row[x * 2]
+          out[dest + 3] = row[x * 2 + 1]
+        } else if (palette) {
+          const source = row[x] * 3
+          out[dest] = palette[source]
+          out[dest + 1] = palette[source + 1]
+          out[dest + 2] = palette[source + 2]
+          out[dest + 3] = 255
+        }
+      }
+    }
+    return { width, height, data: out }
+  } catch {
+    return null
+  }
+}
+
+let anchorCache: DevelopingPageAnchor[] | null = null
+
+/** Pixel fingerprints of the locked developing excerpts. High samples are not anchors. */
+export function developingAnchors(): readonly DevelopingPageAnchor[] {
+  if (anchorCache) return anchorCache
+  const anchors: DevelopingPageAnchor[] = []
+  for (const sample of LOCKED_SAMPLES) {
+    if (sample.role !== 'low' || !sample.bandHint.includes('發展中')) continue
+    const bytes = readExcerpt(sample)
+    if (!bytes) continue
+    const image = rgbaFromPng(bytes)
+    if (!image) continue
+    const dhash = dhashFromRgba(image.data, image.width, image.height)
+    if (!dhash) continue
+    anchors.push({ sampleSha256: sample.sampleSha256, dhash })
+  }
+  anchorCache = anchors
+  return anchors
+}
+
+function flatDhash(hash: string): boolean {
+  return hash === '0000000000000000' || hash === 'ffffffffffffffff'
+}
+
+/**
+ * A content page of a locked developing sample, including a later re-export
+ * whose whole-file sha256 is not the catalog value. High samples are not matched here.
+ */
+export function developingPageHit(pageDhashes: readonly string[]): LockedSample | null {
+  const anchors = developingAnchors()
+  let best: LockedSample | null = null
+  let seen = 0
+  for (const hash of pageDhashes) {
+    if (seen >= 64) break
+    seen += 1
+    const normalized = hash.trim().toLowerCase()
+    if (!/^[0-9a-f]{16}$/.test(normalized) || flatDhash(normalized)) continue
+    for (const anchor of anchors) {
+      const distance = dhashDistance(normalized, anchor.dhash)
+      if (distance == null || distance > DEVELOPING_PAGE_DISTANCE_MAX) continue
+      const sample = LOCKED_SAMPLES.find((item) => item.sampleSha256 === anchor.sampleSha256)
+      if (!sample) continue
+      if (!best || strictness(sample) < strictness(best)) best = sample
+    }
+  }
+  return best
+}
+
+function stricterHit(left: LockedSample | null, right: LockedSample | null): LockedSample | null {
+  if (!left) return right
+  if (!right) return left
+  return strictness(left) <= strictness(right) ? left : right
+}
+
+/** Pixel fingerprints of one received page. A PDF contributes embedded images. The file name is not read. */
+export function receivedPageDhashes(bytes: Uint8Array): string[] {
+  const png = rgbaFromPng(bytes)
+  if (png) {
+    const hash = dhashFromRgba(png.data, png.width, png.height)
+    return hash ? [hash] : []
+  }
+  if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+    const hash = dhashFromJpegBytes(bytes)
+    return hash ? [hash] : []
+  }
+  return embeddedJpegDhashes(bytes)
 }
 
 /**
@@ -216,10 +451,15 @@ export function strictestLockedHit(hashes: readonly string[]): LockedSample | nu
 export function applyLockedSampleHit<T extends { band: PracticeBandId; score: number | null; axes: FormativeAxes }>(
   result: T,
   hashes: readonly string[],
+  pageDhashes: readonly string[] = [],
 ): T {
-  const hit = strictestLockedHit(hashes)
+  const hit = stricterHit(strictestLockedHit(hashes), developingPageHit(pageDhashes))
   if (!hit) return result
-  if (hit.sampleSha256 === LOCKED_LOW_A_SHA256 || hit.bandHint === '發展中') {
+  if (
+    hit.sampleSha256 === LOCKED_LOW_A_SHA256 ||
+    hit.sampleSha256 === LOCKED_LOW_A_REEXPORT_SHA256 ||
+    hit.bandHint === '發展中'
+  ) {
     return {
       ...result,
       band: 'practice-developing',

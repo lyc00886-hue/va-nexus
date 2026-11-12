@@ -4,16 +4,24 @@ import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { formativeCommentSystem, formativeAxisLabels } from './formativeAiComment.ts'
+import { encode } from 'jpeg-js'
 import { formativeModelParts } from '../../api/formative-comment.ts'
+import { formativeAxisLabels, formativeCommentSystem, postFormativeComment } from './formativeAiComment.ts'
+import { dhashDistance, pageDhashesOfUpload } from './pageDhash.ts'
 import {
+  DEVELOPING_PAGE_DISTANCE_MAX,
+  LOCKED_LOW_A_REEXPORT_LABEL,
+  LOCKED_LOW_A_REEXPORT_SHA256,
   LOCKED_LOW_A_SHA256,
   LOCKED_SAMPLES,
   applyLockedSampleHit,
   comparisonImagesReady,
+  developingAnchors,
   lockedComparisonPrompt,
   partsIncludeComparisonImages,
   readLockedComparisonFromDisk,
+  receivedPageDhashes,
+  rgbaFromPng,
   textLabelsWithoutImagesFail,
   type LockedComparisonImage,
 } from './locked-sample-comparison.ts'
@@ -50,6 +58,11 @@ describe('locked comparison excerpts', () => {
     }))
     assert.match(prompt, /待改進示例 A/)
     assert.match(prompt, new RegExp(LOCKED_LOW_A_SHA256))
+    assert.match(prompt, new RegExp(LOCKED_LOW_A_REEXPORT_LABEL))
+    assert.match(prompt, new RegExp(LOCKED_LOW_A_REEXPORT_SHA256))
+    assert.equal(prompt.includes('downgrade'), false)
+    assert.equal(prompt.includes('Level two'), false)
+    assert.equal(prompt.includes('5*'), false)
     assert.equal(textLabelsWithoutImagesFail(prompt, empty), true)
     assert.equal(comparisonImagesReady(empty), false)
     const textOnly = formativeModelParts(prompt, [{ side: 'artwork', sides: ['artwork'], mime: 'image/png', base64: PNG }], empty)
@@ -88,7 +101,7 @@ describe('locked comparison excerpts', () => {
       assert.equal(createHash('sha256').update(bytes).digest('hex'), sample.excerptSha256)
     }
     const apiSources = walk(join(root, 'api')).filter((file) => file.endsWith('.ts') || file.endsWith('.js'))
-    assert.ok(apiSources.length <= 12, apiSources.join('\n'))
+    assert.equal(apiSources.length, 11, apiSources.join('\n'))
     assert.equal(apiSources.some((file) => file.includes('locked-sample-comparison')), false)
     const pub = walk(join(root, 'public'))
     const banned = [...excerptNames.map((name) => name.slice(0, -4)), ...SKIPPED]
@@ -136,5 +149,117 @@ describe('locked comparison excerpts', () => {
     assert.equal(capped.score, 2.5)
     assert.notEqual(capped.band, 'practice-strong')
     assert.equal(capped.axes['aw-1'], 2.5)
+  })
+
+  it('keeps the 23-page re-export and a later lookalike page on 發展中 without using a file name', () => {
+    const hitSource = readFileSync(join(root, 'src/lib/locked-sample-comparison.ts'), 'utf8')
+    const fingerSource = readFileSync(join(root, 'src/lib/pageDhash.ts'), 'utf8')
+    assert.equal(hitSource.includes('fileName'), false)
+    assert.equal(hitSource.includes('downgrade'), false)
+    assert.equal(hitSource.includes('Level two'), false)
+    assert.equal(fingerSource.includes('fileName'), false)
+    assert.equal(fingerSource.includes('downgrade'), false)
+    const reexport = applyLockedSampleHit(
+      { band: 'practice-strong' as const, score: 4.5, axes: { 'aw-1': 4.5, 'aw-2': 5 } },
+      [LOCKED_LOW_A_REEXPORT_SHA256],
+    )
+    assert.equal(reexport.band, 'practice-developing')
+    assert.equal(reexport.score, 2.5)
+    assert.notEqual(reexport.score, 4.5)
+    assert.equal(reexport.axes['aw-1'], 2.5)
+    assert.equal(reexport.axes['aw-2'], 2.5)
+
+    const anchors = developingAnchors()
+    const lowA = anchors.find((anchor) => anchor.sampleSha256 === LOCKED_LOW_A_SHA256)
+    const lowB = LOCKED_SAMPLES.find((sample) => sample.bandHint === '起步／發展中')
+    const lowC = LOCKED_SAMPLES.find((sample) => sample.bandHint === '發展中／穩固')
+    assert.ok(lowA)
+    assert.ok(anchors.some((anchor) => anchor.sampleSha256 === lowB?.sampleSha256))
+    assert.ok(anchors.some((anchor) => anchor.sampleSha256 === lowC?.sampleSha256))
+    assert.equal(anchors.some((anchor) => LOCKED_SAMPLES.some((sample) => sample.role === 'high' && sample.sampleSha256 === anchor.sampleSha256)), false)
+
+    const excerpt = readFileSync(join(root, 'api/locked-sample-excerpts', 'cc2fbd587bcab2592568ce1239d1446d6b7e42857e0a768f8c144e8da286c4d4.png'))
+    const image = rgbaFromPng(excerpt)
+    assert.ok(image)
+    const jpeg = encode({ data: image.data, width: image.width, height: image.height }, 40)
+    const lookalike = receivedPageDhashes(new Uint8Array(jpeg.data))
+    assert.equal(lookalike.length, 1)
+    assert.ok((dhashDistance(lookalike[0], lowA.dhash) ?? 99) <= DEVELOPING_PAGE_DISTANCE_MAX)
+    const later = applyLockedSampleHit(
+      { band: 'practice-strong' as const, score: 4.5, axes: { 'aw-1': 4.5 } },
+      ['ab'.repeat(32)],
+      lookalike,
+    )
+    assert.equal(later.band, 'practice-developing')
+    assert.equal(later.score, 2.5)
+    assert.notEqual(later.score, 4.5)
+
+    const high = LOCKED_SAMPLES.find((sample) => sample.role === 'high' && sample.excerptSha256)
+    assert.ok(high?.excerptSha256)
+    const highBytes = readFileSync(join(root, 'api/locked-sample-excerpts', `${high.excerptSha256}.png`))
+    const highHash = receivedPageDhashes(highBytes)
+    assert.equal(highHash.length, 1)
+    assert.ok((dhashDistance(highHash[0], lowA.dhash) ?? 0) > DEVELOPING_PAGE_DISTANCE_MAX)
+    const ordinary = applyLockedSampleHit(
+      { band: 'practice-strong' as const, score: 4.5, axes: { 'aw-1': 4.5 } },
+      ['cd'.repeat(32)],
+      highHash,
+    )
+    assert.equal(ordinary.score, 4.5)
+    assert.equal(ordinary.band, 'practice-strong')
+    const topped = applyLockedSampleHit(
+      { band: 'practice-strong' as const, score: 5, axes: { 'aw-1': 5 } },
+      [high.sampleSha256],
+      highHash,
+    )
+    assert.equal(topped.score, 5)
+    assert.notEqual(topped.score, 4.5)
+    assert.notEqual(topped.score, 2.5)
+
+    const student = readFileSync(join(root, 'src/components/SchoolScoreLaterStudent.tsx'), 'utf8')
+    for (const banned of ['5**', '5*', '公開試結果', '公開試預測', 'Level two']) {
+      assert.equal(student.includes(banned), false, banned)
+    }
+    for (const file of ['src/i18n/zh-Hant.json', 'src/i18n/zh-Hans.json', 'src/i18n/en.json']) {
+      const text = readFileSync(join(root, file), 'utf8')
+      assert.equal(text.includes(LOCKED_LOW_A_REEXPORT_LABEL), false, file)
+      assert.equal(text.includes(LOCKED_LOW_A_REEXPORT_SHA256), false, file)
+    }
+  })
+
+  it('fingerprints a re-exported page from the original file before the posted subset', async () => {
+    const excerpt = readFileSync(join(root, 'api/locked-sample-excerpts', 'cc2fbd587bcab2592568ce1239d1446d6b7e42857e0a768f8c144e8da286c4d4.png'))
+    const image = rgbaFromPng(excerpt)
+    assert.ok(image)
+    const jpeg = new Uint8Array(encode({ data: image.data, width: image.width, height: image.height }, 40).data)
+    const { PDFDocument } = await import('pdf-lib')
+    const doc = await PDFDocument.create()
+    const embedded = await doc.embedJpg(jpeg)
+    for (let index = 0; index < 5; index += 1) {
+      const page = doc.addPage([embedded.width, embedded.height])
+      page.drawImage(embedded, { x: 0, y: 0, width: embedded.width, height: embedded.height })
+    }
+    const pdf = new Uint8Array(await doc.save())
+    const direct = await pageDhashesOfUpload(pdf)
+    const anchor = developingAnchors().find((item) => item.sampleSha256 === LOCKED_LOW_A_SHA256)
+    assert.ok(anchor)
+    assert.ok(direct.some((hash) => (dhashDistance(hash, anchor.dhash) ?? 99) <= DEVELOPING_PAGE_DISTANCE_MAX))
+    let raw = ''
+    const sent = await postFormativeComment({
+      locale: 'zh-Hant',
+      fileName: 'reexport.pdf',
+      mime: 'application/pdf',
+      bytes: pdf,
+      pages: [{ side: 'artwork', mime: 'application/pdf', bytes: pdf, fileName: 'reexport.pdf' }],
+      fetchImpl: async (_input, init) => {
+        raw = String(init?.body ?? '')
+        return new Response(JSON.stringify({ ok: false }), { status: 503 })
+      },
+    })
+    assert.equal(sent.ok, false)
+    const body = JSON.parse(raw) as { pageDhashes?: string[]; pages?: unknown[] }
+    assert.equal(body.pages?.length, 1)
+    assert.ok(body.pageDhashes?.some((hash) => (dhashDistance(hash, anchor.dhash) ?? 99) <= DEVELOPING_PAGE_DISTANCE_MAX))
+    assert.equal(raw.includes('reexport.pdf'), false)
   })
 })

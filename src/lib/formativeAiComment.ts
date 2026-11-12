@@ -9,6 +9,7 @@ import {
   FORMATIVE_PAGE_BYTE_MAX,
   FORMATIVE_TOTAL_BYTE_MAX,
 } from './formativePageFit.ts'
+import { pageDhashesOfUpload } from './pageDhash.ts'
 import { CRITERIA_IDS, PRACTICE_BAND_IDS, type PracticeBandId } from './teacherDraftBand.ts'
 
 export {
@@ -231,7 +232,7 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
     'Score the visible visual elements and the making path in this order: text, then images, then visual elements, then combine with artist reference, then the artwork.',
     'A weak or missing path must not receive a high unofficial score only because the finished work looks complete, because an artist is cited, or because a cover teacher mark is high.',
     'Artist reference is not score authority. A cover score sheet or a teacher mark on it is not authority for this unofficial result.',
-    'Band hint 發展中, including 待改進示例 A, is about 2.5 and is not 良好. Do not score that locked sample as 4.5 or 良好.',
+    'Band hint 發展中, including 待改進示例 A and 待改進示例 A 再匯出本, is about 2.5 and is not 良好. A re-export, rescan, or cover-removed copy of that locked work stays on this hint even when the whole-file sha256 differs. Do not score it as 4.5 or 良好.',
     'Band hint 良好 on a locked high sample may be an honest 4.5 or an unofficial 5. Do not cap that 5 at 4.5. Do not invent a fifth band name.',
     'Stronger work shows a clear theme, an evidenced reading of artworks carried into the student\'s own work, media trials including unsuccessful ones, a visible making process, and reflection.',
     'Earlier bands show a theme that is only starting, thin evidence, or missing trials.',
@@ -551,19 +552,49 @@ function formativePageJson(page: PackedFormativePage): {
   return { side: page.side, mime: page.mime, imageBase64, fileSha256 }
 }
 
-function formativeRequestBody(locale: string, pages: readonly PackedFormativePage[], asPages: boolean): string {
+function formativeRequestBody(
+  locale: string,
+  pages: readonly PackedFormativePage[],
+  asPages: boolean,
+  pageDhashes: readonly string[],
+): string {
+  const fingerprints = pageDhashes.length > 0 ? { pageDhashes } : {}
   if (asPages) {
     return JSON.stringify({
       locale,
+      ...fingerprints,
       pages: pages.map((page) => formativePageJson(page)),
     })
   }
   return JSON.stringify({
     locale,
+    ...fingerprints,
     mime: pages[0].mime,
     imageBase64: bytesToBase64(pages[0].bytes),
     ...(pages[0].fileSha256 ? { fileSha256: pages[0].fileSha256 } : {}),
   })
+}
+
+async function uploadPageDhashes(input: {
+  bytes: Uint8Array | null
+  pages?: readonly FormativePageInput[]
+}): Promise<string[]> {
+  const source = input.pages && input.pages.length > 0 ? input.pages : input.bytes ? [{ bytes: input.bytes }] : []
+  const found: string[] = []
+  for (const page of source) {
+    if (page.bytes.byteLength === 0 || found.length >= 32) continue
+    let hashes: string[] = []
+    try {
+      hashes = await pageDhashesOfUpload(page.bytes)
+    } catch {
+      hashes = []
+    }
+    for (const hash of hashes) {
+      if (found.length >= 32) break
+      if (!found.includes(hash)) found.push(hash)
+    }
+  }
+  return found
 }
 
 export async function postFormativeComment(input: {
@@ -578,10 +609,11 @@ export async function postFormativeComment(input: {
   let pages = await packFormativePages(input)
   if (pages.length === 0) return { ok: false, reason: 'not_sent' }
   const asPages = Boolean(input.pages && input.pages.length > 0)
-  let body = formativeRequestBody(input.locale, pages, asPages)
+  const pageDhashes = await uploadPageDhashes(input)
+  let body = formativeRequestBody(input.locale, pages, asPages, pageDhashes)
   while (body.length > FORMATIVE_BODY_CHAR_MAX && pages.length > 1) {
     pages = pages.slice(0, -1)
-    body = formativeRequestBody(input.locale, pages, asPages)
+    body = formativeRequestBody(input.locale, pages, asPages, pageDhashes)
   }
   if (body.length > FORMATIVE_BODY_CHAR_MAX) return { ok: false, reason: 'not_sent' }
   const fetchImpl = input.fetchImpl ?? fetch
