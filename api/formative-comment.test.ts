@@ -7,7 +7,13 @@ import {
   setFormativeRateLimitForTests,
   type FormativeGenerator,
 } from './formative-comment.ts'
-import { LOCKED_LOW_A_SHA256, LOCKED_SAMPLES, setLockedComparisonForTests } from '../src/lib/locked-sample-comparison.ts'
+import {
+  LOCKED_LOW_A_REEXPORT_SHA256,
+  LOCKED_LOW_A_SHA256,
+  LOCKED_SAMPLES,
+  developingAnchors,
+  setLockedComparisonForTests,
+} from '../src/lib/locked-sample-comparison.ts'
 
 const PNG =
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='
@@ -532,5 +538,128 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.equal(studentPages, 4)
     assert.equal(excerptImages, 8)
     assert.equal(inlineImages, 12)
+  })
+
+  it('follows 發展中 for the 23-page re-export and does not show 4.5 or 良好', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({
+        comment: COMMENT,
+        band: '良好',
+        score: 4.5,
+        axes: { 'aw-1': 4.5, 'aw-2': 5 },
+      }),
+    )
+    const res = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'zh-Hant',
+        fileName: 'upload.pdf',
+        fileSha256: LOCKED_LOW_A_REEXPORT_SHA256,
+      }),
+    )
+    assert.equal(res.status, 200)
+    const body = (await res.json()) as { band?: string; score?: number; axes?: Record<string, number> }
+    assert.equal(body.band, 'practice-developing')
+    assert.equal(body.score, 2.5)
+    assert.notEqual(body.score, 4.5)
+    assert.notEqual(body.band, 'practice-strong')
+    assert.equal(body.axes?.['aw-1'], 2.5)
+    assert.equal(body.axes?.['aw-2'], 2.5)
+    assert.equal(JSON.stringify(body).includes('4.5'), false)
+    assert.equal(JSON.stringify(body).includes('良好'), false)
+  })
+
+  it('follows 發展中 when a later re-export matches the locked page and the whole-file sha256 does not', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    const anchor = developingAnchors().find((item) => item.sampleSha256 === LOCKED_LOW_A_SHA256)
+    assert.ok(anchor)
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({ comment: COMMENT, band: 'practice-strong', score: 4.5, axes: { 'aw-1': 4.5 } }),
+    )
+    const res = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'zh-Hant',
+        fileName: 'page.png',
+        fileSha256: 'ab'.repeat(32),
+        pageDhashes: [anchor.dhash],
+      }),
+    )
+    assert.equal(res.status, 200)
+    const body = (await res.json()) as { band?: string; score?: number }
+    assert.equal(body.band, 'practice-developing')
+    assert.equal(body.score, 2.5)
+    assert.notEqual(body.score, 4.5)
+  })
+
+  it('does not pull an ordinary non-hit to 2.5 because the file name says downgrade', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({ comment: COMMENT, band: 'practice-strong', score: 4.5, axes: { 'aw-1': 4.5 } }),
+    )
+    const honest = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'zh-Hant',
+        fileName: 'downgrade-notes.pdf',
+        fileSha256: 'cd'.repeat(32),
+        pageDhashes: ['0123456789abcdef'],
+      }),
+    )
+    assert.equal(honest.status, 200)
+    const honestBody = (await honest.json()) as { band?: string; score?: number }
+    assert.equal(honestBody.score, 4.5)
+    assert.equal(honestBody.band, 'practice-strong')
+    assert.notEqual(honestBody.score, 2.5)
+
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({ comment: COMMENT, band: 'practice-strong', score: 5, axes: { 'aw-1': 5 } }),
+    )
+    const topped = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'zh-Hant',
+        fileName: 'downgrade-notes.pdf',
+        fileSha256: 'ef'.repeat(32),
+      }),
+    )
+    assert.equal(topped.status, 200)
+    const topBody = (await topped.json()) as { score?: number }
+    assert.equal(topBody.score, 5)
+    assert.notEqual(topBody.score, 2.5)
+    assert.notEqual(topBody.score, 4.5)
+  })
+
+  it('does not guess a score from a downgrade file name when comparison excerpts cannot be sent', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    let generated = false
+    setFormativeGeneratorForTests(async () => {
+      generated = true
+      return JSON.stringify({ comment: COMMENT, band: '良好', score: 4.5 })
+    })
+    setLockedComparisonForTests('missing')
+    const anchor = developingAnchors().find((item) => item.sampleSha256 === LOCKED_LOW_A_SHA256)
+    assert.ok(anchor)
+    const missing = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'zh-Hant',
+        fileName: 'downgrade-notes.pdf',
+        fileSha256: LOCKED_LOW_A_REEXPORT_SHA256,
+        pageDhashes: [anchor.dhash],
+      }),
+    )
+    assert.equal(missing.status, 502)
+    assert.equal(generated, false)
+    const body = await missing.json()
+    assert.deepEqual(body, { ok: false, reason: 'unavailable' })
+    assert.equal(JSON.stringify(body).includes('downgrade'), false)
+    assert.equal('score' in (body as object), false)
   })
 })

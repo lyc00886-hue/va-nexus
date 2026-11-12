@@ -7,6 +7,9 @@
  * Locked comparison excerpts are attached beside the student pages. They do not
  * count toward the student limit of four pages. A missing excerpt set uses the
  * same unavailable result as a model miss and does not guess from the file name.
+ * A cover-removed re-export of a locked developing sample follows that sample
+ * when the whole-file sha256 matches or a content page matches. The file name
+ * is not used.
  */
 import { createHash } from 'node:crypto'
 import { geminiModels } from './feedback.ts'
@@ -14,6 +17,7 @@ import {
   applyLockedSampleHit,
   loadLockedComparison,
   partsIncludeComparisonImages,
+  receivedPageDhashes,
   type LockedComparisonImage,
 } from '../src/lib/locked-sample-comparison.ts'
 import {
@@ -233,7 +237,19 @@ function uploadedSampleHashes(pages: readonly IncomingPage[]): string[] {
   return found
 }
 
-function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] } | null {
+function readDhashList(value: unknown): string[] {
+  if (!Array.isArray(value)) return []
+  const found: string[] = []
+  for (const item of value) {
+    if (found.length >= 32) break
+    if (typeof item !== 'string') continue
+    const hex = item.trim().toLowerCase()
+    if (/^[0-9a-f]{16}$/.test(hex)) found.push(hex)
+  }
+  return found
+}
+
+function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[]; pageDhashes: string[] } | null {
   if (!body || typeof body !== 'object') return null
   const record = body as {
     locale?: unknown
@@ -241,6 +257,7 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
     imageBase64?: unknown
     fileName?: unknown
     fileSha256?: unknown
+    pageDhashes?: unknown
     pages?: unknown
   }
   const locale = record.locale === 'en' || record.locale === 'zh-Hans' || record.locale === 'zh-Hant' ? record.locale : 'zh-Hant'
@@ -270,7 +287,7 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
     if (next) pages.push(next)
   }
   if (pages.length === 0) return null
-  return { locale, pages }
+  return { locale, pages, pageDhashes: readDhashList(record.pageDhashes) }
 }
 
 async function generateFormative(
@@ -351,7 +368,11 @@ export async function handleFormativeComment(request: Request): Promise<Response
   }
   const parsed = text ? parseFormativeModelText(text) : null
   if (!parsed) return unavailable(502)
-  const scored = applyLockedSampleHit(parsed, uploadedSampleHashes(page.pages))
+  const pageDhashes = [
+    ...page.pageDhashes,
+    ...page.pages.flatMap((item) => receivedPageDhashes(Buffer.from(item.base64, 'base64'))),
+  ]
+  const scored = applyLockedSampleHit(parsed, uploadedSampleHashes(page.pages), pageDhashes)
   return json(200, {
     ok: true,
     comment: scored.comment,
