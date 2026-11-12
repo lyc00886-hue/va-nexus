@@ -223,13 +223,19 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
   return [
     'You write one short school-internal formative reference comment on uploaded visual-arts pages.',
     'The pages are artwork (藝術作品／評賞研究) and/or a research workbook (研究工作簿).',
-    'Score only what is visible on the attached pages. Do not use the file name, file size, or any other file metadata.',
+    'Score only what is visible on the attached pages. Do not use the file name, file size, or any other file metadata to choose a score.',
     'Organize the comment against these existing school-score v1 criteria. Do not invent new axes:',
     ...lines,
     'The reference standard is the school\'s locked internal samples, already used by school-score v1.',
+    'Locked comparison excerpt images are attached on this request, each with a label, a sample sha256, and a band hint. A label or a sha256 in text is not a comparison unless that excerpt image is attached.',
+    'Score the visible visual elements and the making path in this order: text, then images, then visual elements, then combine with artist reference, then the artwork.',
+    'A weak or missing path must not receive a high unofficial score only because the finished work looks complete, because an artist is cited, or because a cover teacher mark is high.',
+    'Artist reference is not score authority. A cover score sheet or a teacher mark on it is not authority for this unofficial result.',
+    'Band hint 發展中, including 待改進示例 A, is about 2.5 and is not 良好. Do not score that locked sample as 4.5 or 良好.',
+    'Band hint 良好 on a locked high sample may be an honest 4.5 or an unofficial 5. Do not cap that 5 at 4.5. Do not invent a fifth band name.',
     'Stronger work shows a clear theme, an evidenced reading of artworks carried into the student\'s own work, media trials including unsuccessful ones, a visible making process, and reflection.',
     'Earlier bands show a theme that is only starting, thin evidence, or missing trials.',
-    'That standard is school-internal formative reference only. Do not name samples or students. Do not present this as a public-exam result.',
+    'That standard is school-internal formative reference only. Do not name a student, a teacher, or a school. Do not present this as a public-exam result.',
     'Choose one approximate band id: practice-emerging, practice-developing, practice-secure, or practice-strong.',
     'Those ids are the school practice bands 起步 / 發展中 / 穩固 / 良好, with values 1.25 / 2.5 / 3.5 / 4.5. They are unofficial.',
     'The visible unofficial score is separate from those four band values. Score and every axis value use only 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, or 5.',
@@ -253,7 +259,7 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
 }
 
 export const FORMATIVE_USER_PROMPT =
-  'The attached images are school artwork and/or research-workbook pages that a teacher already uploaded. Write the short formative comment from what is visible on those pages. Score each axis separately. Do not use the file name or file size. Do not award an official mark.'
+  'Pages marked with a page side are the student artwork and/or research-workbook pages to score. Locked comparison excerpts are separate images, each marked with a label, a sample sha256, and a band hint. Compare the student pages with those excerpts. Score visible visual elements and the making path: text, then images, then visual elements, then combine with artist reference, then the artwork. A weak or missing path must not receive a high unofficial score only because the finished work looks complete, an artist is cited, or a cover teacher mark is high. Artist reference is not score authority. A cover teacher mark is not authority for this unofficial result. Score each axis separately. Do not use the file name or file size. Do not award an official mark.'
 
 export function formativeScanSides(side: unknown, sides?: unknown): Array<'artwork' | 'research_workbook'> {
   const found = new Set<string>()
@@ -465,7 +471,27 @@ export function parseFormativeModelText(
   return { comment, band, axes: parseFormativeAxes(record.axes), score, advice: tailoredAxisAdvice(record.advice) }
 }
 
-type PackedFormativePage = { side: string; sides: Array<'artwork' | 'research_workbook'>; mime: string; bytes: Uint8Array }
+type PackedFormativePage = {
+  side: string
+  sides: Array<'artwork' | 'research_workbook'>
+  mime: string
+  bytes: Uint8Array
+  /** sha256 of the original uploaded file, taken before a fitted page replaces those bytes. */
+  fileSha256: string
+}
+
+async function sha256Hex(bytes: Uint8Array): Promise<string> {
+  try {
+    const copy = new Uint8Array(bytes.byteLength)
+    copy.set(bytes)
+    const digest = await crypto.subtle.digest('SHA-256', copy)
+    const hex: string[] = []
+    for (const byte of new Uint8Array(digest)) hex.push(byte.toString(16).padStart(2, '0'))
+    return hex.join('')
+  } catch {
+    return ''
+  }
+}
 
 async function packFormativePages(input: {
   fileName: string
@@ -486,6 +512,7 @@ async function packFormativePages(input: {
   for (const page of source) {
     if (packed.length >= 4) break
     const sides = formativeScanSides(page.side, page.sides)
+    const fileSha256 = await sha256Hex(page.bytes)
     const fitted = await fitFormativePayload({
       side: sides[0] ?? page.side,
       mime: page.mime,
@@ -496,7 +523,7 @@ async function packFormativePages(input: {
     for (const item of fitted) {
       if (packed.length >= 4) break
       if (item.bytes.byteLength === 0 || item.bytes.byteLength > FORMATIVE_PAGE_BYTE_MAX) continue
-      packed.push({ side: sides[0] ?? item.side, sides, mime: item.mime, bytes: item.bytes })
+      packed.push({ side: sides[0] ?? item.side, sides, mime: item.mime, bytes: item.bytes, fileSha256 })
     }
   }
   const kept: PackedFormativePage[] = []
@@ -516,10 +543,12 @@ function formativePageJson(page: PackedFormativePage): {
   sides?: Array<'artwork' | 'research_workbook'>
   mime: string
   imageBase64: string
+  fileSha256?: string
 } {
   const imageBase64 = bytesToBase64(page.bytes)
-  if (page.sides.length > 1) return { side: page.side, sides: page.sides, mime: page.mime, imageBase64 }
-  return { side: page.side, mime: page.mime, imageBase64 }
+  const fileSha256 = page.fileSha256 || undefined
+  if (page.sides.length > 1) return { side: page.side, sides: page.sides, mime: page.mime, imageBase64, fileSha256 }
+  return { side: page.side, mime: page.mime, imageBase64, fileSha256 }
 }
 
 function formativeRequestBody(locale: string, pages: readonly PackedFormativePage[], asPages: boolean): string {
@@ -533,6 +562,7 @@ function formativeRequestBody(locale: string, pages: readonly PackedFormativePag
     locale,
     mime: pages[0].mime,
     imageBase64: bytesToBase64(pages[0].bytes),
+    ...(pages[0].fileSha256 ? { fileSha256: pages[0].fileSha256 } : {}),
   })
 }
 

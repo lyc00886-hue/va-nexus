@@ -284,4 +284,46 @@ describe('formative AI comment trigger', () => {
     assert.equal(fresh.aiComment, null)
     assert.equal(applyModelComment(fresh, { comment: '太短', band: 'practice-secure' }).aiStatus, 'fallback')
   })
+
+  it('sends the original file sha256, including after a fitted page replaces those bytes', async () => {
+    const bytes = Uint8Array.from([137, 80, 78, 71, 13, 10, 26, 10, 1, 2, 3, 4])
+    let raw = ''
+    const same = await postFormativeComment({
+      locale: 'zh-Hant',
+      fileName: 'page.png',
+      mime: 'image/png',
+      bytes,
+      pages: [{ side: 'artwork', mime: 'image/png', bytes, fileName: 'page.png' }],
+      fetchImpl: async (_input, init) => {
+        raw = String(init?.body ?? '')
+        return new Response(JSON.stringify({ ok: false, reason: 'unavailable' }), { status: 503 })
+      },
+    })
+    assert.equal(same.ok, false)
+    const sameBody = JSON.parse(raw) as { pages?: { fileSha256?: string }[] }
+    assert.equal(sameBody.pages?.[0]?.fileSha256, createHash('sha256').update(bytes).digest('hex'))
+
+    const { PDFDocument } = await import('pdf-lib')
+    const doc = await PDFDocument.create()
+    for (let index = 0; index < 5; index += 1) doc.addPage([200, 200])
+    const pdf = new Uint8Array(await doc.save())
+    const original = createHash('sha256').update(pdf).digest('hex')
+    const fitted = await postFormativeComment({
+      locale: 'zh-Hant',
+      fileName: 'workbook.pdf',
+      mime: 'application/pdf',
+      bytes: pdf,
+      pages: [{ side: 'artwork', mime: 'application/pdf', bytes: pdf, fileName: 'workbook.pdf' }],
+      fetchImpl: async (_input, init) => {
+        raw = String(init?.body ?? '')
+        return new Response(JSON.stringify({ ok: false, reason: 'unavailable' }), { status: 503 })
+      },
+    })
+    assert.equal(fitted.ok, false)
+    const fittedBody = JSON.parse(raw) as { pages?: { fileSha256?: string; imageBase64?: string }[] }
+    const page = fittedBody.pages?.[0]
+    assert.equal(page?.fileSha256, original)
+    const posted = Buffer.from(page?.imageBase64 ?? '', 'base64')
+    assert.notEqual(createHash('sha256').update(posted).digest('hex'), original)
+  })
 })
