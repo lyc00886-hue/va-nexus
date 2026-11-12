@@ -15,7 +15,7 @@ import {
   loadLockedComparison,
   partsIncludeComparisonImages,
   type LockedComparisonImage,
-} from './locked-sample-comparison.ts'
+} from '../src/lib/locked-sample-comparison.ts'
 import {
   FORMATIVE_BODY_CHAR_MAX,
   FORMATIVE_PAGE_BYTE_MAX,

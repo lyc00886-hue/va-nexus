@@ -7,7 +7,7 @@ import {
   setFormativeRateLimitForTests,
   type FormativeGenerator,
 } from './formative-comment.ts'
-import { LOCKED_LOW_A_SHA256, LOCKED_SAMPLES, setLockedComparisonForTests } from './locked-sample-comparison.ts'
+import { LOCKED_LOW_A_SHA256, LOCKED_SAMPLES, setLockedComparisonForTests } from '../src/lib/locked-sample-comparison.ts'
 
 const PNG =
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='

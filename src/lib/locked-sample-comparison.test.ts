@@ -4,8 +4,8 @@ import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { formativeCommentSystem, formativeAxisLabels } from '../src/lib/formativeAiComment.ts'
-import { formativeModelParts } from './formative-comment.ts'
+import { formativeCommentSystem, formativeAxisLabels } from './formativeAiComment.ts'
+import { formativeModelParts } from '../../api/formative-comment.ts'
 import {
   LOCKED_LOW_A_SHA256,
   LOCKED_SAMPLES,
@@ -18,7 +18,7 @@ import {
   type LockedComparisonImage,
 } from './locked-sample-comparison.ts'
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..')
+const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 const PNG =
   'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=='
 const SKIPPED = [
@@ -87,6 +87,9 @@ describe('locked comparison excerpts', () => {
       assert.equal(bytes.length, sample.excerptBytes)
       assert.equal(createHash('sha256').update(bytes).digest('hex'), sample.excerptSha256)
     }
+    const apiSources = walk(join(root, 'api')).filter((file) => file.endsWith('.ts') || file.endsWith('.js'))
+    assert.ok(apiSources.length <= 12, apiSources.join('\n'))
+    assert.equal(apiSources.some((file) => file.includes('locked-sample-comparison')), false)
     const pub = walk(join(root, 'public'))
     const banned = [...excerptNames.map((name) => name.slice(0, -4)), ...SKIPPED]
     for (const hash of banned) assert.equal(pub.some((file) => file.includes(hash)), false, hash)

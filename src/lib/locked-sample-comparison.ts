@@ -1,12 +1,15 @@
 /**
  * Server-only locked comparison excerpts for the later score.
- * The files live beside this module and are imported by the formative route.
- * They are not student uploads and are not placed on a public URL.
+ * The formative route imports this module. The excerpt PNGs stay beside that
+ * route and are included with the function. They are not student uploads and
+ * are not placed on a public URL.
  */
 import { createHash } from 'node:crypto'
 import { readFileSync } from 'node:fs'
-import type { FormativeAxes } from '../src/lib/formativeAiComment.ts'
-import type { PracticeBandId } from '../src/lib/teacherDraftBand.ts'
+import { join } from 'node:path'
+import { pathToFileURL } from 'node:url'
+import type { FormativeAxes } from './formativeAiComment.ts'
+import type { PracticeBandId } from './teacherDraftBand.ts'
 
 export const LOCKED_LOW_A_SHA256 = '823bc0569f8a34bcaad92b1b8b2c40a9619f0a66121f9b5e2d5632a3319ce2b3'
 
@@ -246,21 +249,21 @@ export function applyLockedSampleHit<T extends { band: PracticeBandId; score: nu
 function excerptUrl(excerptSha256: string): URL | null {
   switch (excerptSha256) {
     case 'c32741156586c641b8b835ee3c38e5489d98fafce38aac3cfcf0f16298ff78b2':
-      return new URL('./locked-sample-excerpts/c32741156586c641b8b835ee3c38e5489d98fafce38aac3cfcf0f16298ff78b2.png', import.meta.url)
+      return new URL('../../api/locked-sample-excerpts/c32741156586c641b8b835ee3c38e5489d98fafce38aac3cfcf0f16298ff78b2.png', import.meta.url)
     case '1f3014c65a08fbf417657458f88c15bf2d620e751376009e023bd2d8e122d356':
-      return new URL('./locked-sample-excerpts/1f3014c65a08fbf417657458f88c15bf2d620e751376009e023bd2d8e122d356.png', import.meta.url)
+      return new URL('../../api/locked-sample-excerpts/1f3014c65a08fbf417657458f88c15bf2d620e751376009e023bd2d8e122d356.png', import.meta.url)
     case '72e2abce9e7d9bd5c8fa7f3f69648999f81a47d1773adddc98d982c88f83a778':
-      return new URL('./locked-sample-excerpts/72e2abce9e7d9bd5c8fa7f3f69648999f81a47d1773adddc98d982c88f83a778.png', import.meta.url)
+      return new URL('../../api/locked-sample-excerpts/72e2abce9e7d9bd5c8fa7f3f69648999f81a47d1773adddc98d982c88f83a778.png', import.meta.url)
     case 'dbb052e04c34d3ac5ebf40a0c724ef0cf3d015597cc501e096a1fe319df7fea0':
-      return new URL('./locked-sample-excerpts/dbb052e04c34d3ac5ebf40a0c724ef0cf3d015597cc501e096a1fe319df7fea0.png', import.meta.url)
+      return new URL('../../api/locked-sample-excerpts/dbb052e04c34d3ac5ebf40a0c724ef0cf3d015597cc501e096a1fe319df7fea0.png', import.meta.url)
     case '0fdf5312f89cd0259691f7912b145f33affa34b7f6a38b5e2857993b018f9adc':
-      return new URL('./locked-sample-excerpts/0fdf5312f89cd0259691f7912b145f33affa34b7f6a38b5e2857993b018f9adc.png', import.meta.url)
+      return new URL('../../api/locked-sample-excerpts/0fdf5312f89cd0259691f7912b145f33affa34b7f6a38b5e2857993b018f9adc.png', import.meta.url)
     case 'cc2fbd587bcab2592568ce1239d1446d6b7e42857e0a768f8c144e8da286c4d4':
-      return new URL('./locked-sample-excerpts/cc2fbd587bcab2592568ce1239d1446d6b7e42857e0a768f8c144e8da286c4d4.png', import.meta.url)
+      return new URL('../../api/locked-sample-excerpts/cc2fbd587bcab2592568ce1239d1446d6b7e42857e0a768f8c144e8da286c4d4.png', import.meta.url)
     case '112ec9e8934d05050636f9b2c2f603a9e0d63a538d0bf28beb913064a909775b':
-      return new URL('./locked-sample-excerpts/112ec9e8934d05050636f9b2c2f603a9e0d63a538d0bf28beb913064a909775b.png', import.meta.url)
+      return new URL('../../api/locked-sample-excerpts/112ec9e8934d05050636f9b2c2f603a9e0d63a538d0bf28beb913064a909775b.png', import.meta.url)
     case '0f6a0a60d6244ee694b106c008cefb09d266eab0f0f452c88408a1c92af2c8e3':
-      return new URL('./locked-sample-excerpts/0f6a0a60d6244ee694b106c008cefb09d266eab0f0f452c88408a1c92af2c8e3.png', import.meta.url)
+      return new URL('../../api/locked-sample-excerpts/0f6a0a60d6244ee694b106c008cefb09d266eab0f0f452c88408a1c92af2c8e3.png', import.meta.url)
     default:
       return null
   }
@@ -268,16 +271,20 @@ function excerptUrl(excerptSha256: string): URL | null {
 
 function readExcerpt(sample: LockedSample): Buffer | null {
   if (!sample.excerptSha256 || sample.excerptBytes == null) return null
-  const url = excerptUrl(sample.excerptSha256)
-  if (!url) return null
-  try {
-    const bytes = readFileSync(url)
-    if (bytes.length !== sample.excerptBytes) return null
-    if (createHash('sha256').update(bytes).digest('hex') !== sample.excerptSha256) return null
-    return bytes
-  } catch {
-    return null
+  const fromModule = excerptUrl(sample.excerptSha256)
+  const fromFunction = pathToFileURL(join(process.cwd(), 'api/locked-sample-excerpts', `${sample.excerptSha256}.png`))
+  const targets = fromModule ? [fromModule, fromFunction] : [fromFunction]
+  for (const target of targets) {
+    try {
+      const bytes = readFileSync(target)
+      if (bytes.length !== sample.excerptBytes) continue
+      if (createHash('sha256').update(bytes).digest('hex') !== sample.excerptSha256) continue
+      return bytes
+    } catch {
+      continue
+    }
   }
+  return null
 }
 
 function imageFromSample(sample: LockedSample, bytes: Buffer | null): LockedComparisonImage {
