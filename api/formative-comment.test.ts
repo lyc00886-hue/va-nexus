@@ -310,6 +310,24 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.equal((seen[1]?.user ?? '').includes('Sides to score: artwork'), false)
   })
 
+  it('reads an axis number that arrived under the school criterion label', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({
+        comment: COMMENT,
+        band: 'practice-secure',
+        score: 4,
+        axes: { '媒介、技巧及技法╱寫作技巧': 2.5 },
+      }),
+    )
+    const res = await handleFormativeComment(request({ mime: 'image/png', imageBase64: PNG, locale: 'zh-Hant' }))
+    assert.equal(res.status, 200)
+    const body = (await res.json()) as { axes?: Record<string, number>; score?: number }
+    assert.equal(body.axes?.['aw-1'], 2.5)
+    assert.equal(body.axes?.['aw-2'], undefined)
+    assert.notEqual(body.axes?.['aw-2'], body.score)
+  })
+
   it('does not invent a comment when the page is missing', async () => {
     process.env.GEMINI_API_KEY = 'test-key'
     let generated = false

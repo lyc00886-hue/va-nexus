@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { ARTWORK_AXIS_IDS, RWB_AXIS_IDS } from './schoolScoreDual.ts'
 import { SCHOOL_SCORE_LATER_KEY, aiReferenceAxes, studentVisibleBand } from './schoolScoreLater.ts'
 import { getDualRadarStore } from './useSchoolScoreDual.ts'
-import { acceptLaterFiles, getSchoolScoreLater, requestLaterComment } from './useSchoolScoreLater.ts'
+import { LATER_AXIS_ATTEMPTS, acceptLaterFiles, getSchoolScoreLater, requestLaterComment } from './useSchoolScoreLater.ts'
 import { getTeacherDraftStore } from './useTeacherDraftStore.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
@@ -204,14 +204,19 @@ describe('student later auto request', { concurrency: false }, () => {
   it('does not paint one overall band across every axis', async () => {
     assert.equal(acceptLaterFiles([page('作品頁 4.png', 4400, 'image/png'), page('工作簿頁 4.pdf', 4500, 'application/pdf')]), true)
     const pendingResult = requestLaterComment('en', false)
-    await waitFor(1)
-    reply(200, modelBody(COMMENT, 'practice-secure', null))
+    for (let attempt = 0; attempt < LATER_AXIS_ATTEMPTS; attempt += 1) {
+      await waitFor(1)
+      reply(200, modelBody(COMMENT, 'practice-secure', null))
+    }
     assert.equal(await pendingResult, 'model')
+    assert.equal(apiCalls, LATER_AXIS_ATTEMPTS)
     const draft = getSchoolScoreLater().draft
     assert.equal(studentVisibleBand(draft!), 'practice-secure')
     assert.equal(draft?.aiComment, COMMENT)
     assert.equal(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS), null)
     assert.equal(aiReferenceAxes(draft!, RWB_AXIS_IDS), null)
+    assert.deepEqual(draft?.aiAxes, {})
+    assert.notEqual(draft?.approxValue, undefined)
   })
 
   it('still posts when the staff button calls the same function', async () => {

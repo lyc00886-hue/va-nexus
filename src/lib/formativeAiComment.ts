@@ -192,7 +192,7 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
   const lines = CRITERIA_IDS.flatMap((id) => {
     const label = AXIS_LABELS[key][id]
     if (!labels.includes(label)) return []
-    return [`- ${label} — ${AXIS_FOCUS[key][id]}`]
+    return [`- ${id}: ${label} — ${AXIS_FOCUS[key][id]}`]
   })
   return [
     'You write one short school-internal formative reference comment on uploaded visual-arts pages.',
@@ -210,13 +210,16 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
     'Do not use 1.25 as a visible score or axis value. Do not invent a band name for 5.',
     'Score each axis separately. Do not copy one overall band onto every axis.',
     'Return an axis value only for sides named in the user message.',
+    'Artwork ids are aw-1, aw-2, aw-3, aw-4, aw-5, aw-6. Research-workbook ids are rwb-1, rwb-2, rwb-3, rwb-4.',
+    'Every named side needs its own value on every one of its ids. Do not leave an id out, and do not fill a missing id from the overall score.',
     'For each artwork axis aw-1 through aw-6, add advice that is specific to this work and that axis.',
     'Do not reuse one sentence for more than one axis. Omit an axis from advice when you cannot see a specific improvement.',
     'Do not write a generic tip, a public-exam result, or an official mark.',
     'This is not an SBA remark, not an HKEAA score, and not a public-exam prediction.',
     'Do not write a generic art-criticism essay. Two to four sentences, tied to what is visible on the pages.',
     `Write the comment and the advice in ${language}.`,
-    'Reply with JSON only: {"comment":"...","band":"practice-secure","score":3.5,"axes":{"aw-1":3.5,"rwb-1":2.5},"advice":{"aw-1":"..."}}',
+    'Reply with JSON only, using those ids. Omit ids for a side the user message did not name.',
+    'A complete shape is {"comment":"...","band":"practice-secure","score":3.5,"axes":{"aw-1":3.5,"aw-2":3,"aw-3":2.5,"aw-4":4,"aw-5":3.5,"aw-6":2,"rwb-1":2.5,"rwb-2":3,"rwb-3":2,"rwb-4":3.5},"advice":{"aw-1":"...","aw-2":"...","aw-3":"...","aw-4":"...","aw-5":"...","aw-6":"..."}}',
   ].join('\n')
 }
 
@@ -241,7 +244,14 @@ export function formativeScanSides(side: unknown, sides?: unknown): Array<'artwo
 export function formativeUserPrompt(sides: readonly string[]): string {
   const named = [...new Set(sides.filter((side) => side === 'artwork' || side === 'research_workbook'))]
   const scope = named.length > 0 ? named.join(', ') : 'none'
-  return `${FORMATIVE_USER_PROMPT}\nSides to score: ${scope}.`
+  const ids: string[] = []
+  if (named.includes('artwork')) ids.push('aw-1', 'aw-2', 'aw-3', 'aw-4', 'aw-5', 'aw-6')
+  if (named.includes('research_workbook')) ids.push('rwb-1', 'rwb-2', 'rwb-3', 'rwb-4')
+  const required =
+    ids.length > 0
+      ? `\nEach of these axis ids needs its own value: ${ids.join(', ')}.\nDo not leave one of those ids out. Do not copy the overall score onto an axis.`
+      : ''
+  return `${FORMATIVE_USER_PROMPT}\nSides to score: ${scope}.${required}`
 }
 
 /** Label placed beside one page image. A combined file names both sides once. */
@@ -290,19 +300,72 @@ const ADVICE_PALE = new Set([
   'A tailored improvement note for this axis and this work is not available yet.',
 ])
 
+function axisIdFromModelKey(key: string): (typeof CRITERIA_IDS)[number] | null {
+  const trimmed = key.trim()
+  const lower = trimmed.toLowerCase()
+  for (const id of CRITERIA_IDS) {
+    if (lower === id) return id
+  }
+  for (const locale of ['zh-Hant', 'zh-Hans', 'en'] as const) {
+    for (const id of CRITERIA_IDS) {
+      if (AXIS_LABELS[locale][id] === trimmed) return id
+    }
+  }
+  return null
+}
+
+/**
+ * Scores and notes the model actually returned.
+ * A flat id map, the school criterion label, one nested side object, or a list of
+ * `{id, value}` rows are all read. Nothing here copies an overall score onto a missing id.
+ */
+function flattenModelRecord(raw: unknown): Record<string, unknown> {
+  if (Array.isArray(raw)) {
+    const flat: Record<string, unknown> = {}
+    for (const item of raw) {
+      if (!item || typeof item !== 'object') continue
+      const row = item as Record<string, unknown>
+      const key = [row.id, row.axis, row.key, row.name].find((value) => typeof value === 'string')
+      if (typeof key !== 'string' || flat[key] !== undefined) continue
+      const value = row.value ?? row.score ?? row.text ?? row.advice
+      if (value !== undefined) flat[key] = value
+    }
+    return flat
+  }
+  if (!raw || typeof raw !== 'object') return {}
+  const source = raw as Record<string, unknown>
+  const flat: Record<string, unknown> = {}
+  for (const [key, value] of Object.entries(source)) {
+    if (value && typeof value === 'object') continue
+    flat[key] = value
+  }
+  for (const value of Object.values(source)) {
+    if (!value || typeof value !== 'object' || Array.isArray(value)) continue
+    for (const [innerKey, innerValue] of Object.entries(value as Record<string, unknown>)) {
+      if (flat[innerKey] === undefined) flat[innerKey] = innerValue
+    }
+  }
+  return flat
+}
+
 /** Keep a suggestion only when it is specific to one artwork axis. Shared or empty copy is dropped. */
 export function tailoredAxisAdvice(raw: unknown): FormativeAdvice {
-  if (!raw || typeof raw !== 'object') return {}
-  const bag = raw as Record<string, unknown>
+  const bag = flattenModelRecord(raw)
   const rows: { id: (typeof CRITERIA_IDS)[number]; text: string }[] = []
-  for (const id of CRITERIA_IDS) {
-    if (!id.startsWith('aw-')) continue
-    const value = bag[id]
-    if (typeof value !== 'string') continue
+  const seen = new Set<(typeof CRITERIA_IDS)[number]>()
+  const take = (id: (typeof CRITERIA_IDS)[number], value: unknown) => {
+    if (seen.has(id) || !id.startsWith('aw-')) return
+    if (typeof value !== 'string') return
     const text = value.replace(/\s+/g, ' ').trim()
-    if (text.length < 8 || text.length > 400) continue
-    if (BLOCKED_COMMENT.test(text) || ADVICE_PALE.has(text)) continue
+    if (text.length < 8 || text.length > 400) return
+    if (BLOCKED_COMMENT.test(text) || ADVICE_PALE.has(text)) return
+    seen.add(id)
     rows.push({ id, text })
+  }
+  for (const id of CRITERIA_IDS) take(id, bag[id])
+  for (const [key, value] of Object.entries(bag)) {
+    const id = axisIdFromModelKey(key)
+    if (id) take(id, value)
   }
   const counts = new Map<string, number>()
   for (const row of rows) counts.set(row.text, (counts.get(row.text) ?? 0) + 1)
@@ -314,16 +377,25 @@ export function tailoredAxisAdvice(raw: unknown): FormativeAdvice {
   return advice
 }
 
-export function parseFormativeAxes(raw: unknown): FormativeAxes {
-  if (!raw || typeof raw !== 'object') return {}
-  const bag = raw as Record<string, unknown>
+function parseFormativeAxesFromBag(bag: Record<string, unknown>): FormativeAxes {
   const axes: FormativeAxes = {}
   for (const id of CRITERIA_IDS) {
     const value = axisValueFromModel(bag[id])
     if (value == null) continue
     axes[id] = value
   }
+  for (const [key, rawValue] of Object.entries(bag)) {
+    const id = axisIdFromModelKey(key)
+    if (!id || axes[id] != null) continue
+    const value = axisValueFromModel(rawValue)
+    if (value == null) continue
+    axes[id] = value
+  }
   return axes
+}
+
+export function parseFormativeAxes(raw: unknown): FormativeAxes {
+  return parseFormativeAxesFromBag(flattenModelRecord(raw))
 }
 
 export function parseFormativeModelText(

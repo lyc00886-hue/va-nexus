@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from 'react'
-import { postFormativeComment } from './formativeAiComment.ts'
+import { postFormativeComment, type FormativeModelResult } from './formativeAiComment.ts'
 import { SCHOOL_SCORE_SLOT } from './schoolScore.ts'
 import {
   SCHOOL_SCORE_LATER_KEY,
@@ -12,6 +12,7 @@ import {
   laterFeed,
   laterPageSide,
   laterPageSides,
+  laterRequiredAxesComplete,
   sanitizeLaterStore,
   withAdjustBand,
   withCommitted,
@@ -166,6 +167,28 @@ async function readPreviewBytes(previewUrl: string | null): Promise<Uint8Array |
 
 let inflightKey: string | null = null
 
+/** First ask, then further asks, until the present sides are complete or the call fails. */
+export const LATER_AXIS_ATTEMPTS = 3
+
+let laterAxisAttempts = LATER_AXIS_ATTEMPTS
+
+/** Tests only. `null` restores the default attempt bound. */
+export function setLaterAxisAttemptsForTests(max: number | null): void {
+  laterAxisAttempts = max == null || max < 1 ? LATER_AXIS_ATTEMPTS : Math.floor(max)
+}
+
+type FormativeOk = Extract<FormativeModelResult, { ok: true }>
+
+/** Keep axis numbers and artwork notes the model actually returned. Do not fill a gap from the overall score. */
+function mergeReturnedAxes(prev: FormativeOk | null, next: FormativeOk): FormativeOk {
+  if (!prev) return next
+  return {
+    ...next,
+    axes: { ...prev.axes, ...next.axes },
+    advice: { ...prev.advice, ...next.advice },
+  }
+}
+
 function requestKey(draft: LaterDraft): string {
   const pages = draft.pages
     .map((page) => `${page.side}\u0000${page.fileName}\u0000${page.fileSize}`)
@@ -251,6 +274,7 @@ export function replaceLaterFile(fileName: string, file: File): boolean {
 /** Clears the in-memory later snapshot. Tests only. */
 export function resetSchoolScoreLaterForTests(): void {
   inflightKey = null
+  laterAxisAttempts = LATER_AXIS_ATTEMPTS
   snapshot = { draft: null, previewUrl: null, pagePreviews: [] }
 }
 
@@ -260,6 +284,10 @@ export function resetSchoolScoreLaterForTests(): void {
  * `staff` is accepted so that button can keep its call. It does not gate the request.
  * A second call for the same draft waits out the one already running.
  * A new upload uses a new draft and starts again.
+ * When a present side comes back without every axis, this same call asks again
+ * until those axes arrive, the attempt bound is reached, or the request fails.
+ * The student does not have to replace the file or split it for that follow-up ask.
+ * A missing axis is not filled from the overall score.
  * A missing page or a model miss does not invent a visible band and does not write the school reference.
  */
 export async function requestLaterComment(
@@ -331,23 +359,32 @@ async function runLaterComment(
     publish(applyFileNotSent(currentBefore))
     return 'unsent'
   }
-  const result = await postFormativeComment({
-    locale,
-    fileName,
-    mime: pages[0]?.mime ?? draft.mime,
-    bytes: pages[0]?.bytes ?? null,
-    pages,
-    accessToken,
-  })
-  const current = snapshot.draft
-  if (!current || requestKey(current) !== key) return 'idle'
-  if (!result.ok && result.reason === 'not_sent') {
-    publish(applyFileNotSent(current))
-    return 'unsent'
+  let carried: FormativeOk | null = null
+  const attempts = laterAxisAttempts
+  for (let attempt = 0; attempt < attempts; attempt += 1) {
+    const current = snapshot.draft
+    if (!current || requestKey(current) !== key) return 'idle'
+    const result = await postFormativeComment({
+      locale,
+      fileName,
+      mime: pages[0]?.mime ?? current.mime,
+      bytes: pages[0]?.bytes ?? null,
+      pages,
+      accessToken,
+    })
+    const after = snapshot.draft
+    if (!after || requestKey(after) !== key) return 'idle'
+    if (!result.ok) {
+      publish(result.reason === 'not_sent' ? applyFileNotSent(after) : applyAiFallback(after))
+      return result.reason === 'not_sent' ? 'unsent' : 'fallback'
+    }
+    carried = mergeReturnedAxes(carried, result)
+    const next = applyModelComment(after, carried)
+    publish(next)
+    if (next.aiStatus !== 'model') return 'fallback'
+    if (laterRequiredAxesComplete(next)) return 'model'
   }
-  const next = result.ok ? applyModelComment(current, result) : applyAiFallback(current)
-  publish(next)
-  return next.aiStatus === 'model' ? 'model' : 'fallback'
+  return 'model'
 }
 
 /** Writes the effective band into the school-score slot and fills empty dual-radar axes. */
