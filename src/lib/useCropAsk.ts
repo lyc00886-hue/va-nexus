@@ -104,8 +104,9 @@ export function commitCropAskAnalysis(
   meta: CropAskMeta,
   sections: CropAskSections,
   background: CropAskBackgroundStatus | null = null,
+  speculation: string | null = null,
 ) {
-  publish(withCropAskAnalysis(snapshot, meta, sections, background))
+  publish(withCropAskAnalysis(snapshot, meta, sections, background, speculation))
 }
 
 export function failCropAsk(meta: CropAskMeta, reason: 'failed' | 'unavailable', resume: CropAskPhase) {
