@@ -9,6 +9,7 @@ import {
   cropAskSystem,
   parseCropAskModelText,
   readBackgroundDecision,
+  readModelSpeculation,
   type CropAskBackgroundLookup,
   type GroundingChunk,
 } from '../src/lib/cropAsk.ts'
@@ -105,7 +106,7 @@ async function generateCropAsk(apiKey: string, system: string, mime: string, bas
           ],
           generationConfig: {
             temperature: 0.4,
-            maxOutputTokens: model.startsWith('gemini-2.5') ? 512 : 1024,
+            maxOutputTokens: model.startsWith('gemini-2.5') ? 1024 : 2048,
             thinkingConfig: model.startsWith('gemini-2.5')
               ? { thinkingBudget: 0 }
               : { thinkingLevel: 'low', includeThoughts: false },
@@ -240,14 +241,17 @@ export async function handleCropAsk(request: Request): Promise<Response> {
   } catch {
     text = null
   }
-  const sections = text ? parseCropAskModelText(text) : null
+  if (!text) return failed(502)
+  const sections = parseCropAskModelText(text)
   if (!sections) return failed(502)
+  const speculation = lookup.status === 'found' ? null : readModelSpeculation(text)
   return json(200, {
     ok: true,
     seen: sections.seen,
     understood: sections.understood,
     evidence: sections.evidence,
     background: lookup.status,
+    speculation,
   })
 }
 

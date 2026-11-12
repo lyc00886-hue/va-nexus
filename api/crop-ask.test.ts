@@ -84,9 +84,12 @@ describe('crop ask route', { concurrency: false }, () => {
     assert.equal(body.understood, SECTIONS.understood)
     assert.equal(body.evidence, SECTIONS.evidence)
     assert.equal(body.background, 'notFound')
+    assert.equal(body.speculation, null)
     assert.equal('band' in body, false)
     assert.match(seen[0].system, /selected region only/)
     assert.match(seen[0].system, /Do not invent a title/)
+    assert.match(seen[0].system, /reasonable estimate/)
+    assert.equal(seen[0].system.includes('Do not guess.'), false)
     assert.match(seen[0].system, /寫生、美感同設計思維/)
     assert.equal(seen[0].system.includes('practice-secure'), false)
     assert.equal(seen[0].user.includes('only the cropped region'), true)
@@ -147,12 +150,15 @@ describe('crop ask route', { concurrency: false }, () => {
     const body = (await res.json()) as Record<string, unknown>
     assert.equal(body.background, 'found')
     assert.equal(body.understood, SECTIONS.understood)
+    assert.equal(body.speculation, null)
     assert.equal('studentId' in body, false)
     assert.equal('title' in body, false)
     assert.equal(lookup[0].base64, 'AAAA')
     assert.deepEqual(Object.keys(lookup[0]).sort(), ['base64', 'mime'])
     assert.equal(sectionImage, JPEG)
     assert.match(system, /Starry Night/)
+    assert.match(system, /Do not replace this confirmed background/)
+    assert.equal(system.includes('"speculation"'), false)
     assert.match(system, /selected region only/)
     assert.equal(system.includes('陳同學'), false)
     assert.equal(system.includes('S123456'), false)
@@ -173,8 +179,10 @@ describe('crop ask route', { concurrency: false }, () => {
     assert.equal(missed.status, 200)
     const missedBody = (await missed.json()) as Record<string, unknown>
     assert.equal(missedBody.background, 'notFound')
+    assert.equal(missedBody.speculation, null)
     assert.equal(system.includes('Starry Night'), false)
     assert.match(system, /Do not invent a title/)
+    assert.match(system, /reasonable estimate/)
 
     setCropAskBackgroundFinderForTests(async () => ({ status: 'failed' }))
     const failed = await handleCropAsk(
@@ -182,5 +190,64 @@ describe('crop ask route', { concurrency: false }, () => {
     )
     assert.equal(failed.status, 200)
     assert.equal(((await failed.json()) as { background: string }).background, 'failed')
+  })
+
+  it('returns a marked estimate only when the work is unconfirmed, and never replaces a confirmed background', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    const estimate = 'The pale circle and the darker shadow beneath it may suggest a quiet enclosed subject, in line with this drawing unit.'
+    setCropAskBackgroundFinderForTests(async () => ({ status: 'notFound' }))
+    setCropAskGeneratorForTests(async () => JSON.stringify({ ...SECTIONS, speculation: estimate }))
+    const missed = await handleCropAsk(
+      request({ mime: 'image/jpeg', imageBase64: JPEG, locale: 'en', unitTitle: 'Drawing and design' }),
+    )
+    assert.equal(missed.status, 200)
+    const missedBody = (await missed.json()) as Record<string, unknown>
+    assert.equal(missedBody.background, 'notFound')
+    assert.equal(missedBody.speculation, estimate)
+    assert.equal(missedBody.understood, SECTIONS.understood)
+
+    setCropAskGeneratorForTests(async () => JSON.stringify({ ...SECTIONS, speculation: '' }))
+    const empty = await handleCropAsk(
+      request({ mime: 'image/jpeg', imageBase64: JPEG, locale: 'en', unitTitle: 'Drawing and design' }),
+    )
+    assert.equal(empty.status, 200)
+    assert.equal(((await empty.json()) as { speculation: unknown }).speculation, null)
+
+    setCropAskGeneratorForTests(async () => JSON.stringify({ ...SECTIONS, speculation: 'The title is Starry Night.' }))
+    const invented = await handleCropAsk(
+      request({ mime: 'image/jpeg', imageBase64: JPEG, locale: 'en', unitTitle: 'Drawing and design' }),
+    )
+    assert.equal(invented.status, 200)
+    const inventedBody = (await invented.json()) as Record<string, unknown>
+    assert.equal(inventedBody.speculation, null)
+    assert.equal(inventedBody.understood, SECTIONS.understood)
+
+    setCropAskBackgroundFinderForTests(async () => ({ status: 'failed' }))
+    setCropAskGeneratorForTests(async () => JSON.stringify({ ...SECTIONS, speculation: estimate }))
+    const failed = await handleCropAsk(
+      request({ mime: 'image/jpeg', imageBase64: JPEG, locale: 'zh-Hant', unitTitle: '寫生、美感同設計思維' }),
+    )
+    assert.equal(failed.status, 200)
+    const failedBody = (await failed.json()) as Record<string, unknown>
+    assert.equal(failedBody.background, 'failed')
+    assert.equal(failedBody.speculation, estimate)
+
+    setCropAskBackgroundFinderForTests(async () => ({
+      status: 'found',
+      title: 'Starry Night',
+      artist: 'Vincent van Gogh',
+      background: 'Painted in 1889 at Saint-Rémy.',
+      meaning: 'A swirling night sky over a quiet town.',
+    }))
+    setCropAskGeneratorForTests(async () => JSON.stringify({ ...SECTIONS, speculation: estimate }))
+    const found = await handleCropAsk(
+      request({ mime: 'image/jpeg', imageBase64: JPEG, locale: 'en', unitTitle: 'Drawing and design' }),
+    )
+    assert.equal(found.status, 200)
+    const foundBody = (await found.json()) as Record<string, unknown>
+    assert.equal(foundBody.background, 'found')
+    assert.equal(foundBody.speculation, null)
+    assert.equal(foundBody.understood, SECTIONS.understood)
+    assert.equal(foundBody.understood === estimate, false)
   })
 })

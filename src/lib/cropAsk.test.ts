@@ -4,6 +4,7 @@ import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { imageFileIssue } from './cropAskImage.ts'
+import { bringSectionIntoStep, emptyFeldmanDraft, withFeldmanStep } from './feldmanDraft.ts'
 import {
   bindCropAskStudent,
   cropAskSystem,
@@ -18,12 +19,15 @@ import {
   pendingReviewCount,
   postCropAsk,
   readBackgroundDecision,
+  readModelSpeculation,
   referenceAxesForUnit,
   requestGuard,
   reviewDrafts,
   sanitizeCropAskStore,
+  speculationDisplay,
   staffNeedsNames,
   staffUsesDemo,
+  understoodBringText,
   withCropAskAnalysis,
   withCropAskCancel,
   withCropAskConfirmed,
@@ -238,6 +242,9 @@ const SEEN = '框入面見到一粒淺色圓形，右下方有一抹較深的影
 const UNDERSTOOD = '呢個局部可以理解成寫生時對形狀同明暗的觀察。'
 const EVIDENCE = '圓形右下的深色塊同左邊轉折，支持上面對形狀同光源的理解。'
 const SECTIONS = { seen: SEEN, understood: UNDERSTOOD, evidence: EVIDENCE }
+const ESTIMATE = '框入面嘅淺色圓形同右下方深色影子，可能想表達一個安靜、被光包圍嘅主題，對齊寫生對形狀同明暗嘅觀察。'
+const SPECULATION_NOTE = '呢段係根據框入面見到嘅視覺元素作出嘅合理推測，係學習支援，唔係已知出處或正式鑑定。'
+const SPECULATION_PENDING = '暫時未能按框入面嘅視覺元素作出合理推測。'
 
 function withPicture() {
   const image = 'data:image/jpeg;base64,' + 'A'.repeat(80)
@@ -407,7 +414,41 @@ describe('draft library', () => {
     assert.equal('studentName' in body, false)
     assert.equal('sourceImageBase64' in body, false)
     assert.equal(ok.ok, true)
-    if (ok.ok) assert.equal(ok.background, null)
+    if (ok.ok) {
+      assert.equal(ok.background, null)
+      assert.equal(ok.speculation, null)
+    }
+    const confirmed = await postCropAsk({
+      locale: 'en',
+      unitTitle: 'Drawing',
+      imageBase64: 'aaaa',
+      fetchImpl: async () =>
+        new Response(JSON.stringify({ ok: true, ...SECTIONS, background: 'found', speculation: ESTIMATE }), { status: 200 }),
+    })
+    assert.equal(confirmed.ok, true)
+    if (confirmed.ok) {
+      assert.equal(confirmed.background, 'found')
+      assert.equal(confirmed.speculation, null)
+      assert.equal(confirmed.sections.understood, SECTIONS.understood)
+    }
+    const unconfirmed = await postCropAsk({
+      locale: 'zh-Hant',
+      unitTitle: '寫生、美感同設計思維',
+      imageBase64: 'aaaa',
+      fetchImpl: async () =>
+        new Response(JSON.stringify({ ok: true, ...SECTIONS, background: 'notFound', speculation: ESTIMATE }), { status: 200 }),
+    })
+    assert.equal(unconfirmed.ok, true)
+    if (unconfirmed.ok) assert.equal(unconfirmed.speculation, ESTIMATE)
+    const pending = await postCropAsk({
+      locale: 'zh-Hant',
+      unitTitle: '寫生、美感同設計思維',
+      imageBase64: 'aaaa',
+      fetchImpl: async () =>
+        new Response(JSON.stringify({ ok: true, ...SECTIONS, background: 'failed', speculation: 'The title is Starry Night.' }), { status: 200 }),
+    })
+    assert.equal(pending.ok, true)
+    if (pending.ok) assert.equal(pending.speculation, null)
     const down = await postCropAsk({
       locale: 'zh-Hant',
       unitTitle: '寫生、美感同設計思維',
@@ -510,8 +551,15 @@ describe('locale and wiring', () => {
     assert.match(page, /if \(!role\) return <StaffDenied \/>/)
     assert.equal(app.includes('CropAsk'), false)
     assert.match(work, /cropask\.bringIntoConfirm/)
+    assert.match(work, /understoodBringText/)
+    assert.match(work, /cropask\.speculation\.note/)
+    assert.match(work, /cropask\.speculation\.pending/)
+    assert.match(work, /bringFeldmanStep/)
+    assert.equal(work.includes('cropask.section.speculation'), false)
     assert.match(work, /cropask\.background\.notFound/)
     assert.match(work, /cropask\.background\.foundNote/)
+    assert.match(staff, /SpeculationBlock/)
+    assert.equal(writer.includes('speculation'), false)
     assert.match(work, /fullJpegBase64/)
     assert.ok(work.indexOf('requestGuard(') < work.lastIndexOf('postCropAsk('))
     assert.equal(work.includes('postFeldmanFeedback'), false)
@@ -535,11 +583,13 @@ describe('locale and wiring', () => {
 
 const ADDED = {
   hant: {
-    'cropask.background.hint': '若認到呢幅係已知作品，會補背景同作品背後意思；認唔到就只寫框入面見到嘅，唔會估。',
+    'cropask.background.hint': '若認到呢幅係已知作品，會補背景同作品背後意思；認唔到就會按框入面嘅視覺元素，估計大概主題或可能想表達嘅意思，並標明係合理推測。',
     'cropask.background.checking': '而家先查呢幅上傳圖嘅背景…',
     'cropask.background.foundNote': '呢段「點樣理解」有參考已公開資料嘅作品背景，仍然只係學習支援，唔係正式鑑定。',
-    'cropask.background.notFound': '未能確認呢幅係可喺網上搵到嘅已知作品。「點樣理解」只寫框入面見到嘅內容，唔會估作品名或背後意思。',
-    'cropask.background.failed': '暫時未能查背景。「點樣理解」只寫框入面見到嘅內容，唔會造假。你可以再試一次。',
+    'cropask.background.notFound': '未能確認呢幅係可喺網上搵到嘅已知作品。「點樣理解」唔會杜撰作品名或作者；下面按框入面嘅視覺元素作出合理推測，只係學習支援，唔當已知出處。',
+    'cropask.background.failed': '暫時未能查背景。「點樣理解」唔會杜撰作品名或作者；下面仍可按框入面嘅視覺元素作出合理推測。你可以再試一次查背景。',
+    'cropask.speculation.note': '呢段係根據框入面見到嘅視覺元素作出嘅合理推測，係學習支援，唔係已知出處或正式鑑定。',
+    'cropask.speculation.pending': '暫時未能按框入面嘅視覺元素作出合理推測。',
     'cropask.toWriting': '去費德曼四步寫作',
     'cropask.bringInto': '帶入「{step}」',
     'cropask.bringIntoOther': '改去其他一步',
@@ -551,11 +601,13 @@ const ADDED = {
     'fw.toLookClosely': '用局部觀察睇呢件作品',
   },
   hans: {
-    'cropask.background.hint': '若认到这幅是已知作品，会补背景和作品背后意思；认不到就只写框里面见到的，不会猜。',
+    'cropask.background.hint': '若认到这幅是已知作品，会补背景和作品背后意思；认不到就会按框里面的视觉元素，估计大概主题或可能想表达的意思，并标明是合理推测。',
     'cropask.background.checking': '现在先查这幅上传图的背景…',
     'cropask.background.foundNote': '这段「怎样理解」有参考已公开资料的作品背景，仍然只是学习支援，不是正式鉴定。',
-    'cropask.background.notFound': '未能确认这幅是可在网上找到的已知作品。「怎样理解」只写框里面见到的内容，不会猜作品名或背后意思。',
-    'cropask.background.failed': '暂时未能查背景。「怎样理解」只写框里面见到的内容，不会造假。你可以再试一次。',
+    'cropask.background.notFound': '未能确认这幅是可在网上找到的已知作品。「怎样理解」不会杜撰作品名或作者；下面按框里面的视觉元素作出合理推测，只是学习支援，不当已知出处。',
+    'cropask.background.failed': '暂时未能查背景。「怎样理解」不会杜撰作品名或作者；下面仍可按框里面的视觉元素作出合理推测。你可以再试一次查背景。',
+    'cropask.speculation.note': '这段是根据框里面见到的视觉元素作出的合理推测，是学习支援，不是已知出处或正式鉴定。',
+    'cropask.speculation.pending': '暂时未能按框里面的视觉元素作出合理推测。',
     'cropask.toWriting': '去费德曼四步写作',
     'cropask.bringInto': '带入「{step}」',
     'cropask.bringIntoOther': '改去其他一步',
@@ -567,11 +619,13 @@ const ADDED = {
     'fw.toLookClosely': '用局部观察看这件作品',
   },
   en: {
-    'cropask.background.hint': 'If this is a known work, background and meaning are added; if not, only what is seen in the region is written, with no guessing.',
+    'cropask.background.hint': 'If this is a known work, background and meaning are added; if not, a clearly marked reasonable estimate of the likely theme or meaning is made from the visual elements in the crop.',
     'cropask.background.checking': 'Checking the background of this uploaded image first…',
     'cropask.background.foundNote': 'This “How it is understood” draws on publicly available background. It is still learning support, not a formal identification.',
-    'cropask.background.notFound': 'This could not be confirmed as a known work that can be found online. “How it is understood” only describes what is seen in the region, and does not guess a title or hidden meaning.',
-    'cropask.background.failed': 'The background check is unavailable for now. “How it is understood” only describes what is seen in the region, with no invented claims. You can try again.',
+    'cropask.background.notFound': 'This could not be confirmed as a known work that can be found online. “How it is understood” does not invent a title or artist. The estimate below is drawn from visual elements in the crop; it is learning support, not a known source.',
+    'cropask.background.failed': 'The background check is unavailable for now. “How it is understood” does not invent a title or artist. A reasonable estimate from visual elements in the crop may still appear. You can try the background check again.',
+    'cropask.speculation.note': 'This is a reasonable estimate from the visual elements in the crop. It is learning support, not a known source or a formal identification.',
+    'cropask.speculation.pending': 'A reasonable estimate from the visual elements in the crop is not available yet.',
     'cropask.toWriting': 'Go to Feldman four-step writing',
     'cropask.bringInto': 'Add to “{step}”',
     'cropask.bringIntoOther': 'Choose a different step',
@@ -599,6 +653,14 @@ describe('research pair locale', () => {
     assert.equal(bags.hant['cropask.section.understood'], '點樣理解')
     assert.equal(bags.hans['cropask.section.understood'], '怎样理解')
     assert.equal(bags.en['cropask.section.understood'], 'How it is understood')
+    assert.equal(bags.hant['cropask.section.speculation'], undefined)
+    assert.equal(bags.hans['cropask.section.speculation'], undefined)
+    assert.equal(bags.en['cropask.section.speculation'], undefined)
+    assert.match(bags.hant['cropask.background.notFound'], /唔會杜撰作品名或作者/)
+    assert.match(bags.hant['cropask.background.failed'], /唔會杜撰作品名或作者/)
+    assert.match(bags.hans['cropask.background.notFound'], /不会杜撰作品名或作者/)
+    assert.match(bags.en['cropask.background.notFound'], /does not invent a title or artist/)
+    assert.match(bags.en['cropask.background.failed'], /does not invent a title or artist/)
     assert.equal(bags.hant['fw.title'], '費德曼四步寫作')
     assert.equal(bags.hant['fw.artwork'], '評賞作品（選填）')
     assert.equal(bags.hant['fw.ai.title'], 'AI 學習建議')
@@ -661,25 +723,120 @@ describe('uploaded image background', () => {
     assert.match(found, /Starry Night/)
     assert.match(found, /not a formal identification/)
     assert.match(found, /Drawing and design/)
+    assert.match(found, /Do not replace this confirmed background/)
+    assert.match(found, /Do not add a speculation field/)
+    assert.equal(found.includes('"speculation"'), false)
     const missed = cropAskSystem('zh-Hant', '寫生、美感同設計思維', { status: 'notFound' })
     assert.match(missed, /Do not invent a title/)
+    assert.match(missed, /reasonable estimate/)
+    assert.match(missed, /THIS crop/)
+    assert.equal(missed.includes('Do not guess.'), false)
     assert.equal(missed.includes('Starry Night'), false)
     assert.match(missed, /cropped region/)
     const failed = cropAskSystem('zh-Hans', '写生', { status: 'failed' })
     assert.match(failed, /Do not invent a title/)
+    assert.match(failed, /reasonable estimate/)
     assert.equal(failed.includes('Vincent van Gogh'), false)
+    const exercise = cropAskSystem('en', 'Drawing and design', { status: 'notFound' })
+    assert.match(exercise, /student exercise or a private photo/)
+    assert.match(exercise, /"speculation"/)
   })
 
   it('stores the background status on the shared draft and drops it when the region changes', () => {
     let store = withPicture()
     store = withCropAskCrop(store, META, { x: 0.2, y: 0.2, w: 0.3, h: 0.3 })
-    store = withCropAskAnalysis(store, META, SECTIONS, 'found')
+    store = withCropAskAnalysis(store, META, SECTIONS, 'found', ESTIMATE)
     assert.equal(store.drafts[0].background, 'found')
+    assert.equal(store.drafts[0].speculation, null)
+    assert.equal(store.drafts[0].sections?.understood, UNDERSTOOD)
     assert.equal(store.drafts[0].status, 'pending')
     const kept = sanitizeCropAskStore(store)
     assert.equal(kept.drafts[0].background, 'found')
+    assert.equal(kept.drafts[0].speculation, null)
+    const poisoned = sanitizeCropAskStore({
+      ...kept,
+      drafts: [{ ...kept.drafts[0], speculation: ESTIMATE, background: 'found' }],
+    })
+    assert.equal(poisoned.drafts[0].speculation, null)
+    assert.equal(poisoned.drafts[0].sections?.understood, UNDERSTOOD)
     store = withCropAskCrop(store, META, { x: 0.3, y: 0.3, w: 0.3, h: 0.3 })
     assert.equal(store.drafts[0].background, null)
+    assert.equal(store.drafts[0].speculation, null)
     assert.equal(store.drafts[0].sections, null)
+  })
+})
+
+describe('reasonable estimate when background is unconfirmed', () => {
+  it('shows an estimate only for notFound or failed, and pending when the model cannot make one', () => {
+    assert.deepEqual(speculationDisplay('found', ESTIMATE), { kind: 'hidden' })
+    assert.deepEqual(speculationDisplay(null, ESTIMATE), { kind: 'hidden' })
+    assert.deepEqual(speculationDisplay('notFound', ESTIMATE), { kind: 'estimate', text: ESTIMATE })
+    assert.deepEqual(speculationDisplay('failed', ESTIMATE), { kind: 'estimate', text: ESTIMATE })
+    assert.deepEqual(speculationDisplay('notFound', ''), { kind: 'pending' })
+    assert.deepEqual(speculationDisplay('failed', null), { kind: 'pending' })
+    assert.deepEqual(speculationDisplay('notFound', 'The title is Starry Night.'), { kind: 'pending' })
+    assert.deepEqual(speculationDisplay('failed', 'attributed to Vincent van Gogh in 1889'), { kind: 'pending' })
+    assert.equal(readModelSpeculation(JSON.stringify({ ...SECTIONS, speculation: ESTIMATE })), ESTIMATE)
+    assert.equal(readModelSpeculation(JSON.stringify({ ...SECTIONS, speculation: '' })), null)
+    assert.equal(readModelSpeculation(JSON.stringify({ ...SECTIONS, speculation: '《星夜》想表達夜空。' })), null)
+    assert.deepEqual(speculationDisplay('found', readModelSpeculation(JSON.stringify({ ...SECTIONS, speculation: ESTIMATE }))), {
+      kind: 'hidden',
+    })
+  })
+
+  it('keeps a confirmed understood line and brings an unconfirmed estimate only after confirm', () => {
+    let store = withPicture()
+    store = withCropAskCrop(store, META, { x: 0.2, y: 0.2, w: 0.3, h: 0.3 })
+    store = withCropAskAnalysis(store, META, SECTIONS, 'notFound', ESTIMATE)
+    assert.equal(store.drafts[0].speculation, ESTIMATE)
+    assert.equal(store.drafts[0].sections?.understood, UNDERSTOOD)
+    store = withCropAskAnalysis(store, META, SECTIONS, 'found', ESTIMATE)
+    assert.equal(store.drafts[0].background, 'found')
+    assert.equal(store.drafts[0].speculation, null)
+    assert.equal(store.drafts[0].sections?.understood, UNDERSTOOD)
+
+    const foundBring = understoodBringText({
+      understood: UNDERSTOOD,
+      background: 'found',
+      speculation: ESTIMATE,
+      note: SPECULATION_NOTE,
+      pending: SPECULATION_PENDING,
+    })
+    assert.equal(foundBring, UNDERSTOOD)
+
+    const missedBring = understoodBringText({
+      understood: UNDERSTOOD,
+      background: 'notFound',
+      speculation: ESTIMATE,
+      note: SPECULATION_NOTE,
+      pending: SPECULATION_PENDING,
+    })
+    assert.equal(missedBring.includes(ESTIMATE), true)
+    assert.equal(missedBring.includes(SPECULATION_NOTE), true)
+    assert.equal(missedBring.startsWith(UNDERSTOOD), true)
+
+    const pendingBring = understoodBringText({
+      understood: UNDERSTOOD,
+      background: 'failed',
+      speculation: 'The title is Starry Night.',
+      note: SPECULATION_NOTE,
+      pending: SPECULATION_PENDING,
+    })
+    assert.equal(pendingBring.includes(SPECULATION_PENDING), true)
+    assert.equal(pendingBring.includes(ESTIMATE), false)
+    assert.equal(pendingBring.includes('Starry Night'), false)
+    assert.equal(pendingBring.includes(SPECULATION_NOTE), false)
+
+    const filled = withFeldmanStep(emptyFeldmanDraft(), 'interpret', '已有詮釋。')
+    const held = bringSectionIntoStep(filled, 'interpret', missedBring, false)
+    assert.equal(held.result, 'needConfirm')
+    assert.equal(held.draft.steps.interpret, '已有詮釋。')
+    assert.equal(held.draft.steps.analyse, '')
+    const written = bringSectionIntoStep(emptyFeldmanDraft(), 'interpret', missedBring, true)
+    assert.equal(written.result, 'written')
+    assert.equal(written.draft.steps.interpret.includes('淺色圓形'), true)
+    assert.equal(written.draft.steps.analyse, '')
+    assert.equal(written.draft.steps.describe, '')
+    assert.equal(written.draft.steps.judge, '')
   })
 })

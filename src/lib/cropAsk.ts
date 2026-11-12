@@ -58,6 +58,8 @@ export type CropAskDraft = {
   modelSections: CropAskSections | null
   /** How the uploaded image's background check ended. Null on older drafts. */
   background: CropAskBackgroundStatus | null
+  /** Reasonable estimate for an unconfirmed work. Null when confirmed, or when no estimate was made. */
+  speculation: string | null
   axes: CropAskAxis[]
   status: CropAskPhase
   failReason: 'failed' | 'unavailable' | null
@@ -81,19 +83,28 @@ export type CropAskMeta = {
 }
 
 export type CropAskResult =
-  | { ok: true; sections: CropAskSections; background: CropAskBackgroundStatus | null }
+  | { ok: true; sections: CropAskSections; background: CropAskBackgroundStatus | null; speculation: string | null }
   | { ok: false; reason: 'failed' | 'unavailable' | 'aborted' }
+
+/** Shown inside 「點樣理解」 only when the uploaded work is not confirmed. */
+export type SpeculationDisplay = { kind: 'hidden' } | { kind: 'estimate'; text: string } | { kind: 'pending' }
 
 const AXIS_SET = new Set<string>(CROP_ASK_AXES)
 const GRADE_SET = new Set<string>(CROP_ASK_GRADES)
 const DEMO_SET = new Set<string>(CROP_ASK_DEMOS)
 const SECTION_MIN = 4
 const SECTION_MAX = 500
+const SPECULATION_MIN = 8
+const SPECULATION_MAX = 500
 const DATA_URL_MAX = 900_000
 const UNIT_ID = /^F[456]-U\d+-[A-Z0-9-]+$/
 
 const BLOCKED_ANALYSIS =
   /practice-emerging|practice-developing|practice-secure|practice-strong|起步|發展中|发展中|穩固|稳固|良好|正式成績|正式成绩|正式分數|正式分数|公開試成績|公开试成绩|ArtInSight|洞察藝術|洞察艺术|ArtGPT|crop-and-ask|5\*\*|HKEAA/i
+
+/** An estimate must not name a work, an artist, a school, or a date the crop did not confirm. */
+const SPECULATION_FORBIDDEN =
+  /作品名|作者|畫家|画家|畫派|画派|流派|風格歸屬|风格归属|正式鑑定|正式鉴定|已知出處|已知出处|formal identification|known source|attributed to|\bthe artist\b|\bthe title\b|\bartist is\b|\btitle is\b|《[^》]{1,60}》|\b(?:1[0-9]{3}|20[0-2][0-9])\b/i
 
 const UNIT_AXES: Record<string, readonly CropAskAxis[]> = {
   'F4-U2-DRAW-DESIGN': ['theme', 'visual'],
@@ -244,16 +255,74 @@ export function parseCropAskSections(raw: unknown): CropAskSections | null {
   return { seen, understood, evidence }
 }
 
-export function parseCropAskModelText(raw: string): CropAskSections | null {
+function parseModelRecord(raw: string): Record<string, unknown> | null {
   const trimmed = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
   const start = trimmed.indexOf('{')
   const end = trimmed.lastIndexOf('}')
   if (start < 0 || end <= start) return null
   try {
-    return parseCropAskSections(JSON.parse(trimmed.slice(start, end + 1)))
+    const parsed: unknown = JSON.parse(trimmed.slice(start, end + 1))
+    if (!parsed || typeof parsed !== 'object') return null
+    return parsed as Record<string, unknown>
   } catch {
     return null
   }
+}
+
+export function parseCropAskModelText(raw: string): CropAskSections | null {
+  const record = parseModelRecord(raw)
+  if (!record) return null
+  return parseCropAskSections(record)
+}
+
+function cleanSpeculation(value: unknown): string | null {
+  if (typeof value !== 'string') return null
+  const text = cleanLine(value).slice(0, SPECULATION_MAX)
+  if (text.length < SPECULATION_MIN) return null
+  if (BLOCKED_ANALYSIS.test(text) || SPECULATION_FORBIDDEN.test(text)) return null
+  if (/^(unknown|n\/a|none|null|pending|不詳|不详|未知)$/i.test(text)) return null
+  return text
+}
+
+/** A confirmed work never keeps an estimate. An empty or unsafe estimate becomes pending. */
+export function speculationForStatus(status: CropAskBackgroundStatus | null, value: unknown): string | null {
+  if (status !== 'notFound' && status !== 'failed') return null
+  return cleanSpeculation(value)
+}
+
+export function readModelSpeculation(raw: string): string | null {
+  const record = parseModelRecord(raw)
+  if (!record) return null
+  return cleanSpeculation(record.speculation)
+}
+
+export function speculationDisplay(background: CropAskBackgroundStatus | null, speculation: string | null): SpeculationDisplay {
+  const text = speculationForStatus(background, speculation)
+  if (background !== 'notFound' && background !== 'failed') return { kind: 'hidden' }
+  if (!text) return { kind: 'pending' }
+  return { kind: 'estimate', text }
+}
+
+/**
+ * Confirmed background stays the understood text alone.
+ * An unconfirmed block adds the marked estimate, or the pending sentence when none was made.
+ */
+export function understoodBringText(input: {
+  understood: string
+  background: CropAskBackgroundStatus | null
+  speculation: string | null
+  note: string
+  pending: string
+}): string {
+  const display = speculationDisplay(input.background, input.speculation)
+  if (display.kind === 'hidden') return input.understood
+  if (display.kind === 'pending') {
+    const line = cleanLine(input.pending)
+    return line ? `${input.understood}\n\n${line}` : input.understood
+  }
+  const note = cleanLine(input.note)
+  const marked = note ? `${note}\n${display.text}` : display.text
+  return `${input.understood}\n\n${marked}`
 }
 
 export function teacherSectionText(value: unknown): string | null {
@@ -264,10 +333,13 @@ export function teacherSectionText(value: unknown): string | null {
 }
 
 const BACKGROUND_MISS = [
-  'Background check: this uploaded image was not confirmed as a known artwork that can be found online, or it looks like a student exercise or a private photo.',
-  'In the understood section, write only from what is visible in the cropped region and the current unit.',
-  'Do not invent a title, an artist, or a hidden meaning.',
-  'Do not guess.',
+  'Background check: this uploaded image was not confirmed as a known artwork that can be found online, the background search failed, or it looks like a student exercise or a private photo.',
+  'In the understood section, write how this cropped region can be understood from what is visible in the crop and the current unit.',
+  'Add a speculation field: a reasonable estimate of the likely theme, or of the meaning this crop may express, using only visual elements that are visible in THIS crop and aligned to the current unit.',
+  'The estimate must be specific to this crop. Do not use a generic sentence that is unrelated to the crop.',
+  'Do not invent a title, an artist, a school or style attribution, or historical facts that are not visible in the crop.',
+  'Do not present the estimate as a confirmed source, an artist biography, or a formal identification.',
+  'If you cannot make a reasonable estimate, or the crop has too little to go on, set speculation to an empty string. Do not invent an estimate.',
 ].join('\n')
 
 function backgroundClause(background: CropAskBackgroundLookup): string {
@@ -279,6 +351,9 @@ function backgroundClause(background: CropAskBackgroundLookup): string {
     `Background: ${background.background}`,
     `Meaning: ${background.meaning}`,
     'In the understood section only, add this background and this meaning, and still write about the cropped region and the current unit.',
+    'Do not replace this confirmed background with a reasonable estimate.',
+    'Do not describe the confirmed background as only a reasonable estimate.',
+    'Do not add a speculation field.',
     'The attached image for these three sections is still the cropped region only.',
     'This is learning support, not a formal identification and not a mark.',
   ].join('\n')
@@ -287,6 +362,10 @@ function backgroundClause(background: CropAskBackgroundLookup): string {
 export function cropAskSystem(locale: string, unitTitle: string, background?: CropAskBackgroundLookup): string {
   const language = locale === 'en' ? 'English' : locale === 'zh-Hans' ? 'Simplified Chinese' : 'Traditional Chinese (Hong Kong)'
   const unit = cleanLine(unitTitle).slice(0, 200) || 'the current unit'
+  const unconfirmed = background != null && background.status !== 'found'
+  const reply = unconfirmed
+    ? 'Reply with JSON only: {"seen":"...","understood":"...","evidence":"...","speculation":"..."}'
+    : 'Reply with JSON only: {"seen":"...","understood":"...","evidence":"..."}'
   const base = [
     'You write a structured learning-support note about one cropped region of a student artwork.',
     'The attached image is the selected region only. Do not describe anything outside it, and do not switch to the whole artwork.',
@@ -299,7 +378,7 @@ export function cropAskSystem(locale: string, unitTitle: string, background?: Cr
     'Do not assign a band or a numeric mark.',
     'Do not use four-step criticism titles. Do not invent details that are not visible.',
     `Write in ${language}.`,
-    'Reply with JSON only: {"seen":"...","understood":"...","evidence":"..."}',
+    reply,
   ].join('\n')
   if (!background) return base
   return `${base}\n${backgroundClause(background)}`
@@ -402,11 +481,12 @@ export async function postCropAsk(input: {
     const data: unknown = await res.json().catch(() => null)
     if (res.status === 503) return { ok: false, reason: 'unavailable' }
     if (!res.ok || !data || typeof data !== 'object') return { ok: false, reason: 'failed' }
-    const record = data as { ok?: unknown; band?: unknown; background?: unknown }
+    const record = data as { ok?: unknown; band?: unknown; background?: unknown; speculation?: unknown }
     if (record.ok !== true || 'band' in record) return { ok: false, reason: 'failed' }
     const sections = parseCropAskSections(data)
     if (!sections) return { ok: false, reason: 'failed' }
-    return { ok: true, sections, background: backgroundStatus(record.background) }
+    const background = backgroundStatus(record.background)
+    return { ok: true, sections, background, speculation: speculationForStatus(background, record.speculation) }
   } catch (error) {
     const name = error && typeof error === 'object' && 'name' in error ? String(error.name) : ''
     if (input.signal?.aborted || name === 'AbortError') return { ok: false, reason: 'aborted' }
@@ -473,6 +553,7 @@ function sanitizeDraft(raw: unknown): CropAskDraft | null {
   const sections = storedSections(item.sections)
   const modelSections = storedSections(item.modelSections)
   const background = backgroundStatus(item.background)
+  const speculation = speculationForStatus(background, item.speculation)
   let status: CropAskPhase = isPhase(item.status) ? item.status : 'ready'
   if (status === 'generating') status = sections ? 'pending' : crop ? 'ready' : 'needCrop'
   if ((status === 'pending' || status === 'edited' || status === 'confirmed') && !sections) status = crop ? 'ready' : 'needCrop'
@@ -490,6 +571,7 @@ function sanitizeDraft(raw: unknown): CropAskDraft | null {
     sections,
     modelSections,
     background,
+    speculation,
     axes: storedAxes(item.axes, unitId),
     status,
     failReason,
@@ -552,6 +634,7 @@ function blank(meta: CropAskMeta): CropAskDraft {
     sections: null,
     modelSections: null,
     background: null,
+    speculation: null,
     axes: referenceAxesForUnit(meta.unitId),
     status: 'noImage',
     failReason: null,
@@ -603,6 +686,7 @@ export function withCropAskImage(store: CropAskStore, meta: CropAskMeta, dataUrl
     next.sections = null
     next.modelSections = null
     next.background = null
+    next.speculation = null
     next.status = 'needCrop'
     next.axes = referenceAxesForUnit(meta.unitId)
   }
@@ -623,6 +707,7 @@ export function withCropAskCrop(store: CropAskStore, meta: CropAskMeta, crop: Cr
   next.sections = null
   next.modelSections = null
   next.background = null
+  next.speculation = null
   next.status = 'ready'
   next.failReason = null
   return upsert(store, next)
@@ -636,6 +721,7 @@ export function withCropAskCleared(store: CropAskStore, meta: CropAskMeta): Crop
   next.sections = null
   next.modelSections = null
   next.background = null
+  next.speculation = null
   next.status = current.imageDataUrl ? 'needCrop' : 'noImage'
   next.failReason = null
   return upsert(store, next)
@@ -656,14 +742,17 @@ export function withCropAskAnalysis(
   meta: CropAskMeta,
   sections: CropAskSections,
   background: CropAskBackgroundStatus | null = null,
+  speculation: string | null = null,
 ): CropAskStore {
   const current = find(store, meta)
   const parsed = parseCropAskSections(sections)
   if (!current?.imageDataUrl || !current.crop || !parsed) return store
   const next = retitle(current, meta)
+  const status = backgroundStatus(background)
   next.sections = parsed
   next.modelSections = parsed
-  next.background = backgroundStatus(background)
+  next.background = status
+  next.speculation = speculationForStatus(status, speculation)
   next.status = 'pending'
   next.failReason = null
   next.axes = referenceAxesForUnit(meta.unitId)
@@ -686,6 +775,7 @@ export function withCropAskFailure(
     next.status = 'failed'
     next.sections = null
     next.background = null
+    next.speculation = null
   }
   return upsert(store, next)
 }
@@ -761,6 +851,7 @@ export type CropAskReview = {
   crop: CropRect | null
   imageDataUrl: string | null
   background: CropAskBackgroundStatus | null
+  speculation: string | null
 }
 
 export function reviewDrafts(store: CropAskStore): CropAskReview[] {
@@ -781,6 +872,7 @@ export function reviewDrafts(store: CropAskStore): CropAskReview[] {
       crop: draft.crop,
       imageDataUrl: draft.imageDataUrl,
       background: draft.background,
+      speculation: draft.speculation,
     })
   }
   return rows

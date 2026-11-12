@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useT, type MessageKey } from '../i18n'
 import {
   pendingReviewCount,
   reviewDrafts,
+  speculationDisplay,
   staffNeedsNames,
   staffUsesDemo,
   type CropAskAxis,
@@ -12,7 +13,7 @@ import {
 import { useInspectClassStore } from '../lib/inspectClass'
 import { GRADE_LABEL } from '../lib/softGoMaps'
 import { confirmCropAsk, saveCropAskTeacherEdit, unconfirmCropAsk, useCropAskStore } from '../lib/useCropAsk'
-import { CropAskDisclaimer } from './CropAskWork'
+import { CropAskDisclaimer, SpeculationBlock } from './CropAskWork'
 
 const AXIS_LABEL: Record<CropAskAxis, MessageKey> = {
   theme: 'inspect.axis.theme',
@@ -187,6 +188,13 @@ export function CropAskStaffQueue() {
                                 : null
                         }
                         pale={row.background === 'notFound' || row.background === 'failed'}
+                        speculation={
+                          <SpeculationBlock
+                            display={speculationDisplay(row.background, row.speculation)}
+                            note={t('cropask.speculation.note')}
+                            pending={t('cropask.speculation.pending')}
+                          />
+                        }
                       />
                       <ReadSection title={t('cropask.section.evidence')} body={row.sections.evidence} />
                       <div>
@@ -248,16 +256,19 @@ function ReadSection({
   body,
   note,
   pale,
+  speculation,
 }: {
   title: string
   body: string
   note?: string | null
   pale?: boolean
+  speculation?: ReactNode
 }) {
   return (
     <section className={pale ? 'rounded-2xl border border-[#E7D7A8] bg-[#FFF9E9] px-4 py-3' : 'rounded-2xl border border-[#0D9488]/30 bg-white px-4 py-3'}>
       <h3 className={pale ? 'font-bold text-slate-600' : 'font-bold text-[#0D9488]'}>{title}</h3>
       {note ? <p className="mt-1 text-sm leading-relaxed text-slate-600">{note}</p> : null}
+      {speculation}
       <p className="mt-1 text-sm leading-relaxed text-slate-800">{body}</p>
     </section>
   )

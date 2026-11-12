@@ -8,6 +8,8 @@ import {
   normalizeCrop,
   postCropAsk,
   requestGuard,
+  speculationDisplay,
+  understoodBringText,
   type CropAskAxis,
   type CropAskBackgroundStatus,
   type CropAskGrade,
@@ -249,7 +251,7 @@ export function CropAskWork({
     })
     abortRef.current = null
     if (result.ok) {
-      commitCropAskAnalysis(current, result.sections, result.background)
+      commitCropAskAnalysis(current, result.sections, result.background, result.speculation)
       return
     }
     if (result.reason === 'aborted') {
@@ -476,7 +478,21 @@ export function CropAskWork({
             title={t('cropask.section.understood')}
             body={draft.sections.understood}
             background={draft.background}
-            extra={canBring(phase) ? <BringInto section="understood" text={draft.sections.understood} /> : null}
+            speculation={draft.speculation}
+            extra={
+              canBring(phase) ? (
+                <BringInto
+                  section="understood"
+                  text={understoodBringText({
+                    understood: draft.sections.understood,
+                    background: draft.background,
+                    speculation: draft.speculation,
+                    note: t('cropask.speculation.note'),
+                    pending: t('cropask.speculation.pending'),
+                  })}
+                />
+              ) : null
+            }
           />
           <Section
             title={t('cropask.section.evidence')}
@@ -520,19 +536,53 @@ function Section({ title, body, extra }: { title: string; body: string; extra?: 
   )
 }
 
+export function SpeculationBlock({
+  display,
+  note,
+  pending,
+}: {
+  display: ReturnType<typeof speculationDisplay>
+  note: string
+  pending: string
+}) {
+  if (display.kind === 'estimate') {
+    return (
+      <div data-testid="crop-ask-speculation" className="mt-2 space-y-1">
+        <p data-testid="crop-ask-speculation-note" className="text-sm leading-relaxed text-slate-600">
+          {note}
+        </p>
+        <p data-testid="crop-ask-speculation-text" className="text-sm leading-relaxed text-slate-800">
+          {display.text}
+        </p>
+      </div>
+    )
+  }
+  if (display.kind === 'pending') {
+    return (
+      <p data-testid="crop-ask-speculation-pending" className="mt-2 text-sm leading-relaxed text-slate-600">
+        {pending}
+      </p>
+    )
+  }
+  return null
+}
+
 function UnderstoodSection({
   title,
   body,
   background,
+  speculation,
   extra,
 }: {
   title: string
   body: string
   background: CropAskBackgroundStatus | null
+  speculation: string | null
   extra?: ReactNode
 }) {
   const { t } = useT()
   const pale = background === 'notFound' || background === 'failed'
+  const display = speculationDisplay(background, speculation)
   const note =
     background === 'found'
       ? t('cropask.background.foundNote')
@@ -554,6 +604,7 @@ function UnderstoodSection({
       <h3 className={pale ? 'font-bold text-slate-600' : 'font-bold text-[#0D9488]'}>{title}</h3>
       <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('cropask.background.hint')}</p>
       {note ? <p className="mt-2 text-sm leading-relaxed text-slate-600">{note}</p> : null}
+      <SpeculationBlock display={display} note={t('cropask.speculation.note')} pending={t('cropask.speculation.pending')} />
       <p className="mt-2 text-sm leading-relaxed text-slate-800">{body}</p>
       {extra}
     </section>
