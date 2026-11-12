@@ -17,7 +17,7 @@
  * 自動計出嚟嘅校內學校參考草稿先到教師面。
  * It is not written onto the student surface, and it does not replace the approximate band.
  */
-import { laterVisibleLevel, tailoredAxisAdvice } from './formativeAiComment.ts'
+import { laterUnofficialScore, laterVisibleLevel, tailoredAxisAdvice } from './formativeAiComment.ts'
 import {
   ARTWORK_AXIS_IDS,
   DUAL_AXIS_IDS,
@@ -79,15 +79,21 @@ export type LaterDraft = {
   /**
    * Visible unofficial number for a new model result: 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, or 5.
    * Null on an older stored result, which keeps showing its existing formative number.
+   * Also null when a new top-band result omitted score, so 4.5 is not written in place of a missing 5.
    */
   approxValue: number | null
+  /**
+   * True only for a new model result on the top practice band that omitted `score`.
+   * The visible number stays unset instead of copying 4.5. Older stored results leave this false.
+   */
+  omitTopBandScore?: boolean
   /**
    * Per-axis unofficial reference for the student radars.
    * Only axes the model returned for a side that was actually uploaded.
    * Missing axes stay missing. They are not filled from `approxBand`.
    */
   aiAxes: Partial<Record<DualAxisId, number>>
-  /** Tailored artwork-axis notes from the model. Missing axes stay missing. */
+  /** Tailored per-axis notes from the model, for a side that was uploaded. Missing axes stay missing. */
   aiAdvice: Partial<Record<DualAxisId, string>>
   /** Null follows the approximate band. */
   adjustBand: PracticeBandId | null
@@ -218,6 +224,7 @@ export function draftFromFile(name: string, size: number, mime: string): LaterDr
     aiStatus: 'idle',
     aiComment: null,
     approxValue: null,
+    omitTopBandScore: false,
     aiAxes: {},
     aiAdvice: {},
     adjustBand: null,
@@ -280,6 +287,24 @@ function axesForSides(
   return out
 }
 
+/** Tailored notes for sides that were actually uploaded. A missing side does not keep the other side's notes. */
+function adviceForPages(
+  raw: unknown,
+  pages: readonly LaterPage[],
+): Partial<Record<DualAxisId, string>> {
+  const tailored = tailoredAxisAdvice(raw)
+  const sides = new Set(pages.flatMap((page) => laterPageSides(page.fileName)))
+  const out: Partial<Record<DualAxisId, string>> = {}
+  for (const id of DUAL_AXIS_IDS) {
+    const text = tailored[id]
+    if (!text) continue
+    const side = id.startsWith('aw-') ? 'artwork' : 'research_workbook'
+    if (!sides.has(side)) continue
+    out[id] = text
+  }
+  return out
+}
+
 /** New model axes: nine-level only, and only for a side that was uploaded. */
 export function axesForUploadedSides(
   axes: Partial<Record<DualAxisId, number>> | undefined,
@@ -308,15 +333,16 @@ export function applyModelComment(
 ): LaterDraft {
   const text = commentText(result.comment)
   if (!text || !isPracticeBandId(result.band)) return applyAiFallback(draft)
-  const approxValue = laterVisibleLevel(result.score) ?? laterVisibleLevel(formativeForBand(result.band))
+  const approxValue = laterUnofficialScore(result.score, result.band)
   return {
     ...draft,
     approxBand: result.band,
     aiStatus: 'model',
     aiComment: text,
     approxValue,
+    omitTopBandScore: approxValue == null && formativeForBand(result.band) >= 4.5,
     aiAxes: axesForUploadedSides(result.axes, draft.pages),
-    aiAdvice: tailoredAxisAdvice(result.advice),
+    aiAdvice: adviceForPages(result.advice, draft.pages),
   }
 }
 
@@ -341,6 +367,7 @@ export function applyFileNotSent(draft: LaterDraft): LaterDraft {
     aiStatus: 'unsent',
     aiComment: null,
     approxValue: null,
+    omitTopBandScore: false,
     aiAxes: {},
     aiAdvice: {},
   }
@@ -364,6 +391,7 @@ export function applyAiFallback(draft: LaterDraft): LaterDraft {
     aiStatus: 'fallback',
     aiComment: null,
     approxValue: null,
+    omitTopBandScore: false,
     aiAxes: {},
     aiAdvice: {},
   }
@@ -408,6 +436,7 @@ export function studentVisibleBand(draft: LaterDraft): PracticeBandId | null {
 export function aiReferenceFormative(draft: LaterDraft): number | null {
   const band = studentVisibleBand(draft)
   if (band == null) return null
+  if (draft.omitTopBandScore) return null
   if (draft.approxValue != null) return draft.approxValue
   return formativeForBand(band)
 }
@@ -549,8 +578,10 @@ export function sanitizeLaterStore(raw: unknown): LaterStore {
       aiStatus,
       aiComment,
       approxValue: aiStatus === 'model' ? readStoredVisible(draft.approxValue) : null,
+      omitTopBandScore:
+        aiStatus === 'model' && readStoredVisible(draft.approxValue) == null && draft.omitTopBandScore === true,
       aiAxes: aiStatus === 'model' ? storedAxesForPages(readStoredAxes(draft.aiAxes), pages) : {},
-      aiAdvice: aiStatus === 'model' ? tailoredAxisAdvice(draft.aiAdvice) : {},
+      aiAdvice: aiStatus === 'model' ? adviceForPages(draft.aiAdvice, pages) : {},
       adjustBand,
       committedBand,
       pages,

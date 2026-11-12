@@ -1015,6 +1015,7 @@
   "score.later.removeFile": "剷除",
   "score.later.replaceFile": "更換",
   "score.later.axisAdvicePending": "暫時未有跟呢條軸、跟呢份作品嘅改進建議。",
+  "score.later.axisAdvicePendingWorkbook": "暫時未有跟呢條軸、跟呢份研究工作簿嘅改進建議。",
   "score.later.aiComment": "AI 參考評語（非正式）",
   "score.later.aiCommentHint": "短評只供校內討論，唔係 SBA 或公開試評語。",
   "score.later.requestAi": "產生參考評語／大概帶",

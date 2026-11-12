@@ -179,11 +179,16 @@ export function setLaterAxisAttemptsForTests(max: number | null): void {
 
 type FormativeOk = Extract<FormativeModelResult, { ok: true }>
 
-/** Keep axis numbers and artwork notes the model actually returned. Do not fill a gap from the overall score. */
+/**
+ * Keep axis numbers and per-axis notes the model actually returned.
+ * A later reply that omits score does not replace a score already returned, so a 5 is not dropped.
+ * Do not fill a missing axis from the overall score.
+ */
 function mergeReturnedAxes(prev: FormativeOk | null, next: FormativeOk): FormativeOk {
   if (!prev) return next
   return {
     ...next,
+    score: next.score == null ? prev.score : next.score,
     axes: { ...prev.axes, ...next.axes },
     advice: { ...prev.advice, ...next.advice },
   }

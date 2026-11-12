@@ -145,22 +145,32 @@ export type FormativePageInput = {
 export type FormativeAdvice = Partial<Record<(typeof CRITERIA_IDS)[number], string>>
 
 export type FormativeModelResult =
-  | { ok: true; comment: string; band: PracticeBandId; axes: FormativeAxes; score: number; advice: FormativeAdvice }
+  | { ok: true; comment: string; band: PracticeBandId; axes: FormativeAxes; score: number | null; advice: FormativeAdvice }
   | { ok: false; reason: 'unavailable' | 'not_sent' }
 
 /** Visible unofficial later scale. Practice bands stay on 1.25 / 2.5 / 3.5 / 4.5. */
 export const LATER_VISIBLE_LEVELS = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5] as const
 
+/** A plain number, or the same number written as n/5 or n／5. A starred mark is not a level. */
+function finiteLevelToken(value: unknown): number | null {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null
+  if (typeof value !== 'string') return null
+  const trimmed = value.trim()
+  const slash = /^(-?\d+(?:\.\d+)?)\s*[/／]\s*5$/.exec(trimmed)
+  const source = slash ? slash[1] : trimmed
+  if (!/^-?\d+(?:\.\d+)?$/.test(source)) return null
+  const n = Number(source)
+  return Number.isFinite(n) ? n : null
+}
+
 /**
  * Snap a new model number onto the nine-level visible scale.
  * 1.25 is equidistant from 1 and 1.5 and becomes 1.5, so a new result never shows 1.25.
+ * 5 stays 5. It is not pulled down to 4.5.
  */
 export function laterVisibleLevel(value: unknown): number | null {
-  let n: number
-  if (typeof value === 'number') n = value
-  else if (typeof value === 'string' && /^-?\d+(?:\.\d+)?$/.test(value.trim())) n = Number(value.trim())
-  else return null
-  if (!Number.isFinite(n) || n < 1 || n > 5) return null
+  const n = finiteLevelToken(value)
+  if (n == null || n < 1 || n > 5) return null
   let best: number = LATER_VISIBLE_LEVELS[0]
   let dist = Number.POSITIVE_INFINITY
   for (const level of LATER_VISIBLE_LEVELS) {
@@ -171,6 +181,22 @@ export function laterVisibleLevel(value: unknown): number | null {
     }
   }
   return best
+}
+
+/**
+ * Visible unofficial number for a new model result.
+ * An explicit nine-level score wins, including 5, even when the practice band is 良好 / 4.5.
+ * A numeric band token of 5 is that same score: snapping the band id to practice-strong must not replace it with 4.5.
+ * A named top band with no score does not invent 4.5. A lower named band still uses its formative number.
+ */
+export function laterUnofficialScore(score: unknown, band: PracticeBandId, rawBand?: unknown): number | null {
+  const explicit = laterVisibleLevel(score)
+  if (explicit != null) return explicit
+  const fromBand = laterVisibleLevel(rawBand)
+  if (fromBand != null) return fromBand
+  const bandValue = FORMATIVE_BAND_VALUE[band]
+  if (bandValue >= 4.5) return null
+  return laterVisibleLevel(bandValue)
 }
 
 function axisLocale(locale: string): 'zh-Hant' | 'zh-Hans' | 'en' {
@@ -206,20 +232,23 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
     'That standard is school-internal formative reference only. Do not name samples or students. Do not present this as a public-exam result.',
     'Choose one approximate band id: practice-emerging, practice-developing, practice-secure, or practice-strong.',
     'Those ids are the school practice bands 起步 / 發展中 / 穩固 / 良好, with values 1.25 / 2.5 / 3.5 / 4.5. They are unofficial.',
-    'The visible unofficial score and every axis value use only 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, or 5.',
+    'The visible unofficial score is separate from those four band values. Score and every axis value use only 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, or 5.',
     'Do not use 1.25 as a visible score or axis value. Do not invent a band name for 5.',
+    'When the pages support 5, return score as the number 5. Do not rewrite, snap, or cap that 5 to 4.5, and do not replace it with the 良好 / practice-strong band value.',
+    'When the pages are honestly 4.5, return score as 4.5. If you cannot choose one of those nine levels, omit score. Do not fill a missing score with 4.5.',
+    'The band id stays one of the four even when score is 5.',
     'Score each axis separately. Do not copy one overall band onto every axis.',
     'Return an axis value only for sides named in the user message.',
     'Artwork ids are aw-1, aw-2, aw-3, aw-4, aw-5, aw-6. Research-workbook ids are rwb-1, rwb-2, rwb-3, rwb-4.',
     'Every named side needs its own value on every one of its ids. Do not leave an id out, and do not fill a missing id from the overall score.',
-    'For each artwork axis aw-1 through aw-6, add advice that is specific to this work and that axis.',
-    'Do not reuse one sentence for more than one axis. Omit an axis from advice when you cannot see a specific improvement.',
-    'Do not write a generic tip, a public-exam result, or an official mark.',
+    'For each artwork axis the user message names, add advice on how to improve this work on that axis. Name what is visible and the change to make next. Do not reuse one sentence for another axis.',
+    'When the user message names the research workbook, add advice on how to improve this research workbook on each of rwb-1, rwb-2, rwb-3, and rwb-4. Each note is only for this workbook and that axis. Do not reuse an artwork sentence or one sentence across those axes.',
+    'Omit an axis from advice when you cannot see a specific improvement. Do not write a generic tip, a public-exam result, or an official mark.',
     'This is not an SBA remark, not an HKEAA score, and not a public-exam prediction.',
     'Do not write a generic art-criticism essay. Two to four sentences, tied to what is visible on the pages.',
     `Write the comment and the advice in ${language}.`,
     'Reply with JSON only, using those ids. Omit ids for a side the user message did not name.',
-    'A complete shape is {"comment":"...","band":"practice-secure","score":3.5,"axes":{"aw-1":3.5,"aw-2":3,"aw-3":2.5,"aw-4":4,"aw-5":3.5,"aw-6":2,"rwb-1":2.5,"rwb-2":3,"rwb-3":2,"rwb-4":3.5},"advice":{"aw-1":"...","aw-2":"...","aw-3":"...","aw-4":"...","aw-5":"...","aw-6":"..."}}',
+    'A complete shape, when both sides are named and the visible score is 5, is {"comment":"...","band":"practice-strong","score":5,"axes":{"aw-1":4.5,"aw-2":5,"aw-3":4,"aw-4":5,"aw-5":4.5,"aw-6":4,"rwb-1":4,"rwb-2":4.5,"rwb-3":5,"rwb-4":4.5},"advice":{"aw-1":"...","aw-2":"...","aw-3":"...","aw-4":"...","aw-5":"...","aw-6":"...","rwb-1":"...","rwb-2":"...","rwb-3":"...","rwb-4":"..."}}',
   ].join('\n')
 }
 
@@ -251,7 +280,19 @@ export function formativeUserPrompt(sides: readonly string[]): string {
     ids.length > 0
       ? `\nEach of these axis ids needs its own value: ${ids.join(', ')}.\nDo not leave one of those ids out. Do not copy the overall score onto an axis.`
       : ''
-  return `${FORMATIVE_USER_PROMPT}\nSides to score: ${scope}.${required}`
+  const advice: string[] = []
+  if (named.includes('artwork')) {
+    advice.push(
+      'For each artwork axis aw-1, aw-2, aw-3, aw-4, aw-5, and aw-6, add one note on how to improve this work on that axis. Name what is visible and what to change. Do not reuse one sentence for another axis. Omit an axis when a specific improvement is not visible.',
+    )
+  }
+  if (named.includes('research_workbook')) {
+    advice.push(
+      'For each research-workbook axis rwb-1, rwb-2, rwb-3, and rwb-4, add one note on how to improve this research workbook on that axis. Name what is visible in this workbook and what to change. Do not reuse one sentence for another axis. Omit an axis when a specific improvement is not visible.',
+    )
+  }
+  const adviceBlock = advice.length > 0 ? `\n${advice.join('\n')}` : ''
+  return `${FORMATIVE_USER_PROMPT}\nSides to score: ${scope}.${required}${adviceBlock}`
 }
 
 /** Label placed beside one page image. A combined file names both sides once. */
@@ -270,14 +311,12 @@ export function bytesToBase64(bytes: Uint8Array): string {
 }
 
 export function bandFromModel(value: unknown): PracticeBandId | null {
-  if (typeof value === 'string' && /^-?\d+(?:\.\d+)?$/.test(value.trim())) {
-    return bandFromModel(Number(value.trim()))
-  }
-  if (typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 5) {
+  const token = finiteLevelToken(value)
+  if (token != null && token >= 0 && token <= 5) {
     let best: PracticeBandId = PRACTICE_BAND_IDS[0]
     let dist = Number.POSITIVE_INFINITY
     for (const id of PRACTICE_BAND_IDS) {
-      const next = Math.abs(FORMATIVE_BAND_VALUE[id] - value)
+      const next = Math.abs(FORMATIVE_BAND_VALUE[id] - token)
       if (next < dist) {
         dist = next
         best = id
@@ -298,6 +337,9 @@ const ADVICE_PALE = new Set([
   '暫時未有跟呢條軸、跟呢份作品嘅改進建議。',
   '暂时未有跟这条轴、跟这份作品的改进建议。',
   'A tailored improvement note for this axis and this work is not available yet.',
+  '暫時未有跟呢條軸、跟呢份研究工作簿嘅改進建議。',
+  '暂时未有跟这条轴、跟这份研究工作簿的改进建议。',
+  'A tailored improvement note for this axis and this research workbook is not available yet.',
 ])
 
 function axisIdFromModelKey(key: string): (typeof CRITERIA_IDS)[number] | null {
@@ -348,13 +390,13 @@ function flattenModelRecord(raw: unknown): Record<string, unknown> {
   return flat
 }
 
-/** Keep a suggestion only when it is specific to one artwork axis. Shared or empty copy is dropped. */
+/** Keep a note only when it is specific to one axis. Shared, empty, or pale copy is dropped. */
 export function tailoredAxisAdvice(raw: unknown): FormativeAdvice {
   const bag = flattenModelRecord(raw)
   const rows: { id: (typeof CRITERIA_IDS)[number]; text: string }[] = []
   const seen = new Set<(typeof CRITERIA_IDS)[number]>()
   const take = (id: (typeof CRITERIA_IDS)[number], value: unknown) => {
-    if (seen.has(id) || !id.startsWith('aw-')) return
+    if (seen.has(id)) return
     if (typeof value !== 'string') return
     const text = value.replace(/\s+/g, ' ').trim()
     if (text.length < 8 || text.length > 400) return
@@ -400,7 +442,7 @@ export function parseFormativeAxes(raw: unknown): FormativeAxes {
 
 export function parseFormativeModelText(
   raw: string,
-): { comment: string; band: PracticeBandId; axes: FormativeAxes; score: number; advice: FormativeAdvice } | null {
+): { comment: string; band: PracticeBandId; axes: FormativeAxes; score: number | null; advice: FormativeAdvice } | null {
   const trimmed = raw.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
   const start = trimmed.indexOf('{')
   const end = trimmed.lastIndexOf('}')
@@ -419,8 +461,7 @@ export function parseFormativeModelText(
   if (BLOCKED_COMMENT.test(comment)) return null
   const band = bandFromModel(record.band)
   if (!band) return null
-  const score = laterVisibleLevel(record.score) ?? laterVisibleLevel(FORMATIVE_BAND_VALUE[band])
-  if (score == null) return null
+  const score = laterUnofficialScore(record.score, band, record.band)
   return { comment, band, axes: parseFormativeAxes(record.axes), score, advice: tailoredAxisAdvice(record.advice) }
 }
 

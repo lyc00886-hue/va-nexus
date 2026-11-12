@@ -1015,6 +1015,7 @@
   "score.later.removeFile": "铲除",
   "score.later.replaceFile": "更换",
   "score.later.axisAdvicePending": "暂时未有跟这条轴、跟这份作品的改进建议。",
+  "score.later.axisAdvicePendingWorkbook": "暂时未有跟这条轴、跟这份研究工作簿的改进建议。",
   "score.later.aiComment": "AI 参考评语（非正式）",
   "score.later.aiCommentHint": "短评只供校内讨论，不是 SBA 或公开试评语。",
   "score.later.requestAi": "生成参考评语／大概带",

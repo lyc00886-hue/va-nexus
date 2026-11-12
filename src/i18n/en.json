@@ -999,6 +999,7 @@
   "score.later.removeFile": "Remove",
   "score.later.replaceFile": "Replace",
   "score.later.axisAdvicePending": "A tailored improvement note for this axis and this work is not available yet.",
+  "score.later.axisAdvicePendingWorkbook": "A tailored improvement note for this axis and this research workbook is not available yet.",
   "score.later.aiComment": "AI reference comments (not an official grade)",
   "score.later.aiCommentHint": "Short comments are school-internal only — not SBA or public-exam remarks.",
   "score.later.requestAi": "Generate reference comments / band",

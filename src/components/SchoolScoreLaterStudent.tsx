@@ -202,7 +202,9 @@ function AiReferenceChart({
   testId: 'score-later-ai-chart-artwork' | 'score-later-ai-chart-research_workbook'
 }) {
   const { t } = useT()
-  const showAdvice = chart.id === 'artwork'
+  const showAdvice = chart.id === 'artwork' || chart.id === 'research_workbook'
+  const pendingKey =
+    chart.id === 'research_workbook' ? 'score.later.axisAdvicePendingWorkbook' : 'score.later.axisAdvicePending'
   return (
     <div data-testid={testId} data-axes={chart.axes.length}>
       <h5 className="text-center text-base font-bold text-[#0D9488]">{t(chart.title)}</h5>
@@ -226,7 +228,7 @@ function AiReferenceChart({
               <span className="text-slate-600">{formatLaterVisible(value)}</span>
               {showAdvice ? (
                 <p data-testid={`score-later-ai-advice-${id}`} className="text-slate-600">
-                  {advice?.[id] ?? t('score.later.axisAdvicePending')}
+                  {advice?.[id] ?? t(pendingKey)}
                 </p>
               ) : null}
             </li>
@@ -434,6 +436,7 @@ export function SchoolScoreLaterStudent() {
                 <AiReferenceChart
                   chart={workbookChart}
                   values={radar.workbook}
+                  advice={draft?.aiAdvice}
                   testId="score-later-ai-chart-research_workbook"
                 />
               ) : (

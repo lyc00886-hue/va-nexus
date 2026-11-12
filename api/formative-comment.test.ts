@@ -270,7 +270,10 @@ describe('formative comment route', { concurrency: false }, () => {
           'rwb-3': 4,
           'rwb-4': 5,
         },
-        advice: { 'aw-1': '樽口轉折可以再清楚啲。' },
+        advice: {
+          'aw-1': '樽口轉折可以再清楚啲。',
+          'rwb-1': '研究工作簿可以再寫低失敗試驗點解停咗。',
+        },
       })
     })
     const combined = await handleFormativeComment(
@@ -295,7 +298,8 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.equal(body.axes?.['aw-6'], 4.5)
     assert.equal(body.axes?.['rwb-1'], 2)
     assert.equal(body.advice?.['aw-1']?.includes('樽口'), true)
-    assert.equal(body.advice?.['rwb-1'], undefined)
+    assert.equal(body.advice?.['rwb-1']?.includes('失敗試驗'), true)
+    assert.notEqual(body.advice?.['rwb-1'], body.advice?.['aw-1'])
 
     const workbook = await handleFormativeComment(
       request({
@@ -326,6 +330,47 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.equal(body.axes?.['aw-1'], 2.5)
     assert.equal(body.axes?.['aw-2'], undefined)
     assert.notEqual(body.axes?.['aw-2'], body.score)
+  })
+
+  it('keeps an unofficial 5 and does not replace a missing top score with 4.5', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({
+        comment: COMMENT,
+        band: 'practice-strong',
+        score: 5,
+        axes: { 'aw-1': 5 },
+        advice: { 'aw-1': '樽口轉折可以再推深一點，而家仍然太圓。' },
+      }),
+    )
+    const topped = await handleFormativeComment(request({ mime: 'image/png', imageBase64: PNG, locale: 'zh-Hant' }))
+    assert.equal(topped.status, 200)
+    const topBody = (await topped.json()) as { band?: string; score?: number | null }
+    assert.equal(topBody.band, 'practice-strong')
+    assert.equal(topBody.score, 5)
+    assert.notEqual(topBody.score, 4.5)
+
+    setFormativeGeneratorForTests(async () => JSON.stringify({ comment: COMMENT, band: 5, axes: { 'aw-1': 5 } }))
+    const fromBand = await handleFormativeComment(request({ mime: 'image/png', imageBase64: PNG, locale: 'zh-Hant' }))
+    assert.equal(fromBand.status, 200)
+    const bandBody = (await fromBand.json()) as { band?: string; score?: number | null }
+    assert.equal(bandBody.band, 'practice-strong')
+    assert.equal(bandBody.score, 5)
+
+    setFormativeGeneratorForTests(async () => JSON.stringify({ comment: COMMENT, band: '良好' }))
+    const omitted = await handleFormativeComment(request({ mime: 'image/png', imageBase64: PNG, locale: 'zh-Hant' }))
+    assert.equal(omitted.status, 200)
+    const omittedBody = (await omitted.json()) as { band?: string; score?: number | null }
+    assert.equal(omittedBody.band, 'practice-strong')
+    assert.equal(omittedBody.score, null)
+    assert.notEqual(omittedBody.score, 4.5)
+
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({ comment: COMMENT, band: 'practice-strong', score: 4.5 }),
+    )
+    const honest = await handleFormativeComment(request({ mime: 'image/png', imageBase64: PNG, locale: 'zh-Hant' }))
+    assert.equal(honest.status, 200)
+    assert.equal(((await honest.json()) as { score?: number }).score, 4.5)
   })
 
   it('does not invent a comment when the page is missing', async () => {
