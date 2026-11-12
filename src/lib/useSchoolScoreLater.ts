@@ -321,7 +321,8 @@ async function runLaterComment(
   const fileName = draft.fileName
   const previewUrl = snapshot.previewUrl
   const previews = snapshot.pagePreviews
-  const selected = draft.pages.slice(0, 4)
+  // Every artwork and workbook file on this request. A file that cannot be sent whole fails closed.
+  const selected = draft.pages
   const [loaded, accessToken] = await Promise.all([
     Promise.all(
       selected.map(async (page) => {
@@ -380,6 +381,9 @@ async function runLaterComment(
     const after = snapshot.draft
     if (!after || requestKey(after) !== key) return 'idle'
     if (!result.ok) {
+      if (result.reason === 'not_sent' && after.aiStatus === 'model' && after.aiComment && after.approxBand) {
+        return 'unsent'
+      }
       publish(result.reason === 'not_sent' ? applyFileNotSent(after) : applyAiFallback(after))
       return result.reason === 'not_sent' ? 'unsent' : 'fallback'
     }
