@@ -134,6 +134,8 @@ export type FormativeAxes = Partial<Record<(typeof CRITERIA_IDS)[number], number
 
 export type FormativePageInput = {
   side?: string
+  /** Both scans for one combined file. One page still counts once toward the cap. */
+  sides?: readonly string[]
   mime: string
   bytes: Uint8Array
   /** Used only to recognise a PDF or image. It is not sent to the model. */
@@ -221,10 +223,31 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
 export const FORMATIVE_USER_PROMPT =
   'The attached images are school artwork and/or research-workbook pages that a teacher already uploaded. Write the short formative comment from what is visible on those pages. Score each axis separately. Do not use the file name or file size. Do not award an official mark.'
 
+export function formativeScanSides(side: unknown, sides?: unknown): Array<'artwork' | 'research_workbook'> {
+  const found = new Set<string>()
+  const push = (value: unknown) => {
+    if (value === 'artwork' || value === 'research_workbook') found.add(value)
+  }
+  if (Array.isArray(sides)) {
+    for (const item of sides) push(item)
+  }
+  push(side)
+  const ordered: Array<'artwork' | 'research_workbook'> = []
+  if (found.has('artwork')) ordered.push('artwork')
+  if (found.has('research_workbook')) ordered.push('research_workbook')
+  return ordered
+}
+
 export function formativeUserPrompt(sides: readonly string[]): string {
   const named = [...new Set(sides.filter((side) => side === 'artwork' || side === 'research_workbook'))]
   const scope = named.length > 0 ? named.join(', ') : 'none'
   return `${FORMATIVE_USER_PROMPT}\nSides to score: ${scope}.`
+}
+
+/** Label placed beside one page image. A combined file names both sides once. */
+export function formativePageSideNote(sides: readonly string[]): string {
+  const named = formativeScanSides(undefined, sides)
+  return named.length > 0 ? `Page side: ${named.join(', ')}` : 'Page'
 }
 
 export function bytesToBase64(bytes: Uint8Array): string {
@@ -329,12 +352,14 @@ export function parseFormativeModelText(
   return { comment, band, axes: parseFormativeAxes(record.axes), score, advice: tailoredAxisAdvice(record.advice) }
 }
 
+type PackedFormativePage = { side: string; sides: Array<'artwork' | 'research_workbook'>; mime: string; bytes: Uint8Array }
+
 async function packFormativePages(input: {
   fileName: string
   mime: string
   bytes: Uint8Array | null
   pages?: readonly FormativePageInput[]
-}): Promise<{ side: string; mime: string; bytes: Uint8Array }[]> {
+}): Promise<PackedFormativePage[]> {
   const source: FormativePageInput[] = (
     input.pages && input.pages.length > 0
       ? [...input.pages]
@@ -344,11 +369,12 @@ async function packFormativePages(input: {
   ).filter((page) => page.bytes.byteLength > 0)
   if (source.length === 0) return []
   const share = Math.min(FORMATIVE_PAGE_BYTE_MAX, Math.floor(FORMATIVE_TOTAL_BYTE_MAX / Math.min(4, source.length)))
-  const packed: { side: string; mime: string; bytes: Uint8Array }[] = []
+  const packed: PackedFormativePage[] = []
   for (const page of source) {
     if (packed.length >= 4) break
+    const sides = formativeScanSides(page.side, page.sides)
     const fitted = await fitFormativePayload({
-      side: page.side,
+      side: sides[0] ?? page.side,
       mime: page.mime,
       bytes: page.bytes,
       fileName: page.fileName || input.fileName,
@@ -357,10 +383,10 @@ async function packFormativePages(input: {
     for (const item of fitted) {
       if (packed.length >= 4) break
       if (item.bytes.byteLength === 0 || item.bytes.byteLength > FORMATIVE_PAGE_BYTE_MAX) continue
-      packed.push(item)
+      packed.push({ side: sides[0] ?? item.side, sides, mime: item.mime, bytes: item.bytes })
     }
   }
-  const kept: { side: string; mime: string; bytes: Uint8Array }[] = []
+  const kept: PackedFormativePage[] = []
   let total = 0
   for (const item of packed) {
     if (kept.length >= 4) break
@@ -372,19 +398,22 @@ async function packFormativePages(input: {
   return kept
 }
 
-function formativeRequestBody(
-  locale: string,
-  pages: readonly { side: string; mime: string; bytes: Uint8Array }[],
-  asPages: boolean,
-): string {
+function formativePageJson(page: PackedFormativePage): {
+  side: string
+  sides?: Array<'artwork' | 'research_workbook'>
+  mime: string
+  imageBase64: string
+} {
+  const imageBase64 = bytesToBase64(page.bytes)
+  if (page.sides.length > 1) return { side: page.side, sides: page.sides, mime: page.mime, imageBase64 }
+  return { side: page.side, mime: page.mime, imageBase64 }
+}
+
+function formativeRequestBody(locale: string, pages: readonly PackedFormativePage[], asPages: boolean): string {
   if (asPages) {
     return JSON.stringify({
       locale,
-      pages: pages.map((page) => ({
-        side: page.side,
-        mime: page.mime,
-        imageBase64: bytesToBase64(page.bytes),
-      })),
+      pages: pages.map((page) => formativePageJson(page)),
     })
   }
   return JSON.stringify({

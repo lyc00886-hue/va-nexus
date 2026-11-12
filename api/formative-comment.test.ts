@@ -245,6 +245,71 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.equal(seen.length, before)
   })
 
+  it('scores both sides of one combined page and leaves a workbook-only page on that side', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    const seen: { user: string; count: number; sides: string[][] }[] = []
+    setFormativeGeneratorForTests(async (input) => {
+      seen.push({
+        user: input.user,
+        count: input.pages?.length ?? 0,
+        sides: (input.pages ?? []).map((page) => page.sides),
+      })
+      return JSON.stringify({
+        comment: COMMENT,
+        band: 'practice-secure',
+        score: 3.5,
+        axes: {
+          'aw-1': 3,
+          'aw-2': 3.5,
+          'aw-3': 2,
+          'aw-4': 4,
+          'aw-5': 2.5,
+          'aw-6': 4.5,
+          'rwb-1': 2,
+          'rwb-2': 3,
+          'rwb-3': 4,
+          'rwb-4': 5,
+        },
+        advice: { 'aw-1': '樽口轉折可以再清楚啲。' },
+      })
+    })
+    const combined = await handleFormativeComment(
+      request({
+        locale: 'zh-Hant',
+        pages: [
+          {
+            side: 'artwork',
+            sides: ['artwork', 'research_workbook'],
+            mime: 'image/png',
+            imageBase64: PNG,
+          },
+        ],
+      }),
+    )
+    assert.equal(combined.status, 200)
+    assert.equal(seen[0]?.count, 1)
+    assert.deepEqual(seen[0]?.sides, [['artwork', 'research_workbook']])
+    assert.match(seen[0]?.user ?? '', /Sides to score: artwork, research_workbook/)
+    const body = (await combined.json()) as { comment?: string; axes?: Record<string, number>; advice?: Record<string, string> }
+    assert.equal(body.comment, COMMENT)
+    assert.equal(body.axes?.['aw-6'], 4.5)
+    assert.equal(body.axes?.['rwb-1'], 2)
+    assert.equal(body.advice?.['aw-1']?.includes('樽口'), true)
+    assert.equal(body.advice?.['rwb-1'], undefined)
+
+    const workbook = await handleFormativeComment(
+      request({
+        locale: 'zh-Hant',
+        pages: [{ side: 'research_workbook', mime: 'image/png', imageBase64: PNG }],
+      }),
+    )
+    assert.equal(workbook.status, 200)
+    assert.equal(seen[1]?.count, 1)
+    assert.deepEqual(seen[1]?.sides, [['research_workbook']])
+    assert.match(seen[1]?.user ?? '', /Sides to score: research_workbook/)
+    assert.equal((seen[1]?.user ?? '').includes('Sides to score: artwork'), false)
+  })
+
   it('does not invent a comment when the page is missing', async () => {
     process.env.GEMINI_API_KEY = 'test-key'
     let generated = false

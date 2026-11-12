@@ -11,6 +11,7 @@ import {
   isLaterUploadFile,
   laterFeed,
   laterPageSide,
+  laterPageSides,
   sanitizeLaterStore,
   withAdjustBand,
   withCommitted,
@@ -298,23 +299,27 @@ async function runLaterComment(
     ),
     readAccessToken(),
   ])
-  const packed: { side: LaterPageSide; mime: string; bytes: Uint8Array; fileName: string }[] = []
+  const packed: { side: LaterPageSide; sides: LaterPageSide[]; mime: string; bytes: Uint8Array; fileName: string }[] = []
   for (const item of loaded) {
     if (!item.bytes) continue
+    const sides = laterPageSides(item.page.fileName)
+    if (sides.length === 0) continue
     packed.push({
-      side: item.page.side,
+      side: sides.includes(item.page.side) ? item.page.side : sides[0],
+      sides,
       mime: item.page.mime || item.preview?.mime || '',
       bytes: item.bytes,
       fileName: item.page.fileName,
     })
   }
+  const sides = laterPageSides(fileName)
   const side = laterPageSide(fileName)
   const fallbackBytes = packed.length > 0 || !side ? null : await readPreviewBytes(previewUrl)
   const pages =
     packed.length > 0
       ? packed
       : fallbackBytes && side
-        ? [{ side, mime: draft.mime, bytes: fallbackBytes, fileName }]
+        ? [{ side, sides, mime: draft.mime, bytes: fallbackBytes, fileName }]
         : []
   const currentBefore = snapshot.draft
   if (!currentBefore || requestKey(currentBefore) !== key) return 'idle'
