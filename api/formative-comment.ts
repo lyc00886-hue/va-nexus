@@ -4,8 +4,18 @@
  * A staff session is not required. A cross-origin browser call is refused.
  * A modest per-IP limit applies. No key or a model miss returns unavailable.
  * This route does not write a school reference and does not award an official mark.
+ * Locked comparison excerpts are attached beside the student pages. They do not
+ * count toward the student limit of four pages. A missing excerpt set uses the
+ * same unavailable result as a model miss and does not guess from the file name.
  */
+import { createHash } from 'node:crypto'
 import { geminiModels } from './feedback.ts'
+import {
+  applyLockedSampleHit,
+  loadLockedComparison,
+  partsIncludeComparisonImages,
+  type LockedComparisonImage,
+} from './locked-sample-comparison.ts'
 import {
   FORMATIVE_BODY_CHAR_MAX,
   FORMATIVE_PAGE_BYTE_MAX,
@@ -19,13 +29,45 @@ import {
   parseFormativeModelText,
 } from '../src/lib/formativeAiComment.ts'
 
+export type FormativeModelPart = { text?: string; inlineData?: { mimeType: string; data: string } }
+
 export type FormativeGenerator = (input: {
   system: string
   user: string
   mime: string
   base64: string
   pages?: { side: string; sides: string[]; mime: string; base64: string }[]
+  comparisons?: LockedComparisonImage[]
+  parts?: FormativeModelPart[]
 }) => Promise<string | null>
+
+/**
+ * Student pages stay at most four. Comparison excerpts are extra parts and are
+ * not student uploads. A text label without an excerpt image is not included
+ * as a comparison page.
+ */
+export function formativeModelParts(
+  user: string,
+  pages: readonly { side: string; sides: readonly string[]; mime: string; base64: string }[],
+  comparisons: readonly LockedComparisonImage[],
+): FormativeModelPart[] {
+  const parts: FormativeModelPart[] = [{ text: user }]
+  for (const image of comparisons) {
+    const note = [
+      image.base64 ? 'Locked comparison excerpt.' : 'Locked catalog entry with no excerpt image.',
+      `Label: ${image.label}`,
+      `Sample sha256: ${image.sampleSha256}`,
+      `Band hint: ${image.bandHint}`,
+    ].join('\n')
+    parts.push({ text: note })
+    if (image.base64) parts.push({ inlineData: { mimeType: 'image/png', data: image.base64 } })
+  }
+  for (const page of pages) {
+    parts.push({ text: formativePageSideNote(page.sides.length > 0 ? page.sides : page.side ? [page.side] : []) })
+    parts.push({ inlineData: { mimeType: page.mime, data: page.base64 } })
+  }
+  return parts
+}
 
 /** A class can upload together from one school network. Still bounded. */
 const RATE_WINDOW_MS = 10 * 60 * 1000
@@ -140,7 +182,20 @@ function generationConfig(model: string): {
   }
 }
 
-type IncomingPage = { side: string; sides: string[]; mime: string; base64: string }
+type IncomingPage = {
+  side: string
+  sides: string[]
+  mime: string
+  base64: string
+  fileSha256: string
+  contentSha256: string
+}
+
+function readSha256(value: unknown): string {
+  if (typeof value !== 'string') return ''
+  const hex = value.trim().toLowerCase()
+  return /^[0-9a-f]{64}$/.test(hex) ? hex : ''
+}
 
 function onePage(
   sideRaw: unknown,
@@ -148,6 +203,7 @@ function onePage(
   imageBase64: unknown,
   fileNameRaw: unknown,
   sidesRaw: unknown,
+  fileSha256Raw: unknown,
 ): IncomingPage | null {
   if (typeof mimeRaw !== 'string' || typeof imageBase64 !== 'string') return null
   const base64 = imageBase64.replace(/\s/g, '')
@@ -158,7 +214,23 @@ function onePage(
   const mime = formativePageMime(name, mimeRaw, bytes)
   if (!mime) return null
   const sides = formativeScanSides(sideRaw, sidesRaw)
-  return { side: sides[0] ?? '', sides, mime, base64 }
+  return {
+    side: sides[0] ?? '',
+    sides,
+    mime,
+    base64,
+    fileSha256: readSha256(fileSha256Raw),
+    contentSha256: createHash('sha256').update(bytes).digest('hex'),
+  }
+}
+
+function uploadedSampleHashes(pages: readonly IncomingPage[]): string[] {
+  const found: string[] = []
+  for (const page of pages) {
+    if (page.fileSha256) found.push(page.fileSha256)
+    if (page.contentSha256) found.push(page.contentSha256)
+  }
+  return found
 }
 
 function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] } | null {
@@ -168,6 +240,7 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
     mime?: unknown
     imageBase64?: unknown
     fileName?: unknown
+    fileSha256?: unknown
     pages?: unknown
   }
   const locale = record.locale === 'en' || record.locale === 'zh-Hans' || record.locale === 'zh-Hant' ? record.locale : 'zh-Hant'
@@ -177,8 +250,15 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
     for (const item of record.pages) {
       if (pages.length >= 4) break
       if (!item || typeof item !== 'object') continue
-      const page = item as { side?: unknown; sides?: unknown; mime?: unknown; imageBase64?: unknown; fileName?: unknown }
-      const next = onePage(page.side, page.mime, page.imageBase64, page.fileName, page.sides)
+      const page = item as {
+        side?: unknown
+        sides?: unknown
+        mime?: unknown
+        imageBase64?: unknown
+        fileName?: unknown
+        fileSha256?: unknown
+      }
+      const next = onePage(page.side, page.mime, page.imageBase64, page.fileName, page.sides, page.fileSha256)
       if (!next) continue
       const bytes = Buffer.from(next.base64, 'base64').length
       if (total > 0 && total + bytes > FORMATIVE_TOTAL_BYTE_MAX) continue
@@ -186,7 +266,7 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
       total += bytes
     }
   } else {
-    const next = onePage('', record.mime, record.imageBase64, record.fileName, undefined)
+    const next = onePage('', record.mime, record.imageBase64, record.fileName, undefined, record.fileSha256)
     if (next) pages.push(next)
   }
   if (pages.length === 0) return null
@@ -196,14 +276,10 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[] }
 async function generateFormative(
   apiKey: string,
   system: string,
-  user: string,
-  pages: IncomingPage[],
+  parts: FormativeModelPart[],
+  comparisons: readonly LockedComparisonImage[],
 ): Promise<string | null> {
-  const parts: { text?: string; inlineData?: { mimeType: string; data: string } }[] = [{ text: user }]
-  for (const page of pages) {
-    parts.push({ text: formativePageSideNote(page.sides.length > 0 ? page.sides : page.side ? [page.side] : []) })
-    parts.push({ inlineData: { mimeType: page.mime, data: page.base64 } })
-  }
+  if (!partsIncludeComparisonImages(parts, comparisons)) return null
   for (const model of geminiModels()) {
     let res: Response
     try {
@@ -249,10 +325,14 @@ export async function handleFormativeComment(request: Request): Promise<Response
   if (formativeRateLimited(request)) return unavailable(429)
 
   const labels = formativeAxisLabels(page.locale).map((axis) => axis.label)
+  const loaded = loadLockedComparison()
+  if (!loaded.ok) return unavailable(502)
   const system = formativeCommentSystem(labels, page.locale)
-  const user = formativeUserPrompt(
+  const user = `${formativeUserPrompt(
     page.pages.flatMap((item) => (item.sides.length > 0 ? item.sides : item.side ? [item.side] : [])),
-  )
+  )}\n${loaded.prompt}`
+  const parts = formativeModelParts(user, page.pages, loaded.images)
+  if (!partsIncludeComparisonImages(parts, loaded.images)) return unavailable(502)
   let text: string | null = null
   try {
     text = generator
@@ -262,20 +342,23 @@ export async function handleFormativeComment(request: Request): Promise<Response
           mime: page.pages[0].mime,
           base64: page.pages[0].base64,
           pages: page.pages,
+          comparisons: loaded.images,
+          parts,
         })
-      : await generateFormative(apiKey, system, user, page.pages)
+      : await generateFormative(apiKey, system, parts, loaded.images)
   } catch {
     text = null
   }
   const parsed = text ? parseFormativeModelText(text) : null
   if (!parsed) return unavailable(502)
+  const scored = applyLockedSampleHit(parsed, uploadedSampleHashes(page.pages))
   return json(200, {
     ok: true,
-    comment: parsed.comment,
-    band: parsed.band,
-    axes: parsed.axes,
-    score: parsed.score,
-    advice: parsed.advice,
+    comment: scored.comment,
+    band: scored.band,
+    axes: scored.axes,
+    score: scored.score,
+    advice: scored.advice,
   })
 }
 
