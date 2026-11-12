@@ -3,8 +3,9 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { afterEach, beforeEach, describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
+import { deflateSync } from 'node:zlib'
 import { encode } from 'jpeg-js'
-import { PDFDocument } from 'pdf-lib'
+import { PDFDocument, PDFName } from 'pdf-lib'
 import { ARTWORK_AXIS_IDS } from './schoolScoreDual.ts'
 import {
   FORMATIVE_BODY_CHAR_MAX,
@@ -502,5 +503,138 @@ describe('later files still reach the formative comment', { concurrency: false }
     assert.equal(draft?.aiComment, null)
     assert.deepEqual(draft?.aiAxes, {})
     assert.equal(aiReferenceAxes(draft!, ARTWORK_AXIS_IDS), null)
+  })
+})
+
+/** The old stream-count check: large JPEGs when any exist, otherwise every extracted JPEG. */
+function scannedJpegCount(bytes: Uint8Array): number {
+  const found: number[] = []
+  let index = 0
+  while (index + 3 < bytes.length) {
+    if (bytes[index] !== 0xff || bytes[index + 1] !== 0xd8 || bytes[index + 2] !== 0xff) {
+      index += 1
+      continue
+    }
+    let cursor = index + 3
+    let end = -1
+    while (cursor + 1 < bytes.length) {
+      if (bytes[cursor] === 0xff && bytes[cursor + 1] === 0xd9) {
+        end = cursor + 2
+        break
+      }
+      cursor += 1
+    }
+    if (end <= index) break
+    if (end - index >= 200) found.push(end - index)
+    index = end
+  }
+  const large = found.filter((size) => size >= 12_000)
+  return (large.length > 0 ? large : found).length
+}
+
+function attachUnusedJpeg(doc: PDFDocument, jpeg: Uint8Array) {
+  doc.context.register(
+    doc.context.stream(jpeg, {
+      Type: 'XObject',
+      Subtype: 'Image',
+      Width: 8,
+      Height: 8,
+      ColorSpace: 'DeviceRGB',
+      BitsPerComponent: 8,
+      Filter: 'DCTDecode',
+    }),
+  )
+}
+
+function attachFlatePage(doc: PDFDocument, tint: number) {
+  const width = 4
+  const height = 4
+  const rgb = new Uint8Array(width * height * 3)
+  for (let i = 0; i < rgb.length; i += 3) {
+    rgb[i] = tint
+    rgb[i + 1] = 70
+    rgb[i + 2] = 140
+  }
+  const image = doc.context.register(
+    doc.context.stream(deflateSync(rgb), {
+      Type: 'XObject',
+      Subtype: 'Image',
+      Width: width,
+      Height: height,
+      ColorSpace: 'DeviceRGB',
+      BitsPerComponent: 8,
+      Filter: 'FlateDecode',
+    }),
+  )
+  const page = doc.addPage([120, 120])
+  page.node.setXObject(PDFName.of('Im0'), image)
+  const commands = new TextEncoder().encode('q 120 0 0 120 0 0 cm /Im0 Do Q\n')
+  page.node.addContentStream(doc.context.register(doc.context.stream(commands)))
+}
+
+async function assertWholeFilePosted(bytes: Uint8Array, pageCount: number) {
+  assert.ok(bytes.byteLength > 3_500_000)
+  assert.notEqual(scannedJpegCount(bytes), pageCount)
+  let called = false
+  let raw = ''
+  const result = await postFormativeComment({
+    locale: 'zh-Hant',
+    fileName: 'portfolio.pdf',
+    mime: 'application/pdf',
+    bytes,
+    pages: [{ side: 'artwork', mime: 'application/pdf', bytes, fileName: 'portfolio.pdf' }],
+    fetchImpl: async (_input, init) => {
+      called = true
+      raw = String(init?.body ?? '')
+      return new Response(JSON.stringify({ ok: true, comment: COMMENT, band: 'practice-secure', axes: { ...AXES } }), {
+        status: 200,
+      })
+    },
+  })
+  assert.equal(called, true)
+  assert.equal(result.ok, true)
+  assert.equal(raw.length <= FORMATIVE_BODY_CHAR_MAX, true)
+  const body = JSON.parse(raw) as {
+    sourcePageCount?: number
+    pages?: { mime?: string; imageBase64?: string }[]
+  }
+  assert.equal(body.sourcePageCount, pageCount)
+  assert.equal(body.pages?.length, pageCount)
+  assert.notEqual(body.pages?.length, 4)
+  for (const item of body.pages ?? []) {
+    assert.equal(item.mime, 'image/jpeg')
+    const decoded = Uint8Array.from(Buffer.from(item.imageBase64 ?? '', 'base64'))
+    assert.equal(decoded[0], 0xff)
+    assert.equal(decoded[1], 0xd8)
+    assert.ok(decoded.byteLength > 0)
+  }
+}
+
+describe('whole-file packs whose JPEG stream count does not match the page count', () => {
+  it('posts every page when some pages are not JPEG streams', async () => {
+    const doc = await PDFDocument.create()
+    const jpeg = await doc.embedJpg(tinyJpeg())
+    for (let index = 0; index < 3; index += 1) {
+      const page = doc.addPage([120, 120])
+      page.drawImage(jpeg, { x: 8, y: 8, width: 104, height: 104 })
+    }
+    for (let index = 0; index < 5; index += 1) attachFlatePage(doc, 30 + index * 25)
+    attachUnusedJpeg(doc, padJpeg(tinyJpeg(), OVER_OLD_CAP))
+    const bytes = new Uint8Array(await doc.save())
+    await assertWholeFilePosted(bytes, 8)
+  })
+
+  it('posts all 71 pages when extra JPEG streams are embedded', async () => {
+    const doc = await PDFDocument.create()
+    const jpeg = await doc.embedJpg(tinyJpeg())
+    const pageCount = 71
+    for (let index = 0; index < pageCount; index += 1) {
+      const page = doc.addPage([120, 120])
+      page.drawImage(jpeg, { x: 8, y: 8, width: 104, height: 104 })
+    }
+    attachUnusedJpeg(doc, padJpeg(tinyJpeg(), OVER_OLD_CAP))
+    for (let index = 0; index < 13; index += 1) attachUnusedJpeg(doc, padJpeg(tinyJpeg(), 12_000))
+    const bytes = new Uint8Array(await doc.save())
+    await assertWholeFilePosted(bytes, pageCount)
   })
 })

@@ -1,3 +1,9 @@
+/** Worker asset URL used when a PDF page is rasterized in the browser. */
+declare module '*?url' {
+  const src: string
+  export default src
+}
+
 declare module 'jpeg-js' {
   export type JpegImage = {
     width: number
