@@ -23,6 +23,27 @@ export const LOCKED_LOW_A_REEXPORT_SHA256 = '4dd7ccb4978b91576392e169a292439a8fd
 
 export const LOCKED_LOW_A_REEXPORT_LABEL = '待改進示例 A 再匯出本'
 
+/** Whole-file sha256 of 穩固示例 A. Extra hit only. It is not one of the nine catalog rows. */
+export const LOCKED_SECURE_A_SHA256 = '1fb31841230b6f4ef7c45bc2bb56bd4ebba90bc0b2dee3882d6af326eabe4ebc'
+export const LOCKED_SECURE_A_LABEL = '穩固示例 A'
+export const LOCKED_SECURE_A_BYTES = 24340156
+export const LOCKED_SECURE_A_PAGES = 24
+
+/** Whole-file sha256 of 良好示例 A. Extra hit only. It is not one of the nine catalog rows. */
+export const LOCKED_GOOD_A_SHA256 = 'a6459598b866c0cef47a00821de0fc2b99ef8050ba6b04e748d0c1d87bfdca60'
+export const LOCKED_GOOD_A_LABEL = '良好示例 A'
+export const LOCKED_GOOD_A_BYTES = 14521923
+export const LOCKED_GOOD_A_PAGES = 27
+
+/**
+ * Whole-file sha256 of 誠實五分示例 A. Extra hit only. It is not one of the nine catalog rows.
+ * The 28-page file 1818161a… keeps the label 高分示例 A. This 71-page file does not.
+ */
+export const LOCKED_HONEST_FIVE_A_SHA256 = '2d1feb52a619e42708f3c81aa044e766687df6e2db1690e7ad26e7388558bad9'
+export const LOCKED_HONEST_FIVE_A_LABEL = '誠實五分示例 A'
+export const LOCKED_HONEST_FIVE_A_BYTES = 24976115
+export const LOCKED_HONEST_FIVE_A_PAGES = 71
+
 /**
  * Same-page distance after a JPEG re-save or a modest rescale stays at or below this.
  * Other locked excerpt pages sit well above it. This is not a match across every upload.
@@ -127,8 +148,36 @@ const LOCKED_LOW_A_REEXPORT: LockedSample = {
   excerptBytes: null,
 }
 
+/** Whole-file hits. No excerpt page is stored for these three, so no page fingerprint is invented. */
+const LOCKED_SECURE_A: LockedSample = {
+  label: LOCKED_SECURE_A_LABEL,
+  sampleSha256: LOCKED_SECURE_A_SHA256,
+  bandHint: '穩固',
+  role: 'low',
+  excerptSha256: null,
+  excerptBytes: null,
+}
+
+const LOCKED_GOOD_A: LockedSample = {
+  label: LOCKED_GOOD_A_LABEL,
+  sampleSha256: LOCKED_GOOD_A_SHA256,
+  bandHint: '良好',
+  role: 'high',
+  excerptSha256: null,
+  excerptBytes: null,
+}
+
+const LOCKED_HONEST_FIVE_A: LockedSample = {
+  label: LOCKED_HONEST_FIVE_A_LABEL,
+  sampleSha256: LOCKED_HONEST_FIVE_A_SHA256,
+  bandHint: '良好',
+  role: 'high',
+  excerptSha256: null,
+  excerptBytes: null,
+}
+
 function hitCatalog(): readonly LockedSample[] {
-  return [...LOCKED_SAMPLES, LOCKED_LOW_A_REEXPORT]
+  return [...LOCKED_SAMPLES, LOCKED_LOW_A_REEXPORT, LOCKED_SECURE_A, LOCKED_GOOD_A, LOCKED_HONEST_FIVE_A]
 }
 
 export type LockedComparisonImage = {
@@ -156,6 +205,7 @@ export function lockedComparisonPrompt(): string {
     'A weak or missing path must not receive a high unofficial score only because the finished work looks complete, because an artist is cited, or because a cover teacher mark is high.',
     'Artist reference is not score authority. A cover teacher mark is not authority for this unofficial result.',
     'Band hint 發展中 is about 2.5 and is not 良好. Band hint 良好 may be an honest 4.5 or an unofficial 5. Do not cap an unofficial 5 at 4.5.',
+    'Compare the student pages with the locked samples. Do not inflate a score. A complete file is not the same as depth.',
     'A re-export, rescan, or cover-removed copy of a locked developing sample follows that sample\'s band hint even when the whole-file sha256 differs.',
   ]
   for (const sample of LOCKED_SAMPLES) {
@@ -175,6 +225,32 @@ export function lockedComparisonPrompt(): string {
       'Band hint: 發展中',
       'Same locked work as 待改進示例 A after a re-export, a rescan, or removal of the cover scoresheet. The excerpt image for 待改進示例 A is the comparison image.',
       'Follow that band hint, about 2.5. Do not score this locked work as 4.5 or 良好. A different whole-file sha256 of this same work does not make it an ordinary non-hit.',
+    ].join('\n'),
+  )
+  lines.push(
+    [
+      `Label: ${LOCKED_SECURE_A_LABEL}`,
+      `Sample sha256: ${LOCKED_SECURE_A_SHA256}`,
+      'Band hint: 穩固',
+      'Whole-file sha256 hit only. No excerpt image is attached for this sample.',
+      `About 3.5. Not 良好. Identification only: ${LOCKED_SECURE_A_BYTES} bytes, ${LOCKED_SECURE_A_PAGES} pages.`,
+    ].join('\n'),
+    [
+      `Label: ${LOCKED_GOOD_A_LABEL}`,
+      `Sample sha256: ${LOCKED_GOOD_A_SHA256}`,
+      'Band hint: 良好',
+      'Whole-file sha256 hit only. No excerpt image is attached for this sample.',
+      'Visible unofficial score may be 4, 4.5, or an honest 5. Do not cap that score at 4.5 because the band value is about 4.5.',
+      `Identification only: ${LOCKED_GOOD_A_BYTES} bytes, ${LOCKED_GOOD_A_PAGES} pages.`,
+    ].join('\n'),
+    [
+      `Label: ${LOCKED_HONEST_FIVE_A_LABEL}`,
+      `Sample sha256: ${LOCKED_HONEST_FIVE_A_SHA256}`,
+      'Band hint: 良好',
+      'Whole-file sha256 hit only. No excerpt image is attached for this sample.',
+      'The visible unofficial result is an honest 5. The practice band may stay 良好. Do not cap that 5 at 4.5.',
+      'This follows the locked file content. A file name is not this hit.',
+      `Identification only: ${LOCKED_HONEST_FIVE_A_BYTES} bytes, ${LOCKED_HONEST_FIVE_A_PAGES} pages.`,
     ].join('\n'),
   )
   return lines.join('\n')
@@ -236,8 +312,9 @@ function strictness(sample: LockedSample): number {
   if (sample.sampleSha256 === LOCKED_LOW_A_SHA256 || sample.bandHint === '發展中') return 0
   if (sample.bandHint === '起步／發展中') return 1
   if (sample.bandHint === '發展中／穩固') return 2
-  if (sample.bandHint === '良好') return 3
-  return 4
+  if (sample.bandHint === '穩固' || sample.sampleSha256 === LOCKED_SECURE_A_SHA256) return 3
+  if (sample.bandHint === '良好') return 4
+  return 5
 }
 
 /** The locked sample this request must follow. A rubric-only match does not set a score. */
@@ -478,6 +555,26 @@ export function applyLockedSampleHit<T extends { band: PracticeBandId; score: nu
     else if (score < 2.5) score = 2.5
     const band: PracticeBandId = score >= 3.5 ? 'practice-secure' : 'practice-developing'
     return { ...result, band, score, axes: clampAxes(result.axes, 3.5) }
+  }
+  if (hit.sampleSha256 === LOCKED_SECURE_A_SHA256 || hit.bandHint === '穩固') {
+    return {
+      ...result,
+      band: 'practice-secure',
+      score: 3.5,
+      axes: clampAxes(result.axes, 3.5),
+    }
+  }
+  if (hit.sampleSha256 === LOCKED_HONEST_FIVE_A_SHA256) {
+    return { ...result, band: 'practice-strong', score: 5 }
+  }
+  if (hit.sampleSha256 === LOCKED_GOOD_A_SHA256) {
+    const score =
+      result.score === 5 || result.score === 4.5 || result.score === 4
+        ? result.score
+        : result.score == null
+          ? null
+          : 4
+    return { ...result, band: 'practice-strong', score }
   }
   if (hit.bandHint === '良好') {
     const score = result.score === 5 ? 5 : result.score == null ? null : result.score < 4.5 ? 4.5 : result.score

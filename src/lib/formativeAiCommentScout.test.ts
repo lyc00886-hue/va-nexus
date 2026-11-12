@@ -4,6 +4,8 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
+import { encode } from 'jpeg-js'
+import { FORMATIVE_PAGE_BYTE_MAX } from './formativePageFit.ts'
 import { BAND_FORMATIVE } from './schoolScoreDual.ts'
 import {
   FORMATIVE_BAND_VALUE,
@@ -324,6 +326,59 @@ describe('formative AI comment trigger', () => {
     const page = fittedBody.pages?.[0]
     assert.equal(page?.fileSha256, original)
     const posted = Buffer.from(page?.imageBase64 ?? '', 'base64')
-    assert.notEqual(createHash('sha256').update(posted).digest('hex'), original)
+    const { PDFDocument: LoadedPdf } = await import('pdf-lib')
+    const loaded = await LoadedPdf.load(posted)
+    assert.equal(loaded.getPageCount(), 5)
+    assert.equal(createHash('sha256').update(posted).digest('hex'), original)
+
+    const width = 8
+    const height = 8
+    const pixels = new Uint8Array(width * height * 4)
+    for (let i = 0; i < pixels.length; i += 4) {
+      pixels[i] = 20
+      pixels[i + 1] = 40
+      pixels[i + 2] = 60
+      pixels[i + 3] = 255
+    }
+    const jpeg = new Uint8Array(encode({ data: pixels, width, height }, 80).data)
+    const extra = FORMATIVE_PAGE_BYTE_MAX + 1000 - jpeg.byteLength
+    const segments: number[] = []
+    let left = extra
+    while (left > 0) {
+      const payload = Math.min(left, 65533)
+      segments.push(payload)
+      left -= payload
+    }
+    const big = new Uint8Array(jpeg.byteLength + segments.reduce((sum, payload) => sum + 4 + payload, 0))
+    big[0] = 0xff
+    big[1] = 0xd8
+    let offset = 2
+    for (const payload of segments) {
+      big[offset] = 0xff
+      big[offset + 1] = 0xfe
+      const length = payload + 2
+      big[offset + 2] = length >> 8
+      big[offset + 3] = length & 0xff
+      offset += 4 + payload
+    }
+    big.set(jpeg.subarray(2), offset)
+    const bigSha = createHash('sha256').update(big).digest('hex')
+    const shrunk = await postFormativeComment({
+      locale: 'zh-Hant',
+      fileName: 'page.jpg',
+      mime: 'image/jpeg',
+      bytes: big,
+      pages: [{ side: 'artwork', mime: 'image/jpeg', bytes: big, fileName: 'page.jpg' }],
+      fetchImpl: async (_input, init) => {
+        raw = String(init?.body ?? '')
+        return new Response(JSON.stringify({ ok: false, reason: 'unavailable' }), { status: 503 })
+      },
+    })
+    assert.equal(shrunk.ok, false)
+    const shrunkBody = JSON.parse(raw) as { pages?: { fileSha256?: string; imageBase64?: string }[] }
+    const shrunkPage = shrunkBody.pages?.[0]
+    assert.equal(shrunkPage?.fileSha256, bigSha)
+    const shrunkBytes = Buffer.from(shrunkPage?.imageBase64 ?? '', 'base64')
+    assert.notEqual(createHash('sha256').update(shrunkBytes).digest('hex'), bigSha)
   })
 })

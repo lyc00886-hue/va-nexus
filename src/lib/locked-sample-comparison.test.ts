@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
-import { readdirSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
@@ -10,10 +10,22 @@ import { formativeAxisLabels, formativeCommentSystem, postFormativeComment } fro
 import { dhashDistance, pageDhashesOfUpload } from './pageDhash.ts'
 import {
   DEVELOPING_PAGE_DISTANCE_MAX,
+  LOCKED_GOOD_A_BYTES,
+  LOCKED_GOOD_A_LABEL,
+  LOCKED_GOOD_A_PAGES,
+  LOCKED_GOOD_A_SHA256,
+  LOCKED_HONEST_FIVE_A_BYTES,
+  LOCKED_HONEST_FIVE_A_LABEL,
+  LOCKED_HONEST_FIVE_A_PAGES,
+  LOCKED_HONEST_FIVE_A_SHA256,
   LOCKED_LOW_A_REEXPORT_LABEL,
   LOCKED_LOW_A_REEXPORT_SHA256,
   LOCKED_LOW_A_SHA256,
   LOCKED_SAMPLES,
+  LOCKED_SECURE_A_BYTES,
+  LOCKED_SECURE_A_LABEL,
+  LOCKED_SECURE_A_PAGES,
+  LOCKED_SECURE_A_SHA256,
   applyLockedSampleHit,
   comparisonImagesReady,
   developingAnchors,
@@ -261,5 +273,68 @@ describe('locked comparison excerpts', () => {
     assert.equal(body.pages?.length, 1)
     assert.ok(body.pageDhashes?.some((hash) => (dhashDistance(hash, anchor.dhash) ?? 99) <= DEVELOPING_PAGE_DISTANCE_MAX))
     assert.equal(raw.includes('reexport.pdf'), false)
+  })
+
+  it('locks the three whole-file samples by sha256 and does not invent excerpts', () => {
+    const highA = LOCKED_SAMPLES.find(
+      (sample) => sample.sampleSha256 === '1818161a67b4673a6df8cb0d0582cdf25ff1690cadb145eceb278ac20eab5532',
+    )
+    assert.equal(highA?.label.startsWith('高分示例 A'), true)
+    assert.equal(LOCKED_SECURE_A_BYTES, 24340156)
+    assert.equal(LOCKED_SECURE_A_PAGES, 24)
+    assert.equal(LOCKED_GOOD_A_BYTES, 14521923)
+    assert.equal(LOCKED_GOOD_A_PAGES, 27)
+    assert.equal(LOCKED_HONEST_FIVE_A_BYTES, 24976115)
+    assert.equal(LOCKED_HONEST_FIVE_A_PAGES, 71)
+    for (const hash of [LOCKED_SECURE_A_SHA256, LOCKED_GOOD_A_SHA256, LOCKED_HONEST_FIVE_A_SHA256]) {
+      assert.equal(LOCKED_SAMPLES.some((sample) => sample.sampleSha256 === hash), false)
+      assert.equal(existsSync(join(root, 'api/locked-sample-excerpts', `${hash}.png`)), false)
+    }
+    assert.equal(existsSync(join(root, 'SAMPLES.md')), false)
+    const prompt = lockedComparisonPrompt()
+    assert.match(prompt, new RegExp(LOCKED_SECURE_A_LABEL))
+    assert.match(prompt, new RegExp(LOCKED_GOOD_A_LABEL))
+    assert.match(prompt, new RegExp(LOCKED_HONEST_FIVE_A_LABEL))
+    assert.match(prompt, /Do not inflate/)
+    assert.match(prompt, /not the same as depth/)
+    const honestAt = prompt.indexOf(LOCKED_HONEST_FIVE_A_LABEL)
+    assert.equal(prompt.slice(honestAt, honestAt + 500).includes('高分示例 A'), false)
+    const secure = applyLockedSampleHit(
+      { band: 'practice-strong' as const, score: 4.5, axes: { 'aw-1': 5 } },
+      [LOCKED_SECURE_A_SHA256],
+    )
+    assert.equal(secure.band, 'practice-secure')
+    assert.equal(secure.score, 3.5)
+    assert.equal(secure.axes['aw-1'], 3.5)
+    assert.notEqual(secure.band, 'practice-strong')
+    for (const score of [4, 4.5, 5] as const) {
+      const good = applyLockedSampleHit(
+        { band: 'practice-developing' as const, score, axes: { 'aw-1': score } },
+        [LOCKED_GOOD_A_SHA256],
+      )
+      assert.equal(good.band, 'practice-strong')
+      assert.equal(good.score, score)
+      assert.equal(good.axes['aw-1'], score)
+    }
+    const honest = applyLockedSampleHit(
+      { band: 'practice-strong' as const, score: 4.5, axes: { 'aw-1': 4.5 } },
+      [LOCKED_HONEST_FIVE_A_SHA256],
+    )
+    assert.equal(honest.band, 'practice-strong')
+    assert.equal(honest.score, 5)
+    assert.notEqual(honest.score, 4.5)
+    const named = applyLockedSampleHit(
+      { band: 'practice-secure' as const, score: 3.5, axes: { 'aw-1': 3.5 } },
+      ['ab'.repeat(32)],
+    )
+    assert.equal(named.score, 3.5)
+    assert.equal(named.band, 'practice-secure')
+    for (const file of ['src/i18n/zh-Hant.json', 'src/i18n/zh-Hans.json', 'src/i18n/en.json']) {
+      const text = readFileSync(join(root, file), 'utf8')
+      assert.equal(text.includes(LOCKED_SECURE_A_LABEL), false, file)
+      assert.equal(text.includes(LOCKED_GOOD_A_LABEL), false, file)
+      assert.equal(text.includes(LOCKED_HONEST_FIVE_A_LABEL), false, file)
+      assert.equal(text.includes(LOCKED_HONEST_FIVE_A_SHA256), false, file)
+    }
   })
 })

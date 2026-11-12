@@ -5,6 +5,7 @@
  */
 import {
   fitFormativePayload,
+  formativeSourcePageCount,
   FORMATIVE_BODY_CHAR_MAX,
   FORMATIVE_PAGE_BYTE_MAX,
   FORMATIVE_TOTAL_BYTE_MAX,
@@ -135,7 +136,7 @@ export type FormativeAxes = Partial<Record<(typeof CRITERIA_IDS)[number], number
 
 export type FormativePageInput = {
   side?: string
-  /** Both scans for one combined file. One page still counts once toward the cap. */
+  /** Both scans for one combined file. Every page of that file is still sent. */
   sides?: readonly string[]
   mime: string
   bytes: Uint8Array
@@ -234,6 +235,9 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
     'Artist reference is not score authority. A cover score sheet or a teacher mark on it is not authority for this unofficial result.',
     'Band hint 發展中, including 待改進示例 A and 待改進示例 A 再匯出本, is about 2.5 and is not 良好. A re-export, rescan, or cover-removed copy of that locked work stays on this hint even when the whole-file sha256 differs. Do not score it as 4.5 or 良好.',
     'Band hint 良好 on a locked high sample may be an honest 4.5 or an unofficial 5. Do not cap that 5 at 4.5. Do not invent a fifth band name.',
+    'Compare the student pages with the locked samples. Do not inflate a score. A complete file is not the same as depth.',
+    'Read every attached page of this artwork and workbook. A score from only the first four pages is not a complete result for a longer file.',
+    'Band hint 穩固 is about 3.5. A locked 良好 file may show 4, 4.5, or an honest 5. Do not raise a visible 4 to 4.5 only because the band value is about 4.5.',
     'Stronger work shows a clear theme, an evidenced reading of artworks carried into the student\'s own work, media trials including unsuccessful ones, a visible making process, and reflection.',
     'Earlier bands show a theme that is only starting, thin evidence, or missing trials.',
     'That standard is school-internal formative reference only. Do not name a student, a teacher, or a school. Do not present this as a public-exam result.',
@@ -260,7 +264,7 @@ export function formativeCommentSystem(labels: readonly string[], locale: string
 }
 
 export const FORMATIVE_USER_PROMPT =
-  'Pages marked with a page side are the student artwork and/or research-workbook pages to score. Locked comparison excerpts are separate images, each marked with a label, a sample sha256, and a band hint. Compare the student pages with those excerpts. Score visible visual elements and the making path: text, then images, then visual elements, then combine with artist reference, then the artwork. A weak or missing path must not receive a high unofficial score only because the finished work looks complete, an artist is cited, or a cover teacher mark is high. Artist reference is not score authority. A cover teacher mark is not authority for this unofficial result. Score each axis separately. Do not use the file name or file size. Do not award an official mark.'
+  'Pages marked with a page side are the student artwork and/or research-workbook pages to score. Locked comparison excerpts are separate images, each marked with a label, a sample sha256, and a band hint. Compare the student pages with those excerpts. Score visible visual elements and the making path: text, then images, then visual elements, then combine with artist reference, then the artwork. A weak or missing path must not receive a high unofficial score only because the finished work looks complete, an artist is cited, or a cover teacher mark is high. Artist reference is not score authority. A cover teacher mark is not authority for this unofficial result. Compare with the locked samples. Do not inflate. Completeness is not depth. Read every attached page of this artwork and workbook. Score each axis separately. Do not use the file name or file size. Do not award an official mark.'
 
 export function formativeScanSides(side: unknown, sides?: unknown): Array<'artwork' | 'research_workbook'> {
   const found = new Set<string>()
@@ -479,6 +483,7 @@ type PackedFormativePage = {
   bytes: Uint8Array
   /** sha256 of the original uploaded file, taken before a fitted page replaces those bytes. */
   fileSha256: string
+  pageCount: number
 }
 
 async function sha256Hex(bytes: Uint8Array): Promise<string> {
@@ -494,12 +499,21 @@ async function sha256Hex(bytes: Uint8Array): Promise<string> {
   }
 }
 
+function coveredPageCount(items: readonly { pageCount?: number }[]): number {
+  return items.reduce((sum, item) => sum + (item.pageCount != null && item.pageCount > 0 ? item.pageCount : 1), 0)
+}
+
+/**
+ * Every page of every uploaded artwork and workbook file.
+ * A file that cannot be fitted whole makes the request unsent. A prefix of
+ * pages is not returned in its place.
+ */
 async function packFormativePages(input: {
   fileName: string
   mime: string
   bytes: Uint8Array | null
   pages?: readonly FormativePageInput[]
-}): Promise<PackedFormativePage[]> {
+}): Promise<{ pages: PackedFormativePage[]; sourcePageCount: number } | null> {
   const source: FormativePageInput[] = (
     input.pages && input.pages.length > 0
       ? [...input.pages]
@@ -507,36 +521,44 @@ async function packFormativePages(input: {
         ? [{ mime: input.mime, bytes: input.bytes, fileName: input.fileName }]
         : []
   ).filter((page) => page.bytes.byteLength > 0)
-  if (source.length === 0) return []
-  const share = Math.min(FORMATIVE_PAGE_BYTE_MAX, Math.floor(FORMATIVE_TOTAL_BYTE_MAX / Math.min(4, source.length)))
+  if (source.length === 0) return null
+  const share = Math.min(FORMATIVE_PAGE_BYTE_MAX, Math.floor(FORMATIVE_TOTAL_BYTE_MAX / source.length))
   const packed: PackedFormativePage[] = []
+  let expected = 0
   for (const page of source) {
-    if (packed.length >= 4) break
     const sides = formativeScanSides(page.side, page.sides)
+    const mime = page.mime || input.mime
+    const count = await formativeSourcePageCount(page.bytes, mime)
+    expected += count
     const fileSha256 = await sha256Hex(page.bytes)
     const fitted = await fitFormativePayload({
       side: sides[0] ?? page.side,
-      mime: page.mime,
+      mime,
       bytes: page.bytes,
       fileName: page.fileName || input.fileName,
       maxBytes: share,
     })
+    if (coveredPageCount(fitted) < count) return null
     for (const item of fitted) {
-      if (packed.length >= 4) break
-      if (item.bytes.byteLength === 0 || item.bytes.byteLength > FORMATIVE_PAGE_BYTE_MAX) continue
-      packed.push({ side: sides[0] ?? item.side, sides, mime: item.mime, bytes: item.bytes, fileSha256 })
+      if (item.bytes.byteLength === 0 || item.bytes.byteLength > FORMATIVE_PAGE_BYTE_MAX) return null
+      packed.push({
+        side: sides[0] ?? item.side,
+        sides,
+        mime: item.mime,
+        bytes: item.bytes,
+        fileSha256,
+        pageCount: item.pageCount != null && item.pageCount > 0 ? item.pageCount : 1,
+      })
     }
   }
-  const kept: PackedFormativePage[] = []
   let total = 0
   for (const item of packed) {
-    if (kept.length >= 4) break
-    if (item.bytes.byteLength > FORMATIVE_TOTAL_BYTE_MAX) continue
-    if (kept.length > 0 && total + item.bytes.byteLength > FORMATIVE_TOTAL_BYTE_MAX) continue
-    kept.push(item)
+    if (item.bytes.byteLength > FORMATIVE_TOTAL_BYTE_MAX) return null
+    if (total + item.bytes.byteLength > FORMATIVE_TOTAL_BYTE_MAX) return null
     total += item.bytes.byteLength
   }
-  return kept
+  if (packed.length === 0 || coveredPageCount(packed) < expected) return null
+  return { pages: packed, sourcePageCount: expected }
 }
 
 function formativePageJson(page: PackedFormativePage): {
@@ -557,18 +579,22 @@ function formativeRequestBody(
   pages: readonly PackedFormativePage[],
   asPages: boolean,
   pageDhashes: readonly string[],
+  sourcePageCount: number,
 ): string {
   const fingerprints = pageDhashes.length > 0 ? { pageDhashes } : {}
+  const coverage = sourcePageCount > 0 ? { sourcePageCount } : {}
   if (asPages) {
     return JSON.stringify({
       locale,
       ...fingerprints,
+      ...coverage,
       pages: pages.map((page) => formativePageJson(page)),
     })
   }
   return JSON.stringify({
     locale,
     ...fingerprints,
+    ...coverage,
     mime: pages[0].mime,
     imageBase64: bytesToBase64(pages[0].bytes),
     ...(pages[0].fileSha256 ? { fileSha256: pages[0].fileSha256 } : {}),
@@ -606,15 +632,12 @@ export async function postFormativeComment(input: {
   accessToken?: string | null
   fetchImpl?: typeof fetch
 }): Promise<FormativeModelResult> {
-  let pages = await packFormativePages(input)
-  if (pages.length === 0) return { ok: false, reason: 'not_sent' }
+  const packed = await packFormativePages(input)
+  if (!packed) return { ok: false, reason: 'not_sent' }
+  const pages = packed.pages
   const asPages = Boolean(input.pages && input.pages.length > 0)
   const pageDhashes = await uploadPageDhashes(input)
-  let body = formativeRequestBody(input.locale, pages, asPages, pageDhashes)
-  while (body.length > FORMATIVE_BODY_CHAR_MAX && pages.length > 1) {
-    pages = pages.slice(0, -1)
-    body = formativeRequestBody(input.locale, pages, asPages, pageDhashes)
-  }
+  const body = formativeRequestBody(input.locale, pages, asPages, pageDhashes, packed.sourcePageCount)
   if (body.length > FORMATIVE_BODY_CHAR_MAX) return { ok: false, reason: 'not_sent' }
   const fetchImpl = input.fetchImpl ?? fetch
   try {

@@ -18,6 +18,7 @@ import {
   approximateBandId,
   isLaterUploadFile,
   laterPageSide,
+  sanitizeLaterStore,
   studentVisibleBand,
   withUploadedFile,
 } from './schoolScoreLater.ts'
@@ -355,30 +356,105 @@ describe('later files still reach the formative comment', { concurrency: false }
     assert.equal(result.ok, true)
   })
 
-  it('keeps a PDF that has more than four pages inside the four-page cap', async () => {
+  it('sends every page of a long PDF instead of a four-page stand-in', async () => {
+    for (const count of [6, 24, 27, 71]) {
+      const doc = await PDFDocument.create()
+      for (let i = 0; i < count; i += 1) doc.addPage([200, 200])
+      const file = new Uint8Array(await doc.save())
+      let sent = new Uint8Array()
+      let declared = 0
+      const result = await postFormativeComment({
+        locale: 'en',
+        fileName: 'portfolio.pdf',
+        mime: 'application/pdf',
+        bytes: file,
+        pages: [{ side: 'artwork', mime: 'application/pdf', bytes: file, fileName: 'portfolio.pdf' }],
+        fetchImpl: async (_input, init) => {
+          const body = JSON.parse(String(init?.body)) as {
+            sourcePageCount?: number
+            pages?: { mime?: string; imageBase64?: string }[]
+          }
+          declared = body.sourcePageCount ?? 0
+          assert.equal(body.pages?.length, 1)
+          assert.equal(body.pages?.[0]?.mime, 'application/pdf')
+          sent = Uint8Array.from(Buffer.from(body.pages?.[0]?.imageBase64 ?? '', 'base64'))
+          return new Response(JSON.stringify({ ok: true, comment: COMMENT, band: 'practice-developing', score: 2.5 }), {
+            status: 200,
+          })
+        },
+      })
+      assert.equal(result.ok, true, String(count))
+      assert.equal(declared, count)
+      const loaded = await PDFDocument.load(sent)
+      assert.equal(loaded.getPageCount(), count)
+      assert.notEqual(loaded.getPageCount(), 4)
+    }
+  })
+
+  it('does not post a score when the whole file cannot be sent', async () => {
     const doc = await PDFDocument.create()
-    for (let i = 0; i < 6; i += 1) doc.addPage([200, 200])
-    const six = new Uint8Array(await doc.save())
-    let sent = new Uint8Array()
+    for (let i = 0; i < 8; i += 1) doc.addPage([200, 200])
+    const saved = new Uint8Array(await doc.save())
+    const huge = new Uint8Array(FORMATIVE_PAGE_BYTE_MAX + 64)
+    huge.set(saved)
+    let called = false
     const result = await postFormativeComment({
-      locale: 'en',
-      fileName: 'Jessie_revised_1.pdf',
+      locale: 'zh-Hant',
+      fileName: 'portfolio.pdf',
       mime: 'application/pdf',
-      bytes: six,
-      pages: [{ side: 'artwork', mime: 'application/pdf', bytes: six, fileName: 'Jessie_revised_1.pdf' }],
-      fetchImpl: async (_input, init) => {
-        const body = JSON.parse(String(init?.body)) as { pages?: { mime?: string; imageBase64?: string }[] }
-        assert.equal(body.pages?.length, 1)
-        assert.equal(body.pages?.[0]?.mime, 'application/pdf')
-        sent = Uint8Array.from(Buffer.from(body.pages?.[0]?.imageBase64 ?? '', 'base64'))
-        return new Response(JSON.stringify({ ok: true, comment: COMMENT, band: 'practice-developing', axes: {} }), {
+      bytes: huge,
+      pages: [{ side: 'artwork', mime: 'application/pdf', bytes: huge, fileName: 'portfolio.pdf' }],
+      fetchImpl: async () => {
+        called = true
+        return new Response(JSON.stringify({ ok: true, comment: COMMENT, band: 'practice-strong', score: 5 }), {
           status: 200,
         })
       },
     })
-    assert.equal(result.ok, true)
-    const loaded = await PDFDocument.load(sent)
-    assert.equal(loaded.getPageCount(), 4)
+    assert.equal(called, false)
+    assert.deepEqual(result, { ok: false, reason: 'not_sent' })
+  })
+
+  it('keeps an older later result when a later whole-file send cannot leave', async () => {
+    const kept = sanitizeLaterStore({
+      version: 1,
+      draft: {
+        fileName: 'page.pdf',
+        fileSize: 1200,
+        mime: 'application/pdf',
+        approxBand: 'practice-strong',
+        aiStatus: 'model',
+        aiComment: COMMENT,
+        approxValue: 5,
+        pages: [{ fileName: 'page.pdf', fileSize: 1200, mime: 'application/pdf' }],
+      },
+    })
+    assert.equal(SCHOOL_SCORE_LATER_KEY, 'va-nexus:school-score-later:v1')
+    assert.equal(kept.draft?.approxValue, 5)
+    assert.equal(kept.draft?.aiComment, COMMENT)
+    assert.equal(kept.draft?.approxBand, 'practice-strong')
+    assert.equal(kept.draft?.aiStatus, 'model')
+
+    blobBytes = SMALL_PDF
+    assert.equal(acceptLaterFiles([page('page.pdf', SMALL_PDF.byteLength, 'application/pdf')]), true)
+    const first = requestLaterComment('zh-Hant', false)
+    await waitForPost()
+    postedBody()
+    assert.equal(await first, 'model')
+    const scored = getSchoolScoreLater().draft
+    assert.equal(scored?.aiStatus, 'model')
+    assert.equal(scored?.aiComment, COMMENT)
+
+    blobBytes = new Uint8Array(FORMATIVE_PAGE_BYTE_MAX + 32)
+    const again = requestLaterComment('zh-Hant', false)
+    assert.equal(await again, 'unsent')
+    assert.equal(pending.length, 0)
+    const draft = getSchoolScoreLater().draft
+    assert.equal(draft?.aiStatus, 'model')
+    assert.equal(draft?.aiComment, COMMENT)
+    assert.equal(draft?.approxBand, scored?.approxBand)
+    assert.equal(draft?.approxValue, scored?.approxValue)
+    assert.notEqual(draft?.approxBand, null)
   })
 
   it('does not post an excluded name and does not guess a band', async () => {

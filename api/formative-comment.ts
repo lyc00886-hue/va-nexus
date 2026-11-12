@@ -5,8 +5,10 @@
  * A modest per-IP limit applies. No key or a model miss returns unavailable.
  * This route does not write a school reference and does not award an official mark.
  * Locked comparison excerpts are attached beside the student pages. They do not
- * count toward the student limit of four pages. A missing excerpt set uses the
- * same unavailable result as a model miss and does not guess from the file name.
+ * count as student uploads. Every page of this request's artwork and workbook
+ * is read. A missing excerpt set uses the same unavailable result as a model
+ * miss and does not guess from the file name. A body that covers fewer pages
+ * than the upload declared is not scored.
  * A cover-removed re-export of a locked developing sample follows that sample
  * when the whole-file sha256 matches or a content page matches. The file name
  * is not used.
@@ -20,6 +22,7 @@ import {
   receivedPageDhashes,
   type LockedComparisonImage,
 } from '../src/lib/locked-sample-comparison.ts'
+import { formativeSourcePageCount } from '../src/lib/formativePageFit.ts'
 import {
   FORMATIVE_BODY_CHAR_MAX,
   FORMATIVE_PAGE_BYTE_MAX,
@@ -46,9 +49,9 @@ export type FormativeGenerator = (input: {
 }) => Promise<string | null>
 
 /**
- * Student pages stay at most four. Comparison excerpts are extra parts and are
- * not student uploads. A text label without an excerpt image is not included
- * as a comparison page.
+ * Every student page on this request is sent. Comparison excerpts are extra
+ * parts and are not student uploads. A text label without an excerpt image is
+ * not included as a comparison page.
  */
 export function formativeModelParts(
   user: string,
@@ -249,7 +252,19 @@ function readDhashList(value: unknown): string[] {
   return found
 }
 
-function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[]; pageDhashes: string[] } | null {
+function readSourcePageCount(value: unknown): number | null {
+  if (typeof value !== 'number' || !Number.isInteger(value) || value < 1) return null
+  return value
+}
+
+type ParsedPages = {
+  locale: string
+  pages: IncomingPage[]
+  pageDhashes: string[]
+  sourcePageCount: number | null
+}
+
+function pagesFromBody(body: unknown): ParsedPages | { incomplete: true } | null {
   if (!body || typeof body !== 'object') return null
   const record = body as {
     locale?: unknown
@@ -258,6 +273,7 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[]; 
     fileName?: unknown
     fileSha256?: unknown
     pageDhashes?: unknown
+    sourcePageCount?: unknown
     pages?: unknown
   }
   const locale = record.locale === 'en' || record.locale === 'zh-Hans' || record.locale === 'zh-Hant' ? record.locale : 'zh-Hant'
@@ -265,7 +281,6 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[]; 
   let total = 0
   if (Array.isArray(record.pages)) {
     for (const item of record.pages) {
-      if (pages.length >= 4) break
       if (!item || typeof item !== 'object') continue
       const page = item as {
         side?: unknown
@@ -278,7 +293,7 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[]; 
       const next = onePage(page.side, page.mime, page.imageBase64, page.fileName, page.sides, page.fileSha256)
       if (!next) continue
       const bytes = Buffer.from(next.base64, 'base64').length
-      if (total > 0 && total + bytes > FORMATIVE_TOTAL_BYTE_MAX) continue
+      if (total + bytes > FORMATIVE_TOTAL_BYTE_MAX) return { incomplete: true }
       pages.push(next)
       total += bytes
     }
@@ -287,7 +302,24 @@ function pagesFromBody(body: unknown): { locale: string; pages: IncomingPage[]; 
     if (next) pages.push(next)
   }
   if (pages.length === 0) return null
-  return { locale, pages, pageDhashes: readDhashList(record.pageDhashes) }
+  return {
+    locale,
+    pages,
+    pageDhashes: readDhashList(record.pageDhashes),
+    sourcePageCount: readSourcePageCount(record.sourcePageCount),
+  }
+}
+
+async function coveredUploadPages(pages: readonly IncomingPage[]): Promise<number> {
+  let total = 0
+  for (const page of pages) {
+    if (page.mime === 'application/pdf') {
+      total += await formativeSourcePageCount(Buffer.from(page.base64, 'base64'), page.mime)
+    } else {
+      total += 1
+    }
+  }
+  return total
 }
 
 async function generateFormative(
@@ -339,6 +371,11 @@ export async function handleFormativeComment(request: Request): Promise<Response
   }
   const page = pagesFromBody(body)
   if (!page) return unavailable(400)
+  if ('incomplete' in page) return json(413, { ok: false, reason: 'unavailable' })
+  if (page.sourcePageCount != null) {
+    const covered = await coveredUploadPages(page.pages)
+    if (covered < page.sourcePageCount) return json(413, { ok: false, reason: 'unavailable' })
+  }
   if (formativeRateLimited(request)) return unavailable(429)
 
   const labels = formativeAxisLabels(page.locale).map((axis) => axis.label)

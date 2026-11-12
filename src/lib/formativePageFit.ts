@@ -2,7 +2,8 @@
  * Fit a later-path page so POST /api/formative-comment can leave the browser.
  * Vercel rejects a function body above 4.5 MB. Base64 of a 3_500_000-byte page
  * is already larger than that, so an oversized PDF or image is reduced here
- * instead of being dropped. At most four pages are returned.
+ * instead of being dropped. Every page of the file is returned. A file that
+ * cannot be sent whole returns nothing, so the caller does not score a subset.
  */
 import { decode, encode, type JpegImage } from 'jpeg-js'
 
@@ -28,6 +29,8 @@ export type FittedFormativePage = {
   side: string
   mime: string
   bytes: Uint8Array
+  /** Original pages this part stands for. A whole PDF counts every page. One image is one page. */
+  pageCount?: number
 }
 
 export function mimeFromFileName(name: string): string | null {
@@ -96,24 +99,19 @@ function pdfPageCountLoose(bytes: Uint8Array): number {
   return new TextDecoder('latin1').decode(bytes).match(/\/Type\s*\/Page(?!s)\b/g)?.length ?? 0
 }
 
-function hasPdfTrailer(bytes: Uint8Array): boolean {
-  const start = Math.max(0, bytes.length - 65536)
-  return new TextDecoder('latin1').decode(bytes.subarray(start)).includes('startxref')
-}
-
-/** First page, last page, and a spread between them. At most `max` indexes. */
-export function representativePageIndexes(count: number, max = 4): number[] {
-  if (count <= 0) return []
-  if (count <= max) return Array.from({ length: count }, (_, index) => index)
-  const used = new Set<number>()
-  const indexes: number[] = []
-  for (let i = 0; i < max; i += 1) {
-    const index = Math.round((i * (count - 1)) / (max - 1))
-    if (used.has(index)) continue
-    used.add(index)
-    indexes.push(index)
+/** Pages in a PDF. A file pdf-lib cannot open falls back to the visible page objects. */
+export async function formativeSourcePageCount(bytes: Uint8Array, mime: string): Promise<number> {
+  if (mime !== 'application/pdf' && !isPdf(bytes)) return 1
+  const loose = pdfPageCountLoose(bytes)
+  try {
+    const { PDFDocument } = await import('pdf-lib')
+    const doc = await PDFDocument.load(bytes, { ignoreEncryption: true })
+    const count = doc.getPageCount()
+    if (count > 0) return count
+  } catch {
+    /* A partial header still uses the loose count below. */
   }
-  return indexes
+  return loose > 0 ? loose : 1
 }
 
 function extractJpegs(bytes: Uint8Array): Uint8Array[] {
@@ -140,12 +138,10 @@ function extractJpegs(bytes: Uint8Array): Uint8Array[] {
   return found
 }
 
-function pickRepresentativeJpegs(all: Uint8Array[]): Uint8Array[] {
+function pageImages(all: Uint8Array[]): Uint8Array[] {
   if (all.length === 0) return []
   const large = all.filter((item) => item.byteLength >= 12_000)
-  const pool = large.length > 0 ? large : all
-  if (pool.length <= 4) return pool
-  return representativePageIndexes(pool.length, 4).map((index) => pool[index])
+  return large.length > 0 ? large : all
 }
 
 function downscaleRgba(src: Uint8Array, sw: number, sh: number, maxEdge: number): JpegImage {
@@ -250,60 +246,43 @@ async function fitImage(bytes: Uint8Array, mime: string, maxBytes: number): Prom
   return null
 }
 
-async function fitExtractedJpegs(bytes: Uint8Array, side: string, maxBytes: number): Promise<FittedFormativePage[]> {
-  const images = pickRepresentativeJpegs(extractJpegs(bytes))
-  if (images.length === 0) return []
-  const share = Math.max(1, Math.floor(maxBytes / images.length))
+/**
+ * One fitted image per original page. A shorter list is not the whole file,
+ * so the caller receives nothing instead of a four-page stand-in.
+ */
+async function fitEveryExtractedPage(
+  bytes: Uint8Array,
+  side: string,
+  maxBytes: number,
+  pageCount: number,
+): Promise<FittedFormativePage[]> {
+  if (pageCount < 1) return []
+  const images = pageImages(extractJpegs(bytes))
+  if (images.length !== pageCount) return []
+  const share = Math.max(1, Math.floor(maxBytes / pageCount))
   const fitted: FittedFormativePage[] = []
+  let total = 0
   for (const jpeg of images) {
-    if (fitted.length >= 4) break
-    const one = await fitImage(jpeg, 'image/jpeg', share)
-    if (!one) continue
-    fitted.push({ side, mime: one.mime, bytes: one.bytes })
+    const one = await fitImage(jpeg, 'image/jpeg', Math.min(share, Math.max(1, maxBytes - total)))
+    if (!one || one.bytes.byteLength === 0) return []
+    total += one.bytes.byteLength
+    if (total > maxBytes) return []
+    fitted.push({ side, mime: one.mime, bytes: one.bytes, pageCount: 1 })
   }
-  return fitted
-}
-
-async function subsetPdf(bytes: Uint8Array, maxBytes: number): Promise<Uint8Array | null> {
-  if (!hasPdfTrailer(bytes)) return null
-  try {
-    const { PDFDocument } = await import('pdf-lib')
-    const doc = await PDFDocument.load(bytes, { ignoreEncryption: true })
-    const count = doc.getPageCount()
-    if (count <= 0) return null
-    if (count <= 4 && bytes.byteLength <= maxBytes) return bytes
-    const indexes = representativePageIndexes(count, 4)
-    const out = await PDFDocument.create()
-    const copied = await out.copyPages(doc, indexes)
-    for (const page of copied) out.addPage(page)
-    const saved = new Uint8Array(await out.save())
-    if (saved.byteLength === 0 || saved.byteLength > maxBytes) return null
-    return saved
-  } catch {
-    return null
-  }
+  return fitted.length === pageCount ? fitted : []
 }
 
 async function fitPdf(bytes: Uint8Array, side: string, maxBytes: number): Promise<FittedFormativePage[]> {
   if (!isPdf(bytes)) {
-    return bytes.byteLength > 0 && bytes.byteLength <= maxBytes ? [{ side, mime: 'application/pdf', bytes }] : []
+    return bytes.byteLength > 0 && bytes.byteLength <= maxBytes
+      ? [{ side, mime: 'application/pdf', bytes, pageCount: 1 }]
+      : []
   }
+  const pageCount = await formativeSourcePageCount(bytes, 'application/pdf')
   if (bytes.byteLength <= maxBytes) {
-    const loose = pdfPageCountLoose(bytes)
-    // Object streams hide /Type /Page. A trailer with no visible pages still needs a real count.
-    const needsCount = loose === 0 && hasPdfTrailer(bytes)
-    if (loose >= 1 && loose <= 4) return [{ side, mime: 'application/pdf', bytes }]
-    if (loose > 4 || needsCount) {
-      const subset = await subsetPdf(bytes, maxBytes)
-      if (subset) return [{ side, mime: 'application/pdf', bytes: subset }]
-    }
-    return [{ side, mime: 'application/pdf', bytes }]
+    return [{ side, mime: 'application/pdf', bytes, pageCount }]
   }
-  const images = await fitExtractedJpegs(bytes, side, maxBytes)
-  if (images.length > 0) return images
-  const subset = await subsetPdf(bytes, maxBytes)
-  if (subset) return [{ side, mime: 'application/pdf', bytes: subset }]
-  return []
+  return fitEveryExtractedPage(bytes, side, maxBytes, pageCount)
 }
 
 export async function fitFormativePayload(input: {

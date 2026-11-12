@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { afterEach, describe, it } from 'node:test'
+import { PDFDocument } from 'pdf-lib'
 import {
   handleFormativeComment,
   setFormativeGeneratorForTests,
@@ -8,9 +9,12 @@ import {
   type FormativeGenerator,
 } from './formative-comment.ts'
 import {
+  LOCKED_GOOD_A_SHA256,
+  LOCKED_HONEST_FIVE_A_SHA256,
   LOCKED_LOW_A_REEXPORT_SHA256,
   LOCKED_LOW_A_SHA256,
   LOCKED_SAMPLES,
+  LOCKED_SECURE_A_SHA256,
   developingAnchors,
   setLockedComparisonForTests,
 } from '../src/lib/locked-sample-comparison.ts'
@@ -483,7 +487,7 @@ describe('formative comment route', { concurrency: false }, () => {
     process.env.GEMINI_API_KEY = 'test-key'
     const source = readFileSync(new URL('./formative-comment.ts', import.meta.url), 'utf8')
     assert.equal(source.includes('approximateBandId'), false)
-    assert.match(source, /pages\.length >= 4/)
+    assert.equal(source.includes('pages.length >= 4'), false)
     let generated = false
     setFormativeGeneratorForTests(async () => {
       generated = true
@@ -521,7 +525,7 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.equal('score' in (body as object), false)
   })
 
-  it('keeps the student page cap at four while comparison excerpts are extra', async () => {
+  it('sends every student page while comparison excerpts stay extra', async () => {
     process.env.GEMINI_API_KEY = 'test-key'
     let studentPages = 0
     let excerptImages = 0
@@ -532,12 +536,37 @@ describe('formative comment route', { concurrency: false }, () => {
       inlineImages = (input.parts ?? []).filter((part) => part.inlineData?.data).length
       return JSON.stringify({ comment: COMMENT, band: 'practice-secure', score: 3.5 })
     })
-    const pages = Array.from({ length: 5 }, () => ({ side: 'artwork', mime: 'image/png', imageBase64: PNG }))
-    const res = await handleFormativeComment(request({ locale: 'zh-Hant', pages }))
+    const pages = Array.from({ length: 6 }, () => ({ side: 'artwork', mime: 'image/png', imageBase64: PNG }))
+    const res = await handleFormativeComment(request({ locale: 'zh-Hant', pages, sourcePageCount: 6 }))
     assert.equal(res.status, 200)
-    assert.equal(studentPages, 4)
+    assert.equal(studentPages, 6)
     assert.equal(excerptImages, 8)
-    assert.equal(inlineImages, 12)
+    assert.equal(inlineImages, 14)
+  })
+
+  it('does not treat four pages as a complete result for a longer portfolio', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    let generated = false
+    setFormativeGeneratorForTests(async () => {
+      generated = true
+      return JSON.stringify({ comment: COMMENT, band: 'practice-strong', score: 5 })
+    })
+    const doc = await PDFDocument.create()
+    for (let index = 0; index < 4; index += 1) doc.addPage([120, 120])
+    const pdf = Buffer.from(await doc.save()).toString('base64')
+    const res = await handleFormativeComment(
+      request({
+        locale: 'zh-Hant',
+        sourcePageCount: 71,
+        pages: [{ side: 'artwork', mime: 'application/pdf', imageBase64: pdf, fileName: 'portfolio.pdf' }],
+      }),
+    )
+    assert.equal(generated, false)
+    assert.equal(res.status, 413)
+    const body = await res.json()
+    assert.deepEqual(body, { ok: false, reason: 'unavailable' })
+    assert.equal('score' in (body as object), false)
+    assert.equal(JSON.stringify(body).includes('portfolio.pdf'), false)
   })
 
   it('follows 發展中 for the 23-page re-export and does not show 4.5 or 良好', async () => {
@@ -661,5 +690,111 @@ describe('formative comment route', { concurrency: false }, () => {
     assert.deepEqual(body, { ok: false, reason: 'unavailable' })
     assert.equal(JSON.stringify(body).includes('downgrade'), false)
     assert.equal('score' in (body as object), false)
+  })
+
+  it('locks 穩固示例 A at about 3.5 and does not show 良好', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({ comment: COMMENT, band: '良好', score: 4.5, axes: { 'aw-1': 5 } }),
+    )
+    const res = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'zh-Hant',
+        fileName: 'upload.pdf',
+        fileSha256: LOCKED_SECURE_A_SHA256,
+      }),
+    )
+    assert.equal(res.status, 200)
+    const body = (await res.json()) as { band?: string; score?: number; axes?: Record<string, number> }
+    assert.equal(body.band, 'practice-secure')
+    assert.equal(body.score, 3.5)
+    assert.notEqual(body.score, 4.5)
+    assert.notEqual(body.band, 'practice-strong')
+    assert.equal(body.axes?.['aw-1'], 3.5)
+  })
+
+  it('lets 良好示例 A show 4, 4.5, or an honest 5 without a 4.5 cap', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    for (const score of [4, 4.5, 5]) {
+      setFormativeGeneratorForTests(async () =>
+        JSON.stringify({ comment: COMMENT, band: 'practice-strong', score, axes: { 'aw-1': score } }),
+      )
+      const res = await handleFormativeComment(
+        request({
+          mime: 'image/png',
+          imageBase64: PNG,
+          locale: 'zh-Hant',
+          fileName: 'upload.pdf',
+          fileSha256: LOCKED_GOOD_A_SHA256,
+        }),
+      )
+      assert.equal(res.status, 200)
+      const body = (await res.json()) as { band?: string; score?: number }
+      assert.equal(body.band, 'practice-strong')
+      assert.equal(body.score, score)
+    }
+  })
+
+  it('shows 誠實五分示例 A as an honest 5 while the practice band stays 良好', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({ comment: COMMENT, band: '良好', score: 4.5, axes: { 'aw-1': 4.5 } }),
+    )
+    const res = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'zh-Hant',
+        fileName: '5** sample.pdf',
+        fileSha256: LOCKED_HONEST_FIVE_A_SHA256,
+      }),
+    )
+    assert.equal(res.status, 200)
+    const body = (await res.json()) as { band?: string; score?: number }
+    assert.equal(body.band, 'practice-strong')
+    assert.equal(body.score, 5)
+    assert.notEqual(body.score, 4.5)
+    assert.equal(JSON.stringify(body).includes('5**'), false)
+  })
+
+  it('does not move an ordinary file because the name says 5** or Level', async () => {
+    process.env.GEMINI_API_KEY = 'test-key'
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({ comment: COMMENT, band: 'practice-secure', score: 3.5, axes: { 'aw-1': 3.5 } }),
+    )
+    const named = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'zh-Hant',
+        fileName: 'Level 5** portfolio.pdf',
+        fileSha256: 'ab'.repeat(32),
+      }),
+    )
+    assert.equal(named.status, 200)
+    const namedBody = (await named.json()) as { band?: string; score?: number }
+    assert.equal(namedBody.score, 3.5)
+    assert.equal(namedBody.band, 'practice-secure')
+    assert.notEqual(namedBody.score, 5)
+
+    setFormativeGeneratorForTests(async () =>
+      JSON.stringify({ comment: COMMENT, band: 'practice-strong', score: 5, axes: { 'aw-1': 5 } }),
+    )
+    const high = await handleFormativeComment(
+      request({
+        mime: 'image/png',
+        imageBase64: PNG,
+        locale: 'en',
+        fileName: 'downgrade-Level-notes.pdf',
+        fileSha256: 'cd'.repeat(32),
+      }),
+    )
+    assert.equal(high.status, 200)
+    const highBody = (await high.json()) as { score?: number; band?: string }
+    assert.equal(highBody.score, 5)
+    assert.equal(highBody.band, 'practice-strong')
+    assert.notEqual(highBody.score, 4.5)
   })
 })
