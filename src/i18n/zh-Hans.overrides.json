@@ -417,6 +417,7 @@
   "score.later.removeFile": "铲除",
   "score.later.replaceFile": "更换",
   "score.later.axisAdvicePending": "暂时未有跟这条轴、跟这份作品的改进建议。",
+  "score.later.axisAdvicePendingWorkbook": "暂时未有跟这条轴、跟这份研究工作簿的改进建议。",
   "score.later.aiUnavailable": "暂时未能生成参考评语。你可以稍后再试，或先用教师调分。",
   "score.later.fileNotSent": "这份档案已上传，但暂时未能交到模型计参考评语。不会用档名或档案大小估分。你可以稍后再试，或先用教师调分。",
   "score.later.commentPending": "参考评语待教师确认",

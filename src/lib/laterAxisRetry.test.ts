@@ -335,6 +335,36 @@ describe('later axis automatic retry', { concurrency: false }, () => {
     assert.equal(draft?.aiAdvice['rwb-1'], undefined)
   })
 
+  it('keeps an explicit 5 when a later reply omits score instead of capping at 4.5', async () => {
+    assert.equal(acceptLaterFiles([page(ORDINARY)]), true)
+    const started = requestLaterComment('zh-Hant', false)
+    await waitFor(1)
+    reply(200, {
+      ok: true,
+      comment: COMMENT,
+      band: 'practice-strong',
+      score: 5,
+      axes: without({ ...ART }, 'aw-6'),
+      advice: { 'aw-1': ADVICE['aw-1'] },
+    })
+    await waitFor(1)
+    assert.equal(getSchoolScoreLater().draft?.approxValue, 5)
+    reply(200, {
+      ok: true,
+      comment: COMMENT_NEXT,
+      band: 'practice-strong',
+      axes: { ...ART },
+      advice: { ...ADVICE },
+    })
+    assert.equal(await started, 'model')
+    const draft = getSchoolScoreLater().draft
+    assert.equal(draft?.approxValue, 5)
+    assert.notEqual(draft?.approxValue, 4.5)
+    assert.equal(draft?.aiAxes['aw-6'], ART['aw-6'])
+    assert.equal(draft?.omitTopBandScore, false)
+    for (const id of ARTWORK_AXIS_IDS) assert.equal(draft?.aiAdvice[id], ADVICE[id])
+  })
+
   it('asks again for an already split artwork file and workbook file', async () => {
     assert.equal(acceptLaterFiles([page(ARTWORK, 100), page(WORKBOOK, 200)]), true)
     const started = requestLaterComment('zh-Hant', false)
@@ -557,8 +587,9 @@ describe('later axis retry surface', () => {
     assert.equal(student.includes('score-later-request-ai'), false)
     assert.match(student, /radar\.artworkPending/)
     assert.match(student, /score\.later\.radarPendingWorkbook/)
+    assert.match(student, /score\.later\.axisAdvicePendingWorkbook/)
     assert.match(student, /score\.later\.axisAdvicePending/)
-    assert.match(student, /const showAdvice = chart\.id === 'artwork'/)
+    assert.match(student, /const showAdvice = chart\.id === 'artwork' \|\| chart\.id === 'research_workbook'/)
     assert.equal(student.includes('5**'), false)
     const hook = readFileSync(join(root, 'src/lib/useSchoolScoreLater.ts'), 'utf8')
     assert.match(hook, /postFormativeComment/)
