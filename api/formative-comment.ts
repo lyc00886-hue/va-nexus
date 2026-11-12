@@ -126,12 +126,16 @@ function generationConfig(model: string): {
   maxOutputTokens: number
   thinkingConfig: { thinkingBudget: number } | { thinkingLevel: 'low'; includeThoughts: false }
 } {
+  // A first reply can omit axes in more than one way: a partial object, criterion
+  // labels instead of ids, or an answer cut short while thinking still uses this
+  // budget. The student shell asks again when a present side is still short.
+  // The larger budget only leaves room for the comment, every axis value, and the notes.
   if (model.startsWith('gemini-2.5')) {
-    return { temperature: 0.4, maxOutputTokens: 1024, thinkingConfig: { thinkingBudget: 0 } }
+    return { temperature: 0.4, maxOutputTokens: 2048, thinkingConfig: { thinkingBudget: 0 } }
   }
   return {
     temperature: 0.4,
-    maxOutputTokens: 1024,
+    maxOutputTokens: 4096,
     thinkingConfig: { thinkingLevel: 'low', includeThoughts: false },
   }
 }

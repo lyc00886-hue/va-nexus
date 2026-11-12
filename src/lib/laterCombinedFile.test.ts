@@ -327,7 +327,7 @@ describe('combined later file request', { concurrency: false }, () => {
     assert.deepEqual(combinedPages[0]?.sides, ['artwork', 'research_workbook'])
     assert.equal(sent.pages.filter((item) => item.side === 'artwork' && item.sides == null).length, 2)
     assert.equal(sent.pages.filter((item) => item.side === 'research_workbook' && item.sides == null).length, 1)
-    reply(200, modelBody({ ...ART }))
+    reply(200, modelBody({ ...ART, ...RWB }))
     assert.equal(await pendingResult, 'model')
   })
 

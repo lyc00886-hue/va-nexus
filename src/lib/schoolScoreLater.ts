@@ -420,6 +420,27 @@ export function formatLaterVisible(value: number): string {
 }
 
 /**
+ * True when every axis of each side actually uploaded is present.
+ * A side that was not uploaded is not required. A missing axis stays missing.
+ */
+export function laterRequiredAxesComplete(draft: LaterDraft): boolean {
+  if (draft.aiStatus !== 'model') return false
+  const sides = new Set(draft.pages.flatMap((page) => laterPageSides(page.fileName)))
+  if (sides.size === 0) return true
+  if (sides.has('artwork')) {
+    for (const id of ARTWORK_AXIS_IDS) {
+      if (draft.aiAxes[id] == null) return false
+    }
+  }
+  if (sides.has('research_workbook')) {
+    for (const id of RWB_AXIS_IDS) {
+      if (draft.aiAxes[id] == null) return false
+    }
+  }
+  return true
+}
+
+/**
  * Artwork radar draws when this upload has an artwork side and all six axes are present.
  * The workbook radar draws when this upload has a workbook side and all four axes are present.
  * A combined file can draw either radar as soon as that side's axes are complete.
