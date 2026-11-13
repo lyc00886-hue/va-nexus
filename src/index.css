@@ -106,6 +106,22 @@ html {
   outline: 2px solid #04221f;
 }
 
+/* Lesson cards keep reading support, large type, spacing, and contrast on the art and the body.
+   Large type stays on html --sen-font-scale (rem). Do not multiply that scale again here. */
+.sen-dyslexia [data-lesson-card][data-loose-spacing='on'] [data-lesson-body],
+.sen-dyslexia [data-lesson-card][data-loose-spacing='on'] [data-lesson-body] li {
+  letter-spacing: 0.04em;
+  word-spacing: 0.16em;
+  line-height: 1.85;
+}
+.sen-contrast [data-lesson-card][data-high-contrast='on'] [data-lesson-body] {
+  color: #000000;
+}
+.sen-contrast [data-lesson-card][data-high-contrast='on'] [data-testid='lesson-card-art'] img {
+  outline: 2px solid #04221f;
+  outline-offset: 3px;
+}
+
 /* Wider spacing */
 .sen-dyslexia body {
   letter-spacing: 0.04em;
