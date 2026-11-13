@@ -54,6 +54,7 @@ import { ExerciseMark } from './ExerciseMark'
 import { LessonArtistPanel } from './LessonArtists'
 import { lessonCardBodyStyle, lessonCardReadingAttrs, lessonCardVisibleLines } from '../../lib/lessonReadingSurface'
 import { CommunityLessonIntro } from './CommunityCases'
+import { LessonWorksheet } from './LessonWorksheet'
 import { LessonCardArt } from './LessonCardArt'
 import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
@@ -361,6 +362,7 @@ export function LessonPlayer({
           </div>
           {lesson.demo ? <DemoBadge quiet /> : null}
         </div>
+        <LessonWorksheet lessonId={lesson.id} />
         <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
         <div className="space-y-3">
           {LESSON_FOLD_IDS.map((id, index) => (
@@ -421,6 +423,7 @@ export function LessonPlayer({
         <span className="text-xs text-slate-500">{t('common.aboutMin', { n: lesson.minutes })}</span>
       </div>
 
+      <LessonWorksheet lessonId={lesson.id} />
       <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
 
       {lesson.artists?.length ? <LessonArtistPanel artists={lesson.artists} /> : null}

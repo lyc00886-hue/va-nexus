@@ -146,7 +146,7 @@ describe('November community-art cases', () => {
     assert.equal(hant['case.hill.plan'], '策劃 藝術推廣辦事處')
   })
 
-  it('gives en and zh-Hans the same keys, without worksheet keys or a diagnostic label', () => {
+  it('gives en and zh-Hans the same keys, without a diagnostic label', () => {
     const hant = messages('src/i18n/zh-Hant.json')
     const hans = messages('src/i18n/zh-Hans.json')
     const en = messages('src/i18n/en.json')
@@ -163,7 +163,6 @@ describe('November community-art cases', () => {
     assert.equal(en['case.deepfood.english'].includes('Flavour: x'), false)
     assert.equal(hans['case.deepfood.english'], 'The Unexplored Flavour: \u{1D465}')
     for (const bag of [hant, hans, en]) {
-      assert.equal(Object.keys(bag).some((key) => key.startsWith('worksheet.')), false)
       for (const key of Object.keys(HANT)) {
         assert.equal(BANNED.test(bag[key]), false, key)
         assert.equal(bag[key].includes('學生例子'), false, key)

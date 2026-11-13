@@ -68,9 +68,6 @@ describe('map1 display and reading on the November cards', () => {
     assert.equal(hant['qtype.chip.dualRead'].includes('雙圖對讀'), false)
     assert.equal(hans['header.senModes'], '显示设置')
     assert.equal(en['header.senModes'], 'Display settings')
-    for (const bag of [hant, hans, en]) {
-      assert.equal(Object.keys(bag).some((key) => key.startsWith('worksheet.')), false)
-    }
   })
 
   it('keeps the existing display defaults and toggles, without a diagnostic SEN label', () => {

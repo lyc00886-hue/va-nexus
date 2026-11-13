@@ -533,3 +533,16 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
     overscroll-behavior-y: contain;
   }
 }
+
+@media print {
+  [data-testid='platform-header'],
+  [data-worksheet-toolbar],
+  [data-worksheet-sample],
+  nav,
+  aside {
+    display: none !important;
+  }
+  [data-worksheet-paper] {
+    background: #fff9e9 !important;
+  }
+}
