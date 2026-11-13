@@ -19,7 +19,7 @@ describe('high contrast under 無障礙', () => {
     assert.match(pair, /sen\.toggle\.dyslexia/)
     assert.match(pair, /support\.contrast/)
     assert.ok(pair.indexOf('sen.toggle.dyslexia') < pair.indexOf('support.contrast'))
-    assert.match(panel, /t\('header\.a11y'\)/)
+    assert.match(panel, /aria-label=\{t\('sen\.title'\)\}/)
     assert.match(panel, /role="radiogroup"/)
     assert.match(panel, /sen\.font\.md/)
     assert.equal(/SEN mode|Dyslexia/.test(panel), false)

@@ -18,6 +18,7 @@ import { MOOD_EMPTY_MAP } from '../../game/softMotion'
 import { useSoftMotion } from '../../lib/useSoftMotion'
 import { AiLearningTipScreen, type AiTipState } from './AiLearningTipScreen'
 import { ExerciseMark } from './ExerciseMark'
+import { lessonCardBodyStyle, lessonCardReadingAttrs } from '../../lib/lessonReadingSurface'
 import { LessonCardArt } from './LessonCardArt'
 import { LessonCompleteFrame, StepAdvanceMark } from './SoftMotion'
 import { SoftScreen } from './SoftScreen'
@@ -335,7 +336,13 @@ export function MapOneLesson({
           <p className="mt-2 text-sm font-semibold text-teal-800">{t('er.quiz.pickOne')}</p>
         ) : null}
         {chunk.kind === 'read' ? (
-          <ReadChunk card={lesson.cards[chunk.index]} easy={easyRead} step={step && easyRead} />
+          <ReadChunk
+            card={lesson.cards[chunk.index]}
+            easy={easyRead}
+            step={step && easyRead}
+            fontSize={settings.fontSize}
+            highContrast={settings.highContrast}
+          />
         ) : (
           <PracticeChunk
             question={lesson.questions[chunk.index]}
@@ -505,21 +512,37 @@ function Primary({
   )
 }
 
-function ReadChunk({ card, easy, step = false }: { card: Lesson['cards'][number]; easy: boolean; step?: boolean }) {
+function ReadChunk({
+  card,
+  easy,
+  step = false,
+  fontSize,
+  highContrast,
+}: {
+  card: Lesson['cards'][number]
+  easy: boolean
+  step?: boolean
+  fontSize: 'md' | 'lg' | 'xl'
+  highContrast: boolean
+}) {
   const lines = readLines(card, easy)
   const chunked = easy
+  const bodyStyle = lessonCardBodyStyle({ fontSize, dyslexia: easy, highContrast })
   return (
-    <article className={`mt-4 ${step ? 'rounded-3xl bg-[#FFF9E9] p-4' : ''}`}>
+    <article
+      {...lessonCardReadingAttrs({ fontSize, dyslexia: easy, highContrast })}
+      className={`mt-4 ${step ? 'rounded-3xl bg-[#FFF9E9] p-4' : ''}`}
+    >
       <h3 className="text-xl font-bold text-slate-900">{card.title}</h3>
       <LessonCardArt image={card.image} credit={card.imageCredit} />
       {chunked ? (
-        <ul className="mt-3 space-y-2 text-lg text-slate-800">
+        <ul data-lesson-body className="mt-3 space-y-2 text-lg text-slate-800" style={bodyStyle}>
           {lines.map((line) => (
             <li key={line}>{line}</li>
           ))}
         </ul>
       ) : (
-        <p className="mt-3 text-base leading-relaxed text-slate-700">{card.body}</p>
+        <p data-lesson-body className="mt-3 text-base leading-relaxed text-slate-700" style={bodyStyle}>{card.body}</p>
       )}
     </article>
   )

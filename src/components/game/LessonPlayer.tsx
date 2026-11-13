@@ -52,6 +52,7 @@ import { exerciseIdForQuestion } from '../../game/exerciseLogos'
 import { DemoBadge } from './DemoBadge'
 import { ExerciseMark } from './ExerciseMark'
 import { LessonArtistPanel } from './LessonArtists'
+import { lessonCardBodyStyle, lessonCardReadingAttrs, lessonCardVisibleLines } from '../../lib/lessonReadingSurface'
 import { LessonCardArt } from './LessonCardArt'
 import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
@@ -254,6 +255,8 @@ export function LessonPlayer({
       cardIdx={cardIdx}
       cardCount={lesson.cards.length}
       easyRead={easyRead}
+      fontSize={settings.fontSize}
+      highContrast={settings.highContrast}
       focus={focusTunnel}
       cardText={cardText}
       autoRead={settings.readAloud}
@@ -460,6 +463,8 @@ function CardsStage({
   cardIdx,
   cardCount,
   easyRead,
+  fontSize,
+  highContrast,
   focus,
   cardText,
   autoRead,
@@ -473,6 +478,8 @@ function CardsStage({
   cardIdx: number
   cardCount: number
   easyRead: boolean
+  fontSize: 'md' | 'lg' | 'xl'
+  highContrast: boolean
   focus: boolean
   cardText: string
   autoRead: boolean
@@ -482,9 +489,14 @@ function CardsStage({
   onPrev: () => void
   onNext: () => void
 }) {
+  const visibleLines = lessonCardVisibleLines(card, easyRead)
+  const bodyStyle = lessonCardBodyStyle({ fontSize, dyslexia: easyRead, highContrast })
   return (
     <div className="space-y-4">
-      <article className={`rounded-3xl border border-slate-200 bg-white p-6 shadow-sm ${focus ? 'ring-4 ring-amber-200' : ''}`}>
+      <article
+        {...lessonCardReadingAttrs({ fontSize, dyslexia: easyRead, highContrast })}
+        className={`rounded-3xl border border-slate-200 bg-white p-6 shadow-sm ${focus ? 'ring-4 ring-amber-200' : ''}`}
+      >
         <div className="flex items-start justify-between gap-3">
           <p className="text-xs font-semibold text-blue-600">{t('lp.card', { i: cardIdx + 1, n: cardCount })}</p>
           <ReadAloudButton text={cardText} auto={autoRead} autoKey={autoKey} small />
@@ -492,8 +504,8 @@ function CardsStage({
         <h3 className={`mt-2 font-bold text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{card.title}</h3>
         <LessonCardArt image={card.image} credit={card.imageCredit} />
         {easyRead ? (
-          <ul className="mt-3 space-y-2 text-lg text-slate-800">
-            {card.easy.map((line) => (
+          <ul data-lesson-body className="mt-3 space-y-2 text-lg text-slate-800" style={bodyStyle}>
+            {visibleLines.map((line) => (
               <li key={line} className="flex gap-2">
                 <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-blue-500" aria-hidden />
                 <span>{line}</span>
@@ -501,7 +513,7 @@ function CardsStage({
             ))}
           </ul>
         ) : (
-          <p className="mt-3 text-base leading-relaxed text-slate-700">{card.body}</p>
+          <p data-lesson-body className="mt-3 text-base leading-relaxed text-slate-700" style={bodyStyle}>{visibleLines[0]}</p>
         )}
       </article>
       <div className="flex justify-between">

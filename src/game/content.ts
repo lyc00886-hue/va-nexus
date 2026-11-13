@@ -15,6 +15,7 @@
  *     any type may carry optional image / imageCredit for a question illustration
  */
 import { t } from '../i18n'
+import { easyReadLines } from '../lib/lessonReadingSurface'
 import { cardArtFrom } from './f4Media'
 import type { LessonCard, Question } from './types'
 
@@ -48,21 +49,13 @@ export type ContentLesson = {
   minutes?: number
 }
 
-function easyBullets(text: string): string[] {
-  const parts = text
-    .split(/[，。；：]|(?<=[.;:])\s+/)
-    .map((s) => s.trim())
-    .filter(Boolean)
-  return parts.length ? parts : [text]
-}
-
 export function adaptCards(cards: ContentLesson['cards']): LessonCard[] {
   return cards.map((c, i) => {
-    if (typeof c === 'string') return { title: t('card.point', { n: i + 1 }), body: c, easy: easyBullets(c) }
+    if (typeof c === 'string') return { title: t('card.point', { n: i + 1 }), body: c, easy: easyReadLines(c) }
     return {
       title: c.title ?? t('card.point', { n: i + 1 }),
       body: c.body,
-      easy: c.easy?.length ? c.easy : easyBullets(c.body),
+      easy: c.easy?.length ? c.easy : easyReadLines(c.body),
       ...cardArtFrom(c),
     }
   })

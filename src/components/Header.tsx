@@ -268,8 +268,10 @@ export function Header() {
           <button
             type="button"
             data-sen-trigger
+            data-display-settings={mapOne ? 'map1' : 'classic'}
             aria-expanded={open}
             aria-haspopup="dialog"
+            aria-label={mapOne ? t('sen.quick') : t('header.a11y')}
             onClick={() => setOpen((o) => !o)}
             className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${
               open || mode === 'custom'
@@ -278,7 +280,11 @@ export function Header() {
             }`}
           >
             <Accessibility className="h-3.5 w-3.5" aria-hidden />
-            <span className={mapOne ? 'sr-only' : undefined}>{t('header.a11y')}</span>
+            {mapOne ? (
+              <span data-testid="map1-display-settings-label">{t('header.senModes')}</span>
+            ) : (
+              <span>{t('header.a11y')}</span>
+            )}
           </button>
 
           {mapOne ? <QuestGearButton open={gear} onClick={() => setGear((value) => !value)} /> : <AuthButton />}
