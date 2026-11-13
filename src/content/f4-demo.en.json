@@ -1007,7 +1007,9 @@
                 "Only photograph children"
               ],
               "answer": "Ask / respect privacy",
-              "explain": "Respect and safety come first."
+              "explain": "Respect and safety come first.",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q0-mcq-ask-first.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "mcq",
@@ -1019,7 +1021,9 @@
                 "Copy news headlines"
               ],
               "answer": "Select useful stories for your theme",
-              "explain": "Filter what serves the theme."
+              "explain": "Filter what serves the theme.",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q1-mcq-use-story.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "fill",
@@ -1032,7 +1036,9 @@
                 "exam mark",
                 "password",
                 "shopping"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q2-fill-observe.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "match",
@@ -1047,7 +1053,9 @@
                 "Interview": "Short questions, ask first, keep only useful lines",
                 "Insight": "A community detail you had not noticed"
               },
-              "explain": "All three are classroom research for a theme."
+              "explain": "All three are classroom research for a theme.",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q3-match-methods.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "order",
@@ -1058,7 +1066,9 @@
                 "Hold a short interview",
                 "Write one insight"
               ],
-              "explain": "Sort materials you already have → ask before you record a person → hold a short interview → write one insight"
+              "explain": "Sort materials you already have → ask before you record a person → hold a short interview → write one insight",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q4-order-research.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "dualRead",
@@ -1075,7 +1085,9 @@
               "type": "short",
               "question": "Write one insight. Hint: first the detail you saw in the classroom materials, then how it connects to a community.",
               "options": [],
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q6-short-insight.png",
+              "imageCredit": "Original · VA-Nexus"
             }
           ],
           "artistIds": []
@@ -1125,7 +1137,9 @@
                 "Only show a final photo"
               ],
               "answer": "Show how ideas evolved",
-              "explain": "SBA research workbooks value process."
+              "explain": "SBA research workbooks value process.",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q0-mcq-process-trail.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "mcq",
@@ -1137,7 +1151,9 @@
                 "Rename the file"
               ],
               "answer": "Learn the method and remake with your subject",
-              "explain": "Method yes; their image no."
+              "explain": "Method yes; their image no.",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q1-mcq-learn-method.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "mcq",
@@ -1149,7 +1165,9 @@
                 "Only price"
               ],
               "answer": "Theme, method, viewer feeling",
-              "explain": "Clear intent for the viewer."
+              "explain": "Clear intent for the viewer.",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q2-mcq-three-lines.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "fill",
@@ -1162,7 +1180,9 @@
                 "seat",
                 "advert"
               ],
-              "explain": "The workbook should show why you changed something."
+              "explain": "The workbook should show why you changed something.",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q3-fill-reason.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "match",
@@ -1177,7 +1197,9 @@
                 "Material test": "Compare which medium is clearer",
                 "Three lines": "Theme, method, and what you want a viewer to feel"
               },
-              "explain": "Traces turn research into visible making."
+              "explain": "Traces turn research into visible making.",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q4-match-trail.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "order",
@@ -1188,7 +1210,9 @@
                 "Record why you changed it",
                 "Say the work in three lines"
               ],
-              "explain": "Choose one idea → try one medium → record why you changed it → say the work in three lines"
+              "explain": "Choose one idea → try one medium → record why you changed it → say the work in three lines",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q5-order-to-work.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "dualRead",
@@ -1205,7 +1229,9 @@
               "type": "short",
               "question": "Say one classroom work in three lines. Hint: theme, method, and what you want a viewer to feel.",
               "options": [],
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q7-short-three-lines.png",
+              "imageCredit": "Original · VA-Nexus"
             }
           ],
           "artistIds": []

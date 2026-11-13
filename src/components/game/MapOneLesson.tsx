@@ -580,6 +580,7 @@ function McqChunk({
   return (
     <div className="mt-4">
       <p className="text-lg font-semibold text-slate-900">{q.prompt}</p>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <div className="mt-3 grid gap-2">
         {q.options.map((option, i) => {
           const picked = choice === i
@@ -629,6 +630,7 @@ function FillChunk({
         <span className="mx-1 inline-block min-w-16 border-b-2 border-teal-500 px-2 text-center">{choice ?? '\u00a0'}</span>
         {after}
       </p>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <div className="mt-3 flex flex-wrap gap-2">
         {q.bank.map((word) => (
           <button
@@ -685,6 +687,7 @@ function MatchChunk({ q, onSolved }: { q: MatchQuestion; onSolved: (correct: boo
   return (
     <div className="mt-4">
       <p className="text-lg font-semibold text-slate-900">{q.prompt}</p>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <div className="mt-3 grid grid-cols-2 gap-3">
         <div className="grid gap-2">
           {q.pairs.map((pair) => (

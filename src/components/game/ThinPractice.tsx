@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { moveItem, shuffledItems } from '../../game/thinPractice'
 import type { DualReadQuestion, OrderQuestion, ShortQuestion } from '../../game/types'
 import { t } from '../../i18n'
+import { LessonCardArt } from './LessonCardArt'
 
 const HINT = {
   order: 'qtype.hint.order',
@@ -45,6 +46,7 @@ export function OrderBoard({
     <div data-thin-practice="order">
       <ThinHint type="order" />
       <p className={`mt-3 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <ol className="mt-3 grid gap-2">
         {current.map((item, index) => {
           const placed = revealed && item === q.items[index]
@@ -126,6 +128,7 @@ export function ShortBoard({
     <div data-thin-practice="short">
       <ThinHint type="short" />
       <p className={`mt-3 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <LineFields labels={[t('qtype.write')]} values={[line]} revealed={revealed} onChange={onChange} />
       <ThinPace />
     </div>

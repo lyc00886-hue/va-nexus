@@ -20,6 +20,9 @@ export type McqQuestion = {
   options: string[]
   answer: number
   explain: string
+  /** Optional question illustration. Same local pack path as lesson cards. */
+  image?: string
+  imageCredit?: string
 }
 
 export type MatchQuestion = {
@@ -29,6 +32,9 @@ export type MatchQuestion = {
   /** left term ↔ right description; shuffled at runtime */
   pairs: { left: string; right: string }[]
   explain: string
+  /** Optional question illustration. Same local pack path as lesson cards. */
+  image?: string
+  imageCredit?: string
 }
 
 export type FillQuestion = {
@@ -39,6 +45,9 @@ export type FillQuestion = {
   bank: string[]
   answer: string
   explain: string
+  /** Optional question illustration. Same local pack path as lesson cards. */
+  image?: string
+  imageCredit?: string
 }
 
 /** Canonical order is `items`. The board shuffles them for the student. */
@@ -48,6 +57,9 @@ export type OrderQuestion = {
   prompt: string
   items: string[]
   explain: string
+  /** Optional question illustration. Same local pack path as lesson cards. */
+  image?: string
+  imageCredit?: string
 }
 
 /** Two writing lines beside one local frame. Structure practice, not a marked paper. */
@@ -67,6 +79,9 @@ export type ShortQuestion = {
   type: 'short'
   prompt: string
   explain: string
+  /** Optional question illustration. Same local pack path as lesson cards. */
+  image?: string
+  imageCredit?: string
 }
 
 export type Question = McqQuestion | MatchQuestion | FillQuestion | OrderQuestion | DualReadQuestion | ShortQuestion

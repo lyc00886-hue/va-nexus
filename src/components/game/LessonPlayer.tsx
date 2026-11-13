@@ -792,6 +792,7 @@ function Mcq({ q, locked, easyRead, onAnswer }: QProps<McqQuestion>) {
   return (
     <div>
       <p className={`mt-2 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <div className="mt-4 grid gap-2">
         {q.options.map((o, i) => {
           const st = locked ? (i === q.answer ? 'right' : i === sel ? 'wrong' : 'idle') : sel === i ? 'selected' : 'idle'
@@ -834,6 +835,7 @@ function Fill({ q, seed, locked, easyRead, onAnswer }: QProps<FillQuestion>) {
         </span>
         {after}
       </p>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <div className="mt-4 flex flex-wrap gap-2">
         {bank.map((w) => (
           <button
@@ -923,6 +925,7 @@ function Match({ q, seed, locked, easyRead, onAnswer }: QProps<MatchQuestion>) {
   return (
     <div>
       <p className={`mt-2 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <p className="text-xs text-slate-500">{t('lp.matchHint')}</p>
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="grid gap-2">

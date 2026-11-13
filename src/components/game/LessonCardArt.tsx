@@ -13,11 +13,11 @@ export function LessonCardArt({ image, credit }: { image?: string; credit?: stri
   return (
     <figure className="mt-3" data-testid="lesson-card-art">
       <img
+        key={image}
         src={image}
         alt=""
         width={1024}
         height={1024}
-        loading="lazy"
         decoding="async"
         className="mx-auto max-h-80 w-full rounded-2xl bg-[#FFF9E9] object-contain"
         onError={() => setFailed(true)}

@@ -92,6 +92,35 @@ Seven P0 classroom diagrams for F4-U2-L3, F4-U3-L3, and F4-U3-L4. **自制 · VA
 | `f4-lesson-cards/F4-U3-L4-c1.png` | F4-U3-L4 · 過程要留痕 |
 | `f4-lesson-cards/F4-U3-L4-c2.png` | F4-U3-L4 · 學方法唔抄圖 |
 
+## F4 November compare-works frames (`f4-dualread/`)
+
+F4-U3-L3 and F4-U3-L4 replace the earlier empty frame with an original plate. **自制 · VA-Nexus**. Other lessons keep the frames they already had. English lessons credit these two as “Original · VA-Nexus”.
+
+| File | Question |
+|---|---|
+| `f4-dualread/F4-U3-L3.png` | F4-U3-L3 · 藝術評賞比較 |
+| `f4-dualread/F4-U3-L4.png` | F4-U3-L4 · 藝術評賞比較 |
+
+## F4 November question stems (`f4-stems/`)
+
+Question illustrations for F4-U3-L3 and F4-U3-L4, hung on the existing `image` / `imageCredit` fields. **自制 · VA-Nexus**. The compare-works question in each lesson keeps the frame above and has no stem file. Cards that were already text-only stay text-only.
+
+| File | Question |
+|---|---|
+| `f4-stems/F4-U3-L3-q0-mcq-ask-first.png` | F4-U3-L3 · 選擇 · 問准 |
+| `f4-stems/F4-U3-L3-q1-mcq-use-story.png` | F4-U3-L3 · 選擇 · 有用故事 |
+| `f4-stems/F4-U3-L3-q2-fill-observe.png` | F4-U3-L3 · 填空 · 觀察 |
+| `f4-stems/F4-U3-L3-q3-match-methods.png` | F4-U3-L3 · 配對 |
+| `f4-stems/F4-U3-L3-q4-order-research.png` | F4-U3-L3 · 排序 |
+| `f4-stems/F4-U3-L3-q6-short-insight.png` | F4-U3-L3 · 短答 |
+| `f4-stems/F4-U3-L4-q0-mcq-process-trail.png` | F4-U3-L4 · 選擇 · 留痕 |
+| `f4-stems/F4-U3-L4-q1-mcq-learn-method.png` | F4-U3-L4 · 選擇 · 學方法 |
+| `f4-stems/F4-U3-L4-q2-mcq-three-lines.png` | F4-U3-L4 · 選擇 · 三句 |
+| `f4-stems/F4-U3-L4-q3-fill-reason.png` | F4-U3-L4 · 填空 · 原因 |
+| `f4-stems/F4-U3-L4-q4-match-trail.png` | F4-U3-L4 · 配對 |
+| `f4-stems/F4-U3-L4-q5-order-to-work.png` | F4-U3-L4 · 排序 |
+| `f4-stems/F4-U3-L4-q7-short-three-lines.png` | F4-U3-L4 · 短答 |
+
 ## Artist thumbs bundled in this pack (`artist-thumbs/`)
 
 Only cleared files are copied here. Status taken from `/workspace/va-nexus-content/artist-images/final.json` (Commons `extmetadata` check). Do **not** invent licenses.
