@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
-import { existsSync, readFileSync, statSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
@@ -149,6 +149,7 @@ type Quiz = {
   answer?: string | number | Record<string, string>
   wordBank?: string[]
   image?: string
+  imageCredit?: string
   explain?: string
 }
 
@@ -525,5 +526,102 @@ describe('F.4 demo slice', () => {
     assert.equal((u3l1?.quiz.find((quiz) => quiz.type === 'short')?.question ?? '').includes('streak'), false)
     assert.match(u3l2?.quiz.find((quiz) => quiz.type === 'dualRead')?.question ?? '', /招牌細節/)
     assert.equal((u3l2?.quiz.find((quiz) => quiz.type === 'dualRead')?.question ?? '').includes('店招'), false)
+  })
+
+  it('replaces only the two November compare-works frames and hangs stem art on existing image fields', () => {
+    const player = readFileSync(new URL('../components/game/LessonPlayer.tsx', import.meta.url), 'utf8')
+    const one = readFileSync(new URL('../components/game/MapOneLesson.tsx', import.meta.url), 'utf8')
+    const thin = readFileSync(new URL('../components/game/ThinPractice.tsx', import.meta.url), 'utf8')
+    const adapter = readFileSync(new URL('./content.ts', import.meta.url), 'utf8')
+    assert.match(player, /LessonCardArt image=\{q\.image\} credit=\{q\.imageCredit\}/)
+    assert.match(one, /LessonCardArt image=\{q\.image\} credit=\{q\.imageCredit\}/)
+    assert.match(thin, /LessonCardArt image=\{q\.image\} credit=\{q\.imageCredit\}/)
+    assert.match(adapter, /type: 'mcq', prompt: q\.question, options: q\.options, answer: Math\.max\(0, idx\), explain, \.\.\.art/)
+    assert.match(adapter, /type: 'fill', prompt, bank, answer, explain, \.\.\.art/)
+    assert.match(adapter, /type: 'short', prompt: q\.question, explain, \.\.\.art/)
+    const credit = {
+      'f4-demo.json': '自制 · VA-Nexus',
+      'f4-demo.en.json': 'Original · VA-Nexus',
+      'f4-demo.zh-Hans.json': '自制 · VA-Nexus',
+    } as const
+    const stems: Record<string, (string | null)[]> = {
+      'F4-U3-L3': [
+        'F4-U3-L3-q0-mcq-ask-first.png',
+        'F4-U3-L3-q1-mcq-use-story.png',
+        'F4-U3-L3-q2-fill-observe.png',
+        'F4-U3-L3-q3-match-methods.png',
+        'F4-U3-L3-q4-order-research.png',
+        null,
+        'F4-U3-L3-q6-short-insight.png',
+      ],
+      'F4-U3-L4': [
+        'F4-U3-L4-q0-mcq-process-trail.png',
+        'F4-U3-L4-q1-mcq-learn-method.png',
+        'F4-U3-L4-q2-mcq-three-lines.png',
+        'F4-U3-L4-q3-fill-reason.png',
+        'F4-U3-L4-q4-match-trail.png',
+        'F4-U3-L4-q5-order-to-work.png',
+        null,
+        'F4-U3-L4-q7-short-three-lines.png',
+      ],
+    }
+    const hashes: Record<string, string> = {
+      'f4-dualread/F4-U3-L3.png': '99818dde2e5d19853d42a44218c33f988ea14257d990631c9a63d12017af74dc',
+      'f4-dualread/F4-U3-L4.png': '3511ade67174cb82f49e0631402fa6251c79d74bec4f8572aac3ae03068be21f',
+      'f4-stems/F4-U3-L3-q0-mcq-ask-first.png': '58391c418a227bb0c0dc1abd94320319ec1b5a5bc8dca3c1e16140ff0316422e',
+      'f4-stems/F4-U3-L3-q1-mcq-use-story.png': '3b1ab7c0842e972bf8e4e07a7e6caf6965ad1dbbab4c132eba868436a5449dd3',
+      'f4-stems/F4-U3-L3-q2-fill-observe.png': '9dd8d83d2c24285d2e5127a626deb2790523bbd64a5ac0ed9746e5d61c7a9d2e',
+      'f4-stems/F4-U3-L3-q3-match-methods.png': '21d34220e5ab503fb03292eb0b5b3a06f9ba03332e03b168663f9cb41f4e8c67',
+      'f4-stems/F4-U3-L3-q4-order-research.png': 'd2215bfa9f077d23d95db91758ff6f5ef922689e19d06c70f7421eda714b6de5',
+      'f4-stems/F4-U3-L3-q6-short-insight.png': '1a56d5f754548d551d02fe6b1758ec26a2638317963aa831895121a8705e70a4',
+      'f4-stems/F4-U3-L4-q0-mcq-process-trail.png': '4bf0133385f15fec5cdeb71dc1bef26b0fee33694ac96c7b1612c57036dad71b',
+      'f4-stems/F4-U3-L4-q1-mcq-learn-method.png': '36c7645fa5be3dbcafe96a5a1d93b6dbcac9a86bcf30bad25583d0ce98b5b908',
+      'f4-stems/F4-U3-L4-q2-mcq-three-lines.png': '759ab25c5290631285dccca87ecb931d332cfe855ac1a5261999352c9c469018',
+      'f4-stems/F4-U3-L4-q3-fill-reason.png': 'ac2f0e22fda9af26ed4b271f0a31edff5adc8d05f1a101f449c1ddc841bb990b',
+      'f4-stems/F4-U3-L4-q4-match-trail.png': '7c439764e0b2e82812fbcb6ba82e705b492a5b5e484496bafc6813e655cea5f0',
+      'f4-stems/F4-U3-L4-q5-order-to-work.png': 'b71ae94774f5ae8e45fcc69cdd6d996c626a3c6def5416cd2ba79130bdabb1d0',
+      'f4-stems/F4-U3-L4-q7-short-three-lines.png': '84e353fe68672760aab41bbe297ffebf4a7fe459c67abe76ed3495f9907286c7',
+      'f4-covers/F4-U3-L3.png': '3b0eab8d0938c5ef008bc58ef30db6a26a5a13f2da57a830007dd0ca2d87826c',
+      'f4-covers/F4-U3-L4.png': '217d9f3022faa0535f417e1510f01746b767374bcaab32dbcfcae386974c7b1a',
+      'f4-lesson-cards/F4-U3-L3-c0.png': '2a0ff1d1265199e937499e8a6d43ead2e9d2bea3ec9185652c06b7597ff87014',
+      'f4-lesson-cards/F4-U3-L3-c1.png': '540a067177aea16320d31c43889eca24337283fbabade72510f4a0f64b2d4729',
+      'f4-lesson-cards/F4-U3-L4-c0.png': '358fed0062a6fe86b67284efed4dcab3ba3ede5582bc6cb8fccfcd862d2b55a4',
+      'f4-lesson-cards/F4-U3-L4-c1.png': '987cfb7a566eb7fa083ac8bae4502f5937793a9cf048f745aec4ea301f6b232e',
+      'f4-lesson-cards/F4-U3-L4-c2.png': '083cf69411ad7d03a6db28a6453259fcb690e4fef661e3b7712214fa321baf60',
+    }
+    for (const [file, digest] of Object.entries(hashes)) {
+      const buf = readFileSync(resolve(PUBLIC, 'content/learning-map-illustrations', file))
+      assert.equal(createHash('sha256').update(buf).digest('hex'), digest, file)
+    }
+    const dualDir = resolve(PUBLIC, 'content/learning-map-illustrations/f4-dualread')
+    for (const file of readdirSync(dualDir)) {
+      if (file === 'F4-U3-L3.png' || file === 'F4-U3-L4.png') continue
+      const buf = readFileSync(resolve(dualDir, file))
+      assert.equal(buf.length, 2957, file)
+      assert.equal(createHash('sha256').update(buf).digest('hex'), '947bb83ed7ef167d8a2281329ddbae0a8c654112f880f18e4448245c2ede176b', file)
+    }
+    for (const name of FILES) {
+      for (const lesson of pack(name).units.flatMap((unit) => unit.lessons)) {
+        const slots = stems[lesson.id]
+        if (!slots) {
+          for (const quiz of lesson.quiz) {
+            assert.equal(String(quiz.image ?? '').includes('/f4-stems/'), false, `${name} ${lesson.id}`)
+          }
+          continue
+        }
+        lesson.quiz.forEach((quiz, index) => {
+          const file = slots[index]
+          const id = `${name} ${lesson.id} q${index}`
+          if (!file) {
+            assert.equal(quiz.type, 'dualRead', id)
+            assert.equal(quiz.image, `/content/learning-map-illustrations/f4-dualread/${lesson.id}.png`, id)
+            assert.equal(quiz.imageCredit, credit[name], id)
+            return
+          }
+          assert.equal(quiz.image, `/content/learning-map-illustrations/f4-stems/${file}`, id)
+          assert.equal(quiz.imageCredit, credit[name], id)
+        })
+      }
+    }
   })
 })

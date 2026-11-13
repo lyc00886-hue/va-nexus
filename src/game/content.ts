@@ -12,6 +12,7 @@
  *     order → options = the sequence in the correct order
  *     dualRead → options = two line labels; optional image uses the same local pack path as lesson cards
  *     short → one open line; options unused
+ *     any type may carry optional image / imageCredit for a question illustration
  */
 import { t } from '../i18n'
 import { cardArtFrom } from './f4Media'
@@ -25,7 +26,7 @@ export type ContentQuiz = {
   explain?: string
   /** Curated fill-in choices (incl. the answer). When present, used instead of auto distractors. */
   wordBank?: string[]
-  /** Local lesson-pack image. Used by dualRead frames. */
+  /** Local lesson-pack image. Used by question stems and dualRead frames. */
   image?: string
   imageCredit?: string
 }
@@ -83,10 +84,11 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
   return quiz.map((q, i): Question => {
     const id = `${lessonId}-q${i + 1}`
     const explain = q.explain ?? ''
+    const art = cardArtFrom(q)
     if (q.type === 'mcq') {
       const idx = typeof q.answer === 'number' ? q.answer : q.options.indexOf(String(q.answer))
       if (idx < 0) console.warn(`[content] ${id}: mcq answer not in options`)
-      return { id, type: 'mcq', prompt: q.question, options: q.options, answer: Math.max(0, idx), explain }
+      return { id, type: 'mcq', prompt: q.question, options: q.options, answer: Math.max(0, idx), explain, ...art }
     }
     if (q.type === 'match') {
       const map = (typeof q.answer === 'object' ? q.answer : {}) as Record<string, string>
@@ -97,15 +99,15 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
         prompt: q.question,
         pairs: lefts.filter((l) => map[l] !== undefined).map((l) => ({ left: l, right: map[l] })),
         explain,
+        ...art,
       }
     }
     if (q.type === 'order') {
       const items = q.options.map((item) => item.trim()).filter(Boolean)
-      return { id, type: 'order', prompt: q.question, items, explain }
+      return { id, type: 'order', prompt: q.question, items, explain, ...art }
     }
     if (q.type === 'dualRead') {
       const labels = q.options.map((item) => item.trim()).filter(Boolean)
-      const art = cardArtFrom(q)
       return {
         id,
         type: 'dualRead',
@@ -116,7 +118,7 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
       }
     }
     if (q.type === 'short') {
-      return { id, type: 'short', prompt: q.question, explain }
+      return { id, type: 'short', prompt: q.question, explain, ...art }
     }
     const answer = String(q.answer ?? '')
     const qText = q.question.replace(/_{2,}/g, '＿＿')
@@ -128,7 +130,7 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
         console.warn(`[content] ${id}: wordBank missing answer, appended`)
         bank.push(answer)
       }
-      return { id, type: 'fill', prompt, bank, answer, explain }
+      return { id, type: 'fill', prompt, bank, answer, explain, ...art }
     }
     let bank = q.options.length ? [...q.options] : []
     if (!bank.includes(answer)) bank.push(answer)
@@ -136,7 +138,7 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
       bank = [...bank, ...pickDistractors(answer, [...fillPool, ...fallbackBank()], 3 - bank.length + 0)]
       bank = [...new Set(bank)].slice(0, 4)
     }
-    return { id, type: 'fill', prompt, bank, answer, explain }
+    return { id, type: 'fill', prompt, bank, answer, explain, ...art }
   })
 }
 

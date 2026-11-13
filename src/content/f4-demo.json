@@ -1007,7 +1007,9 @@
                 "只影小朋友"
               ],
               "answer": "問准／尊重私隱",
-              "explain": "尊重同安全係研究底線。"
+              "explain": "尊重同安全係研究底線。",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q0-mcq-ask-first.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "mcq",
@@ -1019,7 +1021,9 @@
                 "照抄新聞標題"
               ],
               "answer": "揀有用故事發展主題",
-              "explain": "篩選同主題有關嘅內容。"
+              "explain": "篩選同主題有關嘅內容。",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q1-mcq-use-story.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "fill",
@@ -1032,7 +1036,9 @@
                 "考試分",
                 "密碼",
                 "購物"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q2-fill-observe.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "match",
@@ -1047,7 +1053,9 @@
                 "訪問": "短問題，先問准，只留有用嘅句子",
                 "洞察": "一件你以前冇留意、但同社區有關嘅細節"
               },
-              "explain": "三種做法都係課室研究，服務主題。"
+              "explain": "三種做法都係課室研究，服務主題。",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q3-match-methods.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "order",
@@ -1058,7 +1066,9 @@
                 "做短訪問",
                 "寫一個洞察"
               ],
-              "explain": "整理已有材料 → 記錄前先問准 → 做短訪問 → 寫一個洞察"
+              "explain": "整理已有材料 → 記錄前先問准 → 做短訪問 → 寫一個洞察",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q4-order-research.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "dualRead",
@@ -1075,7 +1085,9 @@
               "type": "short",
               "question": "寫一個洞察。提示：先寫你喺課室材料見到嘅細節，再寫佢點樣同社區有關。",
               "options": [],
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q6-short-insight.png",
+              "imageCredit": "自制 · VA-Nexus"
             }
           ],
           "artistIds": []
@@ -1125,7 +1137,9 @@
                 "只交成品相"
               ],
               "answer": "顯示諗法點演變",
-              "explain": "SBA 研究工作簿重視過程。"
+              "explain": "SBA 研究工作簿重視過程。",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q0-mcq-process-trail.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "mcq",
@@ -1137,7 +1151,9 @@
                 "改檔名就得"
               ],
               "answer": "學方法再用自己題材重做",
-              "explain": "學方法、用自己內容同合法圖。"
+              "explain": "學方法、用自己內容同合法圖。",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q1-mcq-learn-method.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "mcq",
@@ -1149,7 +1165,9 @@
                 "只講價錢"
               ],
               "answer": "主題、做法、想觀眾感受",
-              "explain": "清楚溝通創作意圖。"
+              "explain": "清楚溝通創作意圖。",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q2-mcq-three-lines.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "fill",
@@ -1162,7 +1180,9 @@
                 "座號",
                 "廣告"
               ],
-              "explain": "研究工作簿要見到你點解改。"
+              "explain": "研究工作簿要見到你點解改。",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q3-fill-reason.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "match",
@@ -1177,7 +1197,9 @@
                 "物料試驗": "比較邊種媒介更清楚",
                 "三句講解": "主題、做法、想觀眾感受"
               },
-              "explain": "留痕令研究變成睇得見嘅創作。"
+              "explain": "留痕令研究變成睇得見嘅創作。",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q4-match-trail.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "order",
@@ -1188,7 +1210,9 @@
                 "記錄改動原因",
                 "用三句講作品"
               ],
-              "explain": "揀一個想法 → 試一種媒介 → 記錄改動原因 → 用三句講作品"
+              "explain": "揀一個想法 → 試一種媒介 → 記錄改動原因 → 用三句講作品",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q5-order-to-work.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "dualRead",
@@ -1205,7 +1229,9 @@
               "type": "short",
               "question": "用三句講一件課室作品。提示：主題一句、做法一句、想觀眾感受到咩一句。",
               "options": [],
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q7-short-three-lines.png",
+              "imageCredit": "自制 · VA-Nexus"
             }
           ],
           "artistIds": []
