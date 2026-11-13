@@ -40,7 +40,11 @@ const HANT = {
   'case.hill.where': '前川龍貫文公立學校及荃灣川龍村',
   'case.hill.artist': '陳思光係參與藝術家之一，用村內陶土做陶瓷；唔係主辦或策劃。',
   'case.hill.source': '課堂參考用官方網頁同小冊子。未核實到官方可課堂播放嘅 YouTube。',
-  'case.hill.frame': '呢個係過往案例參考，唔使出外做計劃。',
+  'case.hill.frame': '呢個係過往案例參考，用嚟做有對象、有焦點嘅評賞。',
+  'appreciate.heading': '評賞任務',
+  'case.hill.appreciate.object': '評賞對象：參與藝術家陳思光用村內陶土做嘅陶瓷（川龍泥土陶杯／村內陶土作品）。',
+  'case.hill.appreciate.focus': '評賞焦點：陶土同村落、地方同人嘅關係。',
+  'case.hill.appreciate.task': '睇官方網頁同場刊，寫你見到陶土作品點樣連住村落同人。呢題唔係背景介紹。',
   'case.deepfood.collective': '深食',
   'case.deepfood.project': '喚味：𝑥',
   'case.deepfood.english': 'The Unexplored Flavour: 𝑥',
@@ -48,6 +52,14 @@ const HANT = {
   'case.deepfood.venue': '場地 油街廚房',
   'case.deepfood.when': '1.6.2023–12.3.2024',
   'case.deepfood.frame': '呢個係課堂案例，只作課堂播放。',
+  'case.deepfood.appreciate.object': '評賞對象：油街實現邀請深食嘅官方計劃「喚味：𝑥」。',
+  'case.deepfood.appreciate.focus': '評賞焦點：食物、地方、人，同「喚味」邀請。',
+  'case.deepfood.appreciate.task': '課堂預設播官方概覽片，只作課堂播放。寫你見到食物、地方同人點樣被邀請去「喚味」。',
+  'visual.heading': '視覺元素同組織原理',
+  'visual.elements.hill': '睇陶瓷時可以寫物料、質感、形態同顏色：陶土表面、杯形、燒成色澤，同村落環境點樣對比或呼應。',
+  'visual.principles.near': '睇近身細節時可以寫空間、重複同強調：課室走廊、食堂座位排列、校門入口點樣引導視線。',
+  'visual.elements.flavour': '睇「喚味：𝑥」時可以寫空間、色彩、動勢同平衡：食物、場地同人點樣被安排去邀請「喚味」。',
+  'visual.trial': '短試驗可以試物料同質感，再用對比、強調或重複去組織你見到嘅近身細節。',
   'video.classroomOnly': '只作課堂播放',
   'video.noDownload': '呢課唔提供下載、上載或轉載。',
   'video.overviewTitle': '【喚味：𝑥 | The Unexplored Flavour: 𝑥】',
@@ -61,6 +73,19 @@ const EN = {
   'lesson.f4u3l4.title': 'November: Getting to know community art — develop and make',
   'lesson.f4u3l4.subtitle': 'In class, look at past cases, then use a classroom exercise to turn that recognition into making. It does not ask you to actually carry out a community art project.',
   'case.hill.english': 'Hi! Hill public art project',
+  'case.hill.frame': 'This is a past case for reference, used for appreciation with an object and a focus.',
+  'appreciate.heading': 'Appreciation task',
+  'case.hill.appreciate.object': 'Object of appreciation: ceramics made by participating artist 陳思光 with clay from the village (Chuen Lung clay cups / works in village clay).',
+  'case.hill.appreciate.focus': 'Focus of appreciation: the relationship between the clay and the village, the place, and the people.',
+  'case.hill.appreciate.task': 'Look at the official webpage and brochure, and write how the clay works connect the village and the people. This question is not a background introduction.',
+  'case.deepfood.appreciate.object': 'Object of appreciation: the official project “喚味：𝑥”, for which Oi! invited Deep Food.',
+  'case.deepfood.appreciate.focus': 'Focus of appreciation: food, place, and people, and the “喚味” invitation.',
+  'case.deepfood.appreciate.task': 'The class plays the official overview by default, for classroom playback only. Write how you see food, place, and people being invited into “喚味”.',
+  'visual.heading': 'Visual elements and organisational principles',
+  'visual.elements.hill': 'When looking at the ceramics, you can write about material, texture, form, and colour: the clay surface, the cup shape, the fired colour, and how they contrast with or echo the village setting.',
+  'visual.principles.near': 'When looking at nearby details, you can write about space, repetition, and emphasis: how the classroom corridor, the canteen seating, and the school-gate entrance guide the eye.',
+  'visual.elements.flavour': 'When looking at “喚味：𝑥”, you can write about space, colour, movement, and balance: how food, the site, and people are arranged to invite “喚味”.',
+  'visual.trial': 'A short trial can try material and texture, then use contrast, emphasis, or repetition to organise the nearby details you see.',
   'case.deepfood.collective': 'Deep Food',
   'case.deepfood.english': 'The Unexplored Flavour: 𝑥',
   'case.deepfood.invite': 'Oi! invited Deep Food',
@@ -76,6 +101,19 @@ const HANS = {
   'lesson.f4u3l4.title': '十一月：认识社区艺术——发展与创作',
   'lesson.f4u3l4.subtitle': '在课堂看以往案例，再用课堂练习把认识发展成创作。不要求你真正实行一个社区艺术计划。',
   'case.hill.where': '前川龙贯文公立学校及荃湾川龙村',
+  'case.hill.frame': '这个是以往案例参考，用来做有对象、有焦点的评赏。',
+  'appreciate.heading': '评赏任务',
+  'case.hill.appreciate.object': '评赏对象：参与艺术家陈思光用村内陶土做的陶瓷（川龙泥土陶杯／村内陶土作品）。',
+  'case.hill.appreciate.focus': '评赏焦点：陶土与村落、地方和人的关系。',
+  'case.hill.appreciate.task': '看官方网页和场刊，写你看到陶土作品怎样连着村落和人。这题不是背景介绍。',
+  'case.deepfood.appreciate.object': '评赏对象：油街实现邀请深食的官方计划「唤味：𝑥」。',
+  'case.deepfood.appreciate.focus': '评赏焦点：食物、地方、人，和「唤味」邀请。',
+  'case.deepfood.appreciate.task': '课堂预设播放官方概览片，只作课堂播放。写你看到食物、地方和人怎样被邀请去「唤味」。',
+  'visual.heading': '视觉元素与组织原理',
+  'visual.elements.hill': '看陶瓷时可以写物料、质感、形态和颜色：陶土表面、杯形、烧成色泽，与村落环境怎样对比或呼应。',
+  'visual.principles.near': '看近身细节时可以写空间、重复和强调：教室走廊、食堂座位排列、校门入口怎样引导视线。',
+  'visual.elements.flavour': '看「唤味：𝑥」时可以写空间、色彩、动势和平衡：食物、场地和人怎样被安排去邀请「唤味」。',
+  'visual.trial': '短试验可以试物料和质感，再用对比、强调或重复去组织你看到的近身细节。',
   'case.deepfood.project': '唤味：𝑥',
   'video.classroomOnly': '只作课堂播放',
   'video.noDownload': '这课不提供下载、上传或转载。',
@@ -144,6 +182,45 @@ describe('November community-art cases', () => {
     assert.equal(hant['case.deepfood.project'].includes('x'), false)
     assert.equal(hant['video.overviewTitle'].includes('\u{1D465}'), true)
     assert.equal(hant['case.hill.plan'], '策劃 藝術推廣辦事處')
+    assert.equal(hant['case.hill.partner'], '在地藝術策劃伙伴 創不同協作')
+    assert.equal(hant['case.hill.title'], '邂逅！山 川 人')
+    assert.equal([...hant['case.hill.title']][1]?.codePointAt(0), 0x9005)
+    const fresh = [
+      'case.hill.frame',
+      'appreciate.heading',
+      'case.hill.appreciate.object',
+      'case.hill.appreciate.focus',
+      'case.hill.appreciate.task',
+      'case.deepfood.appreciate.object',
+      'case.deepfood.appreciate.focus',
+      'case.deepfood.appreciate.task',
+      'visual.heading',
+      'visual.elements.hill',
+      'visual.principles.near',
+      'visual.elements.flavour',
+      'visual.trial',
+    ] as const
+    for (const key of fresh) {
+      assert.equal(hant[key], HANT[key], key)
+      assert.equal(/[\u7684\u628A\u5572]/.test(hant[key]), false, key)
+    }
+    assert.equal([...hant['case.hill.frame']].some((ch) => ch.codePointAt(0) === 0x569f), true)
+    assert.equal(hant['case.deepfood.appreciate.object'].includes('\u{1D465}'), true)
+    assert.equal(hant['case.deepfood.appreciate.object'].includes('x'), false)
+    assert.equal(hant['visual.elements.flavour'].includes('\u{1D465}'), true)
+    assert.equal(hant['visual.elements.flavour'].includes('x'), false)
+    const wrongTitle = ['\u9095\u9005', '\u9088\u9005', '\u9087\u9005', '\u9090\u9005', '\u9089\u9005']
+    for (const file of [
+      'src/i18n/zh-Hant.json',
+      'src/i18n/zh-Hans.json',
+      'src/i18n/zh-Hans.overrides.json',
+      'src/i18n/en.json',
+      'src/components/game/CommunityCases.tsx',
+      'src/game/communityCases.ts',
+    ]) {
+      const source = read(file)
+      for (const bad of wrongTitle) assert.equal(source.includes(bad), false, `${file} ${bad}`)
+    }
   })
 
   it('gives en and zh-Hans the same keys, without a diagnostic label', () => {
@@ -158,6 +235,12 @@ describe('November community-art cases', () => {
     }
     for (const [key, value] of Object.entries(EN)) assert.equal(en[key], value, key)
     for (const [key, value] of Object.entries(HANS)) assert.equal(hans[key], value, key)
+    const overrides = messages('src/i18n/zh-Hans.overrides.json')
+    for (const key of Object.keys(HANS)) {
+      if (key.startsWith('appreciate.') || key.startsWith('visual.') || key.includes('appreciate') || key === 'case.hill.frame') {
+        assert.equal(overrides[key], hans[key], key)
+      }
+    }
     assert.equal(en['case.hill.title'], hant['case.hill.title'])
     assert.equal(en['case.deepfood.english'].endsWith('\u{1D465}'), true)
     assert.equal(en['case.deepfood.english'].includes('Flavour: x'), false)
@@ -279,6 +362,31 @@ describe('November community-art cases', () => {
     assert.equal(view.includes('download='), false)
     assert.equal(/save-offline|repost|rehost/i.test(view), false)
     assert.equal(view.includes('worksheet.'), false)
+    const intro = view.slice(view.indexOf('function CommunityLessonIntro'), view.indexOf('function HillCase'))
+    assert.match(intro, /data-visual/)
+    assert.match(intro, /visual\.elements\.hill/)
+    assert.match(intro, /visual\.principles\.near/)
+    assert.match(intro, /visual\.elements\.flavour/)
+    assert.match(intro, /visual\.trial/)
+    const deep = view.slice(view.indexOf('function DeepFoodCase'))
+    for (const part of [hill, deep]) {
+      const source = part.slice(part.indexOf('data-case-source'), part.indexOf('data-appreciate'))
+      const task = part.slice(part.indexOf('data-appreciate'))
+      assert.match(source, /data-case-source/)
+      assert.equal(source.includes('appreciate.'), false, part.slice(0, 24))
+      assert.match(task, /appreciate\.heading/)
+      assert.match(task, /data-appreciate/)
+    }
+    assert.match(hill, /case\.hill\.appreciate\.object/)
+    assert.match(hill, /case\.hill\.appreciate\.focus/)
+    assert.match(hill, /case\.hill\.appreciate\.task/)
+    assert.match(hill, /case\.hill\.frame/)
+    assert.match(deep, /case\.deepfood\.appreciate\.object/)
+    assert.match(deep, /case\.deepfood\.appreciate\.focus/)
+    assert.match(deep, /case\.deepfood\.appreciate\.task/)
+    assert.match(view, /#FFF9E9/)
+    assert.match(view, /#0D9488/)
+    assert.equal(view.includes('loading='), false)
     assert.equal(FURTHER_CLASSROOM_VIDEOS[0]?.title.includes('\u{1D465}'), true)
     assert.equal(FURTHER_CLASSROOM_VIDEOS[1]?.title.includes('Time'), true)
     assert.equal(FURTHER_CLASSROOM_VIDEOS[2]?.title.includes('Space'), true)

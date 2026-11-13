@@ -133,11 +133,11 @@ describe('November activity papers', () => {
       '主辦 康樂及文化事務署 · 策劃 藝術推廣辦事處',
       '陳思光係參與藝術家之一，用村內陶土做陶瓷；唔係主辦或策劃。',
       '課堂參考用官方網頁同小冊子。未核實到官方可課堂播放嘅 YouTube。',
-      '呢個係過往案例參考，唔使出外做計劃。',
+      '呢個係過往案例參考，用嚟做有對象、有焦點嘅評賞。',
     ])
     assert.deepEqual(worksheetCaseLines('F4-U3-L3', 'student', text), [
       '邂逅！山 川 人 · Hi! Hill public art project',
-      '呢個係過往案例參考，唔使出外做計劃。',
+      '呢個係過往案例參考，用嚟做有對象、有焦點嘅評賞。',
     ])
     assert.deepEqual(worksheetCaseLines('F4-U3-L4', 'teacher', text), [
       '深食「喚味：\u{1D465}」',
@@ -165,6 +165,9 @@ describe('November activity papers', () => {
     assert.equal(teacherL4.includes('\u{1D465}'), true)
     assert.equal(hant['case.hill.title'], '邂逅！山 川 人')
     assert.equal(hant['case.deepfood.project'], '喚味：\u{1D465}')
+    assert.equal(teacherL3.includes('評賞對象'), false)
+    assert.equal(studentL3.includes('視覺元素同組織原理'), false)
+    assert.equal(teacherL4.includes('評賞對象'), false)
   })
 
   it('keeps the sample label on the L3 teacher preview only', () => {
