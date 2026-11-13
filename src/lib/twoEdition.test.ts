@@ -20,7 +20,7 @@ const LOCK = {
     quiz: '課堂觀察嘅材料可以包括？',
     correct: '教師提供或已有嘅相片、短片、物件、速寫',
     wrong: '只准背一句口號',
-    insight: '由課堂觀察材料拎「洞察」：一件你以前冇留意、但同社區有關嘅細節。',
+    insight: '由課堂材料拎一個「洞察」：一件你以前冇留意、但同社區有關嘅細節。',
   },
   'f4-demo.zh-Hans.json': {
     intro:
@@ -30,7 +30,7 @@ const LOCK = {
     quiz: '课堂观察的材料可以包括？',
     correct: '教师提供或已有的照片、短片、物件、速写',
     wrong: '只准背一句口号',
-    insight: '由课堂观察材料拿「洞察」：一件你以前没留意、但与社区有关的细节。',
+    insight: '从课堂材料取出一个「洞察」：一件你以前没有留意、但与社区有关的细节。',
   },
   'f4-demo.en.json': {
     intro:
@@ -41,7 +41,7 @@ const LOCK = {
     quiz: 'What can classroom observation materials include?',
     correct: 'Photos, clips, objects, or sketches provided by the teacher or already available',
     wrong: 'You may only memorise one slogan',
-    insight: 'From classroom observation materials, take one insight: a community-related detail you had not noticed before.',
+    insight: 'Take one insight from the classroom materials: a detail you had not noticed before that relates to the community.',
   },
 } as const
 

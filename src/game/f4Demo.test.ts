@@ -92,12 +92,12 @@ const NOVEMBER_COPY = {
       goal: '由「畫得似」轉去「設計得清楚」——先問功能同觀眾，再落筆。',
     },
     'F4-U3-L3': {
-      title: '十一月：社區藝術計劃——研究',
-      goal: '主題來自真實環境——人物、地方、習慣、物件；做社區藝術研究。',
+      title: '十一月：認識社區藝術——研究',
+      goal: '喺課堂認識咩係社區藝術，配過往案例參考。唔使出外做計劃。',
     },
     'F4-U3-L4': {
-      title: '十一月：社區藝術計劃——發展同創作',
-      goal: '把研究變成創作——繪畫、設計、雕塑或其他媒介都可以。',
+      title: '十一月：認識社區藝術——發展同創作',
+      goal: '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔叫你真係實行一個社區藝術計劃。',
     },
   },
   'f4-demo.zh-Hans.json': {
@@ -106,12 +106,12 @@ const NOVEMBER_COPY = {
       goal: '由「画得像」转向「设计得清楚」——先问功能与观众，再落笔。',
     },
     'F4-U3-L3': {
-      title: '十一月：社区艺术计划——研究',
-      goal: '主题来自真实环境——人物、地方、习惯、物件；做社区艺术研究。',
+      title: '十一月：认识社区艺术——研究',
+      goal: '在课堂认识什么是社区艺术，并配以往案例参考。不必出外做计划。',
     },
     'F4-U3-L4': {
-      title: '十一月：社区艺术计划——发展与创作',
-      goal: '把研究变成创作——绘画、设计、雕塑或其他媒介都可以。',
+      title: '十一月：认识社区艺术——发展与创作',
+      goal: '在课堂看以往案例，再用课堂练习把认识发展成创作。不要求你真正实行一个社区艺术计划。',
     },
   },
   'f4-demo.en.json': {
@@ -120,12 +120,12 @@ const NOVEMBER_COPY = {
       goal: 'Move from “looks real” to “communicates clearly”—ask who it is for, then draw.',
     },
     'F4-U3-L3': {
-      title: 'November: Community art project — research',
-      goal: 'Grow themes from real places—people, habits, objects, spaces—through community-art research.',
+      title: 'November: Getting to know community art — research',
+      goal: 'In class, learn what community art is, with past cases for reference. You do not need to go out and run a project.',
     },
     'F4-U3-L4': {
-      title: 'November: Community art project — develop and make',
-      goal: 'Turn research into making—painting, design, sculpture or other media.',
+      title: 'November: Getting to know community art — develop and make',
+      goal: 'In class, look at past cases, then use a classroom exercise to turn that recognition into making. It does not ask you to actually carry out a community art project.',
     },
   },
 } as const

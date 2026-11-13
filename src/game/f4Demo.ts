@@ -10,7 +10,8 @@
  * The map chrome and unit cards do not show a syllabus year.
  */
 import { contentJson } from '../i18n/content'
-import { perLocale } from '../i18n'
+import { perLocale, t, type MessageKey } from '../i18n'
+import { applyCommunityLessonCopy } from './communityCases'
 import { fillAnswersOf, type ContentLesson } from './content'
 import { lessonFromContent } from './curriculum'
 import { artistsFromLesson, coverFromUnit } from './f4Media'
@@ -69,7 +70,10 @@ export function unitsFromF4File(raw: F4File | null | undefined): Unit[] {
       nodes: lessons.map((lesson) => {
         const node = lessonFromContent(lesson, pool)
         const artists = artistsFromLesson(lesson)
-        return { ...node, demo: false, ...coverFromUnit(lesson), ...(artists ? { artists } : {}) }
+        return applyCommunityLessonCopy(
+          { ...node, demo: false, ...coverFromUnit(lesson), ...(artists ? { artists } : {}) },
+          (key) => t(key as MessageKey),
+        )
       }),
     }
   })
