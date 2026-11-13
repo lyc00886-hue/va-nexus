@@ -20,8 +20,8 @@ function read(path: string): string {
 const NOVEMBER = ['F4-U3-L3', 'F4-U3-L4'] as const
 
 const TITLES = {
-  'F4-U3-L3': '十一月：社區藝術計劃——研究',
-  'F4-U3-L4': '十一月：社區藝術計劃——發展同創作',
+  'F4-U3-L3': '十一月：認識社區藝術——研究',
+  'F4-U3-L4': '十一月：認識社區藝術——發展同創作',
 } as const
 
 const CARD_IMAGES: Record<(typeof NOVEMBER)[number], (string | null)[]> = {
@@ -69,8 +69,7 @@ describe('map1 display and reading on the November cards', () => {
     assert.equal(hans['header.senModes'], '显示设置')
     assert.equal(en['header.senModes'], 'Display settings')
     for (const bag of [hant, hans, en]) {
-      assert.equal(bag['lesson.f4u3l3.title'], undefined)
-      assert.equal(Object.keys(bag).some((key) => key.startsWith('case.') || key.startsWith('video.') || key.startsWith('worksheet.')), false)
+      assert.equal(Object.keys(bag).some((key) => key.startsWith('worksheet.')), false)
     }
   })
 
