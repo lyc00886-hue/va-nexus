@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { readdirSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
@@ -14,6 +15,8 @@ import {
   applyCommunityLessonCopy,
   classroomEmbedUrl,
   classroomWatchUrl,
+  communityCardCriteria,
+  communityGoalKeys,
 } from './communityCases.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
@@ -21,16 +24,31 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 const HANT = {
   'lesson.f4u3l3.title': '十一月：認識社區藝術——研究',
   'lesson.f4u3l3.subtitle': '喺課堂認識咩係社區藝術，配過往案例參考。唔使出外做計劃。',
-  'lesson.f4u3l3.card.theme.body': '社區藝術主題來自真實環境——人物、地方、習慣、物件。呢課喺課堂認識，唔叫你真係去做一個計劃。',
-  'lesson.f4u3l3.card.observe.body': '課堂觀察可以用速寫同筆記。影人之前要問准，尊重私隱。唔使出外做計劃。',
-  'lesson.f4u3l3.card.interview.body': '課堂練習可以做短訪問：短問題、留白、記錄關鍵句。只係課堂練習，唔係要你去實行一個社區計劃。',
-  'lesson.f4u3l3.card.insight.body': '由課堂材料拎一個「洞察」：一件你以前冇留意、但同社區有關嘅細節。',
-  'lesson.f4u3l3.card.practice.body': '呢課喺課堂認識社區藝術，視覺日記每週繼續。課堂唔用真實試卷。唔使出外做計劃。',
+  'lesson.f4u3l3.card.theme.body': '社區藝術主題來自真實環境——人物、地方、習慣、物件。先由課室、食堂、校門、返學路或記憶入面，揀一件近身細節嚟睇。',
+  'lesson.f4u3l3.card.observe.body': '用速寫同筆記睇近身細節：課室角落、食堂座位、校門、返學路，或者一段記憶。影人之前要問准，尊重私隱。',
+  'lesson.f4u3l3.card.interview.body': '課堂短訪問可以問同學：課室、食堂、校門或返學路有邊件你平時冇留意嘅嘢。短問題、留白、記錄關鍵句。',
+  'lesson.f4u3l3.card.insight.body': '由課室、食堂、校門、返學路或記憶拎一個近身洞察：一件你以前冇留意、但同社區有關嘅細節。寫清楚你見到咩、點解同地方同人有關。',
+  'lesson.f4u3l3.card.practice.body': '呢課喺課堂認識社區藝術，視覺日記每週繼續。練習由近身細節出發去做評賞同洞察。課堂唔用真實試卷。',
   'lesson.f4u3l4.title': '十一月：認識社區藝術——發展同創作',
-  'lesson.f4u3l4.subtitle': '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔叫你真係實行一個社區藝術計劃。',
-  'lesson.f4u3l4.card.make.body': '將課堂認識變成創作練習——繪畫、設計、雕塑或其他媒介都可以。唔叫你真係出外完成一件社區計劃。',
-  'lesson.f4u3l4.card.three.body': '用三句講一件課堂練習作品：主題、做法、想觀眾感受到咩。唔當要出外實行一個社區計劃。',
-  'lesson.f4u3l4.card.practice.body': '呢課喺課堂練習發展同創作方法，並反思學習經驗。課堂唔用公開試正式成績聲稱。',
+  'lesson.f4u3l4.subtitle': '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔使出外做計劃。',
+  'lesson.f4u3l4.card.make.body': '用課堂短試驗，將近身洞察變成創作練習——紙、筆、黏土或其他課堂物料都可以。寫低你用咩物料同技巧。',
+  'lesson.f4u3l4.card.three.body': '用三句講呢次短試驗：主題、做法、想觀眾感受到咩。對住簡短準則先自評或請同學寫一句。',
+  'lesson.f4u3l4.card.practice.body': '呢課喺課堂練習發展同創作方法，並做短試驗同三句講解。課堂唔用公開試正式成績聲稱。',
+  'lesson.goal.hint': '呢課要你做到嘅可觀察成果',
+  'lesson.f4u3l3.goal.1': '可以指出「邂逅！山 川 人」嘅評賞對象同焦點，並寫陶土同村落、地方同人嘅關係。',
+  'lesson.f4u3l3.goal.2': '可以由課室、食堂、校門、返學路或記憶寫一個近身洞察，細節夠具體。',
+  'lesson.f4u3l3.goal.3': '可以喺呢兩個例子入面，寫出相關視覺元素同組織原理。',
+  'lesson.f4u3l4.goal.1': '可以指出深食「喚味：𝑥」嘅評賞對象同焦點，並寫食物、地方、人同「喚味」邀請。',
+  'lesson.f4u3l4.goal.2': '可以喺課堂現場用紙、筆、黏土或其他課堂物料，做十至十五分鐘短試驗。唔上載作品。',
+  'lesson.f4u3l4.goal.3': '可以用三句講呢次短試驗：主題、做法、想觀眾感受到咩。表達開放，唔設單一標準答案。',
+  'lesson.goal.open': '表達開放，唔設單一標準答案。',
+  'criteria.insight.title': '近身洞察簡短準則',
+  'criteria.insight.line': '細節夠具體；同社區有關；寫到你見到嘅地方或人。',
+  'criteria.talk.title': '三句講解簡短準則',
+  'criteria.talk.line': '主題清楚；講到做法；講到想觀眾感受到咩。',
+  'criteria.comment.prompt': '教師、同儕或自評一句：',
+  'criteria.comment.placeholder': '喺呢度寫一句回饋。',
+  'criteria.note': '呢步係課內進展性評估，非公開試／非 HKEAA。唔做公開試級別預測。',
   'case.hill.title': '邂逅！山 川 人',
   'case.hill.english': 'Hi! Hill public art project',
   'case.hill.org': '主辦 康樂及文化事務署',
@@ -71,7 +89,21 @@ const EN = {
   'lesson.f4u3l3.title': 'November: Getting to know community art — research',
   'lesson.f4u3l3.subtitle': 'In class, learn what community art is, with past cases for reference. You do not need to go out and run a project.',
   'lesson.f4u3l4.title': 'November: Getting to know community art — develop and make',
-  'lesson.f4u3l4.subtitle': 'In class, look at past cases, then use a classroom exercise to turn that recognition into making. It does not ask you to actually carry out a community art project.',
+  'lesson.f4u3l4.subtitle': 'In class, look at past cases, then use a classroom exercise to turn that recognition into making. You do not need to go out and run a project.',
+  'lesson.f4u3l3.card.theme.body': 'A community-art theme comes from a real setting — people, places, habits and objects. Start in the classroom, the canteen, the school gate, the way to school, or a memory, and choose one nearby detail to look at.',
+  'lesson.f4u3l3.card.insight.body': 'Take one nearby insight from the classroom, the canteen, the school gate, the way to school, or a memory: a detail you had not noticed before that relates to the community. Write clearly what you see, and why it relates to the place and the people.',
+  'lesson.f4u3l4.card.make.body': 'Use a short classroom trial to turn a nearby insight into a making exercise — paper, a pen, clay, or other classroom materials. Write down which materials and skills you use.',
+  'lesson.f4u3l4.card.three.body': 'Use three sentences for this short trial: the theme, how you made it, and what you want the audience to feel. Check the short criteria, then self-assess or ask a classmate to write one sentence.',
+  'lesson.goal.hint': 'Observable outcomes this lesson asks you to reach',
+  'lesson.f4u3l3.goal.1': 'You can point out the object and focus of appreciation for 「邂逅！山 川 人」, and write the relationship between the clay and the village, the place, and the people.',
+  'lesson.f4u3l4.goal.1': 'You can point out the object and focus of appreciation for 深食「喚味：𝑥」, and write about food, place, people, and the 「喚味」 invitation.',
+  'lesson.f4u3l4.goal.3': 'You can use three sentences for this short trial: the theme, how you made it, and what you want the audience to feel. Expression stays open, with no single standard answer.',
+  'lesson.goal.open': 'Expression stays open, with no single standard answer.',
+  'criteria.insight.title': 'Short criteria for a nearby insight',
+  'criteria.talk.title': 'Short criteria for the three-sentence talk',
+  'criteria.comment.prompt': 'One sentence from the teacher, a peer, or yourself:',
+  'criteria.comment.placeholder': 'Write one sentence of feedback here.',
+  'criteria.note': 'This step is in-class formative assessment, not a public exam and not HKEAA. It does not predict a public-exam level.',
   'case.hill.english': 'Hi! Hill public art project',
   'case.hill.frame': 'This is a past case for reference, used for appreciation with an object and a focus.',
   'appreciate.heading': 'Appreciation task',
@@ -99,7 +131,13 @@ const HANS = {
   'lesson.f4u3l3.title': '十一月：认识社区艺术——研究',
   'lesson.f4u3l3.subtitle': '在课堂认识什么是社区艺术，并配以往案例参考。不必出外做计划。',
   'lesson.f4u3l4.title': '十一月：认识社区艺术——发展与创作',
-  'lesson.f4u3l4.subtitle': '在课堂看以往案例，再用课堂练习把认识发展成创作。不要求你真正实行一个社区艺术计划。',
+  'lesson.f4u3l4.subtitle': '在课堂看以往案例，再用课堂练习将认识发展成创作。不必出外做计划。',
+  'lesson.f4u3l3.card.insight.body': '从课室、食堂、校门、上学路或记忆取一个近身洞察：一件你以前没有留意、但与社区有关的细节。写清楚你看到什么、为什么与地方和人有关。',
+  'lesson.f4u3l4.card.make.body': '用课堂短试验，将近身洞察变成创作练习——纸、笔、黏土或其他课堂物料都可以。写下你用什么物料和技巧。',
+  'lesson.f4u3l4.goal.1': '可以指出深食「唤味：𝑥」的评赏对象和焦点，并写食物、地方、人和「唤味」邀请。',
+  'lesson.goal.hint': '这课要你做到的可观察成果',
+  'criteria.insight.line': '细节够具体；与社区有关；写到你看到的地方或人。',
+  'criteria.note': '这步是课内进展性评估，非公开试／非 HKEAA。不做公开试级别预测。',
   'case.hill.where': '前川龙贯文公立学校及荃湾川龙村',
   'case.hill.frame': '这个是以往案例参考，用来做有对象、有焦点的评赏。',
   'appreciate.heading': '评赏任务',
@@ -199,12 +237,52 @@ describe('November community-art cases', () => {
       'visual.principles.near',
       'visual.elements.flavour',
       'visual.trial',
+      'lesson.f4u3l3.card.theme.body',
+      'lesson.f4u3l3.card.observe.body',
+      'lesson.f4u3l3.card.interview.body',
+      'lesson.f4u3l3.card.insight.body',
+      'lesson.f4u3l3.card.practice.body',
+      'lesson.f4u3l4.subtitle',
+      'lesson.f4u3l4.card.make.body',
+      'lesson.f4u3l4.card.three.body',
+      'lesson.f4u3l4.card.practice.body',
+      'lesson.goal.hint',
+      'lesson.f4u3l3.goal.1',
+      'lesson.f4u3l3.goal.2',
+      'lesson.f4u3l3.goal.3',
+      'lesson.f4u3l4.goal.1',
+      'lesson.f4u3l4.goal.2',
+      'lesson.f4u3l4.goal.3',
+      'lesson.goal.open',
+      'criteria.insight.title',
+      'criteria.insight.line',
+      'criteria.talk.title',
+      'criteria.talk.line',
+      'criteria.comment.prompt',
+      'criteria.comment.placeholder',
+      'criteria.note',
     ] as const
     for (const key of fresh) {
       assert.equal(hant[key], HANT[key], key)
       assert.equal(/[\u7684\u628A\u5572]/.test(hant[key]), false, key)
     }
     assert.equal([...hant['case.hill.frame']].some((ch) => ch.codePointAt(0) === 0x569f), true)
+    const theme = hant['lesson.f4u3l3.card.theme.body']
+    const insight = hant['lesson.f4u3l3.card.insight.body']
+    assert.equal(theme.codePointAt(theme.indexOf('真')), 0x771f)
+    assert.equal(theme.includes('\u771E'), false)
+    assert.equal(theme.codePointAt(theme.indexOf('揀')), 0x63c0)
+    assert.equal([...theme].some((ch) => ch.codePointAt(0) === 0x569f), true)
+    assert.equal(insight.includes('\u62CE'), true)
+    assert.equal(insight.includes('\u62D0'), false)
+    assert.equal(insight.includes('\u62C9'), false)
+    assert.equal(hant['lesson.f4u3l3.goal.1'].codePointAt(hant['lesson.f4u3l3.goal.1'].indexOf('邂')), 0x9082)
+    assert.equal([...hant['lesson.f4u3l3.goal.1']].some((ch) => ch.codePointAt(0) === 0x9005), true)
+    assert.equal([...hant['lesson.f4u3l4.goal.1']].some((ch) => ch.codePointAt(0) === 0x1d465), true)
+    assert.equal(hant['lesson.f4u3l4.goal.1'].includes('x'), false)
+    assert.equal(hant['lesson.f4u3l4.goal.1'].includes('X'), false)
+    assert.equal(hant['map.lesson.goal'], '目標')
+    for (const key of Object.keys(hant)) assert.equal(key.startsWith('trial.'), false, key)
     assert.equal(hant['case.deepfood.appreciate.object'].includes('\u{1D465}'), true)
     assert.equal(hant['case.deepfood.appreciate.object'].includes('x'), false)
     assert.equal(hant['visual.elements.flavour'].includes('\u{1D465}'), true)
@@ -241,6 +319,11 @@ describe('November community-art cases', () => {
         assert.equal(overrides[key], hans[key], key)
       }
     }
+    for (const key of Object.keys(HANT)) {
+      if (key.startsWith('criteria.') || key.startsWith('lesson.goal') || key.startsWith('lesson.f4u3l')) {
+        assert.equal(overrides[key], hans[key], key)
+      }
+    }
     assert.equal(en['case.hill.title'], hant['case.hill.title'])
     assert.equal(en['case.deepfood.english'].endsWith('\u{1D465}'), true)
     assert.equal(en['case.deepfood.english'].includes('Flavour: x'), false)
@@ -269,7 +352,12 @@ describe('November community-art cases', () => {
       if (/go out|carry out/i.test(value)) assert.match(value, /do not|does not/i, value)
     }
     assert.match(hant['lesson.f4u3l3.subtitle'], /唔使出外做計劃/)
-    assert.match(hant['lesson.f4u3l4.subtitle'], /唔叫你真係實行一個社區藝術計劃/)
+    assert.match(hant['lesson.f4u3l4.subtitle'], /唔使出外做計劃/)
+    assert.equal(hant['lesson.f4u3l3.subtitle'].split('唔使出外').length - 1, 1)
+    assert.equal(hant['lesson.f4u3l4.subtitle'].split('唔使出外').length - 1, 1)
+    for (const key of LESSON_KEYS) {
+      if (key.includes('.card.')) assert.equal(hant[key].includes('唔使出外'), false, key)
+    }
     assert.match(hant['case.hill.frame'], /過往案例參考/)
     assert.match(hant['case.deepfood.frame'], /課堂案例/)
     assert.equal(hant['case.hill.artist'].includes('唔係主辦或策劃'), true)
@@ -321,11 +409,53 @@ describe('November community-art cases', () => {
     assert.equal(wired.cards[3]?.body, hant['lesson.f4u3l4.card.three.body'])
     assert.equal(wired.cards[3]?.image, undefined)
     assert.deepEqual(wired.cards[0]?.easy.join(''), wired.cards[0]?.body.replace(/[，。；：]/g, ''))
+    assert.equal(l3.cards[3]?.body, hant['lesson.f4u3l3.card.insight.body'])
+    assert.equal(l4.cards[0]?.body, hant['lesson.f4u3l4.card.make.body'])
+    assert.equal(l4.cards[4]?.body, hant['lesson.f4u3l4.card.practice.body'])
+    assert.deepEqual(communityGoalKeys('F4-U3-L3'), [
+      'lesson.f4u3l3.goal.1',
+      'lesson.f4u3l3.goal.2',
+      'lesson.f4u3l3.goal.3',
+    ])
+    assert.deepEqual(communityGoalKeys('F4-U3-L4'), [
+      'lesson.f4u3l4.goal.1',
+      'lesson.f4u3l4.goal.2',
+      'lesson.f4u3l4.goal.3',
+    ])
+    assert.equal(communityGoalKeys('F4-U3-L2'), null)
+    assert.equal(communityCardCriteria('F4-U3-L3', 3), 'insight')
+    assert.equal(communityCardCriteria('F4-U3-L3', 0), null)
+    assert.equal(communityCardCriteria('F4-U3-L4', 0), 'insight')
+    assert.equal(communityCardCriteria('F4-U3-L4', 3), 'talk')
+    assert.equal(communityCardCriteria('F4-U3-L4', 1), null)
 
     const builder = read('src/game/f4Demo.ts')
     const player = read('src/components/game/LessonPlayer.tsx')
     assert.match(builder, /applyCommunityLessonCopy/)
     assert.match(player, /CommunityLessonIntro lessonId=\{lesson\.id\} subtitle=\{lesson\.subtitle\}/)
+    assert.match(player, /goal: \{ title: 'map\.lesson\.goal', hint: 'map\.lesson\.goalHint' \}/)
+    assert.match(player, /<CommunityGoalOutcomes lessonId=\{lesson\.id\} \/>/)
+    assert.match(player, /<LessonCardCriteria lessonId=\{lesson\.id\} index=\{index\} \/>/)
+    assert.match(player, /<LessonCardCriteria lessonId=\{lessonId\} index=\{cardIdx\} \/>/)
+    const surface = read('src/components/game/CommunityCases.tsx')
+    const goals = surface.slice(surface.indexOf('function CommunityGoalOutcomes'))
+    const criteria = surface.slice(surface.indexOf('function LessonCardCriteria'))
+    assert.match(goals, /lesson\.goal\.hint/)
+    assert.match(goals, /lesson\.goal\.open/)
+    assert.match(goals, /data-lesson-goals/)
+    assert.match(criteria, /criteria\.insight\.title/)
+    assert.match(criteria, /criteria\.insight\.line/)
+    assert.match(criteria, /criteria\.talk\.title/)
+    assert.match(criteria, /criteria\.talk\.line/)
+    assert.match(criteria, /criteria\.comment\.prompt/)
+    assert.match(criteria, /criteria\.comment\.placeholder/)
+    assert.match(criteria, /criteria\.note/)
+    assert.match(criteria, /data-criteria="insight"/)
+    assert.match(criteria, /data-criteria="talk"/)
+    assert.match(criteria, /data-criteria-comment/)
+    assert.equal(criteria.includes('trial.'), false)
+    assert.equal(goals.includes('trial.'), false)
+    assert.equal(criteria.includes('worksheet.'), false)
   })
 
   it('uses the two official cases and only the verified YouTube ids', () => {
@@ -394,6 +524,8 @@ describe('November community-art cases', () => {
 
   it('leaves LessonCardArt and the api TypeScript count unchanged', () => {
     const art = read('src/components/game/LessonCardArt.tsx')
+    const artBlob = createHash('sha1').update(`blob ${Buffer.byteLength(art)}\0${art}`).digest('hex')
+    assert.equal(artBlob, '8a19d8c4bff66d05f8bce074478345031a540112')
     assert.match(art, /key=\{image\}/)
     assert.equal(art.includes('loading='), false)
     assert.match(art, /if \(!image \|\| failed\) return null/)
