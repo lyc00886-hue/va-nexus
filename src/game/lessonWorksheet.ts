@@ -28,10 +28,13 @@ export const WORKSHEET_LOCALE_KEYS = [
   'worksheet.section.questions',
 ] as const
 
+/** L3 keeps worksheet.l3.q4 in the locale file and does not show it. */
 export const WORKSHEET_QUESTION_KEYS = {
-  'F4-U3-L3': ['worksheet.l3.q1', 'worksheet.l3.q2', 'worksheet.l3.q3', 'worksheet.l3.q4'],
+  'F4-U3-L3': ['worksheet.l3.q1', 'worksheet.l3.q2', 'worksheet.l3.q3'],
   'F4-U3-L4': ['worksheet.l4.q1', 'worksheet.l4.q2', 'worksheet.l4.q3'],
 } as const
+
+export const WORKSHEET_UNUSED_QUESTION_KEY = 'worksheet.l3.q4'
 
 /** Teacher-preview sample. Not a locale key, and not a real student. */
 export const WORKSHEET_SAMPLE_LABEL = '示例同學甲'

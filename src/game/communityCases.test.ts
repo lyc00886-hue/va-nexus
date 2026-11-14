@@ -282,7 +282,19 @@ describe('November community-art cases', () => {
     assert.equal(hant['lesson.f4u3l4.goal.1'].includes('x'), false)
     assert.equal(hant['lesson.f4u3l4.goal.1'].includes('X'), false)
     assert.equal(hant['map.lesson.goal'], '目標')
-    for (const key of Object.keys(hant)) assert.equal(key.startsWith('trial.'), false, key)
+    assert.deepEqual(
+      Object.keys(hant).filter((key) => key.startsWith('trial.')),
+      [
+        'trial.title',
+        'trial.when',
+        'trial.do',
+        'trial.trace.label',
+        'trial.trace.hint',
+        'trial.talk.label',
+        'trial.disclaimer',
+        'trial.noUpload',
+      ],
+    )
     assert.equal(hant['case.deepfood.appreciate.object'].includes('\u{1D465}'), true)
     assert.equal(hant['case.deepfood.appreciate.object'].includes('x'), false)
     assert.equal(hant['visual.elements.flavour'].includes('\u{1D465}'), true)

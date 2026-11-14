@@ -3,10 +3,12 @@ import { readdirSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
+import { TRIAL_LOCALE_KEYS, showsShortTrial } from './shortTrial.ts'
 import {
   WORKSHEET_LOCALE_KEYS,
   WORKSHEET_QUESTION_KEYS,
   WORKSHEET_SAMPLE_LABEL,
+  WORKSHEET_UNUSED_QUESTION_KEY,
   worksheetCaseLines,
   worksheetDownloadHtml,
   worksheetDownloadName,
@@ -33,19 +35,39 @@ const HANT = {
   'worksheet.printHint': '預覽無問題之後，先列印或下載。',
   'worksheet.l3.title': '十一月：認識社區藝術——研究 · 課堂活動紙',
   'worksheet.l4.title': '十一月：認識社區藝術——發展同創作 · 課堂活動紙',
-  'worksheet.intro': '呢張係課堂活動紙，跟住呢課嘅題同過往案例。唔係功課，亦唔使出外做計劃。',
+  'worksheet.intro': '呢張係課堂活動紙，跟住呢課嘅三題課業：案例評賞、近身洞察、過程留痕或三句講解。唔係功課。',
   'worksheet.sampleNote': '以下係示例，唔係真實同學或真實學校。',
   'worksheet.noSchool': '呢張活動紙唔顯示校名、校徽或教師姓名。',
   'worksheet.section.case': '過往案例參考',
-  'worksheet.section.questions': '跟課本題',
-  'worksheet.l3.q1': '社區研究時影人之前應該？',
-  'worksheet.l3.q2': '訪問之後點用資料？',
-  'worksheet.l3.q3': '視覺研究常用＿＿、速寫同筆記。',
+  'worksheet.section.questions': '三題課業',
+  'worksheet.l3.q1': '評賞陳思光用村內陶土做嘅陶瓷（川龍泥土陶杯／村內陶土作品）。寫陶土同村落、地方同人嘅關係。唔使只抄主辦、策劃或日期。',
+  'worksheet.l3.q2': '由課室、食堂、校門、返學路或記憶揀一件近身細節，寫一個洞察：你見到咩？點解同社區有關？',
+  'worksheet.l3.q3': '用三句講你點樣由呢件近身細節，連去「邂逅！山 川 人」嘅評賞焦點。',
   'worksheet.l3.q4': '寫一個洞察。提示：先寫你喺課室材料見到嘅細節，再寫佢點樣同社區有關。',
-  'worksheet.l4.q1': '概念發展「留痕」係為咗？',
-  'worksheet.l4.q2': '交作品時三句講解應包括？',
-  'worksheet.l4.q3': '用三句講一件課室作品。提示：主題一句、做法一句、想觀眾感受到咩一句。',
+  'worksheet.l4.q1': '評賞深食「喚味：\u{1D465}」。寫食物、地方、人，同「喚味」邀請點樣呈現。只作課堂播放，唔下載、上載或轉載。',
+  'worksheet.l4.q2': '由課室、食堂、校門、返學路或記憶揀一件近身細節，寫佢點樣可以變成課堂短試驗嘅主題。',
+  'worksheet.l4.q3': '用三句講呢次短試驗：主題、做法、想觀眾感受到咩。之後按簡短準則寫一句自評，或請同學寫一句。',
+  'trial.title': '課堂短試驗',
+  'trial.when': '以 11 月 26 日課堂現場為主，十至十五分鐘。',
+  'trial.do': '用紙、筆、黏土或其他課堂物料試一次。產品只支援短試驗同講解留痕。',
+  'trial.trace.label': '過程留痕',
+  'trial.trace.hint': '寫你試咗咩物料、改過咩、點解咁改。',
+  'trial.talk.label': '三句講解留痕',
+  'trial.disclaimer': '科技唔可以取代物料試驗。呢度只係短試驗同講解留痕。',
+  'trial.noUpload': '唔上載作品，亦唔自動評分。',
 } as const
+
+const THIN_HANT_KEYS = [
+  'worksheet.intro',
+  'worksheet.section.questions',
+  'worksheet.l3.q1',
+  'worksheet.l3.q2',
+  'worksheet.l3.q3',
+  'worksheet.l4.q1',
+  'worksheet.l4.q2',
+  'worksheet.l4.q3',
+  ...TRIAL_LOCALE_KEYS,
+] as const
 
 const BANNED =
   /ArtInSight|洞察藝術|洞察艺术|ArtGPT|Unlock the limit|評分校準|评分校准|開閘|开闸|\bRELAY\b|SENCO|學習需要（SEN）|学习需要（SEN）|讀寫障礙|读写障碍|Dyslexia|ADHD|自閉症|自闭症|診斷|诊断/
@@ -83,18 +105,32 @@ describe('November activity papers', () => {
     }
     assert.equal(hant['worksheet.sampleNote'].includes('\u771F'), true)
     assert.equal(hant['worksheet.sampleNote'].includes('\u771E'), false)
-    assert.equal(hant['worksheet.l3.q3'].includes('\uFF3F\uFF3F'), true)
-    assert.equal(hant['worksheet.l3.q3'].includes('__'), false)
     assert.equal(hant['worksheet.l3.q4'].includes('\u8AB2\u5BA4'), true)
     assert.equal(hant['worksheet.l3.q4'].includes('課堂'), false)
     assert.equal(hant['worksheet.l3.q4'].includes('\u55BA'), true)
     assert.equal(hant['worksheet.l3.q4'].includes('\u5605'), true)
-    assert.equal(hant['worksheet.l4.q1'].includes('\u5497'), true)
-    assert.equal(hant['worksheet.l4.q3'].includes('\u8AB2\u5BA4'), true)
-    assert.equal(hant['worksheet.l4.q3'].includes('課堂'), false)
-    assert.equal(hant['worksheet.l4.q3'].includes('\u54A9'), true)
-    assert.equal(en['worksheet.l3.q3'].includes('\uFF3F\uFF3F'), true)
-    assert.equal(hans['worksheet.l3.q3'].includes('\uFF3F\uFF3F'), true)
+    assert.equal(hant['worksheet.l4.q1'].includes('\u{1D465}'), true)
+    assert.equal(hant['worksheet.l4.q1'].includes('x'), false)
+    assert.equal(hant['worksheet.l4.q1'].includes('X'), false)
+    assert.equal(en['worksheet.l4.q1'].includes('\u{1D465}'), true)
+    assert.equal(hans['worksheet.l4.q1'].includes('\u{1D465}'), true)
+    assert.equal(hant['worksheet.l3.q3'].codePointAt(hant['worksheet.l3.q3'].indexOf('邂')), 0x9082)
+    assert.equal([...hant['worksheet.l3.q3']].some((ch) => ch.codePointAt(0) === 0x9005), true)
+    assert.equal(hant['worksheet.l3.q2'].codePointAt(hant['worksheet.l3.q2'].indexOf('揀')), 0x63c0)
+    assert.equal(hant['worksheet.l4.q2'].codePointAt(hant['worksheet.l4.q2'].indexOf('揀')), 0x63c0)
+    assert.equal(hant['worksheet.l3.q2'].includes('\u8AB2\u5BA4'), true)
+    assert.equal(hant['worksheet.l4.q2'].includes('\u8AB2\u5BA4'), true)
+    assert.equal(hant['worksheet.l3.q2'].codePointAt(hant['worksheet.l3.q2'].indexOf('咩')), 0x54a9)
+    assert.equal(hant['worksheet.l4.q3'].codePointAt(hant['worksheet.l4.q3'].indexOf('咩')), 0x54a9)
+    assert.equal(hant['trial.trace.hint'].codePointAt(hant['trial.trace.hint'].indexOf('咗')), 0x5497)
+    assert.equal(hant['trial.trace.hint'].codePointAt(hant['trial.trace.hint'].indexOf('咩')), 0x54a9)
+    for (const key of THIN_HANT_KEYS) {
+      assert.equal(/[\u7684\u628A\u5572]/.test(hant[key]), false, key)
+    }
+    assert.deepEqual(
+      Object.keys(hant).filter((key) => key.startsWith('trial.')),
+      [...TRIAL_LOCALE_KEYS],
+    )
     assert.equal(hans['worksheet.sampleNote'].includes('\u771E'), false)
     assert.equal(WORKSHEET_SAMPLE_LABEL, '示例同學甲')
     assert.equal(hant['worksheet.intro'].includes('唔係功課'), true)
@@ -113,8 +149,9 @@ describe('November activity papers', () => {
       HANT['worksheet.l3.q1'],
       HANT['worksheet.l3.q2'],
       HANT['worksheet.l3.q3'],
-      HANT['worksheet.l3.q4'],
     ])
+    assert.equal(worksheetQuestions('F4-U3-L3', text).includes(hant[WORKSHEET_UNUSED_QUESTION_KEY]), false)
+    assert.equal(worksheetQuestions('F4-U3-L3', text).length, 3)
     assert.deepEqual(worksheetQuestions('F4-U3-L4', text), [
       HANT['worksheet.l4.q1'],
       HANT['worksheet.l4.q2'],
@@ -124,8 +161,8 @@ describe('November activity papers', () => {
       'worksheet.l3.q1',
       'worksheet.l3.q2',
       'worksheet.l3.q3',
-      'worksheet.l3.q4',
     ])
+    assert.equal(WORKSHEET_QUESTION_KEYS['F4-U3-L3'].includes(WORKSHEET_UNUSED_QUESTION_KEY), false)
 
     assert.deepEqual(worksheetCaseLines('F4-U3-L3', 'teacher', text), [
       '邂逅！山 川 人',
@@ -193,6 +230,9 @@ describe('November activity papers', () => {
     assert.equal(file.includes('示例同學甲'), false)
     assert.equal(file.includes('邂逅！山 川 人'), true)
     assert.equal(file.includes(HANT['worksheet.l3.q1']), true)
+    assert.equal(file.includes(hant[WORKSHEET_UNUSED_QUESTION_KEY]), false)
+    assert.equal(file.includes('worksheet.l3.q4'), false)
+    assert.equal(file.split('<li>').length - 1, 3)
     assert.equal(file.includes('#FFF9E9'), true)
     assert.equal(file.includes('#0D9488'), true)
     assert.equal(worksheetDownloadName('F4-U3-L4'), 'classroom-activity-F4-U3-L4.html')
@@ -234,6 +274,42 @@ describe('November activity papers', () => {
     assert.match(cases, /classroomEmbedUrl\(OVERVIEW_VIDEO_ID\)/)
     assert.match(cases, /data-case="hill"/)
     assert.match(cases, /data-case="deepfood"/)
+    assert.equal(view.includes('worksheet.l3.q4'), false)
+    assert.equal(view.includes('<input'), false)
+    assert.equal(/type="radio"|type="checkbox"|<select/.test(view), false)
+  })
+
+  it('shows three tasks on the papers and short-trial traces beside the L4 making criteria', () => {
+    const hant = messages('src/i18n/zh-Hant.json')
+    const view = read('src/components/game/LessonWorksheet.tsx')
+    const player = read('src/components/game/LessonPlayer.tsx')
+    const trial = read('src/components/game/LessonShortTrial.tsx')
+    assert.equal(view.includes('worksheet.l3.q4'), false)
+    assert.equal(view.includes(hant['worksheet.l3.q4']), false)
+    assert.match(view, /worksheetQuestions/)
+    assert.match(player, /<LessonCardCriteria lessonId=\{lesson\.id\} index=\{index\} \/>\s*<LessonShortTrial lessonId=\{lesson\.id\} index=\{index\} \/>/)
+    assert.match(player, /<LessonCardCriteria lessonId=\{lessonId\} index=\{cardIdx\} \/>\s*<LessonShortTrial lessonId=\{lessonId\} index=\{cardIdx\} \/>/)
+    for (const key of TRIAL_LOCALE_KEYS) assert.match(trial, new RegExp(key.replaceAll('.', '\\.')))
+    assert.match(trial, /data-short-trial/)
+    assert.match(trial, /data-trial-trace/)
+    assert.match(trial, /data-trial-talk/)
+    assert.match(trial, /data-trial-disclaimer/)
+    assert.match(trial, /data-trial-no-upload/)
+    assert.match(trial, /#FFF9E9/)
+    assert.match(trial, /#0D9488/)
+    assert.equal(trial.includes('type="file"'), false)
+    assert.equal(trial.includes('fetch('), false)
+    assert.equal(trial.includes('/api/'), false)
+    assert.match(trial, /trial\.noUpload/)
+    assert.equal(/\bscore\b|autoGrade|setScore/.test(trial), false)
+    assert.equal(showsShortTrial('F4-U3-L4', 0), true)
+    assert.equal(showsShortTrial('F4-U3-L4', 3), false)
+    assert.equal(showsShortTrial('F4-U3-L3', 0), false)
+    assert.equal(showsShortTrial('F4-U3-L3', 3), false)
+    const criteria = read('src/components/game/CommunityCases.tsx')
+    const criteriaFn = criteria.slice(criteria.indexOf('function LessonCardCriteria'))
+    assert.equal(criteriaFn.includes('trial.'), false)
+    assert.equal(hant['visual.trial'], '短試驗可以試物料同質感，再用對比、強調或重複去組織你見到嘅近身細節。')
   })
 
   it('leaves LessonCardArt, display settings, playback, SoftMotion, and the api count alone', () => {

@@ -54,6 +54,7 @@ import { ExerciseMark } from './ExerciseMark'
 import { LessonArtistPanel } from './LessonArtists'
 import { lessonCardBodyStyle, lessonCardReadingAttrs, lessonCardVisibleLines } from '../../lib/lessonReadingSurface'
 import { CommunityGoalOutcomes, CommunityLessonIntro, LessonCardCriteria } from './CommunityCases'
+import { LessonShortTrial } from './LessonShortTrial'
 import { LessonWorksheet } from './LessonWorksheet'
 import { LessonCardArt } from './LessonCardArt'
 import { OtterChest, OtterPose } from './OtterPose'
@@ -462,6 +463,7 @@ function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean })
               <p className="mt-1 text-sm leading-relaxed text-slate-700">{item.body}</p>
             )}
             <LessonCardCriteria lessonId={lesson.id} index={index} />
+            <LessonShortTrial lessonId={lesson.id} index={index} />
           </li>
         ))}
       </ul>
@@ -529,6 +531,7 @@ function CardsStage({
           <p data-lesson-body className="mt-3 text-base leading-relaxed text-slate-700" style={bodyStyle}>{visibleLines[0]}</p>
         )}
         <LessonCardCriteria lessonId={lessonId} index={cardIdx} />
+        <LessonShortTrial lessonId={lessonId} index={cardIdx} />
       </article>
       <div className="flex justify-between">
         <button
