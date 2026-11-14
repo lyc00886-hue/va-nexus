@@ -698,5 +698,9 @@
   "trial.trace.hint": "写你试了什么物料、改过什么、为什么这样改。",
   "trial.talk.label": "三句讲解留痕",
   "trial.disclaimer": "科技不可以取代物料试验。这里只是短试验和讲解留痕。",
-  "trial.noUpload": "不上传作品，也不自动评分。"
+  "trial.noUpload": "不上传作品，也不自动评分。",
+  "report.staff.intro": "预览一位同学的校内报告。这份报告由原来的学习进度报告延续，不另外再出第二份报告。",
+  "report.staff.noteValue": "这次已交近身洞察功课。课堂表现平稳。",
+  "report.staff.noteHint": "短注只供校内参考，不会写公开试级别，也不会加额外标签。",
+  "report.staff.bandKeep": "校内评级仍然用老师确认过的练习带，这次不另定新级。"
 }
