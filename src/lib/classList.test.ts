@@ -136,7 +136,7 @@ describe('classroom management copy and wiring', () => {
     assert.equal(hant['inspect.status.steady'], '進度平穩')
     assert.equal(hant['tab.staff'], '評分參考')
     assert.equal(hant['qtype.chip.dualRead'], '藝術評賞比較')
-    assert.equal(Object.keys(hant).some((key) => key.startsWith('assign.') || key.startsWith('hw.')), false)
+    assert.equal(Object.keys(hant).some((key) => key.startsWith('hw.') || key.startsWith('report.')), false)
     assert.equal(hans['class.staff.demoClassNote'].includes('示例课室'), true)
     assert.equal(/[嘅咗唔喺嚟]/.test(hans['class.staff.intro']), false)
   })

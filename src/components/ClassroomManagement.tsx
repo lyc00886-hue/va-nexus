@@ -1,4 +1,5 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
+import { AssignmentPublish } from './AssignmentPublish'
 import { useT } from '../i18n'
 import { addStaffClass, useClassList } from '../lib/classList'
 import { PORTFOLIO_LABEL_MAX, portfolioKey } from '../lib/teacherDraftBand'
@@ -14,7 +15,8 @@ export function ClassroomManagement({ overview }: { overview: ReactNode }) {
   const [name, setName] = useState('')
   const [openId, setOpenId] = useState<string | null>(null)
   const showDemo = classes.some((row) => row.demo)
-  const open = openId != null && classes.some((row) => row.id === openId)
+  const openRow = classes.find((row) => row.id === openId)
+  const open = openRow != null
   const titleId = 'class-staff-title'
   const listId = 'class-staff-list-title'
 
@@ -120,6 +122,14 @@ export function ClassroomManagement({ overview }: { overview: ReactNode }) {
         <div id="class-staff-overview" data-testid="class-staff-overview" className="space-y-3">
           <p className="text-sm leading-relaxed text-slate-600">{t('class.staff.keepOverview')}</p>
           {overview}
+          {openRow ? (
+            <AssignmentPublish
+              key={openRow.id}
+              classId={openRow.id}
+              className={openRow.demo ? t('class.staff.demoClass') : openRow.name}
+              demoClass={openRow.demo}
+            />
+          ) : null}
         </div>
       ) : null}
     </section>
