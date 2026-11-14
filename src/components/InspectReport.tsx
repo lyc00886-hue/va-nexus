@@ -1,11 +1,23 @@
 import { useEffect } from 'react'
 import { HTML_LANG, useT } from '../i18n'
 import { gradeLabelKey, useInspectRows, type InspectView } from '../lib/useInspectClass'
-import { learningProgressFilename, renderInspectReportHtml, type ReportSection } from '../lib/inspectReport'
+import { useHomeworkSubmissions } from '../lib/homeworkSubmit'
+import {
+  collectedReportValue,
+  learningProgressFilename,
+  renderInspectReportHtml,
+  studentHomeworkCollected,
+  type ReportSection,
+} from '../lib/inspectReport'
 
 export type InspectPreview = { kind: 'one'; id: string } | { kind: 'class' }
 
-function sectionFor(row: InspectView, labels: Record<string, string>, gradeText: string): ReportSection {
+function sectionFor(
+  row: InspectView,
+  labels: Record<string, string>,
+  gradeText: string,
+  extra: { homework: string; note: string; bandKeep: string; noteHint: string },
+): ReportSection {
   return {
     name: row.name,
     rows: [
@@ -15,7 +27,9 @@ function sectionFor(row: InspectView, labels: Record<string, string>, gradeText:
       { label: labels.practice, value: `${row.mcScore}\n${row.written}` },
       { label: labels.artwork, value: row.artwork },
       { label: labels.research, value: row.research },
-      { label: labels.band, value: row.band },
+      { label: labels.band, value: `${row.band}\n${extra.bandKeep}` },
+      { label: labels.homework, value: extra.homework },
+      { label: labels.note, value: `${extra.note}\n${extra.noteHint}` },
       { label: labels.date, value: row.date },
     ],
   }
@@ -24,7 +38,16 @@ function sectionFor(row: InspectView, labels: Record<string, string>, gradeText:
 export function InspectReport({ preview, onClose }: { preview: InspectPreview | null; onClose: () => void }) {
   const { t, locale } = useT()
   const rows = useInspectRows()
+  const submissions = useHomeworkSubmissions()
   const shown = preview?.kind === 'class' ? rows : rows.filter((row) => row.id === preview?.id)
+
+  function collectionFor(row: InspectView): { homework: string; note: string } {
+    const collected = studentHomeworkCollected(submissions, row.id)
+    return {
+      homework: collectedReportValue(collected, t('report.staff.homeworkValue'), t('inspect.report.none')),
+      note: collectedReportValue(collected, t('report.staff.noteValue'), t('inspect.report.none')),
+    }
+  }
 
   useEffect(() => {
     if (!preview) return
@@ -40,15 +63,25 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
       artwork: t('inspect.report.artwork'),
       research: t('inspect.report.research'),
       band: t('inspect.report.band'),
+      homework: t('report.staff.homework'),
+      note: t('report.staff.note'),
       date: t('inspect.report.date'),
     }
+    const bandKeep = t('report.staff.bandKeep')
+    const noteHint = t('report.staff.noteHint')
     const sections = list
       .filter((row) => row.name.trim() !== '')
-      .map((row) => sectionFor(row, labels, row.grade ? t(gradeLabelKey(row.grade)) : t('inspect.report.none')))
+      .map((row) =>
+        sectionFor(row, labels, row.grade ? t(gradeLabelKey(row.grade)) : t('inspect.report.none'), {
+          ...collectionFor(row),
+          bandKeep,
+          noteHint,
+        }),
+      )
     const filename = learningProgressFilename()
     const html = renderInspectReportHtml({
       lang: HTML_LANG[locale],
-      title: t('inspect.staff.reportTitle'),
+      title: t('report.staff.title'),
       disclaimer: t('inspect.report.disclaimer'),
       sections,
       filename,
@@ -69,10 +102,10 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
   return (
     <section id="inspect-report" aria-labelledby="inspect-report-title" data-testid="inspect-report" data-soft-motion="off" className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5">
       <div>
-        <h2 id="inspect-report-title" className="text-xl font-bold text-slate-900">
-          {t('inspect.staff.reportTitle')}
+        <h2 id="inspect-report-title" data-testid="report-staff-title" className="text-xl font-bold text-slate-900">
+          {t('report.staff.title')}
         </h2>
-        <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('inspect.staff.reportIntro')}</p>
+        <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('report.staff.intro')}</p>
       </div>
 
       {preview && shown.length > 0 ? (
@@ -81,7 +114,9 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
             {t('inspect.report.disclaimer')}
           </p>
           <div className="mt-4 space-y-6">
-            {shown.map((row) => (
+            {shown.map((row) => {
+              const collection = collectionFor(row)
+              return (
               <div key={row.id}>
                 <h3 className="text-base font-bold text-[#0D9488]">{row.name}</h3>
                 <dl className="mt-2 space-y-2 text-sm">
@@ -113,6 +148,20 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
                   <div>
                     <dt className="font-semibold text-slate-900">{t('inspect.report.band')}</dt>
                     <dd data-testid={`inspect-band-${row.id}`}>{row.band}</dd>
+                    <p data-testid={`report-band-keep-${row.id}`} className="mt-1 text-sm leading-relaxed text-slate-600">
+                      {t('report.staff.bandKeep')}
+                    </p>
+                  </div>
+                  <div>
+                    <dt className="font-semibold text-slate-900">{t('report.staff.homework')}</dt>
+                    <dd data-testid={`report-homework-${row.id}`}>{collection.homework}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold text-slate-900">{t('report.staff.note')}</dt>
+                    <dd data-testid={`report-note-${row.id}`}>{collection.note}</dd>
+                    <p data-testid={`report-note-hint-${row.id}`} className="mt-1 text-sm leading-relaxed text-slate-600">
+                      {t('report.staff.noteHint')}
+                    </p>
                   </div>
                   <div>
                     <dt className="font-semibold text-slate-900">{t('inspect.report.date')}</dt>
@@ -120,7 +169,8 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
                   </div>
                 </dl>
               </div>
-            ))}
+              )
+            })}
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
             <button type="button" onClick={onClose} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700">
