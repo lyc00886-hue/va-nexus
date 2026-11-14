@@ -20,7 +20,7 @@ const LOCK = {
     quiz: '課堂觀察嘅材料可以包括？',
     correct: '教師提供或已有嘅相片、短片、物件、速寫',
     wrong: '只准背一句口號',
-    insight: '由課堂材料拎一個「洞察」：一件你以前冇留意、但同社區有關嘅細節。',
+    insight: '由課室、食堂、校門、返學路或記憶拎一個近身洞察：一件你以前冇留意、但同社區有關嘅細節。寫清楚你見到咩、點解同地方同人有關。',
   },
   'f4-demo.zh-Hans.json': {
     intro:
@@ -30,7 +30,7 @@ const LOCK = {
     quiz: '课堂观察的材料可以包括？',
     correct: '教师提供或已有的照片、短片、物件、速写',
     wrong: '只准背一句口号',
-    insight: '从课堂材料取出一个「洞察」：一件你以前没有留意、但与社区有关的细节。',
+    insight: '从课室、食堂、校门、上学路或记忆取一个近身洞察：一件你以前没有留意、但与社区有关的细节。写清楚你看到什么、为什么与地方和人有关。',
   },
   'f4-demo.en.json': {
     intro:
@@ -41,7 +41,7 @@ const LOCK = {
     quiz: 'What can classroom observation materials include?',
     correct: 'Photos, clips, objects, or sketches provided by the teacher or already available',
     wrong: 'You may only memorise one slogan',
-    insight: 'Take one insight from the classroom materials: a detail you had not noticed before that relates to the community.',
+    insight: 'Take one nearby insight from the classroom, the canteen, the school gate, the way to school, or a memory: a detail you had not noticed before that relates to the community. Write clearly what you see, and why it relates to the place and the people.',
   },
 } as const
 
@@ -146,8 +146,7 @@ describe('two-edition thin slice', () => {
       assert.equal(quiz?.answer, lock.correct, name)
       assert.equal(quiz?.answer === lock.wrong, false, name)
       assert.equal(quiz?.options?.includes(lock.wrong), true, name)
-      const insight = l3?.cards.map(cardText).find((text) => text.includes(lock.insight.slice(0, 8)))
-      assert.equal(insight, lock.insight, name)
+      assert.equal(cardText(l3!.cards[3]!), lock.insight, name)
       const blob = JSON.stringify(unit)
       for (const word of ['導賞', '导赏', '走訪', '走访', 'tour', 'Tour', '外出', '參觀', '参观', 'outing']) {
         assert.equal(blob.includes(word), false, `${name} ${word}`)

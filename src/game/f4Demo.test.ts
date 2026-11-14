@@ -97,7 +97,7 @@ const NOVEMBER_COPY = {
     },
     'F4-U3-L4': {
       title: '十一月：認識社區藝術——發展同創作',
-      goal: '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔叫你真係實行一個社區藝術計劃。',
+      goal: '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔使出外做計劃。',
     },
   },
   'f4-demo.zh-Hans.json': {
@@ -111,7 +111,7 @@ const NOVEMBER_COPY = {
     },
     'F4-U3-L4': {
       title: '十一月：认识社区艺术——发展与创作',
-      goal: '在课堂看以往案例，再用课堂练习把认识发展成创作。不要求你真正实行一个社区艺术计划。',
+      goal: '在课堂看以往案例，再用课堂练习将认识发展成创作。不必出外做计划。',
     },
   },
   'f4-demo.en.json': {
@@ -125,7 +125,7 @@ const NOVEMBER_COPY = {
     },
     'F4-U3-L4': {
       title: 'November: Getting to know community art — develop and make',
-      goal: 'In class, look at past cases, then use a classroom exercise to turn that recognition into making. It does not ask you to actually carry out a community art project.',
+      goal: 'In class, look at past cases, then use a classroom exercise to turn that recognition into making. You do not need to go out and run a project.',
     },
   },
 } as const

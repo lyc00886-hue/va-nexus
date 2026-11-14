@@ -53,7 +53,7 @@ import { DemoBadge } from './DemoBadge'
 import { ExerciseMark } from './ExerciseMark'
 import { LessonArtistPanel } from './LessonArtists'
 import { lessonCardBodyStyle, lessonCardReadingAttrs, lessonCardVisibleLines } from '../../lib/lessonReadingSurface'
-import { CommunityLessonIntro } from './CommunityCases'
+import { CommunityGoalOutcomes, CommunityLessonIntro, LessonCardCriteria } from './CommunityCases'
 import { LessonWorksheet } from './LessonWorksheet'
 import { LessonCardArt } from './LessonCardArt'
 import { OtterChest, OtterPose } from './OtterPose'
@@ -253,6 +253,7 @@ export function LessonPlayer({
 
   const cardsStage = card ? (
     <CardsStage
+      lessonId={lesson.id}
       card={card}
       cardIdx={cardIdx}
       cardCount={lesson.cards.length}
@@ -425,6 +426,7 @@ export function LessonPlayer({
 
       <LessonWorksheet lessonId={lesson.id} />
       <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
+      <CommunityGoalOutcomes lessonId={lesson.id} />
 
       {lesson.artists?.length ? <LessonArtistPanel artists={lesson.artists} /> : null}
 
@@ -441,6 +443,7 @@ function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean })
   const mastery = masteryFor(state.nodes[lesson.id])
   return (
     <div className="space-y-3">
+      <CommunityGoalOutcomes lessonId={lesson.id} />
       {lesson.subtitle ? <p className="text-xs leading-snug text-slate-500">{lesson.subtitle}</p> : null}
       {mastery !== 'none' ? <p className="text-xs font-semibold text-slate-600">{masteryLabel(mastery)}</p> : null}
       {lesson.artists?.length ? <LessonArtistPanel artists={lesson.artists} /> : null}
@@ -458,6 +461,7 @@ function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean })
             ) : (
               <p className="mt-1 text-sm leading-relaxed text-slate-700">{item.body}</p>
             )}
+            <LessonCardCriteria lessonId={lesson.id} index={index} />
           </li>
         ))}
       </ul>
@@ -466,6 +470,7 @@ function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean })
 }
 
 function CardsStage({
+  lessonId,
   card,
   cardIdx,
   cardCount,
@@ -481,6 +486,7 @@ function CardsStage({
   onPrev,
   onNext,
 }: {
+  lessonId: string
   card: Lesson['cards'][number]
   cardIdx: number
   cardCount: number
@@ -522,6 +528,7 @@ function CardsStage({
         ) : (
           <p data-lesson-body className="mt-3 text-base leading-relaxed text-slate-700" style={bodyStyle}>{visibleLines[0]}</p>
         )}
+        <LessonCardCriteria lessonId={lessonId} index={cardIdx} />
       </article>
       <div className="flex justify-between">
         <button

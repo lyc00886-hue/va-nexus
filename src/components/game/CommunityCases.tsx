@@ -1,4 +1,4 @@
-import { t } from '../../i18n'
+import { t, type MessageKey } from '../../i18n'
 import {
   DEEPFOOD_PAGE_URL,
   FURTHER_CLASSROOM_VIDEOS,
@@ -7,6 +7,8 @@ import {
   OVERVIEW_VIDEO_ID,
   classroomEmbedUrl,
   classroomWatchUrl,
+  communityCardCriteria,
+  communityGoalKeys,
   isCommunityCaseLesson,
 } from '../../game/communityCases'
 
@@ -134,5 +136,56 @@ function DeepFoodCase() {
         <p>{t('case.deepfood.appreciate.task')}</p>
       </section>
     </article>
+  )
+}
+
+/** Observable outcomes inside the lesson goal fold. The fold label stays map.lesson.goal. */
+export function CommunityGoalOutcomes({ lessonId }: { lessonId: string }) {
+  const keys = communityGoalKeys(lessonId)
+  if (!keys) return null
+  return (
+    <section
+      data-lesson-goals={lessonId}
+      className="space-y-2 rounded-2xl border border-[#0D9488]/40 bg-[#FFF9E9] px-3 py-3 text-sm leading-relaxed text-slate-800"
+    >
+      <p className="font-semibold text-[#0D9488]">{t('lesson.goal.hint')}</p>
+      <ol data-goal-outcomes className="list-decimal space-y-1 pl-5">
+        {keys.map((key) => (
+          <li key={key}>{t(key as MessageKey)}</li>
+        ))}
+      </ol>
+      <p data-goal-open>{t('lesson.goal.open')}</p>
+    </section>
+  )
+}
+
+/** Short in-class criteria beside the insight card and the three-sentence card. */
+export function LessonCardCriteria({ lessonId, index }: { lessonId: string; index: number }) {
+  const kind = communityCardCriteria(lessonId, index)
+  if (kind === 'insight') {
+    return (
+      <section data-criteria="insight" className="mt-3 space-y-1 rounded-2xl border border-[#0D9488]/40 bg-[#FFF9E9] px-3 py-2 text-sm leading-relaxed text-slate-800">
+        <h4 className="text-sm font-bold text-[#0D9488]">{t('criteria.insight.title')}</h4>
+        <p>{t('criteria.insight.line')}</p>
+      </section>
+    )
+  }
+  if (kind !== 'talk') return null
+  return (
+    <section data-criteria="talk" className="mt-3 space-y-2 rounded-2xl border border-[#0D9488]/40 bg-[#FFF9E9] px-3 py-2 text-sm leading-relaxed text-slate-800">
+      <h4 className="text-sm font-bold text-[#0D9488]">{t('criteria.talk.title')}</h4>
+      <p>{t('criteria.talk.line')}</p>
+      <label className="block font-semibold text-slate-800">
+        {t('criteria.comment.prompt')}
+        <input
+          type="text"
+          data-criteria-comment
+          placeholder={t('criteria.comment.placeholder')}
+          autoComplete="off"
+          className="mt-1 w-full rounded-xl border border-[#0D9488]/40 bg-white px-3 py-2 text-sm font-normal text-slate-800"
+        />
+      </label>
+      <p data-criteria-note className="text-xs leading-relaxed text-slate-600">{t('criteria.note')}</p>
+    </section>
   )
 }

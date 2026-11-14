@@ -100,3 +100,21 @@ function replaceBody<T extends CopyCard>(card: T, key: string | null | undefined
   const body = text(key)
   return { ...card, body, easy: easyReadLines(body) }
 }
+
+const COMMUNITY_GOAL_KEYS: Record<CommunityCaseLessonId, readonly string[]> = {
+  'F4-U3-L3': ['lesson.f4u3l3.goal.1', 'lesson.f4u3l3.goal.2', 'lesson.f4u3l3.goal.3'],
+  'F4-U3-L4': ['lesson.f4u3l4.goal.1', 'lesson.f4u3l4.goal.2', 'lesson.f4u3l4.goal.3'],
+}
+
+export function communityGoalKeys(lessonId: string): readonly string[] | null {
+  if (!isCommunityCaseLesson(lessonId)) return null
+  return COMMUNITY_GOAL_KEYS[lessonId]
+}
+
+/** L3 insight card, the L4 making card that carries the near-at-hand insight, and the L4 three-sentence card. */
+export function communityCardCriteria(lessonId: string, index: number): 'insight' | 'talk' | null {
+  if (lessonId === 'F4-U3-L3' && index === 3) return 'insight'
+  if (lessonId === 'F4-U3-L4' && index === 0) return 'insight'
+  if (lessonId === 'F4-U3-L4' && index === 3) return 'talk'
+  return null
+}
