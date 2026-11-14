@@ -1,4 +1,5 @@
 import { useId, useMemo, useState } from 'react'
+import { ClassroomManagement } from './ClassroomManagement'
 import { InspectClassOverview } from './InspectClassOverview'
 import { CropAskStaffQueue } from './CropAskStaffQueue'
 import { InspectReport, type InspectPreview } from './InspectReport'
@@ -32,13 +33,18 @@ const COPIES = {
 function StaffDenied() {
   const { t } = useT()
   return (
-    <p
-      role="status"
-      data-testid="teacher-draft-denied"
-      className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
-    >
-      {t('staff.denied')}
-    </p>
+    <div className="space-y-3" data-testid="class-staff-denied">
+      <p data-testid="class-staff-denied-lead" className="text-sm leading-relaxed text-slate-700">
+        {t('class.staff.deniedLead')}
+      </p>
+      <p
+        role="status"
+        data-testid="teacher-draft-denied"
+        className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700"
+      >
+        {t('staff.denied')}
+      </p>
+    </div>
   )
 }
 
@@ -256,9 +262,13 @@ export default function TeacherDraftBand() {
   return (
     <div className="space-y-8">
       <CropAskStaffQueue />
-      <InspectClassOverview
-        onPreviewOne={(id) => setPreview({ kind: 'one', id })}
-        onPreviewClass={() => setPreview({ kind: 'class' })}
+      <ClassroomManagement
+        overview={
+          <InspectClassOverview
+            onPreviewOne={(id) => setPreview({ kind: 'one', id })}
+            onPreviewClass={() => setPreview({ kind: 'class' })}
+          />
+        }
       />
       <InspectReport preview={preview} onClose={() => setPreview(null)} />
       <SchoolScoreStaff />
