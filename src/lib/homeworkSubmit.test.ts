@@ -232,7 +232,7 @@ describe('homework copy and wiring', () => {
     assert.equal([...hant['hw.student.intro']].filter((ch) => ch.codePointAt(0) === 0x7540).length, 1)
     assert.equal([...hant['hw.student.mapEntry'], ...hant['hw.staff.intro'], ...hant['hw.staff.fileNote'], ...hant['hw.student.teacherCanOpen']].filter((ch) => ch.codePointAt(0) === 0x569f).length, 4)
     assert.equal([...hant['hw.student.emptyHint']].filter((ch) => ch.codePointAt(0) === 0x5e03).length, 1)
-    assert.equal(Object.keys(hant).some((key) => key.startsWith('report.')), false)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 8)
     assert.equal(hant['inspect.report.disclaimer'], '呢份報告係校內參考，唔係公開試正式成績。')
     for (const [key, value] of Object.entries(CLASS_HANT)) assert.equal(hant[key], value, key)
     for (const [key, value] of Object.entries(ASSIGN_HANT)) assert.equal(hant[key], value, key)

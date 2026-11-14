@@ -29,6 +29,18 @@ export function learningProgressFilename(now = new Date()): string {
   return `learning-progress-${inspectExportDate(now).replaceAll('-', '')}`
 }
 
+/** A collected homework row on this device, matched by the in-school student id. */
+export function studentHomeworkCollected(submissions: readonly { studentId: string }[], studentId: string): boolean {
+  const id = studentId.trim()
+  if (id === '') return false
+  return submissions.some((row) => row.studentId === id)
+}
+
+/** Locked plate sentence when homework is collected; otherwise the existing empty record. */
+export function collectedReportValue(collected: boolean, whenCollected: string, whenEmpty: string): string {
+  return collected ? whenCollected : whenEmpty
+}
+
 export function joinRecord(lines: readonly string[]): string | null {
   const clean: string[] = []
   for (const line of lines) {
