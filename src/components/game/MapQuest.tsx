@@ -18,6 +18,7 @@ import {
   type QuestBandId,
   type QuestNodeProgress,
 } from '../../lib/questPathLayout'
+import { HomeworkMapEntry } from '../HomeworkStudent'
 import { InspectMapEntry } from '../InspectMapEntry'
 import { LessonPlayer } from './LessonPlayer'
 import { QuestPathArt } from './QuestPathArt'
@@ -70,6 +71,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         <QuestMotionButton />
       </div>
       <InspectMapEntry grade={form === 's5' ? 'f5' : form === 's6' ? 'f6' : 'f4'} />
+      <HomeworkMapEntry />
       {openYear ? (
         <F4UnitPanel
           unit={openYear}

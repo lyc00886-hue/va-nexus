@@ -1,5 +1,6 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { AssignmentPublish } from './AssignmentPublish'
+import { HomeworkReview } from './HomeworkReview'
 import { useT } from '../i18n'
 import { addStaffClass, useClassList } from '../lib/classList'
 import { PORTFOLIO_LABEL_MAX, portfolioKey } from '../lib/teacherDraftBand'
@@ -129,6 +130,9 @@ export function ClassroomManagement({ overview }: { overview: ReactNode }) {
               className={openRow.demo ? t('class.staff.demoClass') : openRow.name}
               demoClass={openRow.demo}
             />
+          ) : null}
+          {openRow ? (
+            <HomeworkReview key={`hw-${openRow.id}`} classId={openRow.id} demoClass={openRow.demo} />
           ) : null}
         </div>
       ) : null}

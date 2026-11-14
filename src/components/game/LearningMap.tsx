@@ -33,6 +33,7 @@ import { useMapOneShell } from '../../lib/useMapOneShell'
 import type { Lesson, Mastery, Unit } from '../../game/types'
 import { CommitmentBanner } from '../CommitmentBadges'
 import { softShellFromSearch, type SoftShell } from '../../lib/softAtlas'
+import { HomeworkMapEntry } from '../HomeworkStudent'
 import { InspectMapEntry } from '../InspectMapEntry'
 import { ClassicGrades } from './ClassicGrades'
 import { F4YearList } from './F4YearList'
@@ -239,6 +240,7 @@ export function LearningMap() {
         <MapVersionToggle mapOne={false} />
         <ClassicGrades grade={grade} onGrade={chooseGrade} />
         <InspectMapEntry grade={grade === 'f5' || grade === 'f6' ? grade : 'f4'} />
+        <HomeworkMapEntry />
       </div>
 
       <div className="inline-flex max-w-full flex-wrap rounded-full bg-slate-100 p-1 ring-1 ring-slate-200" role="tablist" aria-label={t('map.track.aria')} data-classic-domains>
