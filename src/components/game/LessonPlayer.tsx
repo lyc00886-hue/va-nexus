@@ -54,6 +54,7 @@ import { ExerciseMark } from './ExerciseMark'
 import { LessonArtistPanel } from './LessonArtists'
 import { lessonCardBodyStyle, lessonCardReadingAttrs, lessonCardVisibleLines } from '../../lib/lessonReadingSurface'
 import { CommunityGoalOutcomes, CommunityLessonIntro, LessonCardCriteria } from './CommunityCases'
+import { F4ThematicResearch } from './F4ThematicResearch'
 import { LessonShortTrial } from './LessonShortTrial'
 import { LessonWorksheet } from './LessonWorksheet'
 import { LessonCardArt } from './LessonCardArt'
@@ -364,6 +365,14 @@ export function LessonPlayer({
           </div>
           {lesson.demo ? <DemoBadge quiet /> : null}
         </div>
+        {lesson.id === 'F4-U3-L3' ? (
+          <F4ThematicResearch
+            lesson={lesson}
+            fontSize={settings.fontSize}
+            easyRead={easyRead}
+            highContrast={settings.highContrast}
+          />
+        ) : null}
         <LessonWorksheet lessonId={lesson.id} />
         <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
         <div className="space-y-3">
@@ -425,6 +434,14 @@ export function LessonPlayer({
         <span className="text-xs text-slate-500">{t('common.aboutMin', { n: lesson.minutes })}</span>
       </div>
 
+      {lesson.id === 'F4-U3-L3' ? (
+        <F4ThematicResearch
+          lesson={lesson}
+          fontSize={settings.fontSize}
+          easyRead={easyRead}
+          highContrast={settings.highContrast}
+        />
+      ) : null}
       <LessonWorksheet lessonId={lesson.id} />
       <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
       <CommunityGoalOutcomes lessonId={lesson.id} />
