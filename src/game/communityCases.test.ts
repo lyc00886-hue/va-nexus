@@ -534,6 +534,18 @@ describe('November community-art cases', () => {
     assert.equal(FURTHER_CLASSROOM_VIDEOS[2]?.title.includes('Space'), true)
   })
 
+  it('keeps the phone in-lesson column as wide as the bottom nav', () => {
+    const player = read('src/components/game/LessonPlayer.tsx')
+    const quest = read('src/components/game/MapQuest.tsx')
+    const path = read('src/components/game/MapPath.tsx')
+    assert.match(player, /w-full max-w-none wrap-anywhere space-y-3/)
+    assert.match(player, /mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl/)
+    assert.match(quest, /data-quest-unit=\{unit\.id\} className="mt-4 w-full max-w-none"/)
+    assert.match(quest, /max-w-\[24rem\]/)
+    assert.match(path, /mx-auto mt-4 max-w-2xl/)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 11)
+  })
+
   it('leaves LessonCardArt and the api TypeScript count unchanged', () => {
     const art = read('src/components/game/LessonCardArt.tsx')
     const artBlob = createHash('sha1').update(`blob ${Buffer.byteLength(art)}\0${art}`).digest('hex')
