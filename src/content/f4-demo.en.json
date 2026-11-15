@@ -167,14 +167,14 @@
             },
             {
               "type": "order",
-              "question": "In SBA lab, order the portfolio start steps: seed theme → open research workbook → gather materials → organise artwork／critical pages.",
+              "question": "In SBA lab, order the portfolio start steps: choose a topic → open a research workbook → gather materials → organise artwork／critical pages.",
               "options": [
-                "Pick a theme seed",
+                "Choose a topic",
                 "Open a research workbook",
                 "Gather materials",
                 "Organise artwork／critical pages"
               ],
-              "explain": "Pick a theme seed → Open a research workbook → Gather materials → Organise artwork／critical pages"
+              "explain": "Choose a topic → Open a research workbook → Gather materials → Organise artwork／critical pages"
             },
             {
               "type": "dualRead",
@@ -765,8 +765,8 @@
     },
     {
       "id": "F4-U3-COMMUNITY",
-      "title": "Community Looking, Visual Diary and Theme Seeds",
-      "intro": "This unit practises community observation and a weekly visual diary, then draws theme seeds from community-related design or making. You can use photos and objects from everyday surroundings, or materials your teacher provides, and develop a theme in the classroom. It also connects to how Hong Kong artists attend to everyday space. Classroom practice includes photos, interviews, collecting and sketches.",
+      "title": "Community Looking, Visual Diary and Topics",
+      "intro": "This unit practises community observation and a weekly visual diary, then draws topics from community-related design or making. You can use photos and objects from everyday surroundings, or materials your teacher provides, and develop a theme in the classroom. It also connects to how Hong Kong artists attend to everyday space. Classroom practice includes photos, interviews, collecting and sketches.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-COMMUNITY.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -877,7 +877,7 @@
             "Making can relate to community: public space, neighbourhood routines, local signs—then reconnect to your theme.",
             "Pak Sheung Chuen often uses everyday actions and ready-mades to make housing/space experiences visible.",
             "Lee Kit often uses household cloth and everyday objects to speak about private feeling and space—community and personal life can be compared.",
-            "Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a theme question. Describe contemporary works in words and cite a reliable source."
+            "Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a question for exploring the theme. Describe contemporary works in words and cite a reliable source."
           ],
           "quiz": [
             {
@@ -922,13 +922,13 @@
               "type": "mcq",
               "question": "After gathering community materials, a good next step is to:",
               "options": [
-                "Ask a theme question you can keep exploring",
+                "Ask a question for exploring the theme that you can keep exploring",
                 "Throw all notes away",
                 "Paste photos with no thinking",
                 "Demand real exam papers from the platform"
               ],
-              "answer": "Ask a theme question you can keep exploring",
-              "explain": "A theme question drives research and making."
+              "answer": "Ask a question for exploring the theme that you can keep exploring",
+              "explain": "A question for exploring the theme drives research and making."
             },
             {
               "type": "order",
@@ -943,9 +943,9 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: shop-sign detail vs whole corner — which better seeds a theme, and why (one line)?",
+              "question": "Compare works: shop-sign detail vs whole corner — which is better as a “topic”, and why (one line)?",
               "options": [
-                "Which one seeds the theme",
+                "Which one for the topic",
                 "Why"
               ],
               "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/06-u3-l2-dualread.png",
@@ -954,7 +954,7 @@
             },
             {
               "type": "short",
-              "question": "Draft a theme question from classroom community material in two lines: “I notice…” and “I wonder…”. Hint: the first line is only what you see; the second becomes a question you can keep researching.",
+              "question": "Draft a question for exploring the theme from classroom community material in two lines: “I notice…” and “I wonder…”. Hint: the first line is only what you see; the second becomes a question you can keep researching.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -1241,7 +1241,7 @@
     {
       "id": "F4-U4-SELF-RESEARCH",
       "title": "Self-Portrait, Artist Research and Theme Development",
-      "intro": "This unit uses self-portrait to explore identity, and practises proper artist research (cite sources, compare views) to start SBA theme development. You can begin from three entry points: self, relationship and story. Lessons do not use high-score student exemplars.",
+      "intro": "This unit uses self-portrait to explore identity, and practises proper artist research (cite sources, compare views) to start SBA theme development. You can begin from three themes: self, relationship and story. Lessons do not use high-score student exemplars.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U4-SELF-RESEARCH.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
@@ -1252,7 +1252,7 @@
           "coverCredit": "Original · VA-Nexus",
           "cards": [
             "A self-portrait is more than likeness: it can speak about identity, bodily experience, roles and social gaze.",
-            "A theme can begin from three entry points: self (a curiosity collection), relationship (a family object) and story (conflict or tension).",
+            "A theme can begin from three themes: self (a curiosity collection), relationship (a family object) and story (conflict or tension).",
             "Frida Kahlo used self-portrait to speak personal experience and cultural identity—the learning goal is how symbols tell a self, not copying a style for marks.",
             "Wilson Shieh paints contemporary figures in gongbi to explore Hong Kong identity; David Hockney often paints family and looking—useful for a “relationship” theme.",
             "Describe contemporary works in words, and note a museum webpage or a reliable encyclopedia as a classroom reference. Add a public-domain historic self-portrait only when the image is rights-cleared. This card does not pretend a missing picture is here."
@@ -1272,7 +1272,7 @@
             },
             {
               "type": "fill",
-              "question": "Theme entry points include self, relationship and ____.",
+              "question": "The three themes include self, relationship and ____.",
               "options": [],
               "answer": "Story",
               "explain": "Story can mean conflict, tension or a narrative line.",
@@ -1312,14 +1312,14 @@
             },
             {
               "type": "order",
-              "question": "Order a self-portrait start: choose a door → draw a draft → mark one symbol → write one identity line.",
+              "question": "Order a self-portrait start: choose a theme → draw a draft → mark one symbol → write one identity line.",
               "options": [
-                "Choose a door",
+                "Choose a theme",
                 "Draw a draft",
                 "Mark one symbol",
                 "Write one identity line"
               ],
-              "explain": "Choose a door → draw a draft → mark one symbol → write one identity line"
+              "explain": "Choose a theme → draw a draft → mark one symbol → write one identity line"
             },
             {
               "type": "dualRead",
@@ -1334,7 +1334,7 @@
             },
             {
               "type": "short",
-              "question": "Pick Self, Relationship, or Story and write two lines. Hint: the object or experience you chose, then how it speaks about identity.",
+              "question": "Pick one theme from self, relationship, or story and write two lines. Hint: the object or experience you chose, then how it speaks about identity.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -1361,7 +1361,7 @@
           "cards": [
             "Artist-research steps: choose relevant artists → record basics → study form and context → link to your theme → write a personal view with evidence.",
             "Use reliable sources: museums, galleries, textbooks, teacher notes; separate facts from opinions.",
-            "A first presentation suggested structure: theme question → self/relationship entry → 1–2 artist comparisons → next media experiments.",
+            "A first presentation suggested structure: a question for exploring the theme → self/relationship entry → 1–2 artist comparisons → next media experiments.",
             "The research workbook should show process: drafts, experiments, failures and improvements—not only final pretty photos.",
             "Reminder: no full real exam papers and no “high-score” student exemplars."
           ],
@@ -1380,7 +1380,7 @@
             },
             {
               "type": "fill",
-              "question": "A presentation should include theme question, entry point, artist comparison and next ____ experiments.",
+              "question": "A presentation should include a question for exploring the theme, entry point, artist comparison and next ____ experiments.",
               "options": [],
               "answer": "media",
               "explain": "Media experiments turn research into making.",
@@ -1431,7 +1431,7 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: artist notes on the left, your theme question on the right. One line each — their method, and what you will borrow it for.",
+              "question": "Compare works: artist notes on the left, your question for exploring the theme on the right. One line each — their method, and what you will borrow it for.",
               "options": [
                 "Method",
                 "Your theme"
@@ -1442,7 +1442,7 @@
             },
             {
               "type": "short",
-              "question": "Write the skeleton of the first presentation. Hint: one theme question, one artist method, and the medium you will try next.",
+              "question": "Write the skeleton of the first presentation. Hint: one question for exploring the theme, one artist method, and the medium you will try next.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -1456,7 +1456,7 @@
           "cards": [
             "The second presentation is about development. Compared with the first presentation, what question changed, what evidence you added, and what you let go.",
             "The research workbook should show the path: an older draft, a newer test, and one sentence on why you changed it.",
-            "A usable shape: the question now → new evidence → how you adapted an artist’s method → the next work.",
+            "A usable shape: the question for exploring the theme now → new evidence → how you adapted an artist’s method → the next work.",
             "Speak only about your own development. Do not use a real paper or a high-score exemplar."
           ],
           "quiz": [
@@ -1897,39 +1897,39 @@
     },
     {
       "id": "F4-U6-THEME-SEEDS",
-      "title": "Theme Seeds: Self, Relationship, Story",
-      "intro": "This unit practises drawing a developable theme question from everyday objects and experiences. The three entry points are: self (a curiosity collection), relationship (a family object) and story (conflict or tension). This can sit alongside the visual diary and prepare you for later self-portrait research. Lessons do not use high-score exemplars or real exam papers.",
+      "title": "Themes: Self, Relationship, Story",
+      "intro": "This unit starts from everyday objects and experiences, and practises drawing out a topic you can keep using to explore a theme. The three themes are: self (a curiosity collection), relationship (a family object) and story (conflict or tension). The practice above can go with the visual diary, and can prepare later self-portrait research. Lessons practise structure and method only, and do not use real exam papers.",
       "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-THEME-SEEDS.png",
       "coverCredit": "Original · VA-Nexus",
       "lessons": [
         {
           "id": "F4-U6-L1",
-          "title": "Three Doors: Collection, Family Object, Conflict",
+          "title": "Three topics: collection, family object, conflict",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-L1.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Theme seeds work best when they are small and real—start from something you care about, not a vague mega-topic.",
+            "A topic should be small and real: start from an object or experience you truly care about, not a vague mega-topic.",
             "Self: gather a small ‘curiosity collection’ (tickets, stones, packaging, old things). Ask: why keep this? which side of me does it show?",
             "Relationship: choose one family object; note who uses it, when, and any rules or memories—objects can narrate relationships.",
             "Story: use a ‘little person’ viewpoint to spot conflict or tension in an environment (crowding, waiting, rules, misunderstanding); sketch scene and feeling.",
-            "Draw your own three-door sheet: collection, family object, conflict. Each column gets an object, one question, and a next step. This card lists the columns in words."
+            "You can draw your own sheet for the three themes: collection, family object, conflict. Each column gets an object, one question, and a next step. This card lists the columns in words."
           ],
           "quiz": [
             {
               "type": "mcq",
-              "question": "Self / Relationship / Story doors mainly help you?",
+              "question": "What do the three themes self / relationship / story mainly do?",
               "options": [
                 "Replace all art history",
-                "Pull theme seeds from lived experience",
+                "Draw a topic out of everyday experience",
                 "Only memorise birthdays",
                 "Submit a real exam paper"
               ],
-              "answer": "Pull theme seeds from lived experience",
-              "explain": "The three doors are discovery tools for themes."
+              "answer": "Draw a topic out of everyday experience",
+              "explain": "The three themes are tools for finding a topic."
             },
             {
               "type": "fill",
-              "question": "The Relationship door often uses a ____ object to tell a story.",
+              "question": "The relationship theme often uses a ____ object to tell a story.",
               "options": [],
               "answer": "family",
               "explain": "Family objects carry relations and memory.",
@@ -1942,7 +1942,7 @@
             },
             {
               "type": "match",
-              "question": "Match door to practice",
+              "question": "Match theme to practice",
               "options": [
                 "Self",
                 "Relationship",
@@ -1953,11 +1953,11 @@
                 "Relationship": "Family object and who uses it",
                 "Story": "Conflict / tension scene narrative"
               },
-              "explain": "Doors can later merge into one theme."
+              "explain": "The three themes can later merge into one direction to explore."
             },
             {
               "type": "mcq",
-              "question": "A better theme seed is usually?",
+              "question": "When choosing a topic, the better one is usually?",
               "options": [
                 "As huge and empty as possible",
                 "Small, real, and worth sustained exploring",
@@ -1969,14 +1969,14 @@
             },
             {
               "type": "order",
-              "question": "Order a seed: choose a door → name the object → write one question → decide a next step.",
+              "question": "Order from theme to topic: choose a theme → name the object → write one question → decide a next step.",
               "options": [
-                "Choose a door",
+                "Choose a theme",
                 "Name the object",
                 "Write one question",
                 "Decide a next step"
               ],
-              "explain": "Choose a door → name the object → write one question → decide a next step"
+              "explain": "Choose a theme → name the object → write one question → decide a next step"
             },
             {
               "type": "dualRead",
@@ -1991,7 +1991,7 @@
             },
             {
               "type": "short",
-              "question": "Write one theme seed. Hint: the door, one real object, and a question you are willing to keep asking.",
+              "question": "Write one topic. Hint: the theme name, one real object, and a question you are willing to keep asking.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -1999,20 +1999,20 @@
         },
         {
           "id": "F4-U6-L2",
-          "title": "From Seed to Theme Question",
+          "title": "Turn a topic into a question for exploring the theme",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-L2.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Rewrite the seed as a theme question—e.g. ‘How does this family object define care?’ ‘What tension sits in bodies and space while waiting?’",
+            "Turn a topic into one question for exploring the theme—e.g. ‘How does this family object define care?’ ‘What tension sits in bodies and space while waiting?’",
             "A strong question opens research and making: observe, interview, test media—not a one-word answer.",
             "Next you can keep writing the visual diary, compare artists and try a self-portrait, and test materials.",
-            "Mini presentation shape: my seed → theme question → materials already gathered → media I will try next.",
+            "Mini presentation draft: my topic → a question for exploring the theme → materials I have gathered → the medium I want to try next.",
             "Reminder: this lesson teaches structure and method only. It does not provide real public exam papers or high-score student works."
           ],
           "quiz": [
             {
               "type": "mcq",
-              "question": "A strong theme question usually?",
+              "question": "A good question for exploring the theme is usually?",
               "options": [
                 "Ends after a yes/no answer",
                 "Drives observation, research and media experiments",
@@ -2020,11 +2020,11 @@
                 "Must be a real exam stem"
               ],
               "answer": "Drives observation, research and media experiments",
-              "explain": "The question is the portfolio engine."
+              "explain": "A question for exploring the theme drives the portfolio process."
             },
             {
               "type": "fill",
-              "question": "A mini presentation includes seed, question, materials gathered and next ____.",
+              "question": "A mini presentation draft includes the topic, a question for exploring the theme, materials you have, and the next ____.",
               "options": [],
               "answer": "media",
               "explain": "Media trials turn the question into making.",
@@ -2037,7 +2037,7 @@
             },
             {
               "type": "mcq",
-              "question": "After finding a seed, the natural next step is?",
+              "question": "After a topic, the most natural next move is?",
               "options": [
                 "Throw it away",
                 "Carry it into the research workbook and develop it",
@@ -2045,7 +2045,7 @@
                 "Demand high-score exemplars"
               ],
               "answer": "Carry it into the research workbook and develop it",
-              "explain": "Seeds become trackable progression."
+              "explain": "A topic has to become trackable progress."
             },
             {
               "type": "match",
@@ -2064,18 +2064,18 @@
             },
             {
               "type": "order",
-              "question": "Order the next move: write the seed → turn it into a theme question → list materials you have → choose the next medium.",
+              "question": "Order from topic to the next step: write the topic → turn it into a question for exploring the theme → list materials you have → choose the next medium.",
               "options": [
-                "Write the seed",
-                "Turn it into a theme question",
+                "Write the topic",
+                "Turn it into a question for exploring the theme",
                 "List materials you have",
                 "Choose the next medium"
               ],
-              "explain": "Write the seed → turn it into a theme question → list materials you have → choose the next medium"
+              "explain": "Write the topic → turn it into a question for exploring the theme → list materials you have → choose the next medium"
             },
             {
               "type": "dualRead",
-              "question": "Compare works: the theme question on the left, materials you already have on the right. One line each — what the question chases, and what the materials show.",
+              "question": "Compare works: a question for exploring the theme on the left, materials you already have on the right. One line each — what the question chases, and what the materials show.",
               "options": [
                 "Question",
                 "Materials"
@@ -2086,7 +2086,7 @@
             },
             {
               "type": "short",
-              "question": "Turn a seed into one theme question. Hint: it should lead to looking, research, or a material test, not a yes-or-no ending.",
+              "question": "Turn a topic into one question for exploring the theme. Hint: it should lead to looking, research, or a material test, not a yes-or-no ending.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -2098,7 +2098,7 @@
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U6-L3.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Extend: stretch a seed into a surreal or abstract picture that still answers your theme question.",
+            "Extend: stretch one topic into a surreal or abstract picture that still answers your question for exploring the theme.",
             "Wish and imagination: write an “if” sentence, then decide which visual element carries that wish.",
             "Assemble a self-portrait: join found scraps, paper, and an image you made, and note why each material is there.",
             "Choose one of the three paths to go deeper. A high-score exemplar is not the only next step."
@@ -2106,15 +2106,15 @@
           "quiz": [
             {
               "type": "mcq",
-              "question": "How do extend, wish, and assemble connect to a theme seed?",
+              "question": "How do extend, wish, and assemble connect to a topic?",
               "options": [
                 "Drop the original question",
-                "Still answer the original theme question, with a different presentation",
+                "Still answer the original question for exploring the theme, with a different presentation",
                 "Copy one surrealist painting",
                 "Become decoration with no theme"
               ],
-              "answer": "Still answer the original theme question, with a different presentation",
-              "explain": "The new presentation returns to the seed."
+              "answer": "Still answer the original question for exploring the theme, with a different presentation",
+              "explain": "The new presentation returns to the topic."
             },
             {
               "type": "fill",
@@ -2138,22 +2138,22 @@
                 "Assemble"
               ],
               "answer": {
-                "Extend": "Stretch the seed into a surreal or abstract picture",
+                "Extend": "Stretch the topic into a surreal or abstract picture",
                 "Wish": "Use an if-sentence to lead the imagination",
                 "Assemble": "Join scraps and write why"
               },
-              "explain": "All three serve the same theme question."
+              "explain": "All three paths serve the same question for exploring the theme."
             },
             {
               "type": "order",
-              "question": "Order one assembly: choose scraps → try two arrangements → write why each material is there → look back at the theme question.",
+              "question": "Order one assembly: choose scraps → try two arrangements → write why each material is there → look back at the question for exploring the theme.",
               "options": [
                 "Choose scraps",
                 "Try two arrangements",
                 "Write why each material is there",
-                "Look back at the theme question"
+                "Look back at the question for exploring the theme"
               ],
-              "explain": "Choose scraps → try two arrangements → write why each material is there → look back at the theme question"
+              "explain": "Choose scraps → try two arrangements → write why each material is there → look back at the question for exploring the theme"
             },
             {
               "type": "dualRead",
@@ -2168,7 +2168,7 @@
             },
             {
               "type": "short",
-              "question": "Choose extend, wish, or assemble and write three lines. Hint: the original theme question, the presentation you changed, and one piece of visible evidence.",
+              "question": "Choose extend, wish, or assemble and write three lines. Hint: the original question for exploring the theme, the presentation you changed, and one piece of visible evidence.",
               "options": [],
               "explain": "Practice structure · not a real paper"
             }
@@ -2190,7 +2190,7 @@
           "coverCredit": "Original · VA-Nexus",
           "cards": [
             "Appreciation writing can use four moves: describe the form you see, analyse how it is organised, interpret a possible meaning, then judge with evidence.",
-            "A theme-exploration shape: theme question → materials you already have → one artist method → the visual point you want to present.",
+            "A theme-exploration shape: a question for exploring the theme → materials you already have → one artist method → the visual point you want to present.",
             "Compare the two shapes. The appreciation paragraphs talk about a work. The exploration slots talk about how your own question opens.",
             "Structure only. Do not use a real paper or a high-score exemplar. The practice stays on writing structure."
           ],
@@ -2209,7 +2209,7 @@
             },
             {
               "type": "fill",
-              "question": "Theme exploration can start with the question, then list the ＿＿ you already have.",
+              "question": "Theme exploration can start with a question for exploring the theme, then list the ＿＿ you already have.",
               "options": [],
               "answer": "materials",
               "wordBank": [
@@ -2226,12 +2226,12 @@
               "options": [
                 "Describe",
                 "Interpret",
-                "Theme question"
+                "Question for exploring the theme"
               ],
               "answer": {
                 "Describe": "The form you see",
                 "Interpret": "How you understand a meaning",
-                "Theme question": "What you still want to chase"
+                "Question for exploring the theme": "What you still want to chase"
               },
               "explain": "Appreciation and exploration use different paragraphs, and both need evidence."
             },
