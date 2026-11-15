@@ -12,10 +12,10 @@ All six covers are **自制 for VA-Nexus** (generated educational illustrations;
 |---|---|---|---|
 | `f4-covers/F4-U1-ORIENT.png` | F4-U1-ORIENT · 中四視藝入門：課程同 SBA 作品集 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 | `f4-covers/F4-U2-DRAW-DESIGN.png` | F4-U2-DRAW-DESIGN · 寫生、美感同設計思維 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
-| `f4-covers/F4-U3-COMMUNITY.png` | F4-U3-COMMUNITY · 社區觀察、視覺日記同主題種子 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
+| `f4-covers/F4-U3-COMMUNITY.png` | F4-U3-COMMUNITY · 社區觀察、視覺日記同課題 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 | `f4-covers/F4-U4-SELF-RESEARCH.png` | F4-U4-SELF-RESEARCH · 自畫像、藝術家研究同主題發展 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 | `f4-covers/F4-U5-ART-HIST.png` | F4-U5-ART-HIST · 藝術史入門：古代西方同中國藝術 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
-| `f4-covers/F4-U6-THEME-SEEDS.png` | F4-U6-THEME-SEEDS · 主題種子：Self、Relationship、Story | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
+| `f4-covers/F4-U6-THEME-SEEDS.png` | F4-U6-THEME-SEEDS · 主題：自我、關係、故事 | 自制 · VA-Nexus | Generated 2026-11-03 for Learning Map tile |
 | `f4-covers/F4-U7-EXAM-STRUCT.png` | F4-U7-EXAM-STRUCT · 應試練習場：主題視覺呈現同評賞寫作 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
 | `f4-covers/F4-U1-L3.png` | F4-U1-L3 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
 | `f4-covers/F4-U1-L4.png` | F4-U1-L4 | 自制 · VA-Nexus | Original geometric plate, 2026-11-10 |
