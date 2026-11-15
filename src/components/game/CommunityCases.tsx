@@ -30,9 +30,11 @@ export function CommunityLessonIntro({ lessonId, subtitle }: { lessonId: string;
   if (!isCommunityCaseLesson(lessonId)) return null
   return (
     <div className="space-y-3">
-      <p data-community-subtitle className="text-sm leading-relaxed text-slate-700">
-        {subtitle}
-      </p>
+      {lessonId === 'F4-U3-L3' ? null : (
+        <p data-community-subtitle className="text-sm leading-relaxed text-slate-700">
+          {subtitle}
+        </p>
+      )}
       <CommunityCases />
       <section data-visual className="space-y-1 rounded-3xl border border-[#0D9488]/40 bg-[#FFF9E9] p-4 text-sm leading-relaxed text-slate-800">
         <h3 className="text-base font-bold text-[#0D9488]">{t('visual.heading')}</h3>
