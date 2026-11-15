@@ -9,10 +9,12 @@ import type { Lesson } from '../../game/types'
 import { LessonCardArt } from './LessonCardArt'
 
 const THEMATIC_LESSON = 'F4-U3-L3'
+const CREATE_LESSON = 'F4-U3-L4'
 
 /**
- * Slice ① reading frame for the November research lesson only.
- * The paired lesson title stays visible. Its unit line and continue image stay unwired.
+ * Reading frame for the November community-art unit.
+ * L3 and L4 share the unit frame. L4 carries the same theme into making.
+ * The woven strands file stays in the tree and is not drawn in the lesson body.
  */
 export function F4ThematicResearch({
   lesson,
@@ -25,8 +27,9 @@ export function F4ThematicResearch({
   easyRead: boolean
   highContrast: boolean
 }) {
-  if (lesson.id !== THEMATIC_LESSON) return null
+  if (lesson.id !== THEMATIC_LESSON && lesson.id !== CREATE_LESSON) return null
 
+  const research = lesson.id === THEMATIC_LESSON
   const researchTitle = t('lesson.f4u3l3.title')
   const makingTitle = t('lesson.f4u3l4.title')
   const message = t('unit.f4u3.themeMessage')
@@ -38,7 +41,7 @@ export function F4ThematicResearch({
   ] as const
 
   return (
-    <div data-thematic-lesson={THEMATIC_LESSON} className="space-y-4">
+    <div data-thematic-lesson={lesson.id} className="space-y-4">
       <section data-thematic-unit="F4-U3" className="space-y-3">
         <p className="inline-flex rounded-full bg-[#0D9488] px-3 py-1.5 text-sm font-semibold text-white">
           {t('unit.thematic.label')}
@@ -63,27 +66,57 @@ export function F4ThematicResearch({
         </div>
       </section>
 
-      <section data-thematic-start={THEMATIC_LESSON} className="space-y-3">
-        <h2 className="text-xl font-bold text-slate-900">{researchTitle}</h2>
-        <p className="text-sm leading-relaxed text-slate-800">{t('lesson.f4u3l3.unitLine')}</p>
-        <ThemeMessage label={`${t('unit.f4u3.themeMessage.label')} · ${t('unit.thematic.label')}`} body={message} />
+      <section data-thematic-start={lesson.id} className="space-y-3">
+        <h2 className="text-xl font-bold text-slate-900">{research ? researchTitle : makingTitle}</h2>
+        <p className="text-sm leading-relaxed text-slate-800">
+          {research ? t('lesson.f4u3l3.unitLine') : t('lesson.f4u3l4.unitLine')}
+        </p>
+        <ThemeMessage
+          label={
+            research
+              ? `${t('unit.f4u3.themeMessage.label')} · ${t('unit.thematic.label')}`
+              : `${t('unit.f4u3.themeMessage.label')} · ${t('unit.f4u3.theme')}`
+          }
+          body={message}
+        />
         <LessonCardArt image={lesson.coverImage} credit={t('image.keep.caption')} />
         <p data-thematic-subtitle className="text-sm leading-relaxed text-slate-800">
-          {t('lesson.f4u3l3.subtitle')}
+          {research ? t('lesson.f4u3l3.subtitle') : t('lesson.f4u3l4.subtitle')}
         </p>
-        <LessonCardArt image={t('image.path.lived')} credit={added} />
+        <LessonCardArt image={research ? t('image.path.lived') : t('image.path.create')} credit={added} />
       </section>
 
-      <section data-thematic-research={THEMATIC_LESSON} className="space-y-3">
+      <section
+        data-thematic-research={research ? THEMATIC_LESSON : undefined}
+        data-thematic-create={research ? undefined : CREATE_LESSON}
+        className="space-y-3"
+      >
         <div className="flex flex-wrap gap-2">
-          <span className="rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-sm font-semibold text-[#0D9488]">
-            {t('unit.f4u3.strand.knowledge.label')}
-          </span>
-          <span className="rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-sm font-semibold text-[#0D9488]">
-            {t('unit.f4u3.strand.appreciate.label')}
-          </span>
+          {research ? (
+            <>
+              <span className="rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-sm font-semibold text-[#0D9488]">
+                {t('unit.f4u3.strand.knowledge.label')}
+              </span>
+              <span className="rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-sm font-semibold text-[#0D9488]">
+                {t('unit.f4u3.strand.appreciate.label')}
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="rounded-full bg-[#0D9488] px-3 py-1.5 text-sm font-semibold text-white">
+                {t('unit.f4u3.strand.create.label')}
+              </span>
+              <span className="rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-sm font-semibold text-[#0D9488]">
+                {t('unit.thematic.label')}
+              </span>
+            </>
+          )}
         </div>
-        <LessonCardArt image={t('image.path.research')} credit={added} />
+        {research ? (
+          <LessonCardArt image={t('image.path.research')} credit={added} />
+        ) : (
+          <p className="text-sm leading-relaxed text-slate-800">{t('unit.f4u3.strand.create')}</p>
+        )}
         <div className="space-y-3">
           {lesson.cards.map((card, index) => {
             const lines = lessonCardVisibleLines(card, easyRead)

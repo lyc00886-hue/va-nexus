@@ -30,7 +30,7 @@ export function CommunityLessonIntro({ lessonId, subtitle }: { lessonId: string;
   if (!isCommunityCaseLesson(lessonId)) return null
   return (
     <div className="space-y-3">
-      {lessonId === 'F4-U3-L3' ? null : (
+      {lessonId === 'F4-U3-L3' || lessonId === 'F4-U3-L4' ? null : (
         <p data-community-subtitle className="text-sm leading-relaxed text-slate-700">
           {subtitle}
         </p>

@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict'
 import { createHash } from 'node:crypto'
-import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
+import { readFileSync, readdirSync, statSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
@@ -27,6 +27,7 @@ const HANT = {
   'lesson.f4u3l3.unitLine': '呢課喺同一個主題式教學單元入面，先做研究。',
   'lesson.f4u3l4.unitLine': '呢課承住同一主題信息，將研究發展成創作。',
   'lesson.f4u3l3.subtitle': '喺課堂認識咩係社區藝術，配過往案例參考。唔使出外做計劃。',
+  'lesson.f4u3l4.subtitle': '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔使出外做計劃。',
   'image.added.caption': '本課再加插圖 · 自制 · VA-Nexus',
   'image.keep.caption': '已有合格原圖 · 自制 · VA-Nexus',
   'image.path.themeUnit': '/content/learning-map-illustrations/f4-thematic/F4-U3-theme-unit.png',
@@ -41,6 +42,7 @@ const ADDED = {
   'F4-U3-lived-community.png': ['278ea01224dd42359a888aa32b3682f27a96902c0fd8a16348654187b4ac188a', 604356],
   'F4-U3-L3-research-path.png': ['b2bf6fe78df7e96bd07bcca3fc1de5e75e7c5b88e3e47ccad1ffd67892b34f63', 674562],
   'F4-U3-strands-woven.png': ['e39a957f63b09e2f1a3dad147fab02b809b6352cdb6021acf80b5e0799e9446c', 770344],
+  'F4-U3-L4-create-continue.png': ['635c669f6c1900babd74563ec612c57561c9d4da38452d64d172b9a10f044c10', 668367],
 } as const
 
 const KEEP = {
@@ -60,6 +62,11 @@ function sha256(path: string): string {
   return createHash('sha256').update(readFileSync(join(root, path))).digest('hex')
 }
 
+function pngSize(path: string): [number, number] {
+  const buf = readFileSync(join(root, path))
+  return [buf.readUInt32BE(16), buf.readUInt32BE(20)]
+}
+
 describe('F4-U3-L3 thematic research slice', () => {
   it('locks the new zh-Hant copy and keeps both lesson titles', () => {
     const hant = messages('src/i18n/zh-Hant.json')
@@ -75,7 +82,7 @@ describe('F4-U3-L3 thematic research slice', () => {
     assert.equal(BANNED.test(Object.values(HANT).join('\n')), false)
   })
 
-  it('ships four added originals and leaves the qualified covers and cards', () => {
+  it('ships the added originals and leaves the qualified covers and cards', () => {
     const dir = 'public/content/learning-map-illustrations/f4-thematic'
     const names = readdirSync(join(root, dir)).sort()
     assert.deepEqual(names, Object.keys(ADDED).sort())
@@ -85,29 +92,40 @@ describe('F4-U3-L3 thematic research slice', () => {
       assert.equal(sha256(path), hash, name)
     }
     for (const [path, hash] of Object.entries(KEEP)) assert.equal(sha256(path), hash, path)
-    assert.equal(existsSync(join(root, HANT['image.path.create'].slice(1))), false)
+    const createPath = `${dir}/F4-U3-L4-create-continue.png`
+    assert.equal(createPath.endsWith(HANT['image.path.create'].slice(1)), true)
+    assert.equal(sha256(createPath), '635c669f6c1900babd74563ec612c57561c9d4da38452d64d172b9a10f044c10')
+    assert.deepEqual(pngSize(createPath), [1280, 720])
   })
 
-  it('wires the research lesson only and leaves the paired lesson line unwired', () => {
+  it('wires the research lesson and carries the same unit into making', () => {
     const view = read('src/components/game/F4ThematicResearch.tsx')
     const player = read('src/components/game/LessonPlayer.tsx')
+    const intro = read('src/components/game/CommunityCases.tsx')
     assert.equal(player.split("lesson.id === 'F4-U3-L3'").length - 1, 2)
+    assert.equal(player.split("lesson.id === 'F4-U3-L4'").length - 1, 2)
     assert.match(player, /F4ThematicResearch/)
-    assert.match(view, /if \(lesson\.id !== THEMATIC_LESSON\) return null/)
+    assert.match(view, /const THEMATIC_LESSON = 'F4-U3-L3'/)
+    assert.match(view, /const CREATE_LESSON = 'F4-U3-L4'/)
+    assert.match(view, /if \(lesson\.id !== THEMATIC_LESSON && lesson\.id !== CREATE_LESSON\) return null/)
     assert.match(view, /image\.path\.themeUnit/)
     assert.match(view, /image\.path\.lived/)
     assert.match(view, /image\.path\.research/)
+    assert.match(view, /image\.path\.create/)
     assert.match(view, /image\.added\.caption/)
     assert.match(view, /image\.keep\.caption/)
     assert.match(view, /lesson\.f4u3l3\.unitLine/)
+    assert.match(view, /lesson\.f4u3l4\.unitLine/)
+    assert.match(view, /lesson\.f4u3l3\.subtitle/)
+    assert.match(view, /lesson\.f4u3l4\.subtitle/)
+    assert.match(view, /unit\.f4u3\.strand\.create/)
     assert.match(view, /LessonCardArt image=\{card\.image\} credit=\{card\.imageCredit\}/)
-    assert.equal(view.includes('lesson.f4u3l4.unitLine'), false)
-    assert.equal(view.includes('image.path.create'), false)
     assert.equal(view.includes('image.path.strands'), false)
-    assert.equal(view.includes('F4-U3-L4-create-continue'), false)
+    assert.equal(view.includes('F4-U3-strands-woven'), false)
     assert.equal(view.includes('loading='), false)
     assert.equal(BANNED.test(view), false)
     assert.equal(/[\u7684\u628A\u5572]/.test(view), false)
+    assert.match(intro, /lessonId === 'F4-U3-L3' \|\| lessonId === 'F4-U3-L4' \? null/)
     assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 11)
   })
 })
