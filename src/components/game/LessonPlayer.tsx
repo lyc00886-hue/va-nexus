@@ -365,7 +365,7 @@ export function LessonPlayer({
           </div>
           {lesson.demo ? <DemoBadge quiet /> : null}
         </div>
-        {lesson.id === 'F4-U3-L3' ? (
+        {lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4' ? (
           <F4ThematicResearch
             lesson={lesson}
             fontSize={settings.fontSize}
@@ -434,7 +434,7 @@ export function LessonPlayer({
         <span className="text-xs text-slate-500">{t('common.aboutMin', { n: lesson.minutes })}</span>
       </div>
 
-      {lesson.id === 'F4-U3-L3' ? (
+      {lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4' ? (
         <F4ThematicResearch
           lesson={lesson}
           fontSize={settings.fontSize}
