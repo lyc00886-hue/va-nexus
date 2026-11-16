@@ -136,10 +136,10 @@ const PLACEHOLDER = {
   'f4-demo.zh-Hans.json': '暂无合法图',
 } as const
 const SCOUT_PLATES = {
-  '01-quest-f4-complete-path.png': '5475cea5fdc2',
-  '02-classic-f4-complete.png': 'be729e66b0c7',
-  '03-f4-lesson-cards-safe.png': '0386f338a607',
-  'preview-strip.png': 'e814f2c34337',
+  '01-quest-f4-complete-path.png': '098339e01f85',
+  '02-classic-f4-complete.png': '7302c73e437b',
+  '03-f4-lesson-cards-safe.png': 'a58127e58ff6',
+  'preview-strip.png': 'eb437f68e474',
 } as const
 
 type Quiz = {
@@ -475,9 +475,9 @@ describe('F.4 demo slice', () => {
       '03-u2-l1-dualread.png': '62bc72340877',
       '04-u2-l2-dualread.png': 'c952ec78eadc',
       '05-u3-l1-dualread.png': '27e9cdf0c8cd',
-      '06-u3-l2-dualread.png': 'd0f689770554',
+      '06-u3-l2-dualread.png': 'f5d00ee909a3',
       '07-chrome-qtype-hints.png': 'd410840b0a93',
-      'preview-strip.png': 'af9f26b494c3',
+      'preview-strip.png': '2391005de2a6',
     }
     const dir = resolve(PUBLIC, 'content/learning-map-illustrations/soft-scout/f4-dualread')
     for (const [file, prefix] of Object.entries(hashes)) {

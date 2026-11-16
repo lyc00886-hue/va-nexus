@@ -55,6 +55,7 @@ import { LessonArtistPanel } from './LessonArtists'
 import { lessonCardBodyStyle, lessonCardReadingAttrs, lessonCardVisibleLines } from '../../lib/lessonReadingSurface'
 import { CommunityGoalOutcomes, CommunityLessonIntro, LessonCardCriteria } from './CommunityCases'
 import { F4ThematicResearch } from './F4ThematicResearch'
+import { OfficialLessonParts } from './OfficialFormat'
 import { LessonShortTrial } from './LessonShortTrial'
 import { LessonWorksheet } from './LessonWorksheet'
 import { LessonCardArt } from './LessonCardArt'
@@ -373,6 +374,7 @@ export function LessonPlayer({
             highContrast={settings.highContrast}
           />
         ) : null}
+        <OfficialLessonParts lessonId={lesson.id} title={lesson.title} />
         <LessonWorksheet lessonId={lesson.id} />
         <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
         <div className="space-y-3">
@@ -442,6 +444,7 @@ export function LessonPlayer({
           highContrast={settings.highContrast}
         />
       ) : null}
+      <OfficialLessonParts lessonId={lesson.id} title={lesson.title} />
       <LessonWorksheet lessonId={lesson.id} />
       <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
       <CommunityGoalOutcomes lessonId={lesson.id} />
