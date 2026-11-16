@@ -25,12 +25,16 @@ function ArtistChip({ artist }: { artist: LessonArtistRef }) {
       {show && artist.thumb ? (
         <img
           src={artist.thumb}
-          alt={t('map.artists.thumbAlt', { name })}
+          alt={artist.reference ? t('map.artists.refAlt', { name }) : t('map.artists.thumbAlt', { name })}
           width={116}
-          height={80}
+          height={artist.reference ? 147 : 80}
           loading="lazy"
           decoding="async"
-          className="h-20 w-full rounded-lg bg-slate-100 object-contain"
+          className={
+            artist.reference
+              ? 'aspect-[678/860] w-full rounded-lg bg-slate-100 object-cover'
+              : 'h-20 w-full rounded-lg bg-slate-100 object-contain'
+          }
           onError={() => setFailed(true)}
         />
       ) : (
@@ -39,7 +43,11 @@ function ArtistChip({ artist }: { artist: LessonArtistRef }) {
         </span>
       )}
       <span className="text-[11px] font-semibold leading-tight text-slate-800">{name}</span>
-      {show && artist.credit ? <span className="line-clamp-3 text-[10px] leading-snug text-slate-500">{artist.credit}</span> : null}
+      {show && artist.reference ? (
+        <span className="line-clamp-3 text-[10px] leading-snug text-slate-500">{t('image.reference.caption')}</span>
+      ) : show && artist.credit ? (
+        <span className="line-clamp-3 text-[10px] leading-snug text-slate-500">{artist.credit}</span>
+      ) : null}
     </span>
   )
 }
@@ -103,7 +111,7 @@ function ArtistCard({
   const name = artistName(artist.artistId)
   const [failed, setFailed] = useState(false)
   const show = Boolean(artist.thumb) && !failed
-  const title = artist.credit || name
+  const title = artist.reference ? t('image.reference.caption') : artist.credit || name
   return (
     <figure className="flex h-full flex-col rounded-2xl border border-slate-200 bg-slate-50 p-2">
       {show && artist.thumb ? (
@@ -111,15 +119,19 @@ function ArtistCard({
           type="button"
           data-artist-open={openToken}
           onClick={onOpen}
-          className="flex min-h-28 items-center justify-center overflow-hidden rounded-xl bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700"
+          className={
+            artist.reference
+              ? 'block w-full overflow-hidden rounded-xl bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700'
+              : 'flex min-h-28 items-center justify-center overflow-hidden rounded-xl bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700'
+          }
         >
           <img
             src={artist.thumb}
-            alt=""
+            alt={artist.reference ? t('map.artists.refAlt', { name }) : ''}
             width={678}
             height={860}
             decoding="async"
-            className="max-h-40 w-full object-contain"
+            className={artist.reference ? 'aspect-[678/860] w-full object-cover' : 'max-h-40 w-full object-contain'}
             onError={() => setFailed(true)}
           />
           <span className="sr-only">{t('ac.media.enlarge', { title })}</span>
@@ -134,18 +146,39 @@ function ArtistCard({
   )
 }
 
+function artistSiteHref(artist: LessonArtistRef): string | undefined {
+  if (!artist.reference || !artist.artistSiteUrl) return undefined
+  return /^https:\/\/[^\s]+$/.test(artist.artistSiteUrl) ? artist.artistSiteUrl : undefined
+}
+
 function ArtistCredit({ artist, name, show }: { artist: LessonArtistRef; name: string; show: boolean }) {
+  const site = show && artist.reference ? artistSiteHref(artist) : undefined
   return (
     <figcaption className="mt-2 space-y-0.5 px-1 text-[11px] leading-snug text-slate-600">
       <span className="block font-semibold text-slate-900">{name}</span>
-      {show && artist.credit ? <span className="block">{artist.credit}</span> : null}
-      {show && artist.license ? (
+      {show && artist.reference ? <span className="block">{t('image.reference.caption')}</span> : null}
+      {show && !artist.reference && artist.credit ? <span className="block">{artist.credit}</span> : null}
+      {show && !artist.reference && artist.license ? (
         <span className="block">
           <span className="font-medium text-slate-500">{t('ac.media.license')}: </span>
           {artist.license}
         </span>
       ) : null}
-      {show && artist.sourceUrl ? (
+      {show && artist.reference ? (
+        site ? (
+          <a
+            href={site}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block font-medium text-[#0D9488] underline-offset-2 hover:underline"
+          >
+            {t('ac.media.artistSite')}
+          </a>
+        ) : (
+          <span className="block">{t('ac.media.artistSite.none')}</span>
+        )
+      ) : null}
+      {show && !artist.reference && artist.sourceUrl ? (
         <a
           href={artist.sourceUrl}
           target="_blank"
@@ -205,8 +238,12 @@ function ArtistDialog({ artist, onClose }: { artist: LessonArtistRef; onClose: (
           {show && artist.thumb ? (
             <img
               src={artist.thumb}
-              alt={t('map.artists.thumbAlt', { name })}
-              className="mx-auto max-h-[70dvh] w-full object-contain"
+              alt={artist.reference ? t('map.artists.refAlt', { name }) : t('map.artists.thumbAlt', { name })}
+              className={
+                artist.reference
+                  ? 'mx-auto aspect-[678/860] max-h-[70dvh] w-auto max-w-full object-cover'
+                  : 'mx-auto max-h-[70dvh] w-full object-contain'
+              }
               decoding="async"
               onError={() => setFailed(true)}
             />

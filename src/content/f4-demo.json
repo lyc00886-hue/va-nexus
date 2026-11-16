@@ -464,7 +464,14 @@
           ],
           "artistIds": [
             "HK-WUCIUS-01"
-          ]
+          ],
+          "artistMedia": {
+            "HK-WUCIUS-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/HK-WUCIUS-01-reference.png",
+              "reference": true,
+              "artistSiteUrl": "https://www.wongwucius.com/"
+            }
+          }
         },
         {
           "id": "F4-U2-L2",
@@ -962,7 +969,19 @@
           "artistIds": [
             "HK-PAK-01",
             "HK-LEEKIT-01"
-          ]
+          ],
+          "artistMedia": {
+            "HK-PAK-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/HK-PAK-01-reference.png",
+              "reference": true,
+              "artistSiteUrl": "https://www.mplus.org.hk/tc/collection/makers/pak-sheung-chuen/"
+            },
+            "HK-LEEKIT-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/HK-LEEKIT-01-reference.png",
+              "reference": true,
+              "artistSiteUrl": "https://www.mplus.org.hk/tc/collection/makers/lee-kit/"
+            }
+          }
         },
         {
           "id": "F4-U3-L3",
@@ -1350,6 +1369,15 @@
               "license": "Public domain",
               "credit": "Frida Kahlo — Self-Portrait Dedicated to Leon Trotsky (1937)",
               "sourceUrl": "https://commons.wikimedia.org/wiki/File:Frida_Kahlo_-_Autoportrait_d%C3%A9di%C3%A9_%C3%A0_L%C3%A9on_Trotsky.png"
+            },
+            "HK-SHIEH-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/HK-SHIEH-01-reference.png",
+              "reference": true
+            },
+            "WEST-HOCKNEY-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/WEST-HOCKNEY-01-reference.png",
+              "reference": true,
+              "artistSiteUrl": "https://www.hockney.com/"
             }
           }
         },

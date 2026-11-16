@@ -15,12 +15,16 @@ export function artistName(artistId: string): string {
   return NAMES[artistId]?.[getLocale()] ?? artistId
 }
 
-/** Spoken summary for the lesson button: credit when a thumb exists, otherwise the empty-image label. */
+/** Spoken summary for the lesson button: reference caption, artwork credit, or the empty-image label. */
 export function artistCreditSummary(artists: LessonArtistRef[]): string {
   return artists
     .map((artist) => {
       const name = artistName(artist.artistId)
-      const detail = artist.thumb && artist.credit ? artist.credit : t('ac.media.empty')
+      const detail = artist.reference
+        ? t('image.reference.caption')
+        : artist.thumb && artist.credit
+          ? artist.credit
+          : t('ac.media.empty')
       return `${name}: ${detail}`
     })
     .join('; ')

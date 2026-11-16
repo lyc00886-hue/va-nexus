@@ -153,7 +153,14 @@ type Quiz = {
   explain?: string
 }
 
-type ArtistMedia = { thumb?: string; license?: string; credit?: string; sourceUrl?: string }
+type ArtistMedia = {
+  thumb?: string
+  license?: string
+  credit?: string
+  sourceUrl?: string
+  reference?: boolean
+  artistSiteUrl?: string
+}
 type ContentCard = {
   title?: string
   body?: string
@@ -240,9 +247,43 @@ describe('F.4 demo slice', () => {
     for (const name of FILES.slice(1)) assert.equal(signature(name), base, name)
   })
 
-  it('ships local unit covers and only the cleared Kahlo artwork thumb', () => {
+  it('ships local unit covers, the cleared Kahlo artwork, and five reference images', () => {
     const portrait = resolve(PUBLIC, 'content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-portrait.jpg')
     assert.ok(existsSync(portrait), portrait)
+    const refDir = resolve(PUBLIC, 'content/learning-map-illustrations/artist-refs')
+    const refFiles = {
+      'HK-PAK-01-reference.png': ['b69153c960e23953b3a4d268a36c33131b5c59e4775a8d851bf3a4be6f03d254', 1011069],
+      'HK-LEEKIT-01-reference.png': ['f97cb7754d0e56fdfbf2597f5d692bc7d902471ce859f1c42e1b8578efbaebae', 579284],
+      'HK-WUCIUS-01-reference.png': ['7e5afda118d2d2932621da1bf2db4ad17b051687371793c559522c469a315f02', 730779],
+      'HK-SHIEH-01-reference.png': ['cf8627b915ffc429a0b897914f42e18f323676666d83d7e28aa13b54cd91efb7', 771923],
+      'WEST-HOCKNEY-01-reference.png': ['70de5ad9c1408e3bb854e0cda489039a2e53908fd9857ee6faba8091a8ab0ecd', 864662],
+    } as const
+    assert.deepEqual(readdirSync(refDir).sort(), Object.keys(refFiles).sort())
+    for (const [file, [digest, bytes]] of Object.entries(refFiles)) {
+      const buf = readFileSync(resolve(refDir, file))
+      assert.equal(buf.length, bytes, file)
+      assert.equal(createHash('sha256').update(buf).digest('hex'), digest, file)
+    }
+    const refThumb = {
+      'HK-PAK-01': '/content/learning-map-illustrations/artist-refs/HK-PAK-01-reference.png',
+      'HK-LEEKIT-01': '/content/learning-map-illustrations/artist-refs/HK-LEEKIT-01-reference.png',
+      'HK-WUCIUS-01': '/content/learning-map-illustrations/artist-refs/HK-WUCIUS-01-reference.png',
+      'HK-SHIEH-01': '/content/learning-map-illustrations/artist-refs/HK-SHIEH-01-reference.png',
+      'WEST-HOCKNEY-01': '/content/learning-map-illustrations/artist-refs/WEST-HOCKNEY-01-reference.png',
+    } as const
+    const refSite = {
+      'HK-PAK-01': 'https://www.mplus.org.hk/tc/collection/makers/pak-sheung-chuen/',
+      'HK-LEEKIT-01': 'https://www.mplus.org.hk/tc/collection/makers/lee-kit/',
+      'HK-WUCIUS-01': 'https://www.wongwucius.com/',
+      'WEST-HOCKNEY-01': 'https://www.hockney.com/',
+    } as const
+    const kahlo = {
+      thumb: '/content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-artwork.png',
+      license: 'Public domain',
+      credit: 'Frida Kahlo — Self-Portrait Dedicated to Leon Trotsky (1937)',
+      sourceUrl: 'https://commons.wikimedia.org/wiki/File:Frida_Kahlo_-_Autoportrait_d%C3%A9di%C3%A9_%C3%A0_L%C3%A9on_Trotsky.png',
+    }
+    const emptyArtistLessons = ['F4-U2-L3', 'F4-U3-L3', 'F4-U3-L4']
     for (const name of FILES) {
       const units = pack(name).units
       const blob = JSON.stringify(units)
@@ -256,11 +297,23 @@ describe('F.4 demo slice', () => {
         const file = resolve(PUBLIC, cover.coverImage.slice(1))
         assert.ok(statSync(file).size > 1000, file)
       }
-      const mediaLessons = units.flatMap((unit) => unit.lessons).filter((lesson) => lesson.artistMedia)
-      assert.equal(mediaLessons.length, 1, name)
-      assert.equal(mediaLessons[0].id, 'F4-U4-L1', name)
-      assert.deepEqual(Object.keys(mediaLessons[0].artistMedia ?? {}), ['WEST-KAHLO-01'], name)
-      for (const lesson of units.flatMap((unit) => unit.lessons)) {
+      const lessons = units.flatMap((unit) => unit.lessons)
+      const mediaLessons = lessons.filter((lesson) => lesson.artistMedia)
+      assert.deepEqual(
+        mediaLessons.map((lesson) => lesson.id),
+        ['F4-U2-L1', 'F4-U3-L2', 'F4-U4-L1'],
+        name,
+      )
+      const u4 = mediaLessons.find((lesson) => lesson.id === 'F4-U4-L1')
+      assert.deepEqual(Object.keys(u4?.artistMedia ?? {}), ['WEST-KAHLO-01', 'HK-SHIEH-01', 'WEST-HOCKNEY-01'], name)
+      assert.deepEqual(u4?.artistMedia?.['WEST-KAHLO-01'], kahlo, name)
+      assert.equal(u4?.artistMedia?.['HK-SHIEH-01']?.artistSiteUrl, undefined, name)
+      for (const id of emptyArtistLessons) {
+        const lesson = lessons.find((item) => item.id === id)
+        assert.deepEqual(lesson?.artistIds ?? [], [], `${name} ${id}`)
+        assert.equal(lesson?.artistMedia, undefined, `${name} ${id}`)
+      }
+      for (const lesson of lessons) {
         const refs = artistsFromLesson(lesson)
         if (!lesson.artistIds?.length) {
           assert.equal(refs, undefined, `${name} ${lesson.id}`)
@@ -273,18 +326,26 @@ describe('F.4 demo slice', () => {
           `${name} ${lesson.id}`,
         )
         for (const ref of refs) {
-          const cleared = lesson.id === 'F4-U4-L1' && ref.artistId === 'WEST-KAHLO-01'
-          if (cleared) {
-            assert.equal(ref.thumb, '/content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-artwork.png')
-            assert.equal(ref.license, 'Public domain')
-            assert.match(ref.credit ?? '', /Frida Kahlo/)
-            assert.match(ref.sourceUrl ?? '', /^https:\/\/commons\.wikimedia\.org\//)
-            assert.ok(statSync(resolve(PUBLIC, ref.thumb.slice(1))).size > 1000)
-          } else {
-            assert.equal(ref.thumb, undefined, ref.artistId)
-            assert.equal(ref.credit, undefined, ref.artistId)
-            assert.equal(ref.sourceUrl, undefined, ref.artistId)
+          if (lesson.id === 'F4-U4-L1' && ref.artistId === 'WEST-KAHLO-01') {
+            assert.deepEqual(ref, { artistId: 'WEST-KAHLO-01', ...kahlo })
+            assert.equal(ref.reference, undefined)
+            assert.equal(ref.artistSiteUrl, undefined)
+            assert.ok(statSync(resolve(PUBLIC, ref.thumb!.slice(1))).size > 1000)
+            continue
           }
+          const thumb = refThumb[ref.artistId as keyof typeof refThumb]
+          assert.ok(thumb, ref.artistId)
+          const site = refSite[ref.artistId as keyof typeof refSite]
+          assert.deepEqual(
+            ref,
+            site
+              ? { artistId: ref.artistId, thumb, reference: true, artistSiteUrl: site }
+              : { artistId: ref.artistId, thumb, reference: true },
+          )
+          assert.equal(ref.license, undefined, ref.artistId)
+          assert.equal(ref.credit, undefined, ref.artistId)
+          assert.equal(ref.sourceUrl, undefined, ref.artistId)
+          if (ref.artistId === 'HK-SHIEH-01') assert.equal(ref.artistSiteUrl, undefined)
         }
       }
     }
@@ -342,6 +403,106 @@ describe('F.4 demo slice', () => {
       },
     })
     assert.deepEqual(refs, [{ artistId: 'WEST-KAHLO-01' }, { artistId: 'HK-SHIEH-01' }])
+    assert.deepEqual(
+      artistsFromLesson({
+        artistIds: ['HK-SHIEH-01', 'HK-PAK-01', 'WEST-KAHLO-01'],
+        artistMedia: {
+          'HK-SHIEH-01': {
+            thumb: 'http://example.invalid/about',
+            reference: true,
+            license: 'Public domain',
+            sourceUrl: 'https://example.com/source',
+            artistSiteUrl: 'http://example.invalid/about',
+          },
+          'HK-PAK-01': {
+            thumb: '/content/learning-map-illustrations/artist-refs/../secret.png',
+            reference: true,
+            artistSiteUrl: 'https://www.mplus.org.hk/tc/collection/makers/pak-sheung-chuen/',
+          },
+          'WEST-KAHLO-01': {
+            thumb: '/content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-artwork.png',
+            reference: true,
+            license: 'Public domain',
+            credit: 'not a reference',
+            sourceUrl: 'https://commons.wikimedia.org/wiki/File:x.png',
+          },
+        },
+      }),
+      [{ artistId: 'HK-SHIEH-01' }, { artistId: 'HK-PAK-01' }, { artistId: 'WEST-KAHLO-01' }],
+    )
+    assert.deepEqual(
+      artistsFromLesson({
+        artistIds: ['HK-WUCIUS-01'],
+        artistMedia: {
+          'HK-WUCIUS-01': {
+            thumb: '/content/learning-map-illustrations/artist-refs/HK-WUCIUS-01-reference.png',
+            license: 'Public domain',
+            sourceUrl: 'https://example.com/source',
+            artistSiteUrl: 'https://www.wongwucius.com/',
+          },
+        },
+      }),
+      [
+        {
+          artistId: 'HK-WUCIUS-01',
+          thumb: '/content/learning-map-illustrations/artist-refs/HK-WUCIUS-01-reference.png',
+          reference: true,
+          artistSiteUrl: 'https://www.wongwucius.com/',
+        },
+      ],
+    )
+  })
+
+  it('labels reference cards with the reference caption and keeps artwork credit', () => {
+    const copy = {
+      'zh-Hant.json': {
+        'image.reference.caption': '寫實參考圖 · 只供參考 · 自制 · VA-Nexus',
+        'map.artists.refAlt': '{name}寫實參考圖',
+        'ac.media.artistSite': '藝術家網站',
+        'ac.media.artistSite.none': '暫時未有公開網站',
+      },
+      'en.json': {
+        'image.reference.caption': 'Realistic reference image · For reference only · Original · VA-Nexus',
+        'map.artists.refAlt': '{name} realistic reference image',
+        'ac.media.artistSite': 'Artist website',
+        'ac.media.artistSite.none': 'No public website for now',
+      },
+      'zh-Hans.json': {
+        'image.reference.caption': '写实参考图 · 只供参考 · 自制 · VA-Nexus',
+        'map.artists.refAlt': '{name}写实参考图',
+        'ac.media.artistSite': '艺术家网站',
+        'ac.media.artistSite.none': '暂时未有公开网站',
+      },
+    } as const
+    for (const [file, expected] of Object.entries(copy)) {
+      const messages = JSON.parse(readFileSync(new URL(`../i18n/${file}`, import.meta.url), 'utf8')) as Record<string, string>
+      for (const [key, value] of Object.entries(expected)) {
+        assert.equal(messages[key], value, `${file} ${key}`)
+      }
+      if (file === 'zh-Hant.json') {
+        for (const value of Object.values(expected)) assert.equal(/[\u7684\u628A\u5572]/.test(value), false, value)
+      }
+      if (file === 'zh-Hans.json') {
+        assert.equal(messages['image.reference.caption'].includes('\u53C2'), true)
+        assert.equal(messages['image.reference.caption'].includes('\u53C3'), false)
+        assert.equal(messages['map.artists.refAlt'].includes('\u53C2'), true)
+        assert.equal(messages['map.artists.refAlt'].includes('\u53C3'), false)
+      }
+    }
+    const panel = readFileSync(new URL('../components/game/LessonArtists.tsx', import.meta.url), 'utf8')
+    assert.match(panel, /image\.reference\.caption/)
+    assert.match(panel, /map\.artists\.refAlt/)
+    assert.match(panel, /ac\.media\.artistSite\.none/)
+    assert.match(panel, /t\('ac\.media\.artistSite'\)/)
+    assert.match(panel, /object-cover/)
+    assert.match(panel, /object-contain/)
+    assert.match(panel, /map\.artists\.thumbAlt/)
+    assert.match(panel, /ac\.media\.source/)
+    const labels = readFileSync(new URL('./lessonArtistLabels.ts', import.meta.url), 'utf8')
+    assert.match(
+      labels,
+      /const detail = artist\.reference\s*\?\s*t\('image\.reference\.caption'\)\s*: artist\.thumb && artist\.credit\s*\?\s*artist\.credit\s*: t\('ac\.media\.empty'\)/,
+    )
   })
 
   it('does not put a syllabus year on the F.4 map chrome', () => {

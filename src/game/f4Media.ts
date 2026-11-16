@@ -56,8 +56,21 @@ export function coverFromUnit(unit: { coverImage?: unknown; coverCredit?: unknow
   return coverCredit ? { coverImage, coverCredit } : { coverImage }
 }
 
+const REFERENCE_PREFIX = `${ASSET_PREFIX}artist-refs/`
+
+/** Local reference file. Any other path, including a cleared artwork thumb, is refused. */
+function referenceThumb(value: unknown): string | undefined {
+  const path = learningMapAssetPath(value)
+  if (!path?.startsWith(REFERENCE_PREFIX)) return undefined
+  return path
+}
+
 /**
- * One row per artistId. A row gets a thumb only when that id has a cleared local file.
+ * One row per artistId.
+ * A reference row accepts only a local path under artist-refs/. It sets
+ * reference: true and artistSiteUrl only for a valid https URL. It never
+ * copies license, credit, or sourceUrl, and it is not a cleared artwork.
+ * Any other row gets a thumb only when that id has a cleared local file.
  * Other ids stay `{ artistId }` so the UI can show the empty-image placeholder.
  */
 export function artistsFromLesson(lesson: {
@@ -76,8 +89,17 @@ export function artistsFromLesson(lesson: {
   return ids.map((artistId) => {
     const raw = media[artistId]
     const row = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : null
-    const thumb = row ? learningMapAssetPath(row.thumb) : undefined
-    if (!row || !thumb) return { artistId }
+    if (!row) return { artistId }
+    const refThumb = referenceThumb(row.thumb)
+    if (row.reference === true || refThumb) {
+      if (!refThumb) return { artistId }
+      const artistSiteUrl = httpsSourceUrl(row.artistSiteUrl)
+      return artistSiteUrl
+        ? { artistId, thumb: refThumb, reference: true, artistSiteUrl }
+        : { artistId, thumb: refThumb, reference: true }
+    }
+    const thumb = learningMapAssetPath(row.thumb)
+    if (!thumb) return { artistId }
     return {
       artistId,
       thumb,
