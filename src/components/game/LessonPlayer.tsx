@@ -349,7 +349,7 @@ export function LessonPlayer({
 
   if (presentation === 'folds') {
     return (
-      <div className={`space-y-3 ${easyRead ? 'leading-loose' : ''}`}>
+      <div className={`w-full max-w-none wrap-anywhere space-y-3 ${easyRead ? 'leading-loose' : ''}`}>
         <div className="flex items-center gap-3">
           <div
             className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200"
@@ -404,7 +404,7 @@ export function LessonPlayer({
   }
 
   return (
-    <div className={`mx-auto max-w-2xl space-y-4 ${easyRead ? 'leading-loose' : ''}`}>
+    <div className={`mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl ${easyRead ? 'leading-loose' : ''}`}>
       {/* top bar */}
       <div className="flex items-center gap-3">
         <button

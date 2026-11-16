@@ -218,7 +218,7 @@ function F4UnitPanel({
 }) {
   const lesson = unit.nodes.find((node) => node.id === lessonId)
   return (
-    <div data-quest-unit={unit.id} className="mt-4">
+    <div data-quest-unit={unit.id} className="mt-4 w-full max-w-none">
       <button type="button" onClick={onBack} className="text-sm font-semibold text-[#0D9488]">
         {backLabel}
       </button>
