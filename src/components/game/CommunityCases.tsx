@@ -18,16 +18,24 @@ import {
  * YouTube is classroom playback of the official videos only.
  * Appreciation is a separate task from organiser, date, and venue.
  */
-export function CommunityCases() {
+export function CommunityCases({ showEmbed = true }: { showEmbed?: boolean }) {
   return (
     <section data-community-cases className="space-y-3">
-      <HillCase />
-      <DeepFoodCase />
+      <HillCase showEmbed={showEmbed} />
+      <DeepFoodCase showEmbed={showEmbed} />
     </section>
   )
 }
 
-export function CommunityLessonIntro({ lessonId, subtitle }: { lessonId: string; subtitle: string }) {
+export function CommunityLessonIntro({
+  lessonId,
+  subtitle,
+  showEmbed = true,
+}: {
+  lessonId: string
+  subtitle: string
+  showEmbed?: boolean
+}) {
   if (!isCommunityCaseLesson(lessonId)) return null
   return (
     <div className="space-y-3">
@@ -36,7 +44,7 @@ export function CommunityLessonIntro({ lessonId, subtitle }: { lessonId: string;
           {subtitle}
         </p>
       )}
-      <CommunityCases />
+      <CommunityCases showEmbed={showEmbed} />
       <section data-visual className="space-y-1 rounded-3xl border border-[#0D9488]/40 bg-[#FFF9E9] p-4 text-sm leading-relaxed text-slate-800">
         <h3 className="text-base font-bold text-[#0D9488]">{t('visual.heading')}</h3>
         <p>{t('visual.elements.hill')}</p>
@@ -48,7 +56,7 @@ export function CommunityLessonIntro({ lessonId, subtitle }: { lessonId: string;
   )
 }
 
-function HillCase() {
+function HillCase({ showEmbed = true }: { showEmbed?: boolean }) {
   return (
     <article data-case="hill" className="space-y-1 rounded-3xl border border-[#0D9488]/40 bg-[#FFF9E9] p-4 text-sm leading-relaxed text-slate-800">
       <h3 className="text-base font-bold text-slate-900">{t('case.hill.title')}</h3>
@@ -75,16 +83,18 @@ function HillCase() {
           {t('video.classroomOnly')}
         </p>
         <p data-video-chrome="no-download">{t('video.noDownload')}</p>
-        <iframe
-          data-testid="classroom-video"
-          data-video-id={HILL_VIDEO_ID}
-          title={t('video.hillTitle')}
-          src={classroomEmbedUrl(HILL_VIDEO_ID)}
-          className="aspect-video w-full rounded-2xl bg-white"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        />
+        {showEmbed ? (
+          <iframe
+            data-testid="classroom-video"
+            data-video-id={HILL_VIDEO_ID}
+            title={t('video.hillTitle')}
+            src={classroomEmbedUrl(HILL_VIDEO_ID)}
+            className="aspect-video w-full rounded-2xl bg-white"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        ) : null}
         <p>{t('video.hillTitle')}</p>
         <p>{t('video.hillChannel')}</p>
       </div>
@@ -99,7 +109,7 @@ function HillCase() {
   )
 }
 
-function DeepFoodCase() {
+function DeepFoodCase({ showEmbed = true }: { showEmbed?: boolean }) {
   return (
     <article data-case="deepfood" className="space-y-2 rounded-3xl border border-[#0D9488]/40 bg-[#FFF9E9] p-4 text-sm leading-relaxed text-slate-800">
       <h3 className="text-base font-bold text-slate-900">{t('case.deepfood.collective')}</h3>
@@ -119,16 +129,18 @@ function DeepFoodCase() {
           {t('video.classroomOnly')}
         </p>
         <p data-video-chrome="no-download">{t('video.noDownload')}</p>
-        <iframe
-          data-testid="classroom-video"
-          data-video-id={OVERVIEW_VIDEO_ID}
-          title={t('video.overviewTitle')}
-          src={classroomEmbedUrl(OVERVIEW_VIDEO_ID)}
-          className="aspect-video w-full rounded-2xl bg-white"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          referrerPolicy="strict-origin-when-cross-origin"
-          allowFullScreen
-        />
+        {showEmbed ? (
+          <iframe
+            data-testid="classroom-video"
+            data-video-id={OVERVIEW_VIDEO_ID}
+            title={t('video.overviewTitle')}
+            src={classroomEmbedUrl(OVERVIEW_VIDEO_ID)}
+            className="aspect-video w-full rounded-2xl bg-white"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        ) : null}
         <p>{t('video.overviewTitle')}</p>
         <p>{t('video.channel')}</p>
         <p>{t('video.more')}</p>

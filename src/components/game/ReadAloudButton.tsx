@@ -32,8 +32,8 @@ export function ReadAloudButton({
 
   if (!supported) return null
   const cls = small
-    ? 'inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50'
-    : 'inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50'
+    ? 'inline-flex shrink-0 items-center gap-1 rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
+    : 'inline-flex items-center gap-1.5 rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-xs font-semibold text-[#0D9488]'
   return tts.speaking ? (
     <button type="button" onClick={tts.stop} className={cls} aria-label={t('tts.stopAria')}>
       <Square className="h-3.5 w-3.5" aria-hidden /> {t('tts.stop')}

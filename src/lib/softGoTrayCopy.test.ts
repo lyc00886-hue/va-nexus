@@ -92,9 +92,11 @@ describe('Soft GO ④ tray and learning-point copy', () => {
     assert.equal(map.includes('mascot.chest.reward'), false)
     assert.equal(map.includes('celebrate.soft'), false)
 
-    for (const key of ['tray.correct.title', 'tray.wrong.title', 'tray.complete.title', 'lp.gain', 'lp.tip']) {
+    for (const key of ['lp.correct', 'lp.wrong', 'tray.complete.title', 'lp.gain', 'lp.tip']) {
       assert.equal(player.includes(`'${key}'`), true, key)
     }
+    assert.equal(player.includes("'tray.correct.title'"), false)
+    assert.equal(player.includes("'tray.wrong.title'"), false)
     assert.equal(achievements.includes("'lp.level'"), true)
     assert.match(frames, /w-\[43\.5%\]/)
     assert.equal(frames.includes('w-[58%]'), false)

@@ -420,6 +420,17 @@ html {
 html[data-soft-screen='focus'] .map-one-chrome {
   display: none;
 }
+/* One-card lesson: hide the tab bar and the page behind the fixed shell. */
+html[data-lesson-wizard='on'] .platform-header,
+html[data-lesson-wizard='on'] .map-one-chrome {
+  display: none;
+}
+html[data-lesson-wizard='on'] main {
+  visibility: hidden;
+}
+html[data-lesson-wizard='on'] main [data-lesson-wizard] {
+  visibility: visible;
+}
 /* Atlas and 我的 use the soft 圖鑑 dock instead of the app tab bar. */
 html[data-soft-nav='atlas'] .map-one-chrome {
   display: none;
