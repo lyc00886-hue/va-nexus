@@ -10,6 +10,9 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+public-pages/.next
+public-pages/out
+src/i18n/.zh-Hans.json.tmp
 *.local
 
 # Editor directories and files
