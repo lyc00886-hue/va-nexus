@@ -169,7 +169,7 @@ describe('November activity papers', () => {
       'Hi! Hill public art project',
       '主辦 康樂及文化事務署 · 策劃 藝術推廣辦事處',
       '陳思光係參與藝術家之一，用村內陶土做陶瓷；唔係主辦或策劃。',
-      '課堂參考用官方網頁同小冊子。未核實到官方可課堂播放嘅 YouTube。',
+      '課堂參考用官方網頁同小冊子。已核實一條可課堂播放嘅官方 YouTube。',
       '呢個係過往案例參考，用嚟做有對象、有焦點嘅評賞。',
     ])
     assert.deepEqual(worksheetCaseLines('F4-U3-L3', 'student', text), [
@@ -332,6 +332,7 @@ describe('November activity papers', () => {
     assert.equal(read('src/components/game/LessonWorksheet.tsx').includes('softMotion'), false)
     assert.equal(read('src/game/lessonWorksheet.ts').includes('youtube.com'), false)
     assert.match(read('src/game/communityCases.ts'), /OVERVIEW_VIDEO_ID = 'hR9X0Ce2r9o'/)
-    assert.equal(read('src/game/communityCases.ts').includes('HILL_VIDEO_ID = null'), true)
+    assert.equal(read('src/game/communityCases.ts').includes("HILL_VIDEO_ID = 'J-VketvKEX4'"), true)
+    assert.equal(read('src/game/communityCases.ts').includes('HILL_VIDEO_ID = null'), false)
   })
 })
