@@ -1,19 +1,20 @@
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Pause,
-  RotateCcw,
-  Trophy,
-  X,
-} from 'lucide-react'
-import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
+import { Pause, Trophy, X } from 'lucide-react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { useGame, type FinishOutcome } from '../../context/GameContext'
 import { useSen } from '../../context/SenContext'
 import { useSenSupport } from '../../context/SenSupportContext'
 import { getUnits } from '../../game/curriculum'
 import { getF4Units } from '../../game/f4Demo'
 import { getMediaUnits } from '../../game/mediaIntro'
+import {
+  HILL_BROCHURE_URL,
+  HILL_PAGE_URL,
+  HILL_VIDEO_ID,
+  classroomEmbedUrl,
+  classroomWatchUrl,
+  isCommunityCaseLesson,
+} from '../../game/communityCases'
+import { buildLessonSteps, splitOfficialFilmText, type LessonStep } from '../../game/lessonSteps'
 import {
   OTTER_CHEST_XP,
   OTTER_STORAGE_KEY,
@@ -29,11 +30,9 @@ import { getLocale, joinList, t } from '../../i18n'
 import { shortLessonFooterCta } from '../../lib/shortLessonCta'
 import {
   DEFAULT_LESSON_FOLDS,
-  LESSON_FOLD_IDS,
   type LessonFoldId,
   type LessonFoldOpen,
 } from '../../lib/learningMapSections'
-import { MapFold } from './MapFold'
 import { LessonCompleteFrame } from './SoftMotion'
 import type {
   DualReadQuestion,
@@ -72,6 +71,12 @@ const FOLD_COPY: Record<LessonFoldId, { title: 'map.lesson.goal' | 'map.lesson.s
   practice: { title: 'map.lesson.practice', hint: 'map.lesson.practiceHint' },
 }
 
+const OUTLINE_CHIP = 'rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
+const WIZARD_BUTTON =
+  'w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white shadow-[0_4px_0_#0F766E] active:translate-y-1 active:shadow-none disabled:translate-y-0 disabled:bg-[#E4EAF2] disabled:text-[#8B95A8] disabled:shadow-none'
+
+type AnswerGate = { ready: boolean; check: () => void }
+
 function mapUnitSlice(lessonId: string) {
   const units = [...getUnits(), ...getF4Units(), ...getMediaUnits()]
   return unitSliceFor(
@@ -89,6 +94,14 @@ function shuffle<T>(arr: T[], seed: number): T[] {
     ;[a[i], a[j]] = [a[j], a[i]]
   }
   return a
+}
+
+function stepsFor(lesson: Lesson): LessonStep[] {
+  return buildLessonSteps({
+    cardCount: lesson.cards.length,
+    questionCount: lesson.questions.length,
+    media: isCommunityCaseLesson(lesson.id),
+  })
 }
 
 type Phase = 'cards' | 'quiz' | 'rest' | 'result'
@@ -111,7 +124,7 @@ export function LessonPlayer({
   after?: ReactNode
   /** Overrides the result exit label. Default stays “Back to the research lab” / map. */
   exitLabel?: string
-  /** Learning-map lessons fold Goal / Steps / Practice. Quests keep the linear flow. */
+  /** Learning-map lessons and quests share one card-at-a-time shell. */
   presentation?: 'flow' | 'folds'
   folds?: LessonFoldOpen
   onSetFold?: (id: LessonFoldId, open: boolean) => void
@@ -122,9 +135,11 @@ export function LessonPlayer({
   const motion = !settings.reduceMotion
   const playSoft = softMotionPlay({ soundMotion: settings.soundMotion, reduceMotion: settings.reduceMotion })
 
-  const [phase, setPhase] = useState<Phase>('cards')
-  const [cardIdx, setCardIdx] = useState(0)
-  const [queue, setQueue] = useState<number[]>(() => lesson.questions.map((_, i) => i))
+  const built = stepsFor(lesson)
+  const [lessonSeen, setLessonSeen] = useState(lesson.id)
+  const [steps, setSteps] = useState<LessonStep[]>(built)
+  const [stepIdx, setStepIdx] = useState(0)
+  const [finished, setFinished] = useState(false)
   const [firstTry, setFirstTry] = useState<Record<string, boolean>>({})
   const [wrongByType, setWrongByType] = useState<Partial<Record<QuestionType, number>>>({})
   const [feedback, setFeedback] = useState<Feedback>(null)
@@ -143,16 +158,65 @@ export function LessonPlayer({
       return flag !== 'off'
     }
   })
-  const foldButtonRefs = useRef<Partial<Record<LessonFoldId, HTMLButtonElement | null>>>({})
+  const gateRef = useRef<AnswerGate>({ ready: false, check: () => {} })
+  const [gateReady, setGateReady] = useState(false)
+  const onGate = useCallback((gate: AnswerGate) => {
+    gateRef.current = gate
+    setGateReady((prev) => (prev === gate.ready ? prev : gate.ready))
+  }, [])
   const foldOpen = folds ?? DEFAULT_LESSON_FOLDS
 
-  function openFold(id: LessonFoldId) {
-    if (presentation === 'folds') onSetFold?.(id, true)
+  if (lessonSeen !== lesson.id) {
+    setLessonSeen(lesson.id)
+    setSteps(built)
+    setStepIdx(0)
+    setFinished(false)
+    setFirstTry({})
+    setWrongByType({})
+    setFeedback(null)
+    setOutcome(null)
+    setResult(null)
+    setChestKey(null)
+    setGateReady(false)
   }
+
+  const step = steps[stepIdx]
+  const phase: Phase = finished
+    ? 'result'
+    : step?.kind === 'question'
+      ? 'quiz'
+      : step?.kind === 'rest'
+        ? 'rest'
+        : 'cards'
+  const cardIdx = step?.kind === 'card' ? step.cardIndex : 0
+  const question = step?.kind === 'question' ? lesson.questions[step.questionIndex] : undefined
+
+  useLayoutEffect(() => {
+    if (typeof document === 'undefined') return
+    if (phase === 'result') {
+      document.documentElement.removeAttribute('data-lesson-wizard')
+      document.body.style.overflow = ''
+      return
+    }
+    document.documentElement.setAttribute('data-lesson-wizard', 'on')
+    const previous = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.documentElement.removeAttribute('data-lesson-wizard')
+      document.body.style.overflow = previous
+    }
+  }, [phase])
 
   useEffect(() => reportSignal({ kind: 'session-reset' }), [reportSignal])
 
-  // idle detection on lesson cards (one gentle signal per card)
+  useEffect(() => {
+    const current = steps[stepIdx]
+    if (!current || presentation !== 'folds') return
+    const id: LessonFoldId = current.kind === 'question' ? 'practice' : 'steps'
+    onSetFold?.(id, true)
+    void t(FOLD_COPY[id].hint)
+  }, [presentation, onSetFold, stepIdx, steps])
+
   useEffect(() => {
     if (phase !== 'cards') return
     if (presentation === 'folds' && !foldOpen.steps) return
@@ -160,14 +224,7 @@ export function LessonPlayer({
     return () => window.clearTimeout(id)
   }, [phase, cardIdx, reportSignal, presentation, foldOpen.steps])
 
-  const card = lesson.cards[cardIdx]
-  const qIdx = queue[0]
-  const question = qIdx !== undefined ? lesson.questions[qIdx] : undefined
-  const answeredCount = lesson.questions.length - new Set(queue).size
-  const progress =
-    phase === 'cards'
-      ? ((cardIdx + 1) / (lesson.cards.length + lesson.questions.length)) * 100
-      : ((lesson.cards.length + answeredCount) / (lesson.cards.length + lesson.questions.length)) * 100
+  const progress = steps.length ? ((stepIdx + 1) / steps.length) * 100 : 100
 
   function answer(correct: boolean, explain: string) {
     if (!question) return
@@ -177,19 +234,6 @@ export function LessonPlayer({
       setWrongByType((w) => ({ ...w, [question.type]: (w[question.type] ?? 0) + 1 }))
       reportSignal({ kind: 'wrong', qtype: question.type })
     }
-  }
-
-  function next() {
-    if (!feedback || qIdx === undefined) return
-    const rest = queue.slice(1)
-    const nq = feedback.correct ? rest : [...rest, qIdx] // wrong answers re-queued
-    setFeedback(null)
-    setAttemptSeed((s) => s + 1)
-    if (nq.length === 0) {
-      finish()
-      return
-    }
-    setQueue(nq)
   }
 
   function finish() {
@@ -213,101 +257,95 @@ export function LessonPlayer({
     setResult(r)
     setOutcome(finishLesson(lesson.id, lesson.title, r, kind))
     setChestKey(offer.key)
-    setQueue([])
-    setPhase('result')
-    openFold('practice')
+    setFinished(true)
+    if (presentation === 'folds') onSetFold?.('practice', true)
+  }
+
+  function goTo(index: number) {
+    setFeedback(null)
+    setGateReady(false)
+    gateRef.current = { ready: false, check: () => {} }
+    setStepIdx(index)
+  }
+
+  function advance() {
+    if (stepIdx + 1 >= steps.length) {
+      finish()
+      return
+    }
+    goTo(stepIdx + 1)
+  }
+
+  function afterCheck() {
+    if (!feedback || step?.kind !== 'question') return
+    const wrong = !feedback.correct
+    const questionIndex = step.questionIndex
+    setFeedback(null)
+    setAttemptSeed((s) => s + 1)
+    setGateReady(false)
+    if (wrong) {
+      setSteps((list) => [...list, { kind: 'question', questionIndex }])
+      setStepIdx((i) => i + 1)
+      return
+    }
+    if (stepIdx + 1 >= steps.length) {
+      finish()
+      return
+    }
+    setStepIdx((i) => i + 1)
   }
 
   function restart() {
-    setPhase('cards')
-    setCardIdx(0)
-    setQueue(lesson.questions.map((_, i) => i))
+    setSteps(stepsFor(lesson))
+    setStepIdx(0)
+    setFinished(false)
     setFirstTry({})
     setWrongByType({})
     setFeedback(null)
+    setAttemptSeed((s) => s + 1)
     setOutcome(null)
     setResult(null)
     setChestKey(null)
+    setGateReady(false)
     reportSignal({ kind: 'session-reset' })
   }
 
-  const sep = getLocale() === 'en' ? '. ' : '。'
-  const cardText = card ? `${card.title}${sep}${easyRead ? card.easy.join(sep) : card.body}` : ''
-
-  function onFoldKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    const last = LESSON_FOLD_IDS.length - 1
-    let nextIndex = index
-    if (event.key === 'ArrowDown') nextIndex = index === last ? 0 : index + 1
-    else if (event.key === 'ArrowUp') nextIndex = index === 0 ? last : index - 1
-    else if (event.key === 'Home') nextIndex = 0
-    else if (event.key === 'End') nextIndex = last
-    else return
-    event.preventDefault()
-    foldButtonRefs.current[LESSON_FOLD_IDS[nextIndex]]?.focus()
+  function onPrimary() {
+    if (phase === 'quiz') {
+      if (feedback) {
+        afterCheck()
+        return
+      }
+      if (!gateRef.current.ready) return
+      gateRef.current.check()
+      return
+    }
+    advance()
   }
 
+  const sep = getLocale() === 'en' ? '. ' : '。'
+  const card = lesson.cards[cardIdx]
+  const cardText = card ? `${card.title}${sep}${easyRead ? card.easy.join(sep) : card.body}` : ''
   const lastCard = cardIdx >= lesson.cards.length - 1
   const nextTone = shortLessonFooterCta({
     folds: presentation === 'folds',
     practiceOpen: foldOpen.practice,
-    phase,
+    phase: phase === 'result' ? 'result' : phase,
     lastCard,
   })
+  const leading =
+    stepIdx === 0 ? <OfficialLessonParts lessonId={lesson.id} title={lesson.title} /> : null
 
-  const cardsStage = card ? (
-    <CardsStage
-      lessonId={lesson.id}
-      card={card}
-      cardIdx={cardIdx}
-      cardCount={lesson.cards.length}
-      easyRead={easyRead}
-      fontSize={settings.fontSize}
-      highContrast={settings.highContrast}
-      focus={focusTunnel}
-      cardText={cardText}
-      autoRead={settings.readAloud}
-      autoKey={`${lesson.id}-${cardIdx}`}
-      nextLabel={lastCard ? (phase === 'cards' ? t('lp.startQuiz') : t('lp.continue')) : t('lp.next')}
-      nextTone={nextTone}
-      onPrev={() => setCardIdx((i) => i - 1)}
-      onNext={() => {
-        if (cardIdx < lesson.cards.length - 1) {
-          setCardIdx((i) => i + 1)
-          return
-        }
-        if (phase === 'cards') setPhase('quiz')
-        openFold('practice')
-      }}
-    />
+  const frame = (lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4') ? (
+    <div hidden>
+      <F4ThematicResearch
+        lesson={lesson}
+        fontSize={settings.fontSize}
+        easyRead={easyRead}
+        highContrast={settings.highContrast}
+      />
+    </div>
   ) : null
-
-  const quizStage = question ? (
-    <QuizStage
-      question={question}
-      showRetry={question.id in firstTry && !feedback}
-      feedback={feedback}
-      attemptSeed={attemptSeed}
-      easyRead={easyRead}
-      otterOn={otterOn}
-      reduceMotion={!motion}
-      onAnswer={answer}
-      onNext={next}
-    />
-  ) : null
-
-  const restStage = (
-    <RestStage
-      onReview={() => {
-        setCardIdx(0)
-        setPhase('cards')
-        openFold('steps')
-      }}
-      onContinue={() => {
-        setPhase('quiz')
-        openFold('practice')
-      }}
-    />
-  )
 
   const resultStage =
     result && outcome ? (
@@ -326,145 +364,177 @@ export function LessonPlayer({
       />
     ) : null
 
-  const practiceStage =
-    phase === 'quiz' ? (
-      quizStage
-    ) : phase === 'rest' ? (
-      restStage
-    ) : phase === 'result' ? (
-      resultStage
-    ) : (
-      <button
-        type="button"
-        onClick={() => {
-          setPhase('quiz')
-          openFold('practice')
-        }}
-        className="inline-flex items-center gap-1.5 rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_#1d4ed8] hover:bg-blue-500"
-      >
-        {t('lp.startQuiz')}
-        <ArrowRight className="h-4 w-4" aria-hidden />
-      </button>
-    )
-
-  if (presentation === 'folds') {
+  if (phase === 'result') {
     return (
-      <div className={`w-full max-w-none wrap-anywhere space-y-3 ${easyRead ? 'leading-loose' : ''}`}>
-        <div className="flex items-center gap-3">
+      <div className="w-full max-w-none wrap-anywhere space-y-3">
+        <div className="mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl">
+          {(lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4') ? (
+            <div hidden>
+              <F4ThematicResearch
+                lesson={lesson}
+                fontSize={settings.fontSize}
+                easyRead={easyRead}
+                highContrast={settings.highContrast}
+              />
+            </div>
+          ) : null}
+          {resultStage}
+          <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} showEmbed={false} />
+          <CommunityGoalOutcomes lessonId={lesson.id} />
+          <LessonWorksheet lessonId={lesson.id} />
+        </div>
+      </div>
+    )
+  }
+
+  const primaryLabel = phase === 'quiz' && !feedback ? t('lp.check') : t('lp.continue')
+  const primaryDisabled = phase === 'quiz' && !feedback && !gateReady
+
+  return (
+    <div
+      data-lesson-wizard=""
+      className="w-full max-w-none wrap-anywhere space-y-3 fixed inset-0 z-50 overflow-hidden bg-[#FFF9E9]"
+    >
+      <div className="mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl flex h-full min-h-0 flex-col px-4 py-3">
+        {frame}
+        <div className="grid shrink-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-1">
+          <button
+            type="button"
+            onClick={onExit}
+            aria-label={t('lp.exit')}
+            className="col-start-1 row-span-2 inline-flex items-center gap-2 text-sm font-bold text-slate-900"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-slate-800">
+              <X className="h-4 w-4" aria-hidden />
+            </span>
+            {t('lp.exit')}
+          </button>
           <div
-            className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200"
+            className="h-3 overflow-hidden rounded-full bg-[#E6E8F2]"
             role="progressbar"
             aria-valuenow={Math.round(progress)}
             aria-valuemin={0}
             aria-valuemax={100}
             aria-label={t('lp.progress')}
           >
-            <div
-              className={`h-full rounded-full bg-emerald-500 ${motion ? 'transition-all duration-500' : ''}`}
-              style={{ width: `${progress}%` }}
-            />
+            <div className="h-full rounded-full bg-[#0D9488]" style={{ width: `${progress}%` }} />
           </div>
-          {lesson.demo ? <DemoBadge quiet /> : null}
+          <p className="text-right text-sm font-bold text-[#0D9488]">
+            {t('lp.step', { x: stepIdx + 1, y: Math.max(steps.length, 1) })}
+          </p>
         </div>
-        {lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4' ? (
-          <F4ThematicResearch
-            lesson={lesson}
-            fontSize={settings.fontSize}
-            easyRead={easyRead}
-            highContrast={settings.highContrast}
-          />
-        ) : null}
-        <OfficialLessonParts lessonId={lesson.id} title={lesson.title} />
-        <LessonWorksheet lessonId={lesson.id} />
-        <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
-        <div className="space-y-3">
-          {LESSON_FOLD_IDS.map((id, index) => (
-            <MapFold
-              key={id}
-              level="h5"
-              testId={`map-lesson-fold-${lesson.id}-${id}`}
-              title={t(FOLD_COPY[id].title)}
-              hint={t(FOLD_COPY[id].hint)}
-              open={foldOpen[id]}
-              onToggle={() => onSetFold?.(id, !foldOpen[id])}
-              onKeyDown={(event) => onFoldKeyDown(event, index)}
-              buttonRef={(node) => {
-                foldButtonRefs.current[id] = node
+
+        <h2 className="shrink-0 text-lg font-bold text-slate-900">{lesson.title}</h2>
+
+        <div className="flex min-h-0 flex-1 flex-col">
+          {step?.kind === 'rest' ? (
+            <RestStage
+              onReview={() => {
+                const cardAt = steps.findIndex((item) => item.kind === 'card')
+                goTo(cardAt >= 0 ? cardAt : 0)
               }}
-              className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+              onContinue={advance}
+            />
+          ) : (
+            <article
+              data-lesson-step={stepIdx + 1}
+              data-lesson-kind={step?.kind ?? 'card'}
+              data-lesson-count={steps.length}
+              className={`flex min-h-0 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm ${focusTunnel ? 'ring-4 ring-amber-200' : ''}`}
             >
-              {id === 'goal' ? <LessonGoal lesson={lesson} easyRead={easyRead} /> : null}
-              {id === 'steps' ? cardsStage : null}
-              {id === 'practice' ? practiceStage : null}
-            </MapFold>
-          ))}
+              {step?.kind === 'media' ? <MediaStage leading={leading} /> : null}
+              {step?.kind === 'card' && card ? (
+                <CardsStage
+                  lessonId={lesson.id}
+                  card={card}
+                  cardIdx={cardIdx}
+                  easyRead={easyRead}
+                  fontSize={settings.fontSize}
+                  highContrast={settings.highContrast}
+                  focus={false}
+                  cardText={cardText}
+                  autoRead={settings.readAloud}
+                  autoKey={`${lesson.id}-${cardIdx}`}
+                  nextLabel={lastCard ? t('lp.continue') : t('lp.next')}
+                  nextTone={nextTone}
+                  leading={
+                    <>
+                      {leading}
+                      {cardIdx === 0 && lesson.artists?.length ? (
+                        <LessonArtistPanel artists={lesson.artists} />
+                      ) : null}
+                    </>
+                  }
+                />
+              ) : null}
+              {step?.kind === 'question' && question ? (
+                <QuizStage
+                  question={question}
+                  showRetry={question.id in firstTry && !feedback}
+                  feedback={feedback}
+                  attemptSeed={attemptSeed}
+                  easyRead={easyRead}
+                  otterOn={otterOn}
+                  reduceMotion={!motion}
+                  onAnswer={answer}
+                  onGate={onGate}
+                  leading={leading}
+                />
+              ) : null}
+            </article>
+          )}
+          {step?.kind === 'rest' ? null : (
+            <div className="shrink-0 pt-3 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+              <button
+                type="button"
+                disabled={primaryDisabled}
+                onClick={onPrimary}
+                autoFocus={Boolean(feedback)}
+                className={WIZARD_BUTTON}
+              >
+                {primaryLabel}
+              </button>
+            </div>
+          )}
         </div>
       </div>
-    )
-  }
-
-  return (
-    <div className={`mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl ${easyRead ? 'leading-loose' : ''}`}>
-      {/* top bar */}
-      <div className="flex items-center gap-3">
-        <button
-          type="button"
-          onClick={onExit}
-          className="rounded-full p-2 text-slate-500 hover:bg-slate-100"
-          aria-label={t('lp.exit')}
-        >
-          <X className="h-5 w-5" />
-        </button>
-        <div
-          className="h-3 flex-1 overflow-hidden rounded-full bg-slate-200"
-          role="progressbar"
-          aria-valuenow={Math.round(progress)}
-          aria-valuemin={0}
-          aria-valuemax={100}
-          aria-label={t('lp.progress')}
-        >
-          <div
-            className={`h-full rounded-full bg-emerald-500 ${motion ? 'transition-all duration-500' : ''}`}
-            style={{ width: `${progress}%` }}
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        <h2 className="text-lg font-bold text-slate-900">{lesson.title}</h2>
-        {lesson.demo && <DemoBadge quiet />}
-        <span className="text-xs text-slate-500">{t('common.aboutMin', { n: lesson.minutes })}</span>
-      </div>
-
-      {lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4' ? (
-        <F4ThematicResearch
-          lesson={lesson}
-          fontSize={settings.fontSize}
-          easyRead={easyRead}
-          highContrast={settings.highContrast}
-        />
-      ) : null}
-      <OfficialLessonParts lessonId={lesson.id} title={lesson.title} />
-      <LessonWorksheet lessonId={lesson.id} />
-      <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} />
-      <CommunityGoalOutcomes lessonId={lesson.id} />
-
-      {lesson.artists?.length ? <LessonArtistPanel artists={lesson.artists} /> : null}
-
-      {phase === 'cards' ? cardsStage : null}
-      {phase === 'quiz' ? quizStage : null}
-      {phase === 'rest' ? restStage : null}
-      {phase === 'result' ? resultStage : null}
     </div>
   )
 }
 
-function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean }) {
+function LessonCopy({ text }: { text: string }) {
+  const parts = splitOfficialFilmText(text)
+  if (parts.length === 1 && parts[0]?.kind === 'text') return <>{parts[0].text}</>
+  return (
+    <>
+      {parts.map((part, index) =>
+        part.kind === 'text' ? (
+          <span key={index}>{part.text}</span>
+        ) : (
+          <iframe
+            key={`${part.id}-${index}`}
+            data-testid="classroom-video"
+            data-video-id={part.id}
+            title={classroomWatchUrl(part.id)}
+            src={classroomEmbedUrl(part.id)}
+            className="mt-3 aspect-video w-full rounded-2xl bg-[#1B2430]"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        ),
+      )}
+    </>
+  )
+}
+
+export function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boolean }) {
   const { state } = useGame()
   const mastery = masteryFor(state.nodes[lesson.id])
   return (
     <div className="space-y-3">
       <CommunityGoalOutcomes lessonId={lesson.id} />
+      {lesson.demo ? <DemoBadge quiet /> : null}
       {lesson.subtitle ? <p className="text-xs leading-snug text-slate-500">{lesson.subtitle}</p> : null}
       {mastery !== 'none' ? <p className="text-xs font-semibold text-slate-600">{masteryLabel(mastery)}</p> : null}
       {lesson.artists?.length ? <LessonArtistPanel artists={lesson.artists} /> : null}
@@ -495,7 +565,6 @@ function CardsStage({
   lessonId,
   card,
   cardIdx,
-  cardCount,
   easyRead,
   fontSize,
   highContrast,
@@ -505,13 +574,11 @@ function CardsStage({
   autoKey,
   nextLabel,
   nextTone,
-  onPrev,
-  onNext,
+  leading,
 }: {
   lessonId: string
   card: Lesson['cards'][number]
   cardIdx: number
-  cardCount: number
   easyRead: boolean
   fontSize: 'md' | 'lg' | 'xl'
   highContrast: boolean
@@ -521,61 +588,42 @@ function CardsStage({
   autoKey: string
   nextLabel: string
   nextTone: 'primary' | 'quiet' | 'hidden'
-  onPrev: () => void
-  onNext: () => void
+  leading?: ReactNode
 }) {
   const visibleLines = lessonCardVisibleLines(card, easyRead)
   const bodyStyle = lessonCardBodyStyle({ fontSize, dyslexia: easyRead, highContrast })
+  const quietFooter = nextTone === 'hidden' ? null : nextTone === 'quiet' ? nextLabel : null
   return (
-    <div className="space-y-4">
-      <article
-        {...lessonCardReadingAttrs({ fontSize, dyslexia: easyRead, highContrast })}
-        className={`rounded-3xl border border-slate-200 bg-white p-6 shadow-sm ${focus ? 'ring-4 ring-amber-200' : ''}`}
-      >
-        <div className="flex items-start justify-between gap-3">
-          <p className="text-xs font-semibold text-blue-600">{t('lp.card', { i: cardIdx + 1, n: cardCount })}</p>
-          <ReadAloudButton text={cardText} auto={autoRead} autoKey={autoKey} small />
-        </div>
-        <h3 className={`mt-2 font-bold text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{card.title}</h3>
+    <div
+      {...lessonCardReadingAttrs({ fontSize, dyslexia: easyRead, highContrast })}
+      className={`flex min-h-0 flex-1 flex-col ${focus ? 'ring-4 ring-amber-200' : ''}`}
+    >
+      <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-4">
+        <h3 className={`font-bold text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{card.title}</h3>
+        <ReadAloudButton text={cardText} auto={autoRead} autoKey={autoKey} small />
+      </div>
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+        {leading}
         <LessonCardArt image={card.image} credit={card.imageCredit} />
         {easyRead ? (
           <ul data-lesson-body className="mt-3 space-y-2 text-lg text-slate-800" style={bodyStyle}>
             {visibleLines.map((line) => (
               <li key={line} className="flex gap-2">
-                <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-blue-500" aria-hidden />
-                <span>{line}</span>
+                <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-[#0D9488]" aria-hidden />
+                <span>
+                  <LessonCopy text={line} />
+                </span>
               </li>
             ))}
           </ul>
         ) : (
-          <p data-lesson-body className="mt-3 text-base leading-relaxed text-slate-700" style={bodyStyle}>{visibleLines[0]}</p>
+          <p data-lesson-body className="mt-3 text-base leading-relaxed text-slate-700" style={bodyStyle}>
+            <LessonCopy text={visibleLines[0] ?? ''} />
+          </p>
         )}
         <LessonCardCriteria lessonId={lessonId} index={cardIdx} />
         <LessonShortTrial lessonId={lessonId} index={cardIdx} />
-      </article>
-      <div className="flex justify-between">
-        <button
-          type="button"
-          disabled={cardIdx === 0}
-          onClick={onPrev}
-          className="inline-flex items-center gap-1.5 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100 disabled:opacity-40"
-        >
-          <ArrowLeft className="h-4 w-4" aria-hidden /> {t('lp.prev')}
-        </button>
-        {nextTone === 'hidden' ? null : (
-          <button
-            type="button"
-            onClick={onNext}
-            className={
-              nextTone === 'quiet'
-                ? 'inline-flex items-center gap-1.5 rounded-2xl px-4 py-3 text-sm font-semibold text-slate-600 hover:bg-slate-100'
-                : 'inline-flex items-center gap-1.5 rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-[0_4px_0_#1d4ed8] hover:bg-blue-500 active:translate-y-0.5 active:shadow-none'
-            }
-          >
-            {nextLabel}
-            <ArrowRight className="h-4 w-4" aria-hidden />
-          </button>
-        )}
+        {quietFooter ? <span className="sr-only">{quietFooter}</span> : null}
       </div>
     </div>
   )
@@ -590,7 +638,8 @@ function QuizStage({
   otterOn,
   reduceMotion,
   onAnswer,
-  onNext,
+  onGate,
+  leading,
 }: {
   question: Question
   showRetry: boolean
@@ -600,23 +649,29 @@ function QuizStage({
   otterOn: boolean
   reduceMotion: boolean
   onAnswer: (correct: boolean, explain: string) => void
-  onNext: () => void
+  onGate: (gate: AnswerGate) => void
+  leading?: ReactNode
 }) {
   const mark = exerciseIdForQuestion(question.type)
   return (
-    <div className="space-y-4">
-      <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <p className="text-xs font-semibold text-violet-600">
-              {t('lp.quiz')}
-              {showRetry ? t('lp.retry') : ''}
-            </p>
-            <QuestionTypeChips types={[question.type]} />
-            {mark ? <ExerciseMark id={mark} /> : null}
-          </div>
-          <ReadAloudButton text={questionSpeech(question)} small />
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className={OUTLINE_CHIP}>
+            {t('lp.quiz')}
+            {showRetry ? t('lp.retry') : ''}
+          </span>
+          <QuestionTypeChips types={[question.type]} variant="outline" />
+          {mark ? (
+            <span className="sr-only">
+              <ExerciseMark id={mark} />
+            </span>
+          ) : null}
         </div>
+        <ReadAloudButton text={questionSpeech(question)} small />
+      </div>
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-2">
+        {leading}
         <QuestionView
           key={`${question.id}-${attemptSeed}`}
           q={question}
@@ -624,17 +679,18 @@ function QuizStage({
           locked={Boolean(feedback)}
           easyRead={easyRead}
           onAnswer={onAnswer}
+          onGate={onGate}
         />
       </div>
-      {feedback && (
+      {feedback ? (
         <div
           role="status"
-          className={`flex flex-wrap items-center justify-between gap-3 rounded-3xl p-4 ${
-            feedback.correct ? 'bg-emerald-50 text-emerald-900' : 'bg-rose-50 text-rose-900'
+          className={`mx-4 mb-4 shrink-0 rounded-2xl px-4 py-3 ${
+            feedback.correct ? 'bg-[#E7F6F3] text-slate-900' : 'bg-[#FFF4DE] text-slate-900'
           }`}
         >
-          <div className="flex items-start gap-2">
-            {otterOn && feedback.correct ? (
+          {otterOn && feedback.correct ? (
+            <div className="hidden">
               <OtterPose
                 pose="encourage"
                 label={t('mascot.encourage')}
@@ -642,29 +698,14 @@ function QuizStage({
                 size="sm"
                 testId="otter-pose-encourage"
               />
-            ) : null}
-            {feedback.correct ? (
-              <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" aria-hidden />
-            ) : (
-              <RotateCcw className="mt-0.5 h-5 w-5 shrink-0 text-rose-600" aria-hidden />
-            )}
-            <div>
-              <p className="font-bold">{feedback.correct ? t('tray.correct.title') : t('tray.wrong.title')}</p>
-              <p className="text-sm">{feedback.explain}</p>
             </div>
-          </div>
-          <button
-            type="button"
-            onClick={onNext}
-            autoFocus
-            className={`rounded-2xl px-6 py-3 text-sm font-bold text-white ${
-              feedback.correct ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-rose-600 hover:bg-rose-500'
-            }`}
-          >
-            {t(feedback.correct ? 'tray.correct.cta' : 'tray.wrong.cta')}
-          </button>
+          ) : null}
+          <p className={`font-bold ${feedback.correct ? 'text-[#115E59]' : 'text-[#9A3412]'}`}>
+            {feedback.correct ? t('lp.correct') : t('lp.wrong')}
+          </p>
+          <p className="mt-1 text-sm text-slate-700">{feedback.explain}</p>
         </div>
-      )}
+      ) : null}
     </div>
   )
 }
@@ -785,6 +826,54 @@ function ResultStage({
   )
 }
 
+function MediaStage({ leading }: { leading?: ReactNode }) {
+  const [detailsOpen, setDetailsOpen] = useState(false)
+  const watchUrl = classroomWatchUrl(HILL_VIDEO_ID)
+  return (
+    <div className="flex min-h-0 flex-1 flex-col">
+      <h3 className="shrink-0 px-4 pt-4 text-xl font-bold text-slate-900">{t('case.hill.title')}</h3>
+      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+        {leading}
+        <iframe
+          data-testid="classroom-video"
+          data-video-id={HILL_VIDEO_ID}
+          title={t('video.hillTitle')}
+          src={classroomEmbedUrl(HILL_VIDEO_ID)}
+          className="mt-3 aspect-video w-full rounded-2xl bg-[#1B2430]"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+        <p className="mt-3 text-sm leading-relaxed text-slate-700">{t('video.hillTitle')}</p>
+        <p className="mt-2 text-sm font-semibold text-[#0D9488]">{t('video.classroomOnly')}</p>
+        <button
+          type="button"
+          aria-expanded={detailsOpen}
+          onClick={() => setDetailsOpen((open) => !open)}
+          className={`mt-3 ${OUTLINE_CHIP}`}
+        >
+          {detailsOpen ? t('lp.hideDetails') : t('lp.showDetails')}
+        </button>
+        {detailsOpen ? (
+          <div className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700">
+            <p>{t('case.hill.source')}</p>
+            <p>{t('video.noDownload')}</p>
+            <a href={HILL_PAGE_URL} className="block break-all font-semibold text-[#0D9488]" target="_blank" rel="noopener noreferrer">
+              {HILL_PAGE_URL}
+            </a>
+            <a href={HILL_BROCHURE_URL} className="block break-all font-semibold text-[#0D9488]" target="_blank" rel="noopener noreferrer">
+              {HILL_BROCHURE_URL}
+            </a>
+            <a href={watchUrl} className="block break-all font-semibold text-[#0D9488]" target="_blank" rel="noopener noreferrer">
+              {watchUrl}
+            </a>
+          </div>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
 function questionSpeech(q: Question) {
   const sep = getLocale() === 'en' ? '. ' : '。'
   if (q.type === 'mcq')
@@ -803,6 +892,18 @@ type QProps<T> = {
   locked: boolean
   easyRead: boolean
   onAnswer: (correct: boolean, explain: string) => void
+  onGate: (gate: AnswerGate) => void
+}
+
+function useAnswerGate(ready: boolean, submit: () => void, onGate: (gate: AnswerGate) => void) {
+  const submitRef = useRef(submit)
+  useEffect(() => {
+    submitRef.current = submit
+    onGate({
+      ready,
+      check: () => submitRef.current(),
+    })
+  }, [onGate, ready, submit])
 }
 
 function QuestionView(props: QProps<Question>) {
@@ -817,34 +918,24 @@ function QuestionView(props: QProps<Question>) {
 
 const optCls = (state: 'idle' | 'selected' | 'right' | 'wrong') =>
   ({
-    idle: 'border-slate-200 bg-white hover:bg-slate-50',
-    selected: 'border-blue-500 bg-blue-50 ring-2 ring-blue-200',
-    right: 'border-emerald-500 bg-emerald-50',
-    wrong: 'border-rose-400 bg-rose-50',
+    idle: 'border-slate-200 bg-white',
+    selected: 'border-[#0D9488] bg-[#E7F6F3]',
+    right: 'border-[#0D9488] bg-[#E7F6F3]',
+    wrong: 'border-[#E7C98A] bg-[#FFF4DE]',
   })[state]
 
-function CheckButton({ disabled, onClick }: { disabled: boolean; onClick: () => void }) {
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      onClick={onClick}
-      className="mt-4 w-full rounded-2xl bg-emerald-600 py-3 text-sm font-bold text-white shadow-[0_4px_0_#047857] hover:bg-emerald-500 disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none"
-    >
-      {t('lp.check')}
-    </button>
-  )
-}
-
-function Mcq({ q, locked, easyRead, onAnswer }: QProps<McqQuestion>) {
+function Mcq({ q, locked, easyRead, onAnswer, onGate }: QProps<McqQuestion>) {
   const [sel, setSel] = useState<number | null>(null)
+  useAnswerGate(sel !== null && !locked, () => {
+    if (sel !== null) onAnswer(sel === q.answer, q.explain)
+  }, onGate)
   return (
     <div>
       <p className={`mt-2 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
       <div className="mt-4 grid gap-2">
         {q.options.map((o, i) => {
-          const st = locked ? (i === q.answer ? 'right' : i === sel ? 'wrong' : 'idle') : sel === i ? 'selected' : 'idle'
+          const st = locked ? (sel === i ? (i === q.answer ? 'right' : 'wrong') : 'idle') : sel === i ? 'selected' : 'idle'
           return (
             <button
               key={o}
@@ -862,22 +953,24 @@ function Mcq({ q, locked, easyRead, onAnswer }: QProps<McqQuestion>) {
           )
         })}
       </div>
-      {!locked && <CheckButton disabled={sel === null} onClick={() => sel !== null && onAnswer(sel === q.answer, q.explain)} />}
     </div>
   )
 }
 
-function Fill({ q, seed, locked, easyRead, onAnswer }: QProps<FillQuestion>) {
+function Fill({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<FillQuestion>) {
   const [sel, setSel] = useState<string | null>(null)
   const bank = useMemo(() => shuffle(q.bank, seed + q.id.length), [q, seed])
   const [before, after] = q.prompt.split('＿＿')
+  useAnswerGate(Boolean(sel) && !locked, () => {
+    if (sel) onAnswer(sel === q.answer, q.explain)
+  }, onGate)
   return (
     <div>
       <p className={`mt-2 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>
         {before}
         <span
           className={`mx-1 inline-block min-w-16 border-b-2 px-2 text-center ${
-            locked ? (sel === q.answer ? 'border-emerald-500 text-emerald-700' : 'border-rose-400 text-rose-700') : 'border-blue-400 text-blue-700'
+            locked ? (sel === q.answer ? 'border-[#0D9488] text-[#0D9488]' : 'border-[#E7C98A] text-[#9A3412]') : 'border-[#0D9488] text-[#0D9488]'
           }`}
         >
           {sel ?? '\u00a0'}
@@ -894,73 +987,65 @@ function Fill({ q, seed, locked, easyRead, onAnswer }: QProps<FillQuestion>) {
             aria-pressed={sel === w}
             onClick={() => setSel(w)}
             className={`rounded-2xl border-2 px-4 py-2 text-base font-semibold ${optCls(
-              locked ? (w === q.answer ? 'right' : w === sel ? 'wrong' : 'idle') : sel === w ? 'selected' : 'idle',
+              locked ? (sel === w ? (w === q.answer ? 'right' : 'wrong') : 'idle') : sel === w ? 'selected' : 'idle',
             )}`}
           >
             {w}
           </button>
         ))}
       </div>
-      {!locked && <CheckButton disabled={!sel} onClick={() => sel && onAnswer(sel === q.answer, q.explain)} />}
     </div>
   )
 }
 
-function OrderQ({ q, locked, easyRead, onAnswer }: QProps<OrderQuestion>) {
+function OrderQ({ q, locked, easyRead, onAnswer, onGate }: QProps<OrderQuestion>) {
   const [order, setOrder] = useState<string[] | null>(null)
+  useAnswerGate(Boolean(order && order.length === q.items.length) && !locked, () => {
+    if (order) onAnswer(orderMatches(order, q.items), q.explain)
+  }, onGate)
   return (
     <div>
       <OrderBoard q={q} order={order} revealed={locked} easyRead={easyRead} onChange={setOrder} />
-      {!locked && (
-        <CheckButton
-          disabled={!order || order.length !== q.items.length}
-          onClick={() => order && onAnswer(orderMatches(order, q.items), q.explain)}
-        />
-      )}
     </div>
   )
 }
 
-function DualReadQ({ q, locked, easyRead, onAnswer }: QProps<DualReadQuestion>) {
+function DualReadQ({ q, locked, easyRead, onAnswer, onGate }: QProps<DualReadQuestion>) {
   const [lines, setLines] = useState<string[]>(['', ''])
+  useAnswerGate(!locked && linesReady(lines, 2), () => onAnswer(true, q.explain), onGate)
   return (
     <div>
       <DualReadBoard q={q} lines={lines} revealed={locked} easyRead={easyRead} onChange={setLines} />
-      {!locked && <CheckButton disabled={!linesReady(lines, 2)} onClick={() => onAnswer(true, q.explain)} />}
     </div>
   )
 }
 
-function ShortQ({ q, locked, easyRead, onAnswer }: QProps<ShortQuestion>) {
+function ShortQ({ q, locked, easyRead, onAnswer, onGate }: QProps<ShortQuestion>) {
   const [lines, setLines] = useState<string[]>([''])
+  useAnswerGate(!locked && linesReady(lines, 1), () => onAnswer(true, q.explain), onGate)
   return (
     <div>
       <ShortBoard q={q} line={lines[0] ?? ''} revealed={locked} easyRead={easyRead} onChange={setLines} />
-      {!locked && <CheckButton disabled={!linesReady(lines, 1)} onClick={() => onAnswer(true, q.explain)} />}
     </div>
   )
 }
 
-function Match({ q, seed, locked, easyRead, onAnswer }: QProps<MatchQuestion>) {
+function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQuestion>) {
   const lefts = useMemo(() => shuffle(q.pairs.map((p) => p.left), seed + 3), [q, seed])
   const rights = useMemo(() => shuffle(q.pairs.map((p) => p.right), seed + 7), [q, seed])
   const [pickL, setPickL] = useState<string | null>(null)
   const [matched, setMatched] = useState<Set<string>>(new Set())
   const [flash, setFlash] = useState<string | null>(null)
   const mistakes = useRef(0)
-  const done = useRef(false)
+  useAnswerGate(matched.size === q.pairs.length && !locked, () => onAnswer(mistakes.current === 0, q.explain), onGate)
 
   function tapRight(r: string) {
     if (!pickL || locked) return
     const pair = q.pairs.find((p) => p.left === pickL)
     if (pair?.right === r) {
-      const m = new Set(matched).add(pickL)
-      setMatched(m)
+      const next = new Set(matched).add(pickL)
+      setMatched(next)
       setPickL(null)
-      if (m.size === q.pairs.length && !done.current) {
-        done.current = true
-        onAnswer(mistakes.current === 0, q.explain)
-      }
     } else {
       mistakes.current += 1
       setFlash(r)
