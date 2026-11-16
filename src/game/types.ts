@@ -86,13 +86,17 @@ export type ShortQuestion = {
 
 export type Question = McqQuestion | MatchQuestion | FillQuestion | OrderQuestion | DualReadQuestion | ShortQuestion
 
-/** Cleared lesson artwork. No `thumb` means the card keeps the empty-image placeholder. */
+/** Cleared lesson artwork, or a VA-Nexus reference image. No `thumb` means the card keeps the empty-image placeholder. */
 export type LessonArtistRef = {
   artistId: string
   thumb?: string
   license?: string
   credit?: string
   sourceUrl?: string
+  /** Reference image. Not a cleared artwork, so it has no license or source. */
+  reference?: boolean
+  /** Public https site. Omitted when none is set. */
+  artistSiteUrl?: string
 }
 
 export type Lesson = {
