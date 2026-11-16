@@ -34,7 +34,7 @@ export function F4ThematicResearch({
   const researchTitle = t('lesson.f4u3l3.title')
   const makingTitle = t('lesson.f4u3l4.title')
   const message = t('unit.f4u3.themeMessage')
-  const added = t('image.added.caption')
+  const realistic = t('image.realistic.caption')
   const strands = [
     ['knowledge', t('unit.f4u3.strand.knowledge.label'), t('unit.f4u3.strand.knowledge')],
     ['appreciate', t('unit.f4u3.strand.appreciate.label'), t('unit.f4u3.strand.appreciate')],
@@ -55,7 +55,7 @@ export function F4ThematicResearch({
           {t('unit.f4u3.theme.label')}：{t('unit.f4u3.theme')}
         </h2>
         <ThemeMessage label={t('unit.f4u3.themeMessage.label')} body={message} />
-        <LessonCardArt image={t('image.path.themeUnit')} credit={added} />
+        <LessonCardArt image={t('image.path.themeUnit')} credit={realistic} />
         <div className="grid grid-cols-2 gap-3">
           <LessonLink title={titleTail(researchTitle)} full={researchTitle} />
           <LessonLink title={titleTail(makingTitle)} full={makingTitle} />
@@ -84,13 +84,13 @@ export function F4ThematicResearch({
           }
           body={message}
         />
-        <LessonCardArt image={lesson.coverImage} credit={t('image.keep.caption')} />
+        <LessonCardArt image={lesson.coverImage} credit={realistic} />
         <p data-thematic-subtitle className="text-sm leading-relaxed text-slate-800">
           {research ? t('lesson.f4u3l3.subtitle') : t('lesson.f4u3l4.subtitle')}
         </p>
         <OfficialGoalChips />
         <OfficialPartList lessonId={lesson.id} />
-        <LessonCardArt image={research ? t('image.path.lived') : t('image.path.create')} credit={added} />
+        <LessonCardArt image={research ? t('image.path.lived') : t('image.path.create')} credit={realistic} />
       </section>
 
       <section
@@ -120,7 +120,7 @@ export function F4ThematicResearch({
           )}
         </div>
         {research ? (
-          <LessonCardArt image={t('image.path.research')} credit={added} />
+          <LessonCardArt image={t('image.path.research')} credit={realistic} />
         ) : (
           <p className="text-sm leading-relaxed text-slate-800">{t('unit.f4u3.strand.create')}</p>
         )}
