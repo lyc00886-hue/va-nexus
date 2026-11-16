@@ -57,7 +57,7 @@ const HANT = {
   'case.hill.when': '11.3–12.8.2018',
   'case.hill.where': '前川龍貫文公立學校及荃灣川龍村',
   'case.hill.artist': '陳思光係參與藝術家之一，用村內陶土做陶瓷；唔係主辦或策劃。',
-  'case.hill.source': '課堂參考用官方網頁同小冊子。未核實到官方可課堂播放嘅 YouTube。',
+  'case.hill.source': '課堂參考用官方網頁同小冊子。已核實一條可課堂播放嘅官方 YouTube。',
   'case.hill.frame': '呢個係過往案例參考，用嚟做有對象、有焦點嘅評賞。',
   'appreciate.heading': '評賞任務',
   'case.hill.appreciate.object': '評賞對象：參與藝術家陳思光用村內陶土做嘅陶瓷（川龍泥土陶杯／村內陶土作品）。',
@@ -82,6 +82,8 @@ const HANT = {
   'video.noDownload': '呢課唔提供下載、上載或轉載。',
   'video.overviewTitle': '【喚味：𝑥 | The Unexplored Flavour: 𝑥】',
   'video.channel': '油街實現 Oi! (Oil Street Art Space)',
+  'video.hillTitle': '邂逅！山 川 人：陳思光 / Hi! Hill: Ray Chan See-kwong',
+  'video.hillChannel': 'Hi hill APO',
   'video.more': '另外三條官方課堂連結：個體、時間、空間。',
 } as const
 
@@ -122,9 +124,12 @@ const EN = {
   'case.deepfood.english': 'The Unexplored Flavour: 𝑥',
   'case.deepfood.invite': 'Oi! invited Deep Food',
   'case.deepfood.venue': 'Venue: Oi! Kitchen',
+  'case.hill.source': 'For classroom reference, use the official webpage and brochure. A verified official YouTube that can be played in class is available.',
   'video.classroomOnly': 'For classroom playback only',
   'video.noDownload': 'This lesson does not offer download, upload, or republication.',
   'video.channel': '油街實現 Oi! (Oil Street Art Space)',
+  'video.hillTitle': '邂逅！山 川 人：陳思光 / Hi! Hill: Ray Chan See-kwong',
+  'video.hillChannel': 'Hi hill APO',
 } as const
 
 const HANS = {
@@ -152,9 +157,12 @@ const HANS = {
   'visual.principles.near': '看近身细节时可以写空间、重复和强调：教室走廊、食堂座位排列、校门入口怎样引导视线。',
   'visual.elements.flavour': '看「唤味：𝑥」时可以写空间、色彩、动势和平衡：食物、场地和人怎样被安排去邀请「唤味」。',
   'visual.trial': '短试验可以试物料和质感，再用对比、强调或重复去组织你看到的近身细节。',
+  'case.hill.source': '课堂参考用官方网页和小册子。已核实一条可课堂播放官方 YouTube。',
   'case.deepfood.project': '唤味：𝑥',
   'video.classroomOnly': '只作课堂播放',
   'video.noDownload': '这课不提供下载、上传或转载。',
+  'video.hillTitle': '邂逅！山 川 人：陳思光 / Hi! Hill: Ray Chan See-kwong',
+  'video.hillChannel': 'Hi hill APO',
 } as const
 
 const LESSON_KEYS = [
@@ -223,6 +231,14 @@ describe('November community-art cases', () => {
     assert.equal(hant['case.hill.partner'], '在地藝術策劃伙伴 創不同協作')
     assert.equal(hant['case.hill.title'], '邂逅！山 川 人')
     assert.equal([...hant['case.hill.title']][1]?.codePointAt(0), 0x9005)
+    assert.equal(hant['video.hillTitle'].codePointAt(0), 0x9082)
+    assert.equal([...hant['video.hillTitle']][1]?.codePointAt(0), 0x9005)
+    assert.equal(hant['video.hillTitle'].includes('\u5c71 \u5ddd \u4eba'), true)
+    assert.equal(hant['video.hillTitle'].includes('\u5c71\u5ddd\u4eba'), false)
+    assert.equal(hant['video.hillChannel'], 'Hi hill APO')
+    assert.equal(/[\u7684\u628A\u5572\u4F86\u6417\u63C5\u63F5]/.test(hant['case.hill.source']), false)
+    assert.equal(/[\u7684\u628A\u5572\u4F86\u6417\u63C5\u63F5]/.test(hant['video.hillTitle']), false)
+    assert.equal(/[\u7684\u628A\u5572\u4F86\u6417\u63C5\u63F5]/.test(hant['video.hillChannel']), false)
     const fresh = [
       'case.hill.frame',
       'appreciate.heading',
@@ -331,6 +347,15 @@ describe('November community-art cases', () => {
         assert.equal(overrides[key], hans[key], key)
       }
     }
+    assert.equal(overrides['case.hill.source'], hans['case.hill.source'])
+    assert.equal(overrides['video.hillTitle'], hans['video.hillTitle'])
+    assert.equal(overrides['video.hillChannel'], hans['video.hillChannel'])
+    assert.equal(hans['case.hill.source'].codePointAt(hans['case.hill.source'].indexOf('参')), 0x53c2)
+    assert.equal(hans['case.hill.source'].includes('\u53C3'), false)
+    assert.equal(en['video.hillTitle'], hant['video.hillTitle'])
+    assert.equal(hans['video.hillTitle'], hant['video.hillTitle'])
+    assert.equal(en['video.hillChannel'], 'Hi hill APO')
+    assert.equal(hans['video.hillChannel'], 'Hi hill APO')
     for (const key of Object.keys(HANT)) {
       if (key.startsWith('criteria.') || key.startsWith('lesson.goal') || key.startsWith('lesson.f4u3l')) {
         assert.equal(overrides[key], hans[key], key)
@@ -474,29 +499,46 @@ describe('November community-art cases', () => {
     assert.equal(HILL_PAGE_URL, 'https://www.apo.hk/tc/web/apo/hi_hill.html')
     assert.equal(HILL_BROCHURE_URL, 'https://www.apo.hk/documents/27096998/30098408/180326_hihill_brochure_web.pdf')
     assert.equal(DEEPFOOD_PAGE_URL, 'https://www.apo.hk/tc/web/apo/oi_the_unexplored_flavour_x.html')
-    assert.equal(HILL_VIDEO_ID, null)
+    assert.equal(HILL_VIDEO_ID, 'J-VketvKEX4')
     assert.equal(OVERVIEW_VIDEO_ID, 'hR9X0Ce2r9o')
     assert.deepEqual(
       FURTHER_CLASSROOM_VIDEOS.map((video) => video.id),
       ['ne_jKi_E1m8', 'bNRkL39iQQc', 'THsKZTXt-sk'],
     )
-    assert.deepEqual(OFFICIAL_VIDEO_IDS, ['hR9X0Ce2r9o', 'ne_jKi_E1m8', 'bNRkL39iQQc', 'THsKZTXt-sk'])
+    assert.deepEqual(OFFICIAL_VIDEO_IDS, ['hR9X0Ce2r9o', 'ne_jKi_E1m8', 'bNRkL39iQQc', 'THsKZTXt-sk', 'J-VketvKEX4'])
+    assert.equal(classroomEmbedUrl(HILL_VIDEO_ID), 'https://www.youtube.com/embed/J-VketvKEX4')
+    assert.equal(classroomWatchUrl(HILL_VIDEO_ID), 'https://www.youtube.com/watch?v=J-VketvKEX4')
     assert.equal(classroomEmbedUrl(OVERVIEW_VIDEO_ID), 'https://www.youtube.com/embed/hR9X0Ce2r9o')
     assert.equal(classroomWatchUrl('ne_jKi_E1m8'), 'https://www.youtube.com/watch?v=ne_jKi_E1m8')
 
     const cases = read('src/game/communityCases.ts')
     const view = read('src/components/game/CommunityCases.tsx')
     const hill = view.slice(view.indexOf('function HillCase'), view.indexOf('function DeepFoodCase'))
-    assert.equal(hill.includes('iframe'), false)
+    assert.match(hill, /src=\{classroomEmbedUrl\(HILL_VIDEO_ID\)\}/)
+    assert.match(hill, /title=\{t\('video\.hillTitle'\)\}/)
+    assert.match(hill, /video\.hillChannel/)
     assert.equal(hill.includes('youtube'), false)
+    assert.equal(hill.includes('youtu.be'), false)
+    assert.equal(hill.includes('si='), false)
+    assert.ok(hill.indexOf('HILL_BROCHURE_URL') < hill.indexOf('video.classroomOnly'))
+    assert.ok(hill.indexOf('video.classroomOnly') < hill.indexOf('video.noDownload'))
+    assert.ok(hill.indexOf('video.noDownload') < hill.indexOf('classroomEmbedUrl(HILL_VIDEO_ID)'))
+    assert.ok(hill.lastIndexOf('video.hillTitle') < hill.indexOf('video.hillChannel'))
+    assert.ok(hill.indexOf('video.hillChannel') < hill.indexOf('data-appreciate'))
     assert.match(hill, /HILL_PAGE_URL/)
     assert.match(hill, /HILL_BROCHURE_URL/)
     assert.equal(cases.includes(HILL_PAGE_URL), true)
     assert.equal(cases.includes(HILL_BROCHURE_URL), true)
     assert.match(view, /src=\{classroomEmbedUrl\(OVERVIEW_VIDEO_ID\)\}/)
+    assert.match(view, /src=\{classroomEmbedUrl\(HILL_VIDEO_ID\)\}/)
     assert.match(cases, /https:\/\/www\.youtube\.com\/embed\/\$\{id\}/)
+    assert.match(cases, /https:\/\/www\.youtube\.com\/watch\?v=\$\{id\}/)
     assert.equal(view.includes('youtube.com/embed/'), false)
-    for (const id of ['hR9X0Ce2r9o', 'ne_jKi_E1m8', 'bNRkL39iQQc', 'THsKZTXt-sk']) {
+    assert.equal(view.includes('youtu.be'), false)
+    assert.equal(view.includes('si='), false)
+    assert.equal(cases.includes('youtu.be'), false)
+    assert.equal(cases.includes('si='), false)
+    for (const id of ['hR9X0Ce2r9o', 'ne_jKi_E1m8', 'bNRkL39iQQc', 'THsKZTXt-sk', 'J-VketvKEX4']) {
       assert.equal(cases.includes(id), true, id)
     }
     assert.match(view, /video\.classroomOnly/)

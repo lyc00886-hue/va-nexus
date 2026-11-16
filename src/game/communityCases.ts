@@ -1,6 +1,6 @@
 /**
  * Slice ② classroom cases for F4-U3-L3 and F4-U3-L4.
- * Copy comes from the locale keys. Hill has no verified classroom YouTube.
+ * Copy comes from the locale keys. Hill has one verified classroom YouTube.
  * Playback is an official YouTube embed only — no download, upload, or rehost.
  */
 import { easyReadLines } from '../lib/lessonReadingSurface.ts'
@@ -14,7 +14,7 @@ export const HILL_BROCHURE_URL =
   'https://www.apo.hk/documents/27096998/30098408/180326_hihill_brochure_web.pdf'
 export const DEEPFOOD_PAGE_URL = 'https://www.apo.hk/tc/web/apo/oi_the_unexplored_flavour_x.html'
 
-/** Official overview. The only embedded classroom playback. */
+/** Official Deep Food overview embed. */
 export const OVERVIEW_VIDEO_ID = 'hR9X0Ce2r9o'
 
 const FLAVOUR_X = '\u{1D465}'
@@ -34,12 +34,13 @@ export const FURTHER_CLASSROOM_VIDEOS = [
   },
 ] as const
 
-/** No official classroom-playable YouTube was verified for 邂逅！山 川 人. */
-export const HILL_VIDEO_ID = null
+/** Verified official classroom YouTube for 邂逅！山 川 人. */
+export const HILL_VIDEO_ID = 'J-VketvKEX4'
 
 export const OFFICIAL_VIDEO_IDS = [
   OVERVIEW_VIDEO_ID,
   ...FURTHER_CLASSROOM_VIDEOS.map((video) => video.id),
+  HILL_VIDEO_ID,
 ] as const
 
 export function isCommunityCaseLesson(id: string): id is CommunityCaseLessonId {

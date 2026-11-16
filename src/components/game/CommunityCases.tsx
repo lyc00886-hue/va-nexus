@@ -4,6 +4,7 @@ import {
   FURTHER_CLASSROOM_VIDEOS,
   HILL_BROCHURE_URL,
   HILL_PAGE_URL,
+  HILL_VIDEO_ID,
   OVERVIEW_VIDEO_ID,
   classroomEmbedUrl,
   classroomWatchUrl,
@@ -14,7 +15,7 @@ import {
 
 /**
  * Past official cases on the November community-art lessons.
- * YouTube is classroom playback of the official overview only.
+ * YouTube is classroom playback of the official videos only.
  * Appreciation is a separate task from organiser, date, and venue.
  */
 export function CommunityCases() {
@@ -70,6 +71,22 @@ function HillCase() {
             {HILL_BROCHURE_URL}
           </a>
         </p>
+        <p data-video-chrome="classroom-only" className="font-semibold text-[#0D9488]">
+          {t('video.classroomOnly')}
+        </p>
+        <p data-video-chrome="no-download">{t('video.noDownload')}</p>
+        <iframe
+          data-testid="classroom-video"
+          data-video-id={HILL_VIDEO_ID}
+          title={t('video.hillTitle')}
+          src={classroomEmbedUrl(HILL_VIDEO_ID)}
+          className="aspect-video w-full rounded-2xl bg-white"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+        <p>{t('video.hillTitle')}</p>
+        <p>{t('video.hillChannel')}</p>
       </div>
       <section data-appreciate className="mt-2 space-y-1 rounded-2xl border border-[#0D9488] bg-white px-3 py-2">
         <h4 className="text-sm font-bold text-[#0D9488]">{t('appreciate.heading')}</h4>
