@@ -30,6 +30,7 @@ const HANT = {
   'lesson.f4u3l4.subtitle': '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔使出外做計劃。',
   'image.added.caption': '本課再加插圖 · 自制 · VA-Nexus',
   'image.keep.caption': '已有合格原圖 · 自制 · VA-Nexus',
+  'image.realistic.caption': '本課寫實原圖 · 自制 · VA-Nexus',
   'image.path.themeUnit': '/content/learning-map-illustrations/f4-thematic/F4-U3-theme-unit.png',
   'image.path.lived': '/content/learning-map-illustrations/f4-thematic/F4-U3-lived-community.png',
   'image.path.research': '/content/learning-map-illustrations/f4-thematic/F4-U3-L3-research-path.png',
@@ -38,21 +39,21 @@ const HANT = {
 } as const
 
 const ADDED = {
-  'F4-U3-theme-unit.png': ['204ce9be6314992fa81ec439f10d7a5dd11521f64b78bc4a154691fd8e9a4bd9', 910487],
-  'F4-U3-lived-community.png': ['278ea01224dd42359a888aa32b3682f27a96902c0fd8a16348654187b4ac188a', 604356],
-  'F4-U3-L3-research-path.png': ['b2bf6fe78df7e96bd07bcca3fc1de5e75e7c5b88e3e47ccad1ffd67892b34f63', 674562],
-  'F4-U3-strands-woven.png': ['e39a957f63b09e2f1a3dad147fab02b809b6352cdb6021acf80b5e0799e9446c', 770344],
-  'F4-U3-L4-create-continue.png': ['635c669f6c1900babd74563ec612c57561c9d4da38452d64d172b9a10f044c10', 668367],
+  'F4-U3-theme-unit.png': ['738f8bc30fe4705adbbd61c0f3caee2a8094450c054219738e0512ba25d84fc9', 1302597],
+  'F4-U3-lived-community.png': ['8ea90ae34245b2903bafbc4e06bccb82511a653634a371ecc872488624ddd4fe', 1369796],
+  'F4-U3-L3-research-path.png': ['648d680f59a692325323c47bcd87ce53d6dd3db44b226163a0a27513fd3c72a0', 1138806],
+  'F4-U3-strands-woven.png': ['1199696fa8dc9e1364063d4a5cc4adc8a6a0928adcafe2e770075a61f41c86dd', 1383568],
+  'F4-U3-L4-create-continue.png': ['59d4c9bcc876eca31654678cf16d4c499090556853f0aa6de5b08276e4f4fbbb', 1201190],
 } as const
 
 const KEEP = {
-  'public/content/learning-map-illustrations/f4-covers/F4-U3-L3.png': '3b0eab8d0938c5ef008bc58ef30db6a26a5a13f2da57a830007dd0ca2d87826c',
-  'public/content/learning-map-illustrations/f4-covers/F4-U3-L4.png': '217d9f3022faa0535f417e1510f01746b767374bcaab32dbcfcae386974c7b1a',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c0.png': '2a0ff1d1265199e937499e8a6d43ead2e9d2bea3ec9185652c06b7597ff87014',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c1.png': '540a067177aea16320d31c43889eca24337283fbabade72510f4a0f64b2d4729',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png': '358fed0062a6fe86b67284efed4dcab3ba3ede5582bc6cb8fccfcd862d2b55a4',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png': '987cfb7a566eb7fa083ac8bae4502f5937793a9cf048f745aec4ea301f6b232e',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c2.png': '083cf69411ad7d03a6db28a6453259fcb690e4fef661e3b7712214fa321baf60',
+  'public/content/learning-map-illustrations/f4-covers/F4-U3-L3.png': '3ce86562819a66149831216716cf9facfe7df082ab9f574fcf3066ff0125dd6c',
+  'public/content/learning-map-illustrations/f4-covers/F4-U3-L4.png': '742bf5e38f62a42eb64f08df6d8bf72d2d7d8624bd24913e2bc1d6606feb8476',
+  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c0.png': '51cd26fcc28c7337560f0edfe0759ad2c59c5c58e7c998b5c4e506f61dba74b2',
+  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c1.png': '1d385c7c8a4f055f2e9c38f1a8c4cf11bbdb3cb96e977304e3f5445f157a428e',
+  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png': 'c6203beb4da80665849abe8974380390541aed7a6246e59d08da58c6b04d44d0',
+  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png': 'e51f3abe22c95583bb20844f8d8aa513b21f286aae1f374deb894cead0817f68',
+  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c2.png': '57cdc0f044f8e56c1452c90ff3b6e59b880c098e92bbb8bc66b3fd03238a5a47',
 } as const
 
 const BANNED =
@@ -76,13 +77,16 @@ describe('F4-U3-L3 thematic research slice', () => {
     }
     assert.equal(hant['lesson.f4u3l3.title'].split('\u2014').length - 1, 2)
     assert.equal(hant['lesson.f4u3l4.title'].split('\u2014').length - 1, 2)
+    assert.equal(messages('src/i18n/en.json')['image.realistic.caption'], 'Realistic original for this lesson · Original · VA-Nexus')
+    assert.equal(messages('src/i18n/zh-Hans.json')['image.realistic.caption'], '本课写实原图 · 自制 · VA-Nexus')
+    assert.equal(/[\u7684\u628A\u5572]/.test(messages('src/i18n/zh-Hans.json')['image.realistic.caption']), false)
     const fresh = hant['unit.f4u3.themeMessage'] + hant['lesson.f4u3l3.unitLine']
     assert.equal([...fresh].filter((ch) => ch === '\u569F').length, 2)
     assert.equal(fresh.includes('\u6765'), false)
     assert.equal(BANNED.test(Object.values(HANT).join('\n')), false)
   })
 
-  it('ships the added originals and leaves the qualified covers and cards', () => {
+  it('ships the realistic thematic originals and the swapped covers and cards', () => {
     const dir = 'public/content/learning-map-illustrations/f4-thematic'
     const names = readdirSync(join(root, dir)).sort()
     assert.deepEqual(names, Object.keys(ADDED).sort())
@@ -94,7 +98,7 @@ describe('F4-U3-L3 thematic research slice', () => {
     for (const [path, hash] of Object.entries(KEEP)) assert.equal(sha256(path), hash, path)
     const createPath = `${dir}/F4-U3-L4-create-continue.png`
     assert.equal(createPath.endsWith(HANT['image.path.create'].slice(1)), true)
-    assert.equal(sha256(createPath), '635c669f6c1900babd74563ec612c57561c9d4da38452d64d172b9a10f044c10')
+    assert.equal(sha256(createPath), '59d4c9bcc876eca31654678cf16d4c499090556853f0aa6de5b08276e4f4fbbb')
     assert.deepEqual(pngSize(createPath), [1280, 720])
   })
 
@@ -112,8 +116,9 @@ describe('F4-U3-L3 thematic research slice', () => {
     assert.match(view, /image\.path\.lived/)
     assert.match(view, /image\.path\.research/)
     assert.match(view, /image\.path\.create/)
-    assert.match(view, /image\.added\.caption/)
-    assert.match(view, /image\.keep\.caption/)
+    assert.match(view, /image\.realistic\.caption/)
+    assert.equal(view.includes('image.added.caption'), false)
+    assert.equal(view.includes('image.keep.caption'), false)
     assert.match(view, /lesson\.f4u3l3\.unitLine/)
     assert.match(view, /lesson\.f4u3l4\.unitLine/)
     assert.match(view, /lesson\.f4u3l3\.subtitle/)
