@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Unit } from '../../game/types'
 import { t, type MessageKey } from '../../i18n'
 import { LessonPlayer } from './LessonPlayer'
+import { OfficialUnitHeader } from './OfficialFormat'
 import { QuestionTypeChips } from './QuestionTypeChips'
 
 /**
@@ -50,6 +51,7 @@ export function F4YearList({
             >
               {unit.title}
             </button>
+            <OfficialUnitHeader unitId={unit.id} />
             {selected ? (
               <ul className="mt-3 space-y-2">
                 {unit.nodes.map((node) => {

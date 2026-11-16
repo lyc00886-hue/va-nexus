@@ -7,6 +7,7 @@ import {
 } from '../../lib/lessonReadingSurface'
 import type { Lesson } from '../../game/types'
 import { LessonCardArt } from './LessonCardArt'
+import { OfficialGoalChips, OfficialPartList } from './OfficialFormat'
 
 const THEMATIC_LESSON = 'F4-U3-L3'
 const CREATE_LESSON = 'F4-U3-L4'
@@ -43,6 +44,10 @@ export function F4ThematicResearch({
   return (
     <div data-thematic-lesson={lesson.id} className="space-y-4">
       <section data-thematic-unit="F4-U3" className="space-y-3">
+        <div data-official-stage="F4-U3">
+          <h3 className="text-sm font-bold text-[#0D9488]">{t('unit.header.stage.label')}</h3>
+          <p className="mt-1 text-sm leading-relaxed text-slate-800">{t('unit.header.stage.value.f4')}</p>
+        </div>
         <p className="inline-flex rounded-full bg-[#0D9488] px-3 py-1.5 text-sm font-semibold text-white">
           {t('unit.thematic.label')}
         </p>
@@ -83,6 +88,8 @@ export function F4ThematicResearch({
         <p data-thematic-subtitle className="text-sm leading-relaxed text-slate-800">
           {research ? t('lesson.f4u3l3.subtitle') : t('lesson.f4u3l4.subtitle')}
         </p>
+        <OfficialGoalChips />
+        <OfficialPartList lessonId={lesson.id} />
         <LessonCardArt image={research ? t('image.path.lived') : t('image.path.create')} credit={added} />
       </section>
 
