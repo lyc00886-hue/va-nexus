@@ -21,6 +21,7 @@ import {
 import { HomeworkMapEntry } from '../HomeworkStudent'
 import { InspectMapEntry } from '../InspectMapEntry'
 import { LessonPlayer } from './LessonPlayer'
+import { OfficialUnitHeader } from './OfficialFormat'
 import { QuestPathArt } from './QuestPathArt'
 import { QuestTraining } from './QuestTraining'
 import { QuestionTypeChips } from './QuestionTypeChips'
@@ -222,6 +223,7 @@ function F4UnitPanel({
         {backLabel}
       </button>
       <h2 className="mt-3 text-xl font-bold text-slate-900">{unit.title}</h2>
+      <OfficialUnitHeader unitId={unit.id} />
       <ul className="mt-4 space-y-2">
         {unit.nodes.map((node) => {
           const shown = node.id === lessonId
