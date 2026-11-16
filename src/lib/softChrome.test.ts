@@ -279,7 +279,8 @@ function studentStrings(value: unknown, path: string, hits: string[]) {
   }
   if (!value || typeof value !== 'object') return
   for (const [key, child] of Object.entries(value as Record<string, unknown>)) {
-    if (key === 'teacherUse' || key === 'outOfScope') continue
+    // public.* is the public overview, not student chrome. Its UDL line says the product does not add a diagnostic label.
+    if (key === 'teacherUse' || key === 'outOfScope' || key.startsWith('public.')) continue
     studentStrings(child, `${path}.${key}`, hits)
   }
 }

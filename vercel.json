@@ -1,5 +1,19 @@
 {
-  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }],
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [{ "type": "query", "key": "ux" }],
+      "destination": "/classroom.html"
+    },
+    { "source": "/", "destination": "/pages/landing.html" },
+    { "source": "/curriculum", "destination": "/pages/curriculum.html" },
+    { "source": "/en", "destination": "/pages/en.html" },
+    { "source": "/en/curriculum", "destination": "/pages/en-curriculum.html" },
+    { "source": "/zh-Hans", "destination": "/pages/zh-Hans.html" },
+    { "source": "/zh-Hans/curriculum", "destination": "/pages/zh-Hans-curriculum.html" },
+    { "source": "/((?!api/).*)", "destination": "/classroom.html" }
+  ],
   "functions": {
     "api/formative-comment.ts": {
       "includeFiles": "api/locked-sample-excerpts/**"

@@ -3,7 +3,7 @@
 // then applies hand-written overrides (zh-Hans.overrides.json) for strings that need
 // rewriting from Cantonese into standard written Chinese. Fails if any Cantonese
 // marker remains so new strings can't slip through unreviewed.
-import { readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, renameSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import * as OpenCC from 'opencc-js'
@@ -34,5 +34,8 @@ if (problems.length) {
   process.exit(1)
 }
 
-writeFileSync(resolve(dir, 'zh-Hans.json'), `${JSON.stringify(out, null, 2)}\n`)
+const target = resolve(dir, 'zh-Hans.json')
+const tmp = resolve(dir, '.zh-Hans.json.tmp')
+writeFileSync(tmp, `${JSON.stringify(out, null, 2)}\n`)
+renameSync(tmp, target)
 console.log(`[gen-zh-hans] wrote ${Object.keys(out).length} strings (${Object.keys(overrides).length} hand-written overrides)`)

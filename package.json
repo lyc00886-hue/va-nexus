@@ -1,6 +1,7 @@
 {
   "name": "va-nexus",
   "private": true,
+  "workspaces": ["public-pages"],
   "version": "0.0.0",
   "type": "module",
   "scripts": {
