@@ -95,7 +95,7 @@ describe('student personal report', () => {
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('report.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('report.')), keys)
     const order = Object.keys(hant)
-    const at = order.indexOf('hw.student.mapEntry')
+    const at = order.indexOf('hw.student.downloadF5Instructions')
     assert.deepEqual(order.slice(at + 1, at + 1 + keys.length), keys)
     let de = 0
     let ba = 0

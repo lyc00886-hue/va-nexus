@@ -51,6 +51,10 @@ const HANT = {
   'hw.student.emptyHint': '老師發布功課之後，就會出現喺呢度。作品集同 SBA 實驗室仍然照舊。',
   'hw.student.due': '截止日期',
   'hw.student.mapEntry': '由學習地圖入嚟睇要交嘅功課。底欄唔另加分頁。',
+  'hw.student.downloadL3': '下載研究活動紙',
+  'hw.student.downloadL4': '下載發展同創作活動紙',
+  'hw.student.downloadF5Paper': '下載本單元活動紙',
+  'hw.student.downloadF5Instructions': '下載功課說明',
 } as Record<string, string>
 
 const CLASS_HANT = {
@@ -194,13 +198,13 @@ describe('homework submissions', () => {
 })
 
 describe('homework copy and wiring', () => {
-  it('byte-matches the 26 zh-Hant hw keys and leaves class and assignment copy in place', () => {
+  it('byte-matches the zh-Hant hw keys and leaves class and assignment copy in place', () => {
     const hant = messages('src/i18n/zh-Hant.json')
     const hans = messages('src/i18n/zh-Hans.json')
     const overrides = messages('src/i18n/zh-Hans.overrides.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
-    assert.equal(keys.length, 26)
+    assert.equal(keys.length, 30)
     assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('hw.')), keys)
