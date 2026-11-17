@@ -35,6 +35,11 @@ export function HomeworkReview({ classId, demoClass }: { classId: string; demoCl
     due: t('assign.staff.demoDue'),
     instructions: t('assign.staff.demoInstructions'),
   }
+  const f5Copy = {
+    title: t('assign.staff.f5demoTitle'),
+    due: t('assign.staff.f5demoDue'),
+    instructions: t('assign.staff.f5demoInstructions'),
+  }
 
   return (
     <section
@@ -69,7 +74,7 @@ export function HomeworkReview({ classId, demoClass }: { classId: string; demoCl
             <div id="hw-staff-list" className="space-y-4">
               <p className="text-sm leading-relaxed text-slate-600">{t('hw.staff.intro')}</p>
               {assignments.map((assignment) => {
-                const shown = visibleAssignment(assignment, demoCopy)
+                const shown = visibleAssignment(assignment, demoCopy, f5Copy)
                 const roster = homeworkRosterIds(classId, demoClass)
                 const rows = homeworkRows({ submissions }, classId, assignment.id, roster)
                 const counts = homeworkCounts(rows)

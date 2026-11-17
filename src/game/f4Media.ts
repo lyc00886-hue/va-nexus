@@ -4,7 +4,7 @@
  * A thumb is accepted only as a local public path under the illustration pack.
  * Remote URLs are dropped so an uncleared artist stays a placeholder.
  */
-import type { LessonArtistRef } from './types'
+import type { ComparePlate, ConceptProfile, LessonArtistRef } from './types'
 
 const ASSET_PREFIX = '/content/learning-map-illustrations/'
 
@@ -108,4 +108,33 @@ export function artistsFromLesson(lesson: {
       sourceUrl: httpsSourceUrl(row.sourceUrl),
     }
   })
+}
+
+/**
+ * One verified local plate. A remote URL or a missing attribution field is dropped.
+ */
+export function plateFrom(raw: unknown): ComparePlate | undefined {
+  if (!raw || typeof raw !== 'object') return undefined
+  const row = raw as Record<string, unknown>
+  const image = learningMapAssetPath(row.image)
+  const title = text(row.title)
+  const artist = text(row.artist)
+  const year = text(row.year)
+  const source = text(row.source)
+  if (!image || !title || !artist || !year || !source) return undefined
+  return { image, title, artist, year, source }
+}
+
+/** Text profile only. An image field on this object is ignored and never returned. */
+export function profileFrom(raw: unknown): ConceptProfile | undefined {
+  if (!raw || typeof raw !== 'object') return undefined
+  const row = raw as Record<string, unknown>
+  const name = text(row.name)
+  const nationality = text(row.nationality)
+  const active = text(row.active)
+  const movement = text(row.movement)
+  const technique = text(row.technique)
+  const search = text(row.search)
+  if (!name || !nationality || !active || !movement || !technique || !search) return undefined
+  return { name, nationality, active, movement, technique, search }
 }

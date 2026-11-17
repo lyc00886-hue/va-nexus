@@ -237,7 +237,7 @@ describe('homework copy and wiring', () => {
     for (const [key, value] of Object.entries(CLASS_HANT)) assert.equal(hant[key], value, key)
     for (const [key, value] of Object.entries(ASSIGN_HANT)) assert.equal(hant[key], value, key)
     assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 12)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('assign.staff.')).length, 16)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('assign.staff.')).length, 20)
     assert.equal(hant['inspect.staff.overviewTitle'], '課室總覽')
     assert.equal(hant['tab.staff'], '評分參考')
     assert.equal(hant['qtype.chip.dualRead'], '藝術評賞比較')

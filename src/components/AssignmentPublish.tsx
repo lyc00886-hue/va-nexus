@@ -1,6 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from 'react'
 import { useT } from '../i18n'
 import {
+  F5_DEMO_ASSIGN_ID,
   assignmentsForClass,
   publishStaffAssignment,
   useAssignList,
@@ -210,10 +211,16 @@ function PublishedList({ rows, headingId }: { rows: StaffAssignment[]; headingId
     due: t('assign.staff.demoDue'),
     instructions: t('assign.staff.demoInstructions'),
   }
+  const f5demo = {
+    title: t('assign.staff.f5demoTitle'),
+    due: t('assign.staff.f5demoDue'),
+    instructions: t('assign.staff.f5demoInstructions'),
+  }
   return (
     <ul aria-labelledby={headingId} data-testid="assign-published-list" className="m-0 list-none space-y-3 p-0">
       {rows.map((row) => {
-        const shown = visibleAssignment(row, demo)
+        const shown = visibleAssignment(row, demo, f5demo)
+        const paper = row.id === F5_DEMO_ASSIGN_ID ? t('assign.staff.f5demoAttach') : t('assign.staff.attachPaper')
         return (
           <li
             key={row.id}
@@ -232,7 +239,7 @@ function PublishedList({ rows, headingId }: { rows: StaffAssignment[]; headingId
             {shown.attach === 'paper' ? (
               <p className="mt-3">
                 <span className="inline-flex max-w-full whitespace-normal rounded-full bg-[#0D9488] px-3 py-1 text-left text-sm font-semibold leading-snug text-[#FFF9E9]">
-                  {t('assign.staff.attachPaper')}
+                  {paper}
                 </span>
               </p>
             ) : null}

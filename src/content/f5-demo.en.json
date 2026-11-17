@@ -441,9 +441,9 @@
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L2.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Strange-stone comparison is about method, not copying a picture. Look at how Wu Bin makes a rock strange, then at how Surrealism and Cubism reassemble what is seen.",
+            "Strange-stone comparison is about methods, not copying a picture. Look at how Wu Bin makes a stone look strange, then at how Surrealism and Cubism reorganise what is seen.",
             "A comparison can ask: where is it exaggerated, where is it cut apart, and where can you still tell it is stone?",
-            "Surrealism often puts unusual combinations together. Cubism often breaks an object into many faces. Talk about the method, not about copying one painting.",
+            "Surrealism often places unusual combinations together. Cubism often splits an object into several planes. Talk about the method; do not treat this as a request to copy a painting.",
             "Images stay as classroom diagrams. Lessons do not use high-score exemplars."
           ],
           "quiz": [
@@ -461,12 +461,12 @@
             },
             {
               "type": "fill",
-              "question": "Cubism often breaks an object into many ＿＿.",
+              "question": "A common Cubist method is to split an object into several ＿＿.",
               "options": [],
-              "answer": "faces",
-              "explain": "Many faces describes a formal method.",
+              "answer": "planes",
+              "explain": "Several planes names a formal method.",
               "wordBank": [
-                "faces",
+                "planes",
                 "prices",
                 "seats",
                 "signatures"
@@ -481,9 +481,9 @@
                 "Cubism"
               ],
               "answer": {
-                "Wu Bin’s strange stones": "Make the rock strange and still readable as stone",
-                "Surrealism": "Put unusual combinations together",
-                "Cubism": "Break an object into many faces"
+                "Wu Bin’s strange stones": "Make the stone look strange, yet still recognisable as stone",
+                "Surrealism": "Place unusual combinations together",
+                "Cubism": "Split an object into several planes"
               },
               "explain": "All three are methods, not pictures to copy."
             },
@@ -500,14 +500,27 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: left, one method in Wu Bin’s strange stones; right, one Surrealist or Cubist method. Do not copy a picture.",
+              "question": "Compare works: on the left, write one method from Wu Bin's strange stones; on the right, write one method from Surrealism or Cubism. If there is an image, write from the image; if not, write from the text profile. Do not copy a picture.",
               "options": [
                 "Strange-stone method",
                 "A method of reassembling"
               ],
-              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L2.png",
-              "imageCredit": "Self-made · VA-Nexus",
-              "explain": "Practice structure · lessons do not use a real exam paper"
+              "explain": "Practice structure · lessons do not use a real exam paper",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f5-pd/wubin-ten-views-lingbi-front-detail.jpg",
+                "title": "Ten Views of a Lingbi Stone (front-view detail, not the full handscroll)",
+                "artist": "Wu Bin (1573–1620)",
+                "year": "c. 1610",
+                "source": "Unidentified private collection · Wikimedia Commons"
+              },
+              "profile": {
+                "name": "Surrealism and Cubism",
+                "nationality": "Mainly European",
+                "active": "Cubism from about 1907; Surrealism from the 1920s",
+                "movement": "Cubism; Surrealism",
+                "technique": "Cubism often splits an object into several planes. Surrealism often places unusual combinations together. Picasso, Magritte, and Dalí died less than 70 years before 2026, so this side stays text only and shows no artwork image.",
+                "search": "Picasso; Magritte; Dali; Cubism; Surrealism"
+              }
             },
             {
               "type": "short",

@@ -1,6 +1,12 @@
 import { useRef, useState, type FormEvent } from 'react'
 import { useT } from '../i18n'
-import { assignmentsForClass, useAssignList, visibleAssignment, type StaffAssignment } from '../lib/assignList'
+import {
+  F5_DEMO_ASSIGN_ID,
+  assignmentsForClass,
+  useAssignList,
+  visibleAssignment,
+  type StaffAssignment,
+} from '../lib/assignList'
 import { DEMO_CLASS_ID } from '../lib/classList'
 import {
   HW_LEARNER_ID,
@@ -41,6 +47,11 @@ export function HomeworkStudent() {
     due: t('assign.staff.demoDue'),
     instructions: t('assign.staff.demoInstructions'),
   }
+  const f5Copy = {
+    title: t('assign.staff.f5demoTitle'),
+    due: t('assign.staff.f5demoDue'),
+    instructions: t('assign.staff.f5demoInstructions'),
+  }
   return (
     <section
       aria-labelledby={titleId}
@@ -65,8 +76,16 @@ export function HomeworkStudent() {
           <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.privateNote')}</p>
           <ul className="m-0 list-none space-y-3 p-0">
             {rows.map((assignment) => {
-              const shown = visibleAssignment(assignment, demoCopy)
-              return <HomeworkCard key={assignment.id} assignment={assignment} due={shown.due} title={shown.title} />
+              const shown = visibleAssignment(assignment, demoCopy, f5Copy)
+              return (
+                <HomeworkCard
+                  key={assignment.id}
+                  assignment={assignment}
+                  due={shown.due}
+                  title={shown.title}
+                  instructions={assignment.id === F5_DEMO_ASSIGN_ID ? shown.instructions : ''}
+                />
+              )
             })}
           </ul>
         </>
@@ -75,7 +94,17 @@ export function HomeworkStudent() {
   )
 }
 
-function HomeworkCard({ assignment, title, due }: { assignment: StaffAssignment; title: string; due: string }) {
+function HomeworkCard({
+  assignment,
+  title,
+  due,
+  instructions,
+}: {
+  assignment: StaffAssignment
+  title: string
+  due: string
+  instructions: string
+}) {
   const { t } = useT()
   const submissions = useHomeworkSubmissions()
   const [file, setFile] = useState<File | null>(null)
@@ -110,6 +139,14 @@ function HomeworkCard({ assignment, title, due }: { assignment: StaffAssignment;
       <p className="mt-1 text-sm text-slate-700">
         {t('hw.student.due')} {due}
       </p>
+      {instructions ? <p className="mt-2 text-sm leading-relaxed text-slate-700">{instructions}</p> : null}
+      {assignment.id === F5_DEMO_ASSIGN_ID ? (
+        <p className="mt-3">
+          <span className="inline-flex max-w-full whitespace-normal rounded-full bg-[#0D9488] px-3 py-1 text-left text-sm font-semibold leading-snug text-[#FFF9E9]">
+            {t('assign.staff.f5demoAttach')}
+          </span>
+        </p>
+      ) : null}
       {existing ? <p className="mt-2 text-sm font-semibold text-[#0D9488]">{existing.fileName}</p> : null}
       <form onSubmit={submit} className="mt-3 space-y-3">
         <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.wholeFile')}</p>

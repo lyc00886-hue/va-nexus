@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import {
   ASSIGN_LIST_KEY,
   DEMO_ASSIGN_ID,
+  F5_DEMO_ASSIGN_ID,
   assignmentsForClass,
   demoAssignList,
   emptyAssignList,
@@ -108,14 +109,21 @@ describe('assignment publish store', () => {
   it('keeps one sample assignment and publishes a trimmed row for one class', () => {
     const demo = demoAssignList()
     assert.equal(ASSIGN_LIST_KEY, 'va-nexus:assign-list:v1')
-    assert.equal(demo.assignments.length, 1)
+    assert.equal(demo.assignments.length, 2)
     assert.equal(demo.assignments[0].id, DEMO_ASSIGN_ID)
+    assert.equal(demo.assignments[1].id, F5_DEMO_ASSIGN_ID)
     assert.equal(demo.assignments[0].classId, DEMO_CLASS_ID)
+    assert.equal(demo.assignments[1].classId, DEMO_CLASS_ID)
     assert.equal(demo.assignments[0].demo, true)
+    assert.equal(demo.assignments[1].demo, true)
     assert.equal(demo.assignments[0].attach, 'paper')
+    assert.equal(demo.assignments[1].attach, 'paper')
     assert.equal(demo.assignments[0].title, '')
+    assert.equal(demo.assignments[1].title, '')
     assert.equal(demo.assignments[0].due, '')
+    assert.equal(demo.assignments[1].due, '')
     assert.equal(demo.assignments[0].instructions, '')
+    assert.equal(demo.assignments[1].instructions, '')
     assert.equal(emptyAssignList().assignments.length, 0)
     assert.deepEqual(visibleAssignment(demo.assignments[0], { title: 'T', due: 'D', instructions: 'I' }), {
       title: 'T',
@@ -123,6 +131,14 @@ describe('assignment publish store', () => {
       instructions: 'I',
       attach: 'paper',
     })
+    assert.deepEqual(
+      visibleAssignment(
+        demo.assignments[1],
+        { title: 'T', due: 'D', instructions: 'I' },
+        { title: 'F', due: 'FD', instructions: 'FI' },
+      ),
+      { title: 'F', due: 'FD', instructions: 'FI', attach: 'paper' },
+    )
 
     const next = withPublishedAssignment(
       demo,
@@ -136,11 +152,11 @@ describe('assignment publish store', () => {
       'assign-fixed',
     )
     assert.notEqual(next, demo)
-    assert.equal(demo.assignments.length, 1)
-    assert.equal(next.assignments.length, 2)
+    assert.equal(demo.assignments.length, 2)
+    assert.equal(next.assignments.length, 3)
     const added = assignmentsForClass(next, 'class-afternoon')
     assert.equal(added.length, 1)
-    assert.equal(assignmentsForClass(next, DEMO_CLASS_ID).length, 1)
+    assert.equal(assignmentsForClass(next, DEMO_CLASS_ID).length, 2)
     assert.equal(assignmentsForClass(next, 'other').length, 0)
     assert.deepEqual(
       { ...added[0], id: 'assign-fixed' },
@@ -166,10 +182,10 @@ describe('assignment publish store', () => {
       { classId: DEMO_CLASS_ID, title: '再一份', due: '2026年12月2日', instructions: '', attach: 'paper' },
       'assign-paper',
     )
-    assert.equal(paper.assignments.length, 3)
-    assert.equal(assignmentsForClass(paper, DEMO_CLASS_ID).length, 2)
-    assert.equal(paper.assignments[2].attach, 'paper')
-    assert.equal(paper.assignments[2].instructions, '')
+    assert.equal(paper.assignments.length, 4)
+    assert.equal(assignmentsForClass(paper, DEMO_CLASS_ID).length, 3)
+    assert.equal(paper.assignments[3].attach, 'paper')
+    assert.equal(paper.assignments[3].instructions, '')
 
     assert.equal(withPublishedAssignment(demo, { classId: 'c', title: '   ', due: '日期', instructions: '', attach: 'paper' }), demo)
     assert.equal(withPublishedAssignment(demo, { classId: 'c', title: '名稱', due: '   ', instructions: '', attach: 'paper' }), demo)
@@ -184,6 +200,10 @@ describe('assignment publish store', () => {
     )
     assert.equal(
       withPublishedAssignment(demo, { classId: 'c', title: '名稱', due: '日期', instructions: '', attach: 'paper' }, DEMO_ASSIGN_ID),
+      demo,
+    )
+    assert.equal(
+      withPublishedAssignment(demo, { classId: 'c', title: '名稱', due: '日期', instructions: '', attach: 'paper' }, F5_DEMO_ASSIGN_ID),
       demo,
     )
 
@@ -202,6 +222,9 @@ describe('assignment publish store', () => {
       assignments: [
         { id: 'demo-november', classId: 'elsewhere', title: 'ignored', due: 'ignored', instructions: 'ignored', attach: 'none', demo: true },
         { id: 'demo-november', classId: DEMO_CLASS_ID, title: 'again', due: 'again', instructions: '', attach: 'paper', demo: true },
+        { id: 'demo-f5-heritage', classId: 'elsewhere', title: 'ignored', due: 'ignored', instructions: 'ignored', attach: 'paper', demo: true },
+        { id: 'demo-f5-heritage', classId: DEMO_CLASS_ID, title: 'again', due: 'again', instructions: '', attach: 'none', demo: true },
+        { id: 'other-demo', classId: DEMO_CLASS_ID, title: 'nope', due: 'nope', instructions: '', attach: 'paper', demo: true },
         { id: 'blank', classId: 'c', title: '   ', due: '日期', instructions: '', attach: 'paper', demo: false },
         { id: 'no-due', classId: 'c', title: '名稱', due: '   ', instructions: '', attach: 'paper', demo: false },
         { id: 'bad-attach', classId: 'c', title: '名稱', due: '日期', instructions: '', attach: 'file', demo: false },
@@ -229,6 +252,15 @@ describe('assignment publish store', () => {
           demo: true,
         },
         {
+          id: 'demo-f5-heritage',
+          classId: DEMO_CLASS_ID,
+          title: '',
+          due: '',
+          instructions: '',
+          attach: 'paper',
+          demo: true,
+        },
+        {
           id: 'kept',
           classId: 'kept-class',
           title: '午班功課',
@@ -250,10 +282,29 @@ describe('assignment copy and wiring', () => {
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
     assert.equal(keys.length, 16)
-    assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('assign.')), keys)
-    assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('assign.')), keys)
-    assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('assign.')), keys)
-    assert.deepEqual(Object.keys(overrides).filter((key) => key.startsWith('assign.')), keys)
+    const f5Keys = [
+      'assign.staff.f5demoTitle',
+      'assign.staff.f5demoDue',
+      'assign.staff.f5demoInstructions',
+      'assign.staff.f5demoAttach',
+    ]
+    assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('assign.')), [...keys, ...f5Keys])
+    assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('assign.')), [...keys, ...f5Keys])
+    assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('assign.')), [...keys, ...f5Keys])
+    assert.deepEqual(Object.keys(overrides).filter((key) => key.startsWith('assign.')), [...keys, ...f5Keys])
+    assert.equal(hant['assign.staff.f5demoTitle'], '自我、傳統同社會：課室功課')
+    assert.equal(hans['assign.staff.f5demoTitle'], '自我、传统与社会：课室功课')
+    assert.equal(en['assign.staff.f5demoTitle'], 'Self, heritage and society: classwork to hand in')
+    assert.equal(overrides['assign.staff.f5demoTitle'], hans['assign.staff.f5demoTitle'])
+    assert.equal(hant['assign.staff.f5demoDue'], '2026年11月24日')
+    assert.equal(en['assign.staff.f5demoDue'], '24 November 2026')
+    assert.equal(hant['assign.staff.f5demoInstructions'], '請一次過交齊視覺日記頁同水墨試驗記錄成份檔。交咗之後，呢個課室嘅老師可以打開嚟睇。呢度唔會自動評分。')
+    assert.equal(hans['assign.staff.f5demoInstructions'], '请一次交齐视觉日记页和水墨试验记录成份档。交了之后，这个课室老师可以打开查看。这里不会自动评分。')
+    assert.equal(en['assign.staff.f5demoInstructions'], 'Hand in your visual journal pages and ink-trial notes together as one complete file. After you hand it in, a teacher of this class can open it. This is not automatic marking.')
+    assert.equal(hant['assign.staff.f5demoAttach'], '自我、傳統同社會 活動紙')
+    assert.equal(hans['assign.staff.f5demoAttach'], '自我、传统与社会 活动纸')
+    assert.equal(en['assign.staff.f5demoAttach'], 'Self, heritage and society activity paper')
+    for (const key of f5Keys) assert.equal(overrides[key], hans[key], key)
     const hantOrder = Object.keys(hant)
     const at = hantOrder.indexOf('class.staff.deniedLead')
     assert.deepEqual(hantOrder.slice(at + 1, at + 1 + keys.length), keys)
@@ -311,6 +362,9 @@ describe('assignment copy and wiring', () => {
     const tabs = sidebar.slice(sidebar.indexOf('export const TABS'), sidebar.indexOf('export const STAFF_TAB'))
     assert.equal(/['"]staff['"]/.test(tabs), false)
     for (const key of Object.keys(HANT)) assert.equal(form.includes(`'${key}'`), true, key)
+    for (const key of ['assign.staff.f5demoTitle', 'assign.staff.f5demoDue', 'assign.staff.f5demoInstructions', 'assign.staff.f5demoAttach']) {
+      assert.equal(form.includes(`'${key}'`), true, key)
+    }
     assert.match(form, /assign\.staff\.noGenerator/)
     assert.match(form, /data-soft-motion="off"/)
     assert.match(form, /#FFF9E9/)
