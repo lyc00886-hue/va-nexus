@@ -18,11 +18,30 @@ const convert = OpenCC.Converter({ from: 'hk', to: 'cn' })
 // Checked on the converted (simplified) text, so include simplified forms too.
 const CANTONESE = /[嘅咗唔係喺嘢冇啲佢咁噉嚟睇揀撳揿啱拎搵揾乜呢俾畀嗰哋晒]|點樣|点样|屋企|返学|返學|寫低|写低|而家|边个|邊個|心心/
 
+// Official locale supplement for the classroom-card line. These zh-Hans
+// strings are BYTE-IDENTICAL to the pack, including 搵 U+6435, 嗰, 嚟, and 嘅.
+const OFFICIAL_LOCALE_SUPPLEMENT = new Set([
+  'settings.reading',
+  'critique.title',
+  'critique.lead',
+  'critique.flex',
+  'critique.object',
+  'critique.nudge',
+  'image.rule',
+  'image.sources',
+  'image.blocked',
+  'image.homemade',
+  'image.school',
+  'image.blockedTitle',
+  'image.ruleTitle',
+  'image.empty',
+])
+
 const out = {}
 const problems = []
 for (const [key, value] of Object.entries(hant)) {
   const v = key in overrides ? overrides[key] : convert(value)
-  if (CANTONESE.test(v)) problems.push(`${key}: ${v}`)
+  if (CANTONESE.test(v) && !OFFICIAL_LOCALE_SUPPLEMENT.has(key)) problems.push(`${key}: ${v}`)
   out[key] = v
 }
 for (const key of Object.keys(overrides)) {

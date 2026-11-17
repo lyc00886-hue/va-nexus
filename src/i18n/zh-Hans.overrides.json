@@ -1148,5 +1148,19 @@
   "lesson.f4u3l4.appr.right.year": "1852–55",
   "lesson.f4u3l4.appr.right.source": "Metropolitan Museum of Art, New York, NY",
   "lesson.f4u3l4.appr.right.license": "Public Domain／CC0",
-  "lesson.f4u3l4.appr.right.intro": "巨大画面由左至右排开奔走与受控之马群，人与马交织成斜向动势。地面尘土与远景树列托出室外场地。作品将巴黎马市写成公开买卖、展示力气与技艺之场所。"
+  "lesson.f4u3l4.appr.right.intro": "巨大画面由左至右排开奔走与受控之马群，人与马交织成斜向动势。地面尘土与远景树列托出室外场地。作品将巴黎马市写成公开买卖、展示力气与技艺之场所。",
+  "settings.reading": "阅读设定",
+  "critique.title": "评赏提示",
+  "critique.lead": "评语会帮你写清评赏对象同评赏焦点。",
+  "critique.flex": "评赏方向可以跟整体感受、表象描述、形式分析、意义诠释、价值判断，按学与教需要灵活调动。",
+  "critique.object": "你这次评赏对象是招牌细节同街角整体。评赏焦点是哪张较适合做课题。",
+  "critique.nudge": "整体感受可以再写清楚。表象描述、形式分析与意义诠释可以分开写，最后先做价值判断。这几个方向可以调动，不必当成固定步骤。",
+  "image.rule": "未有已核实 Public Domain 或 CC0，就不用嗰张图，亦不用嗰位艺术家，改拣其他合适、已核实免费授权作品。",
+  "image.sources": "图源只可用 The Met Open Access、Art Institute of Chicago、Rijksmuseum Rijksstudio，或 Wikimedia Commons。",
+  "image.blocked": "这件作品未核实免费授权，所以不用嗰张图，亦不用嗰位艺术家。请改拣其他已核实免费授权作品。",
+  "image.homemade": "自制图只可用在说明用图解，不可当评赏对象，亦不可用嚟顶艺术评赏比较格原作图。",
+  "image.school": "校本学生作品只可用在该课是评学生自己作品嘅场景，不可顶艺术家原作。",
+  "image.blockedTitle": "搵图未通过授权核实",
+  "image.ruleTitle": "搵图同授权规则",
+  "image.empty": "未有已核实授权图像"
 }

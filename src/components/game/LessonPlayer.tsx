@@ -57,11 +57,12 @@ import { F4ThematicResearch } from './F4ThematicResearch'
 import { OfficialLessonParts } from './OfficialFormat'
 import { LessonShortTrial } from './LessonShortTrial'
 import { LessonWorksheet } from './LessonWorksheet'
+import { imageDecision, questionImageBlocked } from '../../lib/imageLicence'
 import { LessonCardArt } from './LessonCardArt'
 import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
-import { QuestionTypeChips } from './QuestionTypeChips'
-import { DualReadBoard, OrderBoard, ShortBoard } from './ThinPractice'
+import { CritiqueFace, ImageBlockedFace, ImageRuleFace } from './ClassroomFaces'
+import { DualReadBoard, OrderBoard, PracticeOnlyBar, ShortBoard } from './ThinPractice'
 
 const IDLE_MS = 90_000
 
@@ -73,7 +74,7 @@ const FOLD_COPY: Record<LessonFoldId, { title: 'map.lesson.goal' | 'map.lesson.s
 
 const OUTLINE_CHIP = 'rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
 const WIZARD_BUTTON =
-  'w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white shadow-[0_4px_0_#0F766E] active:translate-y-1 active:shadow-none disabled:translate-y-0 disabled:bg-[#E4EAF2] disabled:text-[#8B95A8] disabled:shadow-none'
+  'sticky bottom-0 w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white shadow-[0_4px_0_#0F766E] active:translate-y-1 active:shadow-none'
 
 type AnswerGate = { ready: boolean; check: () => void }
 
@@ -120,7 +121,7 @@ export function LessonPlayer({
   lesson: Lesson
   kind: 'lesson' | 'quest'
   onExit: () => void
-  /** Rendered under the result screen (e.g. embedded Feldman writer) */
+  /** Rendered under the result screen. */
   after?: ReactNode
   /** Overrides the result exit label. Default stays “Back to the research lab” / map. */
   exitLabel?: string
@@ -139,6 +140,7 @@ export function LessonPlayer({
   const [lessonSeen, setLessonSeen] = useState(lesson.id)
   const [steps, setSteps] = useState<LessonStep[]>(built)
   const [stepIdx, setStepIdx] = useState(0)
+  const [licenceStep, setLicenceStep] = useState<'rule' | 'blocked' | null>(null)
   const [finished, setFinished] = useState(false)
   const [firstTry, setFirstTry] = useState<Record<string, boolean>>({})
   const [wrongByType, setWrongByType] = useState<Partial<Record<QuestionType, number>>>({})
@@ -170,6 +172,7 @@ export function LessonPlayer({
     setLessonSeen(lesson.id)
     setSteps(built)
     setStepIdx(0)
+    setLicenceStep(null)
     setFinished(false)
     setFirstTry({})
     setWrongByType({})
@@ -190,6 +193,8 @@ export function LessonPlayer({
         : 'cards'
   const cardIdx = step?.kind === 'card' ? step.cardIndex : 0
   const question = step?.kind === 'question' ? lesson.questions[step.questionIndex] : undefined
+  const imageBlocked = question ? questionImageBlocked(question) : false
+  const licenceFace = imageBlocked ? (licenceStep ?? 'rule') : null
 
   useLayoutEffect(() => {
     if (typeof document === 'undefined') return
@@ -263,6 +268,7 @@ export function LessonPlayer({
 
   function goTo(index: number) {
     setFeedback(null)
+    setLicenceStep(null)
     setGateReady(false)
     gateRef.current = { ready: false, check: () => {} }
     setStepIdx(index)
@@ -281,6 +287,7 @@ export function LessonPlayer({
     const wrong = !feedback.correct
     const questionIndex = step.questionIndex
     setFeedback(null)
+    setLicenceStep(null)
     setAttemptSeed((s) => s + 1)
     setGateReady(false)
     if (wrong) {
@@ -292,12 +299,14 @@ export function LessonPlayer({
       finish()
       return
     }
+    setLicenceStep(null)
     setStepIdx((i) => i + 1)
   }
 
   function restart() {
     setSteps(stepsFor(lesson))
     setStepIdx(0)
+    setLicenceStep(null)
     setFinished(false)
     setFirstTry({})
     setWrongByType({})
@@ -311,6 +320,14 @@ export function LessonPlayer({
   }
 
   function onPrimary() {
+    if (licenceFace === 'rule') {
+      setLicenceStep('blocked')
+      return
+    }
+    if (licenceFace === 'blocked') {
+      advance()
+      return
+    }
     if (phase === 'quiz') {
       if (feedback) {
         afterCheck()
@@ -387,8 +404,16 @@ export function LessonPlayer({
     )
   }
 
-  const primaryLabel = phase === 'quiz' && !feedback ? t('lp.check') : t('lp.continue')
-  const primaryDisabled = phase === 'quiz' && !feedback && !gateReady
+  const critiqueOpen = Boolean(feedback) && lesson.id === 'F4-U3-L2' && question?.type === 'dualRead' && !licenceFace
+  const primaryLabel =
+    licenceFace === 'rule'
+      ? t('lp.continue')
+      : licenceFace === 'blocked' || critiqueOpen || (phase === 'quiz' && !feedback)
+        ? t('lp.check')
+        : phase === 'cards' && !lastCard
+          ? t('lp.next')
+          : t('lp.continue')
+  const primaryDisabled = phase === 'quiz' && !feedback && !gateReady && !licenceFace
 
   return (
     <div
@@ -440,7 +465,10 @@ export function LessonPlayer({
               data-lesson-step={stepIdx + 1}
               data-lesson-kind={step?.kind ?? 'card'}
               data-lesson-count={steps.length}
-              className={`flex min-h-0 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm ${focusTunnel ? 'ring-4 ring-amber-200' : ''}`}
+              data-classroom-face={
+                licenceFace ?? (critiqueOpen ? 'critique' : step?.kind === 'question' && question?.type === 'dualRead' ? 'dual' : step?.kind ?? 'card')
+              }
+              className={`flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm ${focusTunnel ? 'ring-4 ring-amber-200' : ''}`}
             >
               {step?.kind === 'media' ? <MediaStage leading={leading} /> : null}
               {step?.kind === 'card' && card ? (
@@ -468,27 +496,46 @@ export function LessonPlayer({
                 />
               ) : null}
               {step?.kind === 'question' && question ? (
-                <QuizStage
-                  question={question}
-                  showRetry={question.id in firstTry && !feedback}
-                  feedback={feedback}
-                  attemptSeed={attemptSeed}
-                  easyRead={easyRead}
-                  otterOn={otterOn}
-                  reduceMotion={!motion}
-                  onAnswer={answer}
-                  onGate={onGate}
-                  leading={leading}
-                />
+                licenceFace === 'rule' ? (
+                  <ImageRuleFace />
+                ) : licenceFace === 'blocked' ? (
+                  <ImageBlockedFace />
+                ) : critiqueOpen ? (
+                  <div className="flex min-h-0 flex-1 flex-col">
+                    <div className="flex shrink-0 justify-end px-4 pt-4">
+                      <ReadAloudButton
+                        text={[t('critique.title'), t('critique.lead'), t('critique.flex'), t('critique.object'), t('critique.nudge')].join('\n')}
+                        tucked
+                      />
+                    </div>
+                    <CritiqueFace />
+                  </div>
+                ) : (
+                  <QuizStage
+                    question={question}
+                    showRetry={question.id in firstTry && !feedback}
+                    feedback={feedback}
+                    attemptSeed={attemptSeed}
+                    easyRead={easyRead}
+                    otterOn={otterOn}
+                    reduceMotion={!motion}
+                    onAnswer={answer}
+                    onGate={onGate}
+                    leading={leading}
+                  />
+                )
               ) : null}
             </article>
           )}
           {step?.kind === 'rest' ? null : (
-            <div className="shrink-0 pt-3 pb-[max(0.25rem,env(safe-area-inset-bottom))]">
+            <div className="sticky bottom-0 z-10 shrink-0 bg-[#FFF9E9] pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
               <button
                 type="button"
-                disabled={primaryDisabled}
-                onClick={onPrimary}
+                aria-disabled={primaryDisabled}
+                onClick={() => {
+                  if (primaryDisabled) return
+                  onPrimary()
+                }}
                 autoFocus={Boolean(feedback)}
                 className={WIZARD_BUTTON}
               >
@@ -593,20 +640,25 @@ function CardsStage({
   const visibleLines = lessonCardVisibleLines(card, easyRead)
   const bodyStyle = lessonCardBodyStyle({ fontSize, dyslexia: easyRead, highContrast })
   const quietFooter = nextTone === 'hidden' ? null : nextTone === 'quiet' ? nextLabel : null
+  const showCardArt = Boolean(card.image && imageDecision({ image: card.image, role: 'diagram' }) === 'show')
   return (
     <div
       {...lessonCardReadingAttrs({ fontSize, dyslexia: easyRead, highContrast })}
       className={`flex min-h-0 flex-1 flex-col ${focus ? 'ring-4 ring-amber-200' : ''}`}
     >
-      <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-4">
-        <h3 className={`font-bold text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{card.title}</h3>
-        <ReadAloudButton text={cardText} auto={autoRead} autoKey={autoKey} small />
+      <div className="flex shrink-0 justify-end px-4 pt-4">
+        <ReadAloudButton text={cardText} auto={autoRead} autoKey={autoKey} tucked />
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+      {showCardArt ? (
+        <div data-art-slot className="min-h-[16rem] flex-[3] overflow-hidden px-4">
+          <LessonCardArt image={card.image} credit={card.imageCredit} />
+        </div>
+      ) : null}
+      <div className={`min-h-0 overflow-y-auto px-4 pb-4 ${showCardArt ? 'flex-[2]' : 'flex-1'}`}>
         {leading}
-        <LessonCardArt image={card.image} credit={card.imageCredit} />
+        <h3 className={`font-bold text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{card.title}</h3>
         {easyRead ? (
-          <ul data-lesson-body className="mt-3 space-y-2 text-lg text-slate-800" style={bodyStyle}>
+          <ul data-lesson-body className="mt-3 space-y-2 text-xl leading-relaxed text-slate-800" style={bodyStyle}>
             {visibleLines.map((line) => (
               <li key={line} className="flex gap-2">
                 <span className="mt-2.5 h-2 w-2 shrink-0 rounded-full bg-[#0D9488]" aria-hidden />
@@ -617,7 +669,7 @@ function CardsStage({
             ))}
           </ul>
         ) : (
-          <p data-lesson-body className="mt-3 text-base leading-relaxed text-slate-700" style={bodyStyle}>
+          <p data-lesson-body className="mt-3 text-xl leading-relaxed text-slate-900" style={bodyStyle}>
             <LessonCopy text={visibleLines[0] ?? ''} />
           </p>
         )}
@@ -653,24 +705,19 @@ function QuizStage({
   leading?: ReactNode
 }) {
   const mark = exerciseIdForQuestion(question.type)
+  const staged = question.type === 'dualRead' || question.type === 'order' || question.type === 'short'
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex shrink-0 items-start justify-between gap-3 px-4 pt-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className={OUTLINE_CHIP}>
-            {t('lp.quiz')}
+      <div className="flex shrink-0 items-start justify-end gap-3 px-4 pt-4">
+        {mark ? (
+          <span className="sr-only">
+            <ExerciseMark id={mark} />
             {showRetry ? t('lp.retry') : ''}
           </span>
-          <QuestionTypeChips types={[question.type]} variant="outline" />
-          {mark ? (
-            <span className="sr-only">
-              <ExerciseMark id={mark} />
-            </span>
-          ) : null}
-        </div>
-        <ReadAloudButton text={questionSpeech(question)} small />
+        ) : null}
+        <ReadAloudButton text={questionSpeech(question)} tucked />
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-2">
+      <div className={staged ? 'flex min-h-0 flex-1 flex-col' : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}>
         {leading}
         <QuestionView
           key={`${question.id}-${attemptSeed}`}
@@ -918,8 +965,8 @@ function QuestionView(props: QProps<Question>) {
 
 const optCls = (state: 'idle' | 'selected' | 'right' | 'wrong') =>
   ({
-    idle: 'border-slate-200 bg-white',
-    selected: 'border-[#0D9488] bg-[#E7F6F3]',
+    idle: 'border-slate-200 bg-[#FFF9E9]',
+    selected: 'border-[#0D9488] bg-[#FFF9E9]',
     right: 'border-[#0D9488] bg-[#E7F6F3]',
     wrong: 'border-[#E7C98A] bg-[#FFF4DE]',
   })[state]
@@ -931,8 +978,11 @@ function Mcq({ q, locked, easyRead, onAnswer, onGate }: QProps<McqQuestion>) {
   }, onGate)
   return (
     <div>
-      <p className={`mt-2 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <div className="mt-3">
+        <PracticeOnlyBar />
+      </div>
+      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{q.prompt}</p>
       <div className="mt-4 grid gap-2">
         {q.options.map((o, i) => {
           const st = locked ? (sel === i ? (i === q.answer ? 'right' : 'wrong') : 'idle') : sel === i ? 'selected' : 'idle'
@@ -943,11 +993,8 @@ function Mcq({ q, locked, easyRead, onAnswer, onGate }: QProps<McqQuestion>) {
               disabled={locked}
               aria-pressed={sel === i}
               onClick={() => setSel(i)}
-              className={`flex items-center gap-3 rounded-2xl border-2 px-4 py-3 text-left text-base ${optCls(st)}`}
+              className={`rounded-2xl border-2 px-4 py-3 text-left text-base ${optCls(st)}`}
             >
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-slate-300 text-xs font-bold text-slate-500">
-                {i + 1}
-              </span>
               {o}
             </button>
           )
@@ -966,7 +1013,11 @@ function Fill({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<FillQuesti
   }, onGate)
   return (
     <div>
-      <p className={`mt-2 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>
+      <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <div className="mt-3">
+        <PracticeOnlyBar />
+      </div>
+      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
         {before}
         <span
           className={`mx-1 inline-block min-w-16 border-b-2 px-2 text-center ${
@@ -977,7 +1028,6 @@ function Fill({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<FillQuesti
         </span>
         {after}
       </p>
-      <LessonCardArt image={q.image} credit={q.imageCredit} />
       <div className="mt-4 flex flex-wrap gap-2">
         {bank.map((w) => (
           <button
@@ -1004,8 +1054,8 @@ function OrderQ({ q, locked, easyRead, onAnswer, onGate }: QProps<OrderQuestion>
     if (order) onAnswer(orderMatches(order, q.items), q.explain)
   }, onGate)
   return (
-    <div>
-      <OrderBoard q={q} order={order} revealed={locked} easyRead={easyRead} onChange={setOrder} />
+    <div className="flex min-h-0 flex-1 flex-col">
+      <OrderBoard q={q} order={order} revealed={locked} easyRead={easyRead} stage onChange={setOrder} />
     </div>
   )
 }
@@ -1014,8 +1064,8 @@ function DualReadQ({ q, locked, easyRead, onAnswer, onGate }: QProps<DualReadQue
   const [lines, setLines] = useState<string[]>(['', ''])
   useAnswerGate(!locked && linesReady(lines, 2), () => onAnswer(true, q.explain), onGate)
   return (
-    <div>
-      <DualReadBoard q={q} lines={lines} revealed={locked} easyRead={easyRead} onChange={setLines} />
+    <div className="flex min-h-0 flex-1 flex-col">
+      <DualReadBoard q={q} lines={lines} revealed={locked} easyRead={easyRead} stage onChange={setLines} />
     </div>
   )
 }
@@ -1024,8 +1074,8 @@ function ShortQ({ q, locked, easyRead, onAnswer, onGate }: QProps<ShortQuestion>
   const [lines, setLines] = useState<string[]>([''])
   useAnswerGate(!locked && linesReady(lines, 1), () => onAnswer(true, q.explain), onGate)
   return (
-    <div>
-      <ShortBoard q={q} line={lines[0] ?? ''} revealed={locked} easyRead={easyRead} onChange={setLines} />
+    <div className="flex min-h-0 flex-1 flex-col">
+      <ShortBoard q={q} line={lines[0] ?? ''} revealed={locked} easyRead={easyRead} stage onChange={setLines} />
     </div>
   )
 }
@@ -1058,8 +1108,11 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
 
   return (
     <div>
-      <p className={`mt-2 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <div className="mt-3">
+        <PracticeOnlyBar />
+      </div>
+      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{q.prompt}</p>
       <p className="text-xs text-slate-500">{t('lp.matchHint')}</p>
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="grid gap-2">

@@ -431,6 +431,19 @@ html[data-lesson-wizard='on'] main {
 html[data-lesson-wizard='on'] main [data-lesson-wizard] {
   visibility: visible;
 }
+/* Appreciation art fills about three fifths of the classroom card. */
+[data-lesson-wizard] [data-art-slot] [data-testid='lesson-card-art'] {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  margin-top: 0;
+}
+[data-lesson-wizard] [data-art-slot] [data-testid='lesson-card-art'] img {
+  height: 100%;
+  max-height: none;
+  width: 100%;
+  object-fit: contain;
+}
 /* Atlas and 我的 use the soft 圖鑑 dock instead of the app tab bar. */
 html[data-soft-nav='atlas'] .map-one-chrome {
   display: none;
