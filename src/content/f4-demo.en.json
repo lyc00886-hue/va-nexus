@@ -1091,10 +1091,10 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: a sketch on the left, interview notes on the right. One line each — what you see, and one useful sentence you heard.",
+              "question": "Compare works: both sides are community art. One line each — which visual elements or organisational principles do you see? How does the work relate to place and people?",
               "options": [
-                "Sketch",
-                "Interview"
+                "Left image",
+                "Right image"
               ],
               "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L3.png",
               "imageCredit": "Original · VA-Nexus",
@@ -1120,13 +1120,13 @@
           "cards": [
             {
               "title": "Research into making",
-              "body": "Use a short classroom trial to turn a nearby insight into a making exercise — paper, a pen, clay, or other classroom materials. Write down which materials and skills you use.",
+              "body": "Use a material trial to turn a nearby insight into a making exercise — paper, a pen, clay, or other classroom materials. Write down which materials and skills you use.",
               "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png",
               "imageCredit": "Self-made · VA-Nexus"
             },
             {
-              "title": "Leave a trail",
-              "body": "Leave traces of idea development: word/image sketches, material trials, why you changed course (research workbook).",
+              "title": "Record the process",
+              "body": "Record how the idea developed: word and image sketches, material trials, and why you changed course (research workbook).",
               "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png",
               "imageCredit": "Self-made · VA-Nexus"
             },
@@ -1138,17 +1138,17 @@
             },
             {
               "title": "Say it in three lines",
-              "body": "Use three sentences for this short trial: the theme, how you made it, and what you want the audience to feel. Check the short criteria, then self-assess or ask a classmate to write one sentence."
+              "body": "Use three sentences for how you tried materials: the theme, how you made it, and what you want the audience to feel. Check the short criteria, then self-assess or ask a classmate to write one sentence."
             },
             {
               "title": "Classroom practice",
-              "body": "This lesson practises ways to develop and make in class, with a short trial and a three-sentence talk. The class does not claim an official public-exam result."
+              "body": "This lesson practises ways to develop and make in class, with a material trial and a three-sentence talk. The class does not claim an official public-exam result."
             }
           ],
           "quiz": [
             {
               "type": "mcq",
-              "question": "Leaving a process trail helps to:",
+              "question": "Recording the process in a research workbook helps to:",
               "options": [
                 "Submit a blank book",
                 "Show how ideas evolved",
@@ -1190,7 +1190,7 @@
             },
             {
               "type": "fill",
-              "question": "A development trace should record the ＿＿ for each change.",
+              "question": "A development record should record the ＿＿ for each change.",
               "options": [],
               "answer": "reason",
               "wordBank": [
@@ -1205,7 +1205,7 @@
             },
             {
               "type": "match",
-              "question": "Match making traces",
+              "question": "Match making records",
               "options": [
                 "Sketch",
                 "Material test",
@@ -1216,7 +1216,7 @@
                 "Material test": "Compare which medium is clearer",
                 "Three lines": "Theme, method, and what you want a viewer to feel"
               },
-              "explain": "Traces turn research into visible making.",
+              "explain": "Recording the process turns research into visible making.",
               "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q4-match-trail.png",
               "imageCredit": "Original · VA-Nexus"
             },
@@ -1235,10 +1235,10 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: research notes on the left, one work on the right. One line each — what decision the notes keep, and what the work shows.",
+              "question": "Compare works: both sides are community art. One line each — which visual elements or organisational principles do you see? What does the work bring out?",
               "options": [
-                "Notes",
-                "Work"
+                "Left image",
+                "Right image"
               ],
               "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L4.png",
               "imageCredit": "Original · VA-Nexus",

@@ -1091,10 +1091,10 @@
             },
             {
               "type": "dualRead",
-              "question": "艺术评赏比较：左是速写，右是访问笔记。各写一句——你见到什么？你听到一句有用的话？",
+              "question": "艺术评赏比较：左、右都是社区艺术。各写一句——你见到何种视觉元素或组织原理？作品同地方、人有什么关系？",
               "options": [
-                "速写一句",
-                "访问一句"
+                "左图一句",
+                "右图一句"
               ],
               "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L3.png",
               "imageCredit": "自制 · VA-Nexus",
@@ -1120,13 +1120,13 @@
           "cards": [
             {
               "title": "研究变创作",
-              "body": "用课堂短试验，将近身洞察变成创作练习——纸、笔、黏土或其他课堂物料都可以。写下你用什么物料和技巧。",
+              "body": "用试验物料，将近身洞察变成创作练习——纸、笔、黏土或其他课堂物料都可以。写下你用什么物料和技巧。",
               "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png",
               "imageCredit": "自制 · VA-Nexus"
             },
             {
-              "title": "过程要留痕",
-              "body": "概念发展留痕：文字／图像草图、物料试验、改动原因（研究工作簿用）。",
+              "title": "过程要记录",
+              "body": "概念发展要记录：文字／图象草图、试验物料、改动原因（研究工作簿用）。",
               "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png",
               "imageCredit": "自制 · VA-Nexus"
             },
@@ -1138,17 +1138,17 @@
             },
             {
               "title": "三句讲作品",
-              "body": "用三句讲这次短试验：主题、做法、想观众感受到什么。对着简短准则先自评或请同学写一句。"
+              "body": "用三句讲你怎样试验物料：主题、做法、想观众感受到什么。对着简短准则先自评或请同学写一句。"
             },
             {
               "title": "课堂练习",
-              "body": "这课在课堂练习发展与创作方法，并做短试验和三句讲解。课堂不声称公开试的正式成绩。"
+              "body": "这课在课堂练习发展与创作方法，并试验物料和三句讲解。课堂不声称公开试正式成绩。"
             }
           ],
           "quiz": [
             {
               "type": "mcq",
-              "question": "概念发展「留痕」是为了？",
+              "question": "在研究工作簿记录过程，是为了？",
               "options": [
                 "交白卷",
                 "显示想法如何演变",
@@ -1190,7 +1190,7 @@
             },
             {
               "type": "fill",
-              "question": "概念发展留痕要记下改动的＿＿。",
+              "question": "概念发展要记下改动＿＿。",
               "options": [],
               "answer": "原因",
               "wordBank": [
@@ -1205,7 +1205,7 @@
             },
             {
               "type": "match",
-              "question": "配对创作留痕",
+              "question": "配对创作记录",
               "options": [
                 "草图",
                 "物料试验",
@@ -1216,7 +1216,7 @@
                 "物料试验": "比较哪种媒介更清楚",
                 "三句讲解": "主题、做法、想观众感受"
               },
-              "explain": "留痕令研究变成看得见的创作。",
+              "explain": "记录过程令研究变成看得见创作。",
               "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q4-match-trail.png",
               "imageCredit": "自制 · VA-Nexus"
             },
@@ -1235,10 +1235,10 @@
             },
             {
               "type": "dualRead",
-              "question": "艺术评赏比较：左是研究笔记，右是一件作品。各写一句——笔记留下什么决定？作品呈现什么？",
+              "question": "艺术评赏比较：左、右都是社区艺术。各写一句——你见到何种视觉元素或组织原理？作品想带出什么？",
               "options": [
-                "笔记决定",
-                "作品呈现"
+                "左图一句",
+                "右图一句"
               ],
               "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L4.png",
               "imageCredit": "自制 · VA-Nexus",

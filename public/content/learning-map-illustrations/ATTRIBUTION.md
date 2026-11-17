@@ -89,12 +89,12 @@ Seven P0 classroom diagrams for F4-U2-L3, F4-U3-L3, and F4-U3-L4. **自制 · VA
 | `f4-lesson-cards/F4-U3-L3-c0.png` | F4-U3-L3 · 主題喺社區 |
 | `f4-lesson-cards/F4-U3-L3-c1.png` | F4-U3-L3 · 觀察要問准 |
 | `f4-lesson-cards/F4-U3-L4-c0.png` | F4-U3-L4 · 研究變創作 |
-| `f4-lesson-cards/F4-U3-L4-c1.png` | F4-U3-L4 · 過程要留痕 |
+| `f4-lesson-cards/F4-U3-L4-c1.png` | F4-U3-L4 · 過程要記錄 |
 | `f4-lesson-cards/F4-U3-L4-c2.png` | F4-U3-L4 · 學方法唔抄圖 |
 
 ## F4 November compare-works frames (`f4-dualread/`)
 
-F4-U3-L3 and F4-U3-L4 replace the earlier empty frame with an original plate. **自制 · VA-Nexus**. Other lessons keep the frames they already had. English lessons credit these two as “Original · VA-Nexus”.
+F4-U3-L3 and F4-U3-L4 are original community-art stills: an estate wall mural beside a sitting-out mosaic, and a staircase shop-house mural beside a courtyard ceramic wall. **自制 · VA-Nexus**. They are not 陳思光's works. Other lessons keep the frames they already had. English lessons credit these two as “Original · VA-Nexus”.
 
 | File | Question |
 |---|---|
@@ -113,7 +113,7 @@ Question illustrations for F4-U3-L3 and F4-U3-L4, hung on the existing `image` /
 | `f4-stems/F4-U3-L3-q3-match-methods.png` | F4-U3-L3 · 配對 |
 | `f4-stems/F4-U3-L3-q4-order-research.png` | F4-U3-L3 · 排序 |
 | `f4-stems/F4-U3-L3-q6-short-insight.png` | F4-U3-L3 · 短答 |
-| `f4-stems/F4-U3-L4-q0-mcq-process-trail.png` | F4-U3-L4 · 選擇 · 留痕 |
+| `f4-stems/F4-U3-L4-q0-mcq-process-trail.png` | F4-U3-L4 · 選擇 · 記錄過程 |
 | `f4-stems/F4-U3-L4-q1-mcq-learn-method.png` | F4-U3-L4 · 選擇 · 學方法 |
 | `f4-stems/F4-U3-L4-q2-mcq-three-lines.png` | F4-U3-L4 · 選擇 · 三句 |
 | `f4-stems/F4-U3-L4-q3-fill-reason.png` | F4-U3-L4 · 填空 · 原因 |

@@ -21,7 +21,7 @@ const HANT = {
   'unit.f4u3.strand.appreciate.label': '視覺藝術評賞',
   'unit.f4u3.strand.appreciate': '睇案例同近身細節，講清楚對象、焦點，同相關視覺元素。',
   'unit.f4u3.strand.create.label': '視覺藝術創作',
-  'unit.f4u3.strand.create': '將近身洞察變成課堂短試驗，再用三句講主題、做法同感受。',
+  'unit.f4u3.strand.create': '將近身洞察變成試驗物料，再用三句講主題、做法同感受。',
   'lesson.f4u3l3.title': '十一月：認識社區藝術——研究',
   'lesson.f4u3l4.title': '十一月：認識社區藝術——發展同創作',
   'lesson.f4u3l3.unitLine': '呢課喺同一個主題式教學單元入面，先做研究。',

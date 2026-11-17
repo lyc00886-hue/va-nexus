@@ -731,8 +731,8 @@ describe('F.4 demo slice', () => {
       ],
     }
     const hashes: Record<string, string> = {
-      'f4-dualread/F4-U3-L3.png': '7eb69ca3a3c247b2168353e14b9c0b62181a232604dcd390c9c0bb1a7101a009',
-      'f4-dualread/F4-U3-L4.png': '34db41ed303dfab790b0c552e7c1e1f94a97a8841c097d3034fd09e1275dd60c',
+      'f4-dualread/F4-U3-L3.png': 'c95975ad611c6464dabc9e4cd69408c5e8ac8a96eee0e6c3e5b1eeeb5935b2dc',
+      'f4-dualread/F4-U3-L4.png': '6129eb3eaca70073d83708218d71861e3ec87543cf4a949e39115360b46e7587',
       'f4-stems/F4-U3-L3-q0-mcq-ask-first.png': '314ab3a883586c1d3aa02a67e69b2a872a574d37041ea49e767de97de723e8d5',
       'f4-stems/F4-U3-L3-q1-mcq-use-story.png': 'bcd638db0bd5ef1ba58fbde8a30a9dfc2ff6df1689a0bf54967e5f7b806ded47',
       'f4-stems/F4-U3-L3-q2-fill-observe.png': 'cab2d3e120951705d5d8b3fda3f28ffc696ffec3c34e721e6121fd16faabdc61',

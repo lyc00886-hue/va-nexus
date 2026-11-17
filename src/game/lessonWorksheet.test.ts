@@ -35,7 +35,7 @@ const HANT = {
   'worksheet.printHint': '預覽無問題之後，先列印或下載。',
   'worksheet.l3.title': '十一月：認識社區藝術——研究 · 課堂活動紙',
   'worksheet.l4.title': '十一月：認識社區藝術——發展同創作 · 課堂活動紙',
-  'worksheet.intro': '呢張係課堂活動紙，跟住呢課嘅三題課業：案例評賞、近身洞察、過程留痕或三句講解。唔係功課。',
+  'worksheet.intro': '呢張係課堂活動紙，跟住呢課嘅三題課業：案例評賞、近身洞察、記錄過程或三句講解。唔係功課。',
   'worksheet.sampleNote': '以下係示例，唔係真實同學或真實學校。',
   'worksheet.noSchool': '呢張活動紙唔顯示校名、校徽或教師姓名。',
   'worksheet.section.case': '過往案例參考',
@@ -45,15 +45,15 @@ const HANT = {
   'worksheet.l3.q3': '用三句講你點樣由呢件近身細節，連去「邂逅！山 川 人」嘅評賞焦點。',
   'worksheet.l3.q4': '寫一個洞察。提示：先寫你喺課室材料見到嘅細節，再寫佢點樣同社區有關。',
   'worksheet.l4.q1': '評賞深食「喚味：\u{1D465}」。寫食物、地方、人，同「喚味」邀請點樣呈現。只作課堂播放，唔下載、上載或轉載。',
-  'worksheet.l4.q2': '由課室、食堂、校門、返學路或記憶揀一件近身細節，寫佢點樣可以變成課堂短試驗嘅主題。',
-  'worksheet.l4.q3': '用三句講呢次短試驗：主題、做法、想觀眾感受到咩。之後按簡短準則寫一句自評，或請同學寫一句。',
-  'trial.title': '課堂短試驗',
+  'worksheet.l4.q2': '由課室、食堂、校門、返學路或記憶揀一件近身細節，寫佢點樣可以變成試驗物料嘅主題。',
+  'worksheet.l4.q3': '用三句講你點樣試驗物料：主題、做法、想觀眾感受到咩。之後按簡短準則寫一句自評，或請同學寫一句。',
+  'trial.title': '試驗物料',
   'trial.when': '以 11 月 26 日課堂現場為主，十至十五分鐘。',
-  'trial.do': '用紙、筆、黏土或其他課堂物料試一次。產品只支援短試驗同講解留痕。',
-  'trial.trace.label': '過程留痕',
+  'trial.do': '用紙、筆、黏土或其他課堂物料試一次。產品只支援試驗物料同三句講解。',
+  'trial.trace.label': '記錄過程',
   'trial.trace.hint': '寫你試咗咩物料、改過咩、點解咁改。',
-  'trial.talk.label': '三句講解留痕',
-  'trial.disclaimer': '科技唔可以取代物料試驗。呢度只係短試驗同講解留痕。',
+  'trial.talk.label': '三句講解',
+  'trial.disclaimer': '應用科技唔可以取代真實環境嘅藝術學習。呢度只係試驗物料同三句講解。',
   'trial.noUpload': '唔上載作品，亦唔自動評分。',
 } as const
 
@@ -309,7 +309,7 @@ describe('November activity papers', () => {
     const criteria = read('src/components/game/CommunityCases.tsx')
     const criteriaFn = criteria.slice(criteria.indexOf('function LessonCardCriteria'))
     assert.equal(criteriaFn.includes('trial.'), false)
-    assert.equal(hant['visual.trial'], '短試驗可以試物料同質感，再用對比、強調或重複去組織你見到嘅近身細節。')
+    assert.equal(hant['visual.trial'], '試驗物料可以試物料同質感，再用對比、強調或重複去組織你見到嘅近身細節。')
   })
 
   it('leaves LessonCardArt, display settings, playback, SoftMotion, and the api count alone', () => {

@@ -1091,10 +1091,10 @@
             },
             {
               "type": "dualRead",
-              "question": "藝術評賞比較：左係速寫，右係訪問筆記。各寫一句——你見到咩？你聽到一句有用嘅話？",
+              "question": "藝術評賞比較：左、右都係社區藝術。各寫一句——你見到邊種視覺元素或組織原理？作品同地方、人有咩關係？",
               "options": [
-                "速寫一句",
-                "訪問一句"
+                "左圖一句",
+                "右圖一句"
               ],
               "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L3.png",
               "imageCredit": "自制 · VA-Nexus",
@@ -1120,13 +1120,13 @@
           "cards": [
             {
               "title": "研究變創作",
-              "body": "用課堂短試驗，將近身洞察變成創作練習——紙、筆、黏土或其他課堂物料都可以。寫低你用咩物料同技巧。",
+              "body": "用試驗物料，將近身洞察變成創作練習——紙、筆、黏土或其他課堂物料都可以。寫低你用咩物料同技巧。",
               "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png",
               "imageCredit": "自制 · VA-Nexus"
             },
             {
-              "title": "過程要留痕",
-              "body": "概念發展留痕：文字／圖像草圖、物料試驗、改動原因（研究工作簿用）。",
+              "title": "過程要記錄",
+              "body": "概念發展要記錄：文字／圖象草圖、試驗物料、改動原因（研究工作簿用）。",
               "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png",
               "imageCredit": "自制 · VA-Nexus"
             },
@@ -1138,17 +1138,17 @@
             },
             {
               "title": "三句講作品",
-              "body": "用三句講呢次短試驗：主題、做法、想觀眾感受到咩。對住簡短準則先自評或請同學寫一句。"
+              "body": "用三句講你點樣試驗物料：主題、做法、想觀眾感受到咩。對住簡短準則先自評或請同學寫一句。"
             },
             {
               "title": "課堂練習",
-              "body": "呢課喺課堂練習發展同創作方法，並做短試驗同三句講解。課堂唔用公開試正式成績聲稱。"
+              "body": "呢課喺課堂練習發展同創作方法，並試驗物料同三句講解。課堂唔用公開試正式成績聲稱。"
             }
           ],
           "quiz": [
             {
               "type": "mcq",
-              "question": "概念發展「留痕」係為咗？",
+              "question": "喺研究工作簿記錄過程，係為咗？",
               "options": [
                 "交白卷",
                 "顯示諗法點演變",
@@ -1190,7 +1190,7 @@
             },
             {
               "type": "fill",
-              "question": "概念發展留痕要記下改動嘅＿＿。",
+              "question": "概念發展要記下改動嘅＿＿。",
               "options": [],
               "answer": "原因",
               "wordBank": [
@@ -1205,7 +1205,7 @@
             },
             {
               "type": "match",
-              "question": "配對創作留痕",
+              "question": "配對創作記錄",
               "options": [
                 "草圖",
                 "物料試驗",
@@ -1216,7 +1216,7 @@
                 "物料試驗": "比較邊種媒介更清楚",
                 "三句講解": "主題、做法、想觀眾感受"
               },
-              "explain": "留痕令研究變成睇得見嘅創作。",
+              "explain": "記錄過程令研究變成睇得見嘅創作。",
               "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q4-match-trail.png",
               "imageCredit": "自制 · VA-Nexus"
             },
@@ -1235,10 +1235,10 @@
             },
             {
               "type": "dualRead",
-              "question": "藝術評賞比較：左係研究筆記，右係一件作品。各寫一句——筆記留低咩決定？作品呈現咩？",
+              "question": "藝術評賞比較：左、右都係社區藝術。各寫一句——你見到邊種視覺元素或組織原理？作品想帶出咩？",
               "options": [
-                "筆記決定",
-                "作品呈現"
+                "左圖一句",
+                "右圖一句"
               ],
               "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L4.png",
               "imageCredit": "自制 · VA-Nexus",
