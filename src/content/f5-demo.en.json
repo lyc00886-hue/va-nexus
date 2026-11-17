@@ -359,10 +359,30 @@
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L1.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Tradition and society reach you through everyday objects, festival colours, and how things are arranged at home.",
-            "Start from one everyday object: its form, its place in daily life, and your own response.",
-            "Interviews, observation, and collecting stay as classroom practice. A conversation, a photo you already have, or a classroom object is enough.",
-            "Lessons do not use high-score exemplars. Write the influence you actually see."
+            {
+              "title": "Everyday influence",
+              "body": "Tradition and society reach you through everyday objects, festival colours, and how things are arranged at home.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c0.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Start from an object",
+              "body": "Start from one everyday object: its form, its place in daily life, and your own response.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c1.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Class methods",
+              "body": "Interviews, observation, and collecting stay as classroom practice. A conversation, a photo you already have, or a classroom object is enough.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c2.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Write what you see",
+              "body": "Lessons do not use high-score exemplars. Write the influence you actually see.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c3.png",
+              "imageCredit": "Original · VA-Nexus"
+            }
           ],
           "quiz": [
             {
@@ -375,7 +395,9 @@
                 "A score sheet"
               ],
               "answer": "One everyday object",
-              "explain": "Start from an object in everyday life."
+              "explain": "Start from an object in everyday life.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q0-mcq.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "fill",
@@ -388,7 +410,9 @@
                 "contest",
                 "long trip",
                 "raffle"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q1-fill.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "match",
@@ -403,7 +427,9 @@
                 "Place in life": "Where it usually appears",
                 "Your response": "How you feel it affects you"
               },
-              "explain": "All three together show an influence."
+              "explain": "All three together show an influence.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q2-match.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "order",
@@ -414,37 +440,75 @@
                 "Note its place in daily life",
                 "Write your own response"
               ],
-              "explain": "Object, form, place, then response."
+              "explain": "Object, form, place, then response.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q3-order.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "dualRead",
-              "question": "Compare works: left, the object’s form; right, its place in daily life.",
+              "question": "Compare works: on the left, write one line on the object form of Jar with Leaf Decoration; on the right, write one line on where the objects sit in the lived interior of Johannes Vermeer's Young Woman with a Water Pitcher. One line each.",
               "options": [
                 "Object form",
-                "Place in life"
+                "Place in daily life"
               ],
-              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L1.png",
-              "imageCredit": "Self-made · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-42440-jar-with-leaf-decoration.jpg",
+                "title": "Jar with Leaf Decoration",
+                "artist": "Artist not named in the museum record",
+                "year": "12th century",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "The jar has a rounded body, a wide mouth, two loop handles, and a short foot. Brown leafy sprays are painted on a white slip under a crackled glaze. The leaves follow the curve of the vessel, so students can write from the visible form of this everyday object."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-437881-vermeer-young-woman-water-pitcher.jpg",
+                "title": "Young Woman with a Water Pitcher",
+                "artist": "Johannes Vermeer (1632–1675)",
+                "year": "ca. 1662",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "A woman stands by a window, one hand on a jewel box and the other on a silver-and-gilt water pitcher; a map hangs on the wall, and daylight enters from the left. The pitcher, basin, and table catch clear highlights, and the room is orderly and quiet. The work places a daily object inside a lived interior."
+              },
               "explain": "Practice structure · lessons do not use a real exam paper"
             },
             {
               "type": "short",
               "question": "In three sentences, show how tradition or society shapes one everyday object for you. Hint: one sentence each for form, place, and response, all possible in class.",
               "options": [],
-              "explain": "Practice structure · lessons do not use a real exam paper"
+              "explain": "Practice structure · lessons do not use a real exam paper",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q5-short.png",
+              "imageCredit": "Original · VA-Nexus"
             }
           ]
         },
         {
           "id": "F5-U3-L2",
-          "title": "Strange-stone comparison: Wu Bin with Surrealism and Cubism",
+          "title": "Strange-stone comparison: Wu Bin and Bada Shanren (Zhu Da)",
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L2.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Strange-stone comparison is about methods, not copying a picture. Look at how Wu Bin makes a stone look strange, then at how Surrealism and Cubism reorganise what is seen.",
-            "A comparison can ask: where is it exaggerated, where is it cut apart, and where can you still tell it is stone?",
-            "Surrealism often places unusual combinations together. Cubism often splits an object into several planes. Talk about the method; do not treat this as a request to copy a painting.",
-            "Images stay as classroom diagrams. Lessons do not use high-score exemplars."
+            {
+              "title": "Compare methods",
+              "body": "The strange-stone comparison is about method, not copying a picture. Look at how Wu Bin makes a stone look strange, then at how Bada Shanren (Zhu Da) uses abbreviated brushwork and reserved space for rocks and fish.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c0.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Ask about exaggeration",
+              "body": "A comparison can ask: where is it exaggerated, where is space reserved, and where is it still recognisable as rock or fish.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c1.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Name the method",
+              "body": "Bada Shanren (Zhu Da) often uses abbreviated brushwork and a large reserved field for rocks and fish; the forms are exaggerated, yet still recognisable. Name the method; do not treat it as a picture to copy.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c2.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Real artwork images",
+              "body": "The comparison grid uses verified freely licensed real artworks. The lesson does not present a high-score exemplar.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c3.png",
+              "imageCredit": "Original · VA-Nexus"
+            }
           ],
           "quiz": [
             {
@@ -457,76 +521,85 @@
                 "Decide which costs most"
               ],
               "answer": "Compare methods rather than copy a picture",
-              "explain": "The comparison is about method, not copying."
+              "explain": "The comparison is about method, not copying.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q0-mcq.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "fill",
-              "question": "A common Cubist method is to split an object into several ＿＿.",
+              "question": "A common method in Bada Shanren (Zhu Da) is to set rocks and fish against a large field of ＿＿.",
               "options": [],
-              "answer": "planes",
-              "explain": "Several planes names a formal method.",
+              "answer": "reserved space",
+              "explain": "Reserved space names a formal method.",
               "wordBank": [
-                "planes",
+                "reserved space",
                 "prices",
                 "seats",
                 "signatures"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q1-fill.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "match",
               "question": "Match the methods",
               "options": [
                 "Wu Bin’s strange stones",
-                "Surrealism",
-                "Cubism"
+                "Bada Shanren (Zhu Da)"
               ],
               "answer": {
                 "Wu Bin’s strange stones": "Make the stone look strange, yet still recognisable as stone",
-                "Surrealism": "Place unusual combinations together",
-                "Cubism": "Split an object into several planes"
+                "Bada Shanren (Zhu Da)": "Use abbreviated brushwork and reserved space for rocks and fish"
               },
-              "explain": "All three are methods, not pictures to copy."
+              "explain": "Both are methods, not pictures to copy.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q2-match.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "order",
               "question": "Order one strange-stone comparison.",
               "options": [
                 "Describe the stone’s form",
-                "Point to exaggeration or a cut",
-                "Name one Surrealist or Cubist method",
+                "Point to exaggeration or reserved space",
+                "Name one Bada Shanren (Zhu Da) method",
                 "Write one step you would try"
               ],
-              "explain": "From what you see, to a method, to one step of your own."
+              "explain": "From what you see, to a method, to one step of your own.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q3-order.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "dualRead",
-              "question": "Compare works: on the left, write one method from Wu Bin's strange stones; on the right, write one method from Surrealism or Cubism. If there is an image, write from the image; if not, write from the text profile. Do not copy a picture.",
+              "question": "Compare works: on the left, write one method from Wu Bin's strange stones; on the right, write one method from Bada Shanren (Zhu Da). Write from the images; do not copy a picture.",
               "options": [
                 "Strange-stone method",
-                "A method of reassembling"
+                "Abbreviated method"
               ],
-              "explain": "Practice structure · lessons do not use a real exam paper",
               "plate": {
                 "image": "/content/learning-map-illustrations/f5-pd/wubin-ten-views-lingbi-front-detail.jpg",
                 "title": "Ten Views of a Lingbi Stone (front-view detail, not the full handscroll)",
                 "artist": "Wu Bin (1573–1620)",
                 "year": "c. 1610",
-                "source": "Unidentified private collection · Wikimedia Commons"
+                "source": "Unidentified private collection · Wikimedia Commons",
+                "intro": "The plate shows a lingbi stone filling the front-view detail of the handscroll; hollows and ridges are built with darker and lighter ink. The form twists, yet it remains recognisable as stone. The work uses close looking and exaggeration to make the strange stone look strange."
               },
-              "profile": {
-                "name": "Surrealism and Cubism",
-                "nationality": "Mainly European",
-                "active": "Cubism from about 1907; Surrealism from the 1920s",
-                "movement": "Cubism; Surrealism",
-                "technique": "Cubism often splits an object into several planes. Surrealism often places unusual combinations together. Picasso, Magritte, and Dalí died less than 70 years before 2026, so this side stays text only and shows no artwork image.",
-                "search": "Picasso; Magritte; Dali; Cubism; Surrealism"
-              }
+              "right": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-41491-bada-shanren-fish-and-rocks.jpg",
+                "title": "Fish and rocks",
+                "artist": "Bada Shanren (Zhu Da) (1626–1705)",
+                "year": "1699",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "In the tall scroll, a few pale-ink rocks are stacked at the centre, with abbreviated fish beside and below them. Broad empty paper surrounds the rocks and fish, with few ink lines and a strong contrast. The work uses abbreviated brushwork and reserved space to make the rocks and fish look strange, yet still recognisable."
+              },
+              "explain": "Practice structure · lessons do not use a real exam paper"
             },
             {
               "type": "short",
-              "question": "In two sentences, compare Wu Bin with Surrealism or Cubism. Hint: sentence one is the stone’s form; sentence two is a method, and you say you are not copying a picture.",
+              "question": "In two sentences, compare Wu Bin with Bada Shanren (Zhu Da). Hint: sentence one is the form of the stone; sentence two is a method, and say you are not copying a picture.",
               "options": [],
-              "explain": "Practice structure · lessons do not use a real exam paper"
+              "explain": "Practice structure · lessons do not use a real exam paper",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q5-short.png",
+              "imageCredit": "Original · VA-Nexus"
             }
           ]
         },
@@ -536,10 +609,30 @@
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L3.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "A visual journal gathers material and develops a theme. One page collects; a later page narrows.",
-            "Gathering can be a classroom sketch, a photo you already have, a short interview note, or one collected object.",
-            "To develop a theme, pick an interest that keeps returning in the material, then write it as one sentence.",
-            "Interviews, observation, and collecting stay as classroom practice. Lessons do not use high-score exemplars."
+            {
+              "title": "Gather, then narrow",
+              "body": "A visual journal gathers material and develops a theme. One page collects; a later page narrows.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c0.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Class materials",
+              "body": "Gathering can be a classroom sketch, a photo you already have, a short interview note, or one collected object.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c1.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Write one theme",
+              "body": "To develop a theme, pick an interest that keeps returning in the material, then write it as one sentence.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c2.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Class methods",
+              "body": "Interviews, observation, and collecting stay as classroom practice. Lessons do not use high-score exemplars.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c3.png",
+              "imageCredit": "Original · VA-Nexus"
+            }
           ],
           "quiz": [
             {
@@ -552,7 +645,9 @@
                 "Memorise one slogan"
               ],
               "answer": "Gather material",
-              "explain": "Gather first, then narrow to a theme."
+              "explain": "Gather first, then narrow to a theme.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q0-mcq.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "fill",
@@ -565,7 +660,9 @@
                 "score",
                 "seat",
                 "weather forecast"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q1-fill.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "match",
@@ -580,7 +677,9 @@
                 "Interview note": "A conversation held in class",
                 "Theme sentence": "One sentence from a returning interest"
               },
-              "explain": "Gathering and the theme both happen in class."
+              "explain": "Gathering and the theme both happen in class.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q2-match.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "order",
@@ -591,24 +690,42 @@
                 "Write one theme sentence",
                 "Decide what the next page will try"
               ],
-              "explain": "Material, interest, theme, then a next step."
+              "explain": "Material, interest, theme, then a next step.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q3-order.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "dualRead",
-              "question": "Compare works: left is a gathering page, right is a theme sentence. Note what you see and what you narrowed.",
+              "question": "Compare works: on the left, write what Retreats in the Spring Hills gathers as mountain-retreat views; on the right, write how Ogata Kōrin's Rough Waves develops waves into one theme. Write what you see and what has been narrowed.",
               "options": [
-                "Gathering page",
-                "Theme sentence"
+                "Gathered views",
+                "Theme developed"
               ],
-              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L3.png",
-              "imageCredit": "Self-made · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-40056-retreats-in-the-spring-hills.jpg",
+                "title": "Retreats in the Spring Hills (handscroll detail, not the full scroll)",
+                "artist": "Unidentified artist",
+                "year": "first half of the 12th century",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "This plate is a detail of the handscroll, not the full scroll. In the pale ink-and-color landscape on silk, several dwellings and pavilions sit among trees and peaked rocks, with the hills arranged in successive passages. The eye can move from one retreat to another. The work gathers several mountain-dwelling views in this one section."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-44918-ogata-korin-rough-waves.jpg",
+                "title": "Rough Waves",
+                "artist": "Ogata Kōrin (1658–1716)",
+                "year": "ca. 1704–9",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "Two folding-screen panels set large, curling ink waves against a gold field, with almost nothing else around them. The wave forms are simplified and repeated, with a strong contrast between the dark ink and the gold ground. The work narrows the subject to waves and develops it into a bold decorative theme."
+              },
               "explain": "Practice structure · lessons do not use a real exam paper"
             },
             {
               "type": "short",
               "question": "Use “two materials + one theme sentence” to show how you move from gathering to developing. Hint: the materials must be possible in class.",
               "options": [],
-              "explain": "Practice structure · lessons do not use a real exam paper"
+              "explain": "Practice structure · lessons do not use a real exam paper",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q5-short.png",
+              "imageCredit": "Original · VA-Nexus"
             }
           ]
         },
@@ -618,10 +735,30 @@
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L4.png",
           "coverCredit": "Original · VA-Nexus",
           "cards": [
-            "Ink experiments try a few small effects with ink, water, and paper, then you choose one that fits your theme.",
-            "The first portfolio piece uses a research and making structure: one theme sentence, material evidence, one medium test, and a next step.",
-            "Mixed media can be tested with ink. Change only one condition at a time so you can record the difference.",
-            "Lessons do not use high-score exemplars. You show your own test and structure, not a real exam paper."
+            {
+              "title": "Try an ink effect",
+              "body": "Ink experiments try a few small effects with ink, water, and paper, then you choose one that fits your theme.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c0.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "First-piece structure",
+              "body": "The first portfolio piece uses a research and making structure: one theme sentence, material evidence, one medium test, and a next step.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c1.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Change one condition",
+              "body": "Mixed media can be tested with ink. Change only one condition at a time so you can record the difference.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c2.png",
+              "imageCredit": "Original · VA-Nexus"
+            },
+            {
+              "title": "Hand in your own test",
+              "body": "Lessons do not use high-score exemplars. You show your own test and structure, not a real exam paper.",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c3.png",
+              "imageCredit": "Original · VA-Nexus"
+            }
           ],
           "quiz": [
             {
@@ -634,7 +771,9 @@
                 "A high-score student exemplar"
               ],
               "answer": "A theme sentence and one medium test",
-              "explain": "The first piece uses theme, evidence, a test, and a next step."
+              "explain": "The first piece uses theme, evidence, a test, and a next step.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q0-mcq.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "fill",
@@ -647,7 +786,9 @@
                 "school name",
                 "seat",
                 "score"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q1-fill.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "match",
@@ -662,7 +803,9 @@
                 "Medium test": "One ink or mixed-media effect",
                 "Next step": "What you want to try next"
               },
-              "explain": "The three parts together make the structure."
+              "explain": "The three parts together make the structure.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q2-match.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "order",
@@ -673,24 +816,42 @@
                 "Record which condition changed",
                 "Write the next step"
               ],
-              "explain": "Theme, test, record, then next step."
+              "explain": "Theme, test, record, then next step.",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q3-order.png",
+              "imageCredit": "Original · VA-Nexus"
             },
             {
               "type": "dualRead",
-              "question": "Compare works: left, one ink effect; right, the theme sentence of the first portfolio piece.",
+              "question": "Compare works: on the left, write one line on the ink method of Bokushō Shūshō's Splashed-Ink Landscape; on the right, write one line on the theme of Liang Kai's Poet strolling by a marshy bank. One line each.",
               "options": [
-                "Ink effect",
-                "Theme sentence"
+                "Ink method",
+                "Work theme"
               ],
-              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L4.png",
-              "imageCredit": "Self-made · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-53228-bokushos-splashed-ink-landscape.jpg",
+                "title": "Splashed-Ink Landscape",
+                "artist": "Bokushō Shūshō",
+                "year": "early 16th century",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "Ink is splashed from top to bottom in darker and lighter washes; mountain and tree edges are few, and the ink has bled on its own. Near and far grounds melt into ink masses, with only a few strokes hinting at a slope or a tree. The work presents a landscape as a visible ink effect."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-40090-liang-kai-poet-marshy-bank.jpg",
+                "title": "Poet strolling by a marshy bank",
+                "artist": "Liang Kai",
+                "year": "early 13th century",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "On the fan-shaped leaf, a small figure walks along a marshy bank, with reeds and the slope written in pale ink. The figure is small and the space is wide; the brush is abbreviated, yet the walker stays recognisable. The work places a walker on an open bank, and the theme is walking and place."
+              },
               "explain": "Practice structure · lessons do not use a real exam paper"
             },
             {
               "type": "short",
               "question": "Use “theme sentence + one test + next step” for the first portfolio piece. Hint: name the condition you changed, and do not use a high-score exemplar.",
               "options": [],
-              "explain": "Practice structure · lessons do not use a real exam paper"
+              "explain": "Practice structure · lessons do not use a real exam paper",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q5-short.png",
+              "imageCredit": "Original · VA-Nexus"
             }
           ]
         }

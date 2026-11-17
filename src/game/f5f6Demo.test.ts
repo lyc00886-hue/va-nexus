@@ -81,7 +81,8 @@ type Quiz = {
   answer?: string | number | Record<string, string>
   wordBank?: string[]
   image?: string
-  plate?: { image?: string }
+  plate?: { image?: string; intro?: string; year?: string }
+  right?: { image?: string; intro?: string }
   profile?: { image?: string }
   explain?: string
 }
@@ -192,10 +193,18 @@ describe('Form 5 and Form 6 course packs', () => {
               if (quiz.type === 'fill') assert.ok(quiz.wordBank?.includes(String(quiz.answer)), `${name} ${lesson.id}`)
               if (quiz.type === 'mcq') assert.ok(quiz.options.includes(String(quiz.answer)), `${name} ${lesson.id}`)
               if (quiz.type === 'dualRead') {
-                if (grade === 'f5' && lesson.id === 'F5-U3-L2') {
+                const heritage = grade === 'f5' && /^F5-U3-L[1-4]$/.test(lesson.id)
+                if (heritage) {
                   assert.equal(quiz.image, undefined, `${name} ${lesson.id}`)
-                  assert.match(String(quiz.plate?.image), /\/f5-pd\/wubin-ten-views-lingbi-front-detail\.jpg$/)
-                  assert.equal(quiz.profile?.image, undefined, `${name} ${lesson.id}`)
+                  assert.match(String(quiz.plate?.image), /\/f5-pd\//, `${name} ${lesson.id}`)
+                  assert.match(String(quiz.right?.image), /\/f5-pd\//, `${name} ${lesson.id}`)
+                  assert.equal(quiz.profile, undefined, `${name} ${lesson.id}`)
+                  assert.ok((quiz.plate?.intro ?? '').length > 0, `${name} ${lesson.id} intro`)
+                  assert.ok((quiz.right?.intro ?? '').length > 0, `${name} ${lesson.id} right intro`)
+                  if (lesson.id === 'F5-U3-L2') {
+                    assert.match(String(quiz.plate?.image), /\/f5-pd\/wubin-ten-views-lingbi-front-detail\.jpg$/)
+                    assert.equal(quiz.plate?.year, locale === 'en' ? 'c. 1610' : locale === 'hans' ? '约1610' : '約1610')
+                  }
                 } else {
                   assert.match(String(quiz.image), new RegExp(`/${grade}-dualread/${lesson.id}\\.png$`))
                   assert.ok(statSync(resolve(PUBLIC, String(quiz.image).slice(1))).size > 1000, lesson.id)
@@ -256,8 +265,10 @@ describe('Form 5 and Form 6 course packs', () => {
     for (const name of ['f5-demo.json', 'f6-demo.json']) {
       const blob = JSON.stringify(pack(name))
       assert.equal(blob.includes('"imageCredit":"自製 · VA-Nexus"') || blob.includes('自製 · VA-Nexus'), true, name)
-      assert.equal(blob.includes('"imageCredit":"自制 · VA-Nexus"'), false, name)
+      if (name === 'f6-demo.json') assert.equal(blob.includes('"imageCredit":"自制 · VA-Nexus"'), false, name)
     }
+    const f5Cards = JSON.stringify(pack('f5-demo.json'))
+    assert.equal(f5Cards.includes('"imageCredit":"自制 · VA-Nexus"'), true)
     for (const name of ['f5-demo.zh-Hans.json', 'f6-demo.zh-Hans.json']) {
       const raw = readFileSync(new URL(`../content/${name}`, import.meta.url), 'utf8')
       assert.equal(raw.includes('自製'), false, name)
@@ -319,7 +330,7 @@ describe('Form 5 and Form 6 course packs', () => {
     assert.equal(existsSync(resolve(root, 'src/content/f6-demo.json')), true)
   })
 
-  it('shows the Wu Bin front-view detail and a text profile on F5-U3-L2', () => {
+  it('keeps the Wu Bin plate and compares it with Bada Shanren on F5-U3-L2', () => {
     const plate = resolve(PUBLIC, 'content/learning-map-illustrations/f5-pd/wubin-ten-views-lingbi-front-detail.jpg')
     const bytes = readFileSync(plate)
     assert.equal(bytes.length, 326090)
@@ -327,19 +338,22 @@ describe('Form 5 and Form 6 course packs', () => {
     const hk = pack('f5-demo.json')
     const hans = pack('f5-demo.zh-Hans.json')
     const en = pack('f5-demo.en.json')
-    const lessonOf = (file: { units: Unit[] }) =>
-      file.units.find((unit) => unit.id === 'F5-U3-HERITAGE')?.lessons.find((lesson) => lesson.id === 'F5-U3-L2')
+    const unitOf = (file: { units: Unit[] }) => file.units.find((unit) => unit.id === 'F5-U3-HERITAGE')
+    const lessonOf = (file: { units: Unit[] }) => unitOf(file)?.lessons.find((lesson) => lesson.id === 'F5-U3-L2')
+    const cardBody = (card: unknown) => (typeof card === 'string' ? card : (card as { body?: string }).body ?? '')
     const hkLesson = lessonOf(hk)
     const hansLesson = lessonOf(hans)
     const enLesson = lessonOf(en)
-    assert.equal(hkLesson?.cards[0], '奇石比較用方法，唔係抄畫面。你可以睇吳彬點樣畫石畫得奇，再睇超現實同立體主義點樣重組所見。')
-    assert.equal(hkLesson?.cards[2], '超現實常將唔尋常嘅組合放埋一齊。立體主義常將物件拆成多個面。你要講方法，唔好講成要臨摹某一幅畫。')
-    assert.equal(enLesson?.cards[0], 'Strange-stone comparison is about methods, not copying a picture. Look at how Wu Bin makes a stone look strange, then at how Surrealism and Cubism reorganise what is seen.')
-    assert.equal(hansLesson?.cards[0], '奇石比较用方法，不是抄画面。你可以看吴彬怎样画石画得奇，再看超现实与立体主义怎样重组所见。')
+    assert.equal(hkLesson?.title, '奇石比較：吳彬同 Bada Shanren（Zhu Da）')
+    assert.equal(cardBody(hkLesson?.cards[0]), '奇石比較用方法，唔係抄畫面。你可以睇吳彬點樣畫石畫得奇，再睇 Bada Shanren（Zhu Da）點樣用簡筆同留白寫石同魚。')
+    assert.equal(cardBody(hkLesson?.cards[2]), 'Bada Shanren（Zhu Da）常用簡筆同大片留白寫石同魚，形態誇張但仍然認得。你要講方法，唔好講成要臨摹某一幅畫。')
+    assert.equal(cardBody(enLesson?.cards[0]), 'The strange-stone comparison is about method, not copying a picture. Look at how Wu Bin makes a stone look strange, then at how Bada Shanren (Zhu Da) uses abbreviated brushwork and reserved space for rocks and fish.')
+    assert.equal(cardBody(hansLesson?.cards[0]), '奇石比较用方法，不是抄画面。你可以看吴彬怎样画石画得奇，再看 Bada Shanren（Zhu Da）怎样用简笔与留白写石与鱼。')
     const dual = (lesson: Lesson | undefined) => lesson?.quiz.find((quiz) => quiz.type === 'dualRead')
-    assert.equal(dual(hkLesson)?.question, '藝術評賞比較：左邊對住吳彬奇石寫一種方法，右邊對住超現實或立體主義寫一種方法。有圖就對住圖寫；無圖就對住文字檔寫。唔好抄畫面。')
-    assert.deepEqual(dual(hkLesson)?.options, ['奇石方法', '重組方法'])
+    assert.equal(dual(hkLesson)?.question, '藝術評賞比較：左邊對住吳彬奇石寫一種方法，右邊對住 Bada Shanren（Zhu Da）寫一種方法。對住圖寫，唔好抄畫面。')
+    assert.deepEqual(dual(hkLesson)?.options, ['奇石方法', '簡筆方法'])
     assert.equal(dual(hkLesson)?.explain, '練習結構 · 唔用真實試卷')
+    assert.equal(unitOf(hk)?.intro.includes('超現實／立體主義'), true)
     assert.equal(JSON.stringify(hkLesson).includes('徐冰'), false)
     assert.equal(JSON.stringify(hkLesson).includes('tate.org'), false)
     assert.equal(JSON.stringify(enLesson).includes('The Sixteen Luohans'), false)

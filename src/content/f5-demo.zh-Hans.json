@@ -359,10 +359,30 @@
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L1.png",
           "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "传统与社会会经日常物件、节庆颜色、家里的摆设，影响你怎样看一件事物。",
-            "练习由一件日常物件出发：它的形式、它在生活里面的位置，以及你自己的感受。",
-            "访问、观察与收集都是课室做法。用同学对话、已有照片或课室物件就可以。",
-            "课堂不放高分示例。你写自己见到的影响就可以。"
+            {
+              "title": "日常影响",
+              "body": "传统与社会会经日常物件、节庆颜色、家里的摆设，影响你怎样看一件事物。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c0.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "由物件出发",
+              "body": "练习由一件日常物件出发：它的形式、它在生活里面的位置，以及你自己的感受。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "课室做法",
+              "body": "访问、观察与收集都是课室做法。用同学对话、已有照片或课室物件就可以。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c2.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "写自己所见",
+              "body": "课堂不放高分示例。你写自己见到的影响就可以。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c3.png",
+              "imageCredit": "自制 · VA-Nexus"
+            }
           ],
           "quiz": [
             {
@@ -375,7 +395,9 @@
                 "一张分数表"
               ],
               "answer": "一件日常物件",
-              "explain": "由日常生活里面的物件开始。"
+              "explain": "由日常生活里面的物件开始。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q0-mcq.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "fill",
@@ -388,7 +410,9 @@
                 "比赛",
                 "远行",
                 "抽奖"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q1-fill.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "match",
@@ -403,7 +427,9 @@
                 "生活位置": "它通常出现在哪",
                 "自己感受": "你觉得它怎样影响你"
               },
-              "explain": "三项一起才算讲到影响。"
+              "explain": "三项一起才算讲到影响。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q2-match.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "order",
@@ -414,37 +440,75 @@
                 "写它在生活的位置",
                 "写你自己的感受"
               ],
-              "explain": "由物件到形式、位置、感受。"
+              "explain": "由物件到形式、位置、感受。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q3-order.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "dualRead",
-              "question": "艺术评赏比较：左边写物件形式，右边写它在生活里面的位置。各一句。",
+              "question": "艺术评赏比较：左边评赏《Jar with Leaf Decoration》之物件形式，右边评赏 Johannes Vermeer《Young Woman with a Water Pitcher》里面物件在生活空间之位置。各写一句。",
               "options": [
                 "物件形式",
                 "生活位置"
               ],
-              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L1.png",
-              "imageCredit": "自制 · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-42440-jar-with-leaf-decoration.jpg",
+                "title": "Jar with Leaf Decoration",
+                "artist": "馆藏未标示艺术家",
+                "year": "12th century",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "这件瓷罐腹圆、口阔，两边有环耳，底下有矮圈足。白化妆土上面用褐彩写出一枝枝叶纹，釉面有开片。叶纹跟着罐身弧度排开，学生可以对着可见之物件形式写。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-437881-vermeer-young-woman-water-pitcher.jpg",
+                "title": "Young Woman with a Water Pitcher",
+                "artist": "Johannes Vermeer（1632–1675）",
+                "year": "ca. 1662",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "一个女人站在窗边，一只手按住珠宝盒，另一只手扶住银水瓶；墙上面有地图，日光由左边进入。水瓶、盘与桌面有清楚高光，房间整齐而安静。作品将日常物件放在一个生活空间里面。"
+              },
               "explain": "练习结构 · 不用真实试卷"
             },
             {
               "type": "short",
               "question": "用三句讲传统或社会怎样影响你一件日常物件。提示：形式、位置、感受各一句，而且是课室做得到的。",
               "options": [],
-              "explain": "练习结构 · 不用真实试卷"
+              "explain": "练习结构 · 不用真实试卷",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q5-short.png",
+              "imageCredit": "自制 · VA-Nexus"
             }
           ]
         },
         {
           "id": "F5-U3-L2",
-          "title": "奇石比较：吴彬与超现实／立体主义",
+          "title": "奇石比较：吴彬与 Bada Shanren（Zhu Da）",
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L2.png",
           "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "奇石比较用方法，不是抄画面。你可以看吴彬怎样画石画得奇，再看超现实与立体主义怎样重组所见。",
-            "比较可以问：哪里夸张、哪里切开、哪里仍然令人认得是石。",
-            "超现实常将不寻常组合放在一起。立体主义常将物件拆成多个面。你要讲方法，不要讲成要临摹某一幅画。",
-            "图像只用课室示意。课堂不放高分示例。"
+            {
+              "title": "用方法比较",
+              "body": "奇石比较用方法，不是抄画面。你可以看吴彬怎样画石画得奇，再看 Bada Shanren（Zhu Da）怎样用简笔与留白写石与鱼。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c0.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "问夸张与留白",
+              "body": "比较可以问：何处夸张、何处留白、何处仍然令人认得是石或鱼。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "讲方法不临摹",
+              "body": "Bada Shanren（Zhu Da）常用简笔与大片留白写石与鱼，形态夸张但仍然认得。你要讲方法，不要讲成要临摹某一幅画。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c2.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "真实作品图",
+              "body": "评赏格用已核实免费授权之真实作品图。课堂不放高分示例。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c3.png",
+              "imageCredit": "自制 · VA-Nexus"
+            }
           ],
           "quiz": [
             {
@@ -457,76 +521,85 @@
                 "判断哪幅最贵"
               ],
               "answer": "比较方法而不是抄画面",
-              "explain": "比较是方法，不是临摹。"
+              "explain": "比较是方法，不是临摹。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q0-mcq.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "fill",
-              "question": "立体主义常见做法是将物件拆成多个＿＿。",
+              "question": "Bada Shanren（Zhu Da）常见做法是用大片＿＿衬托石与鱼。",
               "options": [],
-              "answer": "面",
-              "explain": "多个面是讲形式方法。",
+              "answer": "留白",
+              "explain": "留白是讲形式方法。",
               "wordBank": [
-                "面",
+                "留白",
                 "价钱",
                 "座位",
                 "签名"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q1-fill.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "match",
               "question": "配对方法",
               "options": [
                 "吴彬奇石",
-                "超现实",
-                "立体主义"
+                "Bada Shanren（Zhu Da）"
               ],
               "answer": {
                 "吴彬奇石": "将石画得奇，仍然认得是石",
-                "超现实": "将不寻常组合放在一起",
-                "立体主义": "将物件拆成多个面"
+                "Bada Shanren（Zhu Da）": "用简笔与留白写石与鱼"
               },
-              "explain": "三个都是方法，不是要你抄画面。"
+              "explain": "两个都是方法，不是要你抄画面。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q2-match.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "order",
               "question": "将一次奇石比较排好。",
               "options": [
                 "描述石的形式",
-                "指出夸张或切开的地方",
-                "讲一种超现实或立体方法",
+                "指出夸张或留白之地方",
+                "讲一种 Bada Shanren（Zhu Da）方法",
                 "写你自己会试的一步"
               ],
-              "explain": "由所见到方法，再到自己一步。"
+              "explain": "由所见到方法，再到自己一步。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q3-order.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "dualRead",
-              "question": "艺术评赏比较：左边对着吴彬奇石写一种方法，右边对着超现实或立体主义写一种方法。有图就对着图写；无图就对着文字档写。不要抄画面。",
+              "question": "艺术评赏比较：左边对着吴彬奇石写一种方法，右边对着 Bada Shanren（Zhu Da）写一种方法。对着图写，不要抄画面。",
               "options": [
                 "奇石方法",
-                "重组方法"
+                "简笔方法"
               ],
-              "explain": "练习结构 · 不用真实试卷",
               "plate": {
                 "image": "/content/learning-map-illustrations/f5-pd/wubin-ten-views-lingbi-front-detail.jpg",
                 "title": "十面灵璧图卷（前正面局部，不是全卷）",
                 "artist": "吴彬（1573–1620）",
                 "year": "约1610",
-                "source": "私人收藏（馆藏未标示）· Wikimedia Commons"
+                "source": "私人收藏（馆藏未标示）· Wikimedia Commons",
+                "intro": "画面见到一块灵璧石占满手卷前正面局部，石面凹凸与孔洞用浓淡墨层层写出。石势弯扭，但又仍然认得是石。作品用仔细观察与夸张形态，将奇石画得奇。"
               },
-              "profile": {
-                "name": "超现实与立体主义",
-                "nationality": "欧洲为主",
-                "active": "立体主义约1907年起；超现实约1920年代起",
-                "movement": "立体主义；超现实",
-                "technique": "立体主义常将物件拆成多个面。超现实常将不寻常组合放在一起。毕加索、马格利特与达利逝世未满七十年，这一侧只出文字档，不出示作品图。",
-                "search": "Picasso；Magritte；Dali；Cubism；Surrealism"
-              }
+              "right": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-41491-bada-shanren-fish-and-rocks.jpg",
+                "title": "Fish and rocks",
+                "artist": "Bada Shanren（Zhu Da）（1626–1705）",
+                "year": "1699",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "直幅中间几块淡墨石头叠起，石旁与石下有几条简笔鱼。大片留白包围石与鱼，墨线少、对比较强。作品用简笔与留白，将石与鱼写得夸张但又仍然认得。"
+              },
+              "explain": "练习结构 · 不用真实试卷"
             },
             {
               "type": "short",
-              "question": "用两句比较吴彬与超现实或立体主义。提示：第一句讲石的形式，第二句讲一种方法，而且写明你不是抄画面。",
+              "question": "用两句比较吴彬与 Bada Shanren（Zhu Da）。提示：第一句讲石之形式，第二句讲一种方法，而且写明你不是抄画面。",
               "options": [],
-              "explain": "练习结构 · 不用真实试卷"
+              "explain": "练习结构 · 不用真实试卷",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q5-short.png",
+              "imageCredit": "自制 · VA-Nexus"
             }
           ]
         },
@@ -536,10 +609,30 @@
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L3.png",
           "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "视觉日记可以用来搜集材料与发展主题。一页先收集，下一页先收窄。",
-            "搜集可以是课室速写、已有照片、一段访问笔记，或者一件收集到的物件。",
-            "发展主题：由很多材料里面选一个重复出现的兴趣，再写一句主题。",
-            "访问、观察与收集都是课室做法。课堂不放高分示例。"
+            {
+              "title": "先搜集再收窄",
+              "body": "视觉日记可以用来搜集材料与发展主题。一页先收集，下一页先收窄。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c0.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "课室材料",
+              "body": "搜集可以是课室速写、已有照片、一段访问笔记，或者一件收集到的物件。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "写一句主题",
+              "body": "发展主题：由很多材料里面选一个重复出现的兴趣，再写一句主题。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c2.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "课室做法",
+              "body": "访问、观察与收集都是课室做法。课堂不放高分示例。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c3.png",
+              "imageCredit": "自制 · VA-Nexus"
+            }
           ],
           "quiz": [
             {
@@ -552,7 +645,9 @@
                 "只背一句口号"
               ],
               "answer": "搜集材料",
-              "explain": "先搜集，再收窄成主题。"
+              "explain": "先搜集，再收窄成主题。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q0-mcq.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "fill",
@@ -565,7 +660,9 @@
                 "分数",
                 "座位",
                 "天气"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q1-fill.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "match",
@@ -580,7 +677,9 @@
                 "访问笔记": "一段课室对话",
                 "主题句": "把重复兴趣收成一句"
               },
-              "explain": "搜集与主题都在课室发生。"
+              "explain": "搜集与主题都在课室发生。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q2-match.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "order",
@@ -591,24 +690,42 @@
                 "写一句主题",
                 "决定下一页试什么"
               ],
-              "explain": "由材料到兴趣，再到主题与下一步。"
+              "explain": "由材料到兴趣，再到主题与下一步。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q3-order.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "dualRead",
-              "question": "艺术评赏比较：左边是搜集页，右边是主题句。各写你见到什么与你收窄了什么。",
+              "question": "艺术评赏比较：左边评赏《Retreats in the Spring Hills》怎样搜集山居画面，右边评赏 Ogata Kōrin《Rough Waves》怎样将波浪发展成一个主题。各写你见到什么与你收窄了什么。",
               "options": [
-                "搜集页",
-                "主题句"
+                "搜集画面",
+                "主题发展"
               ],
-              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L3.png",
-              "imageCredit": "自制 · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-40056-retreats-in-the-spring-hills.jpg",
+                "title": "Retreats in the Spring Hills（手卷局部，不是全卷）",
+                "artist": "Unidentified artist",
+                "year": "first half of the 12th century",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "这张是手卷局部，不是全卷。绢本淡色山水里面，几处山居与亭榭藏在树与石峰之间，山势一段一段排开。视线可以由一处山居移至另一处。作品在同一幅局部里面搜集多个山居画面。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-44918-ogata-korin-rough-waves.jpg",
+                "title": "Rough Waves",
+                "artist": "Ogata Kōrin（1658–1716）",
+                "year": "ca. 1704–9",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "两扇屏风用金地托住几道大而卷曲之墨浪，周围几乎无其他景物。波浪外形简、重复而对比强，金地与浓墨分开很清楚。作品将题目收窄成「浪」，再发展成一个强烈之装饰主题。"
+              },
               "explain": "练习结构 · 不用真实试卷"
             },
             {
               "type": "short",
               "question": "用「两项材料＋一句主题」写下你怎样由搜集去到发展。提示：材料要是课室做得到的。",
               "options": [],
-              "explain": "练习结构 · 不用真实试卷"
+              "explain": "练习结构 · 不用真实试卷",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q5-short.png",
+              "imageCredit": "自制 · VA-Nexus"
             }
           ]
         },
@@ -618,10 +735,30 @@
           "coverImage": "/content/learning-map-illustrations/f5-covers/F5-U3-L4.png",
           "coverCredit": "自制 · VA-Nexus",
           "cards": [
-            "水墨试验是用墨、水、纸试几个小效果，再选一个适合你主题的做法。",
-            "作品集第一件作品用研究与创作结构：主题一句、材料证据、一次媒介试验，以及下一步。",
-            "混合媒介可以与水墨一起试，但每次只改一个条件，方便你写下分别。",
-            "课堂不放高分示例。你交的是自己的试验与结构，不是一份真实试卷。"
+            {
+              "title": "试水墨效果",
+              "body": "水墨试验是用墨、水、纸试几个小效果，再选一个适合你主题的做法。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c0.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "第一件结构",
+              "body": "作品集第一件作品用研究与创作结构：主题一句、材料证据、一次媒介试验，以及下一步。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c1.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "一次改一个",
+              "body": "混合媒介可以与水墨一起试，但每次只改一个条件，方便你写下分别。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c2.png",
+              "imageCredit": "自制 · VA-Nexus"
+            },
+            {
+              "title": "交自己试验",
+              "body": "课堂不放高分示例。你交的是自己的试验与结构，不是一份真实试卷。",
+              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c3.png",
+              "imageCredit": "自制 · VA-Nexus"
+            }
           ],
           "quiz": [
             {
@@ -634,7 +771,9 @@
                 "高分学生示例"
               ],
               "answer": "主题一句与一次媒介试验",
-              "explain": "第一件作品用主题、证据、试验与下一步。"
+              "explain": "第一件作品用主题、证据、试验与下一步。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q0-mcq.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "fill",
@@ -647,7 +786,9 @@
                 "校名",
                 "座位",
                 "分数"
-              ]
+              ],
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q1-fill.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "match",
@@ -662,7 +803,9 @@
                 "媒介试验": "水墨或混合媒介的一次效果",
                 "下一步": "你跟着想试什么"
               },
-              "explain": "三部分一起才算有结构。"
+              "explain": "三部分一起才算有结构。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q2-match.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "order",
@@ -673,24 +816,42 @@
                 "记录改了哪个条件",
                 "写下一步"
               ],
-              "explain": "由主题到试验，再到记录与下一步。"
+              "explain": "由主题到试验，再到记录与下一步。",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q3-order.png",
+              "imageCredit": "自制 · VA-Nexus"
             },
             {
               "type": "dualRead",
-              "question": "艺术评赏比较：左边是一次水墨效果，右边是作品集第一件作品的主题句。各写一句。",
+              "question": "艺术评赏比较：左边评赏 Bokushō Shūshō《Splashed-Ink Landscape》之水墨做法，右边评赏 Liang Kai《Poet strolling by a marshy bank》之作品主题。各写一句。",
               "options": [
-                "水墨效果",
-                "主题一句"
+                "水墨做法",
+                "作品主题"
               ],
-              "image": "/content/learning-map-illustrations/f5-dualread/F5-U3-L4.png",
-              "imageCredit": "自制 · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-53228-bokushos-splashed-ink-landscape.jpg",
+                "title": "Splashed-Ink Landscape",
+                "artist": "Bokushō Shūshō",
+                "year": "early 16th century",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "画面由上至下用浓淡墨泼开，山与树之边线很少，水墨自行渗开。近景与远景都溶成墨团，只剩少量笔触提示坡与树。作品将山水写成一次可见之水墨效果。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f5-pd/met-40090-liang-kai-poet-marshy-bank.jpg",
+                "title": "Poet strolling by a marshy bank",
+                "artist": "Liang Kai",
+                "year": "early 13th century",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "团扇幅见到一个细小人影沿沼泽岸边行，芦苇与坡岸用淡墨写出。人物细、空间阔，笔触简但行人仍然认得。作品将一个行人放在开阔岸边，主题是行路与地方。"
+              },
               "explain": "练习结构 · 不用真实试卷"
             },
             {
               "type": "short",
               "question": "用「主题一句＋一次试验＋下一步」说明作品集第一件作品。提示：试验要写改了哪个条件，而且不用高分示例。",
               "options": [],
-              "explain": "练习结构 · 不用真实试卷"
+              "explain": "练习结构 · 不用真实试卷",
+              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q5-short.png",
+              "imageCredit": "自制 · VA-Nexus"
             }
           ]
         }

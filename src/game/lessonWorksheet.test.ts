@@ -260,7 +260,7 @@ describe('November activity papers', () => {
     assert.match(view, /id: 'print'/)
     assert.match(view, /id: 'download'/)
     assert.match(view, /window\.print\(\)/)
-    assert.match(view, /worksheetDownloadHtml/)
+    assert.match(view, /worksheetDownloadFor/)
     assert.match(view, /worksheetShowsSample/)
     assert.match(view, /WORKSHEET_SAMPLE_LABEL/)
     assert.match(view, /data-worksheet-audience=\{audience\}/)
@@ -310,6 +310,44 @@ describe('November activity papers', () => {
     const criteriaFn = criteria.slice(criteria.indexOf('function LessonCardCriteria'))
     assert.equal(criteriaFn.includes('trial.'), false)
     assert.equal(hant['visual.trial'], '試驗物料可以試物料同質感，再用對比、強調或重複去組織你見到嘅近身細節。')
+  })
+
+  it('gives the Form 5 heritage lessons one unit paper without the November case', () => {
+    const hant = messages('src/i18n/zh-Hant.json')
+    const text = (key: string) => hant[key] ?? key
+    for (const id of ['F5-U3-L1', 'F5-U3-L2', 'F5-U3-L3', 'F5-U3-L4']) {
+      assert.equal(worksheetLessonOf(id), id)
+      assert.equal(worksheetShowsSample(id as 'F5-U3-L1', 'teacher', 'preview'), false)
+    }
+    assert.equal(worksheetLessonOf('F4-U3-L1'), null)
+    assert.deepEqual(worksheetQuestions('F5-U3-L2', text), [
+      hant['worksheet.f5.q1'],
+      hant['worksheet.f5.q2'],
+      hant['worksheet.f5.q3'],
+      hant['worksheet.f5.q4'],
+    ])
+    assert.deepEqual(worksheetCaseLines('F5-U3-L4', 'teacher', text), [])
+    const file = worksheetDownloadHtml({
+      lang: 'zh-Hant-HK',
+      title: hant['worksheet.f5.title'],
+      intro: hant['worksheet.f5.intro'],
+      noSchool: hant['worksheet.noSchool'],
+      caseHeading: hant['worksheet.section.case'],
+      caseLines: [],
+      questionsHeading: hant['worksheet.f5.section.tasks'],
+      questions: worksheetQuestions('F5-U3-L1', text),
+    })
+    assert.equal(file.includes('唔係功課'), true)
+    assert.equal(file.includes(hant['worksheet.noSchool']), true)
+    assert.equal(file.includes('視覺日記'), true)
+    assert.equal(file.includes('方法比較'), true)
+    assert.equal(file.includes('邂逅'), false)
+    assert.equal(file.includes('深食'), false)
+    assert.equal(file.includes('#FFF9E9'), true)
+    assert.equal(file.includes('#0D9488'), true)
+    assert.equal(worksheetDownloadName('F5-U3-L3'), 'classroom-activity-F5-U3-HERITAGE.html')
+    assert.equal(/[\u7684\u628A\u5572\u4F86\u6765\u771E]/.test(hant['worksheet.f5.q1']), false)
+    assert.equal(hant['worksheet.f5.q1'].codePointAt(hant['worksheet.f5.q1'].indexOf('揀')), 0x63c0)
   })
 
   it('leaves LessonCardArt, display settings, playback, SoftMotion, and the api count alone', () => {

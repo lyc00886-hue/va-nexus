@@ -2,11 +2,14 @@ import { useState } from 'react'
 import { flushSync } from 'react-dom'
 import {
   worksheetCaseLines,
-  worksheetDownloadHtml,
-  worksheetDownloadName,
+  worksheetDownloadFor,
+  worksheetIntroKey,
+  worksheetIsHeritage,
   worksheetLessonOf,
   worksheetQuestions,
+  worksheetQuestionsHeadingKey,
   worksheetShowsSample,
+  worksheetTitleKey,
   WORKSHEET_SAMPLE_LABEL,
   type WorksheetAudience,
   type WorksheetMode,
@@ -25,7 +28,8 @@ function copy(key: string): string {
 }
 
 /**
- * Thin activity paper on the two November community-art lessons.
+ * Classroom activity paper.
+ * November lessons keep their case papers. Form 5 heritage lessons share one unit paper.
  * Teachers get preview, print, and download. Students get the paper only.
  */
 export function LessonWorksheet({ lessonId }: { lessonId: string }) {
@@ -40,27 +44,21 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
   if (!lesson) return null
 
   const audience: WorksheetAudience = role ? 'teacher' : 'student'
-  const titleKey = lesson === 'F4-U3-L3' ? 'worksheet.l3.title' : 'worksheet.l4.title'
+  const titleKey = worksheetTitleKey(lesson)
+  const introKey = worksheetIntroKey(lesson)
+  const questionsHeadingKey = worksheetQuestionsHeadingKey(lesson)
+  const heritage = worksheetIsHeritage(lesson)
   const caseLines = worksheetCaseLines(lesson, audience, copy)
   const questions = worksheetQuestions(lesson, copy)
   const sample = worksheetShowsSample(lesson, audience, mode)
 
   function downloadPaper() {
-    const html = worksheetDownloadHtml({
-      lang: HTML_LANG[getLocale()],
-      title: t(titleKey),
-      intro: t('worksheet.intro'),
-      noSchool: t('worksheet.noSchool'),
-      caseHeading: t('worksheet.section.case'),
-      caseLines: worksheetCaseLines(lesson!, 'teacher', copy),
-      questionsHeading: t('worksheet.section.questions'),
-      questions: worksheetQuestions(lesson!, copy),
-    })
-    const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
+    const file = worksheetDownloadFor(lesson!, HTML_LANG[getLocale()], copy)
+    const blob = new Blob([file.html], { type: 'text/html;charset=utf-8' })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = worksheetDownloadName(lesson!)
+    link.download = file.name
     link.rel = 'noopener'
     document.body.appendChild(link)
     link.click()
@@ -124,7 +122,7 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
         className="space-y-4 rounded-3xl bg-[#FFF9E9] px-4 py-4 text-slate-900"
       >
         <h3 className="text-base font-bold leading-snug">{t(titleKey)}</h3>
-        <p className="text-sm leading-relaxed text-slate-700">{t('worksheet.intro')}</p>
+        <p className="text-sm leading-relaxed text-slate-700">{t(introKey)}</p>
         <p className="text-sm leading-relaxed text-slate-700">{t('worksheet.noSchool')}</p>
         {sample ? (
           <div data-worksheet-sample>
@@ -134,17 +132,19 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
             </p>
           </div>
         ) : null}
-        <section
-          data-worksheet-case={lesson === 'F4-U3-L3' ? 'hill' : 'deepfood'}
-          className="space-y-1 rounded-2xl border-2 border-[#0D9488] bg-[#FFF9E9] px-4 py-3 text-sm leading-relaxed"
-        >
-          <h4 className="font-bold text-[#0D9488]">{t('worksheet.section.case')}</h4>
-          {caseLines.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
-        </section>
+        {heritage ? null : (
+          <section
+            data-worksheet-case={lesson === 'F4-U3-L3' ? 'hill' : 'deepfood'}
+            className="space-y-1 rounded-2xl border-2 border-[#0D9488] bg-[#FFF9E9] px-4 py-3 text-sm leading-relaxed"
+          >
+            <h4 className="font-bold text-[#0D9488]">{t('worksheet.section.case')}</h4>
+            {caseLines.map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+          </section>
+        )}
         <div data-worksheet-questions>
-          <h4 className="font-bold text-[#0D9488]">{t('worksheet.section.questions')}</h4>
+          <h4 className="font-bold text-[#0D9488]">{t(questionsHeadingKey)}</h4>
           <ol className="mt-2 list-decimal space-y-4 pl-5 text-sm leading-relaxed">
             {questions.map((question) => (
               <li key={question}>

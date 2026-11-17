@@ -1,12 +1,19 @@
 import { useRef, useState, type FormEvent } from 'react'
-import { useT } from '../i18n'
+import { getLocale, HTML_LANG, t, useT, type MessageKey } from '../i18n'
 import {
+  DEMO_ASSIGN_ID,
   F5_DEMO_ASSIGN_ID,
   assignmentsForClass,
   useAssignList,
   visibleAssignment,
   type StaffAssignment,
 } from '../lib/assignList'
+import {
+  F5_INSTRUCTIONS_DOWNLOAD_NAME,
+  homeworkInstructionsHtml,
+  worksheetDownloadFor,
+  worksheetLessonOf,
+} from '../game/lessonWorksheet'
 import { DEMO_CLASS_ID } from '../lib/classList'
 import {
   HW_LEARNER_ID,
@@ -94,6 +101,76 @@ export function HomeworkStudent() {
   )
 }
 
+function saveHtml(name: string, html: string) {
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = name
+  link.rel = 'noopener'
+  document.body.appendChild(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}
+
+function copy(key: string): string {
+  return t(key as MessageKey)
+}
+
+function HomeworkDownloads({ assignmentId }: { assignmentId: string }) {
+  const { t } = useT()
+  const downloads =
+    assignmentId === DEMO_ASSIGN_ID
+      ? [
+          { id: 'l3', label: t('hw.student.downloadL3'), lessonId: 'F4-U3-L3' },
+          { id: 'l4', label: t('hw.student.downloadL4'), lessonId: 'F4-U3-L4' },
+        ]
+      : assignmentId === F5_DEMO_ASSIGN_ID
+        ? [
+            { id: 'f5-paper', label: t('hw.student.downloadF5Paper'), lessonId: 'F5-U3-L1' },
+            { id: 'f5-instructions', label: t('hw.student.downloadF5Instructions'), lessonId: '' },
+          ]
+        : []
+  if (downloads.length === 0) return null
+
+  function download(id: string, lessonId: string) {
+    if (id === 'f5-instructions') {
+      const dueLine = `${t('hw.student.due')} ${t('assign.staff.f5demoDue')}`
+      saveHtml(
+        F5_INSTRUCTIONS_DOWNLOAD_NAME,
+        homeworkInstructionsHtml({
+          lang: HTML_LANG[getLocale()],
+          title: t('assign.staff.f5demoTitle'),
+          dueLine,
+          instructions: t('assign.staff.f5demoInstructions'),
+        }),
+      )
+      return
+    }
+    const lesson = worksheetLessonOf(lessonId)
+    if (!lesson) return
+    const file = worksheetDownloadFor(lesson, HTML_LANG[getLocale()], copy)
+    saveHtml(file.name, file.html)
+  }
+
+  return (
+    <div className="mt-3 flex flex-wrap gap-2" data-testid={`hw-student-downloads-${assignmentId}`}>
+      {downloads.map((item) => (
+        <button
+          key={item.id}
+          type="button"
+          data-testid={`hw-download-${item.id}`}
+          onClick={() => download(item.id, item.lessonId)}
+          className="inline-flex min-h-9 items-center rounded-full border border-[#0D9488] bg-white px-4 py-2 text-left text-sm font-semibold text-[#0D9488]"
+        >
+          {item.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function HomeworkCard({
   assignment,
   title,
@@ -140,13 +217,7 @@ function HomeworkCard({
         {t('hw.student.due')} {due}
       </p>
       {instructions ? <p className="mt-2 text-sm leading-relaxed text-slate-700">{instructions}</p> : null}
-      {assignment.id === F5_DEMO_ASSIGN_ID ? (
-        <p className="mt-3">
-          <span className="inline-flex max-w-full whitespace-normal rounded-full bg-[#0D9488] px-3 py-1 text-left text-sm font-semibold leading-snug text-[#FFF9E9]">
-            {t('assign.staff.f5demoAttach')}
-          </span>
-        </p>
-      ) : null}
+      <HomeworkDownloads assignmentId={assignment.id} />
       {existing ? <p className="mt-2 text-sm font-semibold text-[#0D9488]">{existing.fileName}</p> : null}
       <form onSubmit={submit} className="mt-3 space-y-3">
         <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.wholeFile')}</p>
