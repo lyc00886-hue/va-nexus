@@ -524,42 +524,46 @@
             {
               "title": "用方法比较",
               "body": "奇石比较用方法，不是抄画面。你可以看吴彬怎样画石画得奇，再看 Bada Shanren（Zhu Da）怎样用简笔与留白写石与鱼。",
-              "image": "/content/learning-map-illustrations/met-open/435883.jpg",
-              "imageTitle": "Still Life with Apples and Pears",
-              "imageArtist": "Paul Cézanne",
-              "imageYear": "ca. 1891–92",
+              "image": "/content/learning-map-illustrations/met-open/35990.jpg",
+              "imageTitle": "Azure Cliff with Red Maples",
+              "imageArtist": "Wu Bin",
+              "imageYear": "dated 1603",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "吴彬用浓淡墨与红枫，将崖石写得陡峭而奇特，石势仍可认出。用以察看他怎样将石画得奇。此幅是扇面山水，不是评赏格《十面灵璧图卷》那个局部。"
             },
             {
               "title": "问夸张与留白",
               "body": "比较可以问：何处夸张、何处留白、何处仍然令人认得是石或鱼。",
-              "image": "/content/learning-map-illustrations/met-open/45422.jpg",
-              "imageTitle": "Rock and Waves",
-              "imageArtist": "Maruyama Ōkyo 円山応挙",
-              "imageYear": "dated 1773",
+              "image": "/content/learning-map-illustrations/met-open/51803-dp154502.jpg",
+              "imageTitle": "Album of miscellaneous paintings（其中一頁：山石同樹）",
+              "imageArtist": "Bada Shanren (Zhu Da)",
+              "imageYear": "約1644–1705（館藏未標精確年份）",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "此页是山水：右边有山石与树，前面几株树干与枝叶都写得清楚，后有石壁与远山；左边是对页书法。用以比较何处夸张、何处留白，并且仍可认出是山石与树。此页不是评赏格原档。"
             },
             {
               "title": "讲方法不临摹",
-              "body": "Bada Shanren（Zhu Da）常用简笔与大片留白写石与鱼，形态夸张但仍然认得。你要讲方法，不要讲成要临摹某一幅画。",
-              "image": "/content/learning-map-illustrations/met-open/63203.jpg",
-              "imageTitle": "Landscape after Xia Gui (active ca. 1195–1230), from the Mustard Seed Garden Manual of Painting",
-              "imageArtist": "Wang Gai",
-              "imageYear": "first edition printed in 1679",
+              "body": "Bada Shanren（Zhu Da）此页山水用浓淡墨写密山石与树林，松枝交叠，形态仍然认得。你要讲方法，不要讲成要临摹某一幅画。",
+              "image": "/content/learning-map-illustrations/met-open/49145-dp160563.jpg",
+              "imageTitle": "Landscape album（其中一頁：山水）",
+              "imageArtist": "Bada Shanren (Zhu Da)",
+              "imageYear": "dated 1699",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "此页是 1699 年山水册里面其中一页：山石密、树林与松枝交叠，墨色浓淡对比较强。用以讲 Bada Shanren（Zhu Da）方法，不要当成要临摹此页。此页不是评赏格原档。"
             },
             {
               "title": "真实作品图",
               "body": "评赏格用已核实免费授权之真实作品图。课堂不放高分示例。",
-              "image": "/content/learning-map-illustrations/met-open/437989.jpg",
-              "imageTitle": "Dish of Apples",
-              "imageArtist": "Paul Cézanne",
-              "imageYear": "ca. 1876–77",
+              "image": "/content/learning-map-illustrations/met-open/49145-dp160560.jpg",
+              "imageTitle": "Landscape album（其中一頁：山石）",
+              "imageArtist": "Bada Shanren (Zhu Da)",
+              "imageYear": "dated 1699",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "此页山石用淡墨与留白写成，笔触简但石势仍可认出。用以做奇石比较方法练习。此页不是评赏格原档。"
             }
           ],
           "quiz": [
@@ -574,12 +578,13 @@
               ],
               "answer": "比较方法而不是抄画面",
               "explain": "比较是方法，不是临摹。",
-              "image": "/content/learning-map-illustrations/met-open/435866.jpg",
-              "imageTitle": "Apples",
-              "imageArtist": "Paul Cézanne",
-              "imageYear": "1878–79",
+              "image": "/content/learning-map-illustrations/met-open/49145-dp160561.jpg",
+              "imageTitle": "Landscape album（其中一頁：崖石同樹）",
+              "imageArtist": "Bada Shanren (Zhu Da)",
+              "imageYear": "dated 1699",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "此页可见崖石与树，墨线简、留白多。用以练习由所见写出方法，而不是抄画面。此页不是评赏格原档。"
             },
             {
               "type": "fill",
@@ -593,12 +598,13 @@
                 "座位",
                 "签名"
               ],
-              "image": "/content/learning-map-illustrations/met-open/436294.jpg",
-              "imageTitle": "Still Life with Pansies",
-              "imageArtist": "Henri Fantin-Latour",
-              "imageYear": "1874",
+              "image": "/content/learning-map-illustrations/met-open/51803-dp154504.jpg",
+              "imageTitle": "Album of miscellaneous paintings（其中一頁：魚同留白）",
+              "imageArtist": "Bada Shanren (Zhu Da)",
+              "imageYear": "約1644–1705（館藏未標精確年份）",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "此页用简笔写出鱼，大片留白包围主体，形态夸张但仍可认出。用以察看 Bada Shanren（Zhu Da）留白与简笔。此页不是评赏格《Fish and rocks》原档。"
             },
             {
               "type": "match",
@@ -612,12 +618,13 @@
                 "Bada Shanren（Zhu Da）": "用简笔与留白写石与鱼"
               },
               "explain": "两个都是方法，不是要你抄画面。",
-              "image": "/content/learning-map-illustrations/met-open/436293.jpg",
-              "imageTitle": "Still Life with Flowers and Fruit",
-              "imageArtist": "Henri Fantin-Latour",
-              "imageYear": "1866",
+              "image": "/content/learning-map-illustrations/met-open/35990.jpg",
+              "imageTitle": "Azure Cliff with Red Maples",
+              "imageArtist": "Wu Bin",
+              "imageYear": "dated 1603",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "吴彬用浓淡墨与红枫，将崖石写得陡峭而奇特，石势仍可认出。用以察看他怎样将石画得奇。此幅是扇面山水，不是评赏格《十面灵璧图卷》那个局部。"
             },
             {
               "type": "order",
@@ -629,12 +636,13 @@
                 "写你自己会试的一步"
               ],
               "explain": "由所见到方法，再到自己一步。",
-              "image": "/content/learning-map-illustrations/met-open/39547.jpg",
-              "imageTitle": "Bamboo, old tree, and rock",
-              "imageArtist": "Wu Zhen",
-              "imageYear": "dated 1338",
+              "image": "/content/learning-map-illustrations/met-open/51803-dp154497.jpg",
+              "imageTitle": "Album of miscellaneous paintings（其中一頁：山水）",
+              "imageArtist": "Bada Shanren (Zhu Da)",
+              "imageYear": "約1644–1705（館藏未標精確年份）",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "此页是山水：右边可见山、树与屋舍，墨色层层叠起；左边是对页书法。用以由所见写形式，再讲方法。此页不是评赏格原档，也不是杂画册里面「山石与树」那一页。"
             },
             {
               "type": "dualRead",
@@ -666,12 +674,13 @@
               "question": "用两句比较吴彬与 Bada Shanren（Zhu Da）。提示：第一句讲石之形式，第二句讲一种方法，而且写明你不是抄画面。",
               "options": [],
               "explain": "练习结构 · 不用真实试卷",
-              "image": "/content/learning-map-illustrations/met-open/49181.jpg",
-              "imageTitle": "Thirty-six Peaks of Mount Huang Recollected",
-              "imageArtist": "Shitao (Zhu Ruoji)",
-              "imageYear": "ca. 1705",
+              "image": "/content/learning-map-illustrations/met-open/35990.jpg",
+              "imageTitle": "Azure Cliff with Red Maples",
+              "imageArtist": "Wu Bin",
+              "imageYear": "dated 1603",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "吴彬用浓淡墨与红枫，将崖石写得陡峭而奇特，石势仍可认出。用以察看他怎样将石画得奇。此幅是扇面山水，不是评赏格《十面灵璧图卷》那个局部。"
             }
           ]
         },
@@ -694,12 +703,13 @@
             {
               "title": "课室材料",
               "body": "搜集可以是课室速写、已有照片、一段访问笔记，或者一件收集到的物件。",
-              "image": "/content/learning-map-illustrations/met-open/435882.jpg",
-              "imageTitle": "Still Life with Apples and a Pot of Primroses",
-              "imageArtist": "Paul Cézanne",
-              "imageYear": "ca. 1890",
+              "image": "/content/learning-map-illustrations/met-open/10797.jpg",
+              "imageTitle": "Sketch from Nature",
+              "imageArtist": "Asher Brown Durand",
+              "imageYear": "ca. 1855",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "对着实地用铅笔写下树与坡。视觉日记可以先用速写搜集材料，再收窄成主题。"
             },
             {
               "title": "写一句主题",
@@ -734,12 +744,13 @@
               ],
               "answer": "搜集材料",
               "explain": "先搜集，再收窄成主题。",
-              "image": "/content/learning-map-illustrations/met-open/845166.jpg",
-              "imageTitle": "Ink Plum and Bamboo",
-              "imageArtist": "Hoashi Kyōu 帆足杏雨",
-              "imageYear": "1856 (Ansei 3)",
+              "image": "/content/learning-map-illustrations/met-open/10797.jpg",
+              "imageTitle": "Sketch from Nature",
+              "imageArtist": "Asher Brown Durand",
+              "imageYear": "ca. 1855",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
-              "imageLicense": "Public Domain · The Met Open Access"
+              "imageLicense": "Public Domain · The Met Open Access",
+              "imageIntro": "对着实地用铅笔写下树与坡。视觉日记可以先用速写搜集材料，再收窄成主题。"
             },
             {
               "type": "fill",
