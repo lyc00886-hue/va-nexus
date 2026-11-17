@@ -16,7 +16,7 @@
  */
 import { t } from '../i18n'
 import { easyReadLines } from '../lib/lessonReadingSurface'
-import { cardArtFrom } from './f4Media'
+import { cardArtFrom, plateFrom, profileFrom } from './f4Media'
 import type { LessonCard, Question } from './types'
 
 export type ContentQuiz = {
@@ -30,6 +30,10 @@ export type ContentQuiz = {
   /** Local lesson-pack image. Used by question stems and dualRead frames. */
   image?: string
   imageCredit?: string
+  /** Verified public-domain plate for one side of a comparison. */
+  plate?: unknown
+  /** Text-only artist and concept profile for the side without an image. */
+  profile?: unknown
 }
 
 export type ContentCard = {
@@ -101,12 +105,16 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
     }
     if (q.type === 'dualRead') {
       const labels = q.options.map((item) => item.trim()).filter(Boolean)
+      const plate = plateFrom(q.plate)
+      const profile = profileFrom(q.profile)
       return {
         id,
         type: 'dualRead',
         prompt: q.question,
         labels: [labels[0] ?? '', labels[1] ?? ''],
         ...art,
+        ...(plate ? { plate } : {}),
+        ...(profile ? { profile } : {}),
         explain,
       }
     }

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { createHash } from 'node:crypto'
 import { existsSync, readFileSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { describe, it } from 'node:test'
@@ -73,7 +74,17 @@ const BANNED = [
 const CANTONESE = /[嘅咗唔係喺嘢冇啲佢咁噉嚟睇揀撳啱拎搵乜呢俾嗰哋晒]|點樣|点样/
 const PORTFOLIO_LINE = 'Lessons do not use real exam papers or high-score exemplars.'
 
-type Quiz = { type: string; question: string; options: string[]; answer?: string | number | Record<string, string>; wordBank?: string[]; image?: string }
+type Quiz = {
+  type: string
+  question: string
+  options: string[]
+  answer?: string | number | Record<string, string>
+  wordBank?: string[]
+  image?: string
+  plate?: { image?: string }
+  profile?: { image?: string }
+  explain?: string
+}
 type Lesson = { id: string; title: string; cards: unknown[]; quiz: Quiz[]; coverImage?: string }
 type Unit = { id: string; title: string; intro: string; coverImage?: string; lessons: Lesson[] }
 
@@ -181,8 +192,14 @@ describe('Form 5 and Form 6 course packs', () => {
               if (quiz.type === 'fill') assert.ok(quiz.wordBank?.includes(String(quiz.answer)), `${name} ${lesson.id}`)
               if (quiz.type === 'mcq') assert.ok(quiz.options.includes(String(quiz.answer)), `${name} ${lesson.id}`)
               if (quiz.type === 'dualRead') {
-                assert.match(String(quiz.image), new RegExp(`/${grade}-dualread/${lesson.id}\\.png$`))
-                assert.ok(statSync(resolve(PUBLIC, String(quiz.image).slice(1))).size > 1000, lesson.id)
+                if (grade === 'f5' && lesson.id === 'F5-U3-L2') {
+                  assert.equal(quiz.image, undefined, `${name} ${lesson.id}`)
+                  assert.match(String(quiz.plate?.image), /\/f5-pd\/wubin-ten-views-lingbi-front-detail\.jpg$/)
+                  assert.equal(quiz.profile?.image, undefined, `${name} ${lesson.id}`)
+                } else {
+                  assert.match(String(quiz.image), new RegExp(`/${grade}-dualread/${lesson.id}\\.png$`))
+                  assert.ok(statSync(resolve(PUBLIC, String(quiz.image).slice(1))).size > 1000, lesson.id)
+                }
               }
             }
           }
@@ -300,5 +317,31 @@ describe('Form 5 and Form 6 course packs', () => {
     assert.equal(hant['map.f6.subtitle'], '中六視藝單元。短課卡，然後小測。唔聲稱全日曆每一週完整課。')
     assert.equal(existsSync(resolve(root, 'src/content/f5-demo.json')), true)
     assert.equal(existsSync(resolve(root, 'src/content/f6-demo.json')), true)
+  })
+
+  it('shows the Wu Bin front-view detail and a text profile on F5-U3-L2', () => {
+    const plate = resolve(PUBLIC, 'content/learning-map-illustrations/f5-pd/wubin-ten-views-lingbi-front-detail.jpg')
+    const bytes = readFileSync(plate)
+    assert.equal(bytes.length, 326090)
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), '6a8c9f89200eafb0c5fbe77a2e9b46bff801e2a40c506670808e1252bdd34037')
+    const hk = pack('f5-demo.json')
+    const hans = pack('f5-demo.zh-Hans.json')
+    const en = pack('f5-demo.en.json')
+    const lessonOf = (file: { units: Unit[] }) =>
+      file.units.find((unit) => unit.id === 'F5-U3-HERITAGE')?.lessons.find((lesson) => lesson.id === 'F5-U3-L2')
+    const hkLesson = lessonOf(hk)
+    const hansLesson = lessonOf(hans)
+    const enLesson = lessonOf(en)
+    assert.equal(hkLesson?.cards[0], '奇石比較用方法，唔係抄畫面。你可以睇吳彬點樣畫石畫得奇，再睇超現實同立體主義點樣重組所見。')
+    assert.equal(hkLesson?.cards[2], '超現實常將唔尋常嘅組合放埋一齊。立體主義常將物件拆成多個面。你要講方法，唔好講成要臨摹某一幅畫。')
+    assert.equal(enLesson?.cards[0], 'Strange-stone comparison is about methods, not copying a picture. Look at how Wu Bin makes a stone look strange, then at how Surrealism and Cubism reorganise what is seen.')
+    assert.equal(hansLesson?.cards[0], '奇石比较用方法，不是抄画面。你可以看吴彬怎样画石画得奇，再看超现实与立体主义怎样重组所见。')
+    const dual = (lesson: Lesson | undefined) => lesson?.quiz.find((quiz) => quiz.type === 'dualRead')
+    assert.equal(dual(hkLesson)?.question, '藝術評賞比較：左邊對住吳彬奇石寫一種方法，右邊對住超現實或立體主義寫一種方法。有圖就對住圖寫；無圖就對住文字檔寫。唔好抄畫面。')
+    assert.deepEqual(dual(hkLesson)?.options, ['奇石方法', '重組方法'])
+    assert.equal(dual(hkLesson)?.explain, '練習結構 · 唔用真實試卷')
+    assert.equal(JSON.stringify(hkLesson).includes('徐冰'), false)
+    assert.equal(JSON.stringify(hkLesson).includes('tate.org'), false)
+    assert.equal(JSON.stringify(enLesson).includes('The Sixteen Luohans'), false)
   })
 })

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { moveItem, shuffledItems } from '../../game/thinPractice'
-import type { DualReadQuestion, OrderQuestion, ShortQuestion } from '../../game/types'
+import type { ComparePlate, ConceptProfile, DualReadQuestion, OrderQuestion, ShortQuestion } from '../../game/types'
 import { t } from '../../i18n'
 import { LessonCardArt } from './LessonCardArt'
 
@@ -100,12 +100,19 @@ export function DualReadBoard({
   onChange: (next: string[]) => void
 }) {
   const values = [lines[0] ?? '', lines[1] ?? '']
+  const compared = q.plate != null || q.profile != null
   return (
     <div data-thin-practice="dualRead">
       <ThinHint type="dualRead" />
       <p className={`mt-3 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
-      <DualReadFrame image={q.image} credit={q.imageCredit} />
-      <LineFields labels={q.labels} values={values} revealed={revealed} onChange={onChange} />
+      {compared ? (
+        <CompareSides q={q} values={values} revealed={revealed} onChange={onChange} />
+      ) : (
+        <>
+          <DualReadFrame image={q.image} credit={q.imageCredit} />
+          <LineFields labels={q.labels} values={values} revealed={revealed} onChange={onChange} />
+        </>
+      )}
       <ThinPace />
     </div>
   )
@@ -157,6 +164,121 @@ function DualReadFrame({ image, credit }: { image?: string; credit?: string }) {
       </div>
       {credit ? <figcaption className="mt-1 text-[11px] leading-snug text-slate-500">{credit}</figcaption> : null}
     </figure>
+  )
+}
+
+function CompareSides({
+  q,
+  values,
+  revealed,
+  onChange,
+}: {
+  q: DualReadQuestion
+  values: string[]
+  revealed: boolean
+  onChange: (next: string[]) => void
+}) {
+  return (
+    <div className="mt-3 grid gap-3 md:grid-cols-2" data-testid="dualread-compare">
+      <div data-testid="dualread-plate">
+        {q.plate ? <PlateFigure plate={q.plate} /> : null}
+        <SideLine
+          label={q.labels[0]}
+          value={values[0] ?? ''}
+          revealed={revealed}
+          onChange={(value) => onChange([value, values[1] ?? ''])}
+        />
+      </div>
+      <div data-testid="dualread-profile" data-image="omitted">
+        {q.profile ? <ProfileCard profile={q.profile} /> : null}
+        <SideLine
+          label={q.labels[1]}
+          value={values[1] ?? ''}
+          revealed={revealed}
+          onChange={(value) => onChange([values[0] ?? '', value])}
+        />
+      </div>
+    </div>
+  )
+}
+
+function PlateFigure({ plate }: { plate: ComparePlate }) {
+  return <PlateImage key={plate.image} plate={plate} />
+}
+
+function PlateImage({ plate }: { plate: ComparePlate }) {
+  const [failed, setFailed] = useState(false)
+  return (
+    <figure className="rounded-2xl border border-[#b7e4df] bg-[#FFF9E9] p-3">
+      {failed ? null : (
+        <img
+          src={plate.image}
+          alt={plate.title}
+          width={1855}
+          height={1080}
+          loading="lazy"
+          decoding="async"
+          className="max-h-72 w-full rounded-xl bg-[#FFF9E9] object-contain"
+          onError={() => setFailed(true)}
+        />
+      )}
+      <figcaption className="mt-2">
+        <AttrLine label={t('art.attr.title')} value={plate.title} />
+        <AttrLine label={t('art.attr.artist')} value={plate.artist} />
+        <AttrLine label={t('art.attr.year')} value={plate.year} />
+        <AttrLine label={t('art.attr.source')} value={plate.source} />
+        <AttrLine label={t('art.attr.license')} value={t('art.attr.pd')} />
+      </figcaption>
+    </figure>
+  )
+}
+
+function ProfileCard({ profile }: { profile: ConceptProfile }) {
+  return (
+    <div className="rounded-2xl border border-[#b7e4df] bg-white p-3">
+      <p className="text-sm font-bold text-[#0D9488]">{t('art.profile.title')}</p>
+      <AttrLine label={t('art.profile.name')} value={profile.name} />
+      <AttrLine label={t('art.profile.nationality')} value={profile.nationality} />
+      <AttrLine label={t('art.profile.active')} value={profile.active} />
+      <AttrLine label={t('art.profile.movement')} value={profile.movement} />
+      <AttrLine label={t('art.profile.technique')} value={profile.technique} />
+      <AttrLine label={t('art.profile.search')} value={profile.search} />
+      <AttrLine label={t('art.attr.license')} value={t('art.attr.omitted')} />
+    </div>
+  )
+}
+
+function AttrLine({ label, value }: { label: string; value: string }) {
+  return (
+    <p className="mt-1 text-xs leading-snug text-slate-600">
+      <span className="font-semibold text-[#0D9488]">{label}</span> {value}
+    </p>
+  )
+}
+
+function SideLine({
+  label,
+  value,
+  revealed,
+  onChange,
+}: {
+  label: string
+  value: string
+  revealed: boolean
+  onChange: (value: string) => void
+}) {
+  return (
+    <label className="mt-3 grid gap-1">
+      <span className="text-sm font-semibold text-[#0D9488]">{label}</span>
+      <textarea
+        value={value}
+        readOnly={revealed}
+        rows={2}
+        placeholder={t('qtype.write')}
+        onChange={(event) => onChange(event.target.value)}
+        className="w-full resize-y rounded-2xl border-2 border-slate-200 bg-[#FFF9E9] px-3 py-2 text-base text-slate-900 outline-none focus:border-[#0D9488]"
+      />
+    </label>
   )
 }
 
