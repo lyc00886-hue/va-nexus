@@ -303,7 +303,7 @@
   "image.rule": "If a work is not independently verified Public Domain or CC0, do not use that image and do not use that artist; pick another suitable, verified free-licence work.",
   "image.sources": "Sources only: The Met Open Access, Art Institute of Chicago, Rijksmuseum Rijksstudio, or Wikimedia Commons.",
   "image.blocked": "This work is not verified as free-licensed, so do not use that image and do not use that artist. Please pick another verified free-licence work.",
-  "image.homemade": "Homemade images may be used only as explanatory diagrams, never as the object of appreciation, and never as a stand-in for an original in a Compare works grid.",
+  "image.homemade": "Lesson-card mains, question-stem illustrations, teaching screens, and reference images must use verified free-licence real works, and must list the source and basic facts. Only classroom-shell interface elements may be original, and must be labelled \"Original · VA-Nexus\".",
   "image.school": "School-based student work may appear only when that lesson is assessing the student's own work, never as a stand-in for an artist's original.",
   "image.blockedTitle": "Image search did not pass licence checks",
   "image.ruleTitle": "Image search and licence rules",
@@ -1285,10 +1285,10 @@
   "image.keep.caption": "Existing qualified original · Original · VA-Nexus",
   "image.realistic.caption": "Realistic original for this lesson · Original · VA-Nexus",
   "image.reference.caption": "Realistic reference image · For reference only · Original · VA-Nexus",
-  "image.path.themeUnit": "/content/learning-map-illustrations/f4-thematic/F4-U3-theme-unit.png",
-  "image.path.lived": "/content/learning-map-illustrations/f4-thematic/F4-U3-lived-community.png",
-  "image.path.research": "/content/learning-map-illustrations/f4-thematic/F4-U3-L3-research-path.png",
-  "image.path.create": "/content/learning-map-illustrations/f4-thematic/F4-U3-L4-create-continue.png",
+  "image.path.themeUnit": "/content/learning-map-illustrations/met-open/338964.jpg",
+  "image.path.lived": "/content/learning-map-illustrations/met-open/338696.jpg",
+  "image.path.research": "/content/learning-map-illustrations/met-open/459619.jpg",
+  "image.path.create": "/content/learning-map-illustrations/met-open/438023.jpg",
   "image.path.strands": "/content/learning-map-illustrations/f4-thematic/F4-U3-strands-woven.png",
   "lesson.goal.hint": "Observable outcomes this lesson asks you to reach",
   "lesson.f4u3l3.goal.1": "You can point out the object and focus of appreciation for 「邂逅！山 川 人」, and write the relationship between the clay and the village, the place, and the people.",
@@ -1800,5 +1800,7 @@
   "lesson.f4u3l4.appr.right.year": "1852–55",
   "lesson.f4u3l4.appr.right.source": "Metropolitan Museum of Art, New York, NY",
   "lesson.f4u3l4.appr.right.license": "Public Domain / CC0",
-  "lesson.f4u3l4.appr.right.intro": "The large canvas spreads a controlled yet running herd of horses from left to right, with riders and handlers woven into a diagonal movement. Dust on the ground and a line of trees at the back mark an outdoor site. The painting presents a Paris horse market as a public place of sale, strength, and skill."
+  "lesson.f4u3l4.appr.right.intro": "The large canvas spreads a controlled yet running herd of horses from left to right, with riders and handlers woven into a diagonal movement. Dust on the ground and a line of trees at the back mark an outdoor site. The painting presents a Paris horse market as a public place of sale, strength, and skill.",
+  "image.path.cover.f4u3l3": "/content/learning-map-illustrations/met-open/459235.jpg",
+  "image.path.cover.f4u3l4": "/content/learning-map-illustrations/met-open/48945.jpg"
 }

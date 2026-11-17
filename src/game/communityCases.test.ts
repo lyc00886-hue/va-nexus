@@ -419,9 +419,9 @@ describe('November community-art cases', () => {
     )
     assert.equal(l4.cards[1]?.body, '概念發展要記錄：文字／圖象草圖、試驗物料、改動原因（研究工作簿用）。')
     assert.equal(l4.cards[2]?.body, '參考風格時：學方法，唔抄圖像；只用合法／自制參考。')
-    assert.equal(l3.cards[0]?.image, '/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c0.png')
+    assert.match(String(l3.cards[0]?.image), /\/met-open\/437310\.jpg$/)
     assert.equal(l3.cards[2]?.image, undefined)
-    assert.equal(l4.cards[0]?.image, '/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png')
+    assert.match(String(l4.cards[0]?.image), /\/met-open\/44601\.jpg$/)
     assert.equal(l4.cards[3]?.image, undefined)
 
     const wired = applyCommunityLessonCopy(

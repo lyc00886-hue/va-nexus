@@ -59,6 +59,7 @@ import { LessonShortTrial } from './LessonShortTrial'
 import { LessonWorksheet } from './LessonWorksheet'
 import { imageDecision, questionImageBlocked } from '../../lib/imageLicence'
 import { LessonCardArt } from './LessonCardArt'
+import { MetWorkFacts } from './MetWorkFacts'
 import { OtterChest, OtterPose } from './OtterPose'
 import { ReadAloudButton } from './ReadAloudButton'
 import { CritiqueFace, ImageBlockedFace, ImageRuleFace } from './ClassroomFaces'
@@ -590,6 +591,7 @@ export function LessonGoal({ lesson, easyRead }: { lesson: Lesson; easyRead: boo
           <li key={`${item.title}-${index}`} className="rounded-2xl bg-slate-50 px-3 py-2">
             <p className={`font-semibold text-slate-900 ${easyRead ? 'text-lg' : 'text-base'}`}>{item.title}</p>
             <LessonCardArt image={item.image} credit={item.imageCredit} />
+            <MetWorkFacts image={item.image} />
             {easyRead ? (
               <ul className="mt-2 space-y-1 text-base text-slate-800">
                 {item.easy.map((line) => (
@@ -640,7 +642,7 @@ function CardsStage({
   const visibleLines = lessonCardVisibleLines(card, easyRead)
   const bodyStyle = lessonCardBodyStyle({ fontSize, dyslexia: easyRead, highContrast })
   const quietFooter = nextTone === 'hidden' ? null : nextTone === 'quiet' ? nextLabel : null
-  const showCardArt = Boolean(card.image && imageDecision({ image: card.image, role: 'diagram' }) === 'show')
+  const showCardArt = Boolean(card.image && imageDecision({ image: card.image, role: 'teaching' }) === 'show')
   return (
     <div
       {...lessonCardReadingAttrs({ fontSize, dyslexia: easyRead, highContrast })}
@@ -652,6 +654,7 @@ function CardsStage({
       {showCardArt ? (
         <div data-art-slot className="min-h-[16rem] flex-[3] overflow-hidden px-4">
           <LessonCardArt image={card.image} credit={card.imageCredit} />
+          <MetWorkFacts image={card.image} />
         </div>
       ) : null}
       <div className={`min-h-0 overflow-y-auto px-4 pb-4 ${showCardArt ? 'flex-[2]' : 'flex-1'}`}>
@@ -979,6 +982,7 @@ function Mcq({ q, locked, easyRead, onAnswer, onGate }: QProps<McqQuestion>) {
   return (
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <MetWorkFacts image={q.image} />
       <div className="mt-3">
         <PracticeOnlyBar />
       </div>
@@ -1014,6 +1018,7 @@ function Fill({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<FillQuesti
   return (
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <MetWorkFacts image={q.image} />
       <div className="mt-3">
         <PracticeOnlyBar />
       </div>
@@ -1109,6 +1114,7 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
   return (
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <MetWorkFacts image={q.image} />
       <div className="mt-3">
         <PracticeOnlyBar />
       </div>

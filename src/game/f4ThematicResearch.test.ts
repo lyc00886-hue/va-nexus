@@ -31,29 +31,22 @@ const HANT = {
   'image.added.caption': '本課再加插圖 · 自制 · VA-Nexus',
   'image.keep.caption': '已有合格原圖 · 自制 · VA-Nexus',
   'image.realistic.caption': '本課寫實原圖 · 自制 · VA-Nexus',
-  'image.path.themeUnit': '/content/learning-map-illustrations/f4-thematic/F4-U3-theme-unit.png',
-  'image.path.lived': '/content/learning-map-illustrations/f4-thematic/F4-U3-lived-community.png',
-  'image.path.research': '/content/learning-map-illustrations/f4-thematic/F4-U3-L3-research-path.png',
-  'image.path.create': '/content/learning-map-illustrations/f4-thematic/F4-U3-L4-create-continue.png',
+  'image.path.themeUnit': '/content/learning-map-illustrations/met-open/338964.jpg',
+  'image.path.lived': '/content/learning-map-illustrations/met-open/338696.jpg',
+  'image.path.research': '/content/learning-map-illustrations/met-open/459619.jpg',
+  'image.path.create': '/content/learning-map-illustrations/met-open/438023.jpg',
+  'image.path.cover.f4u3l3': '/content/learning-map-illustrations/met-open/459235.jpg',
+  'image.path.cover.f4u3l4': '/content/learning-map-illustrations/met-open/48945.jpg',
   'image.path.strands': '/content/learning-map-illustrations/f4-thematic/F4-U3-strands-woven.png',
 } as const
 
 const ADDED = {
-  'F4-U3-theme-unit.png': ['738f8bc30fe4705adbbd61c0f3caee2a8094450c054219738e0512ba25d84fc9', 1302597],
-  'F4-U3-lived-community.png': ['8ea90ae34245b2903bafbc4e06bccb82511a653634a371ecc872488624ddd4fe', 1369796],
-  'F4-U3-L3-research-path.png': ['648d680f59a692325323c47bcd87ce53d6dd3db44b226163a0a27513fd3c72a0', 1138806],
   'F4-U3-strands-woven.png': ['1199696fa8dc9e1364063d4a5cc4adc8a6a0928adcafe2e770075a61f41c86dd', 1383568],
-  'F4-U3-L4-create-continue.png': ['59d4c9bcc876eca31654678cf16d4c499090556853f0aa6de5b08276e4f4fbbb', 1201190],
 } as const
 
 const KEEP = {
   'public/content/learning-map-illustrations/f4-covers/F4-U3-L3.png': '3ce86562819a66149831216716cf9facfe7df082ab9f574fcf3066ff0125dd6c',
   'public/content/learning-map-illustrations/f4-covers/F4-U3-L4.png': '742bf5e38f62a42eb64f08df6d8bf72d2d7d8624bd24913e2bc1d6606feb8476',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c0.png': '51cd26fcc28c7337560f0edfe0759ad2c59c5c58e7c998b5c4e506f61dba74b2',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c1.png': '1d385c7c8a4f055f2e9c38f1a8c4cf11bbdb3cb96e977304e3f5445f157a428e',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png': 'c6203beb4da80665849abe8974380390541aed7a6246e59d08da58c6b04d44d0',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png': 'e51f3abe22c95583bb20844f8d8aa513b21f286aae1f374deb894cead0817f68',
-  'public/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c2.png': '57cdc0f044f8e56c1452c90ff3b6e59b880c098e92bbb8bc66b3fd03238a5a47',
 } as const
 
 const BANNED =
@@ -96,11 +89,14 @@ describe('F4-U3-L3 thematic research slice', () => {
       assert.equal(sha256(path), hash, name)
     }
     for (const [path, hash] of Object.entries(KEEP)) assert.equal(sha256(path), hash, path)
-    const createPath = `${dir}/F4-U3-L4-create-continue.png`
-    assert.equal(createPath.endsWith(HANT['image.path.create'].slice(1)), true)
-    assert.equal(sha256(createPath), '59d4c9bcc876eca31654678cf16d4c499090556853f0aa6de5b08276e4f4fbbb')
-    assert.deepEqual(pngSize(createPath), [1280, 720])
+    assert.equal(sha256('public/content/learning-map-illustrations/met-open/438023.jpg').length, 64)
+    assert.equal(HANT['image.path.create'].endsWith('/met-open/438023.jpg'), true)
+    assert.equal(viewIncludesStrands(), false)
   })
+
+  function viewIncludesStrands(): boolean {
+    return read('src/components/game/F4ThematicResearch.tsx').includes('F4-U3-strands-woven')
+  }
 
   it('wires the research lesson and carries the same unit into making', () => {
     const view = read('src/components/game/F4ThematicResearch.tsx')
@@ -116,7 +112,9 @@ describe('F4-U3-L3 thematic research slice', () => {
     assert.match(view, /image\.path\.lived/)
     assert.match(view, /image\.path\.research/)
     assert.match(view, /image\.path\.create/)
-    assert.match(view, /image\.realistic\.caption/)
+    assert.match(view, /image\.path\.cover\.f4u3l3/)
+    assert.match(view, /image\.path\.cover\.f4u3l4/)
+    assert.match(view, /MetWorkFacts/)
     assert.equal(view.includes('image.added.caption'), false)
     assert.equal(view.includes('image.keep.caption'), false)
     assert.match(view, /lesson\.f4u3l3\.unitLine/)

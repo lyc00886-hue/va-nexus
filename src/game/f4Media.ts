@@ -35,12 +35,22 @@ function text(value: unknown): string | undefined {
  * Optional in-lesson card art. A remote or parent-path image is dropped so the
  * card still renders as title + body. Credit is kept only with a local image.
  */
+const HOMEMADE_TEACHING = [
+  `${ASSET_PREFIX}f4-lesson-cards/`,
+  `${ASSET_PREFIX}f5-lesson-cards/`,
+  `${ASSET_PREFIX}f6-lesson-cards/`,
+  `${ASSET_PREFIX}f4-stems/`,
+  `${ASSET_PREFIX}f5-stems/`,
+  `${ASSET_PREFIX}f6-stems/`,
+  `${ASSET_PREFIX}f4-thematic/`,
+]
+
 export function cardArtFrom(card: { image?: unknown; imageCredit?: unknown }): {
   image?: string
   imageCredit?: string
 } {
   const image = learningMapAssetPath(card.image)
-  if (!image) return {}
+  if (!image || HOMEMADE_TEACHING.some((prefix) => image.startsWith(prefix))) return {}
   const imageCredit = text(card.imageCredit)
   return imageCredit ? { image, imageCredit } : { image }
 }

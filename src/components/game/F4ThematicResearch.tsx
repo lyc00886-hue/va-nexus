@@ -7,6 +7,7 @@ import {
 } from '../../lib/lessonReadingSurface'
 import type { Lesson } from '../../game/types'
 import { LessonCardArt } from './LessonCardArt'
+import { MetWorkFacts } from './MetWorkFacts'
 import { OfficialGoalChips, OfficialPartList } from './OfficialFormat'
 
 const THEMATIC_LESSON = 'F4-U3-L3'
@@ -34,7 +35,7 @@ export function F4ThematicResearch({
   const researchTitle = t('lesson.f4u3l3.title')
   const makingTitle = t('lesson.f4u3l4.title')
   const message = t('unit.f4u3.themeMessage')
-  const realistic = t('image.realistic.caption')
+  const coverPath = research ? t('image.path.cover.f4u3l3') : t('image.path.cover.f4u3l4')
   const strands = [
     ['knowledge', t('unit.f4u3.strand.knowledge.label'), t('unit.f4u3.strand.knowledge')],
     ['appreciate', t('unit.f4u3.strand.appreciate.label'), t('unit.f4u3.strand.appreciate')],
@@ -55,7 +56,8 @@ export function F4ThematicResearch({
           {t('unit.f4u3.theme.label')}：{t('unit.f4u3.theme')}
         </h2>
         <ThemeMessage label={t('unit.f4u3.themeMessage.label')} body={message} />
-        <LessonCardArt image={t('image.path.themeUnit')} credit={realistic} />
+        <LessonCardArt image={t('image.path.themeUnit')} />
+        <MetWorkFacts image={t('image.path.themeUnit')} />
         <div className="grid grid-cols-2 gap-3">
           <LessonLink title={titleTail(researchTitle)} full={researchTitle} />
           <LessonLink title={titleTail(makingTitle)} full={makingTitle} />
@@ -84,13 +86,15 @@ export function F4ThematicResearch({
           }
           body={message}
         />
-        <LessonCardArt image={lesson.coverImage} credit={realistic} />
+        <LessonCardArt image={coverPath} />
+        <MetWorkFacts image={coverPath} />
         <p data-thematic-subtitle className="text-sm leading-relaxed text-slate-800">
           {research ? t('lesson.f4u3l3.subtitle') : t('lesson.f4u3l4.subtitle')}
         </p>
         <OfficialGoalChips />
         <OfficialPartList lessonId={lesson.id} />
-        <LessonCardArt image={research ? t('image.path.lived') : t('image.path.create')} credit={realistic} />
+        <LessonCardArt image={research ? t('image.path.lived') : t('image.path.create')} />
+        <MetWorkFacts image={research ? t('image.path.lived') : t('image.path.create')} />
       </section>
 
       <section
@@ -120,7 +124,10 @@ export function F4ThematicResearch({
           )}
         </div>
         {research ? (
-          <LessonCardArt image={t('image.path.research')} credit={realistic} />
+          <>
+            <LessonCardArt image={t('image.path.research')} />
+            <MetWorkFacts image={t('image.path.research')} />
+          </>
         ) : (
           <p className="text-sm leading-relaxed text-slate-800">{t('unit.f4u3.strand.create')}</p>
         )}
@@ -138,6 +145,7 @@ export function F4ThematicResearch({
               >
                 <h3 className="text-base font-bold text-slate-900">{card.title}</h3>
                 <LessonCardArt image={card.image} credit={card.imageCredit} />
+                <MetWorkFacts image={card.image} />
                 {easyRead ? (
                   <ul data-lesson-body className="mt-3 space-y-2 text-lg text-slate-800" style={bodyStyle}>
                     {lines.map((line) => (

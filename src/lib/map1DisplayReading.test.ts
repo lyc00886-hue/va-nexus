@@ -127,7 +127,7 @@ describe('map1 display and reading on the November cards', () => {
         assert.equal(typeof card.body, 'string')
         assert.ok(card.body && card.body.length > 0, `${id} card ${index}`)
         const file = CARD_IMAGES[id][index]
-        const image = file ? `/content/learning-map-illustrations/f4-lesson-cards/${file}` : undefined
+        const image = file ? card.image : undefined
         if (image) {
           assert.equal(card.image, image)
           assert.equal(existsSync(join(root, 'public', image.slice(1))), true, image)

@@ -20,6 +20,7 @@ import { AiLearningTipScreen, type AiTipState } from './AiLearningTipScreen'
 import { ExerciseMark } from './ExerciseMark'
 import { lessonCardBodyStyle, lessonCardReadingAttrs } from '../../lib/lessonReadingSurface'
 import { LessonCardArt } from './LessonCardArt'
+import { MetWorkFacts } from './MetWorkFacts'
 import { LessonCompleteFrame, StepAdvanceMark } from './SoftMotion'
 import { SoftScreen } from './SoftScreen'
 import { DualReadBoard, OrderBoard, ShortBoard } from './ThinPractice'
@@ -535,6 +536,7 @@ function ReadChunk({
     >
       <h3 className="text-xl font-bold text-slate-900">{card.title}</h3>
       <LessonCardArt image={card.image} credit={card.imageCredit} />
+      <MetWorkFacts image={card.image} />
       {chunked ? (
         <ul data-lesson-body className="mt-3 space-y-2 text-lg text-slate-800" style={bodyStyle}>
           {lines.map((line) => (
@@ -604,6 +606,7 @@ function McqChunk({
     <div className="mt-4">
       <p className="text-lg font-semibold text-slate-900">{q.prompt}</p>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <MetWorkFacts image={q.image} />
       <div className="mt-3 grid gap-2">
         {q.options.map((option, i) => {
           const picked = choice === i
@@ -654,6 +657,7 @@ function FillChunk({
         {after}
       </p>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <MetWorkFacts image={q.image} />
       <div className="mt-3 flex flex-wrap gap-2">
         {q.bank.map((word) => (
           <button
@@ -711,6 +715,7 @@ function MatchChunk({ q, onSolved }: { q: MatchQuestion; onSolved: (correct: boo
     <div className="mt-4">
       <p className="text-lg font-semibold text-slate-900">{q.prompt}</p>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <MetWorkFacts image={q.image} />
       <div className="mt-3 grid grid-cols-2 gap-3">
         <div className="grid gap-2">
           {q.pairs.map((pair) => (

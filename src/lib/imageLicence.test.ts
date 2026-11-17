@@ -18,7 +18,7 @@ const COPY = {
     'image.rule': '未有已核實 Public Domain 或 CC0，就唔用嗰張圖，亦唔用嗰位藝術家，改揀其他合適、已核實免費授權作品。',
     'image.sources': '圖源只可用 The Met Open Access、Art Institute of Chicago、Rijksmuseum Rijksstudio，或 Wikimedia Commons。',
     'image.blocked': '呢件作品未核實免費授權，所以唔用嗰張圖，亦唔用嗰位藝術家。請改揀其他已核實免費授權作品。',
-    'image.homemade': '自制圖只可用喺說明用圖解，唔好當評賞對象，亦唔好用嚟頂藝術評賞比較格嘅原作圖。',
+    'image.homemade': '課卡主圖、題幹插圖、教學畫面同參考圖要改用已核實免費授權真實作品，並要列明出處同基本資料。只准課堂殼介面元素自制，並標「自制 · VA-Nexus」。',
     'image.school': '校本學生作品只可以用喺該課係評學生自己作品嘅場景，唔好頂藝術家原作。',
     'image.blockedTitle': '搵圖未通過授權核實',
     'image.ruleTitle': '搵圖同授權規則',
@@ -34,7 +34,7 @@ const COPY = {
     'image.rule': '未有已核实 Public Domain 或 CC0，就不用嗰张图，亦不用嗰位艺术家，改拣其他合适、已核实免费授权作品。',
     'image.sources': '图源只可用 The Met Open Access、Art Institute of Chicago、Rijksmuseum Rijksstudio，或 Wikimedia Commons。',
     'image.blocked': '这件作品未核实免费授权，所以不用嗰张图，亦不用嗰位艺术家。请改拣其他已核实免费授权作品。',
-    'image.homemade': '自制图只可用在说明用图解，不可当评赏对象，亦不可用嚟顶艺术评赏比较格原作图。',
+    'image.homemade': '课卡主图、题干插图、教学画面同参考图要改用已核实免费授权真实作品，并要列明出处同基本资料。只准课堂壳界面元素自制，并标「自制 · VA-Nexus」。',
     'image.school': '校本学生作品只可用在该课是评学生自己作品嘅场景，不可顶艺术家原作。',
     'image.blockedTitle': '搵图未通过授权核实',
     'image.ruleTitle': '搵图同授权规则',
@@ -50,7 +50,7 @@ const COPY = {
     'image.rule': 'If a work is not independently verified Public Domain or CC0, do not use that image and do not use that artist; pick another suitable, verified free-licence work.',
     'image.sources': 'Sources only: The Met Open Access, Art Institute of Chicago, Rijksmuseum Rijksstudio, or Wikimedia Commons.',
     'image.blocked': 'This work is not verified as free-licensed, so do not use that image and do not use that artist. Please pick another verified free-licence work.',
-    'image.homemade': 'Homemade images may be used only as explanatory diagrams, never as the object of appreciation, and never as a stand-in for an original in a Compare works grid.',
+    'image.homemade': 'Lesson-card mains, question-stem illustrations, teaching screens, and reference images must use verified free-licence real works, and must list the source and basic facts. Only classroom-shell interface elements may be original, and must be labelled "Original · VA-Nexus".',
     'image.school': "School-based student work may appear only when that lesson is assessing the student's own work, never as a stand-in for an artist's original.",
     'image.blockedTitle': 'Image search did not pass licence checks',
     'image.ruleTitle': 'Image search and licence rules',
@@ -117,17 +117,24 @@ describe('classroom image licence and new card copy', () => {
     )
     assert.equal(
       imageDecision({
-        image: '/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c0.png',
-        role: 'diagram',
+        image: '/content/learning-map-illustrations/met-open/45756.jpg',
+        role: 'teaching',
       }),
       'show',
     )
     assert.equal(
       imageDecision({
         image: '/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c0.png',
-        role: 'appreciation',
+        role: 'teaching',
       }),
       'block',
+    )
+    assert.equal(
+      imageDecision({
+        image: '/content/learning-map-illustrations/moods/motion-v2/otter-map-idle.png',
+        role: 'chrome',
+      }),
+      'show',
     )
     assert.equal(
       imageDecision({
@@ -171,7 +178,8 @@ describe('classroom image licence and new card copy', () => {
       'block',
     )
     assert.equal(imageDecision({ image: '/content/own-work.png', role: 'own-work', ownWorkLesson: false }), 'block')
-    assert.equal(imageDecision({ image: '/content/own-work.png', role: 'own-work', ownWorkLesson: true }), 'show')
+    assert.equal(imageDecision({ image: '/content/own-work.png', role: 'own-work', ownWorkLesson: true }), 'block')
+    assert.equal(imageDecision({ image: '/content/own-work.png', role: 'teaching' }), 'block')
   })
 
   it('wires the classroom faces without a pale check button or a mid-card quiz chip', () => {

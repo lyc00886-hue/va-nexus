@@ -4,6 +4,7 @@ import type { ComparePlate, ConceptProfile, DualReadQuestion, OrderQuestion, Sho
 import { t } from '../../i18n'
 import { imageDecision } from '../../lib/imageLicence'
 import { LessonCardArt } from './LessonCardArt'
+import { MetWorkFacts } from './MetWorkFacts'
 import { ImageBlockedFace } from './ClassroomFaces'
 
 const HINT = {
@@ -94,6 +95,7 @@ export function OrderBoard({
         {q.image ? (
           <div data-art-slot className="min-h-[16rem] flex-[3] overflow-y-auto px-4">
             <LessonCardArt image={q.image} credit={q.imageCredit} />
+            <MetWorkFacts image={q.image} />
           </div>
         ) : null}
         <div className="min-h-0 flex-[2] overflow-y-auto px-4 pb-2">
@@ -111,6 +113,7 @@ export function OrderBoard({
       <ThinHint type="order" />
       <p className={`mt-3 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <MetWorkFacts image={q.image} />
       {list}
       <ThinPace />
     </div>
@@ -205,13 +208,14 @@ export function ShortBoard({
 }) {
   const fields = <LineFields labels={[t('qtype.write')]} values={[line]} revealed={revealed} onChange={onChange} />
   if (stage) {
-    const diagramBlocked = Boolean(q.image && imageDecision({ image: q.image, role: 'diagram' }) === 'block')
+    const diagramBlocked = Boolean(q.image && imageDecision({ image: q.image, role: 'teaching' }) === 'block')
     if (diagramBlocked) return <ImageBlockedFace />
     return (
       <div data-thin-practice="short" className="flex min-h-0 flex-1 flex-col">
         {q.image ? (
           <div data-art-slot className="min-h-[16rem] flex-[3] overflow-y-auto px-4">
             <LessonCardArt image={q.image} credit={q.imageCredit} />
+            <MetWorkFacts image={q.image} />
           </div>
         ) : null}
         <div className="min-h-0 flex-[2] overflow-y-auto px-4 pb-2">
@@ -229,6 +233,7 @@ export function ShortBoard({
       <ThinHint type="short" />
       <p className={`mt-3 font-semibold text-slate-900 ${easyRead ? 'text-xl' : 'text-lg'}`}>{q.prompt}</p>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
+      <MetWorkFacts image={q.image} />
       {fields}
       <ThinPace />
     </div>

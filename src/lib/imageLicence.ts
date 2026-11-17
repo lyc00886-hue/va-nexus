@@ -6,7 +6,7 @@
  */
 import type { Question } from '../game/types'
 
-export type ImageRole = 'appreciation' | 'diagram' | 'own-work'
+export type ImageRole = 'appreciation' | 'teaching' | 'chrome' | 'own-work'
 
 export type ImageCandidate = {
   image?: string
@@ -31,7 +31,13 @@ const SHIPPED_APPRECIATION = [
   '/content/learning-map-illustrations/soft-scout/f4-dualread/',
 ]
 
-const DIAGRAM_PREFIXES = [
+/** Local copies of Met Open Access files checked isPublicDomain before they were saved. */
+const VERIFIED_MET = ['/content/learning-map-illustrations/met-open/']
+
+/** Classroom-shell chrome only. Not a teaching image, a stem, or a reference. */
+const CHROME_PREFIXES = ['/content/learning-map-illustrations/moods/', '/logo.png']
+
+const HOMEMADE_TEACHING = [
   '/content/learning-map-illustrations/f4-lesson-cards/',
   '/content/learning-map-illustrations/f5-lesson-cards/',
   '/content/learning-map-illustrations/f6-lesson-cards/',
@@ -61,16 +67,18 @@ export function imageDecision(input: ImageCandidate): ImageDecision {
   const source = input.source?.trim() ?? ''
 
   if (mentionsTate(image) || mentionsTate(source) || mentionsTate(artist)) return 'block'
-  if (input.role === 'own-work') return input.ownWorkLesson ? 'show' : 'block'
-  if (input.role === 'appreciation' && UNLICENSED_ARTISTS.some((name) => artist === name)) return 'block'
+  if (input.role === 'own-work') return 'block'
+  if (input.role === 'chrome') return image && startsWithOne(image, CHROME_PREFIXES) ? 'show' : 'block'
+  if (UNLICENSED_ARTISTS.some((name) => artist === name)) return 'block'
 
-  if (input.role === 'diagram') {
+  if (input.role === 'teaching') {
     if (!image) return 'show'
-    return startsWithOne(image, DIAGRAM_PREFIXES) ? 'show' : 'block'
+    if (startsWithOne(image, HOMEMADE_TEACHING)) return 'block'
+    return startsWithOne(image, VERIFIED_MET) ? 'show' : 'block'
   }
 
   if (!image && !artist) return 'show'
-  if (image && startsWithOne(image, SHIPPED_APPRECIATION)) return 'show'
+  if (image && (startsWithOne(image, SHIPPED_APPRECIATION) || startsWithOne(image, VERIFIED_MET))) return 'show'
   return 'block'
 }
 
@@ -93,5 +101,5 @@ export function questionImageBlocked(q: Question): boolean {
     }
     return false
   }
-  return Boolean(q.image && imageDecision({ image: q.image, role: 'diagram' }) === 'block')
+  return Boolean(q.image && imageDecision({ image: q.image, role: 'teaching' }) === 'block')
 }

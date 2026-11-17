@@ -268,7 +268,13 @@ describe('Form 5 and Form 6 course packs', () => {
       if (name === 'f6-demo.json') assert.equal(blob.includes('"imageCredit":"自制 · VA-Nexus"'), false, name)
     }
     const f5Cards = JSON.stringify(pack('f5-demo.json'))
-    assert.equal(f5Cards.includes('"imageCredit":"自制 · VA-Nexus"'), true)
+    assert.equal(f5Cards.includes('"coverCredit":"自制 · VA-Nexus"'), true)
+    const u3 = pack('f5-demo.json').units.flatMap((unit) => unit.lessons).filter((lesson) => /^F5-U3-L[1-4]$/.test(lesson.id))
+    for (const lesson of u3) {
+      for (const card of lesson.cards) {
+        if (card && typeof card === 'object') assert.notEqual((card as { imageCredit?: string }).imageCredit, '自制 · VA-Nexus')
+      }
+    }
     for (const name of ['f5-demo.zh-Hans.json', 'f6-demo.zh-Hans.json']) {
       const raw = readFileSync(new URL(`../content/${name}`, import.meta.url), 'utf8')
       assert.equal(raw.includes('自製'), false, name)

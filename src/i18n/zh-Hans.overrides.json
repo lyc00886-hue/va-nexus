@@ -1158,9 +1158,15 @@
   "image.rule": "未有已核实 Public Domain 或 CC0，就不用嗰张图，亦不用嗰位艺术家，改拣其他合适、已核实免费授权作品。",
   "image.sources": "图源只可用 The Met Open Access、Art Institute of Chicago、Rijksmuseum Rijksstudio，或 Wikimedia Commons。",
   "image.blocked": "这件作品未核实免费授权，所以不用嗰张图，亦不用嗰位艺术家。请改拣其他已核实免费授权作品。",
-  "image.homemade": "自制图只可用在说明用图解，不可当评赏对象，亦不可用嚟顶艺术评赏比较格原作图。",
+  "image.homemade": "课卡主图、题干插图、教学画面同参考图要改用已核实免费授权真实作品，并要列明出处同基本资料。只准课堂壳界面元素自制，并标「自制 · VA-Nexus」。",
   "image.school": "校本学生作品只可用在该课是评学生自己作品嘅场景，不可顶艺术家原作。",
   "image.blockedTitle": "搵图未通过授权核实",
   "image.ruleTitle": "搵图同授权规则",
-  "image.empty": "未有已核实授权图像"
+  "image.empty": "未有已核实授权图像",
+  "image.path.themeUnit": "/content/learning-map-illustrations/met-open/338964.jpg",
+  "image.path.lived": "/content/learning-map-illustrations/met-open/338696.jpg",
+  "image.path.research": "/content/learning-map-illustrations/met-open/459619.jpg",
+  "image.path.create": "/content/learning-map-illustrations/met-open/438023.jpg",
+  "image.path.cover.f4u3l3": "/content/learning-map-illustrations/met-open/459235.jpg",
+  "image.path.cover.f4u3l4": "/content/learning-map-illustrations/met-open/48945.jpg"
 }
