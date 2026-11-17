@@ -993,14 +993,22 @@
             {
               "title": "主题在社区",
               "body": "社区艺术主题来自真实环境——人物、地方、习惯、物件。先从课室、食堂、校门、上学路或记忆里面，选一件近身细节来看。",
-              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c0.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/437310.jpg",
+              "imageTitle": "The Boulevard Montmartre on a Winter Morning",
+              "imageArtist": "Camille Pissarro",
+              "imageYear": "1897",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "观察要问准",
               "body": "用速写和笔记看近身细节：课室角落、食堂座位、校门、上学路，或者一段记忆。拍摄人物之前要征得同意，尊重隐私。",
-              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L3-c1.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/436596.jpg",
+              "imageTitle": "Venice from the Bacino di San Marco",
+              "imageArtist": "Francesco Guardi",
+              "imageYear": "ca. 1765–75",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "短访问",
@@ -1027,8 +1035,12 @@
               ],
               "answer": "问准／尊重隐私",
               "explain": "尊重与安全是研究底线。",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q0-mcq-ask-first.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/435809.jpg",
+              "imageTitle": "The Harvesters",
+              "imageArtist": "Pieter Bruegel the Elder",
+              "imageYear": "1565",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "mcq",
@@ -1041,8 +1053,12 @@
               ],
               "answer": "选有用故事发展主题",
               "explain": "筛选与主题有关的内容。",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q1-mcq-use-story.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/438117.jpg",
+              "imageTitle": "The Island of San Michele, Venice",
+              "imageArtist": "Francesco Guardi",
+              "imageYear": "1770s",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "fill",
@@ -1056,8 +1072,12 @@
                 "密码",
                 "购物"
               ],
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q2-fill-observe.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/436599.jpg",
+              "imageTitle": "The Grand Canal above the Rialto",
+              "imageArtist": "Francesco Guardi",
+              "imageYear": "late 1760s",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "match",
@@ -1073,8 +1093,12 @@
                 "洞察": "一件你以前没留意、但与社区有关的细节"
               },
               "explain": "三种做法都是课室研究，服务主题。",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q3-match-methods.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/48893.jpg",
+              "imageTitle": "Woman Walking in the Snow",
+              "imageArtist": "Utagawa Hiroshige",
+              "imageYear": "1840s–early 1850s",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "order",
@@ -1086,8 +1110,12 @@
                 "写一个洞察"
               ],
               "explain": "整理已有材料 → 记录前先问准 → 做短访问 → 写一个洞察",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q4-order-research.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/813060.jpg",
+              "imageTitle": "A View of the Nieuwe Korenbeurs on the Damrak, Amsterdam, the Tower of the Oude Kerk Beyond",
+              "imageArtist": "Hermanus Petrus Schouten",
+              "imageYear": "ca. 1770",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "dualRead",
@@ -1119,8 +1147,12 @@
               "question": "写一个洞察。提示：先写你在课室材料见到的细节，再写它怎样与社区有关。",
               "options": [],
               "explain": "练习结构 · 不是真题",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L3-q6-short-insight.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/36005.jpg",
+              "imageTitle": "Mountain Market, Clearing Mist",
+              "imageArtist": "Xia Gui",
+              "imageYear": "early 13th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ],
           "artistIds": []
@@ -1135,20 +1167,32 @@
             {
               "title": "研究变创作",
               "body": "用试验物料，将近身洞察变成创作练习——纸、笔、黏土或其他课堂物料都可以。写下你用什么物料和技巧。",
-              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c0.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/44601.jpg",
+              "imageTitle": "The Cassia Grove Studio",
+              "imageArtist": "Wen Zhengming",
+              "imageYear": "ca. 1532",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "过程要记录",
               "body": "概念发展要记录：文字／图象草图、试验物料、改动原因（研究工作簿用）。",
-              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c1.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/437755.jpg",
+              "imageTitle": "In the Studio",
+              "imageArtist": "Alfred Stevens",
+              "imageYear": "1888",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "学方法不抄图",
               "body": "参考风格时：学方法，不抄图像；只用合法／自制参考。",
-              "image": "/content/learning-map-illustrations/f4-lesson-cards/F4-U3-L4-c2.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/41484.jpg",
+              "imageTitle": "Lofty Scholar among Streams and Mountains, in the manner of Juran",
+              "imageArtist": "Wang Jian",
+              "imageYear": "late 17th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "三句讲作品",
@@ -1171,8 +1215,12 @@
               ],
               "answer": "显示想法如何演变",
               "explain": "SBA 研究工作簿重视过程。",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q0-mcq-process-trail.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/11141.jpg",
+              "imageTitle": "The Studio",
+              "imageArtist": "Winslow Homer",
+              "imageYear": "1867",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "mcq",
@@ -1185,8 +1233,12 @@
               ],
               "answer": "学方法再用自己题材重做",
               "explain": "学方法、用自己内容与合法图。",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q1-mcq-learn-method.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/51482.jpg",
+              "imageTitle": "Immortals' Studio by Stream and Bamboo",
+              "imageArtist": "Unidentified artist",
+              "imageYear": "18th century or later",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "mcq",
@@ -1199,8 +1251,12 @@
               ],
               "answer": "主题、做法、想观众感受",
               "explain": "清楚沟通创作意图。",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q2-mcq-three-lines.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/853798.jpg",
+              "imageTitle": "The Studio of Prolonged Soughing",
+              "imageArtist": "You Yin",
+              "imageYear": "dated 1851",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "fill",
@@ -1214,8 +1270,12 @@
                 "广告"
               ],
               "explain": "研究工作簿要见到你为什么改。",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q3-fill-reason.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/40432.jpg",
+              "imageTitle": "Scholar in a Lakeside Pavilion",
+              "imageArtist": "Samoje",
+              "imageYear": "late 18th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "match",
@@ -1231,8 +1291,12 @@
                 "三句讲解": "主题、做法、想观众感受"
               },
               "explain": "记录过程令研究变成看得见创作。",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q4-match-trail.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/49549.jpg",
+              "imageTitle": "Anchorage on a rainy night",
+              "imageArtist": "Shen Zhou",
+              "imageYear": "dated 1477",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "order",
@@ -1244,8 +1308,12 @@
                 "用三句讲作品"
               ],
               "explain": "选一个想法 → 试一种媒介 → 记录改动原因 → 用三句讲作品",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q5-order-to-work.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/40053.jpg",
+              "imageTitle": "Xiantang Estuary",
+              "imageArtist": "Xia Gui",
+              "imageYear": "ca. 1200",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "dualRead",
@@ -1277,8 +1345,12 @@
               "question": "用三句讲一件课室作品。提示：主题一句、做法一句、想观众感受到什么一句。",
               "options": [],
               "explain": "练习结构 · 不是真题",
-              "image": "/content/learning-map-illustrations/f4-stems/F4-U3-L4-q7-short-three-lines.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/53223.jpg",
+              "imageTitle": "Mountain Landscape",
+              "imageArtist": "Tenshō Shūbun",
+              "imageYear": "early–mid-15th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ],
           "artistIds": []

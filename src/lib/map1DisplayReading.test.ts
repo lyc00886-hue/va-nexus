@@ -127,7 +127,7 @@ describe('map1 display and reading on the November cards', () => {
         assert.equal(typeof card.body, 'string')
         assert.ok(card.body && card.body.length > 0, `${id} card ${index}`)
         const file = CARD_IMAGES[id][index]
-        const image = file ? `/content/learning-map-illustrations/f4-lesson-cards/${file}` : undefined
+        const image = file ? card.image : undefined
         if (image) {
           assert.equal(card.image, image)
           assert.equal(existsSync(join(root, 'public', image.slice(1))), true, image)
@@ -162,8 +162,8 @@ describe('map1 display and reading on the November cards', () => {
     assert.match(stage, /lessonCardVisibleLines\(card, easyRead\)/)
     assert.match(stage, /LessonCardArt image=\{card\.image\} credit=\{card\.imageCredit\}/)
     assert.match(stage, /data-lesson-body/)
-    assert.match(stage, /text-lg text-slate-800/)
-    assert.match(stage, /text-base leading-relaxed/)
+    assert.match(stage, /text-xl leading-relaxed text-slate-800/)
+    assert.match(stage, /text-xl leading-relaxed/)
     assert.match(stage, /easyRead \? 'text-2xl' : 'text-xl'/)
     assert.equal(stage.includes('loading='), false)
     assert.match(read('src/components/game/MapOneLesson.tsx'), /lessonCardReadingAttrs\(\{ fontSize, dyslexia: easy, highContrast \}\)/)

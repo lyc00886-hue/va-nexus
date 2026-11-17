@@ -362,26 +362,42 @@
             {
               "title": "日常影響",
               "body": "傳統同社會會經日常物件、節慶顏色、家裡嘅擺設，影響你點睇一件事物。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c0.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/435884.jpg",
+              "imageTitle": "Still Life with Jar, Cup, and Apples",
+              "imageArtist": "Paul Cézanne",
+              "imageYear": "ca. 1877",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "由物件出發",
               "body": "練習由一件日常物件出發：佢嘅形式、佢喺生活入面嘅位置、同埋你自己嘅感受。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c1.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/435887.jpg",
+              "imageTitle": "The Silver Tureen",
+              "imageArtist": "Jean Siméon Chardin",
+              "imageYear": "ca. 1728–30",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "課室做法",
               "body": "訪問、觀察同收集都係課室做法。用同學對話、已有相片或課室物件就得。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c2.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/437999.jpg",
+              "imageTitle": "Still Life with Teapot and Fruit",
+              "imageArtist": "Paul Gauguin",
+              "imageYear": "1896",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "寫自己所見",
               "body": "課堂唔放高分示例。你寫自己見到嘅影響就得。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L1-c3.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/11737.jpg",
+              "imageTitle": "Still Life with Cake",
+              "imageArtist": "Raphaelle Peale",
+              "imageYear": "1818",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ],
           "quiz": [
@@ -396,8 +412,12 @@
               ],
               "answer": "一件日常物件",
               "explain": "由日常生活入面嘅物件開始。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q0-mcq.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/435881.jpg",
+              "imageTitle": "Still Life with a Ginger Jar and Eggplants",
+              "imageArtist": "Paul Cézanne",
+              "imageYear": "1893–94",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "fill",
@@ -411,8 +431,12 @@
                 "遠行",
                 "抽獎"
               ],
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q1-fill.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/436186.jpg",
+              "imageTitle": "Still Life with Silver",
+              "imageArtist": "Alexandre François Desportes",
+              "imageYear": "1720s",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "match",
@@ -428,8 +452,12 @@
                 "自己感受": "你覺得佢點影響你"
               },
               "explain": "三項一齊先算講到影響。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q2-match.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/437429.jpg",
+              "imageTitle": "Still Life with Peaches",
+              "imageArtist": "Auguste Renoir",
+              "imageYear": "1881",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "order",
@@ -441,8 +469,12 @@
                 "寫你自己嘅感受"
               ],
               "explain": "由物件到形式、位置、感受。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q3-order.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/436305.jpg",
+              "imageTitle": "Still Life",
+              "imageArtist": "Georg Flegel",
+              "imageYear": "probably ca. 1625–30",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "dualRead",
@@ -474,8 +506,12 @@
               "question": "用三句講傳統或社會點影響你一件日常物件。提示：形式、位置、感受各一句，而且係課室做得到嘅。",
               "options": [],
               "explain": "練習結構 · 唔用真實試卷",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L1-q5-short.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/700610.jpg",
+              "imageTitle": "Still Life with Corn",
+              "imageArtist": "Charles Ethan Porter",
+              "imageYear": "ca. 1880",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ]
         },
@@ -488,26 +524,42 @@
             {
               "title": "用方法比較",
               "body": "奇石比較用方法，唔係抄畫面。你可以睇吳彬點樣畫石畫得奇，再睇 Bada Shanren（Zhu Da）點樣用簡筆同留白寫石同魚。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c0.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/435883.jpg",
+              "imageTitle": "Still Life with Apples and Pears",
+              "imageArtist": "Paul Cézanne",
+              "imageYear": "ca. 1891–92",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "問誇張同留白",
               "body": "比較可以問：邊度誇張、邊度留白、邊度仍然令人認得係石或魚。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c1.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/45422.jpg",
+              "imageTitle": "Rock and Waves",
+              "imageArtist": "Maruyama Ōkyo 円山応挙",
+              "imageYear": "dated 1773",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "講方法唔臨摹",
               "body": "Bada Shanren（Zhu Da）常用簡筆同大片留白寫石同魚，形態誇張但仍然認得。你要講方法，唔好講成要臨摹某一幅畫。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c2.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/63203.jpg",
+              "imageTitle": "Landscape after Xia Gui (active ca. 1195–1230), from the Mustard Seed Garden Manual of Painting",
+              "imageArtist": "Wang Gai",
+              "imageYear": "first edition printed in 1679",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "真實作品圖",
               "body": "評賞格用已核實免費授權嘅真實作品圖。課堂唔放高分示例。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L2-c3.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/437989.jpg",
+              "imageTitle": "Dish of Apples",
+              "imageArtist": "Paul Cézanne",
+              "imageYear": "ca. 1876–77",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ],
           "quiz": [
@@ -522,8 +574,12 @@
               ],
               "answer": "比較方法而唔係抄畫面",
               "explain": "比較係方法，唔係臨摹。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q0-mcq.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/435866.jpg",
+              "imageTitle": "Apples",
+              "imageArtist": "Paul Cézanne",
+              "imageYear": "1878–79",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "fill",
@@ -537,8 +593,12 @@
                 "座位",
                 "簽名"
               ],
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q1-fill.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/436294.jpg",
+              "imageTitle": "Still Life with Pansies",
+              "imageArtist": "Henri Fantin-Latour",
+              "imageYear": "1874",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "match",
@@ -552,8 +612,12 @@
                 "Bada Shanren（Zhu Da）": "用簡筆同留白寫石同魚"
               },
               "explain": "兩個都係方法，唔係要你抄畫面。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q2-match.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/436293.jpg",
+              "imageTitle": "Still Life with Flowers and Fruit",
+              "imageArtist": "Henri Fantin-Latour",
+              "imageYear": "1866",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "order",
@@ -565,8 +629,12 @@
                 "寫你自己會試嘅一步"
               ],
               "explain": "由所見到方法，再到自己一步。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q3-order.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/39547.jpg",
+              "imageTitle": "Bamboo, old tree, and rock",
+              "imageArtist": "Wu Zhen",
+              "imageYear": "dated 1338",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "dualRead",
@@ -598,8 +666,12 @@
               "question": "用兩句比較吳彬同 Bada Shanren（Zhu Da）。提示：第一句講石嘅形式，第二句講一種方法，而且寫明你唔係抄畫面。",
               "options": [],
               "explain": "練習結構 · 唔用真實試卷",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L2-q5-short.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/49181.jpg",
+              "imageTitle": "Thirty-six Peaks of Mount Huang Recollected",
+              "imageArtist": "Shitao (Zhu Ruoji)",
+              "imageYear": "ca. 1705",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ]
         },
@@ -612,26 +684,42 @@
             {
               "title": "先搜集再收窄",
               "body": "視覺日記可以用嚟搜集材料同發展主題。一頁先收集，下一頁先收窄。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c0.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/10996.jpg",
+              "imageTitle": "Still Life",
+              "imageArtist": "William Michael Harnett",
+              "imageYear": "1888",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "課室材料",
               "body": "搜集可以係課室速寫、已有相片、一段訪問筆記，或者一件收集到嘅物件。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c1.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/435882.jpg",
+              "imageTitle": "Still Life with Apples and a Pot of Primroses",
+              "imageArtist": "Paul Cézanne",
+              "imageYear": "ca. 1890",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "寫一句主題",
               "body": "發展主題：由好多材料入面揀一個重複出現嘅興趣，再寫一句主題。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c2.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/435904.jpg",
+              "imageTitle": "Still Life with a Skull and a Writing Quill",
+              "imageArtist": "Pieter Claesz",
+              "imageYear": "1628",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "課室做法",
               "body": "訪問、觀察同收集都係課室做法。課堂唔放高分示例。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L3-c3.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/286175.jpg",
+              "imageTitle": "[Still Life with Books]",
+              "imageArtist": "William Notman",
+              "imageYear": "1870s–80s",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ],
           "quiz": [
@@ -646,8 +734,12 @@
               ],
               "answer": "搜集材料",
               "explain": "先搜集，再收窄成主題。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q0-mcq.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/845166.jpg",
+              "imageTitle": "Ink Plum and Bamboo",
+              "imageArtist": "Hoashi Kyōu 帆足杏雨",
+              "imageYear": "1856 (Ansei 3)",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "fill",
@@ -661,8 +753,12 @@
                 "座位",
                 "天氣"
               ],
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q1-fill.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/816192.jpg",
+              "imageTitle": "Ink Plum",
+              "imageArtist": "Byōsen Myōshitsu",
+              "imageYear": "15th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "match",
@@ -678,8 +774,12 @@
                 "主題句": "把重複興趣收成一句"
               },
               "explain": "搜集同主題都喺課室發生。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q2-match.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/36432.jpg",
+              "imageTitle": "Plum blossoms",
+              "imageArtist": "Jin Nong",
+              "imageYear": "dated 1757",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "order",
@@ -691,8 +791,12 @@
                 "決定下一頁試咩"
               ],
               "explain": "由材料到興趣，再到主題同下一步。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q3-order.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/45683.jpg",
+              "imageTitle": "Autumn Colors among Streams and Mountains",
+              "imageArtist": "Shen Zhou",
+              "imageYear": "ca. 1490–1500",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "dualRead",
@@ -724,8 +828,12 @@
               "question": "用「兩項材料＋一句主題」寫低你點樣由搜集去到發展。提示：材料要係課室做得到嘅。",
               "options": [],
               "explain": "練習結構 · 唔用真實試卷",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L3-q5-short.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/670896.jpg",
+              "imageTitle": "Plum Blossoms",
+              "imageArtist": "Motsurin Jōtō (Bokusai)",
+              "imageYear": "15th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ]
         },
@@ -738,26 +846,42 @@
             {
               "title": "試水墨效果",
               "body": "水墨試驗係用墨、水、紙試幾個細效果，再揀一個適合你主題嘅做法。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c0.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/45756.jpg",
+              "imageTitle": "Ink bamboo",
+              "imageArtist": "Tang Yin",
+              "imageYear": "early 16th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "第一件結構",
               "body": "作品集第一件作品用研究同創作結構：主題一句、材料證據、一次媒介試驗、同下一步。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c1.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/40454.jpg",
+              "imageTitle": "Beneficent Rain",
+              "imageArtist": "Zhang Yucai",
+              "imageYear": "late 13th–early 14th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "一次改一個",
               "body": "混合媒介可以同水墨一齊試，但每次只改一個條件，方便你寫低分別。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c2.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/49241.jpg",
+              "imageTitle": "Ink bamboo",
+              "imageArtist": "Li Shan",
+              "imageYear": "dated 1749",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "title": "交自己試驗",
               "body": "課堂唔放高分示例。你交嘅係自己嘅試驗同結構，唔係一份真實試卷。",
-              "image": "/content/learning-map-illustrations/f5-lesson-cards/F5-U3-L4-c3.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/36141.jpg",
+              "imageTitle": "Returning Home in a Driving Rain",
+              "imageArtist": "Xia Gui",
+              "imageYear": "early 13th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ],
           "quiz": [
@@ -772,8 +896,12 @@
               ],
               "answer": "主題一句同一次媒介試驗",
               "explain": "第一件作品用主題、證據、試驗同下一步。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q0-mcq.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/916546.jpg",
+              "imageTitle": "Ink Bamboo",
+              "imageArtist": "Kimura Kenkadō",
+              "imageYear": "late 18th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "fill",
@@ -787,8 +915,12 @@
                 "座位",
                 "分數"
               ],
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q1-fill.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/78108.jpg",
+              "imageTitle": "Bamboo in the Wind",
+              "imageArtist": "Dapeng Zhengkun (Taihō Shōkon)",
+              "imageYear": "mid-18th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "match",
@@ -804,8 +936,12 @@
                 "下一步": "你跟住想試咩"
               },
               "explain": "三部分一齊先算有結構。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q2-match.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/45682.jpg",
+              "imageTitle": "Silent fisherman in an autumn wood",
+              "imageArtist": "Shen Zhou",
+              "imageYear": "dated 1475",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "order",
@@ -817,8 +953,12 @@
                 "寫下一步"
               ],
               "explain": "由主題到試驗，再到記錄同下一步。",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q3-order.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/40456.jpg",
+              "imageTitle": "Bamboo and rocks",
+              "imageArtist": "Li Kan",
+              "imageYear": "dated 1318",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             },
             {
               "type": "dualRead",
@@ -850,8 +990,12 @@
               "question": "用「主題一句＋一次試驗＋下一步」說明作品集第一件作品。提示：試驗要寫改咗邊個條件，而且唔用高分示例。",
               "options": [],
               "explain": "練習結構 · 唔用真實試卷",
-              "image": "/content/learning-map-illustrations/f5-stems/F5-U3-L4-q5-short.png",
-              "imageCredit": "自制 · VA-Nexus"
+              "image": "/content/learning-map-illustrations/met-open/40087.jpg",
+              "imageTitle": "Windswept lakeshore",
+              "imageArtist": "Xia Gui",
+              "imageYear": "13th century",
+              "imageSource": "Metropolitan Museum of Art, New York, NY",
+              "imageLicense": "Public Domain · The Met Open Access"
             }
           ]
         }

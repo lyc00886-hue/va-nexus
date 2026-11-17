@@ -601,10 +601,13 @@ describe('F.4 demo slice', () => {
         image: '/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c1.png',
         imageCredit: '  自制 · VA-Nexus  ',
       }),
-      {
-        image: '/content/learning-map-illustrations/f4-lesson-cards/F4-U2-L3-c1.png',
-        imageCredit: '自制 · VA-Nexus',
-      },
+      {},
+    )
+    assert.deepEqual(
+      cardArtFrom({
+        image: '/content/learning-map-illustrations/met-open/435884.jpg',
+      }),
+      { image: '/content/learning-map-illustrations/met-open/435884.jpg' },
     )
     const prefix = '/content/learning-map-illustrations/f4-lesson-cards/'
     for (const name of FILES) {
@@ -628,6 +631,16 @@ describe('F.4 demo slice', () => {
           const file = slots[index]
           if (!file) {
             assert.equal(row.image, undefined, `${name} ${lesson.id} ${index}`)
+            return
+          }
+          if (lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4') {
+            const met = row as ContentCard & { imageTitle?: string; imageArtist?: string; imageYear?: string; imageSource?: string; imageLicense?: string }
+            assert.match(String(met.image), /\/met-open\/\d+\.jpg$/, `${name} ${lesson.id} ${index}`)
+            assert.equal(met.imageCredit, undefined, `${name} ${lesson.id} ${index}`)
+            assert.equal(met.imageSource, 'Metropolitan Museum of Art, New York, NY')
+            assert.equal(met.imageLicense, 'Public Domain · The Met Open Access')
+            assert.ok(met.imageTitle && met.imageArtist && met.imageYear)
+            assert.ok(statSync(resolve(PUBLIC, met.image!.slice(1))).size > 1000)
             return
           }
           assert.equal(row.image, `${prefix}${file}`, `${name} ${lesson.id} ${index}`)
@@ -718,11 +731,6 @@ describe('F.4 demo slice', () => {
     assert.match(adapter, /type: 'mcq', prompt: q\.question, options: q\.options, answer: Math\.max\(0, idx\), explain, \.\.\.art/)
     assert.match(adapter, /type: 'fill', prompt, bank, answer, explain, \.\.\.art/)
     assert.match(adapter, /type: 'short', prompt: q\.question, explain, \.\.\.art/)
-    const credit = {
-      'f4-demo.json': '自制 · VA-Nexus',
-      'f4-demo.en.json': 'Original · VA-Nexus',
-      'f4-demo.zh-Hans.json': '自制 · VA-Nexus',
-    } as const
     const stems: Record<string, (string | null)[]> = {
       'F4-U3-L3': [
         'F4-U3-L3-q0-mcq-ask-first.png',
@@ -747,26 +755,8 @@ describe('F.4 demo slice', () => {
     const hashes: Record<string, string> = {
       'f4-dualread/F4-U3-L3.png': 'c95975ad611c6464dabc9e4cd69408c5e8ac8a96eee0e6c3e5b1eeeb5935b2dc',
       'f4-dualread/F4-U3-L4.png': '6129eb3eaca70073d83708218d71861e3ec87543cf4a949e39115360b46e7587',
-      'f4-stems/F4-U3-L3-q0-mcq-ask-first.png': '314ab3a883586c1d3aa02a67e69b2a872a574d37041ea49e767de97de723e8d5',
-      'f4-stems/F4-U3-L3-q1-mcq-use-story.png': 'bcd638db0bd5ef1ba58fbde8a30a9dfc2ff6df1689a0bf54967e5f7b806ded47',
-      'f4-stems/F4-U3-L3-q2-fill-observe.png': 'cab2d3e120951705d5d8b3fda3f28ffc696ffec3c34e721e6121fd16faabdc61',
-      'f4-stems/F4-U3-L3-q3-match-methods.png': '704e11b2b56ad2e288c0092a053f13c130726285b08cf6962ddfb29c181e88a2',
-      'f4-stems/F4-U3-L3-q4-order-research.png': '1c5b22743c8fb22dca7169839e38a19f87e3da7011120291351b4c57217580a5',
-      'f4-stems/F4-U3-L3-q6-short-insight.png': 'cd0b846b2a6a4cc4110878d472dc1216fbb0cf5372931f4742fe7307562dc007',
-      'f4-stems/F4-U3-L4-q0-mcq-process-trail.png': '3e72756b9eb72b47cb5ef11198775f380210d7cf4e872efe59eaddc2c56b65c8',
-      'f4-stems/F4-U3-L4-q1-mcq-learn-method.png': 'f31289bd089fc7a557828870eeaa3a2a0b18561565b42d0cc7bfd10ff4fa2d02',
-      'f4-stems/F4-U3-L4-q2-mcq-three-lines.png': 'ecff434dc77525a9405e05e87c139c74b8513d6adf63b367b13d0d2366a778fa',
-      'f4-stems/F4-U3-L4-q3-fill-reason.png': '274d7287f52588a04a70e70afa85b93f0a8916bc2b6b384705c86201c5bec64a',
-      'f4-stems/F4-U3-L4-q4-match-trail.png': 'ad0a639f317246f34f33b9ec271428cc6f6e4e7e1cbf5bc73e10ac3047576664',
-      'f4-stems/F4-U3-L4-q5-order-to-work.png': '45c3113ce31d2259e3c5ce749beca2e8b97fb5ad147d619ef99f848b67cbe7dc',
-      'f4-stems/F4-U3-L4-q7-short-three-lines.png': 'fcf2fc91b62b61ee2263127175d9d9082efc3959ea79be44d2c06a40c31850a1',
       'f4-covers/F4-U3-L3.png': '3ce86562819a66149831216716cf9facfe7df082ab9f574fcf3066ff0125dd6c',
       'f4-covers/F4-U3-L4.png': '742bf5e38f62a42eb64f08df6d8bf72d2d7d8624bd24913e2bc1d6606feb8476',
-      'f4-lesson-cards/F4-U3-L3-c0.png': '51cd26fcc28c7337560f0edfe0759ad2c59c5c58e7c998b5c4e506f61dba74b2',
-      'f4-lesson-cards/F4-U3-L3-c1.png': '1d385c7c8a4f055f2e9c38f1a8c4cf11bbdb3cb96e977304e3f5445f157a428e',
-      'f4-lesson-cards/F4-U3-L4-c0.png': 'c6203beb4da80665849abe8974380390541aed7a6246e59d08da58c6b04d44d0',
-      'f4-lesson-cards/F4-U3-L4-c1.png': 'e51f3abe22c95583bb20844f8d8aa513b21f286aae1f374deb894cead0817f68',
-      'f4-lesson-cards/F4-U3-L4-c2.png': '57cdc0f044f8e56c1452c90ff3b6e59b880c098e92bbb8bc66b3fd03238a5a47',
     }
     for (const [file, digest] of Object.entries(hashes)) {
       const buf = readFileSync(resolve(PUBLIC, 'content/learning-map-illustrations', file))
@@ -799,8 +789,12 @@ describe('F.4 demo slice', () => {
             assert.equal(String(quiz.right?.image ?? '').includes('/f4-dualread/'), false, id)
             return
           }
-          assert.equal(quiz.image, `/content/learning-map-illustrations/f4-stems/${file}`, id)
-          assert.equal(quiz.imageCredit, credit[name], id)
+          const met = quiz as typeof quiz & { imageTitle?: string; imageArtist?: string; imageYear?: string; imageSource?: string; imageLicense?: string }
+          assert.match(String(met.image), /\/met-open\/\d+\.jpg$/, id)
+          assert.equal(met.imageCredit, undefined, id)
+          assert.equal(met.imageSource, 'Metropolitan Museum of Art, New York, NY', id)
+          assert.equal(met.imageLicense, 'Public Domain · The Met Open Access', id)
+          assert.ok(met.imageTitle && met.imageArtist && met.imageYear, id)
         })
       }
     }
