@@ -11,6 +11,7 @@
  *             (both empty → auto-generated distractors)
  *     order → options = the sequence in the correct order
  *     dualRead → options = two line labels; optional image uses the same local pack path as lesson cards
+ *                optional plate / right are verified public-domain images; profile is text only
  *     short → one open line; options unused
  *     any type may carry optional image / imageCredit for a question illustration
  */
@@ -30,8 +31,10 @@ export type ContentQuiz = {
   /** Local lesson-pack image. Used by question stems and dualRead frames. */
   image?: string
   imageCredit?: string
-  /** Verified public-domain plate for one side of a comparison. */
+  /** Verified public-domain plate for the left side of a comparison. */
   plate?: unknown
+  /** Verified public-domain plate for the right side. Both sides are images when this is set. */
+  right?: unknown
   /** Text-only artist and concept profile for the side without an image. */
   profile?: unknown
 }
@@ -106,7 +109,8 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
     if (q.type === 'dualRead') {
       const labels = q.options.map((item) => item.trim()).filter(Boolean)
       const plate = plateFrom(q.plate)
-      const profile = profileFrom(q.profile)
+      const right = plateFrom(q.right)
+      const profile = right ? undefined : profileFrom(q.profile)
       return {
         id,
         type: 'dualRead',
@@ -114,6 +118,7 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
         labels: [labels[0] ?? '', labels[1] ?? ''],
         ...art,
         ...(plate ? { plate } : {}),
+        ...(right ? { right } : {}),
         ...(profile ? { profile } : {}),
         explain,
       }

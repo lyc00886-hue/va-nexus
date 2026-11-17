@@ -1096,8 +1096,22 @@
                 "Left image",
                 "Right image"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L3.png",
-              "imageCredit": "Original · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-435839-canaletto-piazza-san-marco.jpg",
+                "title": "Piazza San Marco",
+                "artist": "Canaletto (Giovanni Antonio Canal)",
+                "year": "late 1720s",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "The piazza is organised by the paved floor and the arcades on both sides, with the basilica and campanile closing the far end. Tiny figures walk or gather across the open square. The painting presents a Venetian public place as a space of everyday meeting and passage."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-37093-hiroshige-fireworks-ryogoku.jpg",
+                "title": "Fireworks at Ryōgoku Bridge, from the series One Hundred Famous Views of Edo",
+                "artist": "Utagawa Hiroshige",
+                "year": "1858",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "The upper half is night sky, with fireworks and smoke opening out; the lower half is the river, boats, and lights along both banks. Many small spectators gather on the bridge and in the boats. The print presents Ryōgoku Bridge in Edo as a public place where people watch a summer night display together."
+              },
               "explain": "Practice structure · not a real paper"
             },
             {
@@ -1240,8 +1254,22 @@
                 "Left image",
                 "Right image"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L4.png",
-              "imageCredit": "Original · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-436095-daumier-third-class-carriage.jpg",
+                "title": "The Third-Class Carriage",
+                "artist": "Honoré Daumier",
+                "year": "1864",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "In the carriage, three travellers sit close in the foreground; their bodies and a basket fill much of the picture, with more figures behind. Light enters from a window at the left, and the poses stay quiet. The painting presents a third-class public train compartment as a situation where ordinary people travel together."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-435702-bonheur-horse-fair.jpg",
+                "title": "The Horse Fair",
+                "artist": "Rosa Bonheur",
+                "year": "1852–55",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "The large canvas spreads a controlled yet running herd of horses from left to right, with riders and handlers woven into a diagonal movement. Dust on the ground and a line of trees at the back mark an outdoor site. The painting presents a Paris horse market as a public place of sale, strength, and skill."
+              },
               "explain": "Practice structure · not a real paper"
             },
             {

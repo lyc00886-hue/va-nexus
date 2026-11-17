@@ -100,7 +100,7 @@ export function DualReadBoard({
   onChange: (next: string[]) => void
 }) {
   const values = [lines[0] ?? '', lines[1] ?? '']
-  const compared = q.plate != null || q.profile != null
+  const compared = q.plate != null || q.right != null || q.profile != null
   return (
     <div data-thin-practice="dualRead">
       <ThinHint type="dualRead" />
@@ -189,15 +189,27 @@ function CompareSides({
           onChange={(value) => onChange([value, values[1] ?? ''])}
         />
       </div>
-      <div data-testid="dualread-profile" data-image="omitted">
-        {q.profile ? <ProfileCard profile={q.profile} /> : null}
-        <SideLine
-          label={q.labels[1]}
-          value={values[1] ?? ''}
-          revealed={revealed}
-          onChange={(value) => onChange([values[0] ?? '', value])}
-        />
-      </div>
+      {q.right ? (
+        <div data-testid="dualread-plate-right">
+          <PlateFigure plate={q.right} />
+          <SideLine
+            label={q.labels[1]}
+            value={values[1] ?? ''}
+            revealed={revealed}
+            onChange={(value) => onChange([values[0] ?? '', value])}
+          />
+        </div>
+      ) : (
+        <div data-testid="dualread-profile" data-image="omitted">
+          {q.profile ? <ProfileCard profile={q.profile} /> : null}
+          <SideLine
+            label={q.labels[1]}
+            value={values[1] ?? ''}
+            revealed={revealed}
+            onChange={(value) => onChange([values[0] ?? '', value])}
+          />
+        </div>
+      )}
     </div>
   )
 }
@@ -228,6 +240,7 @@ function PlateImage({ plate }: { plate: ComparePlate }) {
         <AttrLine label={t('art.attr.year')} value={plate.year} />
         <AttrLine label={t('art.attr.source')} value={plate.source} />
         <AttrLine label={t('art.attr.license')} value={t('art.attr.pd')} />
+        {plate.intro ? <AttrLine label={t('art.intro')} value={plate.intro} /> : null}
       </figcaption>
     </figure>
   )
