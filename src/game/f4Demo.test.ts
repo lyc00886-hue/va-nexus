@@ -4,7 +4,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { artistsFromLesson, cardArtFrom, coverFromUnit, learningMapAssetPath } from './f4Media.ts'
+import { artistsFromLesson, cardArtFrom, coverFromUnit, learningMapAssetPath, plateFrom } from './f4Media.ts'
 
 const PUBLIC = resolve(dirname(fileURLToPath(import.meta.url)), '../../public')
 
@@ -151,6 +151,9 @@ type Quiz = {
   image?: string
   imageCredit?: string
   explain?: string
+  plate?: { image?: string; title?: string; artist?: string; year?: string; source?: string; intro?: string; license?: string }
+  right?: { image?: string; title?: string; artist?: string; year?: string; source?: string; intro?: string; license?: string }
+  profile?: unknown
 }
 
 type ArtistMedia = {
@@ -555,12 +558,19 @@ describe('F.4 demo slice', () => {
               assert.equal(new Set(quiz.options).size, quiz.options.length, id)
             } else if (quiz.type === 'dualRead') {
               assert.equal(quiz.options.length, 2, id)
-              assert.match(
-                String(quiz.image),
-                /^\/content\/learning-map-illustrations\/(?:soft-scout\/f4-dualread|f4-dualread)\//,
-                id,
-              )
-              assert.ok(statSync(resolve(PUBLIC, String(quiz.image).slice(1))).size > 1000, id)
+              if (lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4') {
+                assert.equal(quiz.image, undefined, id)
+                assert.equal(quiz.imageCredit, undefined, id)
+                assert.match(String(quiz.plate?.image), /\/f4-pd\/met-/, id)
+                assert.match(String(quiz.right?.image), /\/f4-pd\/met-/, id)
+              } else {
+                assert.match(
+                  String(quiz.image),
+                  /^\/content\/learning-map-illustrations\/(?:soft-scout\/f4-dualread|f4-dualread)\//,
+                  id,
+                )
+                assert.ok(statSync(resolve(PUBLIC, String(quiz.image).slice(1))).size > 1000, id)
+              }
             } else if (quiz.type === 'short') {
               assert.ok(quiz.question.length > 0, id)
             } else {
@@ -679,6 +689,10 @@ describe('F.4 demo slice', () => {
           for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim']) {
             assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
           }
+        } else if (lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4') {
+          assert.equal(dual?.image, undefined, `${name} ${lesson.id}`)
+          assert.match(String(dual?.plate?.image), /\/f4-pd\//, `${name} ${lesson.id}`)
+          assert.match(String(dual?.right?.image), /\/f4-pd\//, `${name} ${lesson.id}`)
         } else {
           assert.match(String(dual?.image), /^\/content\/learning-map-illustrations\/f4-dualread\//, lesson.id)
         }
@@ -779,8 +793,10 @@ describe('F.4 demo slice', () => {
           const id = `${name} ${lesson.id} q${index}`
           if (!file) {
             assert.equal(quiz.type, 'dualRead', id)
-            assert.equal(quiz.image, `/content/learning-map-illustrations/f4-dualread/${lesson.id}.png`, id)
-            assert.equal(quiz.imageCredit, credit[name], id)
+            assert.equal(quiz.image, undefined, id)
+            assert.equal(quiz.imageCredit, undefined, id)
+            assert.equal(String(quiz.plate?.image ?? '').includes('/f4-dualread/'), false, id)
+            assert.equal(String(quiz.right?.image ?? '').includes('/f4-dualread/'), false, id)
             return
           }
           assert.equal(quiz.image, `/content/learning-map-illustrations/f4-stems/${file}`, id)
@@ -788,5 +804,236 @@ describe('F.4 demo slice', () => {
         })
       }
     }
+  })
+
+  it('shows verified public-domain artist works on the November appreciation comparisons', () => {
+    const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
+    const messages = (file: string) => JSON.parse(readFileSync(resolve(root, file), 'utf8')) as Record<string, string>
+    const hant = messages('src/i18n/zh-Hant.json')
+    const en = messages('src/i18n/en.json')
+    const hans = messages('src/i18n/zh-Hans.json')
+    const overrides = messages('src/i18n/zh-Hans.overrides.json')
+    const source = 'Metropolitan Museum of Art, New York, NY'
+    const pdZh = 'Public Domain\uFF0FCC0'
+    const pdEn = 'Public Domain / CC0'
+    const shared = {
+      'lesson.f4u3l3.appr.left.title': 'Piazza San Marco',
+      'lesson.f4u3l3.appr.left.artist': 'Canaletto (Giovanni Antonio Canal)',
+      'lesson.f4u3l3.appr.left.year': 'late 1720s',
+      'lesson.f4u3l3.appr.right.title': 'Fireworks at Ry\u014dgoku Bridge, from the series One Hundred Famous Views of Edo',
+      'lesson.f4u3l3.appr.right.artist': 'Utagawa Hiroshige',
+      'lesson.f4u3l3.appr.right.year': '1858',
+      'lesson.f4u3l4.appr.left.title': 'The Third-Class Carriage',
+      'lesson.f4u3l4.appr.left.artist': 'Honor\u00e9 Daumier',
+      'lesson.f4u3l4.appr.left.year': '1864',
+      'lesson.f4u3l4.appr.right.title': 'The Horse Fair',
+      'lesson.f4u3l4.appr.right.artist': 'Rosa Bonheur',
+      'lesson.f4u3l4.appr.right.year': '1852\u201355',
+    } as const
+    const intro = {
+      'zh-Hant': {
+        'lesson.f4u3l3.appr.left.intro':
+          '畫面以廣場地磚同兩旁拱廊拉開空間，遠景聖馬可教堂同鐘樓立喺正中。無數細小人影散落廣場，有人行過、有人聚埋。作品將威尼斯公共廣場寫成日常聚集同路過嘅地方。',
+        'lesson.f4u3l3.appr.right.intro':
+          '夜空佔畫面上半，煙火同煙霞散開；下半係河面、船隻同兩岸燈火。橋同舟上聚集好多細小觀者。作品將江戶兩國橋寫成夏夜公眾一齊睇煙火嘅地方。',
+        'lesson.f4u3l4.appr.left.intro':
+          '車廂入面，前景三位旅客坐得接近，身形同籃子佔去大部分畫面；後排仲有更多人影。光線由左面窗戶入嚟，衣著同姿勢對比較靜。作品將公共列車三等車廂寫成普通人一齊上路嘅情境。',
+        'lesson.f4u3l4.appr.right.intro':
+          '巨大畫面由左至右排開奔走同受控嘅馬群，人同馬交織成斜向動勢。地面塵土同遠景樹列托出室外場地。作品將巴黎馬市寫成公開買賣、展示力氣同技藝嘅場所。',
+      },
+      en: {
+        'lesson.f4u3l3.appr.left.intro':
+          'The piazza is organised by the paved floor and the arcades on both sides, with the basilica and campanile closing the far end. Tiny figures walk or gather across the open square. The painting presents a Venetian public place as a space of everyday meeting and passage.',
+        'lesson.f4u3l3.appr.right.intro':
+          'The upper half is night sky, with fireworks and smoke opening out; the lower half is the river, boats, and lights along both banks. Many small spectators gather on the bridge and in the boats. The print presents Ry\u014dgoku Bridge in Edo as a public place where people watch a summer night display together.',
+        'lesson.f4u3l4.appr.left.intro':
+          'In the carriage, three travellers sit close in the foreground; their bodies and a basket fill much of the picture, with more figures behind. Light enters from a window at the left, and the poses stay quiet. The painting presents a third-class public train compartment as a situation where ordinary people travel together.',
+        'lesson.f4u3l4.appr.right.intro':
+          'The large canvas spreads a controlled yet running herd of horses from left to right, with riders and handlers woven into a diagonal movement. Dust on the ground and a line of trees at the back mark an outdoor site. The painting presents a Paris horse market as a public place of sale, strength, and skill.',
+      },
+      'zh-Hans': {
+        'lesson.f4u3l3.appr.left.intro':
+          '画面以广场地砖与两旁拱廊拉开空间，远景圣马可教堂与钟楼立于正中。无数细小人影散落广场，有人走过、有人聚在一起。作品将威尼斯公共广场写成日常聚集与路过之地方。',
+        'lesson.f4u3l3.appr.right.intro':
+          '夜空占画面上半，烟火与烟霞散开；下半是河面、船只与两岸灯火。桥与舟上聚集许多细小观者。作品将江户两国桥写成夏夜公众一齐看烟火之地方。',
+        'lesson.f4u3l4.appr.left.intro':
+          '车厢里面，前景三位旅客坐得接近，身形与篮子占去大部分画面；后排还有更多人影。光线由左面窗户射入，衣着与姿势对比较静。作品将公共列车三等车厢写成普通人一齐上路之情境。',
+        'lesson.f4u3l4.appr.right.intro':
+          '巨大画面由左至右排开奔走与受控之马群，人与马交织成斜向动势。地面尘土与远景树列托出室外场地。作品将巴黎马市写成公开买卖、展示力气与技艺之场所。',
+      },
+    } as const
+    const files = {
+      'f4-demo.json': hant,
+      'f4-demo.en.json': en,
+      'f4-demo.zh-Hans.json': hans,
+    } as const
+    const localeOf = {
+      'f4-demo.json': 'zh-Hant',
+      'f4-demo.en.json': 'en',
+      'f4-demo.zh-Hans.json': 'zh-Hans',
+    } as const
+    const plates = {
+      'F4-U3-L3': {
+        left: 'met-435839-canaletto-piazza-san-marco.jpg',
+        right: 'met-37093-hiroshige-fireworks-ryogoku.jpg',
+        prefix: 'lesson.f4u3l3.appr',
+      },
+      'F4-U3-L4': {
+        left: 'met-436095-daumier-third-class-carriage.jpg',
+        right: 'met-435702-bonheur-horse-fair.jpg',
+        prefix: 'lesson.f4u3l4.appr',
+      },
+    } as const
+    const hashes: Record<string, [string, number]> = {
+      'met-435839-canaletto-piazza-san-marco.jpg': ['421620346ab5b7fa084ab229148833c7880dfec0b6f53fd2a72eeb562315dfb0', 3661754],
+      'met-37093-hiroshige-fireworks-ryogoku.jpg': ['84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773', 2990431],
+      'met-436095-daumier-third-class-carriage.jpg': ['a02482e97ed89950037a8467d84206cd6dba2f13b8c34feb0486ace054f3c3f7', 4215589],
+      'met-435702-bonheur-horse-fair.jpg': ['c905acf8e02c24c5b30f90ad040a8afe43b7b8d2c65faf75b81ac3c53b535be2', 2692523],
+    }
+    const kept = {
+      'f4-demo.json': {
+        'F4-U3-L3': {
+          question: '藝術評賞比較：左、右都係社區藝術。各寫一句——你見到邊種視覺元素或組織原理？作品同地方、人有咩關係？',
+          options: ['左圖一句', '右圖一句'],
+          explain: '練習結構 · 唔係真題',
+        },
+        'F4-U3-L4': {
+          question: '藝術評賞比較：左、右都係社區藝術。各寫一句——你見到邊種視覺元素或組織原理？作品想帶出咩？',
+          options: ['左圖一句', '右圖一句'],
+          explain: '練習結構 · 唔係真題',
+        },
+      },
+      'f4-demo.en.json': {
+        'F4-U3-L3': {
+          question:
+            'Compare works: both sides are community art. One line each — which visual elements or organisational principles do you see? How does the work relate to place and people?',
+          options: ['Left image', 'Right image'],
+          explain: 'Practice structure · not a real paper',
+        },
+        'F4-U3-L4': {
+          question:
+            'Compare works: both sides are community art. One line each — which visual elements or organisational principles do you see? What does the work bring out?',
+          options: ['Left image', 'Right image'],
+          explain: 'Practice structure · not a real paper',
+        },
+      },
+      'f4-demo.zh-Hans.json': {
+        'F4-U3-L3': {
+          question: '艺术评赏比较：左、右都是社区艺术。各写一句——你见到何种视觉元素或组织原理？作品同地方、人有什么关系？',
+          options: ['左图一句', '右图一句'],
+          explain: '练习结构 · 不是真题',
+        },
+        'F4-U3-L4': {
+          question: '艺术评赏比较：左、右都是社区艺术。各写一句——你见到何种视觉元素或组织原理？作品想带出什么？',
+          options: ['左图一句', '右图一句'],
+          explain: '练习结构 · 不是真题',
+        },
+      },
+    } as const
+    assert.equal(hant['art.intro'], '作品簡介')
+    assert.equal(en['art.intro'], 'Work introduction')
+    assert.equal(hans['art.intro'], '作品简介')
+    assert.equal(overrides['art.intro'], hans['art.intro'])
+    assert.equal(hant['art.attr.title'], '題名')
+    assert.equal(en['art.attr.title'], 'Artwork title')
+    assert.equal(hans['art.attr.title'], '题名')
+    assert.equal(hant['art.attr.artist'], '藝術家')
+    assert.equal(en['art.attr.artist'], 'Artist')
+    assert.equal(hans['art.attr.artist'], '艺术家')
+    assert.equal(hant['art.attr.year'], '年份')
+    assert.equal(en['art.attr.year'], 'Year')
+    assert.equal(hans['art.attr.year'], '年份')
+    assert.equal(hant['art.attr.source'], '館藏／出處')
+    assert.equal(en['art.attr.source'], 'Museum / collection')
+    assert.equal(hans['art.attr.source'], '馆藏／出处')
+    assert.equal(hant['art.attr.license'], '授權狀態')
+    assert.equal(en['art.attr.license'], 'License status')
+    assert.equal(hans['art.attr.license'], '授权状态')
+    assert.equal(hant['art.attr.pd'], pdZh)
+    assert.equal(en['art.attr.pd'], pdEn)
+    assert.equal(hans['art.attr.pd'], pdZh)
+    assert.equal(hant['qtype.chip.dualRead'], '藝術評賞比較')
+    assert.equal(en['qtype.chip.dualRead'], 'Compare works')
+    assert.equal(hans['qtype.chip.dualRead'], '艺术评赏比较')
+    const forbidden = ['\u7684', '\u628a', '\u5572', '\u4f86', '\u6765', '\u771e']
+    const newKeys = Object.keys(hant).filter((key) => key === 'art.intro' || key.includes('.appr.'))
+    assert.equal(newKeys.length, 25)
+    for (const key of newKeys) {
+      assert.equal(en[key].length > 0, true, key)
+      assert.equal(hans[key], overrides[key], key)
+      for (const glyph of forbidden) {
+        assert.equal(hant[key].includes(glyph), false, `${key} ${glyph}`)
+        assert.equal(hans[key].includes(glyph), false, `${key} hans ${glyph}`)
+      }
+    }
+    for (const [key, value] of Object.entries(shared)) {
+      assert.equal(hant[key], value, key)
+      assert.equal(en[key], value, key)
+      assert.equal(hans[key], value, key)
+    }
+    for (const [key, value] of Object.entries(intro['zh-Hant'])) assert.equal(hant[key], value, key)
+    for (const [key, value] of Object.entries(intro.en)) assert.equal(en[key], value, key)
+    for (const [key, value] of Object.entries(intro['zh-Hans'])) assert.equal(hans[key], value, key)
+    assert.equal(hant['lesson.f4u3l3.appr.left.intro'].includes('\u55ba'), true)
+    assert.equal(hant['lesson.f4u3l4.appr.left.intro'].includes('\u569f'), true)
+    assert.equal(hant['lesson.f4u3l3.appr.left.intro'].includes('立喂'), false)
+    assert.equal(hant['lesson.f4u3l4.appr.left.intro'].includes('入嚏'), false)
+    for (const [name, digest] of Object.entries(hashes)) {
+      const buf = readFileSync(resolve(PUBLIC, 'content/learning-map-illustrations/f4-pd', name))
+      assert.equal(buf.length, digest[1], name)
+      assert.equal(createHash('sha256').update(buf).digest('hex'), digest[0], name)
+    }
+    const thin = readFileSync(new URL('../components/game/ThinPractice.tsx', import.meta.url), 'utf8')
+    assert.match(thin, /t\('art\.intro'\)/)
+    assert.match(thin, /t\('art\.attr\.pd'\)/)
+    assert.match(thin, /data-testid="dualread-plate-right"/)
+    assert.match(thin, /data-image="omitted"/)
+    assert.equal(thin.includes('plate.license'), false)
+    const api = readdirSync(resolve(root, 'api')).filter((file) => file.endsWith('.ts'))
+    assert.equal(api.length, 11)
+    for (const name of FILES) {
+      const bag = files[name]
+      const locale = localeOf[name]
+      for (const lesson of pack(name).units.flatMap((unit) => unit.lessons)) {
+        const spec = plates[lesson.id as keyof typeof plates]
+        if (!spec) continue
+        const dual = lesson.quiz.find((quiz) => quiz.type === 'dualRead')
+        const keep = kept[name][lesson.id as keyof (typeof kept)[typeof name]]
+        assert.equal(dual?.question, keep.question, `${name} ${lesson.id}`)
+        assert.deepEqual(dual?.options, [...keep.options], `${name} ${lesson.id}`)
+        assert.equal(dual?.explain, keep.explain, `${name} ${lesson.id}`)
+        assert.equal(dual?.image, undefined, `${name} ${lesson.id}`)
+        assert.equal(dual?.profile, undefined, `${name} ${lesson.id}`)
+        const blob = JSON.stringify(dual)
+        assert.equal(blob.includes('十面靈璧'), false, name)
+        assert.equal(blob.includes('The Sixteen Luohans'), false, name)
+        assert.equal(blob.includes('/f4-dualread/'), false, name)
+        for (const side of ['left', 'right'] as const) {
+          const plate = side === 'left' ? dual?.plate : dual?.right
+          const prefix = `${spec.prefix}.${side}`
+          assert.equal(plate?.image, `/content/learning-map-illustrations/f4-pd/${spec[side]}`, `${name} ${prefix}`)
+          assert.equal(plate?.title, bag[`${prefix}.title`], prefix)
+          assert.equal(plate?.artist, bag[`${prefix}.artist`], prefix)
+          assert.equal(plate?.year, bag[`${prefix}.year`], prefix)
+          assert.equal(plate?.source, source, prefix)
+          assert.equal(plate?.intro, intro[locale][`${prefix}.intro` as keyof (typeof intro)[typeof locale]], prefix)
+          assert.equal(plate?.license, undefined, prefix)
+          assert.equal(bag[`${prefix}.license`], bag['art.attr.pd'], prefix)
+          const parsed = plateFrom(plate)
+          assert.equal(parsed?.intro, plate?.intro, prefix)
+          assert.ok(statSync(resolve(PUBLIC, String(plate?.image).slice(1))).size > 1000, prefix)
+        }
+      }
+    }
+    const plain = plateFrom({
+      image: '/content/learning-map-illustrations/f5-pd/wubin-ten-views-lingbi-front-detail.jpg',
+      title: 'plate',
+      artist: 'artist',
+      year: 'year',
+      source: 'source',
+    })
+    assert.ok(plain)
+    assert.equal(plain.intro, undefined)
+    assert.equal('intro' in plain, false)
   })
 })

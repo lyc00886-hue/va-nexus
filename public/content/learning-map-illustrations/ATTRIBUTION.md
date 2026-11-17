@@ -94,16 +94,22 @@ Seven P0 classroom diagrams for F4-U2-L3, F4-U3-L3, and F4-U3-L4. **自制 · VA
 
 ## F4 November compare-works frames (`f4-dualread/`)
 
-F4-U3-L3 and F4-U3-L4 are original community-art stills: an estate wall mural beside a sitting-out mosaic, and a staircase shop-house mural beside a courtyard ceramic wall. **自制 · VA-Nexus**. They are not 陳思光's works. Other lessons keep the frames they already had. English lessons credit these two as “Original · VA-Nexus”.
+`f4-dualread/F4-U3-L3.png` and `f4-dualread/F4-U3-L4.png` remain in the pack. They are original community-art stills (**自制 · VA-Nexus**), not artist originals, and the live F4-U3-L3 and F4-U3-L4 藝術評賞比較 questions no longer use them. Other lessons keep the frames they already had.
 
-| File | Question |
-|---|---|
-| `f4-dualread/F4-U3-L3.png` | F4-U3-L3 · 藝術評賞比較 |
-| `f4-dualread/F4-U3-L4.png` | F4-U3-L4 · 藝術評賞比較 |
+## F4 November verified plates (`f4-pd/`)
+
+Live F4-U3-L3 and F4-U3-L4 藝術評賞比較 slots. Each file is the Met `primaryImage`, byte-identical. Met `repository` is Metropolitan Museum of Art, New York, NY. Met `rightsAndReproduction` was empty, so the student-facing license is the existing `art.attr.pd` label, not a license string from the API.
+
+| File | Object | Slot |
+|---|---|---|
+| `f4-pd/met-435839-canaletto-piazza-san-marco.jpg` | 435839 Canaletto, Piazza San Marco | F4-U3-L3 left |
+| `f4-pd/met-37093-hiroshige-fireworks-ryogoku.jpg` | 37093 Utagawa Hiroshige, Fireworks at Ryōgoku Bridge | F4-U3-L3 right |
+| `f4-pd/met-436095-daumier-third-class-carriage.jpg` | 436095 Honoré Daumier, The Third-Class Carriage | F4-U3-L4 left |
+| `f4-pd/met-435702-bonheur-horse-fair.jpg` | 435702 Rosa Bonheur, The Horse Fair | F4-U3-L4 right |
 
 ## F4 November question stems (`f4-stems/`)
 
-Question illustrations for F4-U3-L3 and F4-U3-L4, hung on the existing `image` / `imageCredit` fields. **自制 · VA-Nexus**. The compare-works question in each lesson keeps the frame above and has no stem file. Cards that were already text-only stay text-only.
+Question illustrations for F4-U3-L3 and F4-U3-L4, hung on the existing `image` / `imageCredit` fields. **自制 · VA-Nexus**. The compare-works question in each lesson uses the verified plates in `f4-pd/` and has no stem file. Cards that were already text-only stay text-only.
 
 | File | Question |
 |---|---|

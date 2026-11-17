@@ -1096,8 +1096,22 @@
                 "左图一句",
                 "右图一句"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L3.png",
-              "imageCredit": "自制 · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-435839-canaletto-piazza-san-marco.jpg",
+                "title": "Piazza San Marco",
+                "artist": "Canaletto (Giovanni Antonio Canal)",
+                "year": "late 1720s",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "画面以广场地砖与两旁拱廊拉开空间，远景圣马可教堂与钟楼立于正中。无数细小人影散落广场，有人走过、有人聚在一起。作品将威尼斯公共广场写成日常聚集与路过之地方。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-37093-hiroshige-fireworks-ryogoku.jpg",
+                "title": "Fireworks at Ryōgoku Bridge, from the series One Hundred Famous Views of Edo",
+                "artist": "Utagawa Hiroshige",
+                "year": "1858",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "夜空占画面上半，烟火与烟霞散开；下半是河面、船只与两岸灯火。桥与舟上聚集许多细小观者。作品将江户两国桥写成夏夜公众一齐看烟火之地方。"
+              },
               "explain": "练习结构 · 不是真题"
             },
             {
@@ -1240,8 +1254,22 @@
                 "左图一句",
                 "右图一句"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U3-L4.png",
-              "imageCredit": "自制 · VA-Nexus",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-436095-daumier-third-class-carriage.jpg",
+                "title": "The Third-Class Carriage",
+                "artist": "Honoré Daumier",
+                "year": "1864",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "车厢里面，前景三位旅客坐得接近，身形与篮子占去大部分画面；后排还有更多人影。光线由左面窗户射入，衣着与姿势对比较静。作品将公共列车三等车厢写成普通人一齐上路之情境。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-435702-bonheur-horse-fair.jpg",
+                "title": "The Horse Fair",
+                "artist": "Rosa Bonheur",
+                "year": "1852–55",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "巨大画面由左至右排开奔走与受控之马群，人与马交织成斜向动势。地面尘土与远景树列托出室外场地。作品将巴黎马市写成公开买卖、展示力气与技艺之场所。"
+              },
               "explain": "练习结构 · 不是真题"
             },
             {

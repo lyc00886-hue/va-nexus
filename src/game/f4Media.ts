@@ -122,7 +122,8 @@ export function plateFrom(raw: unknown): ComparePlate | undefined {
   const year = text(row.year)
   const source = text(row.source)
   if (!image || !title || !artist || !year || !source) return undefined
-  return { image, title, artist, year, source }
+  const intro = text(row.intro)
+  return intro ? { image, title, artist, year, source, intro } : { image, title, artist, year, source }
 }
 
 /** Text profile only. An image field on this object is ignored and never returned. */

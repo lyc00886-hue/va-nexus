@@ -62,13 +62,15 @@ export type OrderQuestion = {
   imageCredit?: string
 }
 
-/** Verified public-domain plate. Labels come from art.attr.*, not from this record. */
+/** Verified public-domain plate. Labels come from art.attr.* and art.intro, not from this record. */
 export type ComparePlate = {
   image: string
   title: string
   artist: string
   year: string
   source: string
+  /** Work introduction. Omitted when this plate has none. */
+  intro?: string
 }
 
 /** Text-only artist and concept profile. No image is accepted on this side. */
@@ -81,7 +83,7 @@ export type ConceptProfile = {
   search: string
 }
 
-/** Two writing lines beside one local frame, or beside a plate and a text profile. */
+/** Two writing lines beside one local frame, beside two verified plates, or beside a plate and a text profile. */
 export type DualReadQuestion = {
   id: string
   type: 'dualRead'
@@ -89,8 +91,10 @@ export type DualReadQuestion = {
   labels: [string, string]
   image?: string
   imageCredit?: string
-  /** Present when one side is a verified public-domain image. */
+  /** Left verified public-domain image. */
   plate?: ComparePlate
+  /** Right verified public-domain image. Both slots are images when this is set. */
+  right?: ComparePlate
   /** Present when one side has no image and the student reads a text profile. */
   profile?: ConceptProfile
   explain: string
