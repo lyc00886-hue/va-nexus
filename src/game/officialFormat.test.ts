@@ -19,7 +19,7 @@ const read = (path: string) => readFileSync(join(root, path), 'utf8')
 const messages = (path: string) => JSON.parse(read(path)) as Record<string, string>
 
 const BANNED_GLYPH = /[\u7684\u628A\u5572\u6415\u63F5\u64BF\u64C0]/
-const COPY_SHA = '6065dbd700af28cec13c722bcf961b101b5b4c8aa001a8591d53d89b895f4a47'
+const COPY_SHA = 'f9d39b3275cf72155644a59a57c0ede8de2ae68da60cc4230770210308c54399'
 
 function isNewKey(key: string): boolean {
   if (key.startsWith('unit.header.') || key.startsWith('goal.') || key.startsWith('area.') || key.startsWith('part.')) {
@@ -100,7 +100,7 @@ describe('official format header and five-part objectives', () => {
     assert.equal(hant['lesson.f4u3l4.unitLine'], '呢課承住同一主題信息，將研究發展成創作。')
     assert.equal(hant['unit.f4u3.strand.knowledge'], '睇線、形、色、質感同構圖，點樣呈現人物、地方、習慣同物件。')
     assert.equal(hant['unit.f4u3.strand.appreciate'], '睇案例同近身細節，講清楚對象、焦點，同相關視覺元素。')
-    assert.equal(hant['unit.f4u3.strand.create'], '將近身洞察變成課堂短試驗，再用三句講主題、做法同感受。')
+    assert.equal(hant['unit.f4u3.strand.create'], '將近身洞察變成試驗物料，再用三句講主題、做法同感受。')
   })
 
   it('covers every live senior lesson and leaves F4-U2-L3 without new part keys', () => {

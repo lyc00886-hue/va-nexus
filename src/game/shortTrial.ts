@@ -1,6 +1,6 @@
 /**
- * Slice ③ short trial on the F4-U3-L4 making card.
- * Local traces only: no upload, no score, no request.
+ * Slice ③ material trial on the F4-U3-L4 making card.
+ * Local process record only: no upload, no score, no request.
  */
 
 export const TRIAL_LOCALE_KEYS = [

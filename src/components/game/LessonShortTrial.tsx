@@ -13,7 +13,7 @@ const COPY = {
 } as const satisfies Record<string, MessageKey>
 
 /**
- * Short in-class trial and talk traces beside the shipped criteria.
+ * Material trial and three-sentence talk beside the shipped criteria.
  * The fields stay on this page. Nothing is uploaded or scored.
  */
 export function LessonShortTrial({ lessonId, index }: { lessonId: string; index: number }) {
