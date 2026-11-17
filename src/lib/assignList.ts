@@ -197,9 +197,10 @@ export function useAssignList(): StaffAssignment[] {
   return useSyncExternalStore(subscribe, readAssignments, readAssignments)
 }
 
-export function publishStaffAssignment(input: PublishInput): boolean {
-  const next = withPublishedAssignment(snapshot, input)
-  if (next === snapshot) return false
+export function publishStaffAssignment(input: PublishInput): string | null {
+  const id = `assign-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`
+  const next = withPublishedAssignment(snapshot, input, id)
+  if (next === snapshot) return null
   publish(next)
-  return true
+  return id
 }

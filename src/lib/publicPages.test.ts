@@ -144,7 +144,7 @@ describe('official public copy', () => {
     assert.equal(manifest.background_color, '#FFF9E9')
   })
 
-  it('leaves the 512 icon byte-identical and keeps 11 api TypeScript files', () => {
+  it('leaves the 512 icon byte-identical and keeps the api TypeScript cap at one new file', () => {
     const icon = readFileSync(join(root, 'public/icons/icon-512.png'))
     assert.equal(icon.length, 184664)
     assert.equal(createHash('sha256').update(icon).digest('hex'), ICON_SHA)
@@ -152,7 +152,7 @@ describe('official public copy', () => {
     assert.equal(fromGit.status, 0)
     assert.deepEqual(icon, fromGit.stdout)
     const now = tsFiles(join(root, 'api'))
-    assert.equal(now.length, 11)
+    assert.equal(now.length, 12)
     const listed = spawnSync('git', ['ls-tree', '-r', '--name-only', 'HEAD', 'api'], { cwd: root, encoding: 'utf8' })
     assert.equal(listed.status, 0)
     const before = listed.stdout
@@ -160,7 +160,7 @@ describe('official public copy', () => {
       .filter((name) => name.endsWith('.ts') || name.endsWith('.tsx'))
       .map((name) => name.slice('api/'.length))
       .sort()
-    assert.deepEqual(now, before)
+    assert.deepEqual(now, [...before, 'class-invite.ts'].sort())
   })
 })
 

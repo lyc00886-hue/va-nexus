@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useT, type MessageKey } from '../i18n'
 import { assignmentsForClass, useAssignList, visibleAssignment } from '../lib/assignList'
+import type { InviteRoom } from '../lib/classInvite'
 import {
   homeworkCounts,
   homeworkFileLabel,
@@ -8,6 +9,7 @@ import {
   homeworkRosterIds,
   homeworkRows,
   homeworkSessionFile,
+  homeworkSubmissionId,
   useHomeworkSubmissions,
   type HwSubmission,
 } from '../lib/homeworkSubmit'
@@ -22,10 +24,33 @@ const NAME_KEY: Record<string, MessageKey> = {
  * Submission list for one opened class, placed after the published assignments.
  * The short button label is not the system name.
  */
-export function HomeworkReview({ classId, demoClass }: { classId: string; demoClass: boolean }) {
+export function HomeworkReview({
+  classId,
+  demoClass,
+  sharedRoom = null,
+}: {
+  classId: string
+  demoClass: boolean
+  sharedRoom?: InviteRoom | null
+}) {
   const { t } = useT()
   const assignments = assignmentsForClass({ assignments: useAssignList() }, classId)
-  const submissions = useHomeworkSubmissions()
+  const localSubmissions = useHomeworkSubmissions()
+  const remoteSubmissions: HwSubmission[] = (sharedRoom?.submissions ?? []).flatMap((row) => {
+    if (!row.memberId || !row.assignmentId || !row.fileName) return []
+    return [
+      {
+        id: homeworkSubmissionId(classId, row.assignmentId, row.memberId),
+        classId,
+        assignmentId: row.assignmentId,
+        studentId: row.memberId,
+        fileName: row.fileName,
+        demo: false,
+      },
+    ]
+  })
+  const submissions = [...localSubmissions, ...remoteSubmissions]
+  const sharedRoster = sharedRoom ? sharedRoom.members.map((member) => member.id) : null
   const [open, setOpen] = useState(true)
   const [fileId, setFileId] = useState<string | null>(null)
   const titleId = 'hw-staff-title'
@@ -75,7 +100,7 @@ export function HomeworkReview({ classId, demoClass }: { classId: string; demoCl
               <p className="text-sm leading-relaxed text-slate-600">{t('hw.staff.intro')}</p>
               {assignments.map((assignment) => {
                 const shown = visibleAssignment(assignment, demoCopy, f5Copy)
-                const roster = homeworkRosterIds(classId, demoClass)
+                const roster = sharedRoster ?? homeworkRosterIds(classId, demoClass)
                 const rows = homeworkRows({ submissions }, classId, assignment.id, roster)
                 const counts = homeworkCounts(rows)
                 const plate = homeworkPlateMatch(counts)

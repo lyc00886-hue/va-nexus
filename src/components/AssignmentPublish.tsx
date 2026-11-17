@@ -9,6 +9,7 @@ import {
   type AssignAttach,
   type StaffAssignment,
 } from '../lib/assignList'
+import { publishRealAssignment, useRealClassrooms } from '../lib/classInvite'
 import { PORTFOLIO_LABEL_MAX } from '../lib/teacherDraftBand'
 
 const ATTACH_ORDER: AssignAttach[] = ['paper', 'none']
@@ -28,6 +29,7 @@ export function AssignmentPublish({
   demoClass: boolean
 }) {
   const { t } = useT()
+  const shared = useRealClassrooms().some((room) => room.id === classId)
   const rows = assignmentsForClass({ assignments: useAssignList() }, classId)
   const [view, setView] = useState<'compose' | 'list'>('compose')
   const [title, setTitle] = useState(() => (demoClass ? t('assign.staff.demoTitle') : ''))
@@ -41,7 +43,10 @@ export function AssignmentPublish({
   function publish(event: FormEvent) {
     event.preventDefault()
     if (!ready) return
-    publishStaffAssignment({ classId, title, due, instructions, attach })
+    const assignmentId = publishStaffAssignment({ classId, title, due, instructions, attach })
+    if (shared && assignmentId) {
+      void publishRealAssignment({ classId, assignmentId, title, due, instructions, attach })
+    }
   }
 
   return (

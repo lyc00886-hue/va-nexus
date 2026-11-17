@@ -984,7 +984,7 @@ describe('F.4 demo slice', () => {
     assert.match(thin, /data-image="omitted"/)
     assert.equal(thin.includes('plate.license'), false)
     const api = readdirSync(resolve(root, 'api')).filter((file) => file.endsWith('.ts'))
-    assert.equal(api.length, 11)
+    assert.equal(api.length, 12)
     for (const name of FILES) {
       const bag = files[name]
       const locale = localeOf[name]

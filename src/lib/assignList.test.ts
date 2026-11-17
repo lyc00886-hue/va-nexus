@@ -86,6 +86,7 @@ const API_FILES = [
   'feedback.usage.test.ts',
   'formative-comment.test.ts',
   'formative-comment.ts',
+  'class-invite.ts',
   'socratic.test.ts',
   'socraticBank.ts',
 ]
@@ -337,7 +338,7 @@ describe('assignment copy and wiring', () => {
     assert.equal(hant['tab.staff'], '評分參考')
     assert.equal(hant['inspect.staff.overviewTitle'], '課室總覽')
     assert.equal(hant['qtype.chip.dualRead'], '藝術評賞比較')
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 12)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 23)
     assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 8)
   })
 

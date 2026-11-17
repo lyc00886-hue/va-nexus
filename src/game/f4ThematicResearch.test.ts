@@ -129,6 +129,6 @@ describe('F4-U3-L3 thematic research slice', () => {
     assert.equal(BANNED.test(view), false)
     assert.equal(/[\u7684\u628A\u5572]/.test(view), false)
     assert.match(intro, /lessonId === 'F4-U3-L3' \|\| lessonId === 'F4-U3-L4' \? null/)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 11)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
   })
 })

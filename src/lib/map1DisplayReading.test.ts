@@ -98,7 +98,7 @@ describe('map1 display and reading on the November cards', () => {
     assert.match(sen, /classList\.toggle\('sen-contrast', settings\.highContrast\)/)
     assert.match(sen, /classList\.toggle\('sen-dyslexia', settings\.dyslexia\)/)
     assert.match(read('src/game/softMotion.ts'), /SOUND_MOTION_DEFAULT = false/)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 11)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
   })
 
   it('puts reading support, large type, loose spacing, and high contrast on the November card art and body', () => {

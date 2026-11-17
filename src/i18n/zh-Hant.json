@@ -1818,5 +1818,22 @@
   "lesson.f4u3l4.appr.right.license": "Public Domain／CC0",
   "lesson.f4u3l4.appr.right.intro": "巨大畫面由左至右排開奔走同受控嘅馬群，人同馬交織成斜向動勢。地面塵土同遠景樹列托出室外場地。作品將巴黎馬市寫成公開買賣、展示力氣同技藝嘅場所。",
   "image.path.cover.f4u3l3": "/content/learning-map-illustrations/met-open/459235.jpg",
-  "image.path.cover.f4u3l4": "/content/learning-map-illustrations/met-open/48945.jpg"
+  "image.path.cover.f4u3l4": "/content/learning-map-illustrations/met-open/48945.jpg",
+  "class.staff.openReal": "開真實課室",
+  "class.staff.nameLabel": "課室名稱",
+  "class.staff.namePlaceholder": "輸入課室名稱",
+  "class.staff.sharedNote": "呢個課室同名單會同受邀請嘅同學共享，唔只留喺呢部裝置。",
+  "class.staff.inviteCode": "邀請碼",
+  "class.staff.copyInvite": "複製邀請碼",
+  "class.staff.handInvite": "將邀請碼交給同學，由同學自己加入。系統唔會代你發出。",
+  "class.staff.realChip": "真實課室",
+  "class.staff.plateExampleName": "中四甲班",
+  "class.staff.inviteSample": "4F7K2M",
+  "class.staff.emptyInvitees": "暫時未有受邀請同學。同學用邀請碼加入之後，就會出現喺呢度。",
+  "class.student.inviteTitle": "用邀請碼加入",
+  "class.student.invitePlaceholder": "輸入邀請碼",
+  "class.student.joinWithCode": "用邀請碼加入",
+  "class.student.inviteIntro": "輸入老師交嚟嘅邀請碼，加入呢個課室。",
+  "class.student.joinedHint": "你已加入呢個課室。而家可以用學生上載功課系統交功課。",
+  "teacher.keepBlocks": "學校評分參考、進度參考帶（只讀）、學校參考評分（雙雷達）仍然喺同一教師殼，呢度唔改名。"
 }

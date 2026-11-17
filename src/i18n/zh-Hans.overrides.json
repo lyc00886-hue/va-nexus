@@ -1168,5 +1168,22 @@
   "image.path.research": "/content/learning-map-illustrations/met-open/459619.jpg",
   "image.path.create": "/content/learning-map-illustrations/met-open/438023.jpg",
   "image.path.cover.f4u3l3": "/content/learning-map-illustrations/met-open/459235.jpg",
-  "image.path.cover.f4u3l4": "/content/learning-map-illustrations/met-open/48945.jpg"
+  "image.path.cover.f4u3l4": "/content/learning-map-illustrations/met-open/48945.jpg",
+  "class.staff.openReal": "开设真实课室",
+  "class.staff.nameLabel": "课室名称",
+  "class.staff.namePlaceholder": "输入课室名称",
+  "class.staff.sharedNote": "这个课室和名单会与受邀请的同学共享，不只留在这部装置。",
+  "class.staff.inviteCode": "邀请码",
+  "class.staff.copyInvite": "复制邀请码",
+  "class.staff.handInvite": "将邀请码交给同学，由同学自己加入。系统不会代你发出。",
+  "class.staff.realChip": "真实课室",
+  "class.staff.plateExampleName": "中四甲班",
+  "class.staff.inviteSample": "4F7K2M",
+  "class.staff.emptyInvitees": "暂时没有受邀请同学。同学用邀请码加入之后，就会出现在这里。",
+  "class.student.inviteTitle": "用邀请码加入",
+  "class.student.invitePlaceholder": "输入邀请码",
+  "class.student.joinWithCode": "用邀请码加入",
+  "class.student.inviteIntro": "输入老师交来的邀请码，加入这个课室。",
+  "class.student.joinedHint": "你已加入这个课室。现在可以用学生上载功课系统交功课。",
+  "teacher.keepBlocks": "学校评分参考、进度参考带（只读）、学校参考评分（双雷达）仍然在同一教师壳，这里不改名。"
 }
