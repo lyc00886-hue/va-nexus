@@ -23,6 +23,9 @@ const COPY = {
     'image.blockedTitle': '搵圖未通過授權核實',
     'image.ruleTitle': '搵圖同授權規則',
     'image.empty': '未有已核實授權圖像',
+    'image.examples': '下列只係例子，唔等於已核實授權，亦唔等於只核藝術家去世超過 70 年就可以跳過出處核實。',
+    'image.tate': 'Tate 唔係核准出處。',
+    'image.noStandIn': '自制圖、招牌特寫同街景圖唔可以當藝術評賞比較嘅評賞對象，亦唔好用嚟頂未授權藝術家原作。',
   },
   'zh-Hans': {
     'settings.reading': '阅读设定',
@@ -39,6 +42,9 @@ const COPY = {
     'image.blockedTitle': '搵图未通过授权核实',
     'image.ruleTitle': '搵图同授权规则',
     'image.empty': '未有已核实授权图像',
+    'image.examples': '下列只是例子，不等于已核实授权，亦不等于只核艺术家去世超过 70 年就可以跳过出处核实。',
+    'image.tate': 'Tate 不是核准出处。',
+    'image.noStandIn': '自制图、招牌特写同街景图不可以当艺术评赏比较嘅评赏对象，亦不可用嚟顶未授权艺术家原作。',
   },
   en: {
     'settings.reading': 'Reading settings',
@@ -55,6 +61,9 @@ const COPY = {
     'image.blockedTitle': 'Image search did not pass licence checks',
     'image.ruleTitle': 'Image search and licence rules',
     'image.empty': 'No verified licensed image',
+    'image.examples': 'The following names are examples only; they are not a licence, and artist-deceased-over-70-years is not enough if a source is not verified.',
+    'image.tate': 'Tate is not an approved source.',
+    'image.noStandIn': 'Homemade images, shop-sign close-ups, and street views must not be the object of Compare works, and must not stand in for an unauthorized artist original.',
   },
 } as const
 
@@ -197,6 +206,9 @@ describe('classroom image licence and new card copy', () => {
     assert.match(faces, /image\.ruleTitle/)
     assert.match(faces, /image\.blockedTitle/)
     assert.match(faces, /image\.empty/)
+    assert.match(faces, /image\.noStandIn/)
+    assert.match(faces, /image\.examples/)
+    assert.match(faces, /image\.tate/)
     assert.equal(/Feldman|DAIE|ArtInsight|Duolingo|SENCritique/.test(faces), false)
     for (const value of Object.values(COPY['zh-Hant'])) {
       assert.equal(/Feldman|DAIE|ArtInsight|Duolingo/.test(value), false)

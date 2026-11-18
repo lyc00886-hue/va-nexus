@@ -58,10 +58,11 @@ import { OfficialLessonParts } from './OfficialFormat'
 import { LessonShortTrial } from './LessonShortTrial'
 import { LessonWorksheet } from './LessonWorksheet'
 import { imageDecision, questionImageBlocked } from '../../lib/imageLicence'
+import { loadPresentation, savePresentation, type PresentationMode } from '../../lib/lessonPresentation'
 import { LessonCardArt } from './LessonCardArt'
 import { MetWorkFacts } from './MetWorkFacts'
 import { OtterChest, OtterPose } from './OtterPose'
-import { ReadAloudButton } from './ReadAloudButton'
+import { PresentationBar } from './PresentationBar'
 import { CritiqueFace, ImageBlockedFace, ImageRuleFace } from './ClassroomFaces'
 import { DualReadBoard, OrderBoard, PracticeOnlyBar, ShortBoard } from './ThinPractice'
 
@@ -76,6 +77,20 @@ const FOLD_COPY: Record<LessonFoldId, { title: 'map.lesson.goal' | 'map.lesson.s
 const OUTLINE_CHIP = 'rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
 const WIZARD_BUTTON =
   'sticky bottom-0 w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white shadow-[0_4px_0_#0F766E] active:translate-y-1 active:shadow-none'
+
+function ReadingBar(props: {
+  mode: PresentationMode
+  onMode: (mode: PresentationMode) => void
+  readText: string
+  auto?: boolean
+  autoKey?: string
+}) {
+  return (
+    <div data-reading-settings="">
+      <PresentationBar {...props} />
+    </div>
+  )
+}
 
 type AnswerGate = { ready: boolean; check: () => void }
 
@@ -132,6 +147,12 @@ export function LessonPlayer({
   onSetFold?: (id: LessonFoldId, open: boolean) => void
 }) {
   const { settings, easyRead, focusTunnel } = useSen()
+  const [readingMode, setReadingMode] = useState<PresentationMode>(() => loadPresentation())
+  function chooseReading(mode: PresentationMode) {
+    setReadingMode(mode)
+    savePresentation(mode)
+  }
+  const readingEasy = easyRead || readingMode === 'easy'
   const { state, finishLesson, awardOnce } = useGame()
   const { reportSignal } = useSenSupport()
   const motion = !settings.reduceMotion
@@ -343,7 +364,7 @@ export function LessonPlayer({
 
   const sep = getLocale() === 'en' ? '. ' : '。'
   const card = lesson.cards[cardIdx]
-  const cardText = card ? `${card.title}${sep}${easyRead ? card.easy.join(sep) : card.body}` : ''
+  const cardText = card ? `${card.title}${sep}${readingEasy ? card.easy.join(sep) : card.body}` : ''
   const lastCard = cardIdx >= lesson.cards.length - 1
   const nextTone = shortLessonFooterCta({
     folds: presentation === 'folds',
@@ -466,18 +487,28 @@ export function LessonPlayer({
               data-lesson-step={stepIdx + 1}
               data-lesson-kind={step?.kind ?? 'card'}
               data-lesson-count={steps.length}
+              data-presentation={readingMode}
               data-classroom-face={
                 licenceFace ?? (critiqueOpen ? 'critique' : step?.kind === 'question' && question?.type === 'dualRead' ? 'dual' : step?.kind ?? 'card')
               }
               className={`flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm ${focusTunnel ? 'ring-4 ring-amber-200' : ''}`}
             >
-              {step?.kind === 'media' ? <MediaStage leading={leading} /> : null}
+              {step?.kind === 'media' ? (
+                <MediaStage
+                  leading={leading}
+                  presentation={readingMode}
+                  onPresentation={chooseReading}
+                  readText={cardText}
+                />
+              ) : null}
               {step?.kind === 'card' && card ? (
                 <CardsStage
                   lessonId={lesson.id}
                   card={card}
                   cardIdx={cardIdx}
-                  easyRead={easyRead}
+                  easyRead={readingEasy}
+                  presentation={readingMode}
+                  onPresentation={chooseReading}
                   fontSize={settings.fontSize}
                   highContrast={settings.highContrast}
                   focus={false}
@@ -503,21 +534,23 @@ export function LessonPlayer({
                   <ImageBlockedFace />
                 ) : critiqueOpen ? (
                   <div className="flex min-h-0 flex-1 flex-col">
-                    <div className="flex shrink-0 justify-end px-4 pt-4">
-                      <ReadAloudButton
-                        text={[t('critique.title'), t('critique.lead'), t('critique.flex'), t('critique.object'), t('critique.nudge')].join('\n')}
-                        tucked
-                      />
-                    </div>
+                    <ReadingBar
+                      mode={readingMode}
+                      onMode={chooseReading}
+                      readText={[t('critique.title'), t('critique.lead'), t('critique.flex'), t('critique.object'), t('critique.nudge')].join('\n')}
+                    />
                     <CritiqueFace />
                   </div>
                 ) : (
                   <QuizStage
+                    lessonId={lesson.id}
                     question={question}
                     showRetry={question.id in firstTry && !feedback}
                     feedback={feedback}
                     attemptSeed={attemptSeed}
-                    easyRead={easyRead}
+                    easyRead={readingEasy}
+                    presentation={readingMode}
+                    onPresentation={chooseReading}
                     otterOn={otterOn}
                     reduceMotion={!motion}
                     onAnswer={answer}
@@ -615,6 +648,8 @@ function CardsStage({
   card,
   cardIdx,
   easyRead,
+  presentation,
+  onPresentation,
   fontSize,
   highContrast,
   focus,
@@ -629,6 +664,8 @@ function CardsStage({
   card: Lesson['cards'][number]
   cardIdx: number
   easyRead: boolean
+  presentation: PresentationMode
+  onPresentation: (mode: PresentationMode) => void
   fontSize: 'md' | 'lg' | 'xl'
   highContrast: boolean
   focus: boolean
@@ -648,11 +685,16 @@ function CardsStage({
       {...lessonCardReadingAttrs({ fontSize, dyslexia: easyRead, highContrast })}
       className={`flex min-h-0 flex-1 flex-col ${focus ? 'ring-4 ring-amber-200' : ''}`}
     >
-      <div className="flex shrink-0 justify-end px-4 pt-4">
-        <ReadAloudButton text={cardText} auto={autoRead} autoKey={autoKey} tucked />
-      </div>
+      <ReadingBar mode={presentation} onMode={onPresentation} readText={cardText} auto={autoRead} autoKey={autoKey} />
       {showCardArt ? (
-        <div data-art-slot className="min-h-[16rem] flex-[3] overflow-hidden px-4">
+        <div
+          data-art-slot
+          className={
+            presentation === 'easy'
+              ? 'min-h-[16rem] flex-[5] overflow-y-auto px-4'
+              : 'min-h-[16rem] flex-[3] overflow-hidden px-4'
+          }
+        >
           <LessonCardArt image={card.image} credit={card.imageCredit} />
           <MetWorkFacts image={card.image} />
         </div>
@@ -685,22 +727,28 @@ function CardsStage({
 }
 
 function QuizStage({
+  lessonId,
   question,
   showRetry,
   feedback,
   attemptSeed,
   easyRead,
+  presentation,
+  onPresentation,
   otterOn,
   reduceMotion,
   onAnswer,
   onGate,
   leading,
 }: {
+  lessonId: string
   question: Question
   showRetry: boolean
   feedback: Feedback
   attemptSeed: number
   easyRead: boolean
+  presentation: PresentationMode
+  onPresentation: (mode: PresentationMode) => void
   otterOn: boolean
   reduceMotion: boolean
   onAnswer: (correct: boolean, explain: string) => void
@@ -709,17 +757,16 @@ function QuizStage({
 }) {
   const mark = exerciseIdForQuestion(question.type)
   const staged = question.type === 'dualRead' || question.type === 'order' || question.type === 'short'
+  const gentle = presentation === 'easy' && Boolean(feedback && !feedback.correct)
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <div className="flex shrink-0 items-start justify-end gap-3 px-4 pt-4">
-        {mark ? (
-          <span className="sr-only">
-            <ExerciseMark id={mark} />
-            {showRetry ? t('lp.retry') : ''}
-          </span>
-        ) : null}
-        <ReadAloudButton text={questionSpeech(question)} tucked />
-      </div>
+      <ReadingBar mode={presentation} onMode={onPresentation} readText={questionSpeech(question)} />
+      {mark ? (
+        <span className="sr-only">
+          <ExerciseMark id={mark} />
+          {showRetry ? t('lp.retry') : ''}
+        </span>
+      ) : null}
       <div className={staged ? 'flex min-h-0 flex-1 flex-col' : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}>
         {leading}
         <QuestionView
@@ -728,6 +775,8 @@ function QuizStage({
           seed={attemptSeed}
           locked={Boolean(feedback)}
           easyRead={easyRead}
+          presentation={presentation}
+          lessonId={lessonId}
           onAnswer={onAnswer}
           onGate={onGate}
         />
@@ -736,7 +785,11 @@ function QuizStage({
         <div
           role="status"
           className={`mx-4 mb-4 shrink-0 rounded-2xl px-4 py-3 ${
-            feedback.correct ? 'bg-[#E7F6F3] text-slate-900' : 'bg-[#FFF4DE] text-slate-900'
+            feedback.correct
+              ? 'bg-[#E7F6F3] text-slate-900'
+              : gentle
+                ? 'border border-[#E7C98A] bg-[#FFF9E9] text-slate-900'
+                : 'bg-[#FFF4DE] text-slate-900'
           }`}
         >
           {otterOn && feedback.correct ? (
@@ -750,8 +803,8 @@ function QuizStage({
               />
             </div>
           ) : null}
-          <p className={`font-bold ${feedback.correct ? 'text-[#115E59]' : 'text-[#9A3412]'}`}>
-            {feedback.correct ? t('lp.correct') : t('lp.wrong')}
+          <p className={`font-bold ${feedback.correct ? 'text-[#115E59]' : gentle ? 'text-lg text-slate-800' : 'text-[#9A3412]'}`}>
+            {feedback.correct ? t('lp.correct') : gentle ? t('lp.retry') : t('lp.wrong')}
           </p>
           <p className="mt-1 text-sm text-slate-700">{feedback.explain}</p>
         </div>
@@ -876,11 +929,22 @@ function ResultStage({
   )
 }
 
-function MediaStage({ leading }: { leading?: ReactNode }) {
+function MediaStage({
+  leading,
+  presentation,
+  onPresentation,
+  readText,
+}: {
+  leading?: ReactNode
+  presentation: PresentationMode
+  onPresentation: (mode: PresentationMode) => void
+  readText: string
+}) {
   const [detailsOpen, setDetailsOpen] = useState(false)
   const watchUrl = classroomWatchUrl(HILL_VIDEO_ID)
   return (
     <div className="flex min-h-0 flex-1 flex-col">
+      <ReadingBar mode={presentation} onMode={onPresentation} readText={readText || t('case.hill.title')} />
       <h3 className="shrink-0 px-4 pt-4 text-xl font-bold text-slate-900">{t('case.hill.title')}</h3>
       <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
         {leading}
@@ -941,6 +1005,8 @@ type QProps<T> = {
   seed: number
   locked: boolean
   easyRead: boolean
+  presentation?: PresentationMode
+  lessonId?: string
   onAnswer: (correct: boolean, explain: string) => void
   onGate: (gate: AnswerGate) => void
 }
@@ -974,7 +1040,7 @@ const optCls = (state: 'idle' | 'selected' | 'right' | 'wrong') =>
     wrong: 'border-[#E7C98A] bg-[#FFF4DE]',
   })[state]
 
-function Mcq({ q, locked, easyRead, onAnswer, onGate }: QProps<McqQuestion>) {
+function Mcq({ q, locked, easyRead, presentation = 'standard', onAnswer, onGate }: QProps<McqQuestion>) {
   const [sel, setSel] = useState<number | null>(null)
   useAnswerGate(sel !== null && !locked, () => {
     if (sel !== null) onAnswer(sel === q.answer, q.explain)
@@ -986,8 +1052,8 @@ function Mcq({ q, locked, easyRead, onAnswer, onGate }: QProps<McqQuestion>) {
       <div className="mt-3">
         <PracticeOnlyBar />
       </div>
-      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{q.prompt}</p>
-      <div className="mt-4 grid gap-2">
+      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead || presentation === 'easy' ? 'text-2xl leading-loose' : 'text-xl'}`}>{q.prompt}</p>
+      <div className={`mt-4 grid gap-3 ${presentation === 'easy' && q.options.length === 2 ? 'grid-cols-2' : ''}`}>
         {q.options.map((o, i) => {
           const st = locked ? (sel === i ? (i === q.answer ? 'right' : 'wrong') : 'idle') : sel === i ? 'selected' : 'idle'
           return (
@@ -997,7 +1063,7 @@ function Mcq({ q, locked, easyRead, onAnswer, onGate }: QProps<McqQuestion>) {
               disabled={locked}
               aria-pressed={sel === i}
               onClick={() => setSel(i)}
-              className={`rounded-2xl border-2 px-4 py-3 text-left text-base ${optCls(st)}`}
+              className={`rounded-2xl border-2 px-4 text-left ${presentation === 'easy' ? 'min-h-16 py-4 text-xl leading-relaxed' : 'py-3 text-base'} ${optCls(st)}`}
             >
               {o}
             </button>
@@ -1008,7 +1074,7 @@ function Mcq({ q, locked, easyRead, onAnswer, onGate }: QProps<McqQuestion>) {
   )
 }
 
-function Fill({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<FillQuestion>) {
+function Fill({ q, seed, locked, easyRead, presentation = 'standard', onAnswer, onGate }: QProps<FillQuestion>) {
   const [sel, setSel] = useState<string | null>(null)
   const bank = useMemo(() => shuffle(q.bank, seed + q.id.length), [q, seed])
   const [before, after] = q.prompt.split('＿＿')
@@ -1041,7 +1107,7 @@ function Fill({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<FillQuesti
             disabled={locked}
             aria-pressed={sel === w}
             onClick={() => setSel(w)}
-            className={`rounded-2xl border-2 px-4 py-2 text-base font-semibold ${optCls(
+            className={`rounded-2xl border-2 px-4 font-semibold ${presentation === 'easy' ? 'min-h-14 py-3 text-xl' : 'py-2 text-base'} ${optCls(
               locked ? (sel === w ? (w === q.answer ? 'right' : 'wrong') : 'idle') : sel === w ? 'selected' : 'idle',
             )}`}
           >
@@ -1053,34 +1119,52 @@ function Fill({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<FillQuesti
   )
 }
 
-function OrderQ({ q, locked, easyRead, onAnswer, onGate }: QProps<OrderQuestion>) {
+function OrderQ({ q, locked, easyRead, presentation = 'standard', onAnswer, onGate }: QProps<OrderQuestion>) {
   const [order, setOrder] = useState<string[] | null>(null)
   useAnswerGate(Boolean(order && order.length === q.items.length) && !locked, () => {
     if (order) onAnswer(orderMatches(order, q.items), q.explain)
   }, onGate)
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <OrderBoard q={q} order={order} revealed={locked} easyRead={easyRead} stage onChange={setOrder} />
+      <OrderBoard q={q} order={order} revealed={locked} easyRead={easyRead} presentation={presentation} stage onChange={setOrder} />
     </div>
   )
 }
 
-function DualReadQ({ q, locked, easyRead, onAnswer, onGate }: QProps<DualReadQuestion>) {
+function DualReadQ({ q, locked, easyRead, presentation = 'standard', lessonId = '', onAnswer, onGate }: QProps<DualReadQuestion>) {
   const [lines, setLines] = useState<string[]>(['', ''])
   useAnswerGate(!locked && linesReady(lines, 2), () => onAnswer(true, q.explain), onGate)
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <DualReadBoard q={q} lines={lines} revealed={locked} easyRead={easyRead} stage onChange={setLines} />
+      <DualReadBoard
+        q={q}
+        lines={lines}
+        revealed={locked}
+        easyRead={easyRead}
+        presentation={presentation}
+        lessonId={lessonId}
+        stage
+        onChange={setLines}
+      />
     </div>
   )
 }
 
-function ShortQ({ q, locked, easyRead, onAnswer, onGate }: QProps<ShortQuestion>) {
+function ShortQ({ q, locked, easyRead, presentation = 'standard', lessonId = '', onAnswer, onGate }: QProps<ShortQuestion>) {
   const [lines, setLines] = useState<string[]>([''])
   useAnswerGate(!locked && linesReady(lines, 1), () => onAnswer(true, q.explain), onGate)
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      <ShortBoard q={q} line={lines[0] ?? ''} revealed={locked} easyRead={easyRead} stage onChange={setLines} />
+      <ShortBoard
+        q={q}
+        line={lines[0] ?? ''}
+        revealed={locked}
+        easyRead={easyRead}
+        presentation={presentation}
+        lessonId={lessonId}
+        stage
+        onChange={setLines}
+      />
     </div>
   )
 }
