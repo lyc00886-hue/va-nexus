@@ -585,7 +585,7 @@ describe('November community-art cases', () => {
     assert.match(quest, /data-quest-unit=\{unit\.id\} className="mt-4 w-full max-w-none"/)
     assert.match(quest, /max-w-\[24rem\]/)
     assert.match(path, /mx-auto mt-4 max-w-2xl/)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 11)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
   })
 
   it('leaves LessonCardArt and the api TypeScript count unchanged', () => {
@@ -595,7 +595,7 @@ describe('November community-art cases', () => {
     assert.match(art, /key=\{image\}/)
     assert.equal(art.includes('loading='), false)
     assert.match(art, /if \(!image \|\| failed\) return null/)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 11)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
     const player = read('src/components/game/LessonPlayer.tsx')
     const stage = player.slice(player.indexOf('function CardsStage'), player.indexOf('function QuizStage'))
     assert.match(stage, /LessonCardArt image=\{card\.image\} credit=\{card\.imageCredit\}/)

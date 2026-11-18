@@ -1,4 +1,10 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { oauthReturnToClassroomMap } from './oauthReturn.ts'
+
+if (typeof window !== 'undefined') {
+  const next = oauthReturnToClassroomMap(window.location.href)
+  if (next) window.history.replaceState(window.history.state, '', next)
+}
 
 const url = import.meta.env.VITE_SUPABASE_URL as string | undefined
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined

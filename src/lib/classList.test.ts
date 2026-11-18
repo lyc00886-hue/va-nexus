@@ -99,17 +99,30 @@ describe('classroom management copy and wiring', () => {
     const hans = messages('src/i18n/zh-Hans.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
+    const extra = [
+      'class.staff.openReal',
+      'class.staff.nameLabel',
+      'class.staff.namePlaceholder',
+      'class.staff.sharedNote',
+      'class.staff.inviteCode',
+      'class.staff.copyInvite',
+      'class.staff.handInvite',
+      'class.staff.realChip',
+      'class.staff.plateExampleName',
+      'class.staff.inviteSample',
+      'class.staff.emptyInvitees',
+    ]
     assert.deepEqual(
       Object.keys(hant).filter((key) => key.startsWith('class.staff.')),
-      keys,
+      [...keys, ...extra],
     )
     assert.deepEqual(
       Object.keys(hans).filter((key) => key.startsWith('class.staff.')),
-      keys,
+      [...keys, ...extra],
     )
     assert.deepEqual(
       Object.keys(en).filter((key) => key.startsWith('class.staff.')),
-      keys,
+      [...keys, ...extra],
     )
     let de = 0
     let ba = 0
@@ -163,7 +176,7 @@ describe('classroom management copy and wiring', () => {
     assert.match(list, /class\.staff\.listTitle/)
     assert.match(list, /class\.staff\.demoClass/)
     assert.match(list, /class\.staff\.openClass/)
-    assert.match(list, /class\.staff\.addClass/)
+    assert.match(list, /class\.staff\.openReal/)
     assert.match(list, /class\.staff\.empty/)
     assert.match(list, /open \?/)
     assert.match(list, /\{overview\}/)
@@ -175,7 +188,7 @@ describe('classroom management copy and wiring', () => {
     assert.equal(app.includes('ClassroomManagement'), false)
     const tabs = sidebar.slice(sidebar.indexOf('export const TABS'), sidebar.indexOf('export const STAFF_TAB'))
     assert.equal(/['"]staff['"]/.test(tabs), false)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 11)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
     for (const file of ['src/components/ClassroomManagement.tsx', 'src/lib/classList.ts', 'src/components/TeacherDraftBand.tsx']) {
       const source = read(file)
       assert.equal(source.includes('\u7684'), false, file)

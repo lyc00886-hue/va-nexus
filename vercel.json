@@ -6,6 +6,11 @@
       "has": [{ "type": "query", "key": "ux" }],
       "destination": "/classroom.html"
     },
+    {
+      "source": "/",
+      "has": [{ "type": "query", "key": "code" }],
+      "destination": "/classroom.html"
+    },
     { "source": "/", "destination": "/pages/landing.html" },
     { "source": "/curriculum", "destination": "/pages/curriculum.html" },
     { "source": "/en", "destination": "/pages/en.html" },

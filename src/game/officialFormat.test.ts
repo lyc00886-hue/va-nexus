@@ -180,7 +180,7 @@ describe('official format header and five-part objectives', () => {
     assert.match(view, /#0D9488/)
     assert.match(view, /#FFF9E9/)
     assert.equal(BANNED_GLYPH.test(view + frame), false)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 11)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
     const pack = read('src/content/f6-demo.json')
     assert.match(pack, /明清美學同當代評賞比較/)
   })

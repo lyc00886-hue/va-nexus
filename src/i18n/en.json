@@ -1802,5 +1802,22 @@
   "lesson.f4u3l4.appr.right.license": "Public Domain / CC0",
   "lesson.f4u3l4.appr.right.intro": "The large canvas spreads a controlled yet running herd of horses from left to right, with riders and handlers woven into a diagonal movement. Dust on the ground and a line of trees at the back mark an outdoor site. The painting presents a Paris horse market as a public place of sale, strength, and skill.",
   "image.path.cover.f4u3l3": "/content/learning-map-illustrations/met-open/459235.jpg",
-  "image.path.cover.f4u3l4": "/content/learning-map-illustrations/met-open/48945.jpg"
+  "image.path.cover.f4u3l4": "/content/learning-map-illustrations/met-open/48945.jpg",
+  "class.staff.openReal": "Open a real classroom",
+  "class.staff.nameLabel": "Classroom name",
+  "class.staff.namePlaceholder": "Enter a classroom name",
+  "class.staff.sharedNote": "This classroom and its roster are shared with invited classmates. They are not kept only on this device.",
+  "class.staff.inviteCode": "Invite code",
+  "class.staff.copyInvite": "Copy invite code",
+  "class.staff.handInvite": "Give the invite code to classmates so they join themselves. The system will not send it for you.",
+  "class.staff.realChip": "Real classroom",
+  "class.staff.plateExampleName": "Form 4 class A",
+  "class.staff.inviteSample": "4F7K2M",
+  "class.staff.emptyInvitees": "No invited classmates yet. After a classmate joins with the invite code, they appear here.",
+  "class.student.inviteTitle": "Join with an invite code",
+  "class.student.invitePlaceholder": "Enter the invite code",
+  "class.student.joinWithCode": "Join with an invite code",
+  "class.student.inviteIntro": "Enter the invite code your teacher handed you, and join this classroom.",
+  "class.student.joinedHint": "You have joined this classroom. You can now hand in work with the student upload system.",
+  "teacher.keepBlocks": "School scoring reference, the read-only progress band, and the dual-radar school reference stay in the same teacher shell. The names stay as they are."
 }

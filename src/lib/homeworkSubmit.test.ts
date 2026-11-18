@@ -240,7 +240,7 @@ describe('homework copy and wiring', () => {
     assert.equal(hant['inspect.report.disclaimer'], '呢份報告係校內參考，唔係公開試正式成績。')
     for (const [key, value] of Object.entries(CLASS_HANT)) assert.equal(hant[key], value, key)
     for (const [key, value] of Object.entries(ASSIGN_HANT)) assert.equal(hant[key], value, key)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 12)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 23)
     assert.equal(Object.keys(hant).filter((key) => key.startsWith('assign.staff.')).length, 20)
     assert.equal(hant['inspect.staff.overviewTitle'], '課室總覽')
     assert.equal(hant['tab.staff'], '評分參考')
@@ -294,8 +294,8 @@ describe('homework copy and wiring', () => {
     assert.equal(student.includes('/api/'), false)
     const found = readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).sort()
     const extra = found.filter((name) => !API_FILES.includes(name))
-    assert.ok(found.length === 11 || found.length === 12)
-    assert.deepEqual(extra, found.length === 12 ? ['class-homework.ts'] : [])
+    assert.equal(found.length, 12)
+    assert.deepEqual(extra, ['class-invite.ts'])
     for (const file of [
       'src/components/HomeworkReview.tsx',
       'src/components/HomeworkStudent.tsx',

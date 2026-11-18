@@ -8,6 +8,7 @@ import {
   visibleAssignment,
   type StaffAssignment,
 } from '../lib/assignList'
+import { joinRealClassroom, submitJoinedHomework, useJoinedClassroom, type InviteRoom } from '../lib/classInvite'
 import {
   F5_INSTRUCTIONS_DOWNLOAD_NAME,
   homeworkInstructionsHtml,
@@ -24,30 +25,177 @@ import {
   useHomeworkSubmissions,
 } from '../lib/homeworkSubmit'
 
+function ClassInviteJoin() {
+  const { t } = useT()
+  const [code, setCode] = useState('')
+  const [pending, setPending] = useState(false)
+  const [invalid, setInvalid] = useState(false)
+  const titleId = 'class-student-invite-title'
+  const normalized = code.toUpperCase().replace(/[^ABCDEFGHJKLMNPQRSTUVWXYZ23456789]/g, '').slice(0, 6)
+
+  async function join(event: FormEvent) {
+    event.preventDefault()
+    if (normalized.length !== 6 || pending) return
+    setPending(true)
+    const room = await joinRealClassroom(normalized)
+    setPending(false)
+    setInvalid(room == null)
+    if (room) setCode('')
+  }
+
+  return (
+    <section aria-labelledby={titleId} data-testid="class-student-invite" data-soft-motion="off" className="space-y-3">
+      <div>
+        <h2 id={titleId} className="text-xl font-bold text-slate-900">
+          {t('class.student.inviteTitle')}
+        </h2>
+        <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('class.student.inviteIntro')}</p>
+      </div>
+      <form onSubmit={join} className="rounded-3xl border-2 border-[#0D9488] bg-white p-4">
+        <label htmlFor="class-student-code" className="block text-sm font-semibold text-slate-700">
+          {t('class.staff.inviteCode')}
+        </label>
+        <input
+          id="class-student-code"
+          data-testid="class-student-code"
+          value={code}
+          placeholder={t('class.student.invitePlaceholder')}
+          autoComplete="off"
+          autoCapitalize="characters"
+          spellCheck={false}
+          aria-invalid={invalid}
+          maxLength={12}
+          onChange={(event) => {
+            setInvalid(false)
+            setCode(event.target.value.toUpperCase())
+          }}
+          className="mt-2 w-full rounded-xl border border-[#0D9488]/40 px-3 py-2 text-lg font-semibold tracking-wide text-slate-900 placeholder:text-base placeholder:font-normal placeholder:tracking-normal placeholder:text-slate-400 focus:border-[#0D9488] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30"
+        />
+        <button
+          type="submit"
+          data-testid="class-student-join"
+          disabled={pending || normalized.length !== 6}
+          className="mt-3 whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
+        >
+          {t('class.student.joinWithCode')}
+        </button>
+      </form>
+      <div className="rounded-3xl border border-[#0D9488]/30 bg-[#F6E7C1] px-4 py-3">
+        <p className="text-sm leading-relaxed text-slate-700">{t('class.student.inviteIntro')}</p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-700">{t('hw.student.mapEntry')}</p>
+      </div>
+    </section>
+  )
+}
+
 /** Learning-map entry. The bottom bar does not gain a tab. */
 export function HomeworkMapEntry() {
   const { t } = useT()
+  const joined = useJoinedClassroom()
   const [open, setOpen] = useState(false)
+  const shown = open || joined != null
   return (
-    <div data-testid="hw-map-entry" data-soft-motion="off" className="mt-3 space-y-2">
+    <div data-testid="hw-map-entry" data-soft-motion="off" className="mt-3 space-y-3">
+      {joined ? null : <ClassInviteJoin />}
       <button
         type="button"
         data-testid="hw-student-open"
-        aria-expanded={open}
+        aria-expanded={shown}
         onClick={() => setOpen((value) => !value)}
         className="inline-flex min-h-9 items-center rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0D9488]"
       >
         {t('hw.student.title')}
       </button>
       <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.mapEntry')}</p>
-      {open ? <HomeworkStudent /> : null}
+      {shown ? <HomeworkStudent /> : null}
     </div>
+  )
+}
+
+function JoinedHomework({ room }: { room: InviteRoom }) {
+  const { t } = useT()
+  const titleId = 'hw-student-joined-title'
+  const live = {
+    id: DEMO_ASSIGN_ID,
+    classId: room.id,
+    title: '',
+    due: '',
+    instructions: '',
+    attach: 'paper' as const,
+    demo: true,
+  }
+  const published = room.assignments
+    .filter((row) => row.demo !== true && row.title.trim() !== '' && row.due.trim() !== '')
+    .map((row) => ({
+      id: row.id,
+      classId: room.id,
+      title: row.title,
+      due: row.due,
+      instructions: row.instructions,
+      attach: row.attach,
+      demo: false,
+    }))
+  return (
+    <section
+      aria-labelledby={titleId}
+      data-testid="hw-student-joined"
+      data-class-name={room.name}
+      data-soft-motion="off"
+      className="space-y-3 rounded-[2rem] border border-[#0D9488]/30 bg-[#FFF9E9] p-4"
+    >
+      <div>
+        <h2 id={titleId} className="text-xl font-bold text-slate-900">
+          {t('hw.student.title')}
+        </h2>
+        <p className="mt-1 text-sm font-semibold text-[#0D9488]">{t('hw.student.systemName')}</p>
+        <p className="mt-2 flex flex-wrap items-center gap-2">
+          <span className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]">
+            {t('class.staff.realChip')}
+          </span>
+          <span className="text-sm font-semibold text-slate-800">{room.name}</span>
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-700">{t('class.student.joinedHint')}</p>
+      </div>
+      <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.intro')}</p>
+      <ul className="m-0 list-none space-y-3 p-0">
+        <HomeworkCard
+          assignment={live}
+          due={t('assign.staff.demoDue')}
+          title={t('assign.staff.demoTitle')}
+          instructions={t('assign.staff.demoInstructions')}
+          classId={room.id}
+          roomCode={room.code}
+          roomName={room.name}
+          joined
+        />
+        {published.map((assignment) => (
+          <HomeworkCard
+            key={assignment.id}
+            assignment={assignment}
+            due={assignment.due}
+            title={assignment.title}
+            instructions={assignment.instructions}
+            classId={room.id}
+            roomCode={room.code}
+            roomName={room.name}
+            joined
+          />
+        ))}
+      </ul>
+      <div className="rounded-3xl border border-[#0D9488]/30 bg-[#F6E7C1] px-4 py-3">
+        <p className="text-sm leading-relaxed text-slate-700">{t('hw.student.privateNote')}</p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-700">{t('hw.student.mapEntry')}</p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-700">{t('hw.student.teacherCanOpen')}</p>
+      </div>
+    </section>
   )
 }
 
 export function HomeworkStudent() {
   const { t } = useT()
+  const joined = useJoinedClassroom()
   const rows = assignmentsForClass({ assignments: useAssignList() }, DEMO_CLASS_ID)
+  if (joined) return <JoinedHomework room={joined} />
   const titleId = 'hw-student-title'
   const demoCopy = {
     title: t('assign.staff.demoTitle'),
@@ -176,20 +324,34 @@ function HomeworkCard({
   title,
   due,
   instructions,
+  classId = DEMO_CLASS_ID,
+  studentId = HW_LEARNER_ID,
+  roomCode = '',
+  roomName = '',
+  joined = false,
 }: {
   assignment: StaffAssignment
   title: string
   due: string
   instructions: string
+  classId?: string
+  studentId?: string
+  roomCode?: string
+  roomName?: string
+  joined?: boolean
 }) {
   const { t } = useT()
   const submissions = useHomeworkSubmissions()
+  const joinedRoom = useJoinedClassroom()
   const [file, setFile] = useState<File | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const existing =
     submissions.find(
-      (row) => row.classId === DEMO_CLASS_ID && row.assignmentId === assignment.id && row.studentId === HW_LEARNER_ID,
+      (row) => row.classId === classId && row.assignmentId === assignment.id && row.studentId === studentId,
     ) ?? null
+  const remoteName =
+    joinedRoom?.submissions.find((row) => row.assignmentId === assignment.id && row.fileName)?.fileName ?? ''
+  const handedName = existing?.fileName || remoteName
   const error = file ? homeworkFileError(file) : null
   const ready = file != null && error == null
   const inputId = `hw-student-file-${assignment.id}`
@@ -197,30 +359,69 @@ function HomeworkCard({
   function submit(event: FormEvent) {
     event.preventDefault()
     if (!file || homeworkFileError(file)) return
-    const id = homeworkSubmissionId(DEMO_CLASS_ID, assignment.id, HW_LEARNER_ID)
+    const id = homeworkSubmissionId(classId, assignment.id, studentId)
     const ok = submitHomework({
-      classId: DEMO_CLASS_ID,
+      classId,
       assignmentId: assignment.id,
-      studentId: HW_LEARNER_ID,
+      studentId,
       fileName: file.name,
     })
     if (!ok) return
+    if (joined && roomCode) void submitJoinedHomework({ assignmentId: assignment.id, fileName: file.name })
     rememberHomeworkFile(id, file)
     if (inputRef.current) inputRef.current.value = ''
     setFile(null)
   }
 
+  const handedIn = handedName !== ''
   return (
-    <li data-testid={`hw-student-card-${assignment.id}`} data-hw-handed-in={existing ? 'true' : 'false'} className="rounded-3xl border border-[#0D9488]/30 bg-white p-4">
+    <li
+      data-testid={`hw-student-card-${assignment.id}`}
+      data-hw-handed-in={handedIn ? 'true' : 'false'}
+      className={
+        joined
+          ? 'rounded-3xl border-2 border-[#0D9488] bg-white p-4'
+          : 'rounded-3xl border border-[#0D9488]/30 bg-white p-4'
+      }
+    >
       <h3 className="text-lg font-bold text-slate-900">{title}</h3>
-      <p className="mt-1 text-sm text-slate-700">
-        {t('hw.student.due')} {due}
+      {joined && roomName ? <p className="mt-1 text-sm text-slate-700">{roomName}</p> : null}
+      <p className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-700">
+        {joined ? (
+          <span
+            className={
+              handedIn
+                ? 'inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]'
+                : 'inline-flex rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
+            }
+          >
+            {handedIn ? t('inspect.practice.submitted') : t('inspect.practice.notSubmitted')}
+          </span>
+        ) : null}
+        <span>
+          {t('hw.student.due')} {due}
+        </span>
       </p>
       {instructions ? <p className="mt-2 text-sm leading-relaxed text-slate-700">{instructions}</p> : null}
-      <HomeworkDownloads assignmentId={assignment.id} />
-      {existing ? <p className="mt-2 text-sm font-semibold text-[#0D9488]">{existing.fileName}</p> : null}
+      {joined && assignment.id === DEMO_ASSIGN_ID ? (
+        <p className="mt-3">
+          <span className="inline-flex max-w-full rounded-full border border-[#0D9488] bg-white px-3 py-1 text-left text-sm font-semibold text-[#0D9488]">
+            {t('assign.staff.attachPaper')}
+          </span>
+        </p>
+      ) : (
+        <HomeworkDownloads assignmentId={assignment.id} />
+      )}
+      {handedName ? <p className="mt-2 text-sm font-semibold text-[#0D9488]">{handedName}</p> : null}
       <form onSubmit={submit} className="mt-3 space-y-3">
         <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.wholeFile')}</p>
+        {joined ? (
+          <div>
+            <p className="text-sm font-semibold text-slate-800">{t('hw.student.upload')}</p>
+            <p className="mt-1 text-sm text-slate-700">{t('hw.staff.genericFile')}</p>
+            <p className="text-sm text-slate-600">{t('hw.staff.pagesHint')}</p>
+          </div>
+        ) : null}
         <label
           htmlFor={inputId}
           className="inline-flex min-h-9 cursor-pointer items-center rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]"
@@ -244,9 +445,9 @@ function HomeworkCard({
           disabled={!ready}
           className="whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
         >
-          {t('hw.student.submit')}
+          {joined ? t('hw.student.upload') : t('hw.student.submit')}
         </button>
-        <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.teacherCanOpen')}</p>
+        {joined ? null : <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.teacherCanOpen')}</p>}
       </form>
     </li>
   )

@@ -1,33 +1,39 @@
-import { useState, type FormEvent, type ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { AssignmentPublish } from './AssignmentPublish'
+import { ClassInviteCreate, ClassInviteRoom } from './ClassInviteStaff'
 import { HomeworkReview } from './HomeworkReview'
 import { useT } from '../i18n'
-import { addStaffClass, useClassList } from '../lib/classList'
-import { PORTFOLIO_LABEL_MAX, portfolioKey } from '../lib/teacherDraftBand'
+import { useClassList } from '../lib/classList'
+import { useRealClassrooms, type InviteRoom } from '../lib/classInvite'
 
 /**
  * Parent surface for the classes a teacher looks after.
- * The class list stays visible. The existing overview is rendered here
- * only after a class is opened.
+ * The sample class stays on this device. A real classroom is opened
+ * through the shared invite route, then the existing overview is shown.
  */
 export function ClassroomManagement({ overview }: { overview: ReactNode }) {
   const { t } = useT()
   const classes = useClassList()
-  const [name, setName] = useState('')
+  const shared = useRealClassrooms()
   const [openId, setOpenId] = useState<string | null>(null)
-  const showDemo = classes.some((row) => row.demo)
-  const openRow = classes.find((row) => row.id === openId)
+  const [screen, setScreen] = useState<'list' | 'create' | 'real'>('list')
+  const [realId, setRealId] = useState<string | null>(null)
+  const localOpen = classes.find((row) => row.id === openId) ?? null
+  const realRoom = shared.find((room) => room.id === realId) ?? null
+  const openRow =
+    screen === 'real' && realRoom
+      ? { id: realRoom.id, name: realRoom.name, demo: false as const }
+      : screen === 'list'
+        ? localOpen
+        : null
   const open = openRow != null
   const titleId = 'class-staff-title'
   const listId = 'class-staff-list-title'
 
-  function add(event: FormEvent) {
-    event.preventDefault()
-    const next = name.trim()
-    if (!next) return
-    if (classes.some((row) => !row.demo && portfolioKey(row.name) === portfolioKey(next))) return
-    if (!addStaffClass(next)) return
-    setName('')
+  function openShared(room: InviteRoom) {
+    setRealId(room.id)
+    setOpenId(null)
+    setScreen('real')
   }
 
   return (
@@ -37,87 +43,124 @@ export function ClassroomManagement({ overview }: { overview: ReactNode }) {
       data-soft-motion="off"
       className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5"
     >
-      <div>
-        <h2 id={titleId} className="text-xl font-bold text-slate-900">
-          {t('class.staff.title')}
-        </h2>
-        <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('class.staff.intro')}</p>
-      </div>
-      <p className="text-sm leading-relaxed text-slate-600">{t('class.staff.overviewHint')}</p>
+      {screen === 'list' ? (
+        <div>
+          <h2 id={titleId} className="text-xl font-bold text-slate-900">
+            {t('class.staff.title')}
+          </h2>
+          <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('class.staff.intro')}</p>
+        </div>
+      ) : null}
+      {screen === 'list' ? (
+        <p className="text-sm leading-relaxed text-slate-600">{t('class.staff.overviewHint')}</p>
+      ) : null}
 
-      <div>
-        <h3 id={listId} className="text-lg font-bold text-slate-900">
-          {t('class.staff.listTitle')}
-        </h3>
-        {showDemo ? (
-          <p data-testid="class-demo-note" className="mt-1 text-sm text-slate-600">
-            {t('class.staff.demoClassNote')}
-          </p>
-        ) : null}
-      </div>
+      {screen === 'create' ? (
+        <ClassInviteCreate onCreated={openShared} onBack={() => setScreen('list')} />
+      ) : null}
 
-      {classes.length === 0 ? (
+      {screen === 'real' && realRoom ? (
+        <ClassInviteRoom room={realRoom} onBack={() => setScreen('list')} />
+      ) : null}
+
+      {screen === 'list' ? (
+        <div>
+          <h3 id={listId} className="text-lg font-bold text-slate-900">
+            {t('class.staff.listTitle')}
+          </h3>
+        </div>
+      ) : null}
+
+      {screen === 'list' && classes.length === 0 && shared.length === 0 ? (
         <p role="status" data-testid="class-staff-empty" className="rounded-2xl bg-white px-3 py-3 text-sm text-slate-700">
           {t('class.staff.empty')}
         </p>
       ) : null}
 
-      <ul aria-labelledby={listId} className="m-0 list-none space-y-3 p-0">
-        {classes.map((row) => {
-          const opened = openId === row.id
-          const label = row.demo ? t('class.staff.demoClass') : row.name
-          return (
+      {screen === 'list' ? (
+        <ul aria-labelledby={listId} className="m-0 list-none space-y-3 p-0">
+          {classes.map((row) => {
+            const opened = openId === row.id
+            const label = row.demo ? t('class.staff.demoClass') : row.name
+            return (
+              <li
+                key={row.id}
+                data-testid={`class-staff-card-${row.id}`}
+                data-class-demo={row.demo ? 'true' : 'false'}
+                data-class-open={opened ? 'true' : 'false'}
+                className="rounded-3xl border border-[#0D9488]/30 bg-white p-4"
+              >
+                <p className="font-semibold text-slate-900">{label}</p>
+                {row.demo ? (
+                  <>
+                    <p data-testid="class-demo-note" className="mt-1 text-sm text-[#0D9488]">
+                      {t('class.staff.demoClassNote')}
+                    </p>
+                    <p data-testid="class-staff-count" className="mt-1 text-sm text-slate-600">
+                      {t('class.staff.studentCount')}
+                    </p>
+                  </>
+                ) : null}
+                <button
+                  type="button"
+                  data-testid={`class-staff-open-${row.id}`}
+                  aria-expanded={opened}
+                  aria-controls={opened ? 'class-staff-overview' : undefined}
+                  onClick={() => {
+                    setScreen('list')
+                    setOpenId(row.id)
+                  }}
+                  className="mt-3 whitespace-nowrap rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]"
+                >
+                  {t('class.staff.openClass')}
+                </button>
+              </li>
+            )
+          })}
+          {shared.map((room) => (
             <li
-              key={row.id}
-              data-testid={`class-staff-card-${row.id}`}
-              data-class-demo={row.demo ? 'true' : 'false'}
-              data-class-open={opened ? 'true' : 'false'}
-              className="rounded-3xl border border-[#0D9488]/30 bg-white p-4"
+              key={room.id}
+              data-testid={`class-staff-card-${room.id}`}
+              data-class-demo="false"
+              data-class-shared="true"
+              className="rounded-3xl border-2 border-[#0D9488] bg-white p-4"
             >
-              <p className="font-semibold text-slate-900">{label}</p>
-              {row.demo ? (
-                <p data-testid="class-staff-count" className="mt-1 text-sm text-slate-600">
-                  {t('class.staff.studentCount')}
-                </p>
-              ) : null}
+              <p className="font-semibold text-slate-900">{room.name}</p>
+              <p className="mt-2">
+                <span className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]">
+                  {t('class.staff.realChip')}
+                </span>
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">{t('class.staff.sharedNote')}</p>
               <button
                 type="button"
-                data-testid={`class-staff-open-${row.id}`}
-                aria-expanded={opened}
-                aria-controls={opened ? 'class-staff-overview' : undefined}
-                onClick={() => setOpenId(row.id)}
-                className="mt-3 whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white"
+                data-testid={`class-staff-open-${room.id}`}
+                onClick={() => openShared(room)}
+                className="mt-3 whitespace-nowrap rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]"
               >
                 {t('class.staff.openClass')}
               </button>
             </li>
-          )
-        })}
-      </ul>
+          ))}
+        </ul>
+      ) : null}
 
-      <form onSubmit={add} className="rounded-3xl border border-[#0D9488]/30 bg-white p-4">
-        <label htmlFor="class-add-name" className="block text-sm font-semibold text-slate-900">
-          {t('class.staff.addClass')}
-        </label>
-        <div className="mt-2 flex flex-col gap-2 sm:flex-row">
-          <input
-            id="class-add-name"
-            data-testid="class-add-name"
-            value={name}
-            maxLength={PORTFOLIO_LABEL_MAX}
-            autoComplete="off"
-            onChange={(event) => setName(event.target.value.slice(0, PORTFOLIO_LABEL_MAX))}
-            className="w-full rounded-xl border border-[#0D9488]/30 px-3 py-2 text-sm text-slate-900 focus:border-[#0D9488] focus:outline-none focus:ring-2 focus:ring-[#0D9488]/30"
-          />
+      {screen === 'list' ? (
+        <div className="space-y-3">
           <button
-            type="submit"
-            data-testid="class-add-submit"
-            className="shrink-0 whitespace-nowrap rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]"
+            type="button"
+            data-testid="class-open-real"
+            onClick={() => setScreen('create')}
+            className="whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white"
           >
-            {t('class.staff.addClass')}
+            {t('class.staff.openReal')}
           </button>
+          <div className="rounded-3xl border border-[#0D9488]/30 bg-white p-4">
+            <p className="text-sm leading-relaxed text-slate-600">{t('class.staff.sharedNote')}</p>
+            <p className="mt-2 text-sm text-[#0D9488]">{t('class.staff.demoClassNote')}</p>
+          </div>
         </div>
-      </form>
+      ) : null}
 
       {open ? (
         <div id="class-staff-overview" data-testid="class-staff-overview" className="space-y-3">
@@ -132,10 +175,22 @@ export function ClassroomManagement({ overview }: { overview: ReactNode }) {
             />
           ) : null}
           {openRow ? (
-            <HomeworkReview key={`hw-${openRow.id}`} classId={openRow.id} demoClass={openRow.demo} />
+            <HomeworkReview
+              key={`hw-${openRow.id}`}
+              classId={openRow.id}
+              demoClass={openRow.demo}
+              sharedRoom={openRow.demo ? null : realRoom}
+            />
           ) : null}
         </div>
       ) : null}
+
+      <div data-testid="class-keep-blocks" className="rounded-3xl border border-[#0D9488]/30 bg-white p-4">
+        <p className="font-semibold text-[#0D9488]">{t('score.v1.title')}</p>
+        <p className="mt-1 text-[#0D9488]">{t('score.v1.bandsTitle')}</p>
+        <p className="mt-1 text-[#0D9488]">{t('score.dual.title')}</p>
+      </div>
+      <p className="text-sm leading-relaxed text-slate-600">{t('teacher.keepBlocks')}</p>
     </section>
   )
 }

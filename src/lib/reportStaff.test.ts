@@ -68,6 +68,7 @@ const API_FILES = [
   'feedback.usage.test.ts',
   'formative-comment.test.ts',
   'formative-comment.ts',
+  'class-invite.ts',
   'socratic.test.ts',
   'socraticBank.ts',
 ]
@@ -187,7 +188,7 @@ describe('student personal report', () => {
     assert.equal(read('src/App.tsx').includes('max-w-5xl'), true)
     const found = readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).sort()
     assert.deepEqual(found, [...API_FILES].sort())
-    assert.equal(found.length, 11)
+    assert.equal(found.length, 12)
     assert.equal(found.includes('class-homework.ts'), false)
     for (const file of ['src/components/InspectReport.tsx', 'src/lib/inspectReport.ts']) {
       const source = read(file)
