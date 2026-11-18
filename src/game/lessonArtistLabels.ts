@@ -9,6 +9,8 @@ const NAMES: Record<string, Record<Locale, string>> = {
   'HK-WUCIUS-01': { en: 'Wucius Wong', 'zh-Hant': '王無邪', 'zh-Hans': '王无邪' },
   'HK-PAK-01': { en: 'Pak Sheung Chuen', 'zh-Hant': '白雙全', 'zh-Hans': '白双全' },
   'HK-LEEKIT-01': { en: 'Lee Kit', 'zh-Hant': '李傑', 'zh-Hans': '李杰' },
+  'FR-CAILLEBOTTE-01': { en: 'Gustave Caillebotte', 'zh-Hant': '卡耶博特', 'zh-Hans': '卡耶博特' },
+  'DK-HAMMERSHOI-01': { en: 'Vilhelm Hammershøi', 'zh-Hant': '哈默修伊', 'zh-Hans': '哈默修伊' },
 }
 
 export function artistName(artistId: string): string {

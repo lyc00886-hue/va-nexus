@@ -250,7 +250,7 @@ describe('F.4 demo slice', () => {
     for (const name of FILES.slice(1)) assert.equal(signature(name), base, name)
   })
 
-  it('ships local unit covers, the cleared Kahlo artwork, and five reference images', () => {
+  it('ships local unit covers, the cleared Kahlo artwork, and reference images', () => {
     const portrait = resolve(PUBLIC, 'content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-portrait.jpg')
     assert.ok(existsSync(portrait), portrait)
     const refDir = resolve(PUBLIC, 'content/learning-map-illustrations/artist-refs')
@@ -260,6 +260,8 @@ describe('F.4 demo slice', () => {
       'HK-WUCIUS-01-reference.png': ['7e5afda118d2d2932621da1bf2db4ad17b051687371793c559522c469a315f02', 730779],
       'HK-SHIEH-01-reference.png': ['cf8627b915ffc429a0b897914f42e18f323676666d83d7e28aa13b54cd91efb7', 771923],
       'WEST-HOCKNEY-01-reference.png': ['70de5ad9c1408e3bb854e0cda489039a2e53908fd9857ee6faba8091a8ab0ecd', 864662],
+      'FR-CAILLEBOTTE-01-reference.png': ['6aa98113c7f1f6d3919266e775657b8c92f7a53b37e2579147b777038de27a3d', 550754],
+      'DK-HAMMERSHOI-01-reference.png': ['3cd39f486bc269bf6c6066c70e3a315320efd0542356599b700c682f0dea884a', 534741],
     } as const
     assert.deepEqual(readdirSync(refDir).sort(), Object.keys(refFiles).sort())
     for (const [file, [digest, bytes]] of Object.entries(refFiles)) {
@@ -273,6 +275,8 @@ describe('F.4 demo slice', () => {
       'HK-WUCIUS-01': '/content/learning-map-illustrations/artist-refs/HK-WUCIUS-01-reference.png',
       'HK-SHIEH-01': '/content/learning-map-illustrations/artist-refs/HK-SHIEH-01-reference.png',
       'WEST-HOCKNEY-01': '/content/learning-map-illustrations/artist-refs/WEST-HOCKNEY-01-reference.png',
+      'FR-CAILLEBOTTE-01': '/content/learning-map-illustrations/artist-refs/FR-CAILLEBOTTE-01-reference.png',
+      'DK-HAMMERSHOI-01': '/content/learning-map-illustrations/artist-refs/DK-HAMMERSHOI-01-reference.png',
     } as const
     const refSite = {
       'HK-PAK-01': 'https://www.mplus.org.hk/tc/collection/makers/pak-sheung-chuen/',
@@ -563,6 +567,13 @@ describe('F.4 demo slice', () => {
                 assert.equal(quiz.imageCredit, undefined, id)
                 assert.match(String(quiz.plate?.image), /\/f4-pd\/met-/, id)
                 assert.match(String(quiz.right?.image), /\/f4-pd\/met-/, id)
+              } else if (lesson.id === 'F4-U3-L2') {
+                assert.equal(quiz.image, undefined, id)
+                assert.equal(quiz.imageCredit, undefined, id)
+                assert.match(String(quiz.plate?.image), /^\/content\/learning-map-illustrations\/f4-pd\//, id)
+                assert.match(String(quiz.right?.image), /^\/content\/learning-map-illustrations\/f4-pd\//, id)
+                assert.ok(statSync(resolve(PUBLIC, String(quiz.plate?.image).slice(1))).size > 1000, id)
+                assert.ok(statSync(resolve(PUBLIC, String(quiz.right?.image).slice(1))).size > 1000, id)
               } else {
                 assert.match(
                   String(quiz.image),
@@ -652,7 +663,7 @@ describe('F.4 demo slice', () => {
   })
 
   it('keeps the early dual-read frames and gives every lesson order, dual-read, and short practice', () => {
-    const p0 = ['F4-U1-L1', 'F4-U1-L2', 'F4-U2-L1', 'F4-U2-L2', 'F4-U3-L1', 'F4-U3-L2']
+    const p0 = ['F4-U1-L1', 'F4-U1-L2', 'F4-U2-L1', 'F4-U2-L2', 'F4-U3-L1']
     const hashes: Record<string, string> = {
       '01-u1-l1-dualread.png': 'f5d98ca741dd',
       '02-u1-l2-dualread.png': '75fb6de0c981',
@@ -674,7 +685,6 @@ describe('F.4 demo slice', () => {
       'F4-U2-L1': '03-u2-l1-dualread.png',
       'F4-U2-L2': '04-u2-l2-dualread.png',
       'F4-U3-L1': '05-u3-l1-dualread.png',
-      'F4-U3-L2': '06-u3-l2-dualread.png',
     }
     const scoutDir = resolve(PUBLIC, 'content/learning-map-illustrations/soft-scout/f4-course-content-2611')
     for (const [file, prefix] of Object.entries(SCOUT_PLATES)) {
@@ -702,6 +712,16 @@ describe('F.4 demo slice', () => {
           for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim']) {
             assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
           }
+        } else if (lesson.id === 'F4-U3-L2') {
+          assert.equal(dual?.image, undefined, `${name} ${lesson.id}`)
+          assert.equal(dual?.imageCredit, undefined, `${name} ${lesson.id}`)
+          assert.match(String(dual?.plate?.image), /\/f4-pd\//, `${name} ${lesson.id}`)
+          assert.match(String(dual?.right?.image), /\/f4-pd\//, `${name} ${lesson.id}`)
+          const added = lesson.quiz.filter((quiz) => quiz.type === 'order' || quiz.type === 'dualRead' || quiz.type === 'short')
+          const blob = JSON.stringify(added)
+          for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim', '招牌細節', '自制', 'Self-made']) {
+            assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
+          }
         } else if (lesson.id === 'F4-U3-L3' || lesson.id === 'F4-U3-L4') {
           assert.equal(dual?.image, undefined, `${name} ${lesson.id}`)
           assert.match(String(dual?.plate?.image), /\/f4-pd\//, `${name} ${lesson.id}`)
@@ -716,8 +736,125 @@ describe('F.4 demo slice', () => {
     const u3l2 = hant.units.flatMap((unit) => unit.lessons).find((lesson) => lesson.id === 'F4-U3-L2')
     assert.match(u3l1?.quiz.find((quiz) => quiz.type === 'short')?.question ?? '', /唔趕/)
     assert.equal((u3l1?.quiz.find((quiz) => quiz.type === 'short')?.question ?? '').includes('streak'), false)
-    assert.match(u3l2?.quiz.find((quiz) => quiz.type === 'dualRead')?.question ?? '', /招牌細節/)
+    assert.equal(
+      u3l2?.quiz.find((quiz) => quiz.type === 'dualRead')?.question,
+      '藝術評賞比較：《Paris Street; Rainy Day》雨中街道 vs 《Moonlight, Strandgade 30》室內窗光。邊張較適合做「課題」？點解？（一句）',
+    )
     assert.equal((u3l2?.quiz.find((quiz) => quiz.type === 'dualRead')?.question ?? '').includes('店招'), false)
+    assert.equal((u3l2?.quiz.find((quiz) => quiz.type === 'dualRead')?.question ?? '').includes('招牌細節'), false)
+    assert.deepEqual(u3l2?.artistIds, ['FR-CAILLEBOTTE-01', 'DK-HAMMERSHOI-01'])
+    const l2Copy = {
+      'f4-demo.json': {
+        card3: '卡耶博特常觀察雨中街道同行人，由公共空間嘅環境搵出主題。',
+        card4: '哈默修伊常觀察家居室內嘅窗、門同地面光，由日常起居空間搵出主題。',
+        card5:
+          '練習：喺課室用教師提供或已有嘅相片、物件、速寫，揀三個「符號／物件／聲音」筆記，寫佢哋點樣可以變成探討主題嘅問題。課堂已提供已核實授權嘅參考作品圖，請一併睇出處同簡介。',
+        fill: '卡耶博特常由雨中＿＿觀察公共空間，再搵主題。',
+        fillAnswer: '街道',
+        fillExplain: '畫面見到濕石路、行人同傘，係由市區街道觀察環境。',
+        match: ['卡耶博特', '哈默修伊'],
+        matchAnswer: {
+          卡耶博特: '雨中街道／公共空間觀察',
+          哈默修伊: '室內窗光同日常起居空間',
+        },
+        matchExplain: '兩位都由環境觀察搵主題，但焦點唔同。',
+        dual: '藝術評賞比較：《Paris Street; Rainy Day》雨中街道 vs 《Moonlight, Strandgade 30》室內窗光。邊張較適合做「課題」？點解？（一句）',
+        labels: ['邊張做課題', '點解一句'],
+        explain: '練習結構 · 唔係真題',
+        source: 'Art Institute of Chicago／Wikimedia Commons',
+        intro:
+          '畫面係雨中巴黎街道路口：濕石板路、行人同傘、路燈同街角樓宇。卡耶博特由公共街道觀察市區環境，再形成主題。',
+        introRight:
+          '畫面係空置室內：窗、門、牆板，同落喺地板上嘅窗格光。哈默修伊由日常起居空間嘅光同結構觀察，再形成主題。',
+      },
+      'f4-demo.zh-Hans.json': {
+        card3: '卡耶博特常观察雨中街道与行人，由公共空间环境找出主题。',
+        card4: '哈默修伊常观察家居室內窗、门与地面光，由日常起居空间找出主题。',
+        card5:
+          '练习：在课室用教师提供或已有的照片、物件、速写，选三个「符号／物件／声音」笔记，写它们怎样可以变成探讨主题的问题。课堂已提供已核实授权参考作品图，请一并看出处与简介。',
+        fill: '卡耶博特常由雨中＿＿观察公共空间，再找主题。',
+        fillAnswer: '街道',
+        fillExplain: '画面可见湿石路、行人与伞，是由市区街道观察环境。',
+        match: ['卡耶博特', '哈默修伊'],
+        matchAnswer: {
+          卡耶博特: '雨中街道／公共空间观察',
+          哈默修伊: '室內窗光与日常起居空间',
+        },
+        matchExplain: '两位都由环境观察找主题，但焦点不同。',
+        dual: '艺术评赏比较：《Paris Street; Rainy Day》雨中街道 vs 《Moonlight, Strandgade 30》室內窗光。哪张更适合做「课题」？为什么？（一句）',
+        labels: ['哪张做课题', '为什么一句'],
+        explain: '练习结构 · 不是真题',
+        source: 'Art Institute of Chicago／Wikimedia Commons',
+        intro:
+          '画面是雨中巴黎街道路口：湿石板路、行人与伞、路灯与街角楼宇。卡耶博特由公共街道观察市区环境，再形成主题。',
+        introRight:
+          '画面是空置室內：窗、门、墙板，以及落在地板上窗格光。哈默修伊由日常起居空间光与结构观察，再形成主题。',
+      },
+      'f4-demo.en.json': {
+        card3: 'Caillebotte often observes rainy streets and passers-by, finding a theme from the public environment.',
+        card4: 'Hammershøi often observes windows, doors, and floor-light in a domestic interior, finding a theme from everyday living space.',
+        card5:
+          'Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a question for exploring the theme. Use the licensed reference works provided in class, together with their sources and introductions.',
+        fill: 'Caillebotte often observes public space from a rainy ____, then finds a theme.',
+        fillAnswer: 'street',
+        fillExplain: 'The picture shows a wet stone street, walkers, and umbrellas: observation from an urban street.',
+        match: ['Caillebotte', 'Hammershøi'],
+        matchAnswer: {
+          Caillebotte: 'Rainy street / observing public space',
+          'Hammershøi': 'Interior window-light and everyday living space',
+        },
+        matchExplain: 'Both start from observing an environment, with different focuses.',
+        dual: 'Compare works: the rainy street in Paris Street; Rainy Day vs the interior window-light in Moonlight, Strandgade 30 — which is better as a “topic”, and why (one line)?',
+        labels: ['Which one for the topic', 'Why'],
+        explain: 'Practice structure · not a real paper',
+        source: 'Art Institute of Chicago / Wikimedia Commons',
+        intro:
+          'The picture is a rainy Paris street intersection: wet stone paving, walkers and umbrellas, a lamp-post, and corner buildings. Caillebotte observes a public street and forms a theme from that urban environment.',
+        introRight:
+          'The picture is an empty interior: a window, a door, wall panels, and a window-grid of light on the floor. Hammershøi observes light and structure in everyday living space, and forms a theme from that.',
+      },
+    } as const
+    for (const name of FILES) {
+      const lesson = pack(name).units.flatMap((unit) => unit.lessons).find((item) => item.id === 'F4-U3-L2')
+      const expected = l2Copy[name]
+      assert.equal(lesson?.cards[2], expected.card3, name)
+      assert.equal(lesson?.cards[3], expected.card4, name)
+      assert.equal(lesson?.cards[4], expected.card5, name)
+      const fill = lesson?.quiz.find((quiz) => quiz.type === 'fill')
+      const match = lesson?.quiz.find((quiz) => quiz.type === 'match')
+      const dual = lesson?.quiz.find((quiz) => quiz.type === 'dualRead')
+      assert.equal(fill?.question, expected.fill, name)
+      assert.equal(fill?.answer, expected.fillAnswer, name)
+      assert.equal(fill?.explain, expected.fillExplain, name)
+      assert.deepEqual(match?.options, [...expected.match], name)
+      assert.deepEqual(match?.answer, expected.matchAnswer, name)
+      assert.equal(match?.explain, expected.matchExplain, name)
+      assert.equal(dual?.question, expected.dual, name)
+      assert.deepEqual(dual?.options, [...expected.labels], name)
+      assert.equal(dual?.explain, expected.explain, name)
+      assert.equal(dual?.plate?.title, 'Paris Street; Rainy Day', name)
+      assert.equal(dual?.plate?.artist, 'Gustave Caillebotte', name)
+      assert.equal(dual?.plate?.year, '1877', name)
+      assert.equal(dual?.plate?.source, expected.source, name)
+      assert.equal(dual?.plate?.intro, expected.intro, name)
+      assert.equal(dual?.plate?.license, undefined, name)
+      assert.equal(dual?.right?.title, 'Moonlight, Strandgade 30', name)
+      assert.equal(dual?.right?.artist, 'Vilhelm Hammershøi', name)
+      assert.equal(dual?.right?.year, '1900–1906', name)
+      assert.equal(dual?.right?.source, 'Metropolitan Museum of Art, New York, NY', name)
+      assert.equal(dual?.right?.intro, expected.introRight, name)
+      assert.equal(dual?.right?.license, undefined, name)
+      assert.deepEqual(lesson?.artistIds, ['FR-CAILLEBOTTE-01', 'DK-HAMMERSHOI-01'], name)
+    }
+    const plates = {
+      'commons-caillebotte-paris-street-rainy-day.jpg': ['e7e4dd6c3ff799538a1873c1e90df17c96cf9375d67e8a6947cc96efcfc9c45a', 5370449],
+      'met-441933-hammershoi-moonlight-strandgade-30.jpg': ['418da7d5d0d59bf7097c25a12cc65a57e825aface7bcb64a4d19240e2e2929d3', 2658660],
+    } as const
+    for (const [file, [digest, bytes]] of Object.entries(plates)) {
+      const buf = readFileSync(resolve(PUBLIC, 'content/learning-map-illustrations/f4-pd', file))
+      assert.equal(buf.length, bytes, file)
+      assert.equal(createHash('sha256').update(buf).digest('hex'), digest, file)
+    }
   })
 
   it('replaces only the two November compare-works frames and hangs stem art on existing image fields', () => {

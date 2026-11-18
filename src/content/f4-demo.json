@@ -882,9 +882,9 @@
           "cards": [
             "課堂觀察：用教師提供或已有嘅相片、短片、物件、速寫，喺課室記錄環境同學習。",
             "創作可以同社區有關：例如公共空間、鄰里日常、本地符號——再連返你嘅主題。",
-            "白雙全常用日常行動同現成物，令「住屋／空間」呢類社區經驗變得可見。",
-            "李傑常用家居布料同日常物，講私人情緒同空間——社區同個人生活可以比較。",
-            "練習：喺課室用教師提供或已有嘅相片、物件、速寫，揀三個「符號／物件／聲音」筆記，寫佢哋點樣可以變成探討主題嘅問題。當代作品用文字描述同可靠來源。"
+            "卡耶博特常觀察雨中街道同行人，由公共空間嘅環境搵出主題。",
+            "哈默修伊常觀察家居室內嘅窗、門同地面光，由日常起居空間搵出主題。",
+            "練習：喺課室用教師提供或已有嘅相片、物件、速寫，揀三個「符號／物件／聲音」筆記，寫佢哋點樣可以變成探討主題嘅問題。課堂已提供已核實授權嘅參考作品圖，請一併睇出處同簡介。"
           ],
           "quiz": [
             {
@@ -901,13 +901,13 @@
             },
             {
               "type": "fill",
-              "question": "白雙全嘅實踐常令日常＿＿經驗變得可見。",
+              "question": "卡耶博特常由雨中＿＿觀察公共空間，再搵主題。",
               "options": [],
-              "answer": "空間",
-              "explain": "例如用膠袋收集一屋空氣，回應逼狹住屋。",
+              "answer": "街道",
+              "explain": "畫面見到濕石路、行人同傘，係由市區街道觀察環境。",
               "wordBank": [
-                "太空",
-                "空間",
+                "街道",
+                "海底",
                 "古文",
                 "化學"
               ]
@@ -916,14 +916,14 @@
               "type": "match",
               "question": "配對藝術家同關注",
               "options": [
-                "白雙全",
-                "李傑"
+                "卡耶博特",
+                "哈默修伊"
               ],
               "answer": {
-                "白雙全": "日常行動／城市空間壓迫感",
-                "李傑": "家居物同私人情緒空間"
+                "卡耶博特": "雨中街道／公共空間觀察",
+                "哈默修伊": "室內窗光同日常起居空間"
               },
-              "explain": "兩位都由日常切入，但焦點唔同。"
+              "explain": "兩位都由環境觀察搵主題，但焦點唔同。"
             },
             {
               "type": "mcq",
@@ -950,14 +950,28 @@
             },
             {
               "type": "dualRead",
-              "question": "藝術評賞比較：招牌細節 vs 街角整體。邊張較適合做「課題」？點解？（一句）",
+              "question": "藝術評賞比較：《Paris Street; Rainy Day》雨中街道 vs 《Moonlight, Strandgade 30》室內窗光。邊張較適合做「課題」？點解？（一句）",
               "options": [
                 "邊張做課題",
                 "點解一句"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/06-u3-l2-dualread.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/commons-caillebotte-paris-street-rainy-day.jpg",
+                "title": "Paris Street; Rainy Day",
+                "artist": "Gustave Caillebotte",
+                "year": "1877",
+                "source": "Art Institute of Chicago／Wikimedia Commons",
+                "intro": "畫面係雨中巴黎街道路口：濕石板路、行人同傘、路燈同街角樓宇。卡耶博特由公共街道觀察市區環境，再形成主題。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-441933-hammershoi-moonlight-strandgade-30.jpg",
+                "title": "Moonlight, Strandgade 30",
+                "artist": "Vilhelm Hammershøi",
+                "year": "1900–1906",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "畫面係空置室內：窗、門、牆板，同落喺地板上嘅窗格光。哈默修伊由日常起居空間嘅光同結構觀察，再形成主題。"
+              }
             },
             {
               "type": "short",
@@ -967,19 +981,17 @@
             }
           ],
           "artistIds": [
-            "HK-PAK-01",
-            "HK-LEEKIT-01"
+            "FR-CAILLEBOTTE-01",
+            "DK-HAMMERSHOI-01"
           ],
           "artistMedia": {
-            "HK-PAK-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/HK-PAK-01-reference.png",
-              "reference": true,
-              "artistSiteUrl": "https://www.mplus.org.hk/tc/collection/makers/pak-sheung-chuen/"
+            "FR-CAILLEBOTTE-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/FR-CAILLEBOTTE-01-reference.png",
+              "reference": true
             },
-            "HK-LEEKIT-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/HK-LEEKIT-01-reference.png",
-              "reference": true,
-              "artistSiteUrl": "https://www.mplus.org.hk/tc/collection/makers/lee-kit/"
+            "DK-HAMMERSHOI-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/DK-HAMMERSHOI-01-reference.png",
+              "reference": true
             }
           }
         },
