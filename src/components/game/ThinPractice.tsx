@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { moveItem, shuffledItems } from '../../game/thinPractice'
 import type { ComparePlate, ConceptProfile, DualReadQuestion, OrderQuestion, ShortQuestion } from '../../game/types'
-import { t } from '../../i18n'
+import { t, type MessageKey } from '../../i18n'
 import { imageDecision } from '../../lib/imageLicence'
+import { appreciationScope, comparisonChipKeys, easyPromptLines, type PresentationMode } from '../../lib/lessonPresentation'
 import { LessonCardArt } from './LessonCardArt'
 import { MetWorkFacts } from './MetWorkFacts'
 import { ImageBlockedFace } from './ClassroomFaces'
+import { SentenceBuilder, StandardWritingNote } from './SentenceBuilder'
 
 const HINT = {
   order: 'qtype.hint.order',
@@ -32,12 +34,52 @@ export function ThinPace() {
   return <p className="mt-3 text-xs text-slate-500">{t('qtype.pace')}</p>
 }
 
+function PromptText({ text, easy }: { text: string; easy: boolean }) {
+  if (!easy) return <p className="mt-3 text-xl font-bold leading-relaxed text-slate-900">{text}</p>
+  return (
+    <div className="mt-3 space-y-2">
+      {easyPromptLines(text).map((line, index) => (
+        <p key={`${index}-${line}`} className="text-2xl font-bold leading-loose text-slate-900">
+          {line}
+        </p>
+      ))}
+    </div>
+  )
+}
+
+function KeywordRow({ keys, onPick }: { keys: MessageKey[]; onPick: (text: string) => void }) {
+  if (keys.length === 0) return null
+  return (
+    <div className="mt-3 flex flex-wrap gap-2" data-keyword-chips="">
+      {keys.map((key) => (
+        <button
+          key={key}
+          type="button"
+          onClick={() => onPick(t(key))}
+          className="rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-base font-semibold text-[#0D9488]"
+        >
+          {t(key)}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function fillEmptyLine(values: string[], text: string, width: number): string[] {
+  const next = Array.from({ length: width }, (_, index) => values[index] ?? '')
+  const slot = next.findIndex((line) => !line.trim())
+  if (slot === -1) return next
+  next[slot] = text
+  return next
+}
+
 export function OrderBoard({
   q,
   order,
   revealed,
   easyRead = false,
   stage = false,
+  presentation = 'standard',
   onChange,
 }: {
   q: OrderQuestion
@@ -45,6 +87,7 @@ export function OrderBoard({
   revealed: boolean
   easyRead?: boolean
   stage?: boolean
+  presentation?: PresentationMode
   onChange: (next: string[]) => void
 }) {
   const initial = useMemo(() => shuffledItems(q.items, q.id), [q])
@@ -58,10 +101,13 @@ export function OrderBoard({
         {current.map((item, index) => {
           const placed = revealed && item === q.items[index]
           const missed = revealed && item !== q.items[index]
+          const gentle = presentation === 'easy'
           const tone = placed
             ? 'border-[#0D9488] bg-teal-50'
             : missed
-              ? 'border-rose-300 bg-rose-50'
+              ? gentle
+                ? 'border-[#E7C98A] bg-[#FFF9E9]'
+                : 'border-rose-300 bg-rose-50'
               : 'border-slate-200 bg-[#FFF9E9]'
           return (
             <li key={item} className={`flex items-center gap-2 rounded-2xl border-2 px-3 py-2 ${tone}`}>
@@ -89,11 +135,12 @@ export function OrderBoard({
         })}
       </ol>
   )
+  const easy = presentation === 'easy' || easyRead
   if (stage) {
     return (
-      <div data-thin-practice="order" className="flex min-h-0 flex-1 flex-col">
+      <div data-thin-practice="order" data-presentation={presentation} className="flex min-h-0 flex-1 flex-col">
         {q.image ? (
-          <div data-art-slot className="min-h-[16rem] flex-[3] overflow-y-auto px-4">
+          <div data-art-slot className={presentation === 'easy' ? 'min-h-[16rem] flex-[5] overflow-y-auto px-4' : 'min-h-[16rem] flex-[3] overflow-y-auto px-4'}>
             <LessonCardArt image={q.image} credit={q.imageCredit} />
             <MetWorkFacts image={q.image} />
           </div>
@@ -102,7 +149,7 @@ export function OrderBoard({
           <div className="mt-3">
             <PracticeOnlyBar />
           </div>
-          <p className="mt-3 text-xl font-semibold leading-relaxed text-slate-900">{q.prompt}</p>
+          <PromptText text={q.prompt} easy={easy} />
           {list}
         </div>
       </div>
@@ -126,6 +173,8 @@ export function DualReadBoard({
   revealed,
   easyRead = false,
   stage = false,
+  presentation = 'standard',
+  lessonId = '',
   onChange,
 }: {
   q: DualReadQuestion
@@ -133,6 +182,8 @@ export function DualReadBoard({
   revealed: boolean
   easyRead?: boolean
   stage?: boolean
+  presentation?: PresentationMode
+  lessonId?: string
   onChange: (next: string[]) => void
 }) {
   const values = [lines[0] ?? '', lines[1] ?? '']
@@ -150,26 +201,38 @@ export function DualReadBoard({
   ) : (
     <DualReadFrame image={q.image} credit={q.imageCredit} fill={stage} />
   )
+  const easy = presentation === 'easy' || easyRead
+  const scoped = appreciationScope(lessonId)
+  const applyText = (text: string) => onChange(fillEmptyLine(values, text, 2))
   const fields = compared ? (
-    <CompareSides q={q} values={values} revealed={revealed} onChange={onChange} part="fields" />
+    <CompareSides q={q} values={values} revealed={revealed} onChange={onChange} part="fields" easy={easy} />
   ) : (
-    <LineFields labels={q.labels} values={values} revealed={revealed} onChange={onChange} />
+    <LineFields labels={q.labels} values={values} revealed={revealed} onChange={onChange} easy={easy} />
   )
-  const prompt = (
-    <p className={`font-semibold text-slate-900 ${stage || easyRead ? 'text-xl leading-relaxed' : 'text-lg'}`}>{q.prompt}</p>
-  )
+  const prompt = <PromptText text={q.prompt} easy={easy} />
+  const writing =
+    stage && scoped && presentation === 'easy' ? (
+      <SentenceBuilder lessonId={lessonId} onUse={applyText} />
+    ) : stage && scoped && presentation === 'standard' ? (
+      <StandardWritingNote />
+    ) : null
+  const hasArt = compared || Boolean(q.image)
   if (stage) {
     return (
-      <div data-thin-practice="dualRead" className="min-h-0 flex-1 overflow-y-auto">
-        <div data-art-slot className="px-4">
-          {art}
-        </div>
-        <div className="px-4 pb-2">
+      <div data-thin-practice="dualRead" data-presentation={presentation} className="flex min-h-0 flex-1 flex-col">
+        {hasArt ? (
+          <div data-art-slot className={presentation === 'easy' ? 'min-h-0 flex-[5] overflow-y-auto px-4' : 'min-h-0 flex-[3] overflow-y-auto px-4'}>
+            {art}
+          </div>
+        ) : null}
+        <div className={hasArt ? (presentation === 'easy' ? 'min-h-0 flex-[3] overflow-y-auto px-4 pb-2' : 'min-h-0 flex-[2] overflow-y-auto px-4 pb-2') : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}>
           <div className="mt-3">
             <PracticeOnlyBar />
           </div>
-          <div className="mt-3">{prompt}</div>
+          {prompt}
+          {presentation === 'easy' ? <KeywordRow keys={comparisonChipKeys(lessonId)} onPick={applyText} /> : null}
           {fields}
+          {writing}
         </div>
       </div>
     )
@@ -197,6 +260,8 @@ export function ShortBoard({
   revealed,
   easyRead = false,
   stage = false,
+  presentation = 'standard',
+  lessonId = '',
   onChange,
 }: {
   q: ShortQuestion
@@ -204,26 +269,39 @@ export function ShortBoard({
   revealed: boolean
   easyRead?: boolean
   stage?: boolean
+  presentation?: PresentationMode
+  lessonId?: string
   onChange: (next: string[]) => void
 }) {
-  const fields = <LineFields labels={[t('qtype.write')]} values={[line]} revealed={revealed} onChange={onChange} />
+  const easy = presentation === 'easy' || easyRead
+  const scoped = appreciationScope(lessonId)
+  const applyText = (text: string) => onChange(fillEmptyLine([line], text, 1))
+  const fields = <LineFields labels={[t('qtype.write')]} values={[line]} revealed={revealed} onChange={onChange} easy={easy} />
+  const writing =
+    stage && scoped && presentation === 'easy' ? (
+      <SentenceBuilder lessonId={lessonId} onUse={applyText} />
+    ) : stage && scoped && presentation === 'standard' ? (
+      <StandardWritingNote />
+    ) : null
   if (stage) {
     const diagramBlocked = Boolean(q.image && imageDecision({ image: q.image, role: 'teaching' }) === 'block')
     if (diagramBlocked) return <ImageBlockedFace />
     return (
-      <div data-thin-practice="short" className="flex min-h-0 flex-1 flex-col">
+      <div data-thin-practice="short" data-presentation={presentation} className="flex min-h-0 flex-1 flex-col">
         {q.image ? (
-          <div data-art-slot className="min-h-[16rem] flex-[3] overflow-y-auto px-4">
+          <div data-art-slot className={presentation === 'easy' ? 'min-h-[16rem] flex-[5] overflow-y-auto px-4' : 'min-h-[16rem] flex-[3] overflow-y-auto px-4'}>
             <LessonCardArt image={q.image} credit={q.imageCredit} />
             <MetWorkFacts image={q.image} />
           </div>
         ) : null}
-        <div className="min-h-0 flex-[2] overflow-y-auto px-4 pb-2">
+        <div className={q.image ? 'min-h-0 flex-[2] overflow-y-auto px-4 pb-2' : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}>
           <div className="mt-3">
             <PracticeOnlyBar />
           </div>
-          <p className="mt-3 text-xl font-semibold leading-relaxed text-slate-900">{q.prompt}</p>
+          <PromptText text={q.prompt} easy={easy} />
+          {presentation === 'standard' ? writing : null}
           {fields}
+          {presentation === 'easy' ? writing : null}
         </div>
       </div>
     )
@@ -273,6 +351,7 @@ function CompareSides({
   onChange,
   part = 'all',
   fill = false,
+  easy = false,
 }: {
   q: DualReadQuestion
   values: string[]
@@ -280,11 +359,21 @@ function CompareSides({
   onChange: (next: string[]) => void
   part?: 'all' | 'art' | 'fields'
   fill?: boolean
+  easy?: boolean
 }) {
   const showArt = part !== 'fields'
   const showFields = part !== 'art'
   return (
-    <div className={`grid gap-3 ${part === 'art' ? 'h-full md:grid-cols-2' : 'mt-3 md:grid-cols-2'}`} data-testid="dualread-compare">
+    <div
+      className={
+        part === 'art'
+          ? 'grid h-full grid-cols-2 gap-2'
+          : part === 'fields'
+            ? 'mt-3 grid gap-3'
+            : 'mt-3 grid gap-3 md:grid-cols-2'
+      }
+      data-testid="dualread-compare"
+    >
       <div data-testid="dualread-plate">
         {showArt && q.plate ? <PlateFigure plate={q.plate} fill={fill} /> : null}
         {showFields ? (
@@ -292,6 +381,7 @@ function CompareSides({
             label={q.labels[0]}
             value={values[0] ?? ''}
             revealed={revealed}
+            easy={easy}
             onChange={(value) => onChange([value, values[1] ?? ''])}
           />
         ) : null}
@@ -304,6 +394,7 @@ function CompareSides({
               label={q.labels[1]}
               value={values[1] ?? ''}
               revealed={revealed}
+              easy={easy}
               onChange={(value) => onChange([values[0] ?? '', value])}
             />
           ) : null}
@@ -316,6 +407,7 @@ function CompareSides({
               label={q.labels[1]}
               value={values[1] ?? ''}
               revealed={revealed}
+              easy={easy}
               onChange={(value) => onChange([values[0] ?? '', value])}
             />
           ) : null}
@@ -348,7 +440,7 @@ function PlateImage({ plate, fill = false }: { plate: ComparePlate; fill?: boole
           height={1080}
           loading="lazy"
           decoding="async"
-          className={fill ? 'max-h-64 w-full rounded-xl bg-[#FFF9E9] object-contain' : 'max-h-72 w-full rounded-xl bg-[#FFF9E9] object-contain'}
+          className={fill ? 'max-h-40 w-full rounded-xl bg-[#FFF9E9] object-contain md:max-h-64' : 'max-h-72 w-full rounded-xl bg-[#FFF9E9] object-contain'}
           onError={() => setFailed(true)}
         />
       )}
@@ -391,23 +483,27 @@ function SideLine({
   label,
   value,
   revealed,
+  easy = false,
   onChange,
 }: {
   label: string
   value: string
   revealed: boolean
+  easy?: boolean
   onChange: (value: string) => void
 }) {
   return (
     <label className="mt-3 grid gap-1">
-      <span className="text-sm font-semibold text-[#0D9488]">{label}</span>
+      <span className={`font-semibold text-[#0D9488] ${easy ? 'text-lg' : 'text-sm'}`}>{label}</span>
       <textarea
         value={value}
         readOnly={revealed}
         rows={2}
         placeholder={t('qtype.write')}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full resize-y rounded-2xl border-2 border-slate-200 bg-[#FFF9E9] px-3 py-2 text-base text-slate-900 outline-none focus:border-[#0D9488]"
+        className={`w-full resize-y rounded-2xl border-2 border-slate-200 bg-[#FFF9E9] px-3 py-2 text-slate-900 outline-none focus:border-[#0D9488] ${
+          easy ? 'text-xl leading-loose' : 'text-base'
+        }`}
       />
     </label>
   )
@@ -417,18 +513,20 @@ function LineFields({
   labels,
   values,
   revealed,
+  easy = false,
   onChange,
 }: {
   labels: readonly string[]
   values: string[]
   revealed: boolean
+  easy?: boolean
   onChange: (next: string[]) => void
 }) {
   return (
     <div className="mt-3 grid gap-3">
       {labels.map((label, index) => (
         <label key={label} className="grid gap-1">
-          <span className="text-sm font-semibold text-[#0D9488]">{label}</span>
+          <span className={`font-semibold text-[#0D9488] ${easy ? 'text-lg' : 'text-sm'}`}>{label}</span>
           <textarea
             value={values[index] ?? ''}
             readOnly={revealed}
@@ -439,7 +537,9 @@ function LineFields({
               next[index] = event.target.value
               onChange(next)
             }}
-            className="w-full resize-y rounded-2xl border-2 border-slate-200 bg-[#FFF9E9] px-3 py-2 text-base text-slate-900 outline-none focus:border-[#0D9488]"
+            className={`w-full resize-y rounded-2xl border-2 border-slate-200 bg-[#FFF9E9] px-3 py-2 text-slate-900 outline-none focus:border-[#0D9488] ${
+              easy ? 'text-xl leading-loose' : 'text-base'
+            }`}
           />
         </label>
       ))}

@@ -11,6 +11,7 @@ export function ReadAloudButton({
   autoKey,
   small = false,
   tucked = false,
+  pill = false,
 }: {
   text: string
   auto?: boolean
@@ -18,6 +19,8 @@ export function ReadAloudButton({
   small?: boolean
   /** Reading setting: 「閱讀設定 · 朗讀」, not a mid-card chip. */
   tucked?: boolean
+  /** Pill beside the presentation choice. */
+  pill?: boolean
 }) {
   const tts = useSpeech()
   const { reportSignal } = useSenSupport()
@@ -33,14 +36,18 @@ export function ReadAloudButton({
     return () => window.clearTimeout(id)
   }, [auto, autoKey, text, speak, supported])
 
-  if (!supported && !tucked) return null
+  if (!supported && !tucked && !pill) return null
   const tuckedLabel = `${t('settings.reading')} · ${tts.speaking ? t('tts.stop') : t('tts.read')}`
   const cls = tucked
     ? 'inline-flex shrink-0 items-center text-sm font-bold text-[#0D9488]'
+    : pill
+      ? `inline-flex shrink-0 items-center rounded-full border border-[#0D9488] px-3 py-1.5 text-base font-semibold ${
+          tts.speaking ? 'bg-[#0D9488] text-white' : 'bg-white text-[#0D9488]'
+        }`
     : small
       ? 'inline-flex shrink-0 items-center gap-1 rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
       : 'inline-flex items-center gap-1.5 rounded-full border border-[#0D9488] bg-white px-3 py-1.5 text-xs font-semibold text-[#0D9488]'
-  if (tucked) {
+  if (tucked || pill) {
     return (
       <button
         type="button"
@@ -55,9 +62,9 @@ export function ReadAloudButton({
           speak(text)
         }}
         className={cls}
-        aria-label={tuckedLabel}
+        aria-label={pill ? (tts.speaking ? t('tts.stop') : t('tts.read')) : tuckedLabel}
       >
-        {tuckedLabel}
+        {pill ? (tts.speaking ? t('tts.stop') : t('tts.read')) : tuckedLabel}
       </button>
     )
   }

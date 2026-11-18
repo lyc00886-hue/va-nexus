@@ -27,6 +27,9 @@ export function ImageRuleFace() {
         <p className={BODY}>{t('image.sources')}</p>
         <p className={BODY}>{t('image.homemade')}</p>
         <p className={BODY}>{t('image.school')}</p>
+        <p className={BODY}>{t('image.noStandIn')}</p>
+        <p className={BODY}>{t('image.examples')}</p>
+        <p className={BODY}>{t('image.tate')}</p>
       </div>
     </div>
   )
@@ -44,6 +47,9 @@ export function ImageBlockedFace() {
         <p className={BODY}>{t('image.blocked')}</p>
         <p className={BODY}>{t('image.rule')}</p>
         <p className={BODY}>{t('image.sources')}</p>
+        <p className={BODY}>{t('image.homemade')}</p>
+        <p className={BODY}>{t('image.school')}</p>
+        <p className={BODY}>{t('image.noStandIn')}</p>
       </div>
     </div>
   )
