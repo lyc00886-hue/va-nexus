@@ -882,9 +882,9 @@
           "cards": [
             "Classroom observation: use teacher-provided or already available photos, clips, objects, or sketches in class to record the environment and your learning.",
             "Making can relate to community: public space, neighbourhood routines, local signs—then reconnect to your theme.",
-            "Pak Sheung Chuen often uses everyday actions and ready-mades to make housing/space experiences visible.",
-            "Lee Kit often uses household cloth and everyday objects to speak about private feeling and space—community and personal life can be compared.",
-            "Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a question for exploring the theme. Describe contemporary works in words and cite a reliable source."
+            "Caillebotte often observes rainy streets and passers-by, finding a theme from the public environment.",
+            "Hammershøi often observes windows, doors, and floor-light in a domestic interior, finding a theme from everyday living space.",
+            "Practice: in class, use teacher-provided or already available photos, objects, or sketches. Note three symbols, objects, or sounds and how each could become a question for exploring the theme. Use the licensed reference works provided in class, together with their sources and introductions."
           ],
           "quiz": [
             {
@@ -901,13 +901,13 @@
             },
             {
               "type": "fill",
-              "question": "Pak Sheung Chuen’s practice often makes everyday ____ experience visible.",
+              "question": "Caillebotte often observes public space from a rainy ____, then finds a theme.",
               "options": [],
-              "answer": "space",
-              "explain": "For example, bagging a flat’s air to respond to cramped housing.",
+              "answer": "street",
+              "explain": "The picture shows a wet stone street, walkers, and umbrellas: observation from an urban street.",
               "wordBank": [
-                "outer-space",
-                "space",
+                "street",
+                "seabed",
                 "classical Chinese",
                 "chemistry"
               ]
@@ -916,14 +916,14 @@
               "type": "match",
               "question": "Match artist to focus",
               "options": [
-                "Pak Sheung Chuen",
-                "Lee Kit"
+                "Caillebotte",
+                "Hammershøi"
               ],
               "answer": {
-                "Pak Sheung Chuen": "Everyday actions / pressure of urban space",
-                "Lee Kit": "Household objects and private emotional space"
+                "Caillebotte": "Rainy street / observing public space",
+                "Hammershøi": "Interior window-light and everyday living space"
               },
-              "explain": "Both start from the everyday, with different focuses."
+              "explain": "Both start from observing an environment, with different focuses."
             },
             {
               "type": "mcq",
@@ -950,14 +950,28 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: shop-sign detail vs whole corner — which is better as a “topic”, and why (one line)?",
+              "question": "Compare works: the rainy street in Paris Street; Rainy Day vs the interior window-light in Moonlight, Strandgade 30 — which is better as a “topic”, and why (one line)?",
               "options": [
                 "Which one for the topic",
                 "Why"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/06-u3-l2-dualread.png",
-              "imageCredit": "Self-made · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/commons-caillebotte-paris-street-rainy-day.jpg",
+                "title": "Paris Street; Rainy Day",
+                "artist": "Gustave Caillebotte",
+                "year": "1877",
+                "source": "Art Institute of Chicago / Wikimedia Commons",
+                "intro": "The picture is a rainy Paris street intersection: wet stone paving, walkers and umbrellas, a lamp-post, and corner buildings. Caillebotte observes a public street and forms a theme from that urban environment."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-441933-hammershoi-moonlight-strandgade-30.jpg",
+                "title": "Moonlight, Strandgade 30",
+                "artist": "Vilhelm Hammershøi",
+                "year": "1900–1906",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "The picture is an empty interior: a window, a door, wall panels, and a window-grid of light on the floor. Hammershøi observes light and structure in everyday living space, and forms a theme from that."
+              }
             },
             {
               "type": "short",
@@ -967,19 +981,17 @@
             }
           ],
           "artistIds": [
-            "HK-PAK-01",
-            "HK-LEEKIT-01"
+            "FR-CAILLEBOTTE-01",
+            "DK-HAMMERSHOI-01"
           ],
           "artistMedia": {
-            "HK-PAK-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/HK-PAK-01-reference.png",
-              "reference": true,
-              "artistSiteUrl": "https://www.mplus.org.hk/tc/collection/makers/pak-sheung-chuen/"
+            "FR-CAILLEBOTTE-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/FR-CAILLEBOTTE-01-reference.png",
+              "reference": true
             },
-            "HK-LEEKIT-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/HK-LEEKIT-01-reference.png",
-              "reference": true,
-              "artistSiteUrl": "https://www.mplus.org.hk/tc/collection/makers/lee-kit/"
+            "DK-HAMMERSHOI-01": {
+              "thumb": "/content/learning-map-illustrations/artist-refs/DK-HAMMERSHOI-01-reference.png",
+              "reference": true
             }
           }
         },
