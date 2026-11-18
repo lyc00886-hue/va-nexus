@@ -153,6 +153,7 @@ describe('official public copy', () => {
     assert.deepEqual(icon, fromGit.stdout)
     const now = tsFiles(join(root, 'api'))
     assert.equal(now.length, 12)
+    assert.equal(now.includes('class-invite.ts'), true)
     const listed = spawnSync('git', ['ls-tree', '-r', '--name-only', 'HEAD', 'api'], { cwd: root, encoding: 'utf8' })
     assert.equal(listed.status, 0)
     const before = listed.stdout
@@ -160,7 +161,7 @@ describe('official public copy', () => {
       .filter((name) => name.endsWith('.ts') || name.endsWith('.tsx'))
       .map((name) => name.slice('api/'.length))
       .sort()
-    assert.deepEqual(now, [...before, 'class-invite.ts'].sort())
+    assert.deepEqual(now, before)
   })
 })
 
@@ -312,7 +313,7 @@ describe('no-JS first HTML', () => {
   }
 
   it('keeps ux query modes on the Vite student shell', async () => {
-    for (const path of ['/?ux=map1', '/?ux=classic', '/?ux=off', '/?ux=steps', '/?ux=map1&track=f4', '/about', '/overview']) {
+    for (const path of ['/?ux=map1', '/?ux=classic', '/?ux=off', '/?ux=steps', '/?ux=map1&track=f4', '/?code=oauth-return', '/about', '/overview']) {
       const response = await html(path)
       assert.equal(response.status, 200, path)
       assert.match(response.body, /<div id="root"><\/div>/, path)
