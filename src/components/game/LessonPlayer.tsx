@@ -14,7 +14,9 @@ import {
   classroomWatchUrl,
   isCommunityCaseLesson,
 } from '../../game/communityCases'
+import { critiqueObjectKey, critiqueSentenceFor } from '../../game/classroomCritique'
 import { buildLessonSteps, splitOfficialFilmText, type LessonStep } from '../../game/lessonSteps'
+import { verifiedAppreciationList, type AppreciationPack } from '../../game/verifiedArtworks'
 import {
   OTTER_CHEST_XP,
   OTTER_STORAGE_KEY,
@@ -27,6 +29,7 @@ import {
 import { PASS_ACCURACY, getBadgeById, masteryFor, masteryHint, masteryLabel } from '../../game/rewards'
 import { softMotionPlay } from '../../game/softMotion'
 import { getLocale, joinList, t } from '../../i18n'
+import { contentJson } from '../../i18n/content'
 import { shortLessonFooterCta } from '../../lib/shortLessonCta'
 import {
   DEFAULT_LESSON_FOLDS,
@@ -426,7 +429,15 @@ export function LessonPlayer({
     )
   }
 
-  const critiqueOpen = Boolean(feedback) && lesson.id === 'F4-U3-L2' && question?.type === 'dualRead' && !licenceFace
+  const critiqueKey = critiqueObjectKey(lesson.id)
+  const critiqueLine = critiqueKey
+    ? critiqueSentenceFor(
+        lesson.id,
+        (key) => t(key),
+        verifiedAppreciationList(contentJson<AppreciationPack>('f4-demo'), contentJson<AppreciationPack>('f5-demo')),
+      )
+    : ''
+  const critiqueOpen = Boolean(feedback) && critiqueLine.length > 0 && question?.type === 'dualRead' && !licenceFace
   const primaryLabel =
     licenceFace === 'rule'
       ? t('lp.continue')
@@ -537,9 +548,9 @@ export function LessonPlayer({
                     <ReadingBar
                       mode={readingMode}
                       onMode={chooseReading}
-                      readText={[t('critique.title'), t('critique.lead'), t('critique.flex'), t('critique.object'), t('critique.nudge')].join('\n')}
+                      readText={[t('critique.title'), t('critique.lead'), t('critique.flex'), critiqueLine, t('critique.nudge')].join('\n')}
                     />
-                    <CritiqueFace />
+                    <CritiqueFace lessonId={lesson.id} objectText={critiqueLine} />
                   </div>
                 ) : (
                   <QuizStage

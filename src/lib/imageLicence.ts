@@ -2,7 +2,9 @@
  * Classroom image gate for appreciation, diagrams, and a student's own work.
  * A JSON license field, a local path, or years since an artist's death is not
  * itself a verified Public Domain or CC0 licence. Tate is not an approved source.
- * Already-shipped appreciation frames stay visible: this line does not replace them.
+ * Already-shipped appreciation frames stay visible. The Form 4 unit 3 lesson 1
+ * homemade frame is no longer an appreciation original. Other leftover homemade
+ * frames in that folder stay visible.
  */
 import type { Question } from '../game/types'
 
@@ -33,6 +35,16 @@ const SHIPPED_APPRECIATION = [
 
 /** Local copies of Met Open Access files checked isPublicDomain before they were saved. */
 const VERIFIED_MET = ['/content/learning-map-illustrations/met-open/']
+
+/** This line only. Do not add other lessons' leftover homemade frames here. */
+const RETIRED_APPRECIATION = new Set([
+  '/content/learning-map-illustrations/soft-scout/f4-dualread/05-u3-l1-dualread.png',
+])
+
+function appreciationAllowed(image: string): boolean {
+  if (RETIRED_APPRECIATION.has(image)) return false
+  return startsWithOne(image, SHIPPED_APPRECIATION) || startsWithOne(image, VERIFIED_MET)
+}
 
 /** Classroom-shell chrome only. Not a teaching image, a stem, or a reference. */
 const CHROME_PREFIXES = ['/content/learning-map-illustrations/moods/', '/logo.png']
@@ -78,7 +90,7 @@ export function imageDecision(input: ImageCandidate): ImageDecision {
   }
 
   if (!image && !artist) return 'show'
-  if (image && (startsWithOne(image, SHIPPED_APPRECIATION) || startsWithOne(image, VERIFIED_MET))) return 'show'
+  if (image && appreciationAllowed(image)) return 'show'
   return 'block'
 }
 

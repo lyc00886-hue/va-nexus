@@ -857,14 +857,28 @@
             },
             {
               "type": "dualRead",
-              "question": "艺术评赏比较：同一角落，日间与夜间。各写一句。",
+              "question": "艺术评赏比较：评赏对象是 Camille Pissarro《The Garden of the Tuileries on a Spring Morning》同《The Garden of the Tuileries on a Winter Afternoon》。评赏焦点：同一座花园在不同时段同季节，光影／人流有什么不同。各写一句。",
               "options": [
-                "日间一句",
-                "夜间一句"
+                "春天早晨一句",
+                "冬天午后一句"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/05-u3-l1-dualread.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "练习结构 · 不是真题"
+              "explain": "练习结构 · 不是真题",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-437313-pissarro-tuileries-spring-morning.jpg",
+                "title": "The Garden of the Tuileries on a Spring Morning",
+                "artist": "Camille Pissarro",
+                "year": "1899",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "画面由高处望向杜乐丽花园：春天树叶已绿，园径同草坪向远方伸展，天上有白云。小行人散落园径，水池同花坛排在画面中间。Camille Pissarro 在春天早晨记录这座花园里光同人流。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-437312-pissarro-tuileries-winter-afternoon.jpg",
+                "title": "The Garden of the Tuileries on a Winter Afternoon",
+                "artist": "Camille Pissarro",
+                "year": "1899",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "画面由相近高处望向同一座杜乐丽花园：冬天树木已落叶，园径上行人较密，天色偏灰而带一层午后光。草坪同树列仍然认得，但光同人流同春天早晨不同。Camille Pissarro 在冬天午后再记录这座花园。"
+              }
             },
             {
               "type": "short",

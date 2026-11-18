@@ -857,14 +857,28 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: same corner, day vs night — one line each on light／people flow.",
+              "question": "Compare works: the objects are Camille Pissarro’s The Garden of the Tuileries on a Spring Morning and The Garden of the Tuileries on a Winter Afternoon. Focus: how light and people flow differ in the same garden at different times and seasons. One line each.",
               "options": [
-                "Day",
-                "Night"
+                "Spring morning",
+                "Winter afternoon"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/05-u3-l1-dualread.png",
-              "imageCredit": "Self-made · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-437313-pissarro-tuileries-spring-morning.jpg",
+                "title": "The Garden of the Tuileries on a Spring Morning",
+                "artist": "Camille Pissarro",
+                "year": "1899",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "Viewed from high up over the Tuileries Garden: spring trees already in leaf, paths and lawns stretching into the distance under a cloudy sky. Small figures are scattered along the path, with a pool and parterres in the middle. Camille Pissarro records this garden’s light and people flow on a spring morning."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-437312-pissarro-tuileries-winter-afternoon.jpg",
+                "title": "The Garden of the Tuileries on a Winter Afternoon",
+                "artist": "Camille Pissarro",
+                "year": "1899",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "Viewed from a similar height over the same Tuileries Garden: winter trees have dropped their leaves, the path is more crowded, and the sky is greyer with a layer of afternoon light. Lawns and tree rows are still readable, but the light and people flow differ from the spring morning. Camille Pissarro records this garden again on a winter afternoon."
+              }
             },
             {
               "type": "short",

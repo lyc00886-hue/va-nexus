@@ -3,14 +3,18 @@ import { t } from '../../i18n'
 const BODY = 'text-lg leading-relaxed text-slate-900'
 
 /** Student-facing appreciation notes. Education Bureau 2024 directions, with no coined method name. */
-export function CritiqueFace() {
+export function CritiqueFace({ lessonId, objectText }: { lessonId: string; objectText: string }) {
   return (
-    <div data-classroom-face="critique" className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+    <div
+      data-classroom-face="critique"
+      data-critique-lesson={lessonId}
+      className="min-h-0 flex-1 overflow-y-auto px-4 pb-4"
+    >
       <h3 className="text-xl font-bold leading-relaxed text-slate-900">{t('critique.title')}</h3>
       <div className="mt-3 space-y-3">
         <p className={BODY}>{t('critique.lead')}</p>
         <p className={BODY}>{t('critique.flex')}</p>
-        <p className={BODY}>{t('critique.object')}</p>
+        <p className={BODY}>{objectText}</p>
         <p className={BODY}>{t('critique.nudge')}</p>
       </div>
     </div>
