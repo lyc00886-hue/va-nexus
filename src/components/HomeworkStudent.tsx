@@ -413,20 +413,46 @@ function HomeworkCard({
         <HomeworkDownloads assignmentId={assignment.id} />
       )}
       {handedName ? <p className="mt-2 text-sm font-semibold text-[#0D9488]">{handedName}</p> : null}
-      <form onSubmit={submit} className="mt-3 space-y-3">
-        <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.wholeFile')}</p>
-        {joined ? (
+      {joined ? (
+        <form onSubmit={submit} className="mt-3 space-y-3">
+          <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.wholeFile')}</p>
           <div>
             <p className="text-sm font-semibold text-slate-800">{t('hw.student.upload')}</p>
             <p className="mt-1 text-sm text-slate-700">{t('hw.staff.genericFile')}</p>
             <p className="text-sm text-slate-600">{t('hw.staff.pagesHint')}</p>
           </div>
-        ) : null}
-        <label
-          htmlFor={inputId}
-          className="inline-flex min-h-9 cursor-pointer items-center rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]"
-        >
-          {t('hw.student.upload')}
+          <label
+            htmlFor={inputId}
+            className="inline-flex min-h-9 cursor-pointer items-center rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]"
+          >
+            {t('hw.student.upload')}
+            <input
+              ref={inputRef}
+              id={inputId}
+              type="file"
+              accept="application/pdf,image/*"
+              data-testid={`hw-student-file-${assignment.id}`}
+              data-hw-file-error={error ?? ''}
+              className="sr-only"
+              onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+            />
+          </label>
+          {file ? <p className="text-sm text-slate-700">{file.name}</p> : null}
+          <button
+            type="submit"
+            data-testid={`hw-student-submit-${assignment.id}`}
+            disabled={!ready}
+            className="whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
+          >
+            {t('hw.student.upload')}
+          </button>
+        </form>
+      ) : handedIn ? (
+        <p className="mt-3 text-sm leading-relaxed text-slate-700" data-testid={`hw-student-handed-${assignment.id}`}>
+          {t('hw.student.handedQuiet')}
+        </p>
+      ) : (
+        <form onSubmit={submit} className="mt-3 space-y-3">
           <input
             ref={inputRef}
             id={inputId}
@@ -437,18 +463,19 @@ function HomeworkCard({
             className="sr-only"
             onChange={(event) => setFile(event.target.files?.[0] ?? null)}
           />
-        </label>
-        {file ? <p className="text-sm text-slate-700">{file.name}</p> : null}
-        <button
-          type="submit"
-          data-testid={`hw-student-submit-${assignment.id}`}
-          disabled={!ready}
-          className="whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white disabled:opacity-40"
-        >
-          {joined ? t('hw.student.upload') : t('hw.student.submit')}
-        </button>
-        {joined ? null : <p className="text-sm leading-relaxed text-slate-600">{t('hw.student.teacherCanOpen')}</p>}
-      </form>
+          {file ? <p className="text-sm text-slate-700">{file.name}</p> : null}
+          <button
+            type={ready ? 'submit' : 'button'}
+            data-testid={`hw-student-submit-${assignment.id}`}
+            onClick={() => {
+              if (!ready) inputRef.current?.click()
+            }}
+            className="inline-flex min-h-9 items-center whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white"
+          >
+            {t('hw.student.uploadAndHandIn')}
+          </button>
+        </form>
+      )}
     </li>
   )
 }

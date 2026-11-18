@@ -45,6 +45,8 @@ const HANT = {
   'hw.student.privateNote': '呢次係老師出嘅功課，唔會入私人作品集或 SBA 實驗室。',
   'hw.student.upload': '上載成份檔',
   'hw.student.submit': '交功課',
+  'hw.student.uploadAndHandIn': '上載同交功課',
+  'hw.student.handedQuiet': '已經交咗。呢個課室嘅老師可以打開嚟睇；而家等老師睇。',
   'hw.student.wholeFile': '請一次過交齊成份檔，唔好只交封面。',
   'hw.student.teacherCanOpen': '交咗之後，呢個課室嘅老師可以打開嚟睇。',
   'hw.student.empty': '而家未有要交嘅功課。',
@@ -204,7 +206,7 @@ describe('homework copy and wiring', () => {
     const overrides = messages('src/i18n/zh-Hans.overrides.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
-    assert.equal(keys.length, 30)
+    assert.equal(keys.length, 32)
     assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('hw.')), keys)
@@ -235,6 +237,16 @@ describe('homework copy and wiring', () => {
     assert.equal(hant['hw.staff.count'].includes('/'), false)
     assert.equal([...hant['hw.student.intro']].filter((ch) => ch.codePointAt(0) === 0x7540).length, 1)
     assert.equal([...hant['hw.student.mapEntry'], ...hant['hw.staff.intro'], ...hant['hw.staff.fileNote'], ...hant['hw.student.teacherCanOpen']].filter((ch) => ch.codePointAt(0) === 0x569f).length, 4)
+    assert.equal(hant['hw.student.uploadAndHandIn'], '上載同交功課')
+    assert.equal(hans['hw.student.uploadAndHandIn'], '上载同交功课')
+    assert.equal(en['hw.student.uploadAndHandIn'], 'Upload and hand in')
+    assert.equal(hant['hw.student.handedQuiet'], '已經交咗。呢個課室嘅老師可以打開嚟睇；而家等老師睇。')
+    assert.equal(hans['hw.student.handedQuiet'], '已经交了。这个课室老师可以打开看；现在等老师看。')
+    assert.equal(en['hw.student.handedQuiet'], 'Already handed in. A teacher of this class can open it. Waiting for a teacher to look.')
+    assert.equal([...hant['hw.student.handedQuiet']].filter((ch) => ch.codePointAt(0) === 0x5497).length, 1)
+    assert.equal([...hant['hw.student.handedQuiet']].filter((ch) => ch.codePointAt(0) === 0x569f).length, 1)
+    assert.equal([...hant['hw.student.handedQuiet']].filter((ch) => ch.codePointAt(0) === 0x5605).length, 1)
+    assert.equal([...hant['hw.student.handedQuiet']].some((ch) => ch.codePointAt(0) === 0x54c7), false)
     assert.equal([...hant['hw.student.emptyHint']].filter((ch) => ch.codePointAt(0) === 0x5e03).length, 1)
     assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 8)
     assert.equal(hant['inspect.report.disclaimer'], '呢份報告係校內參考，唔係公開試正式成績。')
@@ -275,9 +287,16 @@ describe('homework copy and wiring', () => {
     assert.equal(sidebar.includes('hw.student'), false)
     assert.equal(read('src/components/SbaQuest.tsx').includes('hw.student'), false)
     for (const key of Object.keys(HANT)) {
+      if (key === 'hw.student.submit') continue
       const needle = `'${key}'`
       assert.equal(staff.includes(needle) || student.includes(needle), true, key)
     }
+    assert.equal(student.includes("'hw.student.submit'"), false)
+    const card = student.slice(student.indexOf('function HomeworkCard'))
+    assert.equal(card.includes('hw.student.teacherCanOpen'), false)
+    assert.match(card, /hw\.student\.uploadAndHandIn/)
+    assert.match(card, /hw\.student\.handedQuiet/)
+    assert.match(card, /hw\.student\.wholeFile/)
     assert.match(staff, /data-soft-motion="off"/)
     assert.match(student, /data-soft-motion="off"/)
     assert.match(staff, /#FFF9E9/)

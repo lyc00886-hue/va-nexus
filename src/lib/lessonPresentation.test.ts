@@ -160,7 +160,7 @@ describe('easier-reading presentation copy', () => {
     assert.deepEqual(lines, ['藝術評賞比較：左邊一句。', '各寫一句。'])
   })
 
-  it('wires the lesson shell without a teacher override or a merged homework button', () => {
+  it('wires the lesson shell without a teacher override', () => {
     const player = readFileSync(join(root, 'src/components/game/LessonPlayer.tsx'), 'utf8')
     const faces = readFileSync(join(root, 'src/components/game/ClassroomFaces.tsx'), 'utf8')
     const builder = readFileSync(join(root, 'src/components/game/SentenceBuilder.tsx'), 'utf8')
@@ -180,7 +180,9 @@ describe('easier-reading presentation copy', () => {
     assert.match(builder, /DIRECTION_KEYS/)
     assert.equal(/Feldman|DAIE|ArtInsight|Duolingo|SENCritique|雙圖對讀/.test(builder + faces), false)
     assert.match(homework, /hw\.student\.upload/)
-    assert.match(homework, /hw\.student\.submit/)
+    assert.match(homework, /hw\.student\.uploadAndHandIn/)
+    assert.match(homework, /hw\.student\.handedQuiet/)
+    assert.equal(homework.includes('hw.student.submit'), false)
     assert.equal(homework.includes('hw.submit.unsent'), false)
     assert.equal(homework.includes('hw.submit.sent'), false)
   })
