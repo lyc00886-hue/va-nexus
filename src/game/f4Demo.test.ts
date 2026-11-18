@@ -567,7 +567,7 @@ describe('F.4 demo slice', () => {
                 assert.equal(quiz.imageCredit, undefined, id)
                 assert.match(String(quiz.plate?.image), /\/f4-pd\/met-/, id)
                 assert.match(String(quiz.right?.image), /\/f4-pd\/met-/, id)
-              } else if (lesson.id === 'F4-U3-L2') {
+              } else if (lesson.id === 'F4-U3-L1' || lesson.id === 'F4-U3-L2') {
                 assert.equal(quiz.image, undefined, id)
                 assert.equal(quiz.imageCredit, undefined, id)
                 assert.match(String(quiz.plate?.image), /^\/content\/learning-map-illustrations\/f4-pd\//, id)
@@ -663,7 +663,7 @@ describe('F.4 demo slice', () => {
   })
 
   it('keeps the early dual-read frames and gives every lesson order, dual-read, and short practice', () => {
-    const p0 = ['F4-U1-L1', 'F4-U1-L2', 'F4-U2-L1', 'F4-U2-L2', 'F4-U3-L1']
+    const p0 = ['F4-U1-L1', 'F4-U1-L2', 'F4-U2-L1', 'F4-U2-L2']
     const hashes: Record<string, string> = {
       '01-u1-l1-dualread.png': 'f5d98ca741dd',
       '02-u1-l2-dualread.png': '75fb6de0c981',
@@ -684,7 +684,6 @@ describe('F.4 demo slice', () => {
       'F4-U1-L2': '02-u1-l2-dualread.png',
       'F4-U2-L1': '03-u2-l1-dualread.png',
       'F4-U2-L2': '04-u2-l2-dualread.png',
-      'F4-U3-L1': '05-u3-l1-dualread.png',
     }
     const scoutDir = resolve(PUBLIC, 'content/learning-map-illustrations/soft-scout/f4-course-content-2611')
     for (const [file, prefix] of Object.entries(SCOUT_PLATES)) {
@@ -705,11 +704,22 @@ describe('F.4 demo slice', () => {
             `${name} ${lesson.id}`,
           )
           const added = lesson.quiz.filter((quiz) => quiz.type === 'order' || quiz.type === 'dualRead' || quiz.type === 'short')
-          if (lesson.id === 'F4-U2-L2' || lesson.id === 'F4-U3-L1') {
+          if (lesson.id === 'F4-U2-L2') {
             added.push(...lesson.quiz.filter((quiz) => quiz.type === 'match'))
           }
           const blob = JSON.stringify(added)
           for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim']) {
+            assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
+          }
+        } else if (lesson.id === 'F4-U3-L1') {
+          assert.equal(dual?.image, undefined, `${name} ${lesson.id}`)
+          assert.equal(dual?.imageCredit, undefined, `${name} ${lesson.id}`)
+          assert.match(String(dual?.plate?.image), /\/f4-pd\/met-437313-pissarro-tuileries-spring-morning\.jpg$/, `${name} ${lesson.id}`)
+          assert.match(String(dual?.right?.image), /\/f4-pd\/met-437312-pissarro-tuileries-winter-afternoon\.jpg$/, `${name} ${lesson.id}`)
+          assert.equal(JSON.stringify(dual).includes('05-u3-l1-dualread'), false, name)
+          const added = lesson.quiz.filter((quiz) => quiz.type === 'order' || quiz.type === 'dualRead' || quiz.type === 'short' || quiz.type === 'match')
+          const blob = JSON.stringify(added)
+          for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim', '自制', 'Self-made']) {
             assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
           }
         } else if (lesson.id === 'F4-U3-L2') {
