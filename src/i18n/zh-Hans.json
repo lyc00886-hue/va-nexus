@@ -1209,6 +1209,8 @@
   "hw.student.privateNote": "这次是老师布置的功课，不会进入私人作品集或 SBA 实验室。",
   "hw.student.upload": "上载整份文件",
   "hw.student.submit": "交功课",
+  "hw.student.uploadAndHandIn": "上载同交功课",
+  "hw.student.handedQuiet": "已经交了。这个课室老师可以打开看；现在等老师看。",
   "hw.student.wholeFile": "请一次交齐整份文件，不要只交封面。",
   "hw.student.teacherCanOpen": "交了之后，这个课室的老师可以打开查看。",
   "hw.student.empty": "现在没有要交的功课。",

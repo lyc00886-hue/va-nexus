@@ -1193,6 +1193,8 @@
   "hw.student.privateNote": "This is homework set by a teacher. It does not go into the private portfolio or the SBA lab.",
   "hw.student.upload": "Upload the complete file",
   "hw.student.submit": "Hand in homework",
+  "hw.student.uploadAndHandIn": "Upload and hand in",
+  "hw.student.handedQuiet": "Already handed in. A teacher of this class can open it. Waiting for a teacher to look.",
   "hw.student.wholeFile": "Hand in the whole file in one go. Do not hand in only the cover.",
   "hw.student.teacherCanOpen": "After you hand it in, a teacher of this class can open it.",
   "hw.student.empty": "There is no homework to hand in yet.",

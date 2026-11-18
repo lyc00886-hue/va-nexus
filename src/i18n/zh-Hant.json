@@ -1209,6 +1209,8 @@
   "hw.student.privateNote": "呢次係老師出嘅功課，唔會入私人作品集或 SBA 實驗室。",
   "hw.student.upload": "上載成份檔",
   "hw.student.submit": "交功課",
+  "hw.student.uploadAndHandIn": "上載同交功課",
+  "hw.student.handedQuiet": "已經交咗。呢個課室嘅老師可以打開嚟睇；而家等老師睇。",
   "hw.student.wholeFile": "請一次過交齊成份檔，唔好只交封面。",
   "hw.student.teacherCanOpen": "交咗之後，呢個課室嘅老師可以打開嚟睇。",
   "hw.student.empty": "而家未有要交嘅功課。",
