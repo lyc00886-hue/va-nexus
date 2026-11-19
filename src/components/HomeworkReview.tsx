@@ -1,5 +1,13 @@
-import { useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
+import { contentJson } from '../i18n/content'
 import { useT, type MessageKey } from '../i18n'
+import {
+  comparisonChoiceAllowed,
+  lessonComparisonWorks,
+  verifiedAppreciationList,
+  type AppreciationPack,
+  type VerifiedWork,
+} from '../game/verifiedArtworks'
 import { assignmentsForClass, useAssignList, visibleAssignment } from '../lib/assignList'
 import type { InviteRoom } from '../lib/classInvite'
 import {
@@ -11,8 +19,11 @@ import {
   homeworkRows,
   homeworkSessionFile,
   homeworkSubmissionId,
+  saveHomeworkTeacherComment,
+  teacherCommentForSubmission,
   teacherMarkForSubmission,
   useHomeworkSubmissions,
+  useHomeworkTeacherComments,
   useHomeworkTeacherMarks,
   type HwSubmission,
 } from '../lib/homeworkSubmit'
@@ -54,6 +65,10 @@ export function HomeworkReview({
   })
   const submissions = [...localSubmissions, ...remoteSubmissions]
   const sharedRoster = sharedRoom ? sharedRoom.members.map((member) => member.id) : null
+  const reviewed =
+    submissions.find((row) => row.classId === classId && row.studentId === 'demo-a') ??
+    submissions.find((row) => row.classId === classId) ??
+    null
   const [open, setOpen] = useState(true)
   const [fileId, setFileId] = useState<string | null>(null)
   const titleId = 'hw-staff-title'
@@ -170,6 +185,7 @@ export function HomeworkReview({
                   </div>
                 )
               })}
+              {reviewed ? <CompareReview submission={reviewed} /> : null}
               <p data-testid="hw-staff-not-marking" className="text-sm leading-relaxed text-slate-600">
                 {t('hw.staff.notMarking')}
               </p>
@@ -237,6 +253,7 @@ function SubmittedFile({ submission, onBack }: { submission: HwSubmission; onBac
         {t('hw.staff.pagesHint')}
       </p>
       <GradePanel submissionId={submission.id} />
+      <CommentEditor submissionId={submission.id} />
       <p data-testid="hw-staff-file-not-marking" className="text-sm leading-relaxed text-slate-600">
         {t('hw.staff.notMarking')}
       </p>
@@ -310,6 +327,220 @@ function GradePanel({ submissionId }: { submissionId: string }) {
       >
         {t('hw.staff.saveGrade')}
       </button>
+    </div>
+  )
+}
+
+function CommentEditor({ submissionId }: { submissionId: string }) {
+  const { t } = useT()
+  const comments = useHomeworkTeacherComments()
+  const saved = teacherCommentForSubmission(comments, submissionId)
+  const [draft, setDraft] = useState(saved ?? '')
+  const fieldRef = useRef<HTMLTextAreaElement>(null)
+  const fieldId = 'hw-staff-teacher-comment'
+
+  function write(next: string) {
+    setDraft(next)
+    saveHomeworkTeacherComment(submissionId, next)
+  }
+
+  function edit() {
+    const next = draft.trim() === '' ? t('hw.staff.autoCommentValue') : draft
+    write(next)
+    fieldRef.current?.focus()
+  }
+
+  function replace() {
+    write(t('hw.staff.teacherCommentValue'))
+    fieldRef.current?.focus()
+  }
+
+  return (
+    <div data-testid="hw-staff-comment" data-hw-comment-saved={saved ? 'true' : 'false'} className="space-y-3">
+      <div>
+        <h4 className="text-base font-bold text-slate-900">{t('hw.staff.autoCommentLabel')}</h4>
+        <p data-testid="hw-staff-auto-comment" className="mt-1 text-sm leading-relaxed text-slate-700">
+          {t('hw.staff.autoCommentValue')}
+        </p>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="button"
+          data-testid="hw-staff-edit-comment"
+          onClick={edit}
+          className="whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white"
+        >
+          {t('hw.staff.editComment')}
+        </button>
+        <button
+          type="button"
+          data-testid="hw-staff-replace-comment"
+          onClick={replace}
+          className="whitespace-nowrap rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]"
+        >
+          {t('hw.staff.replaceComment')}
+        </button>
+      </div>
+      <p data-testid="hw-staff-comment-hint" className="text-sm leading-relaxed text-slate-600">
+        {t('hw.staff.commentHint')}
+      </p>
+      <div>
+        <label htmlFor={fieldId} className="text-base font-bold text-slate-900">
+          {t('hw.staff.teacherCommentLabel')}
+        </label>
+        <textarea
+          id={fieldId}
+          ref={fieldRef}
+          data-testid="hw-staff-teacher-comment"
+          value={draft}
+          rows={2}
+          onChange={(event) => write(event.target.value)}
+          className="mt-2 w-full resize-y rounded-full border border-[#0D9488] bg-white px-4 py-3 text-sm leading-relaxed text-slate-800"
+        />
+      </div>
+    </div>
+  )
+}
+
+function PageSketch({ image, testId, label }: { image: string | null; testId: string; label: string }) {
+  return (
+    <ol data-testid={testId} data-hw-pages="3" aria-label={label} className="m-0 grid list-none gap-3 p-0 sm:grid-cols-3">
+      <li data-hw-page="1" className="rounded-2xl border border-[#0D9488]/30 bg-white p-3">
+        <p className="text-xs font-semibold text-[#0D9488]">1</p>
+        {image ? (
+          <img src={image} alt="" className="mt-2 h-40 w-full rounded-lg object-contain" />
+        ) : (
+          <div className="mt-2 flex h-40 items-center justify-center rounded-lg bg-[#f4fbfa]">
+            <div className="h-24 w-16 rounded-md border-2 border-[#0D9488]" />
+          </div>
+        )}
+      </li>
+      <li data-hw-page="2" className="rounded-2xl border border-[#0D9488]/30 bg-white p-3">
+        <p className="text-xs font-semibold text-[#0D9488]">2</p>
+        <div className="mt-2 space-y-2">
+          {['a', 'b', 'c', 'd', 'e', 'f'].map((line) => (
+            <div key={line} className="h-2 rounded bg-[#0D9488]/20" />
+          ))}
+        </div>
+      </li>
+      <li data-hw-page="3" className="rounded-2xl border border-[#0D9488]/30 bg-white p-3">
+        <p className="text-xs font-semibold text-[#0D9488]">3</p>
+        <div className="mt-2 space-y-2">
+          {['a', 'b', 'c', 'd'].map((line) => (
+            <div key={line} className="h-2 rounded bg-[#0D9488]/20" />
+          ))}
+          <div className="h-16 rounded-lg border border-[#0D9488]/40" />
+        </div>
+      </li>
+    </ol>
+  )
+}
+
+function CompareReview({ submission }: { submission: HwSubmission }) {
+  const { t } = useT()
+  const works = useMemo(() => {
+    const listed = verifiedAppreciationList(
+      contentJson<AppreciationPack>('f4-demo'),
+      contentJson<AppreciationPack>('f5-demo'),
+    )
+    return lessonComparisonWorks(listed)
+  }, [])
+  const [picked, setPicked] = useState<string | null>(null)
+  const selected = works.find((work) => work.image === picked) ?? works[0] ?? null
+  const nameKey = NAME_KEY[submission.studentId]
+  const session = homeworkSessionFile(submission.id)
+  const image = session && session.mime.startsWith('image/') ? session.url : null
+  const fileName = homeworkFileLabel(submission, t('hw.staff.genericFile'))
+  if (!selected || !comparisonChoiceAllowed(selected)) return null
+
+  function choose(work: VerifiedWork) {
+    if (!comparisonChoiceAllowed(work)) return
+    setPicked(work.image)
+  }
+
+  return (
+    <div data-testid="hw-staff-compare" data-compare-image={selected.image} className="space-y-4">
+      <div>
+        <h3 className="text-lg font-bold text-[#0D9488]">{t('hw.staff.compareTitle')}</h3>
+        <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('hw.staff.reviewPairIntro')}</p>
+        <p className="mt-2 font-semibold text-[#0D9488]">{nameKey ? t(nameKey) : submission.studentId}</p>
+      </div>
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div>
+          <h4 className="text-base font-bold text-slate-900">{t('hw.staff.submittedWork')}</h4>
+          <p className="mt-1 text-sm text-slate-600">{fileName}</p>
+          <div className="mt-3">
+            <PageSketch image={image} testId="hw-compare-pages" label={t('hw.staff.submittedWork')} />
+          </div>
+        </div>
+        <div>
+          <h4 className="text-base font-bold text-slate-900">{t('hw.staff.compareWork')}</h4>
+          <img src={selected.image} alt={selected.title} className="mt-3 h-48 w-full rounded-2xl object-cover" />
+          <dl className="mt-3 space-y-1 text-sm text-slate-800">
+            <div>
+              <dt className="inline font-semibold">{t('art.attr.title')}</dt>
+              <dd className="inline"> {selected.title}</dd>
+            </div>
+            <div>
+              <dt className="inline font-semibold">{t('art.attr.artist')}</dt>
+              <dd className="inline"> {selected.artist}</dd>
+            </div>
+            <div>
+              <dt className="inline font-semibold">{t('art.attr.year')}</dt>
+              <dd className="inline"> {selected.year}</dd>
+            </div>
+            <div>
+              <dt className="inline font-semibold">{t('art.attr.source')}</dt>
+              <dd className="inline"> {selected.source}</dd>
+            </div>
+          </dl>
+          <p className="mt-2">
+            <span className="inline-flex rounded-full border border-[#0D9488] px-3 py-1 text-sm font-semibold text-[#0D9488]">
+              {t('art.attr.pd')}
+            </span>
+          </p>
+        </div>
+      </div>
+      <div>
+        <h4 className="text-base font-bold text-slate-900">{t('hw.staff.studentCritique')}</h4>
+        <p data-testid="hw-staff-student-critique" className="mt-1 text-sm leading-relaxed text-slate-700">
+          {t('hw.staff.studentCritiqueValue')}
+        </p>
+      </div>
+      <div>
+        <h4 className="text-base font-bold text-slate-900">{t('hw.staff.pickCompare')}</h4>
+        <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('hw.staff.pickCompareHint')}</p>
+        <ul className="m-0 mt-3 grid list-none gap-3 p-0 sm:grid-cols-2">
+          {works.map((work) => {
+            const active = work.image === selected.image
+            return (
+              <li key={work.image}>
+                <button
+                  type="button"
+                  data-testid={`hw-compare-pick-${work.side}`}
+                  aria-pressed={active}
+                  onClick={() => choose(work)}
+                  className={
+                    active
+                      ? 'w-full rounded-2xl border-2 border-[#0D9488] bg-white p-3 text-left'
+                      : 'w-full rounded-2xl border border-[#0D9488]/40 bg-white p-3 text-left'
+                  }
+                >
+                  <img src={work.image} alt="" className="h-24 w-full rounded-xl object-cover" />
+                  <p className="mt-2 text-sm font-semibold text-slate-900">{work.title}</p>
+                  <p className="text-sm text-slate-600">{work.source}</p>
+                  <span className="mt-2 inline-flex rounded-full border border-[#0D9488] px-3 py-1 text-sm font-semibold text-[#0D9488]">
+                    {t('art.attr.pd')}
+                  </span>
+                </button>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+      <p data-testid="hw-compare-no-stand-in" className="text-sm leading-relaxed text-slate-600">
+        {t('image.noStandIn')}
+      </p>
     </div>
   )
 }

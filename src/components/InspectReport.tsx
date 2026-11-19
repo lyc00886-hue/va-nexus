@@ -1,12 +1,20 @@
 import { useEffect } from 'react'
 import { HTML_LANG, useT } from '../i18n'
 import { gradeLabelKey, useInspectRows, type InspectView } from '../lib/useInspectClass'
-import { inSchoolMarkForStudent, useHomeworkSubmissions, useHomeworkTeacherMarks } from '../lib/homeworkSubmit'
+import {
+  homeworkFileLabel,
+  inSchoolCommentForStudent,
+  inSchoolMarkForStudent,
+  useHomeworkSubmissions,
+  useHomeworkTeacherComments,
+  useHomeworkTeacherMarks,
+} from '../lib/homeworkSubmit'
 import {
   collectedReportValue,
   learningProgressFilename,
   renderInspectReportHtml,
   studentHomeworkCollected,
+  teacherCommentText,
   type ReportSection,
 } from '../lib/inspectReport'
 
@@ -25,6 +33,10 @@ function sectionFor(
     teacher: string
     analysis: string
     refNote: string
+    teacherComment: string
+    evidenceIntro: string
+    studentWork: string
+    studentCritique: string
   },
 ): ReportSection {
   return {
@@ -42,7 +54,12 @@ function sectionFor(
       { label: labels.auto, value: extra.auto },
       { label: labels.teacher, value: extra.teacher },
       { label: labels.analysis, value: `${extra.analysis}\n${extra.refNote}` },
+      { label: labels.teacherComment, value: extra.teacherComment },
       { label: labels.date, value: row.date },
+      { label: labels.evidence, value: extra.evidenceIntro },
+      { label: labels.studentWork, value: extra.studentWork },
+      { label: labels.studentCritique, value: extra.studentCritique },
+      { label: labels.evidenceComment, value: extra.teacherComment },
     ],
   }
 }
@@ -52,6 +69,7 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
   const rows = useInspectRows()
   const submissions = useHomeworkSubmissions()
   const marks = useHomeworkTeacherMarks()
+  const comments = useHomeworkTeacherComments()
   const shown = preview?.kind === 'class' ? rows : rows.filter((row) => row.id === preview?.id)
 
   function collectionFor(row: InspectView): {
@@ -60,16 +78,26 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
     auto: string
     teacher: string
     analysis: string
+    teacherComment: string
+    studentWork: string
+    studentCritique: string
+    collected: boolean
   } {
     const collected = studentHomeworkCollected(submissions, row.id)
     const none = t('inspect.report.none')
     const saved = inSchoolMarkForStudent(marks, submissions, row.id)
+    const savedComment = inSchoolCommentForStudent(comments, submissions, row.id)
+    const file = submissions.find((item) => item.studentId === row.id)
     return {
       homework: collectedReportValue(collected, t('report.staff.homeworkValue'), none),
       note: collectedReportValue(collected, t('report.staff.noteValue'), none),
       auto: collectedReportValue(collected, t('hw.staff.autoGradeValue'), none),
       teacher: collected ? (saved ?? t('hw.staff.teacherGradeValue')) : none,
       analysis: collectedReportValue(collected, t('report.staff.analysisValue'), none),
+      teacherComment: teacherCommentText(collected, savedComment, t('hw.staff.autoCommentValue'), none),
+      studentWork: collected && file ? homeworkFileLabel(file, t('hw.staff.genericFile')) : none,
+      studentCritique: collectedReportValue(collected, t('hw.staff.studentCritiqueValue'), none),
+      collected,
     }
   }
 
@@ -92,7 +120,12 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
       auto: t('report.staff.autoGrade'),
       teacher: t('report.staff.teacherGrade'),
       analysis: t('report.staff.analysis'),
+      teacherComment: t('report.staff.teacherComment'),
       date: t('inspect.report.date'),
+      evidence: t('inspect.evidence.title'),
+      studentWork: t('inspect.evidence.studentWork'),
+      studentCritique: t('inspect.evidence.studentCritique'),
+      evidenceComment: t('inspect.evidence.teacherComment'),
     }
     const bandKeep = t('report.staff.bandKeep')
     const noteHint = t('report.staff.noteHint')
@@ -105,6 +138,10 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
           bandKeep,
           noteHint,
           refNote,
+          teacherComment: collectionFor(row).teacherComment,
+          evidenceIntro: t('inspect.evidence.intro'),
+          studentWork: collectionFor(row).studentWork,
+          studentCritique: collectionFor(row).studentCritique,
         }),
       )
     const filename = learningProgressFilename()
@@ -208,10 +245,63 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
                     </p>
                   </div>
                   <div>
+                    <dt className="font-semibold text-slate-900">{t('report.staff.teacherComment')}</dt>
+                    <dd data-testid={`report-teacher-comment-${row.id}`}>{collection.teacherComment}</dd>
+                  </div>
+                  <div>
                     <dt className="font-semibold text-slate-900">{t('inspect.report.date')}</dt>
                     <dd>{row.date}</dd>
                   </div>
                 </dl>
+                <section data-testid={`inspect-evidence-${row.id}`} className="mt-4 space-y-3 border-t border-[#0D9488]/30 pt-4">
+                  <h4 className="text-base font-bold text-slate-900">{t('inspect.evidence.title')}</h4>
+                  <p className="text-sm leading-relaxed text-slate-600">{t('inspect.evidence.intro')}</p>
+                  <div>
+                    <h5 className="text-sm font-bold text-slate-900">{t('inspect.evidence.studentWork')}</h5>
+                    <p data-testid={`inspect-evidence-work-${row.id}`} className="mt-1 text-sm text-slate-700">
+                      {collection.studentWork}
+                    </p>
+                    {collection.collected ? (
+                      <ol data-testid="inspect-evidence-pages" data-evidence-pages="3" className="m-0 mt-3 grid list-none gap-3 p-0 sm:grid-cols-3">
+                        <li className="rounded-2xl border border-[#0D9488]/30 bg-[#FFF9E9] p-3">
+                          <p className="text-xs font-semibold text-[#0D9488]">1</p>
+                          <div className="mt-2 flex h-28 items-center justify-center rounded-lg bg-white">
+                            <div className="h-20 w-12 rounded-md border-2 border-[#0D9488]" />
+                          </div>
+                        </li>
+                        <li className="rounded-2xl border border-[#0D9488]/30 bg-[#FFF9E9] p-3">
+                          <p className="text-xs font-semibold text-[#0D9488]">2</p>
+                          <div className="mt-2 space-y-2">
+                            {['a', 'b', 'c', 'd', 'e'].map((line) => (
+                              <div key={line} className="h-2 rounded bg-[#0D9488]/20" />
+                            ))}
+                          </div>
+                        </li>
+                        <li className="rounded-2xl border border-[#0D9488]/30 bg-[#FFF9E9] p-3">
+                          <p className="text-xs font-semibold text-[#0D9488]">3</p>
+                          <div className="mt-2 space-y-2">
+                            {['a', 'b', 'c'].map((line) => (
+                              <div key={line} className="h-2 rounded bg-[#0D9488]/20" />
+                            ))}
+                            <div className="h-12 rounded-lg border border-[#0D9488]/40" />
+                          </div>
+                        </li>
+                      </ol>
+                    ) : null}
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold text-slate-900">{t('inspect.evidence.studentCritique')}</h5>
+                    <p data-testid={`inspect-evidence-critique-${row.id}`} className="mt-1 text-sm leading-relaxed text-slate-700">
+                      {collection.studentCritique}
+                    </p>
+                  </div>
+                  <div>
+                    <h5 className="text-sm font-bold text-slate-900">{t('inspect.evidence.teacherComment')}</h5>
+                    <p data-testid={`inspect-evidence-comment-${row.id}`} className="mt-1 text-sm leading-relaxed text-slate-700">
+                      {collection.teacherComment}
+                    </p>
+                  </div>
+                </section>
               </div>
               )
             })}

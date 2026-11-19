@@ -111,6 +111,9 @@ describe('classroom management copy and wiring', () => {
       'class.staff.plateExampleName',
       'class.staff.inviteSample',
       'class.staff.emptyInvitees',
+      'class.staff.presentTitle',
+      'class.staff.presentHint',
+      'class.staff.presentSaved',
     ]
     assert.deepEqual(
       Object.keys(hant).filter((key) => key.startsWith('class.staff.')),
@@ -149,7 +152,7 @@ describe('classroom management copy and wiring', () => {
     assert.equal(hant['inspect.status.steady'], '進度平穩')
     assert.equal(hant['tab.staff'], '評分參考')
     assert.equal(hant['qtype.chip.dualRead'], '藝術評賞比較')
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 13)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 14)
     assert.equal(hans['class.staff.demoClassNote'].includes('示例课室'), true)
     assert.equal(/[嘅咗唔喺嚟]/.test(hans['class.staff.intro']), false)
   })

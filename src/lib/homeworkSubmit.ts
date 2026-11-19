@@ -357,3 +357,115 @@ export function confirmHomeworkTeacherMark(id: string, mark: string): boolean {
   publishMarks(next)
   return true
 }
+
+/**
+ * Teacher comment for one submitted file.
+ * Editing or replacing the automatic comment stores the new sentence here.
+ * The same report path reads it back. No API route is added.
+ */
+export const HW_COMMENT_KEY = 'va-nexus:hw-teacher-comments:v1'
+const COMMENT_LIMIT = 400
+
+export type HwTeacherComment = {
+  id: string
+  comment: string
+}
+
+export function sanitizeTeacherComments(raw: unknown): HwTeacherComment[] {
+  if (!raw || typeof raw !== 'object') return []
+  const record = raw as { version?: unknown; comments?: unknown }
+  if ('version' in record && record.version !== 1) return []
+  if (!Array.isArray(record.comments)) return []
+  const comments: HwTeacherComment[] = []
+  const seen = new Set<string>()
+  for (const row of record.comments) {
+    if (!row || typeof row !== 'object') continue
+    const item = row as Record<string, unknown>
+    const id = typeof item.id === 'string' ? item.id.trim().slice(0, 120) : ''
+    const comment = typeof item.comment === 'string' ? [...item.comment.trim()].slice(0, COMMENT_LIMIT).join('') : ''
+    if (!id || !comment || seen.has(id)) continue
+    seen.add(id)
+    comments.push({ id, comment })
+  }
+  return comments
+}
+
+export function withTeacherComment(
+  comments: readonly HwTeacherComment[],
+  id: string,
+  comment: string,
+): readonly HwTeacherComment[] {
+  const cleanId = id.trim().slice(0, 120)
+  const clean = [...comment.trim()].slice(0, COMMENT_LIMIT).join('')
+  if (!cleanId || !clean) return comments
+  const next = comments.filter((row) => row.id !== cleanId)
+  next.push({ id: cleanId, comment: clean })
+  return next
+}
+
+export function teacherCommentForSubmission(comments: readonly HwTeacherComment[], id: string): string | null {
+  return comments.find((row) => row.id === id)?.comment ?? null
+}
+
+/** Saved comment for the nearby-insight file when that file exists, otherwise the first file. */
+export function inSchoolCommentForStudent(
+  comments: readonly HwTeacherComment[],
+  submissions: readonly { id: string; studentId: string; assignmentId: string }[],
+  studentId: string,
+): string | null {
+  const id = studentId.trim()
+  if (id === '') return null
+  const mine = submissions.filter((row) => row.studentId === id)
+  if (mine.length === 0) return null
+  const preferred = mine.find((row) => row.assignmentId === DEMO_ASSIGN_ID) ?? mine[0]
+  return teacherCommentForSubmission(comments, preferred.id)
+}
+
+function loadComments(): HwTeacherComment[] {
+  if (typeof localStorage === 'undefined') return []
+  try {
+    const raw = localStorage.getItem(HW_COMMENT_KEY)
+    if (!raw) return []
+    return sanitizeTeacherComments(JSON.parse(raw))
+  } catch {
+    return []
+  }
+}
+
+let commentSnapshot: readonly HwTeacherComment[] = loadComments()
+const commentListeners = new Set<() => void>()
+
+function persistComments() {
+  if (typeof localStorage === 'undefined') return
+  try {
+    localStorage.setItem(HW_COMMENT_KEY, JSON.stringify({ version: 1, comments: commentSnapshot }))
+  } catch {
+    /* quota or private mode */
+  }
+}
+
+function publishComments(next: readonly HwTeacherComment[]) {
+  commentSnapshot = next
+  persistComments()
+  commentListeners.forEach((listener) => listener())
+}
+
+function subscribeComments(cb: () => void) {
+  commentListeners.add(cb)
+  return () => commentListeners.delete(cb)
+}
+
+function readComments(): readonly HwTeacherComment[] {
+  return commentSnapshot
+}
+
+export function useHomeworkTeacherComments(): readonly HwTeacherComment[] {
+  return useSyncExternalStore(subscribeComments, readComments, readComments)
+}
+
+export function saveHomeworkTeacherComment(id: string, comment: string): boolean {
+  const next = withTeacherComment(commentSnapshot, id, comment)
+  if (next === commentSnapshot) return false
+  publishComments(next)
+  return true
+}

@@ -61,7 +61,7 @@ import { OfficialLessonParts } from './OfficialFormat'
 import { LessonShortTrial } from './LessonShortTrial'
 import { LessonWorksheet } from './LessonWorksheet'
 import { imageDecision, questionImageBlocked } from '../../lib/imageLicence'
-import { loadPresentation, savePresentation, type PresentationMode } from '../../lib/lessonPresentation'
+import { loadPresentation, savePresentation, useTeacherPresentation, type PresentationMode } from '../../lib/lessonPresentation'
 import { LessonCardArt } from './LessonCardArt'
 import { MetWorkFacts } from './MetWorkFacts'
 import { OtterChest, OtterPose } from './OtterPose'
@@ -150,7 +150,13 @@ export function LessonPlayer({
   onSetFold?: (id: LessonFoldId, open: boolean) => void
 }) {
   const { settings, easyRead, focusTunnel } = useSen()
-  const [readingMode, setReadingMode] = useState<PresentationMode>(() => loadPresentation())
+  const teacherPresentation = useTeacherPresentation()
+  const [readingMode, setReadingMode] = useState<PresentationMode>(() => teacherPresentation ?? loadPresentation())
+  const [appliedOverride, setAppliedOverride] = useState(teacherPresentation)
+  if (appliedOverride !== teacherPresentation) {
+    setAppliedOverride(teacherPresentation)
+    if (teacherPresentation) setReadingMode(teacherPresentation)
+  }
   function chooseReading(mode: PresentationMode) {
     setReadingMode(mode)
     savePresentation(mode)
@@ -499,6 +505,7 @@ export function LessonPlayer({
               data-lesson-kind={step?.kind ?? 'card'}
               data-lesson-count={steps.length}
               data-presentation={readingMode}
+              data-teacher-presentation={teacherPresentation ?? 'none'}
               data-classroom-face={
                 licenceFace ?? (critiqueOpen ? 'critique' : step?.kind === 'question' && question?.type === 'dualRead' ? 'dual' : step?.kind ?? 'card')
               }

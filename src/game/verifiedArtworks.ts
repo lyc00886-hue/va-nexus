@@ -98,3 +98,48 @@ export function verifiedAppreciationList(f4: AppreciationPack, f5: AppreciationP
 export function verifiedWorksForLesson(works: readonly VerifiedWork[], lessonId: string): VerifiedWork[] {
   return works.filter((work) => work.lessonId === lessonId)
 }
+
+/** Official plate for this line: Form 4 unit 3 lesson 1, the two Tuileries gardens. */
+export const COMPARE_LESSON_ID = 'F4-U3-L1'
+
+const APPROVED_SOURCES = [
+  'Metropolitan Museum of Art',
+  'The Met',
+  'Art Institute of Chicago',
+  'Rijksmuseum',
+  'Wikimedia Commons',
+] as const
+
+const VERIFIED_COMPARE_PREFIXES = [
+  '/content/learning-map-illustrations/f4-pd/',
+  '/content/learning-map-illustrations/f5-pd/',
+  '/content/learning-map-illustrations/met-open/',
+] as const
+
+function mentionsTate(value: string): boolean {
+  return /tate\.org\.uk|\bTate\b/.test(value)
+}
+
+/** True when the source names an approved museum or commons collection. */
+export function approvedComparisonSource(source: string): boolean {
+  const text = source.trim()
+  if (!text || mentionsTate(text)) return false
+  return APPROVED_SOURCES.some((name) => text.includes(name))
+}
+
+/**
+ * A comparison choice must already be a verified local plate from an approved source.
+ * Homemade frames, shop-sign close-ups, and street photos are refused.
+ */
+export function comparisonChoiceAllowed(work: { image?: string; source?: string }): boolean {
+  const image = work.image?.trim() ?? ''
+  const source = work.source?.trim() ?? ''
+  if (!image || mentionsTate(image) || mentionsTate(source)) return false
+  if (!VERIFIED_COMPARE_PREFIXES.some((prefix) => image.startsWith(prefix))) return false
+  return approvedComparisonSource(source)
+}
+
+/** Verified comparison works for the live lesson, and only those the gate allows. */
+export function lessonComparisonWorks(works: readonly VerifiedWork[]): VerifiedWork[] {
+  return works.filter((work) => work.lessonId === COMPARE_LESSON_ID && comparisonChoiceAllowed(work))
+}

@@ -41,6 +41,13 @@ export function collectedReportValue(collected: boolean, whenCollected: string, 
   return collected ? whenCollected : whenEmpty
 }
 
+/** Saved teacher comment when one exists; otherwise the automatic comment for a collected file. */
+export function teacherCommentText(collected: boolean, saved: string | null, automatic: string, empty: string): string {
+  if (!collected) return empty
+  const next = saved?.trim() ?? ''
+  return next !== '' ? next : automatic
+}
+
 export function joinRecord(lines: readonly string[]): string | null {
   const clean: string[] = []
   for (const line of lines) {

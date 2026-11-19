@@ -338,8 +338,8 @@ describe('assignment copy and wiring', () => {
     assert.equal(hant['tab.staff'], '評分參考')
     assert.equal(hant['inspect.staff.overviewTitle'], '課室總覽')
     assert.equal(hant['qtype.chip.dualRead'], '藝術評賞比較')
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 23)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 13)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 26)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 14)
   })
 
   it('stacks compose and the published list inside the opened class, with no new api file', () => {
