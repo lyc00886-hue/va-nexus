@@ -187,17 +187,22 @@ export function DualReadBoard({
   onChange: (next: string[]) => void
 }) {
   const values = [lines[0] ?? '', lines[1] ?? '']
-  const compared = q.plate != null || q.right != null || q.profile != null
+  const structured = q.structure === 'practice' || q.structure === 'school'
+  const compared = !structured && (q.plate != null || q.right != null || q.profile != null)
   const blocked =
-    (q.image != null && imageDecision({ image: q.image, role: 'appreciation' }) === 'block') ||
-    [q.plate, q.right].some(
-      (plate) =>
-        plate != null &&
-        imageDecision({ image: plate.image, artist: plate.artist, source: plate.source, role: 'appreciation' }) === 'block',
-    )
+    !structured &&
+    ((q.image != null && imageDecision({ image: q.image, role: 'appreciation' }) === 'block') ||
+      [q.plate, q.right].some(
+        (plate) =>
+          plate != null &&
+          imageDecision({ image: plate.image, artist: plate.artist, source: plate.source, role: 'appreciation' }) === 'block',
+      ))
   if (blocked) return <ImageBlockedFace />
+  const structure = structured ? <StructurePanels kind={q.structure === 'school' ? 'school' : 'practice'} labels={q.labels} /> : null
   const art = compared ? (
-    <CompareSides q={q} values={values} revealed={revealed} onChange={onChange} part="art" fill={stage} />
+    <CompareSides q={q} values={values} revealed={revealed} onChange={onChange} part="art" />
+  ) : structured ? (
+    structure
   ) : (
     <DualReadFrame image={q.image} credit={q.imageCredit} fill={stage} />
   )
@@ -216,36 +221,38 @@ export function DualReadBoard({
     ) : stage && scoped && presentation === 'standard' ? (
       <StandardWritingNote />
     ) : null
-  const hasArt = compared || Boolean(q.image)
   if (stage) {
     return (
-      <div data-thin-practice="dualRead" data-presentation={presentation} className="flex min-h-0 flex-1 flex-col">
-        {hasArt ? (
-          <div data-art-slot className={presentation === 'easy' ? 'min-h-0 flex-[5] overflow-y-auto px-4' : 'min-h-0 flex-[3] overflow-y-auto px-4'}>
-            {art}
-          </div>
-        ) : null}
-        <div className={hasArt ? (presentation === 'easy' ? 'min-h-0 flex-[3] overflow-y-auto px-4 pb-2' : 'min-h-0 flex-[2] overflow-y-auto px-4 pb-2') : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}>
-          <div className="mt-3">
-            <PracticeOnlyBar />
-          </div>
-          {prompt}
-          {presentation === 'easy' ? <KeywordRow keys={comparisonChipKeys(lessonId)} onPick={applyText} /> : null}
-          {fields}
-          {writing}
-        </div>
+      <div
+        data-thin-practice="dualRead"
+        data-presentation={presentation}
+        data-soft-motion="off"
+        className="min-h-0 flex-1 overflow-y-auto px-4 pb-2"
+      >
+        <p className="mt-3">
+          <span data-qtype-chip="dualRead" className="inline-flex rounded-full bg-[#0D9488] px-4 py-1.5 text-base font-bold text-white">
+            {t('qtype.chip.dualRead')}
+          </span>
+        </p>
+        <ThinHint type="dualRead" />
+        {prompt}
+        {presentation === 'easy' ? <KeywordRow keys={comparisonChipKeys(lessonId)} onPick={applyText} /> : null}
+        {art}
+        {fields}
+        {writing}
+        <ThinPace />
       </div>
     )
   }
   return (
-    <div data-thin-practice="dualRead">
+    <div data-thin-practice="dualRead" data-soft-motion="off">
       <ThinHint type="dualRead" />
       <div className="mt-3">{prompt}</div>
       {compared ? (
         <CompareSides q={q} values={values} revealed={revealed} onChange={onChange} />
       ) : (
         <>
-          <DualReadFrame image={q.image} credit={q.imageCredit} />
+          {structured ? structure : <DualReadFrame image={q.image} credit={q.imageCredit} />}
           {fields}
         </>
       )}
@@ -314,6 +321,25 @@ export function ShortBoard({
       <MetWorkFacts image={q.image} />
       {fields}
       <ThinPace />
+    </div>
+  )
+}
+
+function StructurePanels({ kind, labels }: { kind: 'practice' | 'school'; labels: readonly string[] }) {
+  const heading = t(kind === 'school' ? 'lesson.structure.schoolWork' : 'lesson.structure.banner')
+  return (
+    <div className="mt-3" data-testid="dualread-structure" data-structure={kind}>
+      <p className="text-sm font-bold text-[#0D9488]">{heading}</p>
+      <div className="mt-2 grid grid-cols-2 gap-3">
+        {labels.map((label) => (
+          <div
+            key={label}
+            className="min-h-36 rounded-2xl border-2 border-[#0D9488] bg-white px-3 py-4 text-left text-sm font-semibold leading-snug text-slate-900"
+          >
+            {label}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

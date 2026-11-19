@@ -83,7 +83,7 @@ export type ConceptProfile = {
   search: string
 }
 
-/** Two writing lines beside one local frame, beside two verified plates, or beside a plate and a text profile. */
+/** Two writing lines beside one local frame, beside two verified plates, beside a plate and a text profile, or beside a classroom structure panel. */
 export type DualReadQuestion = {
   id: string
   type: 'dualRead'
@@ -97,6 +97,11 @@ export type DualReadQuestion = {
   right?: ComparePlate
   /** Present when one side has no image and the student reads a text profile. */
   profile?: ConceptProfile
+  /**
+   * Text or structure exercise. practice = classroom practice structure.
+   * school = the question is about the student's own draft or materials.
+   */
+  structure?: 'practice' | 'school'
   explain: string
 }
 
@@ -124,6 +129,8 @@ export type LessonArtistRef = {
   reference?: boolean
   /** Public https site. Omitted when none is set. */
   artistSiteUrl?: string
+  /** Work introduction for a verified artwork. Omitted on reference rows. */
+  intro?: string
 }
 
 export type Lesson = {

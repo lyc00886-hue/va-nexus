@@ -122,14 +122,21 @@ describe('classroom image licence and new card copy', () => {
         image: '/content/learning-map-illustrations/soft-scout/f4-dualread/06-u3-l2-dualread.png',
         role: 'appreciation',
       }),
-      'show',
+      'block',
     )
     assert.equal(
       imageDecision({
         image: '/content/learning-map-illustrations/soft-scout/f4-dualread/01-u1-l1-dualread.png',
         role: 'appreciation',
       }),
-      'show',
+      'block',
+    )
+    assert.equal(
+      imageDecision({
+        image: '/content/learning-map-illustrations/f4-dualread/F4-U5-L1.png',
+        role: 'appreciation',
+      }),
+      'block',
     )
     assert.equal(
       imageDecision({

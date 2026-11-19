@@ -90,9 +90,8 @@
                 "I see…",
                 "I want to try…"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/01-u1-l1-dualread.png",
-              "imageCredit": "Self-made · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -183,9 +182,8 @@
                 "Workbook process",
                 "Artwork decision"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/02-u1-l2-dualread.png",
-              "imageCredit": "Self-made · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -265,9 +263,8 @@
                 "Keyword",
                 "Form"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U1-L3.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -342,14 +339,28 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: one movement on the left, another on the right. One line each — the formal feature, and how the presentation differs.",
+              "question": "Compare works: left, Impressionism, Pissarro, The Boulevard Montmartre on a Winter Morning; right, Post-Impressionism, Cézanne, Still Life with Apples and a Pot of Primroses. In one line each: what formal traits do you see, and how does the way of presenting differ?",
               "options": [
                 "Left",
                 "Right"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U1-L4.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "plate": {
+                "image": "/content/learning-map-illustrations/met-open/437310.jpg",
+                "title": "The Boulevard Montmartre on a Winter Morning",
+                "artist": "Camille Pissarro",
+                "year": "1897",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "A winter morning on the Boulevard Montmartre: wet road, trees, traffic, and people, laid in short broken strokes and pale light. Pissarro records city air and light in an Impressionist way."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/met-open/435882.jpg",
+                "title": "Still Life with Apples and a Pot of Primroses",
+                "artist": "Paul Cézanne",
+                "year": "ca. 1890",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "Apples and a pot of primroses are built from steady colour planes and clear edges, balanced left to right and front to back. Cézanne organises the still life through structure and colour planes."
+              }
             },
             {
               "type": "short",
@@ -377,7 +388,7 @@
             "Drawing from observation starts with looking: overall shape and proportion first, details later—not deepest shadows first.",
             "Basic visual elements: line, shape, colour, texture, space. Organising principles: contrast, rhythm, balance, emphasis.",
             "Try compositions such as rule of thirds, diagonal guides and empty space. Different compositions change where viewers look first.",
-            "Wucius Wong brought design principles into ink landscape, showing how structure can organise a picture.",
+            "Guo Xi uses composition and distance in ink landscape, showing how structure can organise a picture.",
             "Draw your own line-and-shape drill: big shape, proportion, one leading line. Design structure can organise a picture. Use words and your own line study in class."
           ],
           "quiz": [
@@ -408,7 +419,7 @@
             },
             {
               "type": "mcq",
-              "question": "Wucius Wong’s practice reminds us that:",
+              "question": "Guo Xi’s practice reminds us that:",
               "options": [
                 "Design structure can organise a picture",
                 "Art needs no composition",
@@ -416,7 +427,7 @@
                 "Traditional landscape cannot be referenced"
               ],
               "answer": "Design structure can organise a picture",
-              "explain": "He reorganised ink landscapes with geometric/design-based composition."
+              "explain": "He organises ink landscape with composition and distance."
             },
             {
               "type": "match",
@@ -446,14 +457,28 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: dense line vs big colour blocks — where is the visual weight, and why?",
+              "question": "Compare works: left, Van Gogh, Cypresses, with dense strokes; right, Gauguin, The Siesta, with large colour shapes. Which side feels heavier in the composition, and why?",
               "options": [
                 "Which side feels heavier",
                 "Why"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/03-u2-l1-dualread.png",
-              "imageCredit": "Self-made · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-437980-van-gogh-cypresses.jpg",
+                "title": "Cypresses",
+                "artist": "Vincent van Gogh",
+                "year": "1889",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "Two cypresses rise through the middle, built from dense short and curling strokes; hills and clouds on the right also show packed marks. Van Gogh uses dense lines to weight the left side."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-436449-gauguin-the-siesta.jpg",
+                "title": "The Siesta",
+                "artist": "Paul Gauguin",
+                "year": "ca. 1892–94",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "Four figures on a veranda, with large colour shapes in the clothes, floor, and lawn beyond. Gauguin lays flat colour and clear outlines, so the foreground figure and floor feel heavier."
+              }
             },
             {
               "type": "short",
@@ -463,13 +488,15 @@
             }
           ],
           "artistIds": [
-            "HK-WUCIUS-01"
+            "CN-GUOXI-01"
           ],
           "artistMedia": {
-            "HK-WUCIUS-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/HK-WUCIUS-01-reference.png",
-              "reference": true,
-              "artistSiteUrl": "https://www.wongwucius.com/"
+            "CN-GUOXI-01": {
+              "thumb": "/content/learning-map-illustrations/f4-pd/met-39668-guo-xi-old-trees-level-distance.jpg",
+              "license": "Public Domain / CC0",
+              "credit": "Guo Xi — Old Trees, Level Distance (ca. 1080)",
+              "sourceUrl": "https://www.metmuseum.org/art/collection/search/39668",
+              "intro": "Guo Xi’s Old Trees, Level Distance sets bare trees, slopes, and a far shore in layers, organising ink landscape through composition and distance."
             }
           }
         },
@@ -558,9 +585,8 @@
                 "Which texture",
                 "One reason"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/04-u2-l2-dualread.png",
-              "imageCredit": "Self-made · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -673,9 +699,8 @@
                 "Plan",
                 "Material"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U2-L3.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -756,9 +781,8 @@
                 "Drawing",
                 "Material"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U2-L4.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -1000,12 +1024,16 @@
           ],
           "artistMedia": {
             "FR-CAILLEBOTTE-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/FR-CAILLEBOTTE-01-reference.png",
-              "reference": true
+              "thumb": "/content/learning-map-illustrations/f4-pd/commons-caillebotte-paris-street-rainy-day.jpg",
+              "license": "Public Domain / CC0",
+              "credit": "Gustave Caillebotte — Paris Street; Rainy Day (1877)",
+              "sourceUrl": "https://www.artic.edu/artworks/20684/paris-street-rainy-day"
             },
             "DK-HAMMERSHOI-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/DK-HAMMERSHOI-01-reference.png",
-              "reference": true
+              "thumb": "/content/learning-map-illustrations/f4-pd/met-441933-hammershoi-moonlight-strandgade-30.jpg",
+              "license": "Public Domain / CC0",
+              "credit": "Vilhelm Hammershøi — Moonlight, Strandgade 30 (1900–1906)",
+              "sourceUrl": "https://www.metmuseum.org/art/collection/search/441933"
             }
           }
         },
@@ -1404,8 +1432,8 @@
             "A self-portrait is more than likeness: it can speak about identity, bodily experience, roles and social gaze.",
             "A theme can begin from three themes: self (a curiosity collection), relationship (a family object) and story (conflict or tension).",
             "Frida Kahlo used self-portrait to speak personal experience and cultural identity—the learning goal is how symbols tell a self, not copying a style for marks.",
-            "Wilson Shieh paints contemporary figures in gongbi to explore Hong Kong identity; David Hockney often paints family and looking—useful for a “relationship” theme.",
-            "Describe contemporary works in words, and note a museum webpage or a reliable encyclopedia as a classroom reference. Add a public-domain historic self-portrait only when the image is rights-cleared. This card does not pretend a missing picture is here."
+            "Rembrandt uses self-portrait to speak identity, role, and looking; Van Gogh’s La Berceuse shows a person beside a cradle, useful for a “relationship” theme.",
+            "The artist grid now uses verified Public Domain works: Frida Kahlo, Rembrandt’s self-portrait, and Van Gogh’s La Berceuse. Contemporary works without a verified free licence stay off the grid."
           ],
           "quiz": [
             {
@@ -1438,15 +1466,15 @@
               "question": "Match artist to entry point",
               "options": [
                 "Frida Kahlo",
-                "Wilson Shieh",
-                "David Hockney"
+                "Rembrandt",
+                "Vincent van Gogh"
               ],
               "answer": {
                 "Frida Kahlo": "Self-portrait and personal/cultural identity",
-                "Wilson Shieh": "Gongbi contemporary figures and HK identity",
-                "David Hockney": "Family and the gaze / relationships"
+                "Rembrandt": "Self-portrait, role, and looking",
+                "Vincent van Gogh": "Family care and relationships"
               },
-              "explain": "All three can inspire self-portrait/relationship themes in different media and contexts."
+              "explain": "All three can inform self-portrait or relationship themes, in different entry points and contexts."
             },
             {
               "type": "mcq",
@@ -1475,12 +1503,11 @@
               "type": "dualRead",
               "question": "Compare works: a self-portrait draft on the left, an object tied to identity on the right. One line each — what the pose says, and what relationship the object holds.",
               "options": [
-                "Draft",
-                "Object"
+                "Self-portrait draft (school student work)",
+                "An object tied to identity (school student work)"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L1.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -1491,24 +1518,29 @@
           ],
           "artistIds": [
             "WEST-KAHLO-01",
-            "HK-SHIEH-01",
-            "WEST-HOCKNEY-01"
+            "NL-REMBRANDT-01",
+            "NL-VANGOGH-01"
           ],
           "artistMedia": {
             "WEST-KAHLO-01": {
               "thumb": "/content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-artwork.png",
-              "license": "Public domain",
+              "license": "Public Domain / CC0",
               "credit": "Frida Kahlo — Self-Portrait Dedicated to Leon Trotsky (1937)",
               "sourceUrl": "https://commons.wikimedia.org/wiki/File:Frida_Kahlo_-_Autoportrait_d%C3%A9di%C3%A9_%C3%A0_L%C3%A9on_Trotsky.png"
             },
-            "HK-SHIEH-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/HK-SHIEH-01-reference.png",
-              "reference": true
+            "NL-REMBRANDT-01": {
+              "thumb": "/content/learning-map-illustrations/f4-pd/met-437397-rembrandt-self-portrait.jpg",
+              "license": "Public Domain / CC0",
+              "credit": "Rembrandt — Self-Portrait (1660)",
+              "sourceUrl": "https://www.metmuseum.org/art/collection/search/437397",
+              "intro": "Rembrandt paints himself in 1660: a dark hat and collar frame the face, and the gaze meets the viewer. The self-portrait uses light and dress to speak identity and role."
             },
-            "WEST-HOCKNEY-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/WEST-HOCKNEY-01-reference.png",
-              "reference": true,
-              "artistSiteUrl": "https://www.hockney.com/"
+            "NL-VANGOGH-01": {
+              "thumb": "/content/learning-map-illustrations/f4-pd/met-437984-van-gogh-la-berceuse.jpg",
+              "license": "Public Domain / CC0",
+              "credit": "Vincent van Gogh — La Berceuse, 1889",
+              "sourceUrl": "https://www.metmuseum.org/art/collection/search/437984",
+              "intro": "Van Gogh paints Madame Roulin beside a cradle, a cord in her hands, with large flowers and colour shapes behind her. The work enters through care and relationship, not likeness alone."
             }
           }
         },
@@ -1595,9 +1627,8 @@
                 "Method",
                 "Your theme"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L2.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -1677,9 +1708,8 @@
                 "Earlier draft",
                 "Current test"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L3.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -1778,12 +1808,11 @@
               "type": "dualRead",
               "question": "Compare works: compare two periods in words. One line each — a formal feature, and a possible use.",
               "options": [
-                "Form",
-                "Use"
+                "Period one · write the formal traits in words",
+                "Period two · write a possible use in words"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L1.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -1871,14 +1900,28 @@
             },
             {
               "type": "dualRead",
-              "question": "Compare works: a pictograph on the left, a vessel motif on the right. One line each — how the line moves, and what it might record.",
+              "question": "Compare works: left, a Shang oracle-bone inscription; right, ornament on a Shang bronze ding. In one line each: how do the lines travel, and what might they record?",
               "options": [
                 "Pictograph",
                 "Motif"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L2.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-42022-shang-oracle-bone.jpg",
+                "title": "Oracle Bone Fragment",
+                "artist": "Unidentified artisan",
+                "year": "13th–11th century BCE",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "This Shang oracle-bone fragment carries rows of early script, with turns and changes of density in the strokes. The lines record a divination, not a landscape."
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-61239-shang-bronze-ding.jpg",
+                "title": "Ritual tripod cauldron (Ding)",
+                "artist": "Unidentified artisan",
+                "year": "12th–11th century BCE",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "This Shang bronze ding shows a symmetrical animal-mask pattern, with lines turning around the body and a ground pattern behind the main motif. The ornament marks the vessel as ritual ware."
+              }
             },
             {
               "type": "short",
@@ -1958,9 +2001,8 @@
                 "Wall painting",
                 "Writing"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L3.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -2040,9 +2082,8 @@
                 "Tang",
                 "Five Dynasties"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L4.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -2144,9 +2185,8 @@
                 "Collection",
                 "Family object"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L1.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -2239,9 +2279,8 @@
                 "Question",
                 "Materials"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L2.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -2321,9 +2360,8 @@
                 "Wish",
                 "Assemble"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L3.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -2412,9 +2450,8 @@
                 "Appreciation",
                 "Exploration"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U7-L1.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -2494,9 +2531,8 @@
                 "Medium one",
                 "Medium two"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U7-L2.png",
-              "imageCredit": "Original · VA-Nexus",
-              "explain": "Practice structure · not a real paper"
+              "explain": "Practice structure · not a real paper",
+              "structure": "school"
             },
             {
               "type": "short",
