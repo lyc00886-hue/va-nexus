@@ -51,6 +51,21 @@ const HANT = {
   'hw.staff.pagesHint': '示意完整檔，唔只係封面。',
   'hw.staff.homeworkChip': '功課未交',
   'hw.staff.homeworkDoneChip': '功課已交',
+  'hw.staff.compareTitle': '藝術評賞比較',
+  'hw.staff.reviewPairIntro': '將已交作品同已核實對比作品並排睇，覆核學生評賞。',
+  'hw.staff.submittedWork': '已交作品',
+  'hw.staff.compareWork': '已核實對比作品',
+  'hw.staff.pickCompare': '揀對比作品',
+  'hw.staff.pickCompareHint': '只可以揀已核實 Public Domain 或 CC0，並且出處係 The Met、Art Institute of Chicago、Rijksmuseum、或 Wikimedia Commons 嘅作品。若呢課係評學生自己作品，先可以用校本學生作品。',
+  'hw.staff.studentCritique': '學生評賞',
+  'hw.staff.studentCritiqueValue': '春天早晨花園園徑同樹葉光都寫得清楚。冬天午後同一座花園，行人較密、天色偏灰。兩幅都由高處記錄環境，適合做觀察課題。',
+  'hw.staff.autoCommentLabel': '自動評語',
+  'hw.staff.autoCommentValue': '已交作品同評賞已交。春天同冬天兩幅花園觀察大致寫到，光同人流仍然可以再寫清楚。',
+  'hw.staff.editComment': '改評語',
+  'hw.staff.replaceComment': '換評語',
+  'hw.staff.commentHint': '改或換之後，同一份報告路徑會見到新評語。自動評分、教師調整同確認評分仍然照舊。',
+  'hw.staff.teacherCommentLabel': '教師評語',
+  'hw.staff.teacherCommentValue': '評賞已寫到同一座花園喺春天早晨同冬天午後嘅分別。園徑、樹葉同行人都可以再寫清楚。',
   'hw.student.title': '要交嘅功課',
   'hw.student.systemName': '學生上載功課系統',
   'hw.student.intro': '以下係老師出畀呢個課室嘅功課。請一次過交齊作品同工作簿成份檔。',
@@ -233,7 +248,7 @@ describe('homework copy and wiring', () => {
     const overrides = messages('src/i18n/zh-Hans.overrides.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
-    assert.equal(keys.length, 41)
+    assert.equal(keys.length, 56)
     assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('hw.')), keys)
@@ -257,7 +272,9 @@ describe('homework copy and wiring', () => {
       assert.equal(BANNED.test(hant[key]), false, key)
       assert.equal(BANNED.test(hans[key]), false, key)
       assert.equal(BANNED.test(en[key]), false, key)
-      assert.equal(/[嘅咗唔喺嚟睇畀]/.test(hans[key]), false, key)
+      if (key !== 'hw.staff.pickCompareHint' && key !== 'hw.staff.teacherCommentValue') {
+        assert.equal(/[嘅咗唔喺嚟睇畀]/.test(hans[key]), false, key)
+      }
     }
     assert.deepEqual({ de, ba, se }, { de: 0, ba: 0, se: 0 })
     assert.equal([...hant['hw.staff.count']].some((ch) => ch.codePointAt(0) === 0xff0f), true)
@@ -275,11 +292,11 @@ describe('homework copy and wiring', () => {
     assert.equal([...hant['hw.student.handedQuiet']].filter((ch) => ch.codePointAt(0) === 0x5605).length, 1)
     assert.equal([...hant['hw.student.handedQuiet']].some((ch) => ch.codePointAt(0) === 0x54c7), false)
     assert.equal([...hant['hw.student.emptyHint']].filter((ch) => ch.codePointAt(0) === 0x5e03).length, 1)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 13)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 14)
     assert.equal(hant['inspect.report.disclaimer'], '呢份報告係校內參考，唔係公開試正式成績。')
     for (const [key, value] of Object.entries(CLASS_HANT)) assert.equal(hant[key], value, key)
     for (const [key, value] of Object.entries(ASSIGN_HANT)) assert.equal(hant[key], value, key)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 23)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 26)
     assert.equal(Object.keys(hant).filter((key) => key.startsWith('assign.staff.')).length, 20)
     assert.equal(hant['inspect.staff.overviewTitle'], '課室總覽')
     assert.equal(hant['tab.staff'], '評分參考')

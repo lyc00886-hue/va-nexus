@@ -22,6 +22,7 @@ const HANT = {
   'report.staff.analysis': '簡短分析',
   'report.staff.analysisValue': '同學已一次過交齊成份檔，過程記錄大致齊。近身觀察仍然可以再寫清楚，教師已按呢點調整。呢次只係呢份功課嘅校內參考，唔另定新級，亦唔係公開試級別預測。',
   'report.staff.refNote': '功課自動評分同教師調分只係呢次功課嘅校內參考結果，唔另定一套新校內評級，亦唔改寫已有練習帶。',
+  'report.staff.teacherComment': '教師評語',
 } as const
 
 const HANS = {
@@ -38,6 +39,7 @@ const HANS = {
   'report.staff.analysis': '简短分析',
   'report.staff.analysisValue': '同学已一次交齐成份档，过程记录大致齐。近身观察仍然可以再写清楚，教师已按这点调整。这次只是这份功课校内参考，不另定新级，也不是公开试级别预测。',
   'report.staff.refNote': '功课自动评分同教师调分只是这次功课校内参考结果，不另定一套新校内评级，亦不改写已有练习带。',
+  'report.staff.teacherComment': '教师评语',
 } as const
 
 const EN = {
@@ -58,6 +60,7 @@ const EN = {
     'The student handed in the complete file in one go, and the process notes are mostly complete. Nearby observation can still be written more clearly, and the teacher has adjusted for that. This is in-school reference for this homework only. It does not set a new level, and it is not a public-exam level prediction.',
   'report.staff.refNote':
     'The automatic mark and the teacher adjustment are in-school reference results for this homework only. They do not set a new in-school rating, and they do not rewrite the existing practice band.',
+  'report.staff.teacherComment': 'Teacher comment',
 } as const
 
 const REPORT_FIELDS = [
@@ -102,13 +105,13 @@ function messages(path: string): Record<string, string> {
 }
 
 describe('student personal report', () => {
-  it('byte-matches the 13 report.staff keys and keeps the learning-progress fields', () => {
+  it('byte-matches the report.staff keys and keeps the learning-progress fields', () => {
     const hant = messages('src/i18n/zh-Hant.json')
     const hans = messages('src/i18n/zh-Hans.json')
     const overrides = messages('src/i18n/zh-Hans.overrides.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
-    assert.equal(keys.length, 13)
+    assert.equal(keys.length, 14)
     assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('report.')), keys)
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('report.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('report.')), keys)
@@ -137,6 +140,7 @@ describe('student personal report', () => {
     assert.equal(overrides['report.staff.noteValue'], HANS['report.staff.noteValue'])
     assert.equal(overrides['report.staff.noteHint'], HANS['report.staff.noteHint'])
     assert.equal(overrides['report.staff.bandKeep'], HANS['report.staff.bandKeep'])
+    assert.equal(overrides['report.staff.teacherComment'], HANS['report.staff.teacherComment'])
     assert.equal(hant['inspect.report.disclaimer'], REPORT_DISCLAIMER['zh-Hant'])
     assert.equal(hant['inspect.report.disclaimer'], '呢份報告係校內參考，唔係公開試正式成績。')
     for (const key of REPORT_FIELDS) assert.equal(typeof hant[key], 'string', key)

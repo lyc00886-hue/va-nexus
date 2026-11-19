@@ -81,6 +81,11 @@ export function classMemberId(): string {
   return readToken(MEMBER_KEY, 'm')
 }
 
+/** Classmate id on this device after they join. Null when this device has not joined. */
+export function joinedClassMemberId(): string | null {
+  return readJoinedPointer() ? classMemberId() : null
+}
+
 function readJoinedPointer(): JoinedPointer | null {
   try {
     const parsed = JSON.parse(localStorage.getItem(JOINED_KEY) ?? '') as { code?: unknown }

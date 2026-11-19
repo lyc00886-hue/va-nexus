@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useT, type MessageKey } from '../i18n'
 import { createRealClassroom, type InviteRoom } from '../lib/classInvite'
 import { PORTFOLIO_LABEL_MAX } from '../lib/teacherDraftBand'
+import { StudentPresentControl } from './StudentPresentControl'
 
 const EXAMPLE_ROWS: { id: string; name: MessageKey; handedIn: boolean }[] = [
   { id: 'demo-a', name: 'inspect.demo.a', handedIn: true },
@@ -83,6 +84,7 @@ export function ClassInviteCreate({
 export function ClassInviteRoom({ room, onBack }: { room: InviteRoom; onBack: () => void }) {
   const { t } = useT()
   const [copied, setCopied] = useState(false)
+  const [presentStudent, setPresentStudent] = useState<string | null>(null)
   const titleId = 'class-real-room-title'
 
   async function copyCode() {
@@ -162,26 +164,29 @@ export function ClassInviteRoom({ room, onBack }: { room: InviteRoom; onBack: ()
         <ul className="m-0 list-none space-y-3 p-0" data-testid="class-joined-roster">
           {room.members.map((member) => {
             const handedIn = room.submissions.some((row) => row.memberId === member.id && row.fileName !== '')
-            return (
-              <li
-                key={member.id}
-                data-testid={`class-joined-${member.id}`}
-                data-hw-handed-in={handedIn ? 'true' : 'false'}
-                className="rounded-3xl border-2 border-[#0D9488] bg-white p-4"
+            const chip = (
+              <span
+                className={
+                  handedIn
+                    ? 'inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]'
+                    : 'inline-flex rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
+                }
               >
-                <p className="font-semibold text-slate-900">{member.id}</p>
-                <p className="mt-2">
-                  <span
-                    className={
-                      handedIn
-                        ? 'inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]'
-                        : 'inline-flex rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
-                    }
-                  >
-                    {handedIn ? t('hw.staff.homeworkDoneChip') : t('hw.staff.homeworkChip')}
-                  </span>
-                </p>
-              </li>
+                {handedIn ? t('hw.staff.homeworkDoneChip') : t('hw.staff.homeworkChip')}
+              </span>
+            )
+            return (
+              <StudentPresentControl
+                key={member.id}
+                studentId={member.id}
+                open={presentStudent === member.id}
+                onOpen={() => setPresentStudent((current) => (current === member.id ? null : member.id))}
+                extra={
+                  <p data-testid={`class-joined-${member.id}`} data-hw-handed-in={handedIn ? 'true' : 'false'}>
+                    {chip}
+                  </p>
+                }
+              />
             )
           })}
         </ul>

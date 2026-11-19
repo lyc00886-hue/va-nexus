@@ -2,9 +2,11 @@ import { useState, type ReactNode } from 'react'
 import { AssignmentPublish } from './AssignmentPublish'
 import { ClassInviteCreate, ClassInviteRoom } from './ClassInviteStaff'
 import { HomeworkReview } from './HomeworkReview'
+import { StudentPresentControl } from './StudentPresentControl'
 import { useT } from '../i18n'
 import { useClassList } from '../lib/classList'
 import { useRealClassrooms, type InviteRoom } from '../lib/classInvite'
+import { HW_ROSTER_IDS } from '../lib/homeworkSubmit'
 
 /**
  * Parent surface for the classes a teacher looks after.
@@ -18,6 +20,7 @@ export function ClassroomManagement({ overview }: { overview: ReactNode }) {
   const [openId, setOpenId] = useState<string | null>(null)
   const [screen, setScreen] = useState<'list' | 'create' | 'real'>('list')
   const [realId, setRealId] = useState<string | null>(null)
+  const [presentStudent, setPresentStudent] = useState<string | null>('demo-a')
   const localOpen = classes.find((row) => row.id === openId) ?? null
   const realRoom = shared.find((room) => room.id === realId) ?? null
   const openRow =
@@ -99,6 +102,16 @@ export function ClassroomManagement({ overview }: { overview: ReactNode }) {
                     <p data-testid="class-staff-count" className="mt-1 text-sm text-slate-600">
                       {t('class.staff.studentCount')}
                     </p>
+                    <ul data-testid="class-present-roster" className="m-0 mt-3 list-none space-y-3 p-0">
+                      {HW_ROSTER_IDS.map((studentId) => (
+                        <StudentPresentControl
+                          key={studentId}
+                          studentId={studentId}
+                          open={presentStudent === studentId}
+                          onOpen={() => setPresentStudent((current) => (current === studentId ? null : studentId))}
+                        />
+                      ))}
+                    </ul>
                   </>
                 ) : null}
                 <button
