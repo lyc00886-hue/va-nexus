@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { HTML_LANG, useT } from '../i18n'
 import { gradeLabelKey, useInspectRows, type InspectView } from '../lib/useInspectClass'
-import { useHomeworkSubmissions } from '../lib/homeworkSubmit'
+import { inSchoolMarkForStudent, useHomeworkSubmissions, useHomeworkTeacherMarks } from '../lib/homeworkSubmit'
 import {
   collectedReportValue,
   learningProgressFilename,
@@ -16,7 +16,16 @@ function sectionFor(
   row: InspectView,
   labels: Record<string, string>,
   gradeText: string,
-  extra: { homework: string; note: string; bandKeep: string; noteHint: string },
+  extra: {
+    homework: string
+    note: string
+    bandKeep: string
+    noteHint: string
+    auto: string
+    teacher: string
+    analysis: string
+    refNote: string
+  },
 ): ReportSection {
   return {
     name: row.name,
@@ -30,6 +39,9 @@ function sectionFor(
       { label: labels.band, value: `${row.band}\n${extra.bandKeep}` },
       { label: labels.homework, value: extra.homework },
       { label: labels.note, value: `${extra.note}\n${extra.noteHint}` },
+      { label: labels.auto, value: extra.auto },
+      { label: labels.teacher, value: extra.teacher },
+      { label: labels.analysis, value: `${extra.analysis}\n${extra.refNote}` },
       { label: labels.date, value: row.date },
     ],
   }
@@ -39,13 +51,25 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
   const { t, locale } = useT()
   const rows = useInspectRows()
   const submissions = useHomeworkSubmissions()
+  const marks = useHomeworkTeacherMarks()
   const shown = preview?.kind === 'class' ? rows : rows.filter((row) => row.id === preview?.id)
 
-  function collectionFor(row: InspectView): { homework: string; note: string } {
+  function collectionFor(row: InspectView): {
+    homework: string
+    note: string
+    auto: string
+    teacher: string
+    analysis: string
+  } {
     const collected = studentHomeworkCollected(submissions, row.id)
+    const none = t('inspect.report.none')
+    const saved = inSchoolMarkForStudent(marks, submissions, row.id)
     return {
-      homework: collectedReportValue(collected, t('report.staff.homeworkValue'), t('inspect.report.none')),
-      note: collectedReportValue(collected, t('report.staff.noteValue'), t('inspect.report.none')),
+      homework: collectedReportValue(collected, t('report.staff.homeworkValue'), none),
+      note: collectedReportValue(collected, t('report.staff.noteValue'), none),
+      auto: collectedReportValue(collected, t('hw.staff.autoGradeValue'), none),
+      teacher: collected ? (saved ?? t('hw.staff.teacherGradeValue')) : none,
+      analysis: collectedReportValue(collected, t('report.staff.analysisValue'), none),
     }
   }
 
@@ -65,10 +89,14 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
       band: t('inspect.report.band'),
       homework: t('report.staff.homework'),
       note: t('report.staff.note'),
+      auto: t('report.staff.autoGrade'),
+      teacher: t('report.staff.teacherGrade'),
+      analysis: t('report.staff.analysis'),
       date: t('inspect.report.date'),
     }
     const bandKeep = t('report.staff.bandKeep')
     const noteHint = t('report.staff.noteHint')
+    const refNote = t('report.staff.refNote')
     const sections = list
       .filter((row) => row.name.trim() !== '')
       .map((row) =>
@@ -76,6 +104,7 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
           ...collectionFor(row),
           bandKeep,
           noteHint,
+          refNote,
         }),
       )
     const filename = learningProgressFilename()
@@ -161,6 +190,21 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
                     <dd data-testid={`report-note-${row.id}`}>{collection.note}</dd>
                     <p data-testid={`report-note-hint-${row.id}`} className="mt-1 text-sm leading-relaxed text-slate-600">
                       {t('report.staff.noteHint')}
+                    </p>
+                  </div>
+                  <div>
+                    <dt className="font-semibold text-slate-900">{t('report.staff.autoGrade')}</dt>
+                    <dd data-testid={`report-auto-${row.id}`}>{collection.auto}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold text-slate-900">{t('report.staff.teacherGrade')}</dt>
+                    <dd data-testid={`report-teacher-${row.id}`}>{collection.teacher}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-semibold text-slate-900">{t('report.staff.analysis')}</dt>
+                    <dd data-testid={`report-analysis-${row.id}`}>{collection.analysis}</dd>
+                    <p data-testid={`report-ref-note-${row.id}`} className="mt-1 text-sm leading-relaxed text-slate-600">
+                      {t('report.staff.refNote')}
                     </p>
                   </div>
                   <div>

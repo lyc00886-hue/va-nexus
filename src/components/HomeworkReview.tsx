@@ -3,6 +3,7 @@ import { useT, type MessageKey } from '../i18n'
 import { assignmentsForClass, useAssignList, visibleAssignment } from '../lib/assignList'
 import type { InviteRoom } from '../lib/classInvite'
 import {
+  confirmHomeworkTeacherMark,
   homeworkCounts,
   homeworkFileLabel,
   homeworkPlateMatch,
@@ -10,7 +11,9 @@ import {
   homeworkRows,
   homeworkSessionFile,
   homeworkSubmissionId,
+  teacherMarkForSubmission,
   useHomeworkSubmissions,
+  useHomeworkTeacherMarks,
   type HwSubmission,
 } from '../lib/homeworkSubmit'
 
@@ -80,6 +83,7 @@ export function HomeworkReview({
 
       {opened ? (
         <SubmittedFile
+          key={opened.id}
           submission={opened}
           onBack={() => setFileId(null)}
         />
@@ -232,6 +236,7 @@ function SubmittedFile({ submission, onBack }: { submission: HwSubmission; onBac
       <p data-testid="hw-staff-pages-hint" className="text-sm leading-relaxed text-slate-600">
         {t('hw.staff.pagesHint')}
       </p>
+      <GradePanel submissionId={submission.id} />
       <p data-testid="hw-staff-file-not-marking" className="text-sm leading-relaxed text-slate-600">
         {t('hw.staff.notMarking')}
       </p>
@@ -242,6 +247,68 @@ function SubmittedFile({ submission, onBack }: { submission: HwSubmission; onBac
         className="whitespace-nowrap rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]"
       >
         {t('hw.staff.backToList')}
+      </button>
+    </div>
+  )
+}
+
+function GradePanel({ submissionId }: { submissionId: string }) {
+  const { t } = useT()
+  const marks = useHomeworkTeacherMarks()
+  const saved = teacherMarkForSubmission(marks, submissionId)
+  const official = t('hw.staff.teacherGradeValue')
+  const [draft, setDraft] = useState(saved ?? official)
+  const [confirmed, setConfirmed] = useState(saved != null)
+  const fieldId = 'hw-staff-teacher-grade'
+
+  function confirm() {
+    const ok = confirmHomeworkTeacherMark(submissionId, draft)
+    if (ok) setConfirmed(true)
+  }
+
+  return (
+    <div data-testid="hw-staff-grade" data-hw-grade-saved={confirmed ? 'true' : 'false'} className="space-y-3">
+      <div>
+        <h4 className="text-base font-bold text-slate-900">{t('hw.staff.criteriaTitle')}</h4>
+        <p data-testid="hw-staff-criteria" className="mt-1 text-sm leading-relaxed text-slate-700">
+          {t('hw.staff.criteriaBody')}
+        </p>
+      </div>
+      <div>
+        <h4 className="text-base font-bold text-slate-900">{t('hw.staff.autoGradeLabel')}</h4>
+        <p data-testid="hw-staff-auto-grade" className="mt-1 text-sm leading-relaxed text-slate-700">
+          {t('hw.staff.autoGradeValue')}
+        </p>
+      </div>
+      <div>
+        <h4 className="text-base font-bold text-slate-900">{t('hw.staff.adjustLabel')}</h4>
+        <p data-testid="hw-staff-adjust" className="mt-1 text-sm leading-relaxed text-slate-700">
+          {t('hw.staff.adjustHint')}
+        </p>
+      </div>
+      <div>
+        <label htmlFor={fieldId} className="text-base font-bold text-slate-900">
+          {t('hw.staff.teacherGradeLabel')}
+        </label>
+        <textarea
+          id={fieldId}
+          data-testid="hw-staff-teacher-grade"
+          value={draft}
+          rows={2}
+          onChange={(event) => {
+            setDraft(event.target.value)
+            setConfirmed(false)
+          }}
+          className="mt-2 w-full resize-y rounded-full border border-[#0D9488] bg-white px-4 py-3 text-sm leading-relaxed text-slate-800"
+        />
+      </div>
+      <button
+        type="button"
+        data-testid="hw-staff-save-grade"
+        onClick={confirm}
+        className="whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white"
+      >
+        {t('hw.staff.saveGrade')}
       </button>
     </div>
   )

@@ -17,9 +17,12 @@ import {
   homeworkPlateMatch,
   homeworkRosterIds,
   homeworkRows,
+  inSchoolMarkForStudent,
   rememberHomeworkFile,
   sanitizeHomework,
+  sanitizeTeacherMarks,
   withHomeworkSubmission,
+  withTeacherMark,
 } from './homeworkSubmit.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
@@ -33,7 +36,16 @@ const HANT = {
   'hw.staff.openFile': '打開已交檔',
   'hw.staff.backToList': '返回名單',
   'hw.staff.fileNote': '呢份係同學交嚟嘅功課檔，只供呢個課室嘅老師查看。',
-  'hw.staff.notMarking': '呢度可以打開已交檔，唔係自動評分，亦唔會改寫校內評級。',
+  'hw.staff.notMarking': '呢度可以打開已交檔，可以查看同調整自動評分，亦唔會改寫已有校內評級體系。',
+  'hw.staff.criteriaTitle': '評分準則（校內參考）',
+  'hw.staff.criteriaBody': '跟已有功課說明、課堂活動紙同教育局指引方向：近身觀察同資料係咪具體；過程同發展有冇寫低；作品同工作簿係咪一次過交齊，並且對得上呢次功課要求。呢次只係校內參考，唔係公開試級別。',
+  'hw.staff.autoGradeLabel': '自動評分（校內參考）',
+  'hw.staff.autoGradeValue': '成份檔已交。近身觀察仍然可以再寫清楚；過程記錄大致齊。',
+  'hw.staff.adjustLabel': '教師調整',
+  'hw.staff.adjustHint': '調整後嘅教師評分先算校內用嘅結果。',
+  'hw.staff.teacherGradeLabel': '教師評分',
+  'hw.staff.teacherGradeValue': '過程記錄齊，近身觀察要再寫清楚。呢次功課校內參考結果以呢句為準。',
+  'hw.staff.saveGrade': '確認呢次評分',
   'hw.staff.genericFile': 'VA 功課作品及工作簿.pdf',
   'hw.staff.viewTitle': '已交功課檔',
   'hw.staff.pagesHint': '示意完整檔，唔只係封面。',
@@ -178,6 +190,21 @@ describe('homework submissions', () => {
     rememberHomeworkFile('hw-demo-c', new File(['page'], 'work.pdf', { type: 'application/pdf' }))
   })
 
+  it('stores one confirmed teacher mark for the submitted nearby-insight file', () => {
+    const demo = demoHomework()
+    assert.deepEqual(sanitizeTeacherMarks(null), [])
+    assert.deepEqual(sanitizeTeacherMarks({ version: 2, marks: [{ id: 'hw-demo-a', mark: 'kept' }] }), [])
+    const saved = withTeacherMark([], ' hw-demo-a ', '  過程記錄齊。  ')
+    assert.deepEqual(saved, [{ id: 'hw-demo-a', mark: '過程記錄齊。' }])
+    assert.equal(withTeacherMark(saved, 'hw-demo-a', '   '), saved)
+    assert.equal(inSchoolMarkForStudent(saved, demo.submissions, 'demo-a'), '過程記錄齊。')
+    assert.equal(inSchoolMarkForStudent(saved, demo.submissions, 'demo-b'), null)
+    assert.equal(inSchoolMarkForStudent([], demo.submissions, 'demo-c'), null)
+    const long = '句'.repeat(300)
+    const capped = withTeacherMark([], 'hw-demo-b', long)
+    assert.equal([...capped[0].mark].length, 240)
+  })
+
   it('drops a bad save and keeps the two sample rows on the sample assignment', () => {
     assert.equal(sanitizeHomework(null).submissions.length, 0)
     assert.equal(sanitizeHomework({ version: 2, submissions: demoHomework().submissions }).submissions.length, 0)
@@ -206,7 +233,7 @@ describe('homework copy and wiring', () => {
     const overrides = messages('src/i18n/zh-Hans.overrides.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
-    assert.equal(keys.length, 32)
+    assert.equal(keys.length, 41)
     assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('hw.')), keys)
@@ -248,7 +275,7 @@ describe('homework copy and wiring', () => {
     assert.equal([...hant['hw.student.handedQuiet']].filter((ch) => ch.codePointAt(0) === 0x5605).length, 1)
     assert.equal([...hant['hw.student.handedQuiet']].some((ch) => ch.codePointAt(0) === 0x54c7), false)
     assert.equal([...hant['hw.student.emptyHint']].filter((ch) => ch.codePointAt(0) === 0x5e03).length, 1)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 8)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 13)
     assert.equal(hant['inspect.report.disclaimer'], '呢份報告係校內參考，唔係公開試正式成績。')
     for (const [key, value] of Object.entries(CLASS_HANT)) assert.equal(hant[key], value, key)
     for (const [key, value] of Object.entries(ASSIGN_HANT)) assert.equal(hant[key], value, key)

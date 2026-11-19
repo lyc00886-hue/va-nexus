@@ -17,6 +17,11 @@ const HANT = {
   'report.staff.noteValue': '今轉已交近身洞察功課。課堂表現平穩。',
   'report.staff.noteHint': '短註只供校內參考，唔會寫公開試級別，亦唔會加額外標籤。',
   'report.staff.bandKeep': '校內評級仍然用老師確認過嘅練習帶，呢次唔另定新級。',
+  'report.staff.autoGrade': '今次自動評分',
+  'report.staff.teacherGrade': '教師調整後結果',
+  'report.staff.analysis': '簡短分析',
+  'report.staff.analysisValue': '同學已一次過交齊成份檔，過程記錄大致齊。近身觀察仍然可以再寫清楚，教師已按呢點調整。呢次只係呢份功課嘅校內參考，唔另定新級，亦唔係公開試級別預測。',
+  'report.staff.refNote': '功課自動評分同教師調分只係呢次功課嘅校內參考結果，唔另定一套新校內評級，亦唔改寫已有練習帶。',
 } as const
 
 const HANS = {
@@ -28,6 +33,11 @@ const HANS = {
   'report.staff.noteValue': '这次已交近身洞察功课。课堂表现平稳。',
   'report.staff.noteHint': '短注只供校内参考，不会写公开试级别，也不会加额外标签。',
   'report.staff.bandKeep': '校内评级仍然用老师确认过的练习带，这次不另定新级。',
+  'report.staff.autoGrade': '这次自动评分',
+  'report.staff.teacherGrade': '教师调整后结果',
+  'report.staff.analysis': '简短分析',
+  'report.staff.analysisValue': '同学已一次交齐成份档，过程记录大致齐。近身观察仍然可以再写清楚，教师已按这点调整。这次只是这份功课校内参考，不另定新级，也不是公开试级别预测。',
+  'report.staff.refNote': '功课自动评分同教师调分只是这次功课校内参考结果，不另定一套新校内评级，亦不改写已有练习带。',
 } as const
 
 const EN = {
@@ -41,6 +51,13 @@ const EN = {
   'report.staff.noteHint':
     'The short note is for in-school reference only. It does not write a public-exam level, and it does not add an extra label.',
   'report.staff.bandKeep': 'The in-school rating still uses the practice band the teacher confirmed. No new level is set this time.',
+  'report.staff.autoGrade': 'Automatic mark this time',
+  'report.staff.teacherGrade': 'Result after teacher adjustment',
+  'report.staff.analysis': 'Short analysis',
+  'report.staff.analysisValue':
+    'The student handed in the complete file in one go, and the process notes are mostly complete. Nearby observation can still be written more clearly, and the teacher has adjusted for that. This is in-school reference for this homework only. It does not set a new level, and it is not a public-exam level prediction.',
+  'report.staff.refNote':
+    'The automatic mark and the teacher adjustment are in-school reference results for this homework only. They do not set a new in-school rating, and they do not rewrite the existing practice band.',
 } as const
 
 const REPORT_FIELDS = [
@@ -85,13 +102,13 @@ function messages(path: string): Record<string, string> {
 }
 
 describe('student personal report', () => {
-  it('byte-matches the 8 report.staff keys and keeps the learning-progress fields', () => {
+  it('byte-matches the 13 report.staff keys and keeps the learning-progress fields', () => {
     const hant = messages('src/i18n/zh-Hant.json')
     const hans = messages('src/i18n/zh-Hans.json')
     const overrides = messages('src/i18n/zh-Hans.overrides.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
-    assert.equal(keys.length, 8)
+    assert.equal(keys.length, 13)
     assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('report.')), keys)
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('report.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('report.')), keys)
@@ -159,6 +176,12 @@ describe('student personal report', () => {
     assert.match(page, /report\.staff\.noteValue/)
     assert.match(page, /report\.staff\.noteHint/)
     assert.match(page, /report\.staff\.bandKeep/)
+    assert.match(page, /report\.staff\.autoGrade/)
+    assert.match(page, /report\.staff\.teacherGrade/)
+    assert.match(page, /report\.staff\.analysis/)
+    assert.match(page, /report\.staff\.analysisValue/)
+    assert.match(page, /report\.staff\.refNote/)
+    assert.match(page, /inSchoolMarkForStudent/)
     assert.match(page, /inspect\.report\.disclaimer/)
     assert.match(page, /inspect\.staff\.closePreview/)
     assert.match(page, /inspect\.staff\.exportOne/)
