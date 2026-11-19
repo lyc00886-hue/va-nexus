@@ -76,7 +76,7 @@ export function LessonArtistPanel({ artists }: { artists: LessonArtistRef[] }) {
         </h3>
         <ExerciseMark id="ex.image" />
       </div>
-      <ul className="mt-3 grid gap-3 sm:grid-cols-3">
+      <ul className={`mt-3 grid gap-2 ${artists.length >= 3 ? 'grid-cols-3' : artists.length === 2 ? 'grid-cols-2' : 'grid-cols-1'}`}>
         {artists.map((artist) => (
           <li key={artist.artistId}>
             <ArtistCard
@@ -122,7 +122,7 @@ function ArtistCard({
           className={
             artist.reference
               ? 'block w-full overflow-hidden rounded-xl bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700'
-              : 'flex min-h-28 items-center justify-center overflow-hidden rounded-xl bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700'
+              : 'flex min-h-40 items-center justify-center overflow-hidden rounded-xl bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-700'
           }
         >
           <img
@@ -131,7 +131,7 @@ function ArtistCard({
             width={678}
             height={860}
             decoding="async"
-            className={artist.reference ? 'aspect-[678/860] w-full object-cover' : 'max-h-40 w-full object-contain'}
+            className={artist.reference ? 'aspect-[678/860] w-full object-cover' : 'max-h-52 w-full object-contain'}
             onError={() => setFailed(true)}
           />
           <span className="sr-only">{t('ac.media.enlarge', { title })}</span>
@@ -253,6 +253,11 @@ function ArtistDialog({ artist, onClose }: { artist: LessonArtistRef; onClose: (
             </p>
           )}
           <ArtistCredit artist={artist} name={name} show={show} />
+          {show && !artist.reference && artist.intro ? (
+            <p className="mt-2 text-xs leading-snug text-slate-600">
+              <span className="font-semibold text-[#0D9488]">{t('art.intro')}</span> {artist.intro}
+            </p>
+          ) : null}
         </div>
       </div>
     </div>

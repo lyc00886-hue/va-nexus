@@ -154,6 +154,7 @@ type Quiz = {
   plate?: { image?: string; title?: string; artist?: string; year?: string; source?: string; intro?: string; license?: string }
   right?: { image?: string; title?: string; artist?: string; year?: string; source?: string; intro?: string; license?: string }
   profile?: unknown
+  structure?: 'practice' | 'school'
 }
 
 type ArtistMedia = {
@@ -163,6 +164,7 @@ type ArtistMedia = {
   sourceUrl?: string
   reference?: boolean
   artistSiteUrl?: string
+  intro?: string
 }
 type ContentCard = {
   title?: string
@@ -269,24 +271,8 @@ describe('F.4 demo slice', () => {
       assert.equal(buf.length, bytes, file)
       assert.equal(createHash('sha256').update(buf).digest('hex'), digest, file)
     }
-    const refThumb = {
-      'HK-PAK-01': '/content/learning-map-illustrations/artist-refs/HK-PAK-01-reference.png',
-      'HK-LEEKIT-01': '/content/learning-map-illustrations/artist-refs/HK-LEEKIT-01-reference.png',
-      'HK-WUCIUS-01': '/content/learning-map-illustrations/artist-refs/HK-WUCIUS-01-reference.png',
-      'HK-SHIEH-01': '/content/learning-map-illustrations/artist-refs/HK-SHIEH-01-reference.png',
-      'WEST-HOCKNEY-01': '/content/learning-map-illustrations/artist-refs/WEST-HOCKNEY-01-reference.png',
-      'FR-CAILLEBOTTE-01': '/content/learning-map-illustrations/artist-refs/FR-CAILLEBOTTE-01-reference.png',
-      'DK-HAMMERSHOI-01': '/content/learning-map-illustrations/artist-refs/DK-HAMMERSHOI-01-reference.png',
-    } as const
-    const refSite = {
-      'HK-PAK-01': 'https://www.mplus.org.hk/tc/collection/makers/pak-sheung-chuen/',
-      'HK-LEEKIT-01': 'https://www.mplus.org.hk/tc/collection/makers/lee-kit/',
-      'HK-WUCIUS-01': 'https://www.wongwucius.com/',
-      'WEST-HOCKNEY-01': 'https://www.hockney.com/',
-    } as const
-    const kahlo = {
+    const kahloBase = {
       thumb: '/content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-artwork.png',
-      license: 'Public domain',
       credit: 'Frida Kahlo — Self-Portrait Dedicated to Leon Trotsky (1937)',
       sourceUrl: 'https://commons.wikimedia.org/wiki/File:Frida_Kahlo_-_Autoportrait_d%C3%A9di%C3%A9_%C3%A0_L%C3%A9on_Trotsky.png',
     }
@@ -311,10 +297,13 @@ describe('F.4 demo slice', () => {
         ['F4-U2-L1', 'F4-U3-L2', 'F4-U4-L1'],
         name,
       )
+      const pd = name === 'f4-demo.en.json' ? 'Public Domain / CC0' : 'Public Domain\uFF0FCC0'
+      const kahlo = { ...kahloBase, license: pd }
       const u4 = mediaLessons.find((lesson) => lesson.id === 'F4-U4-L1')
-      assert.deepEqual(Object.keys(u4?.artistMedia ?? {}), ['WEST-KAHLO-01', 'HK-SHIEH-01', 'WEST-HOCKNEY-01'], name)
+      assert.deepEqual(Object.keys(u4?.artistMedia ?? {}), ['WEST-KAHLO-01', 'NL-REMBRANDT-01', 'NL-VANGOGH-01'], name)
       assert.deepEqual(u4?.artistMedia?.['WEST-KAHLO-01'], kahlo, name)
-      assert.equal(u4?.artistMedia?.['HK-SHIEH-01']?.artistSiteUrl, undefined, name)
+      assert.equal(u4?.artistMedia?.['NL-REMBRANDT-01']?.credit, 'Rembrandt — Self-Portrait (1660)', name)
+      assert.equal(u4?.artistMedia?.['NL-VANGOGH-01']?.credit, 'Vincent van Gogh — La Berceuse, 1889', name)
       for (const id of emptyArtistLessons) {
         const lesson = lessons.find((item) => item.id === id)
         assert.deepEqual(lesson?.artistIds ?? [], [], `${name} ${id}`)
@@ -333,26 +322,15 @@ describe('F.4 demo slice', () => {
           `${name} ${lesson.id}`,
         )
         for (const ref of refs) {
+          assert.equal(ref.reference, undefined, `${name} ${ref.artistId}`)
+          assert.equal(ref.artistSiteUrl, undefined, `${name} ${ref.artistId}`)
+          assert.equal(String(ref.thumb).includes('/artist-refs/'), false, `${name} ${ref.artistId}`)
+          assert.equal(ref.license, pd, `${name} ${ref.artistId}`)
+          assert.ok(ref.credit && ref.credit.length > 0, `${name} ${ref.artistId}`)
+          assert.ok(ref.thumb && statSync(resolve(PUBLIC, ref.thumb.slice(1))).size > 1000, ref.artistId)
           if (lesson.id === 'F4-U4-L1' && ref.artistId === 'WEST-KAHLO-01') {
             assert.deepEqual(ref, { artistId: 'WEST-KAHLO-01', ...kahlo })
-            assert.equal(ref.reference, undefined)
-            assert.equal(ref.artistSiteUrl, undefined)
-            assert.ok(statSync(resolve(PUBLIC, ref.thumb!.slice(1))).size > 1000)
-            continue
           }
-          const thumb = refThumb[ref.artistId as keyof typeof refThumb]
-          assert.ok(thumb, ref.artistId)
-          const site = refSite[ref.artistId as keyof typeof refSite]
-          assert.deepEqual(
-            ref,
-            site
-              ? { artistId: ref.artistId, thumb, reference: true, artistSiteUrl: site }
-              : { artistId: ref.artistId, thumb, reference: true },
-          )
-          assert.equal(ref.license, undefined, ref.artistId)
-          assert.equal(ref.credit, undefined, ref.artistId)
-          assert.equal(ref.sourceUrl, undefined, ref.artistId)
-          if (ref.artistId === 'HK-SHIEH-01') assert.equal(ref.artistSiteUrl, undefined)
         }
       }
     }
@@ -574,13 +552,18 @@ describe('F.4 demo slice', () => {
                 assert.match(String(quiz.right?.image), /^\/content\/learning-map-illustrations\/f4-pd\//, id)
                 assert.ok(statSync(resolve(PUBLIC, String(quiz.plate?.image).slice(1))).size > 1000, id)
                 assert.ok(statSync(resolve(PUBLIC, String(quiz.right?.image).slice(1))).size > 1000, id)
+              } else if (quiz.plate && quiz.right) {
+                assert.equal(quiz.image, undefined, id)
+                assert.equal(quiz.imageCredit, undefined, id)
+                assert.match(String(quiz.plate.image), /^\/content\/learning-map-illustrations\/(?:f4-pd|met-open)\//, id)
+                assert.match(String(quiz.right.image), /^\/content\/learning-map-illustrations\/(?:f4-pd|met-open)\//, id)
+                assert.ok(statSync(resolve(PUBLIC, String(quiz.plate.image).slice(1))).size > 1000, id)
+                assert.ok(statSync(resolve(PUBLIC, String(quiz.right.image).slice(1))).size > 1000, id)
               } else {
-                assert.match(
-                  String(quiz.image),
-                  /^\/content\/learning-map-illustrations\/(?:soft-scout\/f4-dualread|f4-dualread)\//,
-                  id,
-                )
-                assert.ok(statSync(resolve(PUBLIC, String(quiz.image).slice(1))).size > 1000, id)
+                assert.equal(quiz.structure === 'practice' || quiz.structure === 'school', true, id)
+                assert.equal(quiz.image, undefined, id)
+                assert.equal(quiz.plate, undefined, id)
+                assert.equal(JSON.stringify(quiz).includes('雙圖對讀'), false, id)
               }
             } else if (quiz.type === 'short') {
               assert.ok(quiz.question.length > 0, id)
@@ -679,12 +662,6 @@ describe('F.4 demo slice', () => {
       const buf = readFileSync(resolve(dir, file))
       assert.equal(createHash('sha256').update(buf).digest('hex').slice(0, 12), prefix, file)
     }
-    const frames = {
-      'F4-U1-L1': '01-u1-l1-dualread.png',
-      'F4-U1-L2': '02-u1-l2-dualread.png',
-      'F4-U2-L1': '03-u2-l1-dualread.png',
-      'F4-U2-L2': '04-u2-l2-dualread.png',
-    }
     const scoutDir = resolve(PUBLIC, 'content/learning-map-illustrations/soft-scout/f4-course-content-2611')
     for (const [file, prefix] of Object.entries(SCOUT_PLATES)) {
       const buf = readFileSync(resolve(scoutDir, file))
@@ -698,11 +675,6 @@ describe('F.4 demo slice', () => {
         assert.equal(types.filter((type) => type === 'short').length, 1, lesson.id)
         const dual = lesson.quiz.find((quiz) => quiz.type === 'dualRead')
         if (p0.includes(lesson.id)) {
-          assert.equal(
-            dual?.image,
-            `/content/learning-map-illustrations/soft-scout/f4-dualread/${frames[lesson.id as keyof typeof frames]}`,
-            `${name} ${lesson.id}`,
-          )
           const added = lesson.quiz.filter((quiz) => quiz.type === 'order' || quiz.type === 'dualRead' || quiz.type === 'short')
           if (lesson.id === 'F4-U2-L2') {
             added.push(...lesson.quiz.filter((quiz) => quiz.type === 'match'))
@@ -711,7 +683,10 @@ describe('F.4 demo slice', () => {
           for (const banned of ['streak', 'Soft', 'hearts', 'gems', 'SEN', 'HKEAA', '火焰', '店招', 'claim']) {
             assert.equal(blob.includes(banned), false, `${name} ${lesson.id} ${banned}`)
           }
-        } else if (lesson.id === 'F4-U3-L1') {
+          assert.equal(JSON.stringify(dual).includes('f4-dualread'), false, `${name} ${lesson.id}`)
+          assert.equal(JSON.stringify(dual).includes('雙圖對讀'), false, `${name} ${lesson.id}`)
+        }
+        if (lesson.id === 'F4-U3-L1') {
           assert.equal(dual?.image, undefined, `${name} ${lesson.id}`)
           assert.equal(dual?.imageCredit, undefined, `${name} ${lesson.id}`)
           assert.match(String(dual?.plate?.image), /\/f4-pd\/met-437313-pissarro-tuileries-spring-morning\.jpg$/, `${name} ${lesson.id}`)
@@ -736,8 +711,22 @@ describe('F.4 demo slice', () => {
           assert.equal(dual?.image, undefined, `${name} ${lesson.id}`)
           assert.match(String(dual?.plate?.image), /\/f4-pd\//, `${name} ${lesson.id}`)
           assert.match(String(dual?.right?.image), /\/f4-pd\//, `${name} ${lesson.id}`)
+        } else if (dual?.plate && dual.right) {
+          assert.equal(dual.image, undefined, `${name} ${lesson.id}`)
+          assert.equal(dual.imageCredit, undefined, `${name} ${lesson.id}`)
+          assert.equal(dual.structure, undefined, `${name} ${lesson.id}`)
+          assert.equal(String(dual.plate.image).includes('/f4-dualread/'), false, lesson.id)
+          assert.equal(String(dual.plate.image).includes('soft-scout/f4-dualread'), false, lesson.id)
+          assert.equal(String(dual.right.image).includes('/f4-dualread/'), false, lesson.id)
+          assert.ok(statSync(resolve(PUBLIC, String(dual.plate.image).slice(1))).size > 1000, lesson.id)
+          assert.ok(statSync(resolve(PUBLIC, String(dual.right.image).slice(1))).size > 1000, lesson.id)
         } else {
-          assert.match(String(dual?.image), /^\/content\/learning-map-illustrations\/f4-dualread\//, lesson.id)
+          assert.equal(dual?.image, undefined, `${name} ${lesson.id}`)
+          assert.equal(dual?.imageCredit, undefined, `${name} ${lesson.id}`)
+          assert.equal(dual?.plate, undefined, `${name} ${lesson.id}`)
+          assert.ok(dual?.structure === 'practice' || dual?.structure === 'school', `${name} ${lesson.id}`)
+          assert.equal(JSON.stringify(dual).includes('雙圖對讀'), false, lesson.id)
+          assert.equal(JSON.stringify(dual).includes('f4-dualread'), false, lesson.id)
         }
       }
     }

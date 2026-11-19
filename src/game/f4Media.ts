@@ -110,12 +110,14 @@ export function artistsFromLesson(lesson: {
     }
     const thumb = learningMapAssetPath(row.thumb)
     if (!thumb) return { artistId }
+    const intro = text(row.intro)
     return {
       artistId,
       thumb,
       license: text(row.license),
       credit: text(row.credit),
       sourceUrl: httpsSourceUrl(row.sourceUrl),
+      ...(intro ? { intro } : {}),
     }
   })
 }

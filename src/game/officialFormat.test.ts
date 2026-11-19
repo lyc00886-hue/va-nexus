@@ -19,7 +19,7 @@ const read = (path: string) => readFileSync(join(root, path), 'utf8')
 const messages = (path: string) => JSON.parse(read(path)) as Record<string, string>
 
 const BANNED_GLYPH = /[\u7684\u628A\u5572\u6415\u63F5\u64BF\u64C0]/
-const COPY_SHA = '7878f77d4b3d37240f8478811215d5c20df9e8473a10f8c9785dafba9432abb0'
+const COPY_SHA = 'eccf7c2ed21ed6a3f4e741aeb8aaa170eca1f932b189725b4f3c38e81cb12f04'
 
 function isNewKey(key: string): boolean {
   if (key.startsWith('unit.header.') || key.startsWith('goal.') || key.startsWith('area.') || key.startsWith('part.')) {

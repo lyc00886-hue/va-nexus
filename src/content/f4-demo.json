@@ -90,9 +90,8 @@
                 "我見到…",
                 "我想試…"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/01-u1-l1-dualread.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -183,9 +182,8 @@
                 "簿頁過程",
                 "作品決定"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/02-u1-l2-dualread.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -265,9 +263,8 @@
                 "關鍵字",
                 "形式"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U1-L3.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -342,14 +339,28 @@
             },
             {
               "type": "dualRead",
-              "question": "藝術評賞比較：左格一個藝術運動，右格另一個。各寫一句——形式特徵係咩？呈現方式有咩唔同？",
+              "question": "藝術評賞比較：左格印象派 Pissarro《The Boulevard Montmartre on a Winter Morning》，右格後印象派 Cézanne《Still Life with Apples and a Pot of Primroses》。各寫一句——形式特徵係咩？呈現方式有咩唔同？",
               "options": [
                 "左格",
                 "右格"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U1-L4.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "plate": {
+                "image": "/content/learning-map-illustrations/met-open/437310.jpg",
+                "title": "The Boulevard Montmartre on a Winter Morning",
+                "artist": "Camille Pissarro",
+                "year": "1897",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "冬天早晨嘅蒙馬特大道：濕路面、行道樹同車馬人流，用短碎筆觸同淺色光鋪開。Pissarro 用印象派方法記錄城市空氣同光線。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/met-open/435882.jpg",
+                "title": "Still Life with Apples and a Pot of Primroses",
+                "artist": "Paul Cézanne",
+                "year": "ca. 1890",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "檯面蘋果同報春花盆用穩定色塊同清晰邊線砌成，左右同前後都有對位。Cézanne 用後印象派方法，以結構同色面組織靜物。"
+              }
             },
             {
               "type": "short",
@@ -377,7 +388,7 @@
             "寫生由觀察開始：先睇整體形狀同比例，再加細節，唔好一開始就抄陰影。",
             "基本視覺元素：線、形狀、顏色、質感、空間。組織原則：對比、節奏、平衡、焦點。",
             "構圖可以試：三分法、對角引導線、留白。唔同構圖會改變觀眾先睇邊度。",
-            "王無邪將設計原則帶入水墨山水，說明「結構」可以幫你組織畫面。",
+            "郭熙用水墨山水嘅構圖同遠近，說明「結構」可以幫你組織畫面。",
             "線同形可以自己畫一張練習：大形、比例、一條引導線。設計結構可以幫你組織畫面。課堂用文字同你自己嘅線稿。"
           ],
           "quiz": [
@@ -408,7 +419,7 @@
             },
             {
               "type": "mcq",
-              "question": "王無邪嘅實踐提醒我哋咩？",
+              "question": "郭熙嘅實踐提醒我哋咩？",
               "options": [
                 "設計結構可以組織畫面",
                 "藝術唔需要構圖",
@@ -416,7 +427,7 @@
                 "唔可以參考傳統山水"
               ],
               "answer": "設計結構可以組織畫面",
-              "explain": "佢用幾何／設計式構圖重組水墨山水。"
+              "explain": "佢用水墨山水嘅構圖同遠近，說明結構可以組織畫面。"
             },
             {
               "type": "match",
@@ -446,14 +457,28 @@
             },
             {
               "type": "dualRead",
-              "question": "藝術評賞比較：左圖線條密、右圖大色塊。比較構圖重心——邊邊較「重」？點解？",
+              "question": "藝術評賞比較：左圖 Van Gogh《Cypresses》線條密，右圖 Gauguin《The Siesta》大色塊。比較構圖重心——邊邊較「重」？點解？",
               "options": [
                 "邊邊較重",
                 "點解"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/03-u2-l1-dualread.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-437980-van-gogh-cypresses.jpg",
+                "title": "Cypresses",
+                "artist": "Vincent van Gogh",
+                "year": "1889",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "畫面中間兩株柏樹向上伸，樹身同樹葉用好密嘅短線同捲曲線砌成；右面山同雲亦見到密筆觸。Van Gogh 用密集線條造成畫面左側嘅重量。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-436449-gauguin-the-siesta.jpg",
+                "title": "The Siesta",
+                "artist": "Paul Gauguin",
+                "year": "ca. 1892–94",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "廊下四個人同前景大塊衫色、地板同窗外草坪，都用大色塊鋪開。Gauguin 用平塗色面同清晰外形，令前景人物同地面較重。"
+              }
             },
             {
               "type": "short",
@@ -463,13 +488,15 @@
             }
           ],
           "artistIds": [
-            "HK-WUCIUS-01"
+            "CN-GUOXI-01"
           ],
           "artistMedia": {
-            "HK-WUCIUS-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/HK-WUCIUS-01-reference.png",
-              "reference": true,
-              "artistSiteUrl": "https://www.wongwucius.com/"
+            "CN-GUOXI-01": {
+              "thumb": "/content/learning-map-illustrations/f4-pd/met-39668-guo-xi-old-trees-level-distance.jpg",
+              "license": "Public Domain／CC0",
+              "credit": "Guo Xi — Old Trees, Level Distance (ca. 1080)",
+              "sourceUrl": "https://www.metmuseum.org/art/collection/search/39668",
+              "intro": "郭熙《Old Trees, Level Distance》以枯樹、坡石同遠岸層層推開，用構圖同遠近組織水墨山水。"
             }
           }
         },
@@ -558,9 +585,8 @@
                 "揀邊種",
                 "原因一句"
               ],
-              "image": "/content/learning-map-illustrations/soft-scout/f4-dualread/04-u2-l2-dualread.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -673,9 +699,8 @@
                 "方案一句",
                 "物料一句"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U2-L3.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -756,9 +781,8 @@
                 "設計圖",
                 "物料"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U2-L4.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -1000,12 +1024,16 @@
           ],
           "artistMedia": {
             "FR-CAILLEBOTTE-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/FR-CAILLEBOTTE-01-reference.png",
-              "reference": true
+              "thumb": "/content/learning-map-illustrations/f4-pd/commons-caillebotte-paris-street-rainy-day.jpg",
+              "license": "Public Domain／CC0",
+              "credit": "Gustave Caillebotte — Paris Street; Rainy Day (1877)",
+              "sourceUrl": "https://www.artic.edu/artworks/20684/paris-street-rainy-day"
             },
             "DK-HAMMERSHOI-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/DK-HAMMERSHOI-01-reference.png",
-              "reference": true
+              "thumb": "/content/learning-map-illustrations/f4-pd/met-441933-hammershoi-moonlight-strandgade-30.jpg",
+              "license": "Public Domain／CC0",
+              "credit": "Vilhelm Hammershøi — Moonlight, Strandgade 30 (1900–1906)",
+              "sourceUrl": "https://www.metmuseum.org/art/collection/search/441933"
             }
           }
         },
@@ -1404,8 +1432,8 @@
             "自畫像唔止係「似唔似」：可以講身份、身體經驗、角色同社會目光。",
             "主題可以由三個主題入手：自我（自己嘅好奇收藏）、關係（家庭物件）、故事（衝突或張力）。",
             "弗里達·卡蘿以自畫像講個人經歷同文化身份；學習重點係「點樣用符號說自己」，唔係抄風格交作業。",
-            "石家豪用工筆畫當代人物同角色，探討香港身份；霍克尼常畫家人同凝視關係，可對照「關係」主題。",
-            "當代作品用文字描述，並註明博物館網頁或可靠百科作為課室參考。如果有公有領域嘅古典自畫像，先至後補已清版權圖像。呢張卡唔假裝有一幅缺席嘅圖。"
+            "林布蘭以自畫像講身份、角色同目光；梵谷《La Berceuse》畫搖籃旁邊一位看顧者，可對照「關係」主題。",
+            "評賞格而家用已核實 Public Domain 作品：弗里達·卡蘿、林布蘭自畫像，同梵谷《La Berceuse》。當代未核牌原作唔放上評賞格。"
           ],
           "quiz": [
             {
@@ -1438,15 +1466,15 @@
               "question": "配對藝術家同切入點",
               "options": [
                 "弗里達·卡蘿",
-                "石家豪",
-                "大衛·霍克尼"
+                "林布蘭",
+                "梵谷"
               ],
               "answer": {
                 "弗里達·卡蘿": "自畫像同個人／文化身份",
-                "石家豪": "工筆當代人物同香港身份",
-                "大衛·霍克尼": "家庭同凝視關係"
+                "林布蘭": "自畫像、角色同目光",
+                "梵谷": "家庭照料同關係"
               },
-              "explain": "三人都可以啟發自畫像／關係主題，但媒介同語境不同。"
+              "explain": "三人都可以啟發自畫像／關係主題，但切入點同語境不同。"
             },
             {
               "type": "mcq",
@@ -1475,12 +1503,11 @@
               "type": "dualRead",
               "question": "藝術評賞比較：左係自畫像草稿，右係一件同身份有關嘅物件。各寫一句——面部或姿態講咩？物件講咩關係？",
               "options": [
-                "草稿一句",
-                "物件一句"
+                "自畫像草稿（校本學生作品）",
+                "同身份有關嘅物件（校本學生作品）"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L1.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -1491,24 +1518,29 @@
           ],
           "artistIds": [
             "WEST-KAHLO-01",
-            "HK-SHIEH-01",
-            "WEST-HOCKNEY-01"
+            "NL-REMBRANDT-01",
+            "NL-VANGOGH-01"
           ],
           "artistMedia": {
             "WEST-KAHLO-01": {
               "thumb": "/content/learning-map-illustrations/artist-thumbs/WEST-KAHLO-01-artwork.png",
-              "license": "Public domain",
+              "license": "Public Domain／CC0",
               "credit": "Frida Kahlo — Self-Portrait Dedicated to Leon Trotsky (1937)",
               "sourceUrl": "https://commons.wikimedia.org/wiki/File:Frida_Kahlo_-_Autoportrait_d%C3%A9di%C3%A9_%C3%A0_L%C3%A9on_Trotsky.png"
             },
-            "HK-SHIEH-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/HK-SHIEH-01-reference.png",
-              "reference": true
+            "NL-REMBRANDT-01": {
+              "thumb": "/content/learning-map-illustrations/f4-pd/met-437397-rembrandt-self-portrait.jpg",
+              "license": "Public Domain／CC0",
+              "credit": "Rembrandt — Self-Portrait (1660)",
+              "sourceUrl": "https://www.metmuseum.org/art/collection/search/437397",
+              "intro": "林布蘭喺 1660 年畫自己：深色帽同衣領包圍面部，目光向觀者。自畫像用光同服裝講身份同角色。"
             },
-            "WEST-HOCKNEY-01": {
-              "thumb": "/content/learning-map-illustrations/artist-refs/WEST-HOCKNEY-01-reference.png",
-              "reference": true,
-              "artistSiteUrl": "https://www.hockney.com/"
+            "NL-VANGOGH-01": {
+              "thumb": "/content/learning-map-illustrations/f4-pd/met-437984-van-gogh-la-berceuse.jpg",
+              "license": "Public Domain／CC0",
+              "credit": "Vincent van Gogh — La Berceuse, 1889",
+              "sourceUrl": "https://www.metmuseum.org/art/collection/search/437984",
+              "intro": "梵谷畫 Roulin 夫人坐喺搖籃旁邊，手執繩，背景大花同大塊衫色。作品由照料同關係切入，而唔係只畫外貌。"
             }
           }
         },
@@ -1595,9 +1627,8 @@
                 "方法一句",
                 "自己主題一句"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L2.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -1677,9 +1708,8 @@
                 "舊稿",
                 "新試驗"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U4-L3.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -1778,12 +1808,11 @@
               "type": "dualRead",
               "question": "藝術評賞比較：用文字比較兩個時期。各寫一句——形式有咩特徵？可能做咩用途？",
               "options": [
-                "形式一句",
-                "用途一句"
+                "時期一 · 用文字寫形式特徵",
+                "時期二 · 用文字寫可能用途"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L1.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -1871,14 +1900,28 @@
             },
             {
               "type": "dualRead",
-              "question": "藝術評賞比較：左係一個象形符號，右係一件器物紋飾。各寫一句——線點樣走？可能記緊咩？",
+              "question": "藝術評賞比較：左格商代甲骨上嘅刻辭，右格商代青銅鼎上嘅紋飾。各寫一句——線點樣走？可能記緊咩？",
               "options": [
                 "象形一句",
                 "紋飾一句"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L2.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "plate": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-42022-shang-oracle-bone.jpg",
+                "title": "Oracle Bone Fragment",
+                "artist": "未署名工匠",
+                "year": "13th–11th century BCE",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "呢件商代甲骨碎片上面刻住一行行早期文字，筆畫有轉折同疏密。線條用嚟記占問，而唔係畫一幅風景。"
+              },
+              "right": {
+                "image": "/content/learning-map-illustrations/f4-pd/met-61239-shang-bronze-ding.jpg",
+                "title": "Ritual tripod cauldron (Ding)",
+                "artist": "未署名工匠",
+                "year": "12th–11th century BCE",
+                "source": "Metropolitan Museum of Art, New York, NY",
+                "intro": "呢件商代青銅鼎腹上有對稱獸面紋，線條沿器身轉折，地紋同主紋分層。紋飾環繞器物，用嚟標記禮器身份。"
+              }
             },
             {
               "type": "short",
@@ -1958,9 +2001,8 @@
                 "壁畫",
                 "書跡"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L3.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -2040,9 +2082,8 @@
                 "唐朝",
                 "五代"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U5-L4.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -2144,9 +2185,8 @@
                 "收藏一句",
                 "家庭物件一句"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L1.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -2239,9 +2279,8 @@
                 "問題一句",
                 "材料一句"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L2.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -2321,9 +2360,8 @@
                 "願望",
                 "拼湊"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U6-L3.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "school"
             },
             {
               "type": "short",
@@ -2412,9 +2450,8 @@
                 "評賞",
                 "探索"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U7-L1.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "practice"
             },
             {
               "type": "short",
@@ -2494,9 +2531,8 @@
                 "媒介一",
                 "媒介二"
               ],
-              "image": "/content/learning-map-illustrations/f4-dualread/F4-U7-L2.png",
-              "imageCredit": "自制 · VA-Nexus",
-              "explain": "練習結構 · 唔係真題"
+              "explain": "練習結構 · 唔係真題",
+              "structure": "school"
             },
             {
               "type": "short",

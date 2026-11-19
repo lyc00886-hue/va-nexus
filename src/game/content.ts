@@ -37,6 +37,8 @@ export type ContentQuiz = {
   right?: unknown
   /** Text-only artist and concept profile for the side without an image. */
   profile?: unknown
+  /** Classroom structure panel. practice or school. No appreciation image. */
+  structure?: 'practice' | 'school'
 }
 
 export type ContentCard = {
@@ -108,6 +110,11 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
     }
     if (q.type === 'dualRead') {
       const labels = q.options.map((item) => item.trim()).filter(Boolean)
+      const structure = q.structure === 'practice' || q.structure === 'school' ? q.structure : undefined
+      const labelsPair: [string, string] = [labels[0] ?? '', labels[1] ?? '']
+      if (structure) {
+        return { id, type: 'dualRead', prompt: q.question, labels: labelsPair, structure, explain }
+      }
       const plate = plateFrom(q.plate)
       const right = plateFrom(q.right)
       const profile = right ? undefined : profileFrom(q.profile)
@@ -115,7 +122,7 @@ export function adaptQuiz(lessonId: string, quiz: ContentQuiz[], fillPool: strin
         id,
         type: 'dualRead',
         prompt: q.question,
-        labels: [labels[0] ?? '', labels[1] ?? ''],
+        labels: labelsPair,
         ...art,
         ...(plate ? { plate } : {}),
         ...(right ? { right } : {}),

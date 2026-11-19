@@ -2,9 +2,9 @@
  * Classroom image gate for appreciation, diagrams, and a student's own work.
  * A JSON license field, a local path, or years since an artist's death is not
  * itself a verified Public Domain or CC0 licence. Tate is not an approved source.
- * Already-shipped appreciation frames stay visible. The Form 4 unit 3 lesson 1
- * homemade frame is no longer an appreciation original. Other leftover homemade
- * frames in that folder stay visible.
+ * Already-shipped verified plates stay visible. Form 4 leftover homemade
+ * comparison frames, including the empty placeholder and the baked-in title
+ * boards, are not appreciation subjects.
  */
 import type { Question } from '../game/types'
 
@@ -23,14 +23,12 @@ export type ImageCandidate = {
 
 export type ImageDecision = 'show' | 'block'
 
-/** Verified works already on the shipped Form 4 / Form 5 appreciation grids, plus the homemade frames a later line still owns. */
+/** Verified works already on the shipped appreciation grids. Form 4 leftover homemade frames are not appreciation subjects. */
 const SHIPPED_APPRECIATION = [
   '/content/learning-map-illustrations/f4-pd/',
   '/content/learning-map-illustrations/f5-pd/',
-  '/content/learning-map-illustrations/f4-dualread/',
   '/content/learning-map-illustrations/f5-dualread/',
   '/content/learning-map-illustrations/f6-dualread/',
-  '/content/learning-map-illustrations/soft-scout/f4-dualread/',
 ]
 
 /** Local copies of Met Open Access files checked isPublicDomain before they were saved. */

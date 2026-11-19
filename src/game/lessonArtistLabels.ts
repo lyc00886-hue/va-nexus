@@ -11,6 +11,9 @@ const NAMES: Record<string, Record<Locale, string>> = {
   'HK-LEEKIT-01': { en: 'Lee Kit', 'zh-Hant': '李傑', 'zh-Hans': '李杰' },
   'FR-CAILLEBOTTE-01': { en: 'Gustave Caillebotte', 'zh-Hant': '卡耶博特', 'zh-Hans': '卡耶博特' },
   'DK-HAMMERSHOI-01': { en: 'Vilhelm Hammershøi', 'zh-Hant': '哈默修伊', 'zh-Hans': '哈默修伊' },
+  'CN-GUOXI-01': { en: 'Guo Xi', 'zh-Hant': '郭熙', 'zh-Hans': '郭熙' },
+  'NL-REMBRANDT-01': { en: 'Rembrandt', 'zh-Hant': '林布蘭', 'zh-Hans': '伦勃朗' },
+  'NL-VANGOGH-01': { en: 'Vincent van Gogh', 'zh-Hant': '梵谷', 'zh-Hans': '梵高' },
 }
 
 export function artistName(artistId: string): string {
