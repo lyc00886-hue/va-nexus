@@ -299,9 +299,9 @@ describe('assignment copy and wiring', () => {
     assert.equal(overrides['assign.staff.f5demoTitle'], hans['assign.staff.f5demoTitle'])
     assert.equal(hant['assign.staff.f5demoDue'], '2026年11月24日')
     assert.equal(en['assign.staff.f5demoDue'], '24 November 2026')
-    assert.equal(hant['assign.staff.f5demoInstructions'], '請一次過交齊視覺日記頁同水墨試驗記錄成份檔。交咗之後，呢個課室嘅老師可以打開嚟睇。呢度唔會自動評分。')
-    assert.equal(hans['assign.staff.f5demoInstructions'], '请一次交齐视觉日记页和水墨试验记录成份档。交了之后，这个课室老师可以打开查看。这里不会自动评分。')
-    assert.equal(en['assign.staff.f5demoInstructions'], 'Hand in your visual journal pages and ink-trial notes together as one complete file. After you hand it in, a teacher of this class can open it. This is not automatic marking.')
+    assert.equal(hant['assign.staff.f5demoInstructions'], '請一次過交齊視覺日記頁同水墨試驗記錄成份檔。交咗之後，呢個課室嘅老師可以打開嚟睇。呢度會有校內參考自動評分。')
+    assert.equal(hans['assign.staff.f5demoInstructions'], '请一次交齐视觉日记页和水墨试验记录成份档。交了之后，这个课室老师可以打开查看。这里会有校内参考自动评分。')
+    assert.equal(en['assign.staff.f5demoInstructions'], 'Hand in your visual journal pages and ink-trial notes together as one complete file. After you hand it in, a teacher of this class can open it. There will be an in-school reference automatic mark.')
     assert.equal(hant['assign.staff.f5demoAttach'], '自我、傳統同社會 活動紙')
     assert.equal(hans['assign.staff.f5demoAttach'], '自我、传统与社会 活动纸')
     assert.equal(en['assign.staff.f5demoAttach'], 'Self, heritage and society activity paper')
@@ -339,7 +339,7 @@ describe('assignment copy and wiring', () => {
     assert.equal(hant['inspect.staff.overviewTitle'], '課室總覽')
     assert.equal(hant['qtype.chip.dualRead'], '藝術評賞比較')
     assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 23)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 8)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 13)
   })
 
   it('stacks compose and the published list inside the opened class, with no new api file', () => {

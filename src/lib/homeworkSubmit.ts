@@ -248,3 +248,112 @@ export function submitHomework(input: {
   publish(next)
   return true
 }
+
+/**
+ * Teacher mark for one submitted file.
+ * The automatic sentence is in-school reference copy.
+ * A confirmed mark replaces that sentence for this file only.
+ * Rows stay on this device. No API route is added.
+ */
+export const HW_MARK_KEY = 'va-nexus:hw-teacher-marks:v1'
+const MARK_LIMIT = 240
+
+export type HwTeacherMark = {
+  id: string
+  mark: string
+}
+
+export function sanitizeTeacherMarks(raw: unknown): HwTeacherMark[] {
+  if (!raw || typeof raw !== 'object') return []
+  const record = raw as { version?: unknown; marks?: unknown }
+  if ('version' in record && record.version !== 1) return []
+  if (!Array.isArray(record.marks)) return []
+  const marks: HwTeacherMark[] = []
+  const seen = new Set<string>()
+  for (const row of record.marks) {
+    if (!row || typeof row !== 'object') continue
+    const item = row as Record<string, unknown>
+    const id = typeof item.id === 'string' ? item.id.trim().slice(0, 120) : ''
+    const mark = typeof item.mark === 'string' ? [...item.mark.trim()].slice(0, MARK_LIMIT).join('') : ''
+    if (!id || !mark || seen.has(id)) continue
+    seen.add(id)
+    marks.push({ id, mark })
+  }
+  return marks
+}
+
+export function withTeacherMark(marks: readonly HwTeacherMark[], id: string, mark: string): readonly HwTeacherMark[] {
+  const cleanId = id.trim().slice(0, 120)
+  const clean = [...mark.trim()].slice(0, MARK_LIMIT).join('')
+  if (!cleanId || !clean) return marks
+  const next = marks.filter((row) => row.id !== cleanId)
+  next.push({ id: cleanId, mark: clean })
+  return next
+}
+
+export function teacherMarkForSubmission(marks: readonly HwTeacherMark[], id: string): string | null {
+  return marks.find((row) => row.id === id)?.mark ?? null
+}
+
+/** Confirmed mark for the nearby-insight file when that file exists, otherwise the first file. */
+export function inSchoolMarkForStudent(
+  marks: readonly HwTeacherMark[],
+  submissions: readonly { id: string; studentId: string; assignmentId: string }[],
+  studentId: string,
+): string | null {
+  const id = studentId.trim()
+  if (id === '') return null
+  const mine = submissions.filter((row) => row.studentId === id)
+  if (mine.length === 0) return null
+  const preferred = mine.find((row) => row.assignmentId === DEMO_ASSIGN_ID) ?? mine[0]
+  return teacherMarkForSubmission(marks, preferred.id)
+}
+
+function loadMarks(): HwTeacherMark[] {
+  if (typeof localStorage === 'undefined') return []
+  try {
+    const raw = localStorage.getItem(HW_MARK_KEY)
+    if (!raw) return []
+    return sanitizeTeacherMarks(JSON.parse(raw))
+  } catch {
+    return []
+  }
+}
+
+let markSnapshot: readonly HwTeacherMark[] = loadMarks()
+const markListeners = new Set<() => void>()
+
+function persistMarks() {
+  if (typeof localStorage === 'undefined') return
+  try {
+    localStorage.setItem(HW_MARK_KEY, JSON.stringify({ version: 1, marks: markSnapshot }))
+  } catch {
+    /* quota or private mode */
+  }
+}
+
+function publishMarks(next: readonly HwTeacherMark[]) {
+  markSnapshot = next
+  persistMarks()
+  markListeners.forEach((listener) => listener())
+}
+
+function subscribeMarks(cb: () => void) {
+  markListeners.add(cb)
+  return () => markListeners.delete(cb)
+}
+
+function readMarks(): readonly HwTeacherMark[] {
+  return markSnapshot
+}
+
+export function useHomeworkTeacherMarks(): readonly HwTeacherMark[] {
+  return useSyncExternalStore(subscribeMarks, readMarks, readMarks)
+}
+
+export function confirmHomeworkTeacherMark(id: string, mark: string): boolean {
+  const next = withTeacherMark(markSnapshot, id, mark)
+  if (next === markSnapshot) return false
+  publishMarks(next)
+  return true
+}
