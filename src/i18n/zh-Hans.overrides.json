@@ -1,4 +1,7 @@
 {
+  "lang.mode.bilingual": "英中对照",
+  "lang.mode.bilingual.short": "对照",
+  "lang.mode.bilingual.hint": "同时见到英文和中文",
   "qtype.hint.order": "排一排步骤 · 不赶",
   "qtype.hint.dualRead": "艺术评赏比较 · 慢慢看",
   "qtype.hint.short": "短答 · 写出结构",

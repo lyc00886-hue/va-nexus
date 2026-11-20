@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { moveItem, shuffledItems } from '../../game/thinPractice'
 import type { ComparePlate, ConceptProfile, DualReadQuestion, OrderQuestion, ShortQuestion } from '../../game/types'
-import { t, type MessageKey } from '../../i18n'
+import { t, tIn, type MessageKey } from '../../i18n'
 import { imageDecision } from '../../lib/imageLicence'
 import { appreciationScope, comparisonChipKeys, easyPromptLines, type PresentationMode } from '../../lib/lessonPresentation'
+import { BiKey, BiSpan } from './BilingualText'
 import { LessonCardArt } from './LessonCardArt'
 import { MetWorkFacts } from './MetWorkFacts'
 import { ImageBlockedFace } from './ClassroomFaces'
@@ -17,30 +18,42 @@ const HINT = {
 
 export function PracticeOnlyBar() {
   return (
-    <p className="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">{t('qtype.practiceOnly')}</p>
+    <p className="rounded-2xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-950">
+      <BiKey name="qtype.practiceOnly" />
+    </p>
   )
 }
 
 export function ThinHint({ type }: { type: keyof typeof HINT }) {
   return (
     <div className="mt-3 space-y-2" data-thin-hint={type}>
-      <p className="text-sm font-semibold text-[#0D9488]">{t(HINT[type])}</p>
+      <p className="text-sm font-semibold text-[#0D9488]">
+        <BiKey name={HINT[type]} />
+      </p>
       <PracticeOnlyBar />
     </div>
   )
 }
 
 export function ThinPace() {
-  return <p className="mt-3 text-xs text-slate-500">{t('qtype.pace')}</p>
+  return (
+    <p className="mt-3 text-xs text-slate-500">
+      <BiKey name="qtype.pace" />
+    </p>
+  )
 }
 
 function PromptText({ text, easy }: { text: string; easy: boolean }) {
-  if (!easy) return <p className="mt-3 text-xl font-bold leading-relaxed text-slate-900">{text}</p>
+  if (!easy) return (
+    <p className="mt-3 text-xl font-bold leading-relaxed text-slate-900">
+      <BiSpan text={text} />
+    </p>
+  )
   return (
     <div className="mt-3 space-y-2">
       {easyPromptLines(text).map((line, index) => (
         <p key={`${index}-${line}`} className="text-2xl font-bold leading-loose text-slate-900">
-          {line}
+          <BiSpan text={line} />
         </p>
       ))}
     </div>
@@ -111,7 +124,9 @@ export function OrderBoard({
               : 'border-slate-200 bg-[#FFF9E9]'
           return (
             <li key={item} className={`flex items-center gap-2 rounded-2xl border-2 px-3 py-2 ${tone}`}>
-              <span className="min-w-0 flex-1 text-sm font-semibold text-slate-900">{item}</span>
+              <span className="min-w-0 flex-1 text-sm font-semibold text-slate-900">
+            <BiSpan text={item} />
+          </span>
               <button
                 type="button"
                 disabled={revealed || index === 0}
@@ -140,12 +155,12 @@ export function OrderBoard({
     return (
       <div data-thin-practice="order" data-presentation={presentation} className="flex min-h-0 flex-1 flex-col">
         {q.image ? (
-          <div data-art-slot className={presentation === 'easy' ? 'min-h-[16rem] flex-[5] overflow-y-auto px-4' : 'min-h-[16rem] flex-[3] overflow-y-auto px-4'}>
+          <div data-lesson-scroll="art" data-art-slot className={presentation === 'easy' ? 'min-h-[16rem] flex-[5] overflow-y-auto px-4' : 'min-h-[16rem] flex-[3] overflow-y-auto px-4'}>
             <LessonCardArt image={q.image} credit={q.imageCredit} />
             <MetWorkFacts image={q.image} />
           </div>
         ) : null}
-        <div className="min-h-0 flex-[2] overflow-y-auto px-4 pb-2">
+        <div data-lesson-scroll="body" className="min-h-0 flex-[2] overflow-y-auto px-4 pb-2">
           <div className="mt-3">
             <PracticeOnlyBar />
           </div>
@@ -227,6 +242,7 @@ export function DualReadBoard({
         data-thin-practice="dualRead"
         data-presentation={presentation}
         data-soft-motion="off"
+        data-lesson-scroll="body"
         className="min-h-0 flex-1 overflow-y-auto px-4 pb-2"
       >
         <p className="mt-3">
@@ -296,12 +312,12 @@ export function ShortBoard({
     return (
       <div data-thin-practice="short" data-presentation={presentation} className="flex min-h-0 flex-1 flex-col">
         {q.image ? (
-          <div data-art-slot className={presentation === 'easy' ? 'min-h-[16rem] flex-[5] overflow-y-auto px-4' : 'min-h-[16rem] flex-[3] overflow-y-auto px-4'}>
+          <div data-lesson-scroll="art" data-art-slot className={presentation === 'easy' ? 'min-h-[16rem] flex-[5] overflow-y-auto px-4' : 'min-h-[16rem] flex-[3] overflow-y-auto px-4'}>
             <LessonCardArt image={q.image} credit={q.imageCredit} />
             <MetWorkFacts image={q.image} />
           </div>
         ) : null}
-        <div className={q.image ? 'min-h-0 flex-[2] overflow-y-auto px-4 pb-2' : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}>
+        <div data-lesson-scroll="body" className={q.image ? 'min-h-0 flex-[2] overflow-y-auto px-4 pb-2' : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}>
           <div className="mt-3">
             <PracticeOnlyBar />
           </div>
@@ -471,12 +487,12 @@ function PlateImage({ plate, fill = false }: { plate: ComparePlate; fill?: boole
         />
       )}
       <figcaption className="mt-2">
-        <AttrLine label={t('art.attr.title')} value={plate.title} />
-        <AttrLine label={t('art.attr.artist')} value={plate.artist} />
-        <AttrLine label={t('art.attr.year')} value={plate.year} />
-        <AttrLine label={t('art.attr.source')} value={plate.source} />
-        <AttrLine label={t('art.attr.license')} value={t('art.attr.pd')} />
-        {plate.intro ? <AttrLine label={t('art.intro')} value={plate.intro} /> : null}
+        <AttrLine label={<BiKey name="art.attr.title" />} value={<BiSpan text={plate.title} />} />
+        <AttrLine label={<BiKey name="art.attr.artist" />} value={<BiSpan text={plate.artist} />} />
+        <AttrLine label={<BiKey name="art.attr.year" />} value={<BiSpan text={plate.year} />} />
+        <AttrLine label={<BiKey name="art.attr.source" />} value={<BiSpan text={plate.source} />} />
+        <AttrLine label={<BiKey name="art.attr.license" />} value={<BiSpan text={t('art.attr.pd')} alt={tIn('en', 'art.attr.pd')} />} />
+        {plate.intro ? <AttrLine label={<BiSpan text={t('art.intro')} alt={tIn('en', 'art.intro')} />} value={<BiSpan text={plate.intro} />} /> : null}
       </figcaption>
     </figure>
   )
@@ -485,19 +501,21 @@ function PlateImage({ plate, fill = false }: { plate: ComparePlate; fill?: boole
 function ProfileCard({ profile }: { profile: ConceptProfile }) {
   return (
     <div className="rounded-2xl border border-[#b7e4df] bg-white p-3">
-      <p className="text-sm font-bold text-[#0D9488]">{t('art.profile.title')}</p>
-      <AttrLine label={t('art.profile.name')} value={profile.name} />
-      <AttrLine label={t('art.profile.nationality')} value={profile.nationality} />
-      <AttrLine label={t('art.profile.active')} value={profile.active} />
-      <AttrLine label={t('art.profile.movement')} value={profile.movement} />
-      <AttrLine label={t('art.profile.technique')} value={profile.technique} />
-      <AttrLine label={t('art.profile.search')} value={profile.search} />
-      <AttrLine label={t('art.attr.license')} value={t('art.attr.omitted')} />
+      <p className="text-sm font-bold text-[#0D9488]">
+        <BiKey name="art.profile.title" />
+      </p>
+      <AttrLine label={<BiKey name="art.profile.name" />} value={<BiSpan text={profile.name} />} />
+      <AttrLine label={<BiKey name="art.profile.nationality" />} value={<BiSpan text={profile.nationality} />} />
+      <AttrLine label={<BiKey name="art.profile.active" />} value={<BiSpan text={profile.active} />} />
+      <AttrLine label={<BiKey name="art.profile.movement" />} value={<BiSpan text={profile.movement} />} />
+      <AttrLine label={<BiKey name="art.profile.technique" />} value={<BiSpan text={profile.technique} />} />
+      <AttrLine label={<BiKey name="art.profile.search" />} value={<BiSpan text={profile.search} />} />
+      <AttrLine label={<BiKey name="art.attr.license" />} value={<BiKey name="art.attr.omitted" />} />
     </div>
   )
 }
 
-function AttrLine({ label, value }: { label: string; value: string }) {
+function AttrLine({ label, value }: { label: ReactNode; value: ReactNode }) {
   return (
     <p className="mt-1 text-xs leading-snug text-slate-600">
       <span className="font-semibold text-[#0D9488]">{label}</span> {value}
@@ -520,7 +538,9 @@ function SideLine({
 }) {
   return (
     <label className="mt-3 grid gap-1">
-      <span className={`font-semibold text-[#0D9488] ${easy ? 'text-lg' : 'text-sm'}`}>{label}</span>
+      <span className={`font-semibold text-[#0D9488] ${easy ? 'text-lg' : 'text-sm'}`}>
+        <BiSpan text={label} />
+      </span>
       <textarea
         value={value}
         readOnly={revealed}
@@ -552,7 +572,9 @@ function LineFields({
     <div className="mt-3 grid gap-3">
       {labels.map((label, index) => (
         <label key={label} className="grid gap-1">
-          <span className={`font-semibold text-[#0D9488] ${easy ? 'text-lg' : 'text-sm'}`}>{label}</span>
+          <span className={`font-semibold text-[#0D9488] ${easy ? 'text-lg' : 'text-sm'}`}>
+        <BiSpan text={label} />
+      </span>
           <textarea
             value={values[index] ?? ''}
             readOnly={revealed}

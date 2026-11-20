@@ -1,4 +1,5 @@
-import { t, type MessageKey } from '../../i18n'
+import { type MessageKey } from '../../i18n'
+import { BiKey } from './BilingualText'
 import {
   OFFICIAL_GOAL_KEYS,
   lessonPartsOnPlayer,
@@ -6,8 +7,8 @@ import {
   officialUnit,
 } from '../../game/officialFormat'
 
-function line(key: string): string {
-  return t(key as MessageKey)
+function line(key: string) {
+  return <BiKey name={key as MessageKey} />
 }
 
 export function OfficialGoalChips() {

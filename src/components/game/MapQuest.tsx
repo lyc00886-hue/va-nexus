@@ -20,6 +20,7 @@ import {
 } from '../../lib/questPathLayout'
 import { HomeworkMapEntry } from '../HomeworkStudent'
 import { InspectMapEntry } from '../InspectMapEntry'
+import { BiSpan } from './BilingualText'
 import { LessonPlayer } from './LessonPlayer'
 import { OfficialUnitHeader } from './OfficialFormat'
 import { QuestPathArt } from './QuestPathArt'
@@ -222,7 +223,9 @@ function F4UnitPanel({
       <button type="button" onClick={onBack} className="text-sm font-semibold text-[#0D9488]">
         {backLabel}
       </button>
-      <h2 className="mt-3 text-xl font-bold text-slate-900">{unit.title}</h2>
+      <h2 className="mt-3 text-xl font-bold text-slate-900">
+        <BiSpan text={unit.title} />
+      </h2>
       <OfficialUnitHeader unitId={unit.id} />
       <ul className="mt-4 space-y-2">
         {unit.nodes.map((node) => {
@@ -235,7 +238,7 @@ function F4UnitPanel({
                 onClick={() => onLesson(shown ? null : node.id)}
                 className="block w-full text-left text-sm font-bold text-slate-900"
               >
-                {node.title}
+                <BiSpan text={node.title} />
               </button>
               <span className="mt-1 block">
                 <QuestionTypeChips types={node.questions.map((question) => question.type)} />

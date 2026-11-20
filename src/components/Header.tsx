@@ -2,7 +2,7 @@ import { Accessibility } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useEasyRead } from '../context/EasyReadContext'
 import { useSen } from '../context/SenContext'
-import { LOCALE_NAME, LOCALE_SHORT, LOCALES, useT } from '../i18n'
+import { LOCALE_NAME, LOCALE_SHORT, LOCALES, useT, type LangMode } from '../i18n'
 import { QUEST_CHROME } from '../lib/mapQuest'
 import { PLATFORM_HEADER_MOBILE_MQ, PLATFORM_HEADER_PATH_EVENT, stepPlatformHeader } from '../lib/platformHeaderShell'
 import { isSupabaseConfigured } from '../lib/supabase'
@@ -51,32 +51,54 @@ function DisplayModeSwitch() {
   )
 }
 
-function LanguageSwitcher() {
-  const { locale, setLocale, t } = useT()
+const LANG_MODES: LangMode[] = ['en', 'zh-Hant', 'zh-Hans', 'bilingual']
+
+function LanguageSwitcher({ named = false }: { named?: boolean }) {
+  const { locale, bilingual, setLangMode, t } = useT()
+  const active: LangMode = bilingual ? 'bilingual' : locale
   return (
-    <div
-      className="inline-flex rounded-full bg-slate-100 p-1 ring-1 ring-slate-200"
-      role="group"
-      aria-label={t('lang.switch')}
-    >
-      {LOCALES.map((l) => (
-        <button
-          key={l}
-          type="button"
-          lang={l === 'en' ? 'en' : l}
-          title={LOCALE_NAME[l]}
-          aria-label={LOCALE_NAME[l]}
-          aria-pressed={locale === l}
-          onClick={() => setLocale(l)}
-          className={
-            locale === l
-              ? 'rounded-full bg-slate-900 px-2.5 py-1 text-xs font-semibold text-white shadow'
-              : 'rounded-full px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-200'
-          }
-        >
-          {LOCALE_SHORT[l]}
-        </button>
-      ))}
+    <div data-lang-group="">
+      <div
+        className="inline-flex rounded-full bg-slate-100 p-1 ring-1 ring-slate-200"
+        role="group"
+        aria-label={t('lang.switch')}
+        data-lang-mode={active}
+      >
+        {LANG_MODES.map((mode) => {
+          const pressed = mode === active
+          const short = mode === 'bilingual' ? t('lang.mode.bilingual.short') : LOCALE_SHORT[mode]
+          const name = mode === 'bilingual' ? t('lang.mode.bilingual') : LOCALE_NAME[mode]
+          return (
+            <button
+              key={mode}
+              type="button"
+              lang={mode === 'en' ? 'en' : mode === 'bilingual' ? undefined : mode}
+              title={name}
+              aria-label={name}
+              aria-pressed={pressed}
+              data-lang-choice={mode}
+              onClick={() => setLangMode(mode)}
+              className={
+                pressed
+                  ? 'rounded-full bg-slate-900 px-2.5 py-1 text-xs font-semibold text-white shadow'
+                  : 'rounded-full px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-200'
+              }
+            >
+              {short}
+            </button>
+          )
+        })}
+      </div>
+      {named ? (
+        <>
+          <p className="mt-2 text-xs text-slate-500">
+            {LOCALES.map((item) => LOCALE_NAME[item]).join(' · ')}
+            {' · '}
+            {t('lang.mode.bilingual')}
+          </p>
+          {bilingual ? <p className="mt-1 text-xs text-slate-600">{t('lang.mode.bilingual.hint')}</p> : null}
+        </>
+      ) : null}
     </div>
   )
 }
@@ -179,7 +201,7 @@ function QuestSettingsDrawer({ onClose }: { onClose: () => void }) {
           <div className="rounded-2xl bg-[#FFF9E9] px-3 py-2">
             <p className="text-sm font-bold text-slate-900">{chrome.language}</p>
             <div className="mt-2">
-              <LanguageSwitcher />
+              <LanguageSwitcher named />
             </div>
           </div>
           <div className="rounded-2xl bg-[#FFF9E9] px-3 py-2">
