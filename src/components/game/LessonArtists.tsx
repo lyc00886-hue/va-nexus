@@ -3,6 +3,7 @@ import { useCallback, useEffect, useId, useRef, useState } from 'react'
 import { artistName } from '../../game/lessonArtistLabels'
 import type { LessonArtistRef } from '../../game/types'
 import { t } from '../../i18n'
+import { BiKey } from './BilingualText'
 import { ExerciseMark } from './ExerciseMark'
 
 /** Non-interactive chips for inside a lesson-node button. */
@@ -72,7 +73,7 @@ export function LessonArtistPanel({ artists }: { artists: LessonArtistRef[] }) {
     <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm" aria-labelledby={headingId}>
       <div className="flex flex-wrap items-center gap-2">
         <h3 id={headingId} className="text-sm font-bold text-slate-900">
-          {t('map.artists.heading')}
+          <BiKey name="map.artists.heading" />
         </h3>
         <ExerciseMark id="ex.image" />
       </div>

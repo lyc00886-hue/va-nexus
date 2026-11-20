@@ -28,7 +28,9 @@ import {
 } from '../../game/otterMascot'
 import { PASS_ACCURACY, getBadgeById, masteryFor, masteryHint, masteryLabel } from '../../game/rewards'
 import { softMotionPlay } from '../../game/softMotion'
-import { getLocale, joinList, t } from '../../i18n'
+import { getLocale, joinList, t, useT } from '../../i18n'
+import { englishAlt } from '../../lib/bilingualCatalog'
+import { bindLessonPageScroll } from '../../lib/lessonPageScroll'
 import { contentJson } from '../../i18n/content'
 import { shortLessonFooterCta } from '../../lib/shortLessonCta'
 import {
@@ -64,6 +66,7 @@ import { imageDecision, questionImageBlocked } from '../../lib/imageLicence'
 import { loadPresentation, savePresentation, useTeacherPresentation, type PresentationMode } from '../../lib/lessonPresentation'
 import { LessonCardArt } from './LessonCardArt'
 import { MetWorkFacts } from './MetWorkFacts'
+import { BiSpan } from './BilingualText'
 import { OtterChest, OtterPose } from './OtterPose'
 import { PresentationBar } from './PresentationBar'
 import { CritiqueFace, ImageBlockedFace, ImageRuleFace } from './ClassroomFaces'
@@ -79,7 +82,7 @@ const FOLD_COPY: Record<LessonFoldId, { title: 'map.lesson.goal' | 'map.lesson.s
 
 const OUTLINE_CHIP = 'rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
 const WIZARD_BUTTON =
-  'sticky bottom-0 w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white shadow-[0_4px_0_#0F766E] active:translate-y-1 active:shadow-none'
+  'w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white shadow-[0_4px_0_#0F766E] active:translate-y-1 active:shadow-none'
 
 function ReadingBar(props: {
   mode: PresentationMode
@@ -150,6 +153,8 @@ export function LessonPlayer({
   onSetFold?: (id: LessonFoldId, open: boolean) => void
 }) {
   const { settings, easyRead, focusTunnel } = useSen()
+  const { bilingual, zhSide } = useT()
+  const shellRef = useRef<HTMLDivElement>(null)
   const teacherPresentation = useTeacherPresentation()
   const [readingMode, setReadingMode] = useState<PresentationMode>(() => teacherPresentation ?? loadPresentation())
   const [appliedOverride, setAppliedOverride] = useState(teacherPresentation)
@@ -241,6 +246,12 @@ export function LessonPlayer({
       document.documentElement.removeAttribute('data-lesson-wizard')
       document.body.style.overflow = previous
     }
+  }, [phase])
+
+  useEffect(() => {
+    const root = shellRef.current
+    if (!root) return
+    return bindLessonPageScroll(root)
   }, [phase])
 
   useEffect(() => reportSignal({ kind: 'session-reset' }), [reportSignal])
@@ -373,7 +384,12 @@ export function LessonPlayer({
 
   const sep = getLocale() === 'en' ? '. ' : '。'
   const card = lesson.cards[cardIdx]
-  const cardText = card ? `${card.title}${sep}${readingEasy ? card.easy.join(sep) : card.body}` : ''
+  const cardBody = card ? (readingEasy ? card.easy.join(sep) : card.body) : ''
+  const cardText = card
+    ? bilingual
+      ? [englishAlt(zhSide, card.title), englishAlt(zhSide, card.body), card.title, cardBody].filter(Boolean).join(sep)
+      : `${card.title}${sep}${cardBody}`
+    : ''
   const lastCard = cardIdx >= lesson.cards.length - 1
   const nextTone = shortLessonFooterCta({
     folds: presentation === 'folds',
@@ -456,10 +472,11 @@ export function LessonPlayer({
 
   return (
     <div
+      ref={shellRef}
       data-lesson-wizard=""
-      className="w-full max-w-none wrap-anywhere space-y-3 fixed inset-0 z-50 overflow-hidden bg-[#FFF9E9]"
+      className="w-full max-w-none wrap-anywhere space-y-3 fixed inset-0 z-50 flex h-dvh flex-col overflow-hidden bg-[#FFF9E9]"
     >
-      <div className="mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl flex h-full min-h-0 flex-col px-4 py-3">
+      <div className="mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl flex h-full min-h-0 flex-1 flex-col overflow-hidden px-4 py-3">
         {frame}
         <div className="grid shrink-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-1">
           <button
@@ -488,9 +505,11 @@ export function LessonPlayer({
           </p>
         </div>
 
-        <h2 className="shrink-0 text-lg font-bold text-slate-900">{lesson.title}</h2>
+        <h2 className="shrink-0 text-lg font-bold text-slate-900">
+          <BiSpan text={lesson.title} />
+        </h2>
 
-        <div className="flex min-h-0 flex-1 flex-col">
+        <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
           {step?.kind === 'rest' ? (
             <RestStage
               onReview={() => {
@@ -580,7 +599,7 @@ export function LessonPlayer({
             </article>
           )}
           {step?.kind === 'rest' ? null : (
-            <div className="sticky bottom-0 z-10 shrink-0 bg-[#FFF9E9] pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+            <div className="z-10 shrink-0 bg-[#FFF9E9] pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
               <button
                 type="button"
                 aria-disabled={primaryDisabled}
@@ -603,7 +622,7 @@ export function LessonPlayer({
 
 function LessonCopy({ text }: { text: string }) {
   const parts = splitOfficialFilmText(text)
-  if (parts.length === 1 && parts[0]?.kind === 'text') return <>{parts[0].text}</>
+  if (parts.length === 1 && parts[0]?.kind === 'text') return <BiSpan text={parts[0].text} />
   return (
     <>
       {parts.map((part, index) =>
@@ -707,6 +726,7 @@ function CardsStage({
       {showCardArt ? (
         <div
           data-art-slot
+          data-lesson-scroll={presentation === 'easy' ? 'art' : undefined}
           className={
             presentation === 'easy'
               ? 'min-h-[16rem] flex-[5] overflow-y-auto px-4'
@@ -717,9 +737,11 @@ function CardsStage({
           <MetWorkFacts image={card.image} />
         </div>
       ) : null}
-      <div className={`min-h-0 overflow-y-auto px-4 pb-4 ${showCardArt ? 'flex-[2]' : 'flex-1'}`}>
+      <div data-lesson-scroll="body" className={`min-h-0 overflow-y-auto px-4 pb-4 ${showCardArt ? 'flex-[2]' : 'flex-1'}`}>
         {leading}
-        <h3 className={`font-bold text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{card.title}</h3>
+        <h3 className={`font-bold text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
+          <BiSpan text={card.title} />
+        </h3>
         {easyRead ? (
           <ul data-lesson-body className="mt-3 space-y-2 text-xl leading-relaxed text-slate-800" style={bodyStyle}>
             {visibleLines.map((line) => (
@@ -785,7 +807,10 @@ function QuizStage({
           {showRetry ? t('lp.retry') : ''}
         </span>
       ) : null}
-      <div className={staged ? 'flex min-h-0 flex-1 flex-col' : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}>
+      <div
+        data-lesson-scroll={staged ? undefined : 'body'}
+        className={staged ? 'flex min-h-0 flex-1 flex-col' : 'min-h-0 flex-1 overflow-y-auto px-4 pb-2'}
+      >
         {leading}
         <QuestionView
           key={`${question.id}-${attemptSeed}`}
@@ -824,7 +849,9 @@ function QuizStage({
           <p className={`font-bold ${feedback.correct ? 'text-[#115E59]' : gentle ? 'text-lg text-slate-800' : 'text-[#9A3412]'}`}>
             {feedback.correct ? t('lp.correct') : gentle ? t('lp.retry') : t('lp.wrong')}
           </p>
-          <p className="mt-1 text-sm text-slate-700">{feedback.explain}</p>
+          <p className="mt-1 text-sm text-slate-700">
+            <BiSpan text={feedback.explain} />
+          </p>
         </div>
       ) : null}
     </div>
@@ -964,7 +991,7 @@ function MediaStage({
     <div className="flex min-h-0 flex-1 flex-col">
       <ReadingBar mode={presentation} onMode={onPresentation} readText={readText || t('case.hill.title')} />
       <h3 className="shrink-0 px-4 pt-4 text-xl font-bold text-slate-900">{t('case.hill.title')}</h3>
-      <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
+      <div data-lesson-scroll="body" className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
         {leading}
         <iframe
           data-testid="classroom-video"
@@ -1070,7 +1097,9 @@ function Mcq({ q, locked, easyRead, presentation = 'standard', onAnswer, onGate 
       <div className="mt-3">
         <PracticeOnlyBar />
       </div>
-      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead || presentation === 'easy' ? 'text-2xl leading-loose' : 'text-xl'}`}>{q.prompt}</p>
+      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead || presentation === 'easy' ? 'text-2xl leading-loose' : 'text-xl'}`}>
+        <BiSpan text={q.prompt} />
+      </p>
       <div className={`mt-4 grid gap-3 ${presentation === 'easy' && q.options.length === 2 ? 'grid-cols-2' : ''}`}>
         {q.options.map((o, i) => {
           const st = locked ? (sel === i ? (i === q.answer ? 'right' : 'wrong') : 'idle') : sel === i ? 'selected' : 'idle'
@@ -1083,7 +1112,7 @@ function Mcq({ q, locked, easyRead, presentation = 'standard', onAnswer, onGate 
               onClick={() => setSel(i)}
               className={`rounded-2xl border-2 px-4 text-left ${presentation === 'easy' ? 'min-h-16 py-4 text-xl leading-relaxed' : 'py-3 text-base'} ${optCls(st)}`}
             >
-              {o}
+              <BiSpan text={o} />
             </button>
           )
         })}
@@ -1106,7 +1135,9 @@ function Fill({ q, seed, locked, easyRead, presentation = 'standard', onAnswer, 
       <div className="mt-3">
         <PracticeOnlyBar />
       </div>
-      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
+      <div className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
+        <BiSpan text={q.prompt} englishOnly />
+        <p className="mt-2">
         {before}
         <span
           className={`mx-1 inline-block min-w-16 border-b-2 px-2 text-center ${
@@ -1116,7 +1147,8 @@ function Fill({ q, seed, locked, easyRead, presentation = 'standard', onAnswer, 
           {sel ?? '\u00a0'}
         </span>
         {after}
-      </p>
+        </p>
+      </div>
       <div className="mt-4 flex flex-wrap gap-2">
         {bank.map((w) => (
           <button
@@ -1129,7 +1161,7 @@ function Fill({ q, seed, locked, easyRead, presentation = 'standard', onAnswer, 
               locked ? (sel === w ? (w === q.answer ? 'right' : 'wrong') : 'idle') : sel === w ? 'selected' : 'idle',
             )}`}
           >
-            {w}
+            <BiSpan text={w} />
           </button>
         ))}
       </div>
@@ -1220,7 +1252,9 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
       <div className="mt-3">
         <PracticeOnlyBar />
       </div>
-      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>{q.prompt}</p>
+      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
+        <BiSpan text={q.prompt} />
+      </p>
       <p className="text-xs text-slate-500">{t('lp.matchHint')}</p>
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="grid gap-2">
@@ -1235,7 +1269,7 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
                 matched.has(l) ? optCls('right') + ' opacity-60' : optCls(pickL === l ? 'selected' : 'idle')
               }`}
             >
-              {l}
+              <BiSpan text={l} />
             </button>
           ))}
         </div>
@@ -1250,7 +1284,7 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
                 rightMatched.has(r) ? optCls('right') + ' opacity-60' : optCls(flash === r ? 'wrong' : 'idle')
               }`}
             >
-              {r}
+              <BiSpan text={r} />
             </button>
           ))}
         </div>

@@ -1,4 +1,5 @@
 import { t } from '../../i18n'
+import { BiKey } from './BilingualText'
 
 const BODY = 'text-lg leading-relaxed text-slate-900'
 
@@ -8,14 +9,23 @@ export function CritiqueFace({ lessonId, objectText }: { lessonId: string; objec
     <div
       data-classroom-face="critique"
       data-critique-lesson={lessonId}
+      data-lesson-scroll="body"
       className="min-h-0 flex-1 overflow-y-auto px-4 pb-4"
     >
-      <h3 className="text-xl font-bold leading-relaxed text-slate-900">{t('critique.title')}</h3>
+      <h3 className="text-xl font-bold leading-relaxed text-slate-900">
+        <BiKey name="critique.title" />
+      </h3>
       <div className="mt-3 space-y-3">
-        <p className={BODY}>{t('critique.lead')}</p>
-        <p className={BODY}>{t('critique.flex')}</p>
+        <p className={BODY}>
+          <BiKey name="critique.lead" />
+        </p>
+        <p className={BODY}>
+          <BiKey name="critique.flex" />
+        </p>
         <p className={BODY}>{objectText}</p>
-        <p className={BODY}>{t('critique.nudge')}</p>
+        <p className={BODY}>
+          <BiKey name="critique.nudge" />
+        </p>
       </div>
     </div>
   )
@@ -24,7 +34,7 @@ export function CritiqueFace({ lessonId, objectText }: { lessonId: string; objec
 /** Rules shown before a blocked image search. Homemade art is not offered as the appreciation object. */
 export function ImageRuleFace() {
   return (
-    <div data-classroom-face="rule" className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 pb-4">
+    <div data-classroom-face="rule" data-lesson-scroll="body" className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 pb-4">
       <h3 className="text-xl font-bold leading-relaxed text-slate-900">{t('image.ruleTitle')}</h3>
       <div className="mt-3 space-y-3">
         <p className={BODY}>{t('image.rule')}</p>
@@ -42,7 +52,7 @@ export function ImageRuleFace() {
 /** Empty frame when a work is not verified Public Domain or CC0. The artist and the image stay off the card. */
 export function ImageBlockedFace() {
   return (
-    <div data-classroom-face="blocked" className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 pb-4">
+    <div data-classroom-face="blocked" data-lesson-scroll="body" className="min-h-0 flex-1 overflow-y-auto px-4 pt-4 pb-4">
       <h3 className="text-xl font-bold leading-relaxed text-slate-900">{t('image.blockedTitle')}</h3>
       <div className="mt-3 flex min-h-40 items-center justify-center rounded-2xl border-2 border-slate-200 bg-[#FFF9E9] px-4 py-8 text-center text-sm font-semibold text-slate-500">
         {t('image.empty')}

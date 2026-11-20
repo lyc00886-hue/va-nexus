@@ -9,16 +9,18 @@
  *   the active locale.
  */
 import { createContext, Fragment, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
+import { nextLangState, resolveLangState, type LangMode, type LangState, type Locale, type ZhSide } from '../lib/langMode'
 import en from './en.json'
 import zhHans from './zh-Hans.json'
 import zhHant from './zh-Hant.json'
 
-export type Locale = 'zh-Hant' | 'zh-Hans' | 'en'
+export type { LangMode, Locale, ZhSide }
 export type MessageKey = keyof typeof zhHant
 type Messages = Record<MessageKey, string>
 
 export const LOCALES: Locale[] = ['en', 'zh-Hant', 'zh-Hans']
 export const LOCALE_STORAGE_KEY = 'va-nexus:locale:v1'
+export const ZH_SIDE_STORAGE_KEY = 'va-nexus:zh-side:v1'
 
 const MESSAGES: Record<Locale, Partial<Messages>> = {
   'zh-Hant': zhHant as Messages,
@@ -40,26 +42,25 @@ function isLocale(v: unknown): v is Locale {
   return v === 'zh-Hant' || v === 'zh-Hans' || v === 'en'
 }
 
-/** navigator.language → locale: zh-HK/zh-TW/zh-MO/zh-Hant → 繁, zh-CN/zh-SG/zh-Hans/zh → 简, else English. */
-export function localeFromLanguage(lang: string | undefined | null): Locale {
-  const l = (lang ?? '').toLowerCase()
-  if (!l.startsWith('zh') && !l.startsWith('yue')) return 'en'
-  if (l.startsWith('yue') || /hant|-hk|-tw|-mo/.test(l)) return 'zh-Hant'
-  return 'zh-Hans'
-}
+export { localeFromLanguage } from '../lib/langMode'
 
-function detectLocale(): Locale {
+function readStoredLang(): LangState {
+  let savedLocale: string | null = null
+  let savedSide: string | null = null
   try {
-    const saved = localStorage.getItem(LOCALE_STORAGE_KEY)
-    if (isLocale(saved)) return saved
+    savedLocale = localStorage.getItem(LOCALE_STORAGE_KEY)
+    savedSide = localStorage.getItem(ZH_SIDE_STORAGE_KEY)
   } catch {
     /* ignore */
   }
-  if (typeof navigator === 'undefined') return 'zh-Hant'
-  return localeFromLanguage(navigator.languages?.[0] ?? navigator.language)
+  const navigatorLang = typeof navigator === 'undefined' ? null : (navigator.languages?.[0] ?? navigator.language)
+  return resolveLangState(savedLocale, savedSide, navigatorLang)
 }
 
-let current: Locale = detectLocale()
+const initialLang = readStoredLang()
+let current: Locale = initialLang.locale
+let bilingualOn = initialLang.bilingual
+let zhSideCurrent: ZhSide = initialLang.zhSide
 
 export function getLocale(): Locale {
   return current
@@ -72,11 +73,40 @@ applyHtmlLang(current)
 
 export type Vars = Record<string, string | number | null | undefined>
 
+function fill(raw: string, vars?: Vars): string {
+  if (!vars) return raw
+  return raw.replace(/\{(\w+)\}/g, (m, k: string) => (k in vars ? String(vars[k] ?? '') : m))
+}
+
 /** Translate with {name} interpolation. Missing keys fall back to zh-Hant, then the key. */
 export function t(key: MessageKey, vars?: Vars): string {
   const raw = MESSAGES[current][key] ?? MESSAGES['zh-Hant'][key] ?? key
-  if (!vars) return raw
-  return raw.replace(/\{(\w+)\}/g, (m, k: string) => (k in vars ? String(vars[k] ?? '') : m))
+  return fill(raw, vars)
+}
+
+/** Translate in one locale without changing the active language. */
+export function tIn(locale: Locale, key: MessageKey, vars?: Vars): string {
+  const raw = MESSAGES[locale][key] ?? MESSAGES['zh-Hant'][key] ?? key
+  return fill(raw, vars)
+}
+
+export function isBilingual(): boolean {
+  return bilingualOn
+}
+
+export function getZhSide(): ZhSide {
+  return zhSideCurrent
+}
+
+/** Run `fn` while content getters see `locale`, then restore the active language. */
+export function withLocale<T>(locale: Locale, fn: () => T): T {
+  const prev = current
+  current = locale
+  try {
+    return fn()
+  } finally {
+    current = prev
+  }
 }
 
 /** List joiner for the active locale (、 vs , ) */
@@ -98,30 +128,64 @@ export function perLocale<T>(build: (l: Locale) => T): () => T {
   }
 }
 
-type Ctx = { locale: Locale; setLocale: (l: Locale) => void; t: typeof t }
+function applyLangState(next: LangState) {
+  current = next.locale
+  bilingualOn = next.bilingual
+  zhSideCurrent = next.zhSide
+  try {
+    localStorage.setItem(LOCALE_STORAGE_KEY, next.bilingual ? 'bilingual' : next.locale)
+    localStorage.setItem(ZH_SIDE_STORAGE_KEY, next.zhSide)
+  } catch {
+    /* ignore */
+  }
+  applyHtmlLang(next.locale)
+}
+
+type Ctx = {
+  locale: Locale
+  bilingual: boolean
+  zhSide: ZhSide
+  setLocale: (l: Locale) => void
+  setLangMode: (mode: LangMode) => void
+  t: typeof t
+}
 const LocaleContext = createContext<Ctx | null>(null)
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setState] = useState<Locale>(current)
-  const setLocale = useCallback((l: Locale) => {
-    if (!isLocale(l)) return
-    current = l
-    try {
-      localStorage.setItem(LOCALE_STORAGE_KEY, l)
-    } catch {
-      /* ignore */
-    }
-    applyHtmlLang(l)
-    setState(l)
+  const [lang, setLang] = useState<LangState>(initialLang)
+  const setLangMode = useCallback((mode: LangMode) => {
+    setLang((prev) => {
+      const next = nextLangState(prev, mode)
+      applyLangState(next)
+      return next
+    })
   }, [])
-  useEffect(() => applyHtmlLang(locale), [locale])
-  // keep module-level `current` in sync even if state was restored by React
-  current = locale
-  const value = useMemo<Ctx>(() => ({ locale, setLocale, t }), [locale, setLocale])
+  const setLocale = useCallback(
+    (l: Locale) => {
+      if (!isLocale(l)) return
+      setLangMode(l)
+    },
+    [setLangMode],
+  )
+  useEffect(() => applyHtmlLang(lang.locale), [lang.locale])
+  current = lang.locale
+  bilingualOn = lang.bilingual
+  zhSideCurrent = lang.zhSide
+  const value = useMemo<Ctx>(
+    () => ({
+      locale: lang.locale,
+      bilingual: lang.bilingual,
+      zhSide: lang.zhSide,
+      setLocale,
+      setLangMode,
+      t,
+    }),
+    [lang.bilingual, lang.locale, lang.zhSide, setLangMode, setLocale],
+  )
   return (
     <LocaleContext.Provider value={value}>
       {/* re-mount on change so per-locale content getters + local copies refresh (state lives in localStorage) */}
-      <Fragment key={locale}>{children}</Fragment>
+      <Fragment key={`${lang.locale}:${lang.bilingual ? 'bi' : 'one'}`}>{children}</Fragment>
     </LocaleContext.Provider>
   )
 }
