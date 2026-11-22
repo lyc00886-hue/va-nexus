@@ -12,15 +12,15 @@ const HANT = {
   'report.staff.title': '學生個人報告',
   'report.staff.intro': '預覽一位同學嘅校內報告。呢份報告由原本嘅學習進度報告延續，唔另外再出第二份報告。',
   'report.staff.homework': '功課交收',
-  'report.staff.homeworkValue': '近身洞察功課：已交',
+  'report.staff.homeworkValue': '走進社區觀察課業：已交',
   'report.staff.note': '老師短註',
-  'report.staff.noteValue': '今轉已交近身洞察功課。課堂表現平穩。',
+  'report.staff.noteValue': '已交走進社區觀察課業。課堂表現平穩。',
   'report.staff.noteHint': '短註只供校內參考，唔會寫公開試級別，亦唔會加額外標籤。',
   'report.staff.bandKeep': '校內評級仍然用老師確認過嘅練習帶，呢次唔另定新級。',
   'report.staff.autoGrade': '今次自動評分',
   'report.staff.teacherGrade': '教師調整後結果',
   'report.staff.analysis': '簡短分析',
-  'report.staff.analysisValue': '同學已一次過交齊成份檔，過程記錄大致齊。近身觀察仍然可以再寫清楚，教師已按呢點調整。呢次只係呢份功課嘅校內參考，唔另定新級，亦唔係公開試級別預測。',
+  'report.staff.analysisValue': '同學已一次過交齊成份檔，工作簿大致齊。觀察仍然可以再寫清楚，教師已按呢點調整。呢次只係呢份課業嘅校內參考，唔另定新級，亦唔係公開試級別預測。',
   'report.staff.refNote': '功課自動評分同教師調分只係呢次功課嘅校內參考結果，唔另定一套新校內評級，亦唔改寫已有練習帶。',
   'report.staff.teacherComment': '教師評語',
 } as const
@@ -29,15 +29,15 @@ const HANS = {
   'report.staff.title': '学生个人报告',
   'report.staff.intro': '预览一位同学的校内报告。这份报告由原来的学习进度报告延续，不另外再出第二份报告。',
   'report.staff.homework': '功课交收',
-  'report.staff.homeworkValue': '近身洞察功课：已交',
+  'report.staff.homeworkValue': '走进社区观察课业：已交',
   'report.staff.note': '老师短注',
-  'report.staff.noteValue': '这次已交近身洞察功课。课堂表现平稳。',
+  'report.staff.noteValue': '已交走进社区观察课业。课堂表现平稳。',
   'report.staff.noteHint': '短注只供校内参考，不会写公开试级别，也不会加额外标签。',
   'report.staff.bandKeep': '校内评级仍然用老师确认过的练习带，这次不另定新级。',
   'report.staff.autoGrade': '这次自动评分',
   'report.staff.teacherGrade': '教师调整后结果',
   'report.staff.analysis': '简短分析',
-  'report.staff.analysisValue': '同学已一次交齐成份档，过程记录大致齐。近身观察仍然可以再写清楚，教师已按这点调整。这次只是这份功课校内参考，不另定新级，也不是公开试级别预测。',
+  'report.staff.analysisValue': '同学已一次交齐成份档，工作簿大致齐。观察仍然可以再写清楚，教师已按这点调整。这次只是这份课业校内参考，不另定新级，也不是公开试级别预测。',
   'report.staff.refNote': '功课自动评分同教师调分只是这次功课校内参考结果，不另定一套新校内评级，亦不改写已有练习带。',
   'report.staff.teacherComment': '教师评语',
 } as const
@@ -47,9 +47,9 @@ const EN = {
   'report.staff.intro':
     'Preview one student\'s in-school report. This report continues the original learning-progress report and does not issue a second report.',
   'report.staff.homework': 'Homework collection',
-  'report.staff.homeworkValue': 'Nearby insight homework: submitted',
+  'report.staff.homeworkValue': 'Community observation assignment: submitted',
   'report.staff.note': 'Teacher short note',
-  'report.staff.noteValue': 'Nearby insight homework was submitted this round. Classroom performance is steady.',
+  'report.staff.noteValue': 'The community observation assignment has been submitted. Class performance is steady.',
   'report.staff.noteHint':
     'The short note is for in-school reference only. It does not write a public-exam level, and it does not add an extra label.',
   'report.staff.bandKeep': 'The in-school rating still uses the practice band the teacher confirmed. No new level is set this time.',
@@ -57,7 +57,7 @@ const EN = {
   'report.staff.teacherGrade': 'Result after teacher adjustment',
   'report.staff.analysis': 'Short analysis',
   'report.staff.analysisValue':
-    'The student handed in the complete file in one go, and the process notes are mostly complete. Nearby observation can still be written more clearly, and the teacher has adjusted for that. This is in-school reference for this homework only. It does not set a new level, and it is not a public-exam level prediction.',
+    'The student handed in the complete file at once, and the research workbook is mostly complete. Observation can still be written more clearly, and the teacher has adjusted for this. This is only in-school reference for this assignment, not a new level, and not a public-exam level prediction.',
   'report.staff.refNote':
     'The automatic mark and the teacher adjustment are in-school reference results for this homework only. They do not set a new in-school rating, and they do not rewrite the existing practice band.',
   'report.staff.teacherComment': 'Teacher comment',
@@ -164,7 +164,7 @@ describe('student personal report', () => {
     assert.equal(studentHomeworkCollected(demo.submissions, '  '), false)
     assert.equal(
       collectedReportValue(true, HANT['report.staff.homeworkValue'], '未有紀錄'),
-      '近身洞察功課：已交',
+      '走進社區觀察課業：已交',
     )
     assert.equal(collectedReportValue(false, HANT['report.staff.noteValue'], '未有紀錄'), '未有紀錄')
 

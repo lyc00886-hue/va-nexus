@@ -171,7 +171,7 @@ describe('shared classroom invite', () => {
     }
     assert.deepEqual({ de, ba, se, lai, come, zhen }, { de: 0, ba: 0, se: 0, lai: 0, come: 0, zhen: 0 })
     assert.equal(lei, 1)
-    assert.equal(hant['assign.staff.demoTitle'], '十一月：近身洞察功課')
+    assert.equal(hant['assign.staff.demoTitle'], '十一月：走進社區觀察課業')
     assert.equal(hant['class.staff.demoClass'], '中四示例班')
     assert.equal(hant['class.staff.demoClassNote'], '以下係示例課室，唔係真實學校名單。')
     assert.equal(hant['class.staff.addClass'], '加入課室')

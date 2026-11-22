@@ -19,7 +19,7 @@ const read = (path: string) => readFileSync(join(root, path), 'utf8')
 const messages = (path: string) => JSON.parse(read(path)) as Record<string, string>
 
 const BANNED_GLYPH = /[\u7684\u628A\u5572\u6415\u63F5\u64BF\u64C0]/
-const COPY_SHA = 'eccf7c2ed21ed6a3f4e741aeb8aaa170eca1f932b189725b4f3c38e81cb12f04'
+const COPY_SHA = '162244d0efa6c4595fe68c352dbbbdf733871c80c254d89cb7635d55d5ef631e'
 
 function isNewKey(key: string): boolean {
   if (key.startsWith('unit.header.') || key.startsWith('goal.') || key.startsWith('area.') || key.startsWith('part.')) {
@@ -67,8 +67,8 @@ describe('official format header and five-part objectives', () => {
     assert.equal(hant['goal.creativity'], '培養創意及想像力')
     assert.equal(hant['area.appreciate'], '視覺藝術評賞')
     assert.equal(hant['part.topic'], '課題')
-    assert.equal(hant['unit.f4u3.theme'], '認識社區藝術')
-    assert.equal(hant['unit.f4u3.themeMessage'], '社區藝術由身邊嚟。睇清楚地方同人，再用創作講出嚟。')
+    assert.equal(hant['unit.f4u3.theme'], '走進社區')
+    assert.equal(hant['unit.f4u3.themeMessage'], '走進社區由真實生活嚟。睇清楚地方同人，再用視覺藝術創作講出嚟。')
     assert.equal(hant['unit.f4u6.theme'], '自我、關係、故事')
     assert.equal(hant['unit.f6u2.theme'], '明清美學同當代評賞比較')
     assert.equal(en['qtype.chip.dualRead'], 'Compare works')
@@ -87,20 +87,20 @@ describe('official format header and five-part objectives', () => {
     assert.equal(hant['lesson.f4u3l3.part.expression'], hant['lesson.f4u3l3.goal.2'])
     assert.equal(
       hant['lesson.f4u3l3.part.making'],
-      '用速寫同筆記記錄近身細節：課室角落、食堂座位、校門、返學路，或者一段記憶。影人之前要問准，尊重私隱。',
+      '用速寫同筆記寫低同社區有關嘅細節：課室角落、食堂座位、校門、返學路，或者一段記憶。影人之前要問准，尊重私隱。',
     )
     assert.equal(hant['lesson.f4u3l4.part.element'], hant['visual.elements.flavour'])
     assert.equal(hant['lesson.f4u3l4.part.principle'], hant['visual.trial'])
     assert.equal(hant['lesson.f4u3l4.part.appreciate'], hant['lesson.f4u3l4.goal.1'])
     assert.equal(hant['lesson.f4u3l4.part.expression'], hant['lesson.f4u3l4.goal.3'])
     assert.equal(hant['lesson.f4u3l4.part.making'], hant['lesson.f4u3l4.goal.2'])
-    assert.equal(hant['lesson.f4u3l3.title'], '十一月：認識社區藝術——研究')
-    assert.equal(hant['lesson.f4u3l4.title'], '十一月：認識社區藝術——發展同創作')
-    assert.equal(hant['lesson.f4u3l3.subtitle'], '喺課堂認識咩係社區藝術，配過往案例參考。唔使出外做計劃。')
+    assert.equal(hant['lesson.f4u3l3.title'], '十一月：走進社區——研究')
+    assert.equal(hant['lesson.f4u3l4.title'], '十一月：走進社區——發展同創作')
+    assert.equal(hant['lesson.f4u3l3.subtitle'], '喺課堂認識點樣走進社區，配過往案例參考。唔使出外做計劃。')
     assert.equal(hant['lesson.f4u3l4.unitLine'], '呢課承住同一主題信息，將研究發展成創作。')
     assert.equal(hant['unit.f4u3.strand.knowledge'], '睇線、形、色、質感同構圖，點樣呈現人物、地方、習慣同物件。')
-    assert.equal(hant['unit.f4u3.strand.appreciate'], '睇案例同近身細節，講清楚對象、焦點，同相關視覺元素。')
-    assert.equal(hant['unit.f4u3.strand.create'], '將近身洞察變成試驗物料，再用三句講主題、做法同感受。')
+    assert.equal(hant['unit.f4u3.strand.appreciate'], '睇案例同社區細節，講清楚對象、焦點，同相關視覺元素。')
+    assert.equal(hant['unit.f4u3.strand.create'], '將直接觀察變成試驗物料，再用三句講主題、做法同感受。')
   })
 
   it('covers every live senior lesson and leaves F4-U2-L3 without new part keys', () => {

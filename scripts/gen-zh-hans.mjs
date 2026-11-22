@@ -88,6 +88,28 @@ const OFFICIAL_LOCALE_SUPPLEMENT = new Set([
   'inspect.evidence.studentCritique',
   'inspect.evidence.teacherComment',
   'report.staff.teacherComment',
+  // Official locale supplement for the community observation line. zh-Hans stays BYTE-IDENTICAL, including 嘅 / 嚟 / 呢.
+  'ci.tip.medium.alt',
+  'ci.tip.medium.body',
+  'lesson.f4u3l3.card.insight.body',
+  'lesson.f4u3l3.card.observe.body',
+  'lesson.f4u3l3.card.practice.body',
+  'lesson.f4u3l3.card.theme.body',
+  'lesson.f4u3l3.goal.2',
+  'lesson.f4u3l3.part.expression',
+  'lesson.f4u3l3.part.making',
+  'lesson.f4u3l3.part.principle',
+  'lesson.f4u3l4.card.make.body',
+  'lesson.f4u3l4.part.principle',
+  'unit.f4u3.strand.appreciate',
+  'unit.f4u3.themeMessage',
+  'visual.principles.near',
+  'visual.trial',
+  'worksheet.intro',
+  'worksheet.l3.q2',
+  'worksheet.l3.q3',
+  'worksheet.l3.q4',
+  'worksheet.l4.q2',
 ])
 
 const out = {}

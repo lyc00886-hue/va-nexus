@@ -22,27 +22,27 @@ import {
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 
 const HANT = {
-  'lesson.f4u3l3.title': '十一月：認識社區藝術——研究',
-  'lesson.f4u3l3.subtitle': '喺課堂認識咩係社區藝術，配過往案例參考。唔使出外做計劃。',
-  'lesson.f4u3l3.card.theme.body': '社區藝術主題來自真實環境——人物、地方、習慣、物件。先由課室、食堂、校門、返學路或記憶入面，揀一件近身細節嚟睇。',
-  'lesson.f4u3l3.card.observe.body': '用速寫同筆記睇近身細節：課室角落、食堂座位、校門、返學路，或者一段記憶。影人之前要問准，尊重私隱。',
+  'lesson.f4u3l3.title': '十一月：走進社區——研究',
+  'lesson.f4u3l3.subtitle': '喺課堂認識點樣走進社區，配過往案例參考。唔使出外做計劃。',
+  'lesson.f4u3l3.card.theme.body': '走進社區嘅主題由真實生活開始——人物、地方、習慣、物件。先由課室、食堂、校門、返學路或記憶入面，揀一件同社區有關嘅細節嚟睇。',
+  'lesson.f4u3l3.card.observe.body': '用速寫同筆記睇同社區有關嘅細節：課室角落、食堂座位、校門、返學路，或者一段記憶。影人之前要問准，尊重私隱。',
   'lesson.f4u3l3.card.interview.body': '課堂短訪問可以問同學：課室、食堂、校門或返學路有邊件你平時冇留意嘅嘢。短問題、留白、記錄關鍵句。',
-  'lesson.f4u3l3.card.insight.body': '由課室、食堂、校門、返學路或記憶拎一個近身洞察：一件你以前冇留意、但同社區有關嘅細節。寫清楚你見到咩、點解同地方同人有關。',
-  'lesson.f4u3l3.card.practice.body': '呢課喺課堂認識社區藝術，視覺日記每週繼續。練習由近身細節出發去做評賞同洞察。課堂唔用真實試卷。',
-  'lesson.f4u3l4.title': '十一月：認識社區藝術——發展同創作',
+  'lesson.f4u3l3.card.insight.body': '由課室、食堂、校門、返學路或記憶做一次直接觀察：一件你以前冇留意、但同社區有關嘅細節。寫清楚你見到咩、點解同地方同人有關。',
+  'lesson.f4u3l3.card.practice.body': '呢課喺課堂走進社區，視覺日記每週繼續。練習由同社區有關嘅細節出發去做視覺藝術評賞。課堂唔用真實試卷。',
+  'lesson.f4u3l4.title': '十一月：走進社區——發展同創作',
   'lesson.f4u3l4.subtitle': '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔使出外做計劃。',
-  'lesson.f4u3l4.card.make.body': '用試驗物料，將近身洞察變成創作練習——紙、筆、黏土或其他課堂物料都可以。寫低你用咩物料同技巧。',
+  'lesson.f4u3l4.card.make.body': '用試驗物料，將直接觀察變成視覺藝術創作練習——紙、筆、黏土或其他課堂物料都可以。寫低你用咩物料同技巧。',
   'lesson.f4u3l4.card.three.body': '用三句講你點樣試驗物料：主題、做法、想觀眾感受到咩。對住簡短準則先自評或請同學寫一句。',
   'lesson.f4u3l4.card.practice.body': '呢課喺課堂練習發展同創作方法，並試驗物料同三句講解。課堂唔用公開試正式成績聲稱。',
   'lesson.goal.hint': '呢課要你做到嘅可觀察成果',
   'lesson.f4u3l3.goal.1': '可以指出「邂逅！山 川 人」嘅評賞對象同焦點，並寫陶土同村落、地方同人嘅關係。',
-  'lesson.f4u3l3.goal.2': '可以由課室、食堂、校門、返學路或記憶寫一個近身洞察，細節夠具體。',
+  'lesson.f4u3l3.goal.2': '可以由課室、食堂、校門、返學路或記憶寫一次觀察，細節夠具體。',
   'lesson.f4u3l3.goal.3': '可以喺呢兩個例子入面，寫出相關視覺元素同組織原理。',
   'lesson.f4u3l4.goal.1': '可以指出深食「喚味：𝑥」嘅評賞對象同焦點，並寫食物、地方、人同「喚味」邀請。',
   'lesson.f4u3l4.goal.2': '可以喺課堂現場用紙、筆、黏土或其他課堂物料，用十至十五分鐘試驗物料。唔上載作品。',
   'lesson.f4u3l4.goal.3': '可以用三句講你點樣試驗物料：主題、做法、想觀眾感受到咩。表達開放，唔設單一標準答案。',
   'lesson.goal.open': '表達開放，唔設單一標準答案。',
-  'criteria.insight.title': '近身洞察簡短準則',
+  'criteria.insight.title': '觀察簡短準則',
   'criteria.insight.line': '細節夠具體；同社區有關；寫到你見到嘅地方或人。',
   'criteria.talk.title': '三句講解簡短準則',
   'criteria.talk.line': '主題清楚；講到做法；講到想觀眾感受到咩。',
@@ -75,9 +75,9 @@ const HANT = {
   'case.deepfood.appreciate.task': '課堂預設播官方概覽片，只作課堂播放。寫你見到食物、地方同人點樣被邀請去「喚味」。',
   'visual.heading': '視覺元素同組織原理',
   'visual.elements.hill': '睇陶瓷時可以寫物料、質感、形態同顏色：陶土表面、杯形、燒成色澤，同村落環境點樣對比或呼應。',
-  'visual.principles.near': '睇近身細節時可以寫空間、重複同強調：課室走廊、食堂座位排列、校門入口點樣引導視線。',
+  'visual.principles.near': '睇同社區有關嘅細節時可以寫空間、重複同強調：課室走廊、食堂座位排列、校門入口點樣引導視線。',
   'visual.elements.flavour': '睇「喚味：𝑥」時可以寫空間、色彩、動勢同平衡：食物、場地同人點樣被安排去邀請「喚味」。',
-  'visual.trial': '試驗物料可以試物料同質感，再用對比、強調或重複去組織你見到嘅近身細節。',
+  'visual.trial': '試驗物料可以試物料同質感，再用對比、強調或重複去組織你見到、同社區有關嘅細節。',
   'video.classroomOnly': '只作課堂播放',
   'video.noDownload': '呢課唔提供下載、上載或轉載。',
   'video.overviewTitle': '【喚味：𝑥 | The Unexplored Flavour: 𝑥】',
@@ -88,20 +88,20 @@ const HANT = {
 } as const
 
 const EN = {
-  'lesson.f4u3l3.title': 'November: Getting to know community art — research',
-  'lesson.f4u3l3.subtitle': 'In class, learn what community art is, with past cases for reference. You do not need to go out and run a project.',
-  'lesson.f4u3l4.title': 'November: Getting to know community art — develop and make',
+  'lesson.f4u3l3.title': 'November: community — research',
+  'lesson.f4u3l3.subtitle': 'In class, learn how to go into the community, with past cases for reference. You do not need to go out and run a project.',
+  'lesson.f4u3l4.title': 'November: community — develop and make',
   'lesson.f4u3l4.subtitle': 'In class, look at past cases, then use a classroom exercise to turn that recognition into making. You do not need to go out and run a project.',
-  'lesson.f4u3l3.card.theme.body': 'A community-art theme comes from a real setting — people, places, habits and objects. Start in the classroom, the canteen, the school gate, the way to school, or a memory, and choose one nearby detail to look at.',
-  'lesson.f4u3l3.card.insight.body': 'Take one nearby insight from the classroom, the canteen, the school gate, the way to school, or a memory: a detail you had not noticed before that relates to the community. Write clearly what you see, and why it relates to the place and the people.',
-  'lesson.f4u3l4.card.make.body': 'Use a material trial to turn a nearby insight into a making exercise — paper, a pen, clay, or other classroom materials. Write down which materials and skills you use.',
+  'lesson.f4u3l3.card.theme.body': 'A community theme comes from real life — people, places, habits and objects. Start in the classroom, the canteen, the school gate, the way to school, or a memory, and choose one community observation to look at.',
+  'lesson.f4u3l3.card.insight.body': 'Take one observation from the classroom, the canteen, the school gate, the way to school, or a memory: something you had not noticed before that relates to the community. Write clearly what you see, and why it relates to the place and the people.',
+  'lesson.f4u3l4.card.make.body': 'Use a material trial to turn an observation into a visual arts making task — paper, a pen, clay, or other classroom materials. Write down which materials and skills you use.',
   'lesson.f4u3l4.card.three.body': 'Use three sentences for how you tried materials: the theme, how you made it, and what you want the audience to feel. Check the short criteria, then self-assess or ask a classmate to write one sentence.',
   'lesson.goal.hint': 'Observable outcomes this lesson asks you to reach',
   'lesson.f4u3l3.goal.1': 'You can point out the object and focus of appreciation for 「邂逅！山 川 人」, and write the relationship between the clay and the village, the place, and the people.',
   'lesson.f4u3l4.goal.1': 'You can point out the object and focus of appreciation for 深食「喚味：𝑥」, and write about food, place, people, and the 「喚味」 invitation.',
   'lesson.f4u3l4.goal.3': 'You can use three sentences for how you tried materials: the theme, how you made it, and what you want the audience to feel. Expression stays open, with no single standard answer.',
   'lesson.goal.open': 'Expression stays open, with no single standard answer.',
-  'criteria.insight.title': 'Short criteria for a nearby insight',
+  'criteria.insight.title': 'Short criteria for an observation',
   'criteria.talk.title': 'Short criteria for the three-sentence talk',
   'criteria.comment.prompt': 'One sentence from the teacher, a peer, or yourself:',
   'criteria.comment.placeholder': 'Write one sentence of feedback here.',
@@ -117,9 +117,9 @@ const EN = {
   'case.deepfood.appreciate.task': 'The class plays the official overview by default, for classroom playback only. Write how you see food, place, and people being invited into “喚味”.',
   'visual.heading': 'Visual elements and organisational principles',
   'visual.elements.hill': 'When looking at the ceramics, you can write about material, texture, form, and colour: the clay surface, the cup shape, the fired colour, and how they contrast with or echo the village setting.',
-  'visual.principles.near': 'When looking at nearby details, you can write about space, repetition, and emphasis: how the classroom corridor, the canteen seating, and the school-gate entrance guide the eye.',
+  'visual.principles.near': 'When looking at a community observation, you can write about space, repetition, and emphasis: how the classroom corridor, the canteen seating, and the school-gate entrance guide the eye.',
   'visual.elements.flavour': 'When looking at “喚味：𝑥”, you can write about space, colour, movement, and balance: how food, the site, and people are arranged to invite “喚味”.',
-  'visual.trial': 'A material trial can try material and texture, then use contrast, emphasis, or repetition to organise the nearby details you see.',
+  'visual.trial': 'A material trial can try material and texture, then use contrast, emphasis, or repetition to organise the community observations you see.',
   'case.deepfood.collective': 'Deep Food',
   'case.deepfood.english': 'The Unexplored Flavour: 𝑥',
   'case.deepfood.invite': 'Oi! invited Deep Food',
@@ -133,12 +133,12 @@ const EN = {
 } as const
 
 const HANS = {
-  'lesson.f4u3l3.title': '十一月：认识社区艺术——研究',
-  'lesson.f4u3l3.subtitle': '在课堂认识什么是社区艺术，并配以往案例参考。不必出外做计划。',
-  'lesson.f4u3l4.title': '十一月：认识社区艺术——发展与创作',
+  'lesson.f4u3l3.title': '十一月：走进社区——研究',
+  'lesson.f4u3l3.subtitle': '在课堂认识怎样走进社区，配过往案例参考。不必出外做计划。',
+  'lesson.f4u3l4.title': '十一月：走进社区——发展同创作',
   'lesson.f4u3l4.subtitle': '在课堂看以往案例，再用课堂练习将认识发展成创作。不必出外做计划。',
-  'lesson.f4u3l3.card.insight.body': '从课室、食堂、校门、上学路或记忆取一个近身洞察：一件你以前没有留意、但与社区有关的细节。写清楚你看到什么、为什么与地方和人有关。',
-  'lesson.f4u3l4.card.make.body': '用试验物料，将近身洞察变成创作练习——纸、笔、黏土或其他课堂物料都可以。写下你用什么物料和技巧。',
+  'lesson.f4u3l3.card.insight.body': '由课室、食堂、校门、返学路或记忆做一次直接观察：一件你以前未留意、但同社区有关嘅细节。写清楚你见到咩、点解同地方同人有关。',
+  'lesson.f4u3l4.card.make.body': '用试验物料，将直接观察变成视觉艺术创作练习——纸、笔、黏土或其他课堂物料都可以。写低你用咩物料同技巧。',
   'lesson.f4u3l4.goal.1': '可以指出深食「唤味：𝑥」的评赏对象和焦点，并写食物、地方、人和「唤味」邀请。',
   'lesson.goal.hint': '这课要你做到的可观察成果',
   'criteria.insight.line': '细节够具体；与社区有关；写到你看到的地方或人。',
@@ -154,9 +154,9 @@ const HANS = {
   'case.deepfood.appreciate.task': '课堂预设播放官方概览片，只作课堂播放。写你看到食物、地方和人怎样被邀请去「唤味」。',
   'visual.heading': '视觉元素与组织原理',
   'visual.elements.hill': '看陶瓷时可以写物料、质感、形态和颜色：陶土表面、杯形、烧成色泽，与村落环境怎样对比或呼应。',
-  'visual.principles.near': '看近身细节时可以写空间、重复和强调：教室走廊、食堂座位排列、校门入口怎样引导视线。',
+  'visual.principles.near': '睇同社区有关嘅细节时可以写空间、重复同强调：课室走廊、食堂座位排列、校门入口点样引导视线。',
   'visual.elements.flavour': '看「唤味：𝑥」时可以写空间、色彩、动势和平衡：食物、场地和人怎样被安排去邀请「唤味」。',
-  'visual.trial': '试验物料可以试物料和质感，再用对比、强调或重复去组织你看到近身细节。',
+  'visual.trial': '试验物料可以试物料同质感，再用对比、强调或重复去组织你见到、同社区有关嘅细节。',
   'case.hill.source': '课堂参考用官方网页和小册子。已核实一条可课堂播放官方 YouTube。',
   'case.deepfood.project': '唤味：𝑥',
   'video.classroomOnly': '只作课堂播放',
@@ -207,7 +207,8 @@ describe('November community-art cases', () => {
     for (const [key, value] of Object.entries(HANT)) {
       assert.equal(hant[key], value, key)
     }
-    assert.equal(hant['lesson.f4u3l3.subtitle'].includes('\u54A9'), true)
+    assert.equal(hant['lesson.f4u3l3.subtitle'].includes('點樣'), true)
+    assert.equal(hant['lesson.f4u3l3.subtitle'].includes('\u54A9'), false)
     assert.equal(hant['lesson.f4u3l3.subtitle'].includes('\u54A5'), false)
     assert.equal(hant['lesson.f4u3l4.card.three.body'].includes('\u54A9'), true)
     assert.equal(hant['lesson.f4u3l4.card.three.body'].includes('\u54A5'), false)
@@ -289,7 +290,8 @@ describe('November community-art cases', () => {
     assert.equal(theme.includes('\u771E'), false)
     assert.equal(theme.codePointAt(theme.indexOf('揀')), 0x63c0)
     assert.equal([...theme].some((ch) => ch.codePointAt(0) === 0x569f), true)
-    assert.equal(insight.includes('\u62CE'), true)
+    assert.equal(insight.includes('直接觀察'), true)
+    assert.equal(insight.includes('\u62CE'), false)
     assert.equal(insight.includes('\u62D0'), false)
     assert.equal(insight.includes('\u62C9'), false)
     assert.equal(hant['lesson.f4u3l3.goal.1'].codePointAt(hant['lesson.f4u3l3.goal.1'].indexOf('邂')), 0x9082)
@@ -411,13 +413,13 @@ describe('November community-art cases', () => {
     assert.equal(l4.subtitle, hant['lesson.f4u3l4.subtitle'])
     assert.deepEqual(
       l3.cards.map((card) => card.title),
-      ['主題喺社區', '觀察要問准', '短訪問', '拎一個洞察', '課堂練習'],
+      ['主題喺社區', '觀察要問准', '短訪問', '做一次直接觀察', '課堂練習'],
     )
     assert.deepEqual(
       l4.cards.map((card) => card.title),
-      ['研究變創作', '過程要記錄', '學方法唔抄圖', '三句講作品', '課堂練習'],
+      ['研究變創作', '寫入工作簿', '學方法唔抄圖', '三句講作品', '課堂練習'],
     )
-    assert.equal(l4.cards[1]?.body, '概念發展要記錄：文字／圖象草圖、試驗物料、改動原因（研究工作簿用）。')
+    assert.equal(l4.cards[1]?.body, '概念發展要寫入工作簿：文字／圖象草圖、試驗物料、改動原因。')
     assert.equal(l4.cards[2]?.body, '參考風格時：學方法，唔抄圖像；只用合法／自制參考。')
     assert.match(String(l3.cards[0]?.image), /\/met-open\/437310\.jpg$/)
     assert.equal(l3.cards[2]?.image, undefined)
@@ -441,7 +443,7 @@ describe('November community-art cases', () => {
     assert.equal(wired.title, hant['lesson.f4u3l4.title'])
     assert.equal(wired.cards[0]?.body, hant['lesson.f4u3l4.card.make.body'])
     assert.equal(wired.cards[1]?.body, l4.cards[1]?.body)
-    assert.equal(wired.cards[1]?.title, '過程要記錄')
+    assert.equal(wired.cards[1]?.title, '寫入工作簿')
     assert.equal(wired.cards[2]?.body, l4.cards[2]?.body)
     assert.equal(wired.cards[3]?.body, hant['lesson.f4u3l4.card.three.body'])
     assert.equal(wired.cards[3]?.image, undefined)

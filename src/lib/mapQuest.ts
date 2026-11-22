@@ -166,7 +166,7 @@ export const QUEST_SECTIONS: readonly [QuestSection, QuestSection, QuestSection]
       's4',
       3,
       3,
-      ['社區藝術 · 視覺日記', '社区艺术 · 视觉日记', 'Community and a visual diary'],
+      ['走進社區 · 視覺日記', '走进社区 · 视觉日记', 'Community and a visual diary'],
       ['社區主題同視覺日記', '社区主题与视觉日记', 'A community theme and a visual diary'],
       [
         [['社區主題', '社区主题', 'Community theme'], ['3-1 · 社區主題', '3-1 · 社区主题', '3-1 · Community theme']],

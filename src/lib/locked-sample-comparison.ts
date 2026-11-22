@@ -105,7 +105,7 @@ export const LOCKED_SAMPLES: readonly LockedSample[] = [
     excerptBytes: 1184387,
   },
   {
-    label: '待改進示例 A（過程紀錄對照）',
+    label: '待改進示例 A（工作簿對照）',
     sampleSha256: LOCKED_LOW_A_SHA256,
     bandHint: '發展中',
     role: 'low',
