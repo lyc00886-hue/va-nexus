@@ -55,7 +55,7 @@ const F4_HANS: Record<(typeof F4)[number], ArtistHansPack> = {
   'HK-PAK-01': {
     name_zh_hans: '白双全',
     sba_theme_tags: '城市空间;日常现成物;压迫感',
-    formal_traits: '日常透明胶袋、身体空间量度、极简过程纪录',
+    formal_traits: '日常透明胶袋、身体空间量度、极简工作簿',
     dse_concept: '收集一屋空气，将狭小住屋压迫感物质化',
     spld_summary: '香港艺术家。用透明胶袋装起整间屋的空气，表现住屋挤迫',
   },

@@ -61,7 +61,7 @@ describe('artistFields English', () => {
         spld_summary: '香港藝術家。用透明膠袋收集屋內空氣',
         origin: '觀念／混合媒介',
         sba_theme_tags_en: ['urban space', 'everyday ready-mades', 'pressure'],
-        formal_traits_en: 'Everyday clear plastic bags, measuring space with the body, minimal process records',
+        formal_traits_en: 'Everyday clear bags, measured body space, a minimal research workbook',
         dse_concept_en: 'Collects the air of a whole flat, making the pressure of cramped housing physical',
         spld_summary_en:
           'Hong Kong artist. He filled clear plastic bags with the air of a flat to show how crowded homes are',

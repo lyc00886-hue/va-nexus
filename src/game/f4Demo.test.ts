@@ -92,11 +92,11 @@ const NOVEMBER_COPY = {
       goal: '由「畫得似」轉去「設計得清楚」——先問功能同觀眾，再落筆。',
     },
     'F4-U3-L3': {
-      title: '十一月：認識社區藝術——研究',
-      goal: '喺課堂認識咩係社區藝術，配過往案例參考。唔使出外做計劃。',
+      title: '十一月：走進社區——研究',
+      goal: '喺課堂認識點樣走進社區，配過往案例參考。唔使出外做計劃。',
     },
     'F4-U3-L4': {
-      title: '十一月：認識社區藝術——發展同創作',
+      title: '十一月：走進社區——發展同創作',
       goal: '喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔使出外做計劃。',
     },
   },
@@ -106,11 +106,11 @@ const NOVEMBER_COPY = {
       goal: '由「画得像」转向「设计得清楚」——先问功能与观众，再落笔。',
     },
     'F4-U3-L3': {
-      title: '十一月：认识社区艺术——研究',
-      goal: '在课堂认识什么是社区艺术，并配以往案例参考。不必出外做计划。',
+      title: '十一月：走进社区——研究',
+      goal: '在课堂认识怎样走进社区，配过往案例参考。不必出外做计划。',
     },
     'F4-U3-L4': {
-      title: '十一月：认识社区艺术——发展与创作',
+      title: '十一月：走进社区——发展同创作',
       goal: '在课堂看以往案例，再用课堂练习将认识发展成创作。不必出外做计划。',
     },
   },
@@ -120,11 +120,11 @@ const NOVEMBER_COPY = {
       goal: 'Move from “looks real” to “communicates clearly”—ask who it is for, then draw.',
     },
     'F4-U3-L3': {
-      title: 'November: Getting to know community art — research',
-      goal: 'In class, learn what community art is, with past cases for reference. You do not need to go out and run a project.',
+      title: 'November: community — research',
+      goal: 'In class, learn how to go into the community, with past cases for reference. You do not need to go out and run a project.',
     },
     'F4-U3-L4': {
-      title: 'November: Getting to know community art — develop and make',
+      title: 'November: community — develop and make',
       goal: 'In class, look at past cases, then use a classroom exercise to turn that recognition into making. You do not need to go out and run a project.',
     },
   },
@@ -1023,12 +1023,12 @@ describe('F.4 demo slice', () => {
     const kept = {
       'f4-demo.json': {
         'F4-U3-L3': {
-          question: '藝術評賞比較：左、右都係社區藝術。各寫一句——你見到邊種視覺元素或組織原理？作品同地方、人有咩關係？',
+          question: '藝術評賞比較：左、右都同社區有關。各寫一句——你見到邊種視覺元素或組織原理？作品同地方、人有咩關係？',
           options: ['左圖一句', '右圖一句'],
           explain: '練習結構 · 唔係真題',
         },
         'F4-U3-L4': {
-          question: '藝術評賞比較：左、右都係社區藝術。各寫一句——你見到邊種視覺元素或組織原理？作品想帶出咩？',
+          question: '藝術評賞比較：左、右都同社區有關。各寫一句——你見到邊種視覺元素或組織原理？作品想帶出咩？',
           options: ['左圖一句', '右圖一句'],
           explain: '練習結構 · 唔係真題',
         },
@@ -1036,25 +1036,25 @@ describe('F.4 demo slice', () => {
       'f4-demo.en.json': {
         'F4-U3-L3': {
           question:
-            'Compare works: both sides are community art. One line each — which visual elements or organisational principles do you see? How does the work relate to place and people?',
+            'Compare works: both sides relate to the community. One line each — which visual elements or organisational principles do you see? How does the work relate to place and people?',
           options: ['Left image', 'Right image'],
           explain: 'Practice structure · not a real paper',
         },
         'F4-U3-L4': {
           question:
-            'Compare works: both sides are community art. One line each — which visual elements or organisational principles do you see? What does the work bring out?',
+            'Compare works: both sides relate to the community. One line each — which visual elements or organisational principles do you see? What does the work bring out?',
           options: ['Left image', 'Right image'],
           explain: 'Practice structure · not a real paper',
         },
       },
       'f4-demo.zh-Hans.json': {
         'F4-U3-L3': {
-          question: '艺术评赏比较：左、右都是社区艺术。各写一句——你见到何种视觉元素或组织原理？作品同地方、人有什么关系？',
+          question: '艺术评赏比较：左、右都同社区有关。各写一句——你见到边种视觉元素或组织原理？作品同地方、人有咩关系？',
           options: ['左图一句', '右图一句'],
           explain: '练习结构 · 不是真题',
         },
         'F4-U3-L4': {
-          question: '艺术评赏比较：左、右都是社区艺术。各写一句——你见到何种视觉元素或组织原理？作品想带出什么？',
+          question: '艺术评赏比较：左、右都同社区有关。各写一句——你见到边种视觉元素或组织原理？作品想带出咩？',
           options: ['左图一句', '右图一句'],
           explain: '练习结构 · 不是真题',
         },

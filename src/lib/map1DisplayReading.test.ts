@@ -20,8 +20,8 @@ function read(path: string): string {
 const NOVEMBER = ['F4-U3-L3', 'F4-U3-L4'] as const
 
 const TITLES = {
-  'F4-U3-L3': '十一月：認識社區藝術——研究',
-  'F4-U3-L4': '十一月：認識社區藝術——發展同創作',
+  'F4-U3-L3': '十一月：走進社區——研究',
+  'F4-U3-L4': '十一月：走進社區——發展同創作',
 } as const
 
 const CARD_IMAGES: Record<(typeof NOVEMBER)[number], (string | null)[]> = {

@@ -1039,14 +1039,14 @@
         },
         {
           "id": "F4-U3-L3",
-          "title": "十一月：認識社區藝術——研究",
+          "title": "十一月：走進社區——研究",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L3.png",
           "coverCredit": "自制 · VA-Nexus",
-          "subtitle": "喺課堂認識咩係社區藝術，配過往案例參考。唔使出外做計劃。",
+          "subtitle": "喺課堂認識點樣走進社區，配過往案例參考。唔使出外做計劃。",
           "cards": [
             {
               "title": "主題喺社區",
-              "body": "社區藝術主題來自真實環境——人物、地方、習慣、物件。先由課室、食堂、校門、返學路或記憶入面，揀一件近身細節嚟睇。",
+              "body": "走進社區嘅主題由真實生活開始——人物、地方、習慣、物件。先由課室、食堂、校門、返學路或記憶入面，揀一件同社區有關嘅細節嚟睇。",
               "image": "/content/learning-map-illustrations/met-open/437310.jpg",
               "imageTitle": "The Boulevard Montmartre on a Winter Morning",
               "imageArtist": "Camille Pissarro",
@@ -1056,26 +1056,26 @@
             },
             {
               "title": "觀察要問准",
-              "body": "用速寫同筆記睇近身細節：課室角落、食堂座位、校門、返學路，或者一段記憶。影人之前要問准，尊重私隱。",
+              "body": "用速寫同筆記睇同社區有關嘅細節：課室角落、食堂座位、校門、返學路，或者一段記憶。影人之前要問准，尊重私隱。",
               "image": "/content/learning-map-illustrations/met-open/10450.jpg",
               "imageTitle": "Fly Market",
               "imageArtist": "William P. Chappel",
               "imageYear": "1870s",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
               "imageLicense": "Public Domain · The Met Open Access",
-              "imageIntro": "畫面係城市街市同橋上人流，小販同路過嘅人都喺公共地方活動。觀察近身社區時，影人之前要問准。"
+              "imageIntro": "畫面係城市街市同橋上人流，小販同路過嘅人都喺公共地方活動。觀察社區時，影人之前要問准。"
             },
             {
               "title": "短訪問",
               "body": "課堂短訪問可以問同學：課室、食堂、校門或返學路有邊件你平時冇留意嘅嘢。短問題、留白、記錄關鍵句。"
             },
             {
-              "title": "拎一個洞察",
-              "body": "由課室、食堂、校門、返學路或記憶拎一個近身洞察：一件你以前冇留意、但同社區有關嘅細節。寫清楚你見到咩、點解同地方同人有關。"
+              "title": "做一次直接觀察",
+              "body": "由課室、食堂、校門、返學路或記憶做一次直接觀察：一件你以前冇留意、但同社區有關嘅細節。寫清楚你見到咩、點解同地方同人有關。"
             },
             {
               "title": "課堂練習",
-              "body": "呢課喺課堂認識社區藝術，視覺日記每週繼續。練習由近身細節出發去做評賞同洞察。課堂唔用真實試卷。"
+              "body": "呢課喺課堂走進社區，視覺日記每週繼續。練習由同社區有關嘅細節出發去做視覺藝術評賞。課堂唔用真實試卷。"
             }
           ],
           "quiz": [
@@ -1143,12 +1143,12 @@
               "options": [
                 "觀察",
                 "訪問",
-                "洞察"
+                "寫觀察"
               ],
               "answer": {
                 "觀察": "用課室材料記人物、地方、習慣、物件",
                 "訪問": "短問題，先問准，只留有用嘅句子",
-                "洞察": "一件你以前冇留意、但同社區有關嘅細節"
+                "寫觀察": "一件你以前冇留意、但同社區有關嘅細節"
               },
               "explain": "三種做法都係課室研究，服務主題。",
               "image": "/content/learning-map-illustrations/met-open/48893.jpg",
@@ -1160,14 +1160,14 @@
             },
             {
               "type": "order",
-              "question": "排好一次課室研究：整理已有材料 → 記錄前先問准 → 做短訪問 → 寫一個洞察。",
+              "question": "排好一次課室研究：整理已有材料 → 記錄前先問准 → 做短訪問 → 寫一次觀察。",
               "options": [
                 "整理已有材料",
                 "記錄前先問准",
                 "做短訪問",
-                "寫一個洞察"
+                "寫一次觀察"
               ],
-              "explain": "整理已有材料 → 記錄前先問准 → 做短訪問 → 寫一個洞察",
+              "explain": "整理已有材料 → 記錄前先問准 → 做短訪問 → 寫一次觀察",
               "image": "/content/learning-map-illustrations/met-open/813060.jpg",
               "imageTitle": "A View of the Nieuwe Korenbeurs on the Damrak, Amsterdam, the Tower of the Oude Kerk Beyond",
               "imageArtist": "Hermanus Petrus Schouten",
@@ -1177,7 +1177,7 @@
             },
             {
               "type": "dualRead",
-              "question": "藝術評賞比較：左、右都係社區藝術。各寫一句——你見到邊種視覺元素或組織原理？作品同地方、人有咩關係？",
+              "question": "藝術評賞比較：左、右都同社區有關。各寫一句——你見到邊種視覺元素或組織原理？作品同地方、人有咩關係？",
               "options": [
                 "左圖一句",
                 "右圖一句"
@@ -1202,7 +1202,7 @@
             },
             {
               "type": "short",
-              "question": "寫一個洞察。提示：先寫你喺課室材料見到嘅細節，再寫佢點樣同社區有關。",
+              "question": "寫你嘅觀察。提示：先寫你喺課室材料見到嘅細節，再寫佢點樣同社區有關。",
               "options": [],
               "explain": "練習結構 · 唔係真題",
               "image": "/content/learning-map-illustrations/met-open/36005.jpg",
@@ -1217,14 +1217,14 @@
         },
         {
           "id": "F4-U3-L4",
-          "title": "十一月：認識社區藝術——發展同創作",
+          "title": "十一月：走進社區——發展同創作",
           "coverImage": "/content/learning-map-illustrations/f4-covers/F4-U3-L4.png",
           "coverCredit": "自制 · VA-Nexus",
           "subtitle": "喺課堂睇過往案例，再用課堂練習將認識發展成創作。唔使出外做計劃。",
           "cards": [
             {
               "title": "研究變創作",
-              "body": "用試驗物料，將近身洞察變成創作練習——紙、筆、黏土或其他課堂物料都可以。寫低你用咩物料同技巧。",
+              "body": "用試驗物料，將直接觀察變成視覺藝術創作練習——紙、筆、黏土或其他課堂物料都可以。寫低你用咩物料同技巧。",
               "image": "/content/learning-map-illustrations/met-open/44601.jpg",
               "imageTitle": "The Cassia Grove Studio",
               "imageArtist": "Wen Zhengming",
@@ -1233,8 +1233,8 @@
               "imageLicense": "Public Domain · The Met Open Access"
             },
             {
-              "title": "過程要記錄",
-              "body": "概念發展要記錄：文字／圖象草圖、試驗物料、改動原因（研究工作簿用）。",
+              "title": "寫入工作簿",
+              "body": "概念發展要寫入工作簿：文字／圖象草圖、試驗物料、改動原因。",
               "image": "/content/learning-map-illustrations/met-open/437755.jpg",
               "imageTitle": "In the Studio",
               "imageArtist": "Alfred Stevens",
@@ -1264,7 +1264,7 @@
           "quiz": [
             {
               "type": "mcq",
-              "question": "喺研究工作簿記錄過程，係為咗？",
+              "question": "喺研究工作簿寫低發展，係為咗？",
               "options": [
                 "交白卷",
                 "顯示諗法點演變",
@@ -1272,7 +1272,7 @@
                 "只交成品相"
               ],
               "answer": "顯示諗法點演變",
-              "explain": "SBA 研究工作簿重視過程。",
+              "explain": "校本評核工作簿要寫低發展。",
               "image": "/content/learning-map-illustrations/met-open/11141.jpg",
               "imageTitle": "The Studio",
               "imageArtist": "Winslow Homer",
@@ -1334,7 +1334,7 @@
               "imageYear": "1870s",
               "imageSource": "Metropolitan Museum of Art, New York, NY",
               "imageLicense": "Public Domain · The Met Open Access",
-              "imageIntro": "街坊一齊撑起屋架，係社區入面共同做嘢嘅過程。發展創作時都要記錄過程同改動原因。"
+              "imageIntro": "街坊一齊撑起屋架，係社區入面共同做嘢嘅過程。發展視覺藝術創作時都要喺工作簿寫低改動原因。"
             },
             {
               "type": "match",
@@ -1349,7 +1349,7 @@
                 "物料試驗": "比較邊種媒介更清楚",
                 "三句講解": "主題、做法、想觀眾感受"
               },
-              "explain": "記錄過程令研究變成睇得見嘅創作。",
+              "explain": "喺工作簿寫低發展，令課業變成睇得見嘅視覺藝術創作。",
               "image": "/content/learning-map-illustrations/met-open/49549.jpg",
               "imageTitle": "Anchorage on a rainy night",
               "imageArtist": "Shen Zhou",
@@ -1376,7 +1376,7 @@
             },
             {
               "type": "dualRead",
-              "question": "藝術評賞比較：左、右都係社區藝術。各寫一句——你見到邊種視覺元素或組織原理？作品想帶出咩？",
+              "question": "藝術評賞比較：左、右都同社區有關。各寫一句——你見到邊種視覺元素或組織原理？作品想帶出咩？",
               "options": [
                 "左圖一句",
                 "右圖一句"

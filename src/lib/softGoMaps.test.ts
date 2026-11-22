@@ -30,7 +30,7 @@ const UX = {
     'ux.hint': '可以隨時轉另一個版本。',
     'map.f4.chrome.u1': '視藝入門',
     'map.f4.chrome.u2': '素描美感設計',
-    'map.f4.chrome.u3': '社區藝術視覺日記',
+    'map.f4.chrome.u3': '走進社區視覺日記',
     'map.f4.chrome.u4': '自畫像藝術家研究',
     'map.pickTitle': '揀地圖',
     'map.grade.all': '全部年級',
@@ -63,7 +63,7 @@ const UX = {
     'map.grade.empty': '这个年级还没有地图 · 可以选全部年级',
     'map.f4.chrome.u1': '视艺入门',
     'map.f4.chrome.u2': '素描美感设计',
-    'map.f4.chrome.u3': '社区艺术视觉日记',
+    'map.f4.chrome.u3': '走进社区视觉日记',
     'map.f4.chrome.u4': '自画像艺术家研究',
   },
 } as const

@@ -560,7 +560,7 @@ UPDATE public.artists SET
 WHERE artist_id = 'HK-LUISCHAN-01';
 UPDATE public.artists SET
   sba_theme_tags_en = ARRAY['urban space', 'everyday ready-mades', 'pressure']::text[],
-  formal_traits_en = 'Everyday clear plastic bags, measuring space with the body, minimal process records',
+  formal_traits_en = 'Everyday clear bags, measured body space, a minimal research workbook',
   dse_concept_en = 'Collects the air of a whole flat, making the pressure of cramped housing physical',
   spld_summary_en = 'Hong Kong artist. He filled clear plastic bags with the air of a flat to show how crowded homes are',
   origin_en = 'Conceptual / mixed media'
