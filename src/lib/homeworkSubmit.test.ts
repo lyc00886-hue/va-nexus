@@ -11,7 +11,9 @@ import {
   HW_LIST_KEY,
   demoHomework,
   emptyHomework,
+  fileFollowKind,
   homeworkCounts,
+  mergeClassShellMarks,
   homeworkFileError,
   homeworkFileLabel,
   homeworkPlateMatch,
@@ -84,6 +86,14 @@ const HANT = {
   'hw.student.downloadL4': '下載發展同創作活動紙',
   'hw.student.downloadF5Paper': '下載本單元活動紙',
   'hw.student.downloadF5Instructions': '下載功課說明',
+  'hw.staff.autoGradeValue.f4': '已跟呢份已交成份檔睇過。作品同工作簿已交；同社區有關嘅觀察仲可以再寫清楚。呢次只係校內參考。',
+  'hw.staff.autoGradeValue.f5': '已跟呢份已交成份檔睇過。視覺日記頁同水墨試驗記錄已交；自我、傳統同社會嘅觀察仲可以再寫清楚。呢次只係校內參考。',
+  'hw.staff.teacherGradeValue.f4': '已留低：作品同工作簿齊，同社區有關嘅觀察要再寫清楚。呢次課業校內參考結果以呢句為準。',
+  'hw.staff.teacherGradeValue.f5': '已留低：視覺日記頁同水墨試驗記錄已交，自我、傳統同社會嘅觀察要再寫清楚。呢次課業校內參考結果以呢句為準。',
+  'hw.staff.gradeSaved': '已留低呢次教師評分。呢個課室睇得到。',
+  'hw.staff.reconfirmHint': '改咗之後，請再確認先至留低。',
+  'hw.staff.gradeSavedChip': '評分已留低',
+  'hw.staff.waitingConfirmChip': '等確認',
 } as Record<string, string>
 
 const CLASS_HANT = {
@@ -218,6 +228,21 @@ describe('homework submissions', () => {
     const long = '句'.repeat(300)
     const capped = withTeacherMark([], 'hw-demo-b', long)
     assert.equal([...capped[0].mark].length, 240)
+    assert.equal(fileFollowKind(DEMO_ASSIGN_ID), 'f4')
+    assert.equal(fileFollowKind('demo-f5-heritage'), 'f5')
+    assert.equal(fileFollowKind('assign-other'), null)
+    const merged = mergeClassShellMarks(
+      [{ id: 'hw-demo-a', mark: 'local', classId: DEMO_CLASS_ID }],
+      [
+        { id: 'hw-demo-a', mark: 'remote', classId: DEMO_CLASS_ID },
+        { id: 'hw-demo-b', mark: 'from-class', classId: DEMO_CLASS_ID },
+      ],
+      DEMO_CLASS_ID,
+    )
+    assert.deepEqual(merged, [
+      { id: 'hw-demo-a', mark: 'local', classId: DEMO_CLASS_ID },
+      { id: 'hw-demo-b', mark: 'from-class', classId: DEMO_CLASS_ID },
+    ])
   })
 
   it('drops a bad save and keeps the two sample rows on the sample assignment', () => {
@@ -248,7 +273,7 @@ describe('homework copy and wiring', () => {
     const overrides = messages('src/i18n/zh-Hans.overrides.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
-    assert.equal(keys.length, 56)
+    assert.equal(keys.length, 64)
     assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('hw.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('hw.')), keys)
@@ -292,7 +317,7 @@ describe('homework copy and wiring', () => {
     assert.equal([...hant['hw.student.handedQuiet']].filter((ch) => ch.codePointAt(0) === 0x5605).length, 1)
     assert.equal([...hant['hw.student.handedQuiet']].some((ch) => ch.codePointAt(0) === 0x54c7), false)
     assert.equal([...hant['hw.student.emptyHint']].filter((ch) => ch.codePointAt(0) === 0x5e03).length, 1)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 14)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 16)
     assert.equal(hant['inspect.report.disclaimer'], '呢份報告係校內參考，唔係公開試正式成績。')
     for (const [key, value] of Object.entries(CLASS_HANT)) assert.equal(hant[key], value, key)
     for (const [key, value] of Object.entries(ASSIGN_HANT)) assert.equal(hant[key], value, key)
@@ -357,8 +382,8 @@ describe('homework copy and wiring', () => {
     assert.equal(student.includes('/api/'), false)
     const found = readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).sort()
     const extra = found.filter((name) => !API_FILES.includes(name))
-    assert.equal(found.length, 12)
-    assert.deepEqual(extra, ['class-invite.ts'])
+    assert.equal(found.length, 14)
+    assert.deepEqual(extra, ['class-invite.ts', 'class-shell-marks.test.ts', 'class-shell-marks.ts'])
     for (const file of [
       'src/components/HomeworkReview.tsx',
       'src/components/HomeworkStudent.tsx',

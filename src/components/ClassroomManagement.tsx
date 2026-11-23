@@ -191,6 +191,7 @@ export function ClassroomManagement({ overview }: { overview: ReactNode }) {
             <HomeworkReview
               key={`hw-${openRow.id}`}
               classId={openRow.id}
+              classLabel={openRow.demo ? t('class.staff.demoClass') : openRow.name}
               demoClass={openRow.demo}
               sharedRoom={openRow.demo ? null : realRoom}
             />

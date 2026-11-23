@@ -8,7 +8,7 @@
  * No API route is added.
  */
 import { useSyncExternalStore } from 'react'
-import { DEMO_ASSIGN_ID } from './assignList.ts'
+import { DEMO_ASSIGN_ID, F5_DEMO_ASSIGN_ID } from './assignList.ts'
 import { DEMO_CLASS_ID } from './classList.ts'
 
 export const HW_LIST_KEY = 'va-nexus:hw-submissions:v1'
@@ -251,9 +251,10 @@ export function submitHomework(input: {
 
 /**
  * Teacher mark for one submitted file.
- * The automatic sentence is in-school reference copy.
- * A confirmed mark replaces that sentence for this file only.
- * Rows stay on this device. No API route is added.
+ * The automatic sentence is in-school reference copy and follows the two official files.
+ * A confirmed mark is the class shell record for this class.
+ * This browser keeps a copy so the shell can open again; the class record is also written
+ * through the class shell route, so the mark is not only this browser's local storage.
  */
 export const HW_MARK_KEY = 'va-nexus:hw-teacher-marks:v1'
 const MARK_LIMIT = 240
@@ -261,6 +262,27 @@ const MARK_LIMIT = 240
 export type HwTeacherMark = {
   id: string
   mark: string
+  classId?: string
+}
+
+export type FileFollowKind = 'f4' | 'f5'
+
+/** Official Form 4 and Form 5 demo files. Other assignments stay on the older fixed sentence. */
+export function fileFollowKind(assignmentId: string): FileFollowKind | null {
+  if (assignmentId === DEMO_ASSIGN_ID) return 'f4'
+  if (assignmentId === F5_DEMO_ASSIGN_ID) return 'f5'
+  return null
+}
+
+export function preferredHomework<T extends { id: string; studentId: string; assignmentId: string }>(
+  submissions: readonly T[],
+  studentId: string,
+): T | null {
+  const id = studentId.trim()
+  if (id === '') return null
+  const mine = submissions.filter((row) => row.studentId === id)
+  if (mine.length === 0) return null
+  return mine.find((row) => row.assignmentId === DEMO_ASSIGN_ID) ?? mine[0]
 }
 
 export function sanitizeTeacherMarks(raw: unknown): HwTeacherMark[] {
@@ -275,20 +297,44 @@ export function sanitizeTeacherMarks(raw: unknown): HwTeacherMark[] {
     const item = row as Record<string, unknown>
     const id = typeof item.id === 'string' ? item.id.trim().slice(0, 120) : ''
     const mark = typeof item.mark === 'string' ? [...item.mark.trim()].slice(0, MARK_LIMIT).join('') : ''
+    const classId = typeof item.classId === 'string' ? item.classId.trim().slice(0, 80) : ''
     if (!id || !mark || seen.has(id)) continue
     seen.add(id)
-    marks.push({ id, mark })
+    marks.push(classId ? { id, mark, classId } : { id, mark })
   }
   return marks
 }
 
-export function withTeacherMark(marks: readonly HwTeacherMark[], id: string, mark: string): readonly HwTeacherMark[] {
+export function withTeacherMark(
+  marks: readonly HwTeacherMark[],
+  id: string,
+  mark: string,
+  classId = '',
+): readonly HwTeacherMark[] {
   const cleanId = id.trim().slice(0, 120)
   const clean = [...mark.trim()].slice(0, MARK_LIMIT).join('')
   if (!cleanId || !clean) return marks
+  const cleanClass = classId.trim().slice(0, 80)
   const next = marks.filter((row) => row.id !== cleanId)
-  next.push({ id: cleanId, mark: clean })
+  const row: HwTeacherMark = cleanClass ? { id: cleanId, mark: clean, classId: cleanClass } : { id: cleanId, mark: clean }
+  next.push(row)
   return next
+}
+
+/** Local class rows win. Remote rows fill a submission this shell does not have yet. */
+export function mergeClassShellMarks(
+  local: readonly HwTeacherMark[],
+  remote: readonly HwTeacherMark[],
+  classId: string,
+): HwTeacherMark[] {
+  const scope = classId.trim()
+  const others = local.filter((row) => row.classId !== scope)
+  const mine = new Map(local.filter((row) => row.classId === scope).map((row) => [row.id, row]))
+  for (const row of remote) {
+    if (row.classId !== scope || mine.has(row.id)) continue
+    mine.set(row.id, row)
+  }
+  return [...others, ...mine.values()]
 }
 
 export function teacherMarkForSubmission(marks: readonly HwTeacherMark[], id: string): string | null {
@@ -301,12 +347,15 @@ export function inSchoolMarkForStudent(
   submissions: readonly { id: string; studentId: string; assignmentId: string }[],
   studentId: string,
 ): string | null {
-  const id = studentId.trim()
-  if (id === '') return null
-  const mine = submissions.filter((row) => row.studentId === id)
-  if (mine.length === 0) return null
-  const preferred = mine.find((row) => row.assignmentId === DEMO_ASSIGN_ID) ?? mine[0]
+  const preferred = preferredHomework(submissions, studentId)
+  if (!preferred) return null
   return teacherMarkForSubmission(marks, preferred.id)
+}
+
+export function adoptClassShellMarks(incoming: readonly HwTeacherMark[], classId: string): void {
+  const next = mergeClassShellMarks(markSnapshot, incoming, classId)
+  if (next.length === markSnapshot.length && next.every((row, index) => row === markSnapshot[index])) return
+  publishMarks(next)
 }
 
 function loadMarks(): HwTeacherMark[] {
@@ -351,8 +400,8 @@ export function useHomeworkTeacherMarks(): readonly HwTeacherMark[] {
   return useSyncExternalStore(subscribeMarks, readMarks, readMarks)
 }
 
-export function confirmHomeworkTeacherMark(id: string, mark: string): boolean {
-  const next = withTeacherMark(markSnapshot, id, mark)
+export function confirmHomeworkTeacherMark(id: string, mark: string, classId = ''): boolean {
+  const next = withTeacherMark(markSnapshot, id, mark, classId)
   if (next === markSnapshot) return false
   publishMarks(next)
   return true

@@ -66,7 +66,7 @@ describe('classroom page scroll', () => {
     assert.equal(player.includes('sticky bottom-0'), false)
     assert.match(player, /w-full max-w-none wrap-anywhere space-y-3/)
     assert.match(player, /mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl/)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 14)
   })
 })
 

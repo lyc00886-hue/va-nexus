@@ -357,7 +357,7 @@ describe('November activity papers', () => {
     assert.match(art, /key=\{image\}/)
     assert.equal(art.includes('loading='), false)
     assert.match(art, /if \(!image \|\| failed\) return null/)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 14)
 
     const header = read('src/components/Header.tsx')
     const trigger = header.slice(header.indexOf('data-sen-trigger'), header.indexOf('<QuestGearButton'))

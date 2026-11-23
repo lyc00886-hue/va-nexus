@@ -113,7 +113,7 @@ describe('locked comparison excerpts', () => {
       assert.equal(createHash('sha256').update(bytes).digest('hex'), sample.excerptSha256)
     }
     const apiSources = walk(join(root, 'api')).filter((file) => file.endsWith('.ts') || file.endsWith('.js'))
-    assert.equal(apiSources.length, 12, apiSources.join('\n'))
+    assert.equal(apiSources.length, 14, apiSources.join('\n'))
     assert.equal(apiSources.some((file) => file.includes('locked-sample-comparison')), false)
     const pub = walk(join(root, 'public'))
     const banned = [...excerptNames.map((name) => name.slice(0, -4)), ...SKIPPED]

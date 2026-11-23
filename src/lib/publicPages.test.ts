@@ -152,7 +152,7 @@ describe('official public copy', () => {
     assert.equal(fromGit.status, 0)
     assert.deepEqual(icon, fromGit.stdout)
     const now = tsFiles(join(root, 'api'))
-    assert.equal(now.length, 12)
+    assert.equal(now.length, 14)
     assert.equal(now.includes('class-invite.ts'), true)
     const listed = spawnSync('git', ['ls-tree', '-r', '--name-only', 'HEAD', 'api'], { cwd: root, encoding: 'utf8' })
     assert.equal(listed.status, 0)

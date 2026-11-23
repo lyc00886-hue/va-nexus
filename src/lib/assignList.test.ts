@@ -87,6 +87,8 @@ const API_FILES = [
   'formative-comment.test.ts',
   'formative-comment.ts',
   'class-invite.ts',
+  'class-shell-marks.test.ts',
+  'class-shell-marks.ts',
   'socratic.test.ts',
   'socraticBank.ts',
 ]
@@ -339,7 +341,7 @@ describe('assignment copy and wiring', () => {
     assert.equal(hant['inspect.staff.overviewTitle'], '課室總覽')
     assert.equal(hant['qtype.chip.dualRead'], '藝術評賞比較')
     assert.equal(Object.keys(hant).filter((key) => key.startsWith('class.staff.')).length, 26)
-    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 14)
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('report.staff.')).length, 16)
   })
 
   it('stacks compose and the published list inside the opened class, with no new api file', () => {

@@ -1,13 +1,16 @@
 import { useEffect } from 'react'
-import { HTML_LANG, useT } from '../i18n'
+import { HTML_LANG, useT, type MessageKey } from '../i18n'
 import { gradeLabelKey, useInspectRows, type InspectView } from '../lib/useInspectClass'
 import {
+  fileFollowKind,
   homeworkFileLabel,
   inSchoolCommentForStudent,
   inSchoolMarkForStudent,
+  preferredHomework,
   useHomeworkSubmissions,
   useHomeworkTeacherComments,
   useHomeworkTeacherMarks,
+  type FileFollowKind,
 } from '../lib/homeworkSubmit'
 import {
   collectedReportValue,
@@ -19,6 +22,24 @@ import {
 } from '../lib/inspectReport'
 
 export type InspectPreview = { kind: 'one'; id: string } | { kind: 'class' }
+
+function autoGradeKey(kind: FileFollowKind | null): MessageKey {
+  if (kind === 'f4') return 'hw.staff.autoGradeValue.f4'
+  if (kind === 'f5') return 'hw.staff.autoGradeValue.f5'
+  return 'hw.staff.autoGradeValue'
+}
+
+function teacherGradeKey(kind: FileFollowKind | null): MessageKey {
+  if (kind === 'f4') return 'hw.staff.teacherGradeValue.f4'
+  if (kind === 'f5') return 'hw.staff.teacherGradeValue.f5'
+  return 'hw.staff.teacherGradeValue'
+}
+
+function analysisKey(kind: FileFollowKind | null): MessageKey {
+  if (kind === 'f4') return 'report.staff.analysisValue.f4'
+  if (kind === 'f5') return 'report.staff.analysisValue.f5'
+  return 'report.staff.analysisValue'
+}
 
 function sectionFor(
   row: InspectView,
@@ -87,13 +108,15 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
     const none = t('inspect.report.none')
     const saved = inSchoolMarkForStudent(marks, submissions, row.id)
     const savedComment = inSchoolCommentForStudent(comments, submissions, row.id)
-    const file = submissions.find((item) => item.studentId === row.id)
+    const preferred = preferredHomework(submissions, row.id)
+    const kind = preferred ? fileFollowKind(preferred.assignmentId) : null
+    const file = preferred ?? submissions.find((item) => item.studentId === row.id)
     return {
       homework: collectedReportValue(collected, t('report.staff.homeworkValue'), none),
       note: collectedReportValue(collected, t('report.staff.noteValue'), none),
-      auto: collectedReportValue(collected, t('hw.staff.autoGradeValue'), none),
-      teacher: collected ? (saved ?? t('hw.staff.teacherGradeValue')) : none,
-      analysis: collectedReportValue(collected, t('report.staff.analysisValue'), none),
+      auto: collectedReportValue(collected, t(autoGradeKey(kind)), none),
+      teacher: collected ? (saved ?? t(teacherGradeKey(kind))) : none,
+      analysis: collectedReportValue(collected, t(analysisKey(kind)), none),
       teacherComment: teacherCommentText(collected, savedComment, t('hw.staff.autoCommentValue'), none),
       studentWork: collected && file ? homeworkFileLabel(file, t('hw.staff.genericFile')) : none,
       studentCritique: collectedReportValue(collected, t('hw.staff.studentCritiqueValue'), none),
