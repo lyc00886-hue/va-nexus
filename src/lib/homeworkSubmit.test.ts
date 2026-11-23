@@ -382,8 +382,8 @@ describe('homework copy and wiring', () => {
     assert.equal(student.includes('/api/'), false)
     const found = readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).sort()
     const extra = found.filter((name) => !API_FILES.includes(name))
-    assert.equal(found.length, 14)
-    assert.deepEqual(extra, ['class-invite.ts', 'class-shell-marks.test.ts', 'class-shell-marks.ts'])
+    assert.equal(found.length, 12)
+    assert.deepEqual(extra, ['class-invite.ts'])
     for (const file of [
       'src/components/HomeworkReview.tsx',
       'src/components/HomeworkStudent.tsx',

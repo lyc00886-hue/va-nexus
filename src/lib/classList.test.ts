@@ -191,7 +191,7 @@ describe('classroom management copy and wiring', () => {
     assert.equal(app.includes('ClassroomManagement'), false)
     const tabs = sidebar.slice(sidebar.indexOf('export const TABS'), sidebar.indexOf('export const STAFF_TAB'))
     assert.equal(/['"]staff['"]/.test(tabs), false)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 14)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
     for (const file of ['src/components/ClassroomManagement.tsx', 'src/lib/classList.ts', 'src/components/TeacherDraftBand.tsx']) {
       const source = read(file)
       assert.equal(source.includes('\u7684'), false, file)

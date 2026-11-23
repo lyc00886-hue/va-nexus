@@ -37,6 +37,6 @@ describe('google sign-in return from the classroom map', () => {
       ],
     )
     assert.equal(readFileSync(join(root, 'src/lib/auth.ts'), 'utf8').includes('redirectTo: window.location.origin'), true)
-    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 14)
+    assert.equal(readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts')).length, 12)
   })
 })

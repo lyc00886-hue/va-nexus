@@ -253,8 +253,8 @@ export function submitHomework(input: {
  * Teacher mark for one submitted file.
  * The automatic sentence is in-school reference copy and follows the two official files.
  * A confirmed mark is the class shell record for this class.
- * This browser keeps a copy so the shell can open again; the class record is also written
- * through the class shell route, so the mark is not only this browser's local storage.
+ * This browser keeps a copy so the shell can open again. The confirmed sentence
+ * is also written on the existing class invite route.
  */
 export const HW_MARK_KEY = 'va-nexus:hw-teacher-marks:v1'
 const MARK_LIMIT = 240

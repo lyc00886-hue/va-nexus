@@ -226,6 +226,6 @@ describe('teacher control behaviour', () => {
     assert.match(page, /inspect\.staff\.exportClass/)
     assert.match(page, /inspect\.report\.printHint/)
     const api = readdirSync(join(root, 'api')).filter((name) => name.endsWith('.ts') && !name.endsWith('.test.ts'))
-    assert.deepEqual(api.sort(), ['class-invite.ts', 'class-shell-marks.ts', 'crop-ask.ts', 'feedback.ts', 'formative-comment.ts', 'socraticBank.ts'])
+    assert.deepEqual(api.sort(), ['class-invite.ts', 'crop-ask.ts', 'feedback.ts', 'formative-comment.ts', 'socraticBank.ts'])
   })
 })

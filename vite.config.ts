@@ -14,19 +14,13 @@ export default defineConfig({
     {
       name: 'va-nexus-class-invite-dev',
       configureServer(server) {
-        const routes: Record<string, { modulePath: string; exportName: 'handleClassInvite' | 'handleClassShellMarks' }> = {
-          '/api/class-invite': { modulePath: '/api/class-invite.ts', exportName: 'handleClassInvite' },
-          '/api/class-shell-marks': { modulePath: '/api/class-shell-marks.ts', exportName: 'handleClassShellMarks' },
-        }
         server.middlewares.use(async (req, res, next) => {
-          const path = req.url?.split('?')[0] ?? ''
-          const route = routes[path]
-          if (!route) return next()
+          const path = req.url?.split('?')[0]
+          if (path !== '/api/class-invite') return next()
           try {
-            const mod = (await server.ssrLoadModule(route.modulePath)) as Record<
-              string,
-              (request: Request) => Promise<Response>
-            >
+            const mod = (await server.ssrLoadModule('/api/class-invite.ts')) as {
+              handleClassInvite: (request: Request) => Promise<Response>
+            }
             const chunks: Buffer[] = []
             for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk))
             const body = Buffer.concat(chunks)
@@ -40,7 +34,7 @@ export default defineConfig({
               headers,
               body: req.method === 'GET' || req.method === 'HEAD' ? undefined : body,
             })
-            const response = await mod[route.exportName](request)
+            const response = await mod.handleClassInvite(request)
             res.statusCode = response.status
             response.headers.forEach((value, key) => {
               res.setHeader(key, value)
@@ -48,7 +42,7 @@ export default defineConfig({
             res.end(Buffer.from(await response.arrayBuffer()))
           } catch (error) {
             res.statusCode = 500
-            res.end(error instanceof Error ? error.message : 'class route failed')
+            res.end(error instanceof Error ? error.message : 'invite route failed')
           }
         })
       },

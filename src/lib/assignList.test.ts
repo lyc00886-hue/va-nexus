@@ -87,8 +87,6 @@ const API_FILES = [
   'formative-comment.test.ts',
   'formative-comment.ts',
   'class-invite.ts',
-  'class-shell-marks.test.ts',
-  'class-shell-marks.ts',
   'socratic.test.ts',
   'socraticBank.ts',
 ]

@@ -5,7 +5,7 @@
 import { classOwnerId } from './classInvite'
 import { adoptClassShellMarks, type HwTeacherMark } from './homeworkSubmit'
 
-const PATH = '/api/class-shell-marks'
+const PATH = '/api/class-invite'
 
 type ShellResult = { ok?: boolean; marks?: { id?: unknown; classId?: unknown; mark?: unknown }[] }
 
@@ -42,7 +42,7 @@ async function post(body: Record<string, unknown>): Promise<ShellResult | null> 
 export async function pullClassShellMarks(classId: string): Promise<void> {
   const scope = classId.trim()
   if (!scope) return
-  const result = await post({ action: 'list', classId: scope, ownerId: classOwnerId() })
+  const result = await post({ action: 'mark-list', classId: scope, ownerId: classOwnerId() })
   if (!result) return
   adoptClassShellMarks(asMarks(result.marks, scope), scope)
 }
@@ -52,5 +52,5 @@ export async function pushClassShellMark(classId: string, id: string, mark: stri
   const cleanId = id.trim()
   const clean = mark.trim()
   if (!scope || !cleanId || !clean) return
-  await post({ action: 'confirm', classId: scope, ownerId: classOwnerId(), id: cleanId, mark: clean })
+  await post({ action: 'mark-confirm', classId: scope, ownerId: classOwnerId(), id: cleanId, mark: clean })
 }

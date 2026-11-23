@@ -2,6 +2,7 @@
  * Shared real classrooms and invite codes.
  * A teacher copies the code and hands it over. This route does not send it.
  * Classmates join by typing the code. The roster is the response, not this device's localStorage.
+ * A confirmed teacher sentence for one class stays on this same route.
  */
 import { randomInt } from 'node:crypto'
 import { readFileSync, writeFileSync } from 'node:fs'
@@ -37,11 +38,14 @@ export type InviteRoom = {
   assignments: InviteAssignment[]
 }
 export type InviteStore = { rooms: InviteRoom[] }
+export type ClassShellMark = { id: string; classId: string; mark: string }
+export type ClassShellStore = { marks: ClassShellMark[] }
 export type InviteResult = {
   ok: boolean
   reason?: string
   room?: InviteRoom
   rooms?: InviteRoom[]
+  marks?: ClassShellMark[]
 }
 
 export function emptyInviteStore(): InviteStore {
@@ -338,22 +342,136 @@ function enqueue<T>(job: () => Promise<T>): Promise<T> {
   return run
 }
 
-function localApply(action: string, payload: unknown): InviteResult {
-  if (!memory) memory = persistLocal ? readLocal() : emptyInviteStore()
-  const next = applyInvite(memory, action, payload)
-  memory = next.store
-  if (persistLocal) {
-    try {
-      writeFileSync(FILE_STORE, JSON.stringify({ version: 1, rooms: memory.rooms }))
-    } catch {
-      /* private mode or a read-only function image */
+const MARK_LIMIT = 240
+const MARK_CAP = 400
+let markRows: ClassShellMark[] = []
+let marksReady = false
+
+export function emptyClassShellStore(): ClassShellStore {
+  return { marks: [] }
+}
+
+function cleanClassId(raw: unknown): string {
+  if (typeof raw !== 'string') return ''
+  const value = raw.trim()
+  return /^[A-Za-z0-9-]{1,80}$/.test(value) ? value : ''
+}
+
+function cleanMarkId(raw: unknown): string {
+  if (typeof raw !== 'string') return ''
+  let out = ''
+  for (const char of raw.trim()) {
+    const point = char.codePointAt(0) ?? 0
+    if (point >= 32 && point !== 127) out += char
+  }
+  return out.slice(0, 120)
+}
+
+function cleanMarkText(raw: unknown): string {
+  if (typeof raw !== 'string') return ''
+  let out = ''
+  for (const char of raw.trim()) {
+    const point = char.codePointAt(0) ?? 0
+    if (point >= 32 && point !== 127) out += char
+  }
+  return [...out].slice(0, MARK_LIMIT).join('')
+}
+
+function copyMark(row: ClassShellMark): ClassShellMark {
+  return { id: row.id, classId: row.classId, mark: row.mark }
+}
+
+function readMarkRows(raw: unknown): ClassShellMark[] {
+  const record = asRecord(raw)
+  if (!record || !Array.isArray(record.marks)) return []
+  const marks: ClassShellMark[] = []
+  const seen = new Set<string>()
+  for (const row of record.marks) {
+    const item = asRecord(row)
+    if (!item) continue
+    const classId = cleanClassId(item.classId)
+    const id = cleanMarkId(item.id)
+    const mark = cleanMarkText(item.mark)
+    if (!classId || !id || !mark) continue
+    const key = `${classId}\n${id}`
+    if (seen.has(key)) continue
+    seen.add(key)
+    marks.push({ id, classId, mark })
+  }
+  return marks
+}
+
+export function applyClassShellMarks(
+  store: ClassShellStore,
+  action: string,
+  payload: unknown,
+): { store: ClassShellStore; result: InviteResult } {
+  const body = asRecord(payload) ?? {}
+  const classId = cleanClassId(body.classId)
+  const ownerId = cleanToken(body.ownerId)
+  if (!classId || !ownerId) return { store, result: { ok: false, reason: 'invalid' } }
+  const marks = store.marks.map(copyMark)
+  if (action === 'mark-list') {
+    return { store, result: { ok: true, marks: marks.filter((row) => row.classId === classId).map(copyMark) } }
+  }
+  if (action === 'mark-confirm') {
+    const id = cleanMarkId(body.id)
+    const mark = cleanMarkText(body.mark)
+    if (!id || !mark) return { store, result: { ok: false, reason: 'invalid' } }
+    const exists = marks.some((row) => row.classId === classId && row.id === id)
+    if (!exists && marks.length >= MARK_CAP) return { store, result: { ok: false, reason: 'full' } }
+    const next = marks.filter((row) => !(row.classId === classId && row.id === id))
+    next.push({ id, classId, mark })
+    return {
+      store: { marks: next },
+      result: { ok: true, marks: next.filter((row) => row.classId === classId).map(copyMark) },
     }
   }
+  return { store, result: { ok: false, reason: 'action' } }
+}
+
+function loadMarks() {
+  if (marksReady) return
+  marksReady = true
+  if (!persistLocal) return
+  try {
+    markRows = readMarkRows(JSON.parse(readFileSync(FILE_STORE, 'utf8')))
+  } catch {
+    markRows = []
+  }
+}
+
+function writeDisk() {
+  if (!persistLocal) return
+  try {
+    writeFileSync(FILE_STORE, JSON.stringify({ version: 1, rooms: (memory ?? emptyInviteStore()).rooms, marks: markRows }))
+  } catch {
+    /* private mode or a read-only function image */
+  }
+}
+
+function localApply(action: string, payload: unknown): InviteResult {
+  if (!memory) memory = persistLocal ? readLocal() : emptyInviteStore()
+  loadMarks()
+  const next = applyInvite(memory, action, payload)
+  memory = next.store
+  writeDisk()
+  return next.result
+}
+
+function localApplyMarks(action: string, payload: unknown): InviteResult {
+  if (!memory) memory = persistLocal ? readLocal() : emptyInviteStore()
+  loadMarks()
+  const next = applyClassShellMarks({ marks: markRows }, action, payload)
+  markRows = next.store.marks
+  writeDisk()
   return next.result
 }
 
 export function resetLocalInviteStoreForTests(): void {
   memory = emptyInviteStore()
+  markRows = []
+  marksReady = true
   persistLocal = false
 }
 
@@ -464,6 +582,10 @@ export async function handleClassInvite(request: Request): Promise<Response> {
   const body = await readBody(request)
   if (!body) return json(400, { ok: false, reason: 'invalid' })
   const action = typeof body.action === 'string' ? body.action : ''
+  if (action === 'mark-list' || action === 'mark-confirm') {
+    const result = await enqueue(async () => localApplyMarks(action, body))
+    return json(statusFor(result), result)
+  }
   if (action === 'create') {
     const ownerId = cleanToken(body.ownerId)
     const name = cleanName(body.name)
