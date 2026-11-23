@@ -23,6 +23,8 @@ const HANT = {
   'report.staff.analysisValue': '同學已一次過交齊成份檔，工作簿大致齊。觀察仍然可以再寫清楚，教師已按呢點調整。呢次只係呢份課業嘅校內參考，唔另定新級，亦唔係公開試級別預測。',
   'report.staff.refNote': '功課自動評分同教師調分只係呢次功課嘅校內參考結果，唔另定一套新校內評級，亦唔改寫已有練習帶。',
   'report.staff.teacherComment': '教師評語',
+  'report.staff.analysisValue.f4': '已跟呢份已交成份檔睇過。作品同工作簿大致齊，同社區有關嘅觀察仲可以再寫清楚，教師已按呢點調整。呢次只係呢份課業嘅校內參考，唔另定新級，亦唔係公開試級別預測。',
+  'report.staff.analysisValue.f5': '已跟呢份已交成份檔睇過。視覺日記頁同水墨試驗記錄大致齊，自我、傳統同社會嘅觀察仲可以再寫清楚，教師已按呢點調整。呢次只係呢份課業嘅校內參考，唔另定新級，亦唔係公開試級別預測。',
 } as const
 
 const HANS = {
@@ -40,6 +42,8 @@ const HANS = {
   'report.staff.analysisValue': '同学已一次交齐成份档，工作簿大致齐。观察仍然可以再写清楚，教师已按这点调整。这次只是这份课业校内参考，不另定新级，也不是公开试级别预测。',
   'report.staff.refNote': '功课自动评分同教师调分只是这次功课校内参考结果，不另定一套新校内评级，亦不改写已有练习带。',
   'report.staff.teacherComment': '教师评语',
+  'report.staff.analysisValue.f4': '已跟这份已交成份档看过。作品同工作簿大致齐，同社区有关观察还可以再写清楚，教师已按这点调整。这次只是这份课业校内参考，不另定新级，也不是公开试级别预测。',
+  'report.staff.analysisValue.f5': '已跟这份已交成份档看过。视觉日记页同水墨试验记录大致齐，自我、传统同社会观察还可以再写清楚，教师已按这点调整。这次只是这份课业校内参考，不另定新级，也不是公开试级别预测。',
 } as const
 
 const EN = {
@@ -61,6 +65,10 @@ const EN = {
   'report.staff.refNote':
     'The automatic mark and the teacher adjustment are in-school reference results for this homework only. They do not set a new in-school rating, and they do not rewrite the existing practice band.',
   'report.staff.teacherComment': 'Teacher comment',
+  'report.staff.analysisValue.f4':
+    'This short analysis follows the submitted complete file. The artwork and research workbook are mostly complete. Observation related to the community can still be written more clearly, and the teacher has adjusted for this. This is only in-school reference for this assignment, not a new level, and not a public-exam level prediction.',
+  'report.staff.analysisValue.f5':
+    'This short analysis follows the submitted complete file. The visual journal pages and ink-trial notes are mostly complete. Observation of self, heritage and society can still be written more clearly, and the teacher has adjusted for this. This is only in-school reference for this assignment, not a new level, and not a public-exam level prediction.',
 } as const
 
 const REPORT_FIELDS = [
@@ -111,13 +119,13 @@ describe('student personal report', () => {
     const overrides = messages('src/i18n/zh-Hans.overrides.json')
     const en = messages('src/i18n/en.json')
     const keys = Object.keys(HANT)
-    assert.equal(keys.length, 14)
+    assert.equal(keys.length, 16)
     assert.deepEqual(Object.keys(hant).filter((key) => key.startsWith('report.')), keys)
     assert.deepEqual(Object.keys(hans).filter((key) => key.startsWith('report.')), keys)
     assert.deepEqual(Object.keys(en).filter((key) => key.startsWith('report.')), keys)
     const order = Object.keys(hant)
-    const at = order.indexOf('hw.student.downloadF5Instructions')
-    assert.deepEqual(order.slice(at + 1, at + 1 + keys.length), keys)
+    const at = order.indexOf('report.staff.title')
+    assert.deepEqual(order.slice(at, at + keys.length), keys)
     let de = 0
     let ba = 0
     let se = 0

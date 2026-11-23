@@ -1,6 +1,7 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { contentJson } from '../i18n/content'
 import { useT, type MessageKey } from '../i18n'
+import { pullClassShellMarks, pushClassShellMark } from '../lib/classShellMarks'
 import {
   comparisonChoiceAllowed,
   lessonComparisonWorks,
@@ -13,12 +14,14 @@ import type { InviteRoom } from '../lib/classInvite'
 import {
   confirmHomeworkTeacherMark,
   homeworkCounts,
+  fileFollowKind,
   homeworkFileLabel,
   homeworkPlateMatch,
   homeworkRosterIds,
   homeworkRows,
   homeworkSessionFile,
   homeworkSubmissionId,
+  type FileFollowKind,
   saveHomeworkTeacherComment,
   teacherCommentForSubmission,
   teacherMarkForSubmission,
@@ -40,10 +43,12 @@ const NAME_KEY: Record<string, MessageKey> = {
  */
 export function HomeworkReview({
   classId,
+  classLabel,
   demoClass,
   sharedRoom = null,
 }: {
   classId: string
+  classLabel: string
   demoClass: boolean
   sharedRoom?: InviteRoom | null
 }) {
@@ -72,6 +77,10 @@ export function HomeworkReview({
   const [open, setOpen] = useState(true)
   const [fileId, setFileId] = useState<string | null>(null)
   const titleId = 'hw-staff-title'
+  const markTitleId = 'hw-staff-mark-title'
+  useEffect(() => {
+    void pullClassShellMarks(classId)
+  }, [classId])
   const opened = submissions.find((row) => row.id === fileId) ?? null
   const demoCopy = {
     title: t('assign.staff.demoTitle'),
@@ -84,22 +93,30 @@ export function HomeworkReview({
     instructions: t('assign.staff.f5demoInstructions'),
   }
 
+  const roster = sharedRoster ?? homeworkRosterIds(classId, demoClass)
+  const marks = useHomeworkTeacherMarks()
+
   return (
+    <>
     <section
-      aria-labelledby={titleId}
+      aria-labelledby={markTitleId}
       data-testid="hw-staff"
       data-soft-motion="off"
       data-hw-open={fileId ? 'file' : open ? 'list' : 'closed'}
       className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5"
     >
-      <h2 id={titleId} className="text-xl font-bold text-slate-900">
-        {t('hw.staff.title')}
+      <h2 id={markTitleId} className="text-xl font-bold text-[#0D9488]">
+        {t('staff.block.assignmentMark')}
       </h2>
+      <h3 id={titleId} className="text-xl font-bold text-slate-900">
+        {t('hw.staff.title')}
+      </h3>
 
       {opened ? (
         <SubmittedFile
           key={opened.id}
           submission={opened}
+          classId={classId}
           onBack={() => setFileId(null)}
         />
       ) : (
@@ -119,7 +136,6 @@ export function HomeworkReview({
               <p className="text-sm leading-relaxed text-slate-600">{t('hw.staff.intro')}</p>
               {assignments.map((assignment) => {
                 const shown = visibleAssignment(assignment, demoCopy, f5Copy)
-                const roster = sharedRoster ?? homeworkRosterIds(classId, demoClass)
                 const rows = homeworkRows({ submissions }, classId, assignment.id, roster)
                 const counts = homeworkCounts(rows)
                 const plate = homeworkPlateMatch(counts)
@@ -194,10 +210,40 @@ export function HomeworkReview({
         </>
       )}
     </section>
+    <AssignmentAnalysis
+      classId={classId}
+      demoClass={demoClass}
+      assignments={assignments}
+      submissions={submissions}
+      roster={roster}
+      marks={marks}
+      demoCopy={demoCopy}
+      f5Copy={f5Copy}
+    />
+    <ClassAnalysis
+      classId={classId}
+      classLabel={classLabel}
+      demoClass={demoClass}
+      assignments={assignments}
+      submissions={submissions}
+      roster={roster}
+      marks={marks}
+      demoCopy={demoCopy}
+      f5Copy={f5Copy}
+    />
+    </>
   )
 }
 
-function SubmittedFile({ submission, onBack }: { submission: HwSubmission; onBack: () => void }) {
+function SubmittedFile({
+  submission,
+  classId,
+  onBack,
+}: {
+  submission: HwSubmission
+  classId: string
+  onBack: () => void
+}) {
   const { t } = useT()
   const session = homeworkSessionFile(submission.id)
   const image = session && session.mime.startsWith('image/') ? session.url : null
@@ -252,7 +298,7 @@ function SubmittedFile({ submission, onBack }: { submission: HwSubmission; onBac
       <p data-testid="hw-staff-pages-hint" className="text-sm leading-relaxed text-slate-600">
         {t('hw.staff.pagesHint')}
       </p>
-      <GradePanel submissionId={submission.id} />
+      <GradePanel submissionId={submission.id} classId={classId} assignmentId={submission.assignmentId} />
       <CommentEditor submissionId={submission.id} />
       <p data-testid="hw-staff-file-not-marking" className="text-sm leading-relaxed text-slate-600">
         {t('hw.staff.notMarking')}
@@ -269,22 +315,55 @@ function SubmittedFile({ submission, onBack }: { submission: HwSubmission; onBac
   )
 }
 
-function GradePanel({ submissionId }: { submissionId: string }) {
+function autoGradeKey(kind: FileFollowKind | null): MessageKey {
+  if (kind === 'f4') return 'hw.staff.autoGradeValue.f4'
+  if (kind === 'f5') return 'hw.staff.autoGradeValue.f5'
+  return 'hw.staff.autoGradeValue'
+}
+
+function teacherGradeKey(kind: FileFollowKind | null): MessageKey {
+  if (kind === 'f4') return 'hw.staff.teacherGradeValue.f4'
+  if (kind === 'f5') return 'hw.staff.teacherGradeValue.f5'
+  return 'hw.staff.teacherGradeValue'
+}
+
+function StatusChip({ tone, children }: { tone: 'teal' | 'quiet'; children: string }) {
+  const face =
+    tone === 'teal'
+      ? 'inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]'
+      : 'inline-flex rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700'
+  return <span className={face}>{children}</span>
+}
+
+function GradePanel({
+  submissionId,
+  classId,
+  assignmentId,
+}: {
+  submissionId: string
+  classId: string
+  assignmentId: string
+}) {
   const { t } = useT()
   const marks = useHomeworkTeacherMarks()
   const saved = teacherMarkForSubmission(marks, submissionId)
-  const official = t('hw.staff.teacherGradeValue')
-  const [draft, setDraft] = useState(saved ?? official)
-  const [confirmed, setConfirmed] = useState(saved != null)
+  const official = t(teacherGradeKey(fileFollowKind(assignmentId)))
+  const [draft, setDraft] = useState<string | null>(null)
+  const value = draft ?? saved ?? official
   const fieldId = 'hw-staff-teacher-grade'
+  const savedNow = saved != null && value.trim() === saved
+  const readyFace = 'whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white'
+  const savedFace = 'whitespace-nowrap rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488]'
 
   function confirm() {
-    const ok = confirmHomeworkTeacherMark(submissionId, draft)
-    if (ok) setConfirmed(true)
+    const ok = confirmHomeworkTeacherMark(submissionId, value, classId)
+    if (!ok) return
+    setDraft(null)
+    void pushClassShellMark(classId, submissionId, value)
   }
 
   return (
-    <div data-testid="hw-staff-grade" data-hw-grade-saved={confirmed ? 'true' : 'false'} className="space-y-3">
+    <div data-testid="hw-staff-grade" data-hw-grade-saved={savedNow ? 'true' : 'false'} data-class-shell="marks" className="space-y-3">
       <div>
         <h4 className="text-base font-bold text-slate-900">{t('hw.staff.criteriaTitle')}</h4>
         <p data-testid="hw-staff-criteria" className="mt-1 text-sm leading-relaxed text-slate-700">
@@ -294,7 +373,7 @@ function GradePanel({ submissionId }: { submissionId: string }) {
       <div>
         <h4 className="text-base font-bold text-slate-900">{t('hw.staff.autoGradeLabel')}</h4>
         <p data-testid="hw-staff-auto-grade" className="mt-1 text-sm leading-relaxed text-slate-700">
-          {t('hw.staff.autoGradeValue')}
+          {t(autoGradeKey(fileFollowKind(assignmentId)))}
         </p>
       </div>
       <div>
@@ -310,24 +389,190 @@ function GradePanel({ submissionId }: { submissionId: string }) {
         <textarea
           id={fieldId}
           data-testid="hw-staff-teacher-grade"
-          value={draft}
-          rows={2}
+          value={value}
+          rows={3}
           onChange={(event) => {
             setDraft(event.target.value)
-            setConfirmed(false)
           }}
-          className="mt-2 w-full resize-y rounded-full border border-[#0D9488] bg-white px-4 py-3 text-sm leading-relaxed text-slate-800"
+          className="mt-2 w-full resize-y rounded-3xl border border-[#0D9488] bg-white px-4 py-3 text-sm leading-relaxed text-slate-800"
         />
       </div>
+      <p className="m-0">
+        {savedNow ? (
+          <StatusChip tone="teal">{t('hw.staff.gradeSavedChip')}</StatusChip>
+        ) : (
+          <StatusChip tone="quiet">{t('hw.staff.waitingConfirmChip')}</StatusChip>
+        )}
+      </p>
+      {savedNow ? (
+        <p data-testid="hw-staff-grade-saved" className="text-sm leading-relaxed text-[#0D9488]">
+          {t('hw.staff.gradeSaved')}
+        </p>
+      ) : null}
       <button
         type="button"
         data-testid="hw-staff-save-grade"
+        data-grade-face={savedNow ? 'saved' : 'ready'}
         onClick={confirm}
-        className="whitespace-nowrap rounded-full bg-[#0D9488] px-4 py-2 text-sm font-semibold text-white"
+        className={savedNow ? savedFace : readyFace}
       >
         {t('hw.staff.saveGrade')}
       </button>
+      <p data-testid="hw-staff-reconfirm" className="text-sm leading-relaxed text-slate-600">
+        {t('hw.staff.reconfirmHint')}
+      </p>
     </div>
+  )
+}
+
+function AssignmentAnalysis({
+  classId,
+  demoClass,
+  assignments,
+  submissions,
+  roster,
+  marks,
+  demoCopy,
+  f5Copy,
+}: {
+  classId: string
+  demoClass: boolean
+  assignments: ReturnType<typeof assignmentsForClass>
+  submissions: HwSubmission[]
+  roster: readonly string[]
+  marks: readonly { id: string; mark: string }[]
+  demoCopy: { title: string; due: string; instructions: string }
+  f5Copy: { title: string; due: string; instructions: string }
+}) {
+  const { t } = useT()
+  const titleId = 'staff-assignment-analysis-title'
+  return (
+    <section
+      aria-labelledby={titleId}
+      data-testid="staff-assignment-analysis"
+      data-soft-motion="off"
+      className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5"
+    >
+      <h2 id={titleId} className="text-xl font-bold text-[#0D9488]">
+        {t('staff.block.assignmentAnalysis')}
+      </h2>
+      <p className="text-sm leading-relaxed text-slate-600">{t('staff.assignmentAnalysis.lead')}</p>
+      {assignments.map((assignment) => {
+        const shown = visibleAssignment(assignment, demoCopy, f5Copy)
+        const rows = homeworkRows({ submissions }, classId, assignment.id, roster)
+        const counts = homeworkCounts(rows)
+        const plate = homeworkPlateMatch(counts)
+        const kind = fileFollowKind(assignment.id)
+        return (
+          <div key={assignment.id} data-testid={`staff-assignment-analysis-${assignment.id}`} className="space-y-3">
+            <h3 className="text-lg font-bold text-slate-900">{shown.title}</h3>
+            {roster.length > 0 ? (
+              <p className="text-sm font-semibold text-[#0D9488]">
+                {plate ? t('hw.staff.count') : `${counts.submitted}\uFF0F${counts.total}`}
+              </p>
+            ) : null}
+            {counts.submitted > 0 ? (
+              <p className="text-sm leading-relaxed text-slate-700">{t(autoGradeKey(kind))}</p>
+            ) : null}
+            <ul className="m-0 list-none space-y-3 p-0">
+              {rows.map((row) => (
+                <WorkRow key={row.studentId} studentId={row.studentId} submitted={row.status === 'submitted'} saved={row.submission != null && teacherMarkForSubmission(marks, row.submission.id) != null} />
+              ))}
+            </ul>
+          </div>
+        )
+      })}
+      {demoClass ? <p className="text-sm text-slate-600">{t('inspect.staff.demoNote')}</p> : null}
+    </section>
+  )
+}
+
+function ClassAnalysis({
+  classId,
+  classLabel,
+  demoClass,
+  assignments,
+  submissions,
+  roster,
+  marks,
+  demoCopy,
+  f5Copy,
+}: {
+  classId: string
+  classLabel: string
+  demoClass: boolean
+  assignments: ReturnType<typeof assignmentsForClass>
+  submissions: HwSubmission[]
+  roster: readonly string[]
+  marks: readonly { id: string; mark: string }[]
+  demoCopy: { title: string; due: string; instructions: string }
+  f5Copy: { title: string; due: string; instructions: string }
+}) {
+  const { t } = useT()
+  const titleId = 'staff-class-analysis-title'
+  return (
+    <section
+      aria-labelledby={titleId}
+      data-testid="staff-class-analysis"
+      data-soft-motion="off"
+      className="space-y-4 rounded-[2rem] bg-[#FFF9E9] p-4 sm:p-5"
+    >
+      <h2 id={titleId} className="text-xl font-bold text-[#0D9488]">
+        {t('staff.block.classAnalysis')}
+      </h2>
+      <p className="text-sm leading-relaxed text-slate-600">{t('staff.classAnalysis.lead')}</p>
+      <p className="font-semibold text-slate-900">{classLabel}</p>
+      {demoClass ? <p className="text-sm text-slate-600">{t('inspect.staff.demoNote')}</p> : null}
+      <ul className="m-0 list-none space-y-3 p-0">
+        {roster.map((studentId) => (
+          <li key={studentId} data-testid={`staff-class-analysis-${studentId}`} className="rounded-3xl border border-[#0D9488]/30 bg-[#FFF9E9] p-4">
+            <p className="font-semibold text-slate-900">{NAME_KEY[studentId] ? t(NAME_KEY[studentId]) : studentId}</p>
+            <div className="mt-3 space-y-3">
+              {assignments.map((assignment) => {
+                const shown = visibleAssignment(assignment, demoCopy, f5Copy)
+                const row = homeworkRows({ submissions }, classId, assignment.id, [studentId])[0]
+                const submitted = row?.status === 'submitted'
+                const saved = row?.submission != null && teacherMarkForSubmission(marks, row.submission.id) != null
+                return (
+                  <div key={assignment.id}>
+                    <p className="text-sm text-slate-700">{shown.title}</p>
+                    <p className="mt-2 flex flex-wrap gap-2">
+                      <StatusChip tone={submitted ? 'teal' : 'quiet'}>
+                        {submitted ? t('hw.staff.homeworkDoneChip') : t('hw.staff.homeworkChip')}
+                      </StatusChip>
+                      {submitted ? (
+                        <StatusChip tone={saved ? 'teal' : 'quiet'}>
+                          {saved ? t('hw.staff.gradeSavedChip') : t('hw.staff.waitingConfirmChip')}
+                        </StatusChip>
+                      ) : null}
+                    </p>
+                  </div>
+                )
+              })}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+function WorkRow({ studentId, submitted, saved }: { studentId: string; submitted: boolean; saved: boolean }) {
+  const { t } = useT()
+  return (
+    <li className="rounded-3xl border border-[#0D9488]/30 bg-[#FFF9E9] p-4">
+      <p className="font-semibold text-slate-900">{NAME_KEY[studentId] ? t(NAME_KEY[studentId]) : studentId}</p>
+      <p className="mt-2 flex flex-wrap gap-2">
+        <StatusChip tone={submitted ? 'teal' : 'quiet'}>
+          {submitted ? t('hw.staff.homeworkDoneChip') : t('hw.staff.homeworkChip')}
+        </StatusChip>
+        {submitted ? (
+          <StatusChip tone={saved ? 'teal' : 'quiet'}>
+            {saved ? t('hw.staff.gradeSavedChip') : t('hw.staff.waitingConfirmChip')}
+          </StatusChip>
+        ) : null}
+      </p>
+    </li>
   )
 }
 
