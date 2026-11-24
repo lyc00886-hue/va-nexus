@@ -26,28 +26,19 @@ export function OfficialGoalChips() {
   )
 }
 
-/** Thin stage, theme, and theme-message header for one live senior-secondary unit. */
+/** One path line for a live unit: stage and theme. The longer message stays available to assistive tech. */
 export function OfficialUnitHeader({ unitId }: { unitId: string }) {
   const format = officialUnit(unitId)
   if (!format) return null
   return (
-    <section
-      data-official-header={unitId}
-      className="mt-3 space-y-3 rounded-2xl border border-[#0D9488] bg-white px-4 py-3"
-    >
-      <div data-official-stage={unitId}>
-        <h3 className="text-sm font-bold text-[#0D9488]">{line('unit.header.stage.label')}</h3>
-        <p className="mt-1 text-sm leading-relaxed text-slate-800">{line(format.stageKey)}</p>
-      </div>
-      <div>
-        <h3 className="text-sm font-bold text-[#0D9488]">{line('unit.f4u3.theme.label')}</h3>
-        <p className="mt-1 text-sm font-semibold leading-relaxed text-slate-900">{line(format.themeKey)}</p>
-      </div>
-      <div>
-        <h3 className="text-sm font-bold text-[#0D9488]">{line('unit.f4u3.themeMessage.label')}</h3>
-        <p className="mt-1 text-sm leading-relaxed text-slate-800">{line(format.messageKey)}</p>
-      </div>
-      <OfficialGoalChips />
+    <section data-official-header={unitId} data-official-stage={unitId} className="rounded-2xl bg-[#E7F6F3] px-4 py-2">
+      <h3 className="text-sm font-semibold text-[#0D9488]">
+        <span className="sr-only">{line('unit.header.stage.label')}</span>
+        {line(format.stageKey)}
+        <span aria-hidden> · </span>
+        {line(format.themeKey)}
+      </h3>
+      <p className="sr-only">{line(format.messageKey)}</p>
     </section>
   )
 }
