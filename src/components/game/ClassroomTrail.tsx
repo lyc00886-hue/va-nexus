@@ -1,39 +1,32 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react'
+import type { ButtonHTMLAttributes } from 'react'
 import type { Lesson } from '../../game/types'
 import { BiSpan } from './BilingualText'
 import { QuestionTypeChips } from './QuestionTypeChips'
 
-export function TrailCard({
+/** Full-width unit row. The cover is the image button; the official title stays inside the frame. */
+export function UnitImageCard({
   selected,
-  children,
+  cover,
+  title,
   ...rest
-}: { selected: boolean; children: ReactNode } & ButtonHTMLAttributes<HTMLButtonElement>) {
+}: { selected: boolean; cover?: string; title: string } & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
       type="button"
       {...rest}
       className={
         selected
-          ? 'flex h-full min-h-24 w-full items-start gap-2 rounded-2xl border-2 border-[#0D9488] bg-[#0D9488] px-3 py-3 text-left text-white'
-          : 'flex h-full min-h-24 w-full items-start gap-2 rounded-2xl border-2 border-[#0D9488] bg-white px-3 py-3 text-left text-slate-900'
+          ? 'flex w-full min-w-0 items-center gap-3 rounded-3xl border-2 border-[#0D9488] bg-[#E7F6F3] px-3 py-2.5 text-left'
+          : 'flex w-full min-w-0 items-center gap-3 rounded-3xl border-2 border-[#0D9488] bg-white px-3 py-2.5 text-left'
       }
     >
-      {children}
+      <span className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[#0D9488]/40 bg-[#FFF9E9]">
+        {cover ? <img src={cover} alt="" className="h-full w-full object-cover" /> : null}
+      </span>
+      <span className="min-w-0 flex-1 text-sm font-bold leading-snug text-slate-900 wrap-anywhere">
+        <BiSpan text={title} />
+      </span>
     </button>
-  )
-}
-
-export function TrailIndex({ n, selected }: { n: number; selected: boolean }) {
-  return (
-    <span
-      className={
-        selected
-          ? 'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-white text-sm font-bold text-[#0D9488]'
-          : 'inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-[#0D9488] text-sm font-bold text-[#FFF9E9]'
-      }
-    >
-      {n}
-    </span>
   )
 }
 
@@ -61,11 +54,11 @@ export function LessonTrail({
             onClick={() => onOpen(lesson.id)}
             className={
               active
-                ? 'block w-full rounded-2xl bg-[#E7F6F3] px-3 py-3 text-left'
-                : 'block w-full rounded-2xl border border-[#d7efe9] bg-[#FFF9E9] px-3 py-3 text-left'
+                ? 'block w-full min-w-0 rounded-2xl bg-[#E7F6F3] px-3 py-3 text-left'
+                : 'block w-full min-w-0 rounded-2xl border border-[#d7efe9] bg-[#FFF9E9] px-3 py-3 text-left'
             }
           >
-            <span className="block text-sm font-bold text-slate-900">
+            <span className="block min-w-0 text-sm font-bold text-slate-900 wrap-anywhere">
               <BiSpan text={lesson.title} />
             </span>
             {active ? (
