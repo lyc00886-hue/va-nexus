@@ -1,58 +1,84 @@
-import { useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import { Check } from 'lucide-react'
 import { getF4Units } from '../../game/f4Demo'
 import { getF5Units } from '../../game/f5Demo'
 import { getF6Units } from '../../game/f6Demo'
 import type { Unit } from '../../game/types'
-import { useT } from '../../i18n'
-import { QUEST_CHROME, type QuestFormId } from '../../lib/mapQuest'
+import { useT, type MessageKey } from '../../i18n'
+import { QUEST_CHROME, questXpMoves, type QuestFormId } from '../../lib/mapQuest'
 import { useQuestForm, useQuestMotionPlay } from '../../lib/useQuestForm'
 import { QuestMotionButton, QuestSectionSwitch } from './MapQuestChrome'
 import {
+  questBand,
   questCurrentIndex,
   questNodeFramed,
   questNodeProgress,
   QUEST_LABEL_WIDTH_RATIO,
+  questPathLayout,
+  questPathSpacing,
+  type QuestBandId,
+  type QuestNodeProgress,
 } from '../../lib/questPathLayout'
 import { HomeworkMapEntry } from '../HomeworkStudent'
 import { InspectMapEntry } from '../InspectMapEntry'
 import { BiSpan } from './BilingualText'
-import { LessonTrail, TrailCard, TrailIndex } from './ClassroomTrail'
 import { F4SlidesEntry } from './F4SlidesEntry'
 import { LessonPlayer } from './LessonPlayer'
 import { OfficialUnitHeader } from './OfficialFormat'
+import { QuestPathArt } from './QuestPathArt'
 import { QuestTraining } from './QuestTraining'
+
+const BAND_LABEL: Record<QuestBandId, MessageKey> = {
+  garden: 'map.band.garden',
+  studio: 'map.band.studio',
+  classroom: 'map.band.classroom',
+  frames: 'map.band.frames',
+  exam: 'map.band.exam',
+}
 
 const EMPTY_UNITS: Unit[] = []
 
 export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Unit[]; media?: Unit[] }) {
-  const { locale } = useT()
+  const { locale, t, bilingual } = useT()
+  const pathRef = useRef<HTMLDivElement>(null)
+  const [pathWidth, setPathWidth] = useState(360)
   const [form, choose] = useQuestForm()
   const motion = useQuestMotionPlay()
   const [openUnitId, setOpenUnitId] = useState<string | null>(null)
   const [lessonId, setLessonId] = useState<string | null>(null)
-  const [pathUnitId, setPathUnitId] = useState<string | null>(null)
-  const [pathLessonId, setPathLessonId] = useState<string | null>(null)
+  useLayoutEffect(() => {
+    const el = pathRef.current
+    if (!el) return
+    const read = () => {
+      const next = el.clientWidth || 360
+      setPathWidth((prev) => (Math.abs(prev - next) < 2 ? prev : next))
+    }
+    read()
+    const observer = new ResizeObserver(read)
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [form, bilingual, openUnitId])
   const [seenForm, setSeenForm] = useState(form)
   if (seenForm !== form) {
     setSeenForm(form)
     setOpenUnitId(null)
     setLessonId(null)
-    setPathUnitId(null)
-    setPathLessonId(null)
   }
   const chrome = QUEST_CHROME[locale]
   const yearUnits = form === 's5' ? getF5Units() : form === 's6' ? getF6Units() : getF4Units()
   const openYear = yearUnits.find((unit) => unit.id === openUnitId)
-  const pathUnit = yearUnits.find((unit) => unit.id === pathUnitId) ?? yearUnits[0] ?? null
-  const pathLesson = pathUnit?.nodes.find((node) => node.id === pathLessonId) ?? null
+  const spacing = questPathSpacing(pathWidth, bilingual)
+  const layout = questPathLayout(yearUnits.length, spacing.gap, spacing.bottom)
   const currentIndex = questCurrentIndex(0, yearUnits.length)
+  const bands = Array.from({ length: yearUnits.length }, (_, index) => {
+    const id = questBand(index)
+    return { id, label: t(BAND_LABEL[id]) }
+  })
 
   function chooseForm(next: QuestFormId) {
     choose(next)
     setOpenUnitId(null)
     setLessonId(null)
-    setPathUnitId(null)
-    setPathLessonId(null)
   }
 
   return (
@@ -86,60 +112,44 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         />
       ) : (
         <div
+          ref={pathRef}
           data-quest-path="illustrated"
           data-quest-entry="path"
           data-quest-xp="static"
-          data-classroom-units
-          className="relative mx-auto mt-3 w-full max-w-[24rem] space-y-3 sm:max-w-none"
-          style={{ ['--quest-label-ratio' as string]: QUEST_LABEL_WIDTH_RATIO }}
+          className="relative mx-auto mt-3 w-full max-w-[24rem]"
         >
-          {pathUnit ? <OfficialUnitHeader unitId={pathUnit.id} /> : null}
-          <ol className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <QuestPathArt layout={layout} bands={bands} motion={motion} />
+          <ol className="absolute inset-0 m-0 list-none p-0">
             {yearUnits.map((unit, index) => {
-              const selected = unit.id === pathUnit?.id
+              const point = layout.points[index]
               const progress = questNodeProgress(index, currentIndex)
-              const framed = questNodeFramed(index)
+              if (!point) return null
               return (
-                <li key={unit.id} className="min-w-0">
-                  <TrailCard
-                    data-quest-node={unit.id}
-                    data-quest-active={progress === 'current' ? 'true' : 'false'}
-                    data-quest-progress={progress}
-                    data-quest-state={framed ? 'checkpoint' : progress}
-                    data-quest-shape={framed ? 'frame' : 'ring'}
-                    aria-current={progress === 'current' ? 'step' : undefined}
-                    aria-pressed={selected}
-                    selected={selected}
-                    onClick={() => {
-                      setPathUnitId(unit.id)
-                      setPathLessonId(null)
+                <li
+                  key={unit.id}
+                  className="absolute -translate-x-1/2 -translate-y-6 text-center"
+                  style={{
+                    left: `${(point.x / layout.width) * 100}%`,
+                    top: `${(point.y / layout.height) * 100}%`,
+                    width: `${QUEST_LABEL_WIDTH_RATIO * 100}%`,
+                  }}
+                >
+                  <PathNode
+                    unitId={unit.id}
+                    cover={unit.coverImage}
+                    progress={progress}
+                    framed={questNodeFramed(index)}
+                    motion={motion}
+                    label={unit.title}
+                    onOpen={() => {
+                      setLessonId(null)
+                      setOpenUnitId(unit.id)
                     }}
-                  >
-                    <TrailIndex n={index + 1} selected={selected} />
-                    <span className="min-w-0 text-sm font-bold leading-snug">
-                      <BiSpan text={unit.title} />
-                    </span>
-                  </TrailCard>
+                  />
                 </li>
               )
             })}
           </ol>
-          {pathUnit ? (
-            <LessonTrail
-              lessons={pathUnit.nodes}
-              focusId={pathLessonId}
-              onOpen={(id) => setPathLessonId(id)}
-            />
-          ) : null}
-          {pathLesson ? (
-            <LessonPlayer
-              lesson={pathLesson}
-              kind="lesson"
-              exitLabel={chrome.back}
-              onExit={() => setPathLessonId(null)}
-            />
-          ) : null}
-          {pathUnit?.id === 'F4-U1-ORIENT' ? <QuestTraining art={art} media={media} /> : null}
         </div>
       )}
       <div className="mt-4 space-y-3">
@@ -147,6 +157,73 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         <HomeworkMapEntry />
       </div>
     </section>
+  )
+}
+
+function PathNode({
+  unitId,
+  cover,
+  progress,
+  framed,
+  motion,
+  label,
+  onOpen,
+}: {
+  unitId: string
+  cover?: string
+  progress: QuestNodeProgress
+  framed: boolean
+  motion: boolean
+  label: string
+  onOpen: () => void
+}) {
+  const moves = questXpMoves()
+  const current = progress === 'current'
+  const done = progress === 'done'
+  const locked = progress === 'locked'
+  return (
+    <button
+      type="button"
+      data-quest-node={unitId}
+      data-quest-active={current ? 'true' : 'false'}
+      data-quest-progress={progress}
+      data-quest-state={framed ? 'checkpoint' : progress}
+      data-quest-shape={framed ? 'frame' : 'ring'}
+      data-unit-image={cover ? 'cover' : 'empty'}
+      aria-current={current ? 'step' : undefined}
+      onClick={onOpen}
+      className="flex w-full flex-col items-center bg-transparent"
+    >
+      <span className="relative flex h-16 w-16 items-center justify-center">
+        {current && motion ? (
+          <span className="quest-ring-pulse absolute h-16 w-16 rounded-full border-2 border-[#0D9488]" aria-hidden />
+        ) : null}
+        {current ? (
+          <span
+            data-quest-xp="static"
+            data-quest-xp-moves={moves ? 'on' : 'off'}
+            className="absolute h-[4.6rem] w-[4.6rem] rounded-full border-2 border-[#0D9488]"
+            aria-hidden
+          />
+        ) : null}
+        {current ? <span className="absolute h-14 w-14 rounded-full border-2 border-[#0D9488]" aria-hidden /> : null}
+        <span
+          className={`relative h-12 w-12 overflow-hidden rounded-full border-2 bg-[#FFF9E9] ${
+            locked ? 'border-[#0D9488]/45 opacity-80' : 'border-[#0D9488]'
+          }`}
+        >
+          {cover ? <img src={cover} alt="" className="h-full w-full object-cover" /> : null}
+          {done ? (
+            <span className="absolute right-0 bottom-0 flex h-5 w-5 items-center justify-center rounded-full bg-white ring-1 ring-[#0D9488]">
+              <Check className="h-3.5 w-3.5 text-[#0D9488]" strokeWidth={2.6} aria-hidden />
+            </span>
+          ) : null}
+        </span>
+      </span>
+      <span className="mt-1 block w-full rounded-xl bg-white/95 px-2 py-1 text-center text-xs font-bold leading-snug text-slate-900 shadow-sm ring-1 ring-[#d7efe9] wrap-anywhere">
+        <BiSpan text={label} />
+      </span>
+    </button>
   )
 }
 
@@ -173,7 +250,7 @@ function F4UnitPanel({
       <button type="button" onClick={onBack} className="text-sm font-semibold text-[#0D9488]">
         {backLabel}
       </button>
-      <h2 className="mt-3 text-xl font-bold text-slate-900">
+      <h2 className="mt-3 text-xl font-bold text-slate-900 wrap-anywhere">
         <BiSpan text={unit.title} />
       </h2>
       <OfficialUnitHeader unitId={unit.id} />
@@ -186,7 +263,7 @@ function F4UnitPanel({
                 type="button"
                 aria-expanded={shown}
                 onClick={() => onLesson(shown ? null : node.id)}
-                className="block w-full text-left text-sm font-bold text-slate-900"
+                className="block w-full min-w-0 text-left text-sm font-bold text-slate-900 wrap-anywhere"
               >
                 <BiSpan text={node.title} />
               </button>

@@ -27,6 +27,7 @@ import {
   questNodeFramed,
   questNodeProgress,
   questPathLayout,
+  questPathSpacing,
   questSceneBox,
 } from './questPathLayout.ts'
 
@@ -225,6 +226,16 @@ describe('quest map structure', () => {
     }
     const questSource = read('src/components/game/MapQuest.tsx')
     assert.match(questSource, /QUEST_LABEL_WIDTH_RATIO/)
+    assert.match(questSource, /QuestPathArt/)
+    assert.match(questSource, /unit\.coverImage/)
+    assert.match(questSource, /data-unit-image/)
+    assert.equal(questSource.includes('grid-cols-2'), false)
+    assert.equal(questSource.includes('TrailCard'), false)
+    const year = read('src/components/game/F4YearList.tsx')
+    assert.match(year, /unit\.coverImage/)
+    assert.match(year, /UnitImageCard/)
+    assert.equal(year.includes('grid-cols-2'), false)
+    assert.equal(year.includes('grid-cols-4'), false)
     assert.deepEqual(
       [0, 1, 2, 3, 4].map(questBand),
       ['garden', 'studio', 'classroom', 'frames', 'exam'],
@@ -243,6 +254,16 @@ describe('quest map structure', () => {
     assert.equal(questMotionPlay({ pref: true, reduceMotion: false, prefersReducedMotion: false }), true)
     assert.equal(questMotionPlay({ pref: true, reduceMotion: true, prefersReducedMotion: false }), false)
     assert.equal(questMotionPlay({ pref: true, reduceMotion: false, prefersReducedMotion: true }), false)
+    const wide = questPathSpacing(384, false)
+    const narrow = questPathSpacing(228, false)
+    const narrowBi = questPathSpacing(228, true)
+    assert.equal(wide.gap, 236)
+    assert.ok(narrow.gap > wide.gap)
+    assert.ok(narrowBi.gap > narrow.gap)
+    assert.ok(narrowBi.bottom > wide.bottom)
+    const spaced = questPathLayout(7, narrowBi.gap, narrowBi.bottom)
+    assert.equal(spaced.points.length, 7)
+    assert.ok(spaced.points[1].y - spaced.points[0].y >= narrowBi.gap)
     const files = {
       'zh-Hant': ['動態：關', '動態：開'],
       'zh-Hans': ['动态：关', '动态：开'],

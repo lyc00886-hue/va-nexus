@@ -18,6 +18,7 @@ const WIDTH = 360
 const TOP = 118
 /** Room under a two-line unit name so the tag clears the next scene card. */
 const GAP = 236
+const BOTTOM = 124
 
 /** Share of the path width used by a unit-name tag. Kept off the scene cards. */
 export const QUEST_LABEL_WIDTH_RATIO = 0.44
@@ -47,13 +48,33 @@ export function questNodeProgress(index: number, currentIndex: number): QuestNod
   return 'locked'
 }
 
-export function questPathLayout(count: number): { width: number; height: number; points: QuestPathPoint[] } {
+export function questPathLayout(
+  count: number,
+  gap = GAP,
+  bottom = BOTTOM,
+): { width: number; height: number; points: QuestPathPoint[] } {
+  const step = Math.max(GAP, gap)
+  const tail = Math.max(BOTTOM, bottom)
   const points = Array.from({ length: Math.max(count, 0) }, (_, index) => ({
     x: NODE_X[index % 2],
-    y: TOP + index * GAP,
+    y: TOP + index * step,
   }))
-  const height = (points[points.length - 1]?.y ?? TOP) + 124
+  const height = (points[points.length - 1]?.y ?? TOP) + tail
   return { width: WIDTH, height, points }
+}
+
+/**
+ * Vertical room for a wrapped official title.
+ * Narrow screens and 英中對照 need a longer step so the label stays off the next scene.
+ * Wide single-language maps keep the original step.
+ */
+export function questPathSpacing(pathWidth: number, bilingual: boolean): { gap: number; bottom: number } {
+  const width = Math.max(200, pathWidth || WIDTH)
+  const scale = width / WIDTH
+  const labelH = (bilingual ? 72000 : 42000) / width
+  const gap = Math.max(GAP, Math.ceil((labelH + 60) / scale + 52))
+  const bottom = Math.max(BOTTOM, Math.ceil((labelH + 70) / scale))
+  return { gap, bottom }
 }
 
 /** Scene card on the side opposite the node, inset from the unit-name tag. */

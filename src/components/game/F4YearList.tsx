@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import type { Unit } from '../../game/types'
 import { t, type MessageKey } from '../../i18n'
-import { BiSpan } from './BilingualText'
-import { LessonTrail, TrailCard, TrailIndex } from './ClassroomTrail'
+import { UnitImageCard, LessonTrail } from './ClassroomTrail'
 import { F4SlidesEntry } from './F4SlidesEntry'
 import { LessonPlayer } from './LessonPlayer'
 import { OfficialUnitHeader } from './OfficialFormat'
 
 /**
- * Classic map year list. Units sit on one path. A lesson opens in the player.
+ * Classic map year list. Units sit on full-width image rows.
+ * A lesson opens in the player.
  */
 export function F4YearList({
   units,
@@ -19,9 +19,9 @@ export function F4YearList({
   gradeKey?: MessageKey
   subtitleKey?: MessageKey
 }) {
-  const [unitId, setUnitId] = useState<string | null>(units[0]?.id ?? null)
+  const [unitId, setUnitId] = useState<string | null>(null)
   const [lessonId, setLessonId] = useState<string | null>(null)
-  const open = units.find((unit) => unit.id === unitId) ?? units[0] ?? null
+  const open = units.find((unit) => unit.id === unitId) ?? null
   const lesson = open?.nodes.find((node) => node.id === lessonId) ?? null
 
   return (
@@ -32,47 +32,42 @@ export function F4YearList({
         </p>
       ) : null}
       {gradeKey === 'map.grade.f4' ? <F4SlidesEntry /> : null}
-      <ol data-classroom-units className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-        {units.map((unit, index) => {
+      <ol data-classroom-units className="space-y-2">
+        {units.map((unit) => {
           const selected = unit.id === open?.id
           return (
-            <li key={unit.id} className="min-w-0">
-              <TrailCard
+            <li key={unit.id} className="min-w-0 space-y-2">
+              <UnitImageCard
                 data-f4-unit={unit.id}
-                aria-pressed={selected}
+                aria-expanded={selected}
                 selected={selected}
+                cover={unit.coverImage}
+                title={unit.title}
                 onClick={() => {
                   setLessonId(null)
-                  setUnitId(unit.id)
+                  setUnitId(selected ? null : unit.id)
                 }}
-              >
-                <TrailIndex n={index + 1} selected={selected} />
-                <span className="min-w-0 text-sm font-bold leading-snug">
-                  <BiSpan text={unit.title} />
-                </span>
-              </TrailCard>
+              />
+              {selected ? (
+                <div className="space-y-2">
+                  <OfficialUnitHeader unitId={unit.id} />
+                  <LessonTrail
+                    lessons={unit.nodes}
+                    focusId={lessonId}
+                    onOpen={(id) => {
+                      setUnitId(unit.id)
+                      setLessonId(id)
+                    }}
+                  />
+                  {lesson ? (
+                    <LessonPlayer lesson={lesson} kind="lesson" exitLabel={t('map.media.back')} onExit={() => setLessonId(null)} />
+                  ) : null}
+                </div>
+              ) : null}
             </li>
           )
         })}
       </ol>
-      {units.map((unit) =>
-        unit.id === open?.id ? (
-          <div key={unit.id} className="space-y-2">
-            <OfficialUnitHeader unitId={unit.id} />
-            <LessonTrail
-              lessons={unit.nodes}
-              focusId={lessonId}
-              onOpen={(id) => {
-                setUnitId(unit.id)
-                setLessonId(id)
-              }}
-            />
-            {lesson ? (
-              <LessonPlayer lesson={lesson} kind="lesson" exitLabel={t('map.media.back')} onExit={() => setLessonId(null)} />
-            ) : null}
-          </div>
-        ) : null,
-      )}
     </div>
   )
 }
