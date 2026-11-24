@@ -29,8 +29,10 @@ export function QuestTraining({ art, media }: { art: Unit[]; media: Unit[] }) {
   return (
     <div data-quest-training className="space-y-4">
       {visible.map((track) => (
-        <section key={track.id} data-quest-training={track.id} className="space-y-3">
-          <h2 className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-bold text-[#FFF9E9]">{track.title}</h2>
+        <details key={track.id} data-quest-training={track.id} className="space-y-3">
+          <summary className="cursor-pointer list-none">
+            <h2 className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-bold text-[#FFF9E9]">{track.title}</h2>
+          </summary>
           {track.units.map((unit) => (
             <article key={unit.id} data-quest-unit={unit.id} className="rounded-[1.5rem] border border-[#0D9488]/40 bg-white p-4">
               <h3 className="text-lg font-bold text-slate-900">{unit.title}</h3>
@@ -70,7 +72,7 @@ export function QuestTraining({ art, media }: { art: Unit[]; media: Unit[] }) {
               </ul>
             </article>
           ))}
-        </section>
+        </details>
       ))}
     </div>
   )

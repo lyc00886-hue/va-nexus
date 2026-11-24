@@ -35,9 +35,9 @@ export function ThinHint({ type }: { type: keyof typeof HINT }) {
   )
 }
 
-export function ThinPace() {
+export function ThinPace({ clear = false }: { clear?: boolean }) {
   return (
-    <p className="mt-3 text-xs text-slate-500">
+    <p data-qtype-pace className={clear ? 'text-sm font-semibold text-[#0D9488]' : 'mt-3 text-xs text-slate-500'}>
       <BiKey name="qtype.pace" />
     </p>
   )
@@ -237,6 +237,7 @@ export function DualReadBoard({
       <StandardWritingNote />
     ) : null
   if (stage) {
+    const sideBySide = structured && q.labels.length === 2
     return (
       <div
         data-thin-practice="dualRead"
@@ -245,18 +246,20 @@ export function DualReadBoard({
         data-lesson-scroll="body"
         className="min-h-0 flex-1 overflow-y-auto px-4 pb-2"
       >
-        <p className="mt-3">
-          <span data-qtype-chip="dualRead" className="inline-flex rounded-full bg-[#0D9488] px-4 py-1.5 text-base font-bold text-white">
-            {t('qtype.chip.dualRead')}
-          </span>
-        </p>
-        <ThinHint type="dualRead" />
         {prompt}
         {presentation === 'easy' ? <KeywordRow keys={comparisonChipKeys(lessonId)} onPick={applyText} /> : null}
-        {art}
-        {fields}
+        {sideBySide ? (
+          <LineFields labels={q.labels} values={values} revealed={revealed} onChange={onChange} easy={easy} columns={2} />
+        ) : (
+          <>
+            {art}
+            {fields}
+          </>
+        )}
         {writing}
-        <ThinPace />
+        <div className="mt-3">
+          <PracticeOnlyBar />
+        </div>
       </div>
     )
   }
@@ -560,34 +563,50 @@ function LineFields({
   values,
   revealed,
   easy = false,
+  columns = 1,
   onChange,
 }: {
   labels: readonly string[]
   values: string[]
   revealed: boolean
   easy?: boolean
+  columns?: 1 | 2
   onChange: (next: string[]) => void
 }) {
+  const sideBySide = columns === 2
   return (
-    <div className="mt-3 grid gap-3">
+    <div className={sideBySide ? 'mt-3 grid grid-cols-2 gap-3' : 'mt-3 grid gap-3'}>
       {labels.map((label, index) => (
-        <label key={label} className="grid gap-1">
-          <span className={`font-semibold text-[#0D9488] ${easy ? 'text-lg' : 'text-sm'}`}>
-        <BiSpan text={label} />
-      </span>
+        <label key={label} className={sideBySide ? 'grid' : 'grid gap-1'}>
+          {sideBySide ? (
+            <span className="sr-only">
+              <BiSpan text={label} />
+            </span>
+          ) : (
+            <span className={`font-semibold text-[#0D9488] ${easy ? 'text-lg' : 'text-sm'}`}>
+              <BiSpan text={label} />
+            </span>
+          )}
           <textarea
             value={values[index] ?? ''}
             readOnly={revealed}
-            rows={2}
-            placeholder={t('qtype.write')}
+            rows={sideBySide ? 4 : 2}
+            aria-label={sideBySide ? label : undefined}
+            placeholder={sideBySide ? label : t('qtype.write')}
             onChange={(event) => {
               const next = labels.map((_, slot) => values[slot] ?? '')
               next[index] = event.target.value
               onChange(next)
             }}
-            className={`w-full resize-y rounded-2xl border-2 border-slate-200 bg-[#FFF9E9] px-3 py-2 text-slate-900 outline-none focus:border-[#0D9488] ${
-              easy ? 'text-xl leading-loose' : 'text-base'
-            }`}
+            className={
+              sideBySide
+                ? `min-h-28 w-full resize-y rounded-2xl border-2 border-[#0D9488]/40 bg-[#FFF9E9] px-3 py-3 font-semibold text-slate-900 outline-none placeholder:font-semibold placeholder:text-slate-800 focus:border-[#0D9488] ${
+                    easy ? 'text-xl leading-loose' : 'text-base'
+                  }`
+                : `w-full resize-y rounded-2xl border-2 border-slate-200 bg-[#FFF9E9] px-3 py-2 text-slate-900 outline-none focus:border-[#0D9488] ${
+                    easy ? 'text-xl leading-loose' : 'text-base'
+                  }`
+            }
           />
         </label>
       ))}

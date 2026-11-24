@@ -70,7 +70,8 @@ import { BiSpan } from './BilingualText'
 import { OtterChest, OtterPose } from './OtterPose'
 import { PresentationBar } from './PresentationBar'
 import { CritiqueFace, ImageBlockedFace, ImageRuleFace } from './ClassroomFaces'
-import { DualReadBoard, OrderBoard, PracticeOnlyBar, ShortBoard } from './ThinPractice'
+import { QuestMotionButton } from './MapQuestChrome'
+import { DualReadBoard, OrderBoard, ShortBoard, ThinPace } from './ThinPractice'
 
 const IDLE_MS = 90_000
 
@@ -81,6 +82,14 @@ const FOLD_COPY: Record<LessonFoldId, { title: 'map.lesson.goal' | 'map.lesson.s
 }
 
 const OUTLINE_CHIP = 'rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
+const STEP_CHIP = {
+  mcq: 'qtype.chip.mcq',
+  fill: 'qtype.chip.fill',
+  match: 'qtype.chip.match',
+  order: 'qtype.chip.order',
+  dualRead: 'qtype.chip.dualRead',
+  short: 'qtype.chip.short',
+} as const
 const WIZARD_BUTTON =
   'w-full rounded-2xl bg-[#0D9488] py-3.5 text-base font-bold text-white shadow-[0_4px_0_#0F766E] active:translate-y-1 active:shadow-none'
 
@@ -474,24 +483,22 @@ export function LessonPlayer({
     <div
       ref={shellRef}
       data-lesson-wizard=""
-      className="w-full max-w-none wrap-anywhere space-y-3 fixed inset-0 z-50 flex h-dvh flex-col overflow-hidden bg-[#FFF9E9]"
+      className="fixed inset-0 z-50 w-full max-w-none space-y-3 overflow-y-auto wrap-anywhere bg-[#FFF9E9] p-3 sm:p-6"
     >
-      <div className="mx-auto w-full max-w-none wrap-anywhere space-y-4 md:max-w-2xl flex h-full min-h-0 flex-1 flex-col overflow-hidden px-4 py-3">
+      <div className="mx-auto flex w-full max-w-none flex-col space-y-4 wrap-anywhere rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-4 py-3 md:max-w-2xl">
         {frame}
-        <div className="grid shrink-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-x-3 gap-y-1">
-          <button
-            type="button"
-            onClick={onExit}
-            aria-label={t('lp.exit')}
-            className="col-start-1 row-span-2 inline-flex items-center gap-2 text-sm font-bold text-slate-900"
-          >
-            <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-slate-800">
-              <X className="h-4 w-4" aria-hidden />
-            </span>
-            {t('lp.exit')}
-          </button>
+        <div className="shrink-0">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+            <p className="text-xs font-semibold text-slate-600">{t('lp.progress')}</p>
+            <p className="text-center text-sm font-bold text-[#0D9488]">
+              {t('lp.step', { x: stepIdx + 1, y: Math.max(steps.length, 1) })}
+            </p>
+            <div className="justify-self-end">
+              <QuestMotionButton />
+            </div>
+          </div>
           <div
-            className="h-3 overflow-hidden rounded-full bg-[#E6E8F2]"
+            className="mt-1 h-2.5 overflow-hidden rounded-full bg-[#E6E8F2]"
             role="progressbar"
             aria-valuenow={Math.round(progress)}
             aria-valuemin={0}
@@ -500,14 +507,24 @@ export function LessonPlayer({
           >
             <div className="h-full rounded-full bg-[#0D9488]" style={{ width: `${progress}%` }} />
           </div>
-          <p className="text-right text-sm font-bold text-[#0D9488]">
-            {t('lp.step', { x: stepIdx + 1, y: Math.max(steps.length, 1) })}
-          </p>
         </div>
 
-        <h2 className="shrink-0 text-lg font-bold text-slate-900">
-          <BiSpan text={lesson.title} />
-        </h2>
+        <div className="flex shrink-0 items-start justify-between gap-3">
+          <h2 className="text-lg font-bold text-slate-900">
+            <BiSpan text={lesson.title} />
+          </h2>
+          <button
+            type="button"
+            onClick={onExit}
+            aria-label={t('lp.exit')}
+            className="inline-flex shrink-0 items-center gap-2 text-sm font-bold text-[#0D9488]"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#0D9488]">
+              <X className="h-4 w-4" aria-hidden />
+            </span>
+            {t('lp.exit')}
+          </button>
+        </div>
 
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
           {step?.kind === 'rest' ? (
@@ -528,7 +545,11 @@ export function LessonPlayer({
               data-classroom-face={
                 licenceFace ?? (critiqueOpen ? 'critique' : step?.kind === 'question' && question?.type === 'dualRead' ? 'dual' : step?.kind ?? 'card')
               }
-              className={`flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm ${focusTunnel ? 'ring-4 ring-amber-200' : ''}`}
+              className={
+                step?.kind === 'question'
+                  ? 'flex min-h-0 flex-1 flex-col overflow-hidden'
+                  : `flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm ${focusTunnel ? 'ring-4 ring-amber-200' : ''}`
+              }
             >
               {step?.kind === 'media' ? (
                 <MediaStage
@@ -801,6 +822,17 @@ function QuizStage({
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <ReadingBar mode={presentation} onMode={onPresentation} readText={questionSpeech(question)} />
+      <div className="px-4 pt-3">
+        <ThinPace clear />
+        <p className="mt-2">
+          <span
+            data-qtype-current={question.type}
+            className="inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-bold text-[#FFF9E9]"
+          >
+            {t(STEP_CHIP[question.type])}
+          </span>
+        </p>
+      </div>
       {mark ? (
         <span className="sr-only">
           <ExerciseMark id={mark} />
@@ -827,12 +859,12 @@ function QuizStage({
       {feedback ? (
         <div
           role="status"
-          className={`mx-4 mb-4 shrink-0 rounded-2xl px-4 py-3 ${
+          className={`mx-4 mb-4 shrink-0 rounded-2xl border px-4 py-3 ${
             feedback.correct
-              ? 'bg-[#E7F6F3] text-slate-900'
+              ? 'border-[#0D9488] bg-[#E7F6F3] text-slate-900'
               : gentle
-                ? 'border border-[#E7C98A] bg-[#FFF9E9] text-slate-900'
-                : 'bg-[#FFF4DE] text-slate-900'
+                ? 'border-[#E7C98A] bg-[#FFF9E9] text-slate-900'
+                : 'border-[#E38B82] bg-[#FDECEA] text-slate-900'
           }`}
         >
           {otterOn && feedback.correct ? (
@@ -846,12 +878,19 @@ function QuizStage({
               />
             </div>
           ) : null}
-          <p className={`font-bold ${feedback.correct ? 'text-[#115E59]' : gentle ? 'text-lg text-slate-800' : 'text-[#9A3412]'}`}>
+          <p className={`font-bold ${feedback.correct ? 'text-[#0D9488]' : gentle ? 'text-lg text-slate-800' : 'text-[#9A3412]'}`}>
             {feedback.correct ? t('lp.correct') : gentle ? t('lp.retry') : t('lp.wrong')}
           </p>
-          <p className="mt-1 text-sm text-slate-700">
-            <BiSpan text={feedback.explain} />
-          </p>
+          {feedback.correct ? (
+            <p className="mt-1 text-sm font-semibold text-[#0D9488]">{t('lp.gain', { n: 1 })}</p>
+          ) : gentle ? null : (
+            <p className="mt-1 text-sm font-semibold text-[#9A3412]">{t('lp.retry')}</p>
+          )}
+          {feedback.explain ? (
+            <p className="mt-1 text-sm text-slate-700">
+              <BiSpan text={feedback.explain} />
+            </p>
+          ) : null}
         </div>
       ) : null}
     </div>
@@ -1077,12 +1116,12 @@ function QuestionView(props: QProps<Question>) {
   return <Match {...props} q={q} />
 }
 
-const optCls = (state: 'idle' | 'selected' | 'right' | 'wrong') =>
+const optCls = (state: 'idle' | 'selected' | 'right' | 'wrong', gentle = false) =>
   ({
     idle: 'border-slate-200 bg-[#FFF9E9]',
-    selected: 'border-[#0D9488] bg-[#FFF9E9]',
+    selected: 'border-[#0D9488] bg-white',
     right: 'border-[#0D9488] bg-[#E7F6F3]',
-    wrong: 'border-[#E7C98A] bg-[#FFF4DE]',
+    wrong: gentle ? 'border-[#E7C98A] bg-[#FFF4DE]' : 'border-[#E38B82] bg-[#FDECEA]',
   })[state]
 
 function Mcq({ q, locked, easyRead, presentation = 'standard', onAnswer, onGate }: QProps<McqQuestion>) {
@@ -1094,9 +1133,6 @@ function Mcq({ q, locked, easyRead, presentation = 'standard', onAnswer, onGate 
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
       <MetWorkFacts image={q.image} />
-      <div className="mt-3">
-        <PracticeOnlyBar />
-      </div>
       <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead || presentation === 'easy' ? 'text-2xl leading-loose' : 'text-xl'}`}>
         <BiSpan text={q.prompt} />
       </p>
@@ -1110,7 +1146,7 @@ function Mcq({ q, locked, easyRead, presentation = 'standard', onAnswer, onGate 
               disabled={locked}
               aria-pressed={sel === i}
               onClick={() => setSel(i)}
-              className={`rounded-2xl border-2 px-4 text-left ${presentation === 'easy' ? 'min-h-16 py-4 text-xl leading-relaxed' : 'py-3 text-base'} ${optCls(st)}`}
+              className={`min-h-14 rounded-2xl border-2 px-4 text-left ${presentation === 'easy' ? 'min-h-16 py-4 text-xl leading-relaxed' : 'py-3 text-base'} ${optCls(st, presentation === 'easy')}`}
             >
               <BiSpan text={o} />
             </button>
@@ -1132,9 +1168,6 @@ function Fill({ q, seed, locked, easyRead, presentation = 'standard', onAnswer, 
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
       <MetWorkFacts image={q.image} />
-      <div className="mt-3">
-        <PracticeOnlyBar />
-      </div>
       <div className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
         <BiSpan text={q.prompt} englishOnly />
         <p className="mt-2">
@@ -1157,8 +1190,9 @@ function Fill({ q, seed, locked, easyRead, presentation = 'standard', onAnswer, 
             disabled={locked}
             aria-pressed={sel === w}
             onClick={() => setSel(w)}
-            className={`rounded-2xl border-2 px-4 font-semibold ${presentation === 'easy' ? 'min-h-14 py-3 text-xl' : 'py-2 text-base'} ${optCls(
+            className={`min-h-12 rounded-2xl border-2 px-4 font-semibold ${presentation === 'easy' ? 'min-h-14 py-3 text-xl' : 'py-2 text-base'} ${optCls(
               locked ? (sel === w ? (w === q.answer ? 'right' : 'wrong') : 'idle') : sel === w ? 'selected' : 'idle',
+              presentation === 'easy',
             )}`}
           >
             <BiSpan text={w} />
@@ -1249,9 +1283,6 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
       <MetWorkFacts image={q.image} />
-      <div className="mt-3">
-        <PracticeOnlyBar />
-      </div>
       <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
         <BiSpan text={q.prompt} />
       </p>
@@ -1265,8 +1296,8 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
               disabled={locked || matched.has(l)}
               aria-pressed={pickL === l}
               onClick={() => setPickL(l)}
-              className={`rounded-2xl border-2 px-3 py-3 text-sm font-semibold ${
-                matched.has(l) ? optCls('right') + ' opacity-60' : optCls(pickL === l ? 'selected' : 'idle')
+              className={`min-h-12 rounded-2xl border-2 px-3 py-3 text-sm font-semibold ${
+                matched.has(l) ? optCls('right') + ' opacity-60' : optCls(pickL === l ? 'selected' : 'idle', easyRead)
               }`}
             >
               <BiSpan text={l} />
@@ -1280,8 +1311,8 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
               type="button"
               disabled={locked || rightMatched.has(r)}
               onClick={() => tapRight(r)}
-              className={`rounded-2xl border-2 px-3 py-3 text-sm ${
-                rightMatched.has(r) ? optCls('right') + ' opacity-60' : optCls(flash === r ? 'wrong' : 'idle')
+              className={`min-h-12 rounded-2xl border-2 px-3 py-3 text-sm ${
+                rightMatched.has(r) ? optCls('right') + ' opacity-60' : optCls(flash === r ? 'wrong' : 'idle', easyRead)
               }`}
             >
               <BiSpan text={r} />

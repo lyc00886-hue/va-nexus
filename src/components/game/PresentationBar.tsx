@@ -1,4 +1,4 @@
-import { t } from '../../i18n'
+import { t, useT } from '../../i18n'
 import type { PresentationMode } from '../../lib/lessonPresentation'
 import { ReadAloudButton } from './ReadAloudButton'
 
@@ -18,6 +18,7 @@ export function PresentationBar({
   auto?: boolean
   autoKey?: string
 }) {
+  const { bilingual, locale, setLangMode } = useT()
   return (
     <div className="shrink-0 px-4 pt-4">
       <p className="text-sm font-bold text-[#0D9488]">
@@ -41,6 +42,14 @@ export function PresentationBar({
           {t('present.easy')}
         </button>
         <ReadAloudButton text={readText} auto={auto} autoKey={autoKey} pill />
+        <button
+          type="button"
+          aria-pressed={bilingual}
+          onClick={() => setLangMode(bilingual ? locale : 'bilingual')}
+          className={`${PILL} ${bilingual ? 'bg-[#0D9488] text-white' : 'bg-white text-[#0D9488]'}`}
+        >
+          {t('lang.mode.bilingual')}
+        </button>
       </div>
     </div>
   )
