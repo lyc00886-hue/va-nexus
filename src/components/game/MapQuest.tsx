@@ -21,6 +21,7 @@ import {
 import { HomeworkMapEntry } from '../HomeworkStudent'
 import { InspectMapEntry } from '../InspectMapEntry'
 import { BiSpan } from './BilingualText'
+import { F4SlidesEntry } from './F4SlidesEntry'
 import { LessonPlayer } from './LessonPlayer'
 import { OfficialUnitHeader } from './OfficialFormat'
 import { QuestPathArt } from './QuestPathArt'
@@ -72,6 +73,11 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         <QuestSectionSwitch form={form} onChoose={chooseForm} />
         <QuestMotionButton />
       </div>
+      {form === 's4' && !openYear ? (
+        <div className="mt-4">
+          <F4SlidesEntry />
+        </div>
+      ) : null}
       <InspectMapEntry grade={form === 's5' ? 'f5' : form === 's6' ? 'f6' : 'f4'} />
       <HomeworkMapEntry />
       {openYear ? (

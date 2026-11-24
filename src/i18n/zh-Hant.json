@@ -1925,5 +1925,8 @@
   "class.student.joinWithCode": "用邀請碼加入",
   "class.student.inviteIntro": "輸入老師交嚟嘅邀請碼，加入呢個課室。",
   "class.student.joinedHint": "你已加入呢個課室。而家可以用學生上載功課系統交功課。",
-  "teacher.keepBlocks": "學校評分參考、進度參考帶（只讀）、學校參考評分（雙雷達）仍然喺同一教師殼，呢度唔改名。"
+  "teacher.keepBlocks": "學校評分參考、進度參考帶（只讀）、學校參考評分（雙雷達）仍然喺同一教師殼，呢度唔改名。",
+  "lesson.slides.label": "課堂投影片",
+  "lesson.slides.open": "打開投影片",
+  "lesson.slides.hint": "用呢份投影片，等你更容易明白課題。"
 }

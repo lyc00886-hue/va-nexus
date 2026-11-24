@@ -1909,5 +1909,8 @@
   "class.student.joinWithCode": "Join with an invite code",
   "class.student.inviteIntro": "Enter the invite code your teacher handed you, and join this classroom.",
   "class.student.joinedHint": "You have joined this classroom. You can now hand in work with the student upload system.",
-  "teacher.keepBlocks": "School scoring reference, the read-only progress band, and the dual-radar school reference stay in the same teacher shell. The names stay as they are."
+  "teacher.keepBlocks": "School scoring reference, the read-only progress band, and the dual-radar school reference stay in the same teacher shell. The names stay as they are.",
+  "lesson.slides.label": "Classroom slides",
+  "lesson.slides.open": "Open slides",
+  "lesson.slides.hint": "Use this slide deck so you can understand the topic more easily."
 }

@@ -1925,5 +1925,8 @@
   "class.student.joinWithCode": "用邀请码加入",
   "class.student.inviteIntro": "输入老师交来的邀请码，加入这个课室。",
   "class.student.joinedHint": "你已加入这个课室。现在可以用学生上载功课系统交功课。",
-  "teacher.keepBlocks": "学校评分参考、进度参考带（只读）、学校参考评分（双雷达）仍然在同一教师壳，这里不改名。"
+  "teacher.keepBlocks": "学校评分参考、进度参考带（只读）、学校参考评分（双雷达）仍然在同一教师壳，这里不改名。",
+  "lesson.slides.label": "课堂投影片",
+  "lesson.slides.open": "打开投影片",
+  "lesson.slides.hint": "用这份投影片，等你更容易明白课题。"
 }
