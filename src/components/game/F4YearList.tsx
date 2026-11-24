@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Unit } from '../../game/types'
 import { t, type MessageKey } from '../../i18n'
+import { F4SlidesEntry } from './F4SlidesEntry'
 import { LessonPlayer } from './LessonPlayer'
 import { OfficialUnitHeader } from './OfficialFormat'
 import { QuestionTypeChips } from './QuestionTypeChips'
@@ -30,6 +31,7 @@ export function F4YearList({
           {t(subtitleKey)}
         </p>
       ) : null}
+      {gradeKey === 'map.grade.f4' ? <F4SlidesEntry /> : null}
       {units.map((unit) => {
         const selected = unit.id === unitId
         return (

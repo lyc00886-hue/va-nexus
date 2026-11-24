@@ -1276,5 +1276,8 @@
   "teacher.keepBlocks": "学校评分参考、进度参考带（只读）、学校参考评分（双雷达）仍然在同一教师壳，这里不改名。",
   "unit.f4u3.theme": "走进社区",
   "map.f4.chrome.u3": "走进社区视觉日记",
-  "report.staff.homeworkValue": "走进社区观察课业：已交"
+  "report.staff.homeworkValue": "走进社区观察课业：已交",
+  "lesson.slides.label": "课堂投影片",
+  "lesson.slides.open": "打开投影片",
+  "lesson.slides.hint": "用这份投影片，等你更容易明白课题。"
 }
