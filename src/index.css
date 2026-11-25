@@ -569,4 +569,10 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
   [data-worksheet-paper] {
     background: #fff9e9 !important;
   }
+  [data-lesson-worksheet='F4-U3-L3'] [data-worksheet-paper],
+  [data-lesson-worksheet='F4-U3-L4'] [data-worksheet-paper],
+  [data-lesson-worksheet='F4-U3-L3'] [data-worksheet-case],
+  [data-lesson-worksheet='F4-U3-L4'] [data-worksheet-case] {
+    background: #FFFFFF !important;
+  }
 }

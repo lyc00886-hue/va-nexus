@@ -59,6 +59,13 @@ export function worksheetIsHeritage(lessonId: WorksheetLessonId): boolean {
   return lessonId === 'F5-U3-L1' || lessonId === 'F5-U3-L2' || lessonId === 'F5-U3-L3' || lessonId === 'F5-U3-L4'
 }
 
+/** Form 4 activity paper, case card, and download body. Form 5 papers stay cream. */
+export type WorksheetPaperBackground = '#FFFFFF' | '#FFF9E9'
+
+export function worksheetPaperBackground(lessonId: WorksheetLessonId): WorksheetPaperBackground {
+  return worksheetIsHeritage(lessonId) ? '#FFF9E9' : '#FFFFFF'
+}
+
 /** Sample name is only the L3 teacher preview, matching Soft SCOUT plate 08. */
 export function worksheetShowsSample(
   lessonId: WorksheetLessonId,
@@ -150,6 +157,7 @@ export function worksheetDownloadFor(
       caseLines: worksheetCaseLines(lessonId, 'teacher', text),
       questionsHeading: text(worksheetQuestionsHeadingKey(lessonId)),
       questions: worksheetQuestions(lessonId, text),
+      background: worksheetPaperBackground(lessonId),
     }),
   }
 }
@@ -191,6 +199,7 @@ export function worksheetDownloadHtml(input: {
   caseLines: readonly string[]
   questionsHeading: string
   questions: readonly string[]
+  background: WorksheetPaperBackground
 }): string {
   const lines = input.caseLines.map((line) => `<p>${escapeHtml(line)}</p>`).join('')
   const questions = input.questions
@@ -212,9 +221,9 @@ export function worksheetDownloadHtml(input: {
 <meta charset="utf-8">
 <title>${escapeHtml(input.title)}</title>
 <style>
-  body { margin: 24px; background: #FFF9E9; color: #042f2e; font-family: sans-serif; }
+  body { margin: 24px; background: ${input.background}; color: #042f2e; font-family: sans-serif; }
   h1 { font-size: 20px; }
-  .case { border: 2px solid #0D9488; border-radius: 16px; padding: 12px 16px; }
+  .case { background: ${input.background}; border: 2px solid #0D9488; border-radius: 16px; padding: 12px 16px; }
   .lines hr { border: 0; border-bottom: 1px solid #94a3b8; margin: 16px 0; }
 </style>
 <h1>${escapeHtml(input.title)}</h1>

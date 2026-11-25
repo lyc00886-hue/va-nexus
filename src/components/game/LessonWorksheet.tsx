@@ -119,7 +119,7 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
         data-testid="worksheet-paper"
         data-worksheet-paper=""
         data-worksheet-open="true"
-        className="space-y-4 rounded-3xl bg-[#FFF9E9] px-4 py-4 text-slate-900"
+        className={`space-y-4 rounded-3xl px-4 py-4 text-slate-900 ${heritage ? 'bg-[#FFF9E9]' : 'bg-[#FFFFFF]'}`}
       >
         <h3 className="text-base font-bold leading-snug">{t(titleKey)}</h3>
         <p className="text-sm leading-relaxed text-slate-700">{t(introKey)}</p>
@@ -135,7 +135,7 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
         {heritage ? null : (
           <section
             data-worksheet-case={lesson === 'F4-U3-L3' ? 'hill' : 'deepfood'}
-            className="space-y-1 rounded-2xl border-2 border-[#0D9488] bg-[#FFF9E9] px-4 py-3 text-sm leading-relaxed"
+            className="space-y-1 rounded-2xl border-2 border-[#0D9488] bg-[#FFFFFF] px-4 py-3 text-sm leading-relaxed"
           >
             <h4 className="font-bold text-[#0D9488]">{t('worksheet.section.case')}</h4>
             {caseLines.map((line) => (

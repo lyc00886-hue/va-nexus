@@ -10,9 +10,11 @@ import {
   WORKSHEET_SAMPLE_LABEL,
   WORKSHEET_UNUSED_QUESTION_KEY,
   worksheetCaseLines,
+  worksheetDownloadFor,
   worksheetDownloadHtml,
   worksheetDownloadName,
   worksheetLessonOf,
+  worksheetPaperBackground,
   worksheetQuestions,
   worksheetShowsSample,
 } from './lessonWorksheet.ts'
@@ -218,6 +220,8 @@ describe('November activity papers', () => {
     assert.equal(worksheetShowsSample('F4-U3-L4', 'student', 'preview'), false)
     const hant = messages('src/i18n/zh-Hant.json')
     const text = (key: string) => hant[key] ?? key
+    assert.equal(worksheetPaperBackground('F4-U3-L3'), '#FFFFFF')
+    assert.equal(worksheetPaperBackground('F4-U3-L4'), '#FFFFFF')
     const file = worksheetDownloadHtml({
       lang: 'zh-Hant-HK',
       title: hant['worksheet.l3.title'],
@@ -227,6 +231,7 @@ describe('November activity papers', () => {
       caseLines: worksheetCaseLines('F4-U3-L3', 'teacher', text),
       questionsHeading: hant['worksheet.section.questions'],
       questions: worksheetQuestions('F4-U3-L3', text),
+      background: worksheetPaperBackground('F4-U3-L3'),
     })
     assert.equal(file.includes(WORKSHEET_SAMPLE_LABEL), false)
     assert.equal(file.includes('示例同學甲'), false)
@@ -235,8 +240,13 @@ describe('November activity papers', () => {
     assert.equal(file.includes(hant[WORKSHEET_UNUSED_QUESTION_KEY]), false)
     assert.equal(file.includes('worksheet.l3.q4'), false)
     assert.equal(file.split('<li>').length - 1, 3)
-    assert.equal(file.includes('#FFF9E9'), true)
+    assert.equal(file.includes('background: #FFFFFF'), true)
+    assert.equal(file.includes('#FFF9E9'), false)
     assert.equal(file.includes('#0D9488'), true)
+    const downloaded = worksheetDownloadFor('F4-U3-L3', 'zh-Hant-HK', text)
+    assert.equal(downloaded.name, 'classroom-activity-F4-U3-L3.html')
+    assert.equal(downloaded.html.includes('background: #FFFFFF'), true)
+    assert.equal(downloaded.html.includes('#FFF9E9'), false)
     assert.equal(worksheetDownloadName('F4-U3-L4'), 'classroom-activity-F4-U3-L4.html')
     const l4 = worksheetDownloadHtml({
       lang: 'zh-Hant-HK',
@@ -247,10 +257,16 @@ describe('November activity papers', () => {
       caseLines: worksheetCaseLines('F4-U3-L4', 'teacher', text),
       questionsHeading: hant['worksheet.section.questions'],
       questions: worksheetQuestions('F4-U3-L4', text),
+      background: worksheetPaperBackground('F4-U3-L4'),
     })
     assert.equal(l4.includes('\u{1D465}'), true)
     assert.equal(l4.includes('只作課堂播放'), true)
     assert.equal(l4.includes(WORKSHEET_SAMPLE_LABEL), false)
+    assert.equal(l4.includes('background: #FFFFFF'), true)
+    assert.equal(l4.includes('#FFF9E9'), false)
+    const l4Download = worksheetDownloadFor('F4-U3-L4', 'zh-Hant-HK', text)
+    assert.equal(l4Download.html.includes('background: #FFFFFF'), true)
+    assert.equal(l4Download.html.includes('#FFF9E9'), false)
   })
 
   it('gives teachers preview, print, and download, and keeps personal data off the student paper', () => {
@@ -263,6 +279,15 @@ describe('November activity papers', () => {
     assert.match(view, /id: 'download'/)
     assert.match(view, /window\.print\(\)/)
     assert.match(view, /worksheetDownloadFor/)
+    assert.match(view, /heritage \? 'bg-\[#FFF9E9\]' : 'bg-\[#FFFFFF\]'/)
+    assert.match(view, /border-2 border-\[#0D9488\] bg-\[#FFFFFF\]/)
+    const printCss = read('src/index.css').slice(read('src/index.css').indexOf('@media print'))
+    assert.match(printCss, /\[data-worksheet-paper\] \{\s*background: #fff9e9 !important;/)
+    assert.match(printCss, /\[data-lesson-worksheet='F4-U3-L3'\] \[data-worksheet-paper\]/)
+    assert.match(printCss, /\[data-lesson-worksheet='F4-U3-L4'\] \[data-worksheet-paper\]/)
+    assert.match(printCss, /\[data-lesson-worksheet='F4-U3-L3'\] \[data-worksheet-case\]/)
+    assert.match(printCss, /\[data-lesson-worksheet='F4-U3-L4'\] \[data-worksheet-case\]/)
+    assert.match(printCss, /background: #FFFFFF !important;/)
     assert.match(view, /worksheetShowsSample/)
     assert.match(view, /WORKSHEET_SAMPLE_LABEL/)
     assert.match(view, /data-worksheet-audience=\{audience\}/)
@@ -338,15 +363,22 @@ describe('November activity papers', () => {
       caseLines: [],
       questionsHeading: hant['worksheet.f5.section.tasks'],
       questions: worksheetQuestions('F5-U3-L1', text),
+      background: worksheetPaperBackground('F5-U3-L1'),
     })
+    assert.equal(worksheetPaperBackground('F5-U3-L1'), '#FFF9E9')
+    assert.equal(worksheetPaperBackground('F5-U3-L4'), '#FFF9E9')
     assert.equal(file.includes('唔係功課'), true)
     assert.equal(file.includes(hant['worksheet.noSchool']), true)
     assert.equal(file.includes('視覺日記'), true)
     assert.equal(file.includes('方法比較'), true)
     assert.equal(file.includes('邂逅'), false)
     assert.equal(file.includes('深食'), false)
-    assert.equal(file.includes('#FFF9E9'), true)
+    assert.equal(file.includes('background: #FFF9E9'), true)
+    assert.equal(file.includes('#FFFFFF'), false)
     assert.equal(file.includes('#0D9488'), true)
+    const downloaded = worksheetDownloadFor('F5-U3-L1', 'zh-Hant-HK', text)
+    assert.equal(downloaded.html.includes('background: #FFF9E9'), true)
+    assert.equal(downloaded.html.includes('#FFFFFF'), false)
     assert.equal(worksheetDownloadName('F5-U3-L3'), 'classroom-activity-F5-U3-HERITAGE.html')
     assert.equal(/[\u7684\u628A\u5572\u4F86\u6765\u771E]/.test(hant['worksheet.f5.q1']), false)
     assert.equal(hant['worksheet.f5.q1'].codePointAt(hant['worksheet.f5.q1'].indexOf('揀')), 0x63c0)
