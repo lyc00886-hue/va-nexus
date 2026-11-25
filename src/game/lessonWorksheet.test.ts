@@ -5,6 +5,8 @@ import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { TRIAL_LOCALE_KEYS, showsShortTrial } from './shortTrial.ts'
 import {
+  FORM4_NEW_KEYS,
+  WORKSHEET_HIDDEN_KEYS,
   WORKSHEET_LOCALE_KEYS,
   WORKSHEET_QUESTION_KEYS,
   WORKSHEET_SAMPLE_LABEL,
@@ -35,8 +37,8 @@ const HANT = {
   'worksheet.print': '列印',
   'worksheet.download': '下載',
   'worksheet.printHint': '預覽無問題之後，先列印或下載。',
-  'worksheet.l3.title': '十一月：走進社區——研究 · 課堂活動紙',
-  'worksheet.l4.title': '十一月：走進社區——發展同創作 · 課堂活動紙',
+  'worksheet.l3.title': '社區藝術：連接回憶與環境——研究 · 課堂活動紙',
+  'worksheet.l4.title': '社區藝術：連接回憶與環境——發展同創作 · 課堂活動紙',
   'worksheet.intro': '呢張係課堂活動紙，跟住呢課嘅三題：案例評賞、觀察、工作簿或三句講解。',
   'worksheet.sampleNote': '以下係示例，唔係真實同學或真實學校。',
   'worksheet.noSchool': '呢張活動紙唔顯示校名、校徽或教師姓名。',
@@ -139,6 +141,21 @@ describe('November activity papers', () => {
     assert.equal(hant['worksheet.intro'].includes('唔係功課'), false)
     assert.equal(en['worksheet.intro'].includes('research workbook'), true)
     assert.equal(en['worksheet.intro'].includes('not homework'), false)
+    assert.equal(hant['worksheet.l3.title'], '社區藝術：連接回憶與環境——研究 · 課堂活動紙')
+    assert.equal(hant['worksheet.l4.title'], '社區藝術：連接回憶與環境——發展同創作 · 課堂活動紙')
+    assert.equal(en['worksheet.l3.title'], 'Community Art: Connecting Memory and Environment — Research · classroom activity paper')
+    assert.equal(en['worksheet.l4.title'], 'Community Art: Connecting Memory and Environment — Develop and make · classroom activity paper')
+    assert.equal(hans['worksheet.l3.title'], '社区艺术：连接回忆与环境——研究 · 课堂活动纸')
+    assert.equal(hans['worksheet.l4.title'], '社区艺术：连接回忆与环境——发展与创作 · 课堂活动纸')
+    assert.equal(FORM4_NEW_KEYS.length, 40)
+    for (const key of FORM4_NEW_KEYS) {
+      assert.equal(/[\u7684\u628A\u5572\u754C]/.test(hant[key]), false, key)
+      assert.equal(en[key].length > 0, true, key)
+      assert.equal(hans[key], overrides[key], key)
+      assert.equal(BANNED.test(hant[key]), false, key)
+      assert.equal(BANNED.test(en[key]), false, key)
+      assert.equal(BANNED.test(hans[key]), false, key)
+    }
   })
 
   it('follows L3 questions with case A and L4 questions with case B', () => {
@@ -150,65 +167,48 @@ describe('November activity papers', () => {
     assert.equal(worksheetLessonOf('F4-U3-L1'), null)
 
     assert.deepEqual(worksheetQuestions('F4-U3-L3', text), [
-      HANT['worksheet.l3.q1'],
-      HANT['worksheet.l3.q2'],
-      HANT['worksheet.l3.q3'],
+      hant['worksheet.l3.prompt'],
+      hant['worksheet.l3.case1.q'],
+      hant['worksheet.l3.case2.q'],
+      hant['worksheet.l3.compare'],
+      hant['worksheet.l3.notice'],
     ])
     assert.equal(worksheetQuestions('F4-U3-L3', text).includes(hant[WORKSHEET_UNUSED_QUESTION_KEY]), false)
-    assert.equal(worksheetQuestions('F4-U3-L3', text).length, 3)
-    assert.deepEqual(worksheetQuestions('F4-U3-L4', text), [
-      HANT['worksheet.l4.q1'],
-      HANT['worksheet.l4.q2'],
-      HANT['worksheet.l4.q3'],
-    ])
-    assert.deepEqual([...WORKSHEET_QUESTION_KEYS['F4-U3-L3']], [
-      'worksheet.l3.q1',
-      'worksheet.l3.q2',
-      'worksheet.l3.q3',
+    assert.equal(worksheetQuestions('F4-U3-L3', text).includes(hant['worksheet.l3.q1']), false)
+    assert.deepEqual([...WORKSHEET_QUESTION_KEYS['F4-U3-L4']], [
+      'worksheet.l4.sketch',
+      'worksheet.l4.reflect',
+      'worksheet.l4.diary',
+      'worksheet.l4.compare',
+      'worksheet.l4.further',
     ])
     assert.equal(WORKSHEET_QUESTION_KEYS['F4-U3-L3'].includes(WORKSHEET_UNUSED_QUESTION_KEY), false)
+    for (const key of WORKSHEET_HIDDEN_KEYS) {
+      assert.equal(worksheetQuestions('F4-U3-L3', text).includes(hant[key]), false, key)
+      assert.equal(worksheetQuestions('F4-U3-L4', text).includes(hant[key]), false, key)
+    }
 
-    assert.deepEqual(worksheetCaseLines('F4-U3-L3', 'teacher', text), [
-      '邂逅！山 川 人',
-      'Hi! Hill public art project',
-      '主辦 康樂及文化事務署 · 策劃 藝術推廣辦事處',
-      '陳思光係參與藝術家之一，用村內陶土做陶瓷；唔係主辦或策劃。',
-      '課堂參考用官方網頁同小冊子。已核實一條可課堂播放嘅官方 YouTube。',
-      '呢個係過往案例參考，用嚟做有對象、有焦點嘅評賞。',
-    ])
-    assert.deepEqual(worksheetCaseLines('F4-U3-L3', 'student', text), [
-      '邂逅！山 川 人 · Hi! Hill public art project',
-      '呢個係過往案例參考，用嚟做有對象、有焦點嘅評賞。',
-    ])
-    assert.deepEqual(worksheetCaseLines('F4-U3-L4', 'teacher', text), [
-      '深食「喚味：\u{1D465}」',
-      'The Unexplored Flavour: \u{1D465}',
-      '油街實現邀請深食 · 場地 油街廚房 · 1.6.2023–12.3.2024',
-      '只作課堂播放',
-      '呢課唔提供下載、上載或轉載。',
-    ])
-    assert.deepEqual(worksheetCaseLines('F4-U3-L4', 'student', text), [
-      '深食「喚味：\u{1D465}」 · The Unexplored Flavour: \u{1D465}',
-      '呢個係課堂案例，只作課堂播放。',
-    ])
-
-    const teacherL3 = worksheetCaseLines('F4-U3-L3', 'teacher', text).join('\n')
-    const studentL3 = worksheetCaseLines('F4-U3-L3', 'student', text).join('\n')
-    const teacherL4 = worksheetCaseLines('F4-U3-L4', 'teacher', text).join('\n')
-    const studentL4 = worksheetCaseLines('F4-U3-L4', 'student', text).join('\n')
-    assert.equal(teacherL3.includes('深食'), false)
-    assert.equal(studentL3.includes('陳思光'), false)
-    assert.equal(studentL3.includes('前川龍'), false)
-    assert.equal(teacherL3.includes('前川龍'), false)
-    assert.equal(teacherL4.includes('邂逅'), false)
-    assert.equal(studentL4.includes('Flavour: x'), false)
-    assert.equal(studentL4.includes('\u{1D465}'), true)
-    assert.equal(teacherL4.includes('\u{1D465}'), true)
+    const teacherL3 = worksheetCaseLines('F4-U3-L3', 'teacher', text)
+    const studentL3 = worksheetCaseLines('F4-U3-L3', 'student', text)
+    assert.deepEqual(studentL3, teacherL3)
+    const l3Case = teacherL3.join('\n')
+    assert.equal(l3Case.includes('邂逅！山 川 人'), true)
+    assert.equal(l3Case.includes('《新新相續》'), true)
+    assert.equal(l3Case.includes('「川龍杯」'), true)
+    assert.equal(l3Case.includes('深食在祖堯'), true)
+    assert.equal(l3Case.includes('《漁嚐夢遊》'), true)
+    assert.equal(l3Case.includes('100 Spices, 100 Lives of Cho Yiu'), true)
+    assert.equal(l3Case.includes('Art of Dumplings'), true)
+    assert.equal(l3Case.includes('Community Interactive Theater'), true)
+    assert.equal(l3Case.includes('Recipe Publication (2024)'), true)
+    assert.equal(l3Case.includes('喚味'), false)
+    assert.equal(l3Case.includes('油街實現'), false)
+    assert.equal(l3Case.includes('油街廚房'), false)
+    assert.equal(l3Case.includes('1.6.2023–12.3.2024'), false)
+    assert.deepEqual(worksheetCaseLines('F4-U3-L4', 'teacher', text), [])
+    assert.deepEqual(worksheetCaseLines('F4-U3-L4', 'student', text), [])
     assert.equal(hant['case.hill.title'], '邂逅！山 川 人')
     assert.equal(hant['case.deepfood.project'], '喚味：\u{1D465}')
-    assert.equal(teacherL3.includes('評賞對象'), false)
-    assert.equal(studentL3.includes('視覺元素同組織原理'), false)
-    assert.equal(teacherL4.includes('評賞對象'), false)
   })
 
   it('keeps the sample label on the L3 teacher preview only', () => {
@@ -222,24 +222,24 @@ describe('November activity papers', () => {
     const text = (key: string) => hant[key] ?? key
     assert.equal(worksheetPaperBackground('F4-U3-L3'), '#FFFFFF')
     assert.equal(worksheetPaperBackground('F4-U3-L4'), '#FFFFFF')
-    const file = worksheetDownloadHtml({
-      lang: 'zh-Hant-HK',
-      title: hant['worksheet.l3.title'],
-      intro: hant['worksheet.intro'],
-      noSchool: hant['worksheet.noSchool'],
-      caseHeading: hant['worksheet.section.case'],
-      caseLines: worksheetCaseLines('F4-U3-L3', 'teacher', text),
-      questionsHeading: hant['worksheet.section.questions'],
-      questions: worksheetQuestions('F4-U3-L3', text),
-      background: worksheetPaperBackground('F4-U3-L3'),
-    })
+    const file = worksheetDownloadFor('F4-U3-L3', 'zh-Hant-HK', text).html
     assert.equal(file.includes(WORKSHEET_SAMPLE_LABEL), false)
     assert.equal(file.includes('示例同學甲'), false)
     assert.equal(file.includes('邂逅！山 川 人'), true)
-    assert.equal(file.includes(HANT['worksheet.l3.q1']), true)
+    assert.equal(file.includes('《新新相續》'), true)
+    assert.equal(file.includes('「川龍杯」'), true)
+    assert.equal(file.includes('深食在祖堯'), true)
+    assert.equal(file.includes('《漁嚐夢遊》'), true)
+    assert.equal(file.includes(hant['worksheet.l3.intro']), true)
+    assert.equal(file.includes(hant['worksheet.intro']), false)
+    assert.equal(file.includes(HANT['worksheet.l3.q1']), false)
     assert.equal(file.includes(hant[WORKSHEET_UNUSED_QUESTION_KEY]), false)
     assert.equal(file.includes('worksheet.l3.q4'), false)
-    assert.equal(file.split('<li>').length - 1, 3)
+    assert.equal(file.includes('喚味'), false)
+    assert.equal(file.includes('油街實現'), false)
+    assert.equal(file.includes('油街廚房'), false)
+    assert.equal(file.includes('1.6.2023–12.3.2024'), false)
+    assert.equal(file.includes('<img'), false)
     assert.equal(file.includes('background: #FFFFFF'), true)
     assert.equal(file.includes('#FFF9E9'), false)
     assert.equal(file.includes('#0D9488'), true)
@@ -248,23 +248,28 @@ describe('November activity papers', () => {
     assert.equal(downloaded.html.includes('background: #FFFFFF'), true)
     assert.equal(downloaded.html.includes('#FFF9E9'), false)
     assert.equal(worksheetDownloadName('F4-U3-L4'), 'classroom-activity-F4-U3-L4.html')
-    const l4 = worksheetDownloadHtml({
-      lang: 'zh-Hant-HK',
-      title: hant['worksheet.l4.title'],
-      intro: hant['worksheet.intro'],
-      noSchool: hant['worksheet.noSchool'],
-      caseHeading: hant['worksheet.section.case'],
-      caseLines: worksheetCaseLines('F4-U3-L4', 'teacher', text),
-      questionsHeading: hant['worksheet.section.questions'],
-      questions: worksheetQuestions('F4-U3-L4', text),
-      background: worksheetPaperBackground('F4-U3-L4'),
-    })
-    assert.equal(l4.includes('\u{1D465}'), true)
-    assert.equal(l4.includes('只作課堂播放'), true)
+    const l4 = worksheetDownloadFor('F4-U3-L4', 'zh-Hant-HK', text).html
+    assert.equal(l4.includes(hant['worksheet.l4.intro']), true)
+    assert.equal(l4.includes(hant['worksheet.l4.sketch']), true)
+    assert.equal(l4.includes('成功標準'), true)
+    assert.equal(l4.includes('在地性、參與、意圖、地方感'), true)
+    assert.equal(l4.includes('150 至 200'), true)
+    assert.equal(l4.includes('視覺日記'), true)
+    assert.equal(l4.includes('SBA'), true)
+    assert.equal(l4.includes(hant['worksheet.intro']), false)
+    assert.equal(l4.includes(HANT['worksheet.l4.q1']), false)
+    assert.equal(l4.includes('\u{1D465}'), false)
+    assert.equal(l4.includes('喚味'), false)
+    assert.equal(l4.includes('油街實現'), false)
+    assert.equal(l4.includes('油街廚房'), false)
+    assert.equal(l4.includes('1.6.2023–12.3.2024'), false)
+    assert.equal(l4.includes('《新新相續》'), false)
+    assert.equal(l4.includes('<img'), false)
     assert.equal(l4.includes(WORKSHEET_SAMPLE_LABEL), false)
     assert.equal(l4.includes('background: #FFFFFF'), true)
     assert.equal(l4.includes('#FFF9E9'), false)
     const l4Download = worksheetDownloadFor('F4-U3-L4', 'zh-Hant-HK', text)
+    assert.equal(l4Download.name, 'classroom-activity-F4-U3-L4.html')
     assert.equal(l4Download.html.includes('background: #FFFFFF'), true)
     assert.equal(l4Download.html.includes('#FFF9E9'), false)
   })
@@ -302,6 +307,9 @@ describe('November activity papers', () => {
     assert.match(cases, /data-case="hill"/)
     assert.match(cases, /data-case="deepfood"/)
     assert.equal(view.includes('worksheet.l3.q4'), false)
+    assert.equal(view.includes('worksheet.l3.q1'), false)
+    assert.equal(view.includes("t('worksheet.intro')"), false)
+    assert.equal(view.includes('worksheetForm4Sections'), true)
     assert.equal(view.includes('<input'), false)
     assert.equal(/type="radio"|type="checkbox"|<select/.test(view), false)
   })
