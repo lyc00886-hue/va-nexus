@@ -91,6 +91,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
   const chrome = QUEST_CHROME[locale]
   const yearUnits = form === 's5' ? getF5Units() : form === 's6' ? getF6Units() : getF4Units()
   const openYear = yearUnits.find((unit) => unit.id === openUnitId)
+  const openLesson = openYear?.nodes.find((node) => node.id === lessonId) ?? null
   const spacing = questPathSpacing(pathWidth, bilingual)
   const layout = questPathLayout(yearUnits.length, spacing.gap, spacing.bottom)
   const currentIndex = questCurrentIndex(0, yearUnits.length)
@@ -122,74 +123,81 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
           <QuestMotionButton />
         </div>
       </div>
-      {form === 's4' && !openYear ? (
-        <div className="mt-3">
-          <F4SlidesEntry />
-        </div>
-      ) : null}
-      {openYear ? (
-        <F4UnitPanel
-          unit={openYear}
-          lessonId={lessonId}
-          art={art}
-          media={media}
-          backLabel={chrome.back}
-          onBack={() => {
-            setOpenUnitId(null)
-            setLessonId(null)
-          }}
-          onLesson={setLessonId}
-        />
-      ) : (
-        <div
-          ref={pathRef}
-          data-quest-path="illustrated"
-          data-quest-entry="path"
-          data-quest-xp="static"
-          data-quest-gap={spacing.gap}
-          data-quest-path-width={pathWidth}
-          data-quest-bilingual={bilingual ? 'on' : 'off'}
-          className="relative mx-auto mt-2 w-full max-w-[24rem]"
-        >
-          <QuestPathArt layout={layout} bands={bands} motion={motion} />
-          <ol className="absolute inset-0 m-0 list-none p-0">
-            {yearUnits.map((unit, index) => {
-              const point = layout.points[index]
-              const progress = questNodeProgress(index, currentIndex)
-              if (!point) return null
-              return (
-                <li
-                  key={unit.id}
-                  className="absolute -translate-x-1/2 -translate-y-6 text-center"
-                  style={{
-                    left: `${(point.x / layout.width) * 100}%`,
-                    top: `${(point.y / layout.height) * 100}%`,
-                    width: `${QUEST_LABEL_WIDTH_RATIO * 100}%`,
-                    minWidth: 0,
-                    maxWidth: '78%',
-                  }}
-                >
-                  <PathNode
-                    unitId={unit.id}
-                    cover={unit.coverImage}
-                    progress={progress}
-                    framed={questNodeFramed(index)}
-                    motion={motion}
-                    label={unit.title}
-                    onOpen={() => {
-                      setLessonId(null)
-                      setOpenUnitId(unit.id)
+      <div data-quest-under className="quest-map-under">
+        {form === 's4' && !openYear ? (
+          <div className="mt-3">
+            <F4SlidesEntry />
+          </div>
+        ) : null}
+        {openYear ? (
+          <F4UnitPanel
+            unit={openYear}
+            lessonId={lessonId}
+            art={art}
+            media={media}
+            backLabel={chrome.back}
+            onBack={() => {
+              setOpenUnitId(null)
+              setLessonId(null)
+            }}
+            onLesson={setLessonId}
+          />
+        ) : (
+          <div
+            ref={pathRef}
+            data-quest-path="illustrated"
+            data-quest-entry="path"
+            data-quest-xp="static"
+            data-quest-gap={spacing.gap}
+            data-quest-path-width={pathWidth}
+            data-quest-bilingual={bilingual ? 'on' : 'off'}
+            className="relative mx-auto mt-2 w-full max-w-[24rem]"
+          >
+            <QuestPathArt layout={layout} bands={bands} motion={motion} />
+            <ol className="absolute inset-0 m-0 list-none p-0">
+              {yearUnits.map((unit, index) => {
+                const point = layout.points[index]
+                const progress = questNodeProgress(index, currentIndex)
+                if (!point) return null
+                return (
+                  <li
+                    key={unit.id}
+                    className="absolute -translate-x-1/2 -translate-y-6 text-center"
+                    style={{
+                      left: `${(point.x / layout.width) * 100}%`,
+                      top: `${(point.y / layout.height) * 100}%`,
+                      width: `${QUEST_LABEL_WIDTH_RATIO * 100}%`,
+                      minWidth: 0,
+                      maxWidth: '78%',
                     }}
-                  />
-                </li>
-              )
-            })}
-          </ol>
+                  >
+                    <PathNode
+                      unitId={unit.id}
+                      cover={unit.coverImage}
+                      progress={progress}
+                      framed={questNodeFramed(index)}
+                      motion={motion}
+                      label={unit.title}
+                      onOpen={() => {
+                        setLessonId(null)
+                        setOpenUnitId(unit.id)
+                      }}
+                    />
+                  </li>
+                )
+              })}
+            </ol>
+          </div>
+        )}
+        <div data-quest-follow className="mt-4 space-y-3">
+          <InspectMapEntry grade={form === 's5' ? 'f5' : form === 's6' ? 'f6' : 'f4'} />
+          <HomeworkMapEntry />
         </div>
-      )}
-      <div className="mt-4 space-y-3">
-        <InspectMapEntry grade={form === 's5' ? 'f5' : form === 's6' ? 'f6' : 'f4'} />
-        <HomeworkMapEntry />
+      </div>
+      <div data-quest-lesson-host>
+        {openLesson ? (
+          <LessonPlayer lesson={openLesson} kind="lesson" exitLabel={chrome.back} onExit={() => setLessonId(null)} />
+        ) : null}
       </div>
     </section>
   )
@@ -230,32 +238,8 @@ function PathNode({
       className="flex w-full flex-col items-center bg-transparent"
     >
       <span className="relative flex h-16 w-16 items-center justify-center">
-        {current && motion ? (
-          <>
-            <span className="quest-ring-pulse absolute h-16 w-16 rounded-full border-2 border-[#0D9488]" aria-hidden />
-            <span
-              data-quest-xp="static"
-              data-quest-rings="on"
-              data-quest-xp-moves={moves ? 'on' : 'off'}
-              className="absolute h-[4.6rem] w-[4.6rem] rounded-full border-2 border-[#0D9488]"
-              aria-hidden
-            />
-            <span className="absolute h-14 w-14 rounded-full border-2 border-[#0D9488]" aria-hidden />
-          </>
-        ) : null}
-        {current && !motion ? (
-          <span
-            data-quest-mark="static"
-            data-quest-xp="static"
-            data-quest-xp-moves={moves ? 'on' : 'off'}
-            className="quest-current-mark pointer-events-none absolute -top-2 left-1/2 z-[1] -translate-x-1/2"
-            aria-hidden
-          >
-            <svg width="16" height="12" viewBox="0 0 16 12">
-              <path d="M8 12 L1 1.2 H15 Z" fill="#0D9488" />
-            </svg>
-          </span>
-        ) : null}
+        {motion ? <QuestNodeRings moves={moves} /> : null}
+        {current && !motion ? <QuestCurrentMark moves={moves} /> : null}
         <span
           className={`relative h-12 w-12 overflow-hidden rounded-full border-2 bg-[#FFF9E9] ${
             locked ? 'border-[#0D9488]/45 opacity-80' : 'border-[#0D9488]'
@@ -276,6 +260,40 @@ function PathNode({
   )
 }
 
+/** Same concentric rings on every title button once path motion is already on. */
+function QuestNodeRings({ moves }: { moves: boolean }) {
+  return (
+    <>
+      <span className="quest-ring-pulse absolute h-16 w-16 rounded-full border-2 border-[#0D9488]" aria-hidden />
+      <span
+        data-quest-xp="static"
+        data-quest-rings="on"
+        data-quest-xp-moves={moves ? 'on' : 'off'}
+        className="absolute h-[4.6rem] w-[4.6rem] rounded-full border-2 border-[#0D9488]"
+        aria-hidden
+      />
+      <span className="absolute h-14 w-14 rounded-full border-2 border-[#0D9488]" aria-hidden />
+    </>
+  )
+}
+
+/** Already-live current step: a still pointer, with no pulsing rings. */
+function QuestCurrentMark({ moves }: { moves: boolean }) {
+  return (
+    <span
+      data-quest-mark="static"
+      data-quest-xp="static"
+      data-quest-xp-moves={moves ? 'on' : 'off'}
+      className="quest-current-mark pointer-events-none absolute -top-2 left-1/2 z-[1] -translate-x-1/2"
+      aria-hidden
+    >
+      <svg width="16" height="12" viewBox="0 0 16 12">
+        <path d="M8 12 L1 1.2 H15 Z" fill="#0D9488" />
+      </svg>
+    </span>
+  )
+}
+
 function F4UnitPanel({
   unit,
   lessonId,
@@ -293,7 +311,6 @@ function F4UnitPanel({
   onBack: () => void
   onLesson: (id: string | null) => void
 }) {
-  const lesson = unit.nodes.find((node) => node.id === lessonId)
   return (
     <div data-quest-unit={unit.id} className="mt-4 w-full max-w-none">
       <button type="button" onClick={onBack} className="text-sm font-semibold text-[#0D9488]">
@@ -316,11 +333,6 @@ function F4UnitPanel({
               >
                 <BiSpan text={node.title} keepWords />
               </button>
-              {shown && lesson ? (
-                <div className="mt-3">
-                  <LessonPlayer lesson={lesson} kind="lesson" exitLabel={backLabel} onExit={() => onLesson(null)} />
-                </div>
-              ) : null}
             </li>
           )
         })}
