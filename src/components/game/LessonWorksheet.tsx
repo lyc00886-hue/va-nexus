@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { flushSync } from 'react-dom'
 import {
-  worksheetCaseLines,
   worksheetDownloadFor,
+  worksheetForm4Sections,
   worksheetIntroKey,
   worksheetIsHeritage,
   worksheetLessonOf,
@@ -29,7 +29,7 @@ function copy(key: string): string {
 
 /**
  * Classroom activity paper.
- * November lessons keep their case papers. Form 5 heritage lessons share one unit paper.
+ * Form 4 lessons follow the locked community-art paper. Form 5 heritage lessons share one unit paper.
  * Teachers get preview, print, and download. Students get the paper only.
  */
 export function LessonWorksheet({ lessonId }: { lessonId: string }) {
@@ -46,11 +46,10 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
   const audience: WorksheetAudience = role ? 'teacher' : 'student'
   const titleKey = worksheetTitleKey(lesson)
   const introKey = worksheetIntroKey(lesson)
-  const questionsHeadingKey = worksheetQuestionsHeadingKey(lesson)
   const heritage = worksheetIsHeritage(lesson)
-  const caseLines = worksheetCaseLines(lesson, audience, copy)
-  const questions = worksheetQuestions(lesson, copy)
+  const questions = heritage ? worksheetQuestions(lesson, copy) : []
   const sample = worksheetShowsSample(lesson, audience, mode)
+  const form4Sections = heritage ? [] : worksheetForm4Sections(lesson)
 
   function downloadPaper() {
     const file = worksheetDownloadFor(lesson!, HTML_LANG[getLocale()], copy)
@@ -132,31 +131,48 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
             </p>
           </div>
         ) : null}
-        {heritage ? null : (
-          <section
-            data-worksheet-case={lesson === 'F4-U3-L3' ? 'hill' : 'deepfood'}
-            className="space-y-1 rounded-2xl border-2 border-[#0D9488] bg-[#FFFFFF] px-4 py-3 text-sm leading-relaxed"
-          >
-            <h4 className="font-bold text-[#0D9488]">{t('worksheet.section.case')}</h4>
-            {caseLines.map((line) => (
-              <p key={line}>{line}</p>
-            ))}
-          </section>
-        )}
-        <div data-worksheet-questions>
-          <h4 className="font-bold text-[#0D9488]">{t(questionsHeadingKey)}</h4>
-          <ol className="mt-2 list-decimal space-y-4 pl-5 text-sm leading-relaxed">
-            {questions.map((question) => (
-              <li key={question}>
-                <p>{question}</p>
-                <div data-worksheet-answer className="mt-3 space-y-3" aria-hidden="true">
-                  <div className="h-6 border-b border-slate-400" />
-                  <div className="h-6 border-b border-slate-400" />
+        {heritage ? (
+          <div data-worksheet-questions>
+            <h4 className="font-bold text-[#0D9488]">{t(worksheetQuestionsHeadingKey(lesson))}</h4>
+            <ol className="mt-2 list-decimal space-y-4 pl-5 text-sm leading-relaxed">
+              {questions.map((question) => (
+                <li key={question}>
+                  <p>{question}</p>
+                  <div data-worksheet-answer className="mt-3 space-y-3" aria-hidden="true">
+                    <div className="h-6 border-b border-slate-400" />
+                    <div className="h-6 border-b border-slate-400" />
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ) : (
+          form4Sections.map((section) => (
+            <section
+              key={section.headingKey}
+              data-worksheet-section={section.headingKey}
+              data-worksheet-case={section.caseCard ? 'community-art' : undefined}
+              className={
+                section.caseCard
+                  ? 'space-y-2 rounded-2xl border-2 border-[#0D9488] bg-[#FFFFFF] px-4 py-3 text-sm leading-relaxed'
+                  : 'space-y-2 text-sm leading-relaxed'
+              }
+            >
+              <h4 className="font-bold text-[#0D9488]">{copy(section.headingKey)}</h4>
+              {section.blocks.map((item) => (
+                <div key={item.key} data-worksheet-block={item.key}>
+                  <p className={item.title ? 'font-semibold text-slate-900' : undefined}>{copy(item.key)}</p>
+                  {item.lines ? (
+                    <div data-worksheet-answer className="mt-3 space-y-3" aria-hidden="true">
+                      <div className="h-6 border-b border-slate-400" />
+                      <div className="h-6 border-b border-slate-400" />
+                    </div>
+                  ) : null}
                 </div>
-              </li>
-            ))}
-          </ol>
-        </div>
+              ))}
+            </section>
+          ))
+        )}
       </article>
     </section>
   )

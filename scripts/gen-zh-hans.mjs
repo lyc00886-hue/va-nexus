@@ -110,6 +110,28 @@ const OFFICIAL_LOCALE_SUPPLEMENT = new Set([
   'worksheet.l3.q3',
   'worksheet.l3.q4',
   'worksheet.l4.q2',
+  // Official locale table for the community-art activity papers. zh-Hans stays BYTE-IDENTICAL, including 嘅 / 唔 / 喺 / 咗 / 睇.
+  'worksheet.l3.intro',
+  'worksheet.l4.intro',
+  'worksheet.l3.prompt',
+  'worksheet.l3.what',
+  'worksheet.l3.case1.work',
+  'worksheet.l3.case1.q',
+  'worksheet.l3.case2.who',
+  'worksheet.l3.case2.q',
+  'worksheet.l3.contrast',
+  'worksheet.l3.compare',
+  'worksheet.section.notice',
+  'worksheet.l3.notice',
+  'worksheet.l3.vocab.communityArt',
+  'worksheet.l3.vocab.publicArt',
+  'worksheet.l3.vocab.audience',
+  'worksheet.l3.vocab.senseOfPlace',
+  'worksheet.l4.sketch',
+  'worksheet.l4.reflect',
+  'worksheet.l4.diary',
+  'worksheet.l4.compare',
+  'worksheet.l4.further',
 ])
 
 const out = {}
