@@ -4,7 +4,10 @@ import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
 import { TRIAL_LOCALE_KEYS, showsShortTrial } from './shortTrial.ts'
+import { LOCALE_SHORT } from '../lib/langMode.ts'
+import { bindWorksheetLiveCopy } from './worksheetLiveCopy.ts'
 import {
+  F5_WORKSHEET_QUESTION_KEYS,
   FORM4_NEW_KEYS,
   WORKSHEET_HIDDEN_KEYS,
   WORKSHEET_LOCALE_KEYS,
@@ -15,10 +18,15 @@ import {
   worksheetDownloadFor,
   worksheetDownloadHtml,
   worksheetDownloadName,
+  worksheetForm4Sections,
+  worksheetIntroKey,
   worksheetLessonOf,
   worksheetPaperBackground,
   worksheetQuestions,
+  worksheetQuestionsHeadingKey,
+  worksheetSentenceHtml,
   worksheetShowsSample,
+  worksheetTitleKey,
 } from './lessonWorksheet.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
@@ -414,5 +422,218 @@ describe('November activity papers', () => {
     assert.match(read('src/game/communityCases.ts'), /OVERVIEW_VIDEO_ID = 'hR9X0Ce2r9o'/)
     assert.equal(read('src/game/communityCases.ts').includes("HILL_VIDEO_ID = 'J-VketvKEX4'"), true)
     assert.equal(read('src/game/communityCases.ts').includes('HILL_VIDEO_ID = null'), false)
+  })
+
+  it('stacks English above Chinese on the papers and the download HTML', () => {
+    const hant = messages('src/i18n/zh-Hant.json')
+    const hans = messages('src/i18n/zh-Hans.json')
+    const en = messages('src/i18n/en.json')
+    assert.equal(Object.keys(hant).filter((key) => key.startsWith('worksheet.')).length, 66)
+    const view = read('src/components/game/LessonWorksheet.tsx')
+    const bilingual = read('src/components/game/BilingualText.tsx')
+    assert.match(view, /import \{ BiKey \} from '\.\/BilingualText'/)
+    assert.match(view, /<BiKey name="worksheet\.title" \/>/)
+    assert.match(view, /<BiKey name=\{item\.label\} \/>/)
+    assert.match(view, /<BiKey name="worksheet\.printHint" \/>/)
+    assert.match(view, /<BiKey name=\{titleKey\} \/>/)
+    assert.match(view, /<BiKey name=\{introKey\} \/>/)
+    assert.match(view, /<BiKey name="worksheet\.noSchool" \/>/)
+    assert.match(view, /<BiKey name="worksheet\.sampleNote" \/>/)
+    assert.match(view, /<BiKey name=\{worksheetQuestionsHeadingKey\(lesson\)\} \/>/)
+    assert.match(view, /<BiKey name=\{key\} \/>/)
+    assert.match(view, /<BiKey name=\{section\.headingKey as MessageKey\} \/>/)
+    assert.match(view, /<BiKey name=\{item\.key as MessageKey\} \/>/)
+    assert.equal(view.includes('copy(section'), false)
+    assert.equal(view.includes('copy(item'), false)
+    assert.equal(view.includes("{t('worksheet.title')}"), false)
+    assert.equal(view.includes("{t(titleKey)}"), false)
+    assert.equal(view.includes("t('worksheet.intro')"), false)
+    assert.match(view, /worksheetDownloadFor\(lesson!, HTML_LANG\[getLocale\(\)\], copy\)/)
+    assert.match(view, /\{WORKSHEET_SAMPLE_LABEL\}/)
+    assert.match(bilingual, /english === text/)
+    assert.match(bilingual, /lang="en"/)
+    assert.match(bilingual, /LOCALE_SHORT\.en/)
+    assert.match(bilingual, /LOCALE_SHORT\[zhSide\]/)
+    const homework = read('src/components/HomeworkStudent.tsx')
+    assert.match(homework, /worksheetDownloadFor\(lesson, HTML_LANG\[getLocale\(\)\], copy\)/)
+    assert.match(homework, /hw\.student\.downloadL3/)
+    assert.match(homework, /hw\.student\.downloadL4/)
+    assert.match(homework, /F5_INSTRUCTIONS_DOWNLOAD_NAME/)
+    assert.match(homework, /homeworkInstructionsHtml/)
+    const i18n = read('src/i18n/index.tsx')
+    assert.match(i18n, /bindWorksheetLiveCopy/)
+    assert.match(i18n, /tIn\('en', key as MessageKey\)/)
+    assert.match(i18n, /export \{ LOCALE_SHORT \}/)
+    assert.equal(LOCALE_SHORT.en, 'EN')
+    assert.equal(LOCALE_SHORT['zh-Hant'], '繁')
+    assert.equal(LOCALE_SHORT['zh-Hans'], '简')
+    assert.equal(worksheetSentenceHtml('同一行', { english: () => '同一行', zhLang: 'zh-Hant' }, 'same'), '同一行')
+    const pair = worksheetSentenceHtml('简体', { english: () => 'English', zhLang: 'zh-Hans' }, 'pair')
+    assert.ok(pair.indexOf('lang="en">English') < pair.indexOf('lang="zh-Hans">简体'))
+    assert.match(pair, /class="chip">EN</)
+    assert.match(pair, /class="chip">简</)
+    assert.equal(pair.includes('class="chip">繁'), false)
+
+    const form4Keys = (id: 'F4-U3-L3' | 'F4-U3-L4') => {
+      const keys = [worksheetTitleKey(id), worksheetIntroKey(id), 'worksheet.noSchool']
+      for (const section of worksheetForm4Sections(id)) {
+        keys.push(section.headingKey)
+        for (const block of section.blocks) keys.push(block.key)
+      }
+      return keys
+    }
+    const f5Keys = [
+      worksheetTitleKey('F5-U3-L1'),
+      worksheetIntroKey('F5-U3-L1'),
+      'worksheet.noSchool',
+      worksheetQuestionsHeadingKey('F5-U3-L1'),
+      ...F5_WORKSHEET_QUESTION_KEYS,
+    ]
+    const packs = { 'zh-Hant': hant, 'zh-Hans': hans } as const
+
+    function assertStacked(
+      html: string,
+      keys: readonly string[],
+      zh: Record<string, string>,
+      zhLang: 'zh-Hant' | 'zh-Hans',
+      root: string,
+    ) {
+      assert.match(html, new RegExp(`<html lang="${root}">`))
+      assert.equal(html.split('data-bilingual="stack"').length - 1, keys.length)
+      for (const key of keys) {
+        const enAt = html.indexOf(`lang="en">${en[key]}`)
+        const zhAt = html.indexOf(`lang="${zhLang}">${zh[key]}`)
+        assert.ok(enAt >= 0, key)
+        assert.ok(zhAt > enAt, key)
+      }
+      assert.match(html, /class="chip">EN</)
+      assert.match(html, new RegExp(`class="chip">${LOCALE_SHORT[zhLang]}</`))
+      assert.equal(html.includes('<img'), false)
+      assert.equal(html.includes(WORKSHEET_SAMPLE_LABEL), false)
+    }
+
+    for (const id of ['F4-U3-L3', 'F4-U3-L4'] as const) {
+      const keys = form4Keys(id)
+      for (const zhLang of ['zh-Hant', 'zh-Hans'] as const) {
+        const zh = packs[zhLang]
+        const root = zhLang === 'zh-Hant' ? 'zh-Hant-HK' : 'zh-Hans-CN'
+        const html = worksheetDownloadFor(id, root, (key) => zh[key] ?? key, {
+          english: (key) => en[key] ?? key,
+          zhLang,
+        }).html
+        assert.equal(worksheetDownloadName(id), `classroom-activity-${id}.html`)
+        assertStacked(html, keys, zh, zhLang, root)
+        assert.match(html, /<title>[^<]*<\/title>/)
+        assert.equal(html.includes(`<title>${zh[worksheetTitleKey(id)]}</title>`), true)
+        assert.equal(html.includes('background: #FFFFFF'), true)
+        assert.equal(html.includes('#FFF9E9'), false)
+        assert.equal(html.includes(zh[WORKSHEET_HIDDEN_KEYS[0]]), false)
+        for (const key of WORKSHEET_HIDDEN_KEYS) {
+          assert.equal(html.includes(en[key]), false, key)
+          assert.equal(html.includes(zh[key]), false, key)
+        }
+        assert.equal(html.includes('喚味'), false)
+        assert.equal(html.includes('油街實現'), false)
+        assert.equal(html.includes('油街廚房'), false)
+        assert.equal(html.includes('1.6.2023–12.3.2024'), false)
+      }
+      const monoEn = worksheetDownloadFor(id, 'en', (key) => en[key] ?? key, null).html
+      assert.match(monoEn, /<html lang="en">/)
+      assert.equal(monoEn.includes('data-bilingual'), false)
+      assert.equal(monoEn.includes('class="chip"'), false)
+      assert.equal(monoEn.match(/lang="en"/g)?.length, 1)
+      assert.equal(monoEn.includes(en[worksheetTitleKey(id)]), true)
+      assert.equal(monoEn.includes(hant[worksheetTitleKey(id)]), false)
+      assert.equal(monoEn.includes('background: #FFFFFF'), true)
+      for (const zhLang of ['zh-Hant', 'zh-Hans'] as const) {
+        const zh = packs[zhLang]
+        const root = zhLang === 'zh-Hant' ? 'zh-Hant-HK' : 'zh-Hans-CN'
+        const mono = worksheetDownloadFor(id, root, (key) => zh[key] ?? key, null).html
+        assert.match(mono, new RegExp(`<html lang="${root}">`))
+        assert.equal(mono.includes('data-bilingual'), false)
+        assert.equal(mono.includes('class="chip"'), false)
+        assert.equal(mono.includes(zh[worksheetTitleKey(id)]), true)
+        assert.equal(mono.includes(en[worksheetTitleKey(id)]), false)
+      }
+    }
+
+    const l3Hant = worksheetDownloadFor('F4-U3-L3', 'zh-Hant-HK', (key) => hant[key] ?? key, {
+      english: (key) => en[key] ?? key,
+      zhLang: 'zh-Hant',
+    }).html
+    assert.equal(l3Hant.includes('邂逅！山 川 人'), true)
+    assert.equal(l3Hant.codePointAt(l3Hant.indexOf('邂')), 0x9082)
+    assert.equal(l3Hant.includes('Hi! Hill'), true)
+    assert.equal(l3Hant.includes('深食在祖堯'), true)
+    assert.equal(l3Hant.includes('《漁嚐夢遊》'), true)
+    assert.equal(l3Hant.includes('Aberdeen Fishing Dreams'), true)
+    assert.equal(l3Hant.indexOf('lang="en">Case 1: “Hi! Hill”') < l3Hant.indexOf('lang="zh-Hant">個案一：「邂逅！山 川 人」'), true)
+    const l3Hans = worksheetDownloadFor('F4-U3-L3', 'zh-Hans-CN', (key) => hans[key] ?? key, {
+      english: (key) => en[key] ?? key,
+      zhLang: 'zh-Hans',
+    }).html
+    assert.equal(l3Hans.includes('《渔尝梦游》'), true)
+    assert.equal(l3Hans.includes('《漁嚐夢遊》'), false)
+    assert.equal(l3Hans.includes('邂逅！山 川 人'), true)
+    assert.equal(l3Hans.includes('class="chip">简'), true)
+    assert.equal(l3Hans.includes('class="chip">繁'), false)
+    assert.equal(l3Hant.includes('class="chip">繁'), true)
+    assert.equal(l3Hant.includes('class="chip">简'), false)
+
+    const same = worksheetDownloadFor('F4-U3-L3', 'zh-Hant-HK', () => '同一行', {
+      english: () => '同一行',
+      zhLang: 'zh-Hant',
+    }).html
+    assert.equal(same.includes('data-bilingual'), false)
+    assert.equal(same.includes('lang="en"'), false)
+    assert.equal(same.split('同一行').length - 1, form4Keys('F4-U3-L3').length + 1)
+
+    for (const zhLang of ['zh-Hant', 'zh-Hans'] as const) {
+      const zh = packs[zhLang]
+      const root = zhLang === 'zh-Hant' ? 'zh-Hant-HK' : 'zh-Hans-CN'
+      const html = worksheetDownloadFor('F5-U3-L2', root, (key) => zh[key] ?? key, {
+        english: (key) => en[key] ?? key,
+        zhLang,
+      }).html
+      assertStacked(html, f5Keys, zh, zhLang, root)
+      assert.equal(html.includes('background: #FFF9E9'), true)
+      assert.equal(html.includes('#FFFFFF'), false)
+      assert.equal(html.includes('邂逅'), false)
+      assert.equal(html.includes('深食'), false)
+      assert.equal(worksheetDownloadName('F5-U3-L2'), 'classroom-activity-F5-U3-HERITAGE.html')
+      const mono = worksheetDownloadFor('F5-U3-L2', root, (key) => zh[key] ?? key, null).html
+      assert.equal(mono.includes('data-bilingual'), false)
+      assert.equal(mono.includes(en[worksheetTitleKey('F5-U3-L1')]), false)
+      assert.equal(mono.includes(zh['worksheet.f5.q4']), true)
+    }
+    const f5En = worksheetDownloadFor('F5-U3-L1', 'en', (key) => en[key] ?? key, null).html
+    assert.match(f5En, /<html lang="en">/)
+    assert.equal(f5En.includes('data-bilingual'), false)
+    assert.equal(f5En.includes('Compare works'), true)
+    assert.equal(f5En.includes('藝術評賞比較'), false)
+    assert.equal(f5En.includes('艺术评赏比较'), false)
+    assert.equal(f5En.includes('background: #FFF9E9'), true)
+
+    bindWorksheetLiveCopy({
+      isBilingual: () => true,
+      zhSide: () => 'zh-Hans',
+      english: (key) => en[key] ?? key,
+    })
+    try {
+      const live = worksheetDownloadFor('F4-U3-L3', 'zh-Hans-CN', (key) => hans[key] ?? key).html
+      assert.match(live, /<html lang="zh-Hans-CN">/)
+      assert.match(live, /lang="zh-Hans">/)
+      assert.equal(live.includes('《渔尝梦游》'), true)
+      assert.equal(live.includes('class="chip">简'), true)
+      assert.ok(live.indexOf('lang="en">Case 1: “Hi! Hill”') < live.indexOf('lang="zh-Hans">个案一：「邂逅！山 川 人」'))
+      const forced = worksheetDownloadFor('F4-U3-L3', 'zh-Hans-CN', (key) => hans[key] ?? key, null).html
+      assert.equal(forced.includes('data-bilingual'), false)
+      assert.equal(forced.includes('Hi! Hill'), false)
+    } finally {
+      bindWorksheetLiveCopy(null)
+    }
+    const after = worksheetDownloadFor('F4-U3-L3', 'zh-Hant-HK', (key) => hant[key] ?? key).html
+    assert.equal(after.includes('data-bilingual'), false)
+    assert.equal(after.includes('Hi! Hill'), false)
   })
 })

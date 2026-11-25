@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { flushSync } from 'react-dom'
 import {
+  F5_WORKSHEET_QUESTION_KEYS,
   worksheetDownloadFor,
   worksheetForm4Sections,
   worksheetIntroKey,
   worksheetIsHeritage,
   worksheetLessonOf,
-  worksheetQuestions,
   worksheetQuestionsHeadingKey,
   worksheetShowsSample,
   worksheetTitleKey,
@@ -16,6 +16,7 @@ import {
 } from '../../game/lessonWorksheet'
 import { getLocale, HTML_LANG, t, type MessageKey } from '../../i18n'
 import { useStaffRole } from '../../lib/useStaffRole'
+import { BiKey } from './BilingualText'
 
 const MODES = [
   { id: 'preview', label: 'worksheet.preview' },
@@ -47,7 +48,6 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
   const titleKey = worksheetTitleKey(lesson)
   const introKey = worksheetIntroKey(lesson)
   const heritage = worksheetIsHeritage(lesson)
-  const questions = heritage ? worksheetQuestions(lesson, copy) : []
   const sample = worksheetShowsSample(lesson, audience, mode)
   const form4Sections = heritage ? [] : worksheetForm4Sections(lesson)
 
@@ -88,8 +88,10 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
     >
       {audience === 'teacher' ? (
         <div data-worksheet-toolbar className="space-y-2">
-          <h3 className="text-lg font-bold text-slate-900">{t('worksheet.title')}</h3>
-          <div role="group" aria-label={t('worksheet.title')} className="flex flex-wrap gap-2">
+          <h3 id={`worksheet-toolbar-${lesson}`} className="text-lg font-bold text-slate-900">
+            <BiKey name="worksheet.title" />
+          </h3>
+          <div role="group" aria-labelledby={`worksheet-toolbar-${lesson}`} className="flex flex-wrap gap-2">
             {MODES.map((item) => {
               const selected = mode === item.id
               return (
@@ -102,16 +104,18 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
                   onClick={() => choose(item.id)}
                   className={
                     selected
-                      ? 'min-h-9 rounded-full border border-[#0D9488] bg-[#0D9488] px-4 py-1 text-sm font-semibold text-[#FFF9E9]'
-                      : 'min-h-9 rounded-full border border-[#0D9488] bg-white px-4 py-1 text-sm font-semibold text-[#0D9488]'
+                      ? 'inline-flex min-h-9 items-center rounded-full border border-[#0D9488] bg-[#0D9488] px-4 py-1.5 text-left text-sm font-semibold text-[#FFF9E9]'
+                      : 'inline-flex min-h-9 items-center rounded-full border border-[#0D9488] bg-white px-4 py-1.5 text-left text-sm font-semibold text-[#0D9488]'
                   }
                 >
-                  {t(item.label)}
+                  <BiKey name={item.label} />
                 </button>
               )
             })}
           </div>
-          <p className="text-sm text-slate-600">{t('worksheet.printHint')}</p>
+          <p className="text-sm text-slate-600">
+            <BiKey name="worksheet.printHint" />
+          </p>
         </div>
       ) : null}
       <article
@@ -120,12 +124,20 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
         data-worksheet-open="true"
         className={`space-y-4 rounded-3xl px-4 py-4 text-slate-900 ${heritage ? 'bg-[#FFF9E9]' : 'bg-[#FFFFFF]'}`}
       >
-        <h3 className="text-base font-bold leading-snug">{t(titleKey)}</h3>
-        <p className="text-sm leading-relaxed text-slate-700">{t(introKey)}</p>
-        <p className="text-sm leading-relaxed text-slate-700">{t('worksheet.noSchool')}</p>
+        <h3 className="text-base font-bold leading-snug">
+          <BiKey name={titleKey} />
+        </h3>
+        <p className="text-sm leading-relaxed text-slate-700">
+          <BiKey name={introKey} />
+        </p>
+        <p className="text-sm leading-relaxed text-slate-700">
+          <BiKey name="worksheet.noSchool" />
+        </p>
         {sample ? (
           <div data-worksheet-sample>
-            <p className="text-sm text-slate-600">{t('worksheet.sampleNote')}</p>
+            <p className="text-sm text-slate-600">
+              <BiKey name="worksheet.sampleNote" />
+            </p>
             <p data-testid="worksheet-sample-label" className="mt-1 text-sm font-semibold">
               {WORKSHEET_SAMPLE_LABEL}
             </p>
@@ -133,11 +145,15 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
         ) : null}
         {heritage ? (
           <div data-worksheet-questions>
-            <h4 className="font-bold text-[#0D9488]">{t(worksheetQuestionsHeadingKey(lesson))}</h4>
+            <h4 className="font-bold text-[#0D9488]">
+              <BiKey name={worksheetQuestionsHeadingKey(lesson)} />
+            </h4>
             <ol className="mt-2 list-decimal space-y-4 pl-5 text-sm leading-relaxed">
-              {questions.map((question) => (
-                <li key={question}>
-                  <p>{question}</p>
+              {F5_WORKSHEET_QUESTION_KEYS.map((key) => (
+                <li key={key}>
+                  <p>
+                    <BiKey name={key} />
+                  </p>
                   <div data-worksheet-answer className="mt-3 space-y-3" aria-hidden="true">
                     <div className="h-6 border-b border-slate-400" />
                     <div className="h-6 border-b border-slate-400" />
@@ -158,10 +174,14 @@ export function LessonWorksheet({ lessonId }: { lessonId: string }) {
                   : 'space-y-2 text-sm leading-relaxed'
               }
             >
-              <h4 className="font-bold text-[#0D9488]">{copy(section.headingKey)}</h4>
+              <h4 className="font-bold text-[#0D9488]">
+                <BiKey name={section.headingKey as MessageKey} />
+              </h4>
               {section.blocks.map((item) => (
                 <div key={item.key} data-worksheet-block={item.key}>
-                  <p className={item.title ? 'font-semibold text-slate-900' : undefined}>{copy(item.key)}</p>
+                  <p className={item.title ? 'font-semibold text-slate-900' : undefined}>
+                    <BiKey name={item.key as MessageKey} />
+                  </p>
                   {item.lines ? (
                     <div data-worksheet-answer className="mt-3 space-y-3" aria-hidden="true">
                       <div className="h-6 border-b border-slate-400" />
