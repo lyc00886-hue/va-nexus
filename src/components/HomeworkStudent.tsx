@@ -409,9 +409,8 @@ function HomeworkCard({
             {t('assign.staff.attachPaper')}
           </span>
         </p>
-      ) : (
-        <HomeworkDownloads assignmentId={assignment.id} />
-      )}
+      ) : null}
+      <HomeworkDownloads assignmentId={assignment.id} />
       {handedName ? <p className="mt-2 text-sm font-semibold text-[#0D9488]">{handedName}</p> : null}
       {joined ? (
         <form onSubmit={submit} className="mt-3 space-y-3">
