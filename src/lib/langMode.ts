@@ -1,5 +1,8 @@
 export type Locale = 'zh-Hant' | 'zh-Hans' | 'en'
 
+/** Short switcher labels. The on-screen bilingual stack uses these same chips. */
+export const LOCALE_SHORT: Record<Locale, string> = { en: 'EN', 'zh-Hant': '繁', 'zh-Hans': '简' }
+
 /** navigator.language → locale: zh-HK/zh-TW/zh-MO/zh-Hant → 繁, zh-CN/zh-SG/zh-Hans/zh → 简, else English. */
 export function localeFromLanguage(lang: string | undefined | null): Locale {
   const l = (lang ?? '').toLowerCase()

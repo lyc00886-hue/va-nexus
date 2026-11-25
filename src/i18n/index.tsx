@@ -9,7 +9,8 @@
  *   the active locale.
  */
 import { createContext, Fragment, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import { nextLangState, resolveLangState, type LangMode, type LangState, type Locale, type ZhSide } from '../lib/langMode'
+import { bindWorksheetLiveCopy } from '../game/worksheetLiveCopy'
+import { LOCALE_SHORT, nextLangState, resolveLangState, type LangMode, type LangState, type Locale, type ZhSide } from '../lib/langMode'
 import en from './en.json'
 import zhHans from './zh-Hans.json'
 import zhHant from './zh-Hant.json'
@@ -34,8 +35,7 @@ export const HTML_LANG: Record<Locale, string> = { 'zh-Hant': 'zh-Hant-HK', 'zh-
 export const SPEECH_LANG: Record<Locale, string> = { 'zh-Hant': 'zh-HK', 'zh-Hans': 'zh-CN', en: 'en-GB' }
 /** Intl date/number formatting locale */
 export const INTL_LOCALE: Record<Locale, string> = { 'zh-Hant': 'zh-HK', 'zh-Hans': 'zh-CN', en: 'en-HK' }
-/** Short switcher labels */
-export const LOCALE_SHORT: Record<Locale, string> = { en: 'EN', 'zh-Hant': '繁', 'zh-Hans': '简' }
+export { LOCALE_SHORT }
 export const LOCALE_NAME: Record<Locale, string> = { en: 'English', 'zh-Hant': '繁體中文', 'zh-Hans': '简体中文' }
 
 function isLocale(v: unknown): v is Locale {
@@ -195,3 +195,10 @@ export function useT(): Ctx {
   if (!ctx) throw new Error('useT must be used within LocaleProvider')
   return ctx
 }
+
+// Activity-paper downloads read this at click time. English sits above the Chinese side.
+bindWorksheetLiveCopy({
+  isBilingual: () => bilingualOn,
+  zhSide: () => zhSideCurrent,
+  english: (key) => tIn('en', key as MessageKey),
+})

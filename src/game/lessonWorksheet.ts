@@ -2,7 +2,11 @@
  * Classroom activity papers for F4-U3-L3, F4-U3-L4, and the Form 5 heritage unit.
  * Form 4 papers follow the locked community-art lesson. Old question keys stay in
  * the locale files and are not shown. The sample label is a preview stand-in, not a student.
+ * Download HTML stacks English above the Chinese side when bilingual reading is on.
+ * The root lang stays the Chinese-side HTML lang. Identical lines stay one line.
  */
+import { LOCALE_SHORT } from '../lib/langMode.ts'
+import { worksheetLiveCopy } from './worksheetLiveCopy.ts'
 
 export const WORKSHEET_LESSON_IDS = ['F4-U3-L3', 'F4-U3-L4'] as const
 
@@ -259,45 +263,86 @@ export function worksheetDownloadName(lessonId: WorksheetLessonId): string {
   return 'classroom-activity-F5-U3-HERITAGE.html'
 }
 
+/** English above the active Chinese side. Omit to follow the live reading switch. */
+export type WorksheetSentenceStack = {
+  english: (key: string) => string
+  zhLang: 'zh-Hant' | 'zh-Hans'
+}
+
+const BILINGUAL_CSS = `
+  .bi { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+  .bi-row { display: flex; width: 100%; align-items: flex-start; gap: 8px; }
+  .chip { display: inline-flex; flex: none; align-items: center; margin-top: 2px; border: 1px solid #0D9488; border-radius: 999px; background: #fff; color: #0D9488; padding: 2px 6px; font-size: 10px; font-weight: 700; line-height: 1; }`
+
+function liveStack(): WorksheetSentenceStack | null {
+  const live = worksheetLiveCopy()
+  if (!live?.isBilingual()) return null
+  const zhLang = live.zhSide() === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant'
+  return { zhLang, english: (key) => live.english(key) }
+}
+
+/**
+ * One download sentence. Monolingual, and identical English and Chinese, stay one line.
+ * A real pair is English above Chinese, with the same short chips as the on-screen stack.
+ */
+export function worksheetSentenceHtml(current: string, stack: WorksheetSentenceStack | null, key: string): string {
+  if (!stack) return escapeHtml(current)
+  const english = stack.english(key)
+  if (english === current) return escapeHtml(current)
+  const zhLang = stack.zhLang
+  return `<span class="bi" data-bilingual="stack"><span class="bi-row"><span class="chip">${escapeHtml(LOCALE_SHORT.en)}</span><span lang="en">${escapeHtml(english)}</span></span><span class="bi-row"><span class="chip">${escapeHtml(LOCALE_SHORT[zhLang])}</span><span lang="${zhLang}">${escapeHtml(current)}</span></span></span>`
+}
+
 /** Same file the lesson toolbar and the homework page download. */
 export function worksheetDownloadFor(
   lessonId: WorksheetLessonId,
   lang: string,
   text: (key: string) => string,
+  stack?: WorksheetSentenceStack | null,
 ): { name: string; html: string } {
+  const chosen = stack === undefined ? liveStack() : stack
+  const line = (key: string) => worksheetSentenceHtml(text(key), chosen, key)
+  const extraCss = chosen ? BILINGUAL_CSS : ''
   if (lessonId === 'F4-U3-L3' || lessonId === 'F4-U3-L4') {
     return {
       name: worksheetDownloadName(lessonId),
       html: worksheetForm4DownloadHtml({
         lang,
         title: text(worksheetTitleKey(lessonId)),
-        intro: text(worksheetIntroKey(lessonId)),
-        noSchool: text('worksheet.noSchool'),
+        titleBody: line(worksheetTitleKey(lessonId)),
+        intro: line(worksheetIntroKey(lessonId)),
+        noSchool: line('worksheet.noSchool'),
         sections: worksheetForm4Sections(lessonId).map((section) => ({
-          heading: text(section.headingKey),
+          heading: line(section.headingKey),
           caseCard: section.caseCard,
           blocks: section.blocks.map((item) => ({
-            text: text(item.key),
+            text: line(item.key),
             lines: item.lines,
             title: item.title,
           })),
         })),
         background: worksheetPaperBackground(lessonId),
+        raw: true,
+        extraCss,
       }),
     }
   }
+  const questionsHeadingKey = worksheetQuestionsHeadingKey(lessonId)
   return {
     name: worksheetDownloadName(lessonId),
     html: worksheetDownloadHtml({
       lang,
       title: text(worksheetTitleKey(lessonId)),
-      intro: text(worksheetIntroKey(lessonId)),
-      noSchool: text('worksheet.noSchool'),
-      caseHeading: text('worksheet.section.case'),
+      titleBody: line(worksheetTitleKey(lessonId)),
+      intro: line(worksheetIntroKey(lessonId)),
+      noSchool: line('worksheet.noSchool'),
+      caseHeading: line('worksheet.section.case'),
       caseLines: worksheetCaseLines(lessonId, 'teacher', text),
-      questionsHeading: text(worksheetQuestionsHeadingKey(lessonId)),
-      questions: worksheetQuestions(lessonId, text),
+      questionsHeading: line(questionsHeadingKey),
+      questions: F5_WORKSHEET_QUESTION_KEYS.map((key) => line(key)),
       background: worksheetPaperBackground(lessonId),
+      raw: true,
+      extraCss,
     }),
   }
 }
@@ -333,6 +378,7 @@ function escapeHtml(value: string): string {
 export function worksheetForm4DownloadHtml(input: {
   lang: string
   title: string
+  titleBody?: string
   intro: string
   noSchool: string
   sections: readonly {
@@ -341,19 +387,23 @@ export function worksheetForm4DownloadHtml(input: {
     blocks: readonly { text: string; lines: boolean; title: boolean }[]
   }[]
   background: WorksheetPaperBackground
+  /** Body fields are already escaped HTML. The title tag still uses plain `title`. */
+  raw?: boolean
+  extraCss?: string
 }): string {
+  const show = (value: string) => (input.raw ? value : escapeHtml(value))
   const sections = input.sections
     .map((section) => {
       const body = section.blocks
         .map((item) => {
-          const paragraph = `<p${item.title ? ' class="title"' : ''}>${escapeHtml(item.text)}</p>`
+          const paragraph = `<p${item.title ? ' class="title"' : ''}>${show(item.text)}</p>`
           const lines = item.lines ? '<div class="lines" aria-hidden="true"><hr><hr></div>' : ''
           return paragraph + lines
         })
         .join('')
       const cls = section.caseCard ? ' class="case"' : ''
       return `<section${cls}>
-  <h2>${escapeHtml(section.heading)}</h2>
+  <h2>${show(section.heading)}</h2>
   ${body}
 </section>
 `
@@ -369,11 +419,11 @@ export function worksheetForm4DownloadHtml(input: {
   h2 { font-size: 16px; color: #0D9488; }
   .title { font-weight: 700; }
   .case { background: ${input.background}; border: 2px solid #0D9488; border-radius: 16px; padding: 12px 16px; }
-  .lines hr { border: 0; border-bottom: 1px solid #94a3b8; margin: 16px 0; }
+  .lines hr { border: 0; border-bottom: 1px solid #94a3b8; margin: 16px 0; }${input.extraCss ?? ''}
 </style>
-<h1>${escapeHtml(input.title)}</h1>
-<p>${escapeHtml(input.intro)}</p>
-<p>${escapeHtml(input.noSchool)}</p>
+<h1>${input.titleBody ?? escapeHtml(input.title)}</h1>
+<p>${show(input.intro)}</p>
+<p>${show(input.noSchool)}</p>
 ${sections}</html>
 `
 }
@@ -382,6 +432,7 @@ ${sections}</html>
 export function worksheetDownloadHtml(input: {
   lang: string
   title: string
+  titleBody?: string
   intro: string
   noSchool: string
   caseHeading: string
@@ -389,19 +440,23 @@ export function worksheetDownloadHtml(input: {
   questionsHeading: string
   questions: readonly string[]
   background: WorksheetPaperBackground
+  /** Body fields are already escaped HTML. The title tag still uses plain `title`. */
+  raw?: boolean
+  extraCss?: string
 }): string {
-  const lines = input.caseLines.map((line) => `<p>${escapeHtml(line)}</p>`).join('')
+  const show = (value: string) => (input.raw ? value : escapeHtml(value))
+  const lines = input.caseLines.map((line) => `<p>${show(line)}</p>`).join('')
   const questions = input.questions
     .map(
       (question) =>
-        `<li><p>${escapeHtml(question)}</p><div class="lines" aria-hidden="true"><hr><hr></div></li>`,
+        `<li><p>${show(question)}</p><div class="lines" aria-hidden="true"><hr><hr></div></li>`,
     )
     .join('')
   const caseBlock =
     input.caseLines.length === 0
       ? ''
       : `<section class="case">
-  <h2>${escapeHtml(input.caseHeading)}</h2>
+  <h2>${show(input.caseHeading)}</h2>
   ${lines}
 </section>
 `
@@ -413,12 +468,12 @@ export function worksheetDownloadHtml(input: {
   body { margin: 24px; background: ${input.background}; color: #042f2e; font-family: sans-serif; }
   h1 { font-size: 20px; }
   .case { background: ${input.background}; border: 2px solid #0D9488; border-radius: 16px; padding: 12px 16px; }
-  .lines hr { border: 0; border-bottom: 1px solid #94a3b8; margin: 16px 0; }
+  .lines hr { border: 0; border-bottom: 1px solid #94a3b8; margin: 16px 0; }${input.extraCss ?? ''}
 </style>
-<h1>${escapeHtml(input.title)}</h1>
-<p>${escapeHtml(input.intro)}</p>
-<p>${escapeHtml(input.noSchool)}</p>
-${caseBlock}<h2>${escapeHtml(input.questionsHeading)}</h2>
+<h1>${input.titleBody ?? escapeHtml(input.title)}</h1>
+<p>${show(input.intro)}</p>
+<p>${show(input.noSchool)}</p>
+${caseBlock}<h2>${show(input.questionsHeading)}</h2>
 <ol>${questions}</ol>
 </html>
 `
