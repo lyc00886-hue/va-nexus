@@ -7,18 +7,17 @@ const CHIP =
 /**
  * Thin 原版 / 闖關 switch. Does not touch motion or the atlas.
  * Short labels sit on narrow screens. The full names stay in the control.
+ * bar puts the title and the two tabs on one sticky row. The hint stays available to assistive tech.
  */
-export function MapVersionToggle({ mapOne }: { mapOne: boolean }) {
+export function MapVersionToggle({ mapOne, bar = false }: { mapOne: boolean; bar?: boolean }) {
   const version = mapOne ? 'map1' : 'classic'
-  return (
-    <div data-ux-toggle="" data-ux-mode={version} className="space-y-3">
-      <h2 className="text-2xl font-bold text-slate-900">{mapOne ? t('ux.map1') : t('ux.classic')}</h2>
-      <div className="space-y-1">
-        <div
-          role="radiogroup"
-          aria-label={t('ux.modeLabel')}
-          className="inline-flex max-w-full rounded-full bg-white p-1 ring-1 ring-[#0D9488]"
-        >
+  const title = mapOne ? t('ux.map1') : t('ux.classic')
+  const pills = (
+    <div
+      role="radiogroup"
+      aria-label={t('ux.modeLabel')}
+      className="inline-flex max-w-full rounded-full bg-white p-1 ring-1 ring-[#0D9488]"
+    >
           <button
             type="button"
             role="radio"
@@ -51,7 +50,22 @@ export function MapVersionToggle({ mapOne }: { mapOne: boolean }) {
             <span>{t('ux.classic')}</span>
             <span className="hidden" aria-hidden="true">{t('ux.classicShort')}</span>
           </button>
-        </div>
+    </div>
+  )
+  if (bar) {
+    return (
+      <div data-ux-toggle="" data-ux-mode={version} className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+        <h2 className="text-lg font-bold text-slate-900">{title}</h2>
+        {pills}
+        <p className="sr-only">{t('ux.hint')}</p>
+      </div>
+    )
+  }
+  return (
+    <div data-ux-toggle="" data-ux-mode={version} className="space-y-3">
+      <h2 className="text-2xl font-bold text-slate-900">{title}</h2>
+      <div className="space-y-1">
+        {pills}
         <p className="text-xs text-slate-500">{t('ux.hint')}</p>
       </div>
     </div>

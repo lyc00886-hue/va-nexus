@@ -23,8 +23,8 @@ export function UnitImageCard({
       <span className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[#0D9488]/40 bg-[#FFF9E9]">
         {cover ? <img src={cover} alt="" className="h-full w-full object-cover" /> : null}
       </span>
-      <span className="min-w-0 flex-1 text-sm font-bold leading-snug text-slate-900 wrap-anywhere">
-        <BiSpan text={title} />
+      <span className="quest-label min-w-0 flex-1 text-sm font-bold leading-snug text-slate-900">
+        <BiSpan text={title} keepWords />
       </span>
     </button>
   )
@@ -58,8 +58,8 @@ export function LessonTrail({
                 : 'block w-full min-w-0 rounded-2xl border border-[#d7efe9] bg-[#FFF9E9] px-3 py-3 text-left'
             }
           >
-            <span className="block min-w-0 text-sm font-bold text-slate-900 wrap-anywhere">
-              <BiSpan text={lesson.title} />
+            <span className="quest-label block min-w-0 text-sm font-bold text-slate-900">
+              <BiSpan text={lesson.title} keepWords />
             </span>
             {active ? (
               <span className="mt-2 block">

@@ -20,8 +20,11 @@ const TOP = 118
 const GAP = 236
 const BOTTOM = 124
 
-/** Share of the path width used by a unit-name tag. Kept off the scene cards. */
-export const QUEST_LABEL_WIDTH_RATIO = 0.44
+/**
+ * Share of the path width used by a unit-name tag.
+ * Wide enough for a whole English word or a short Chinese phrase, still clear of the scene cards.
+ */
+export const QUEST_LABEL_WIDTH_RATIO = 0.56
 
 const LABEL_TOP = 28
 const LABEL_HEIGHT = 108
@@ -53,7 +56,7 @@ export function questPathLayout(
   gap = GAP,
   bottom = BOTTOM,
 ): { width: number; height: number; points: QuestPathPoint[] } {
-  const step = Math.max(GAP, gap)
+  const step = Math.max(160, gap)
   const tail = Math.max(BOTTOM, bottom)
   const points = Array.from({ length: Math.max(count, 0) }, (_, index) => ({
     x: NODE_X[index % 2],
@@ -71,9 +74,12 @@ export function questPathLayout(
 export function questPathSpacing(pathWidth: number, bilingual: boolean): { gap: number; bottom: number } {
   const width = Math.max(200, pathWidth || WIDTH)
   const scale = width / WIDTH
-  const labelH = (bilingual ? 72000 : 42000) / width
-  const gap = Math.max(GAP, Math.ceil((labelH + 60) / scale + 52))
-  const bottom = Math.max(BOTTOM, Math.ceil((labelH + 70) / scale))
+  if (scale >= 1 && !bilingual) return { gap: GAP, bottom: BOTTOM }
+  const labelPx = bilingual ? Math.ceil(16800 / width) : Math.ceil(8000 / width)
+  const stepPx = (bilingual ? 86 : 78) + labelPx
+  const floor = bilingual ? 176 : GAP
+  const gap = Math.max(floor, Math.ceil(stepPx / scale))
+  const bottom = Math.max(BOTTOM, Math.ceil((labelPx + 40) / scale))
   return { gap, bottom }
 }
 
