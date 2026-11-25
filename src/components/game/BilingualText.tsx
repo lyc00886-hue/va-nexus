@@ -1,5 +1,6 @@
 import { LOCALE_SHORT, tIn, useT, type MessageKey, type Vars } from '../../i18n'
 import { englishAlt } from '../../lib/bilingualCatalog'
+import { QuestLabelText } from './QuestLabelText'
 
 function LangChip({ children }: { children: string }) {
   return (
@@ -9,21 +10,36 @@ function LangChip({ children }: { children: string }) {
   )
 }
 
+function labelText(value: string, keepWords: boolean) {
+  return keepWords ? <QuestLabelText text={value} /> : value
+}
+
 /**
  * English above Chinese. Single-language modes render the active string only.
  * Identical English and Chinese stay one line.
+ * keepWords wraps only between words, for map titles that must stay inside the pill.
  */
-export function BiSpan({ text, alt, englishOnly = false }: { text: string; alt?: string; englishOnly?: boolean }) {
+export function BiSpan({
+  text,
+  alt,
+  englishOnly = false,
+  keepWords = false,
+}: {
+  text: string
+  alt?: string
+  englishOnly?: boolean
+  keepWords?: boolean
+}) {
   const { bilingual, zhSide } = useT()
   const english = !bilingual ? undefined : (alt ?? englishAlt(zhSide, text))
-  if (!bilingual || !english || english === text) return englishOnly ? null : <>{text}</>
+  if (!bilingual || !english || english === text) return englishOnly ? null : labelText(text, keepWords)
   const zhLang = zhSide === 'zh-Hans' ? 'zh-Hans' : 'zh-Hant'
   if (englishOnly) {
     return (
       <span data-bilingual="en" className="mb-1 flex w-full items-start gap-2">
         <LangChip>{LOCALE_SHORT.en}</LangChip>
         <span lang="en" className="min-w-0 flex-1">
-          {english}
+          {labelText(english, keepWords)}
         </span>
       </span>
     )
@@ -33,13 +49,13 @@ export function BiSpan({ text, alt, englishOnly = false }: { text: string; alt?:
       <span className="flex w-full items-start gap-2">
         <LangChip>{LOCALE_SHORT.en}</LangChip>
         <span lang="en" className="min-w-0 flex-1">
-          {english}
+          {labelText(english, keepWords)}
         </span>
       </span>
       <span className="flex w-full items-start gap-2">
         <LangChip>{LOCALE_SHORT[zhSide]}</LangChip>
         <span lang={zhLang} className="min-w-0 flex-1">
-          {text}
+          {labelText(text, keepWords)}
         </span>
       </span>
     </span>

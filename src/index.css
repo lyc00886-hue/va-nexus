@@ -547,6 +547,75 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
   opacity: 0 !important;
 }
 
+/* Unit titles stay inside the pill. Breaks fall between words, not inside 故事 or re-presenting. */
+.quest-label {
+  max-width: 100%;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  hyphens: manual;
+  line-break: strict;
+}
+.quest-label-words {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.text-center .quest-label-words {
+  justify-content: center;
+}
+.quest-label-token {
+  white-space: nowrap;
+}
+
+/* Map title, grades, version tabs, and the motion switch stay put while the path scrolls. */
+.quest-map-sticky {
+  position: sticky;
+  z-index: 25;
+  top: var(--platform-header-offset, 0px);
+}
+.quest-current-mark {
+  animation: none;
+}
+
+/* Phone: the bottom bar sits under the quest map instead of covering unit buttons or homework. */
+@media (max-width: 767px) {
+  .quest-map-sticky {
+    top: 0;
+  }
+  html:has([data-quest-map]),
+  html:has([data-quest-map]) body {
+    height: 100%;
+    overflow: hidden;
+  }
+  #root:has([data-quest-map]) > div {
+    display: flex;
+    height: 100dvh;
+    max-height: 100dvh;
+    flex-direction: column;
+    overflow: visible;
+  }
+  #root:has([data-quest-map]) > div > header {
+    flex-shrink: 0;
+  }
+  #root:has([data-quest-map]) > div > .flex {
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+  #root:has([data-quest-map]) main {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scroll-padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+  #root:has([data-quest-map]) nav.map-one-chrome {
+    position: static;
+    flex-shrink: 0;
+  }
+}
+
 @media (min-width: 1024px) {
   .library-browser-side {
     position: sticky;

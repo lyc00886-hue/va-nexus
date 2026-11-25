@@ -8,6 +8,7 @@ import { useT, type MessageKey } from '../../i18n'
 import { QUEST_CHROME, questXpMoves, type QuestFormId } from '../../lib/mapQuest'
 import { useQuestForm, useQuestMotionPlay } from '../../lib/useQuestForm'
 import { QuestMotionButton, QuestSectionSwitch } from './MapQuestChrome'
+import { MapVersionToggle } from './MapVersionToggle'
 import {
   questBand,
   questCurrentIndex,
@@ -38,8 +39,31 @@ const BAND_LABEL: Record<QuestBandId, MessageKey> = {
 
 const EMPTY_UNITS: Unit[] = []
 
+/** Stick map controls just under the platform header. A tucked header leaves the top clear. */
+function usePlatformHeaderOffset() {
+  useLayoutEffect(() => {
+    const header = document.querySelector<HTMLElement>('[data-platform-header]')
+    if (!header) return
+    const apply = () => {
+      const hidden = header.dataset.collapsed === 'true'
+      const height = hidden ? 0 : Math.ceil(header.getBoundingClientRect().height)
+      document.documentElement.style.setProperty('--platform-header-offset', `${height}px`)
+    }
+    apply()
+    const observer = new MutationObserver(apply)
+    observer.observe(header, { attributes: true, attributeFilter: ['data-collapsed'] })
+    const resize = new ResizeObserver(apply)
+    resize.observe(header)
+    return () => {
+      observer.disconnect()
+      resize.disconnect()
+    }
+  }, [])
+}
+
 export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Unit[]; media?: Unit[] }) {
   const { locale, t, bilingual } = useT()
+  usePlatformHeaderOffset()
   const pathRef = useRef<HTMLDivElement>(null)
   const [pathWidth, setPathWidth] = useState(360)
   const [form, choose] = useQuestForm()
@@ -86,14 +110,20 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
       data-quest-map
       data-quest-form={form}
       data-quest-motion={motion ? 'on' : 'off'}
-      className="relative rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-3 pt-3 pb-32 sm:px-4 sm:pt-4"
+      className="relative rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-3 pb-32 sm:px-4"
     >
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <QuestSectionSwitch form={form} onChoose={chooseForm} />
-        <QuestMotionButton />
+      <div
+        data-quest-sticky="controls"
+        className="quest-map-sticky -mx-3 mb-2 rounded-t-[1.55rem] border-b border-[#d7efe9] bg-[#FFF9E9] px-3 pt-2.5 pb-2 sm:-mx-4 sm:px-4"
+      >
+        <MapVersionToggle mapOne bar />
+        <div className="mt-2 flex flex-wrap items-end justify-between gap-2">
+          <QuestSectionSwitch form={form} onChoose={chooseForm} />
+          <QuestMotionButton />
+        </div>
       </div>
       {form === 's4' && !openYear ? (
-        <div className="mt-4">
+        <div className="mt-3">
           <F4SlidesEntry />
         </div>
       ) : null}
@@ -116,7 +146,10 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
           data-quest-path="illustrated"
           data-quest-entry="path"
           data-quest-xp="static"
-          className="relative mx-auto mt-3 w-full max-w-[24rem]"
+          data-quest-gap={spacing.gap}
+          data-quest-path-width={pathWidth}
+          data-quest-bilingual={bilingual ? 'on' : 'off'}
+          className="relative mx-auto mt-2 w-full max-w-[24rem]"
         >
           <QuestPathArt layout={layout} bands={bands} motion={motion} />
           <ol className="absolute inset-0 m-0 list-none p-0">
@@ -132,6 +165,8 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
                     left: `${(point.x / layout.width) * 100}%`,
                     top: `${(point.y / layout.height) * 100}%`,
                     width: `${QUEST_LABEL_WIDTH_RATIO * 100}%`,
+                    minWidth: 0,
+                    maxWidth: '78%',
                   }}
                 >
                   <PathNode
@@ -196,17 +231,31 @@ function PathNode({
     >
       <span className="relative flex h-16 w-16 items-center justify-center">
         {current && motion ? (
-          <span className="quest-ring-pulse absolute h-16 w-16 rounded-full border-2 border-[#0D9488]" aria-hidden />
+          <>
+            <span className="quest-ring-pulse absolute h-16 w-16 rounded-full border-2 border-[#0D9488]" aria-hidden />
+            <span
+              data-quest-xp="static"
+              data-quest-rings="on"
+              data-quest-xp-moves={moves ? 'on' : 'off'}
+              className="absolute h-[4.6rem] w-[4.6rem] rounded-full border-2 border-[#0D9488]"
+              aria-hidden
+            />
+            <span className="absolute h-14 w-14 rounded-full border-2 border-[#0D9488]" aria-hidden />
+          </>
         ) : null}
-        {current ? (
+        {current && !motion ? (
           <span
+            data-quest-mark="static"
             data-quest-xp="static"
             data-quest-xp-moves={moves ? 'on' : 'off'}
-            className="absolute h-[4.6rem] w-[4.6rem] rounded-full border-2 border-[#0D9488]"
+            className="quest-current-mark pointer-events-none absolute -top-2 left-1/2 z-[1] -translate-x-1/2"
             aria-hidden
-          />
+          >
+            <svg width="16" height="12" viewBox="0 0 16 12">
+              <path d="M8 12 L1 1.2 H15 Z" fill="#0D9488" />
+            </svg>
+          </span>
         ) : null}
-        {current ? <span className="absolute h-14 w-14 rounded-full border-2 border-[#0D9488]" aria-hidden /> : null}
         <span
           className={`relative h-12 w-12 overflow-hidden rounded-full border-2 bg-[#FFF9E9] ${
             locked ? 'border-[#0D9488]/45 opacity-80' : 'border-[#0D9488]'
@@ -220,8 +269,8 @@ function PathNode({
           ) : null}
         </span>
       </span>
-      <span className="mt-1 block w-full rounded-xl bg-white/95 px-2 py-1 text-center text-xs font-bold leading-snug text-slate-900 shadow-sm ring-1 ring-[#d7efe9] wrap-anywhere">
-        <BiSpan text={label} />
+      <span className="quest-label mt-1 block w-full rounded-xl bg-white/95 px-2 py-1 text-center text-xs font-bold leading-snug text-slate-900 shadow-sm ring-1 ring-[#d7efe9]">
+        <BiSpan text={label} keepWords />
       </span>
     </button>
   )
@@ -250,8 +299,8 @@ function F4UnitPanel({
       <button type="button" onClick={onBack} className="text-sm font-semibold text-[#0D9488]">
         {backLabel}
       </button>
-      <h2 className="mt-3 text-xl font-bold text-slate-900 wrap-anywhere">
-        <BiSpan text={unit.title} />
+      <h2 className="quest-label mt-3 text-xl font-bold text-slate-900">
+        <BiSpan text={unit.title} keepWords />
       </h2>
       <OfficialUnitHeader unitId={unit.id} />
       <ul className="mt-4 space-y-2">
@@ -263,9 +312,9 @@ function F4UnitPanel({
                 type="button"
                 aria-expanded={shown}
                 onClick={() => onLesson(shown ? null : node.id)}
-                className="block w-full min-w-0 text-left text-sm font-bold text-slate-900 wrap-anywhere"
+                className="quest-label block w-full min-w-0 text-left text-sm font-bold text-slate-900"
               >
-                <BiSpan text={node.title} />
+                <BiSpan text={node.title} keepWords />
               </button>
               {shown && lesson ? (
                 <div className="mt-3">
