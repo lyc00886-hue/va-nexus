@@ -115,7 +115,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
       data-quest-map
       data-quest-form={form}
       data-quest-motion={motion ? 'on' : 'off'}
-      className="relative grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-3 sm:px-4"
+      className="relative rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-3 sm:px-4"
     >
       <div
         data-quest-sticky="controls"
@@ -127,7 +127,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
           <QuestMotionButton />
         </div>
       </div>
-      <div data-quest-under className="quest-map-under min-h-0 overflow-x-hidden overflow-y-auto overscroll-contain">
+      <div data-quest-under className="quest-map-under">
         <div className="pb-32">
         {form === 's4' && !openYear ? (
           <div className="mt-3">

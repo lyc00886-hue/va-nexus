@@ -570,65 +570,21 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
   white-space: nowrap;
 }
 
-/* The quest page itself does not scroll. The plate stays under the site header,
-   and the path, nodes, scene art, and homework scroll in the region beneath it.
-   100svh fits while browser chrome is showing, so the map is not trapped under it. */
-html:has([data-quest-map]),
-html:has([data-quest-map]) body {
-  height: 100%;
-  overflow: hidden;
-}
-#root:has([data-quest-map]) > div {
-  display: flex;
-  height: 100svh;
-  max-height: 100svh;
-  flex-direction: column;
-  overflow: hidden;
-}
-#root:has([data-quest-map]) > div > header {
-  flex-shrink: 0;
-}
-#root:has([data-quest-map]) > div > .flex {
-  min-height: 0;
-  flex: 1 1 0%;
-  overflow: hidden;
-}
+/* The quest page scrolls with the document. A 100svh shell with overflow hidden
+   left the path behind the phone browser toolbar: dragging the reading card,
+   the grades, or the motion switch could not move anything.
+   The controls plate stays pinned. The path paints only beneath that plate. */
 #root:has([data-quest-map]) main {
-  display: flex;
-  min-height: 0;
-  min-width: 0;
-  flex: 1 1 0%;
-  flex-direction: column;
-  overflow: hidden;
   padding-top: 0;
   padding-bottom: 0;
 }
-#root:has([data-quest-map]) main > .mx-auto,
-#root:has([data-quest-map]) .tab-panel-enter,
-#root:has([data-quest-map]) [data-map-shell='one'],
-#root:has([data-quest-map]) [data-quest-frame] {
-  display: flex;
-  min-height: 0;
-  min-width: 0;
-  flex: 1 1 0%;
-  flex-direction: column;
-  overflow: hidden;
-}
-/* The reading card keeps its own height. The map frame gets the rest. */
-#root:has([data-quest-map]) [data-testid='easy-read-bar'] {
-  flex: 0 0 auto;
-}
-/* The page footer sits at the end of the map scroll, so it does not shrink the scrollport. */
+/* The page footer is repeated at the end of the map, so the shell shows it once. */
 #root:has([data-quest-map]) main > .mx-auto > [data-testid='site-footer'] {
   display: none;
 }
-[data-quest-map] {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  min-height: 0;
-}
 .quest-map-sticky {
-  position: relative;
+  position: sticky;
+  top: var(--platform-header-offset, 0px);
   z-index: 4;
   isolation: isolate;
   background-color: #FFF9E9;
@@ -640,11 +596,10 @@ html:has([data-quest-map]) body {
   z-index: 0;
   isolation: isolate;
   contain: paint;
-  min-height: 0;
-  min-width: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  /* Clip without a nested scrollport. overflow:auto here swallows a drag that
+     starts outside this box, and iOS Safari drops that drag when the document
+     itself cannot scroll. */
+  overflow: clip;
 }
 html:has([data-quest-map]) .platform-header {
   background-color: #FFF9E9;
@@ -654,27 +609,15 @@ html:has([data-quest-map]) .platform-header {
 .quest-current-mark {
   animation: none;
 }
-@media (min-width: 768px) {
+/* The phone tab bar stays on screen. An opaque bar clips the map instead of letting it show through. */
+@media (max-width: 767px) {
   #root:has([data-quest-map]) nav.map-one-chrome {
-    position: relative;
-    top: 0;
-    height: auto;
-    max-height: 100%;
-    overflow-y: auto;
+    background-color: #fff9e9;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
 
-/* Phone: the bottom bar sits under the quest map instead of covering unit buttons or homework.
-   Browser chrome is already outside 100svh. */
-@media (max-width: 767px) {
-  #root:has([data-quest-map]) nav.map-one-chrome {
-    position: static;
-    flex-shrink: 0;
-  }
-  #root:has([data-quest-map]) [data-quest-frame] {
-    padding-bottom: 0;
-  }
-}
 /* A short phone still shows the reading card and browser chrome. The logo row
    would push the path below the card, so that row leaves the flow only then. */
 @media (max-width: 767px) and (max-height: 760px) {
