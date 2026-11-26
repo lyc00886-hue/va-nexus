@@ -571,7 +571,8 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
 }
 
 /* The quest page itself does not scroll. The plate stays under the site header,
-   and the path, nodes, scene art, and homework scroll in the region beneath it. */
+   and the path, nodes, scene art, and homework scroll in the region beneath it.
+   100svh fits while browser chrome is showing, so the map is not trapped under it. */
 html:has([data-quest-map]),
 html:has([data-quest-map]) body {
   height: 100%;
@@ -579,8 +580,8 @@ html:has([data-quest-map]) body {
 }
 #root:has([data-quest-map]) > div {
   display: flex;
-  height: 100dvh;
-  max-height: 100dvh;
+  height: 100svh;
+  max-height: 100svh;
   flex-direction: column;
   overflow: hidden;
 }
@@ -589,14 +590,14 @@ html:has([data-quest-map]) body {
 }
 #root:has([data-quest-map]) > div > .flex {
   min-height: 0;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   overflow: hidden;
 }
 #root:has([data-quest-map]) main {
   display: flex;
   min-height: 0;
   min-width: 0;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   flex-direction: column;
   overflow: hidden;
   padding-top: 0;
@@ -609,14 +610,27 @@ html:has([data-quest-map]) body {
   display: flex;
   min-height: 0;
   min-width: 0;
-  flex: 1 1 auto;
+  flex: 1 1 0%;
   flex-direction: column;
+  overflow: hidden;
+}
+/* The reading card keeps its own height. The map frame gets the rest. */
+#root:has([data-quest-map]) [data-testid='easy-read-bar'] {
+  flex: 0 0 auto;
+}
+/* The page footer sits at the end of the map scroll, so it does not shrink the scrollport. */
+#root:has([data-quest-map]) main > .mx-auto > [data-testid='site-footer'] {
+  display: none;
+}
+[data-quest-map] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-height: 0;
 }
 .quest-map-sticky {
   position: relative;
   z-index: 4;
   isolation: isolate;
-  flex: 0 0 auto;
   background-color: #FFF9E9;
   /* Cover the hairline where a rounded title can meet the plate edge. */
   box-shadow: 0 0.4rem 0 #FFF9E9;
@@ -627,7 +641,7 @@ html:has([data-quest-map]) body {
   isolation: isolate;
   contain: paint;
   min-height: 0;
-  flex: 1 1 auto;
+  min-width: 0;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -650,11 +664,27 @@ html:has([data-quest-map]) .platform-header {
   }
 }
 
-/* Phone: the bottom bar sits under the quest map instead of covering unit buttons or homework. */
+/* Phone: the bottom bar sits under the quest map instead of covering unit buttons or homework.
+   Browser chrome is already outside 100svh. */
 @media (max-width: 767px) {
   #root:has([data-quest-map]) nav.map-one-chrome {
     position: static;
     flex-shrink: 0;
+  }
+  #root:has([data-quest-map]) [data-quest-frame] {
+    padding-bottom: 0;
+  }
+}
+/* A short phone still shows the reading card and browser chrome. The logo row
+   would push the path below the card, so that row leaves the flow only then. */
+@media (max-width: 767px) and (max-height: 760px) {
+  #root:has([data-quest-map]) [data-platform-header] > div {
+    gap: 0;
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+  #root:has([data-quest-map]) [data-platform-header] > div > :first-child {
+    display: none;
   }
 }
 
