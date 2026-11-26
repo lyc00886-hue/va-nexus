@@ -614,13 +614,18 @@ html:has([data-quest-map]) body {
 }
 .quest-map-sticky {
   position: relative;
-  z-index: 2;
+  z-index: 4;
+  isolation: isolate;
   flex: 0 0 auto;
   background-color: #FFF9E9;
+  /* Cover the hairline where a rounded title can meet the plate edge. */
+  box-shadow: 0 0.4rem 0 #FFF9E9;
 }
 .quest-map-under {
   position: relative;
   z-index: 0;
+  isolation: isolate;
+  contain: paint;
   min-height: 0;
   flex: 1 1 auto;
   overflow-x: hidden;

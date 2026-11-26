@@ -117,7 +117,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
     >
       <div
         data-quest-sticky="controls"
-        className="quest-map-sticky -mx-3 shrink-0 rounded-t-[1.55rem] border-b border-[#d7efe9] bg-[#FFF9E9] px-3 pt-2.5 pb-2 sm:-mx-4 sm:px-4"
+        className="quest-map-sticky -mx-3 shrink-0 rounded-t-[1.55rem] border-b border-[#d7efe9] bg-[#FFF9E9] px-3 pt-2.5 pb-6 sm:-mx-4 sm:px-4"
       >
         <MapVersionToggle mapOne bar />
         <div className="mt-2 flex flex-wrap items-end justify-between gap-2">
@@ -164,10 +164,10 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
                 return (
                   <li
                     key={unit.id}
-                    className="absolute -translate-x-1/2 -translate-y-6 text-center"
+                    className="absolute text-center"
                     style={{
-                      left: `${(point.x / layout.width) * 100}%`,
-                      top: `${(point.y / layout.height) * 100}%`,
+                      left: `calc(${(point.x / layout.width) * 100}% - ${QUEST_LABEL_WIDTH_RATIO * 50}%)`,
+                      top: `calc(${(point.y / layout.height) * 100}% - 1.5rem)`,
                       width: `${QUEST_LABEL_WIDTH_RATIO * 100}%`,
                       minWidth: 0,
                       maxWidth: '78%',
