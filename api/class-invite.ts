@@ -32,6 +32,8 @@ export type InviteRoom = {
   id: string
   code: string
   ownerId: string
+  /** Signed-in teacher. Empty when the room is still only on the device token. */
+  sessionUserId: string
   name: string
   members: InviteMember[]
   submissions: InviteSubmission[]
@@ -105,6 +107,7 @@ function copyRoom(room: InviteRoom): InviteRoom {
     id: room.id,
     code: room.code,
     ownerId: room.ownerId,
+    sessionUserId: room.sessionUserId || '',
     name: room.name,
     members: room.members.map((member) => ({ id: member.id })),
     submissions: room.submissions.map((row) => ({
@@ -123,9 +126,9 @@ function copyRoom(room: InviteRoom): InviteRoom {
   }
 }
 
-/** Owner view. The classmate view below does not include the owner token or other classmates. */
+/** Owner view. The response keeps the device token off the session field. */
 function ownerView(room: InviteRoom): InviteRoom {
-  return copyRoom(room)
+  return { ...copyRoom(room), sessionUserId: '' }
 }
 
 function codeView(room: InviteRoom, memberId: string): InviteRoom {
@@ -133,6 +136,7 @@ function codeView(room: InviteRoom, memberId: string): InviteRoom {
     id: room.id,
     code: room.code,
     ownerId: '',
+    sessionUserId: '',
     name: room.name,
     members: room.members.filter((member) => member.id === memberId).map((member) => ({ id: member.id })),
     submissions: room.submissions
@@ -153,14 +157,36 @@ function sameName(room: InviteRoom, ownerId: string, name: string): boolean {
   return room.ownerId === ownerId && room.name === name
 }
 
+function sessionToken(raw: unknown): string {
+  return cleanToken(raw)
+}
+
+/** Device token or the signed-in teacher. A list click does not insert a room. */
+function roomVisible(room: InviteRoom, ownerId: string, sessionUserId: string): boolean {
+  if (ownerId && room.ownerId === ownerId) return true
+  return sessionUserId !== '' && room.sessionUserId === sessionUserId
+}
+
 export function applyInvite(store: InviteStore, action: string, payload: unknown): { store: InviteStore; result: InviteResult } {
   const body = asRecord(payload) ?? {}
   const rooms = store.rooms.map(copyRoom)
 
   if (action === 'list') {
     const ownerId = cleanToken(body.ownerId)
-    if (!ownerId) return { store, result: { ok: false, reason: 'invalid' } }
-    return { store, result: { ok: true, rooms: rooms.filter((room) => room.ownerId === ownerId).map(ownerView) } }
+    const sessionUserId = sessionToken(body.sessionUserId)
+    if (!ownerId && !sessionUserId) return { store, result: { ok: false, reason: 'invalid' } }
+    let next = rooms
+    let claimed = false
+    if (ownerId && sessionUserId) {
+      next = rooms.map((room) => {
+        if (room.ownerId !== ownerId || room.sessionUserId) return room
+        claimed = true
+        return { ...room, sessionUserId }
+      })
+    }
+    const result = { ok: true, rooms: next.filter((room) => roomVisible(room, ownerId, sessionUserId)).map(ownerView) }
+    if (!claimed) return { store, result }
+    return { store: { rooms: next }, result }
   }
 
   if (action === 'get') {
@@ -173,20 +199,28 @@ export function applyInvite(store: InviteStore, action: string, payload: unknown
     }
     const id = cleanToken(body.id)
     const ownerId = cleanToken(body.ownerId)
+    const sessionUserId = sessionToken(body.sessionUserId)
     if (!id || !ownerId) return { store, result: { ok: false, reason: 'invalid' } }
-    const room = rooms.find((row) => row.id === id && row.ownerId === ownerId)
+    const room = rooms.find((row) => row.id === id && roomVisible(row, ownerId, sessionUserId))
     if (!room) return { store, result: { ok: false, reason: 'missing' } }
     return { store, result: { ok: true, room: ownerView(room) } }
   }
 
   if (action === 'create') {
     const ownerId = cleanToken(body.ownerId)
+    const sessionUserId = sessionToken(body.sessionUserId)
     const name = cleanName(body.name)
     const id = cleanToken(body.id)
     const code = cleanCode(body.code)
     if (!ownerId || !name || !id || !code) return { store, result: { ok: false, reason: 'invalid' } }
     const existing = rooms.find((room) => sameName(room, ownerId, name))
-    if (existing) return { store, result: { ok: true, room: ownerView(existing) } }
+    if (existing) {
+      if (sessionUserId && !existing.sessionUserId) {
+        const claimed = rooms.map((room) => (room.id === existing.id ? { ...room, sessionUserId } : room))
+        return { store: { rooms: claimed }, result: { ok: true, room: ownerView({ ...existing, sessionUserId }) } }
+      }
+      return { store, result: { ok: true, room: ownerView(existing) } }
+    }
     if (rooms.length >= ROOM_CAP) return { store, result: { ok: false, reason: 'full' } }
     if (rooms.filter((room) => room.ownerId === ownerId).length >= OWNER_CAP) {
       return { store, result: { ok: false, reason: 'full' } }
@@ -198,6 +232,7 @@ export function applyInvite(store: InviteStore, action: string, payload: unknown
       id,
       code,
       ownerId,
+      sessionUserId,
       name,
       members: [],
       submissions: [],
@@ -246,6 +281,7 @@ export function applyInvite(store: InviteStore, action: string, payload: unknown
 
   if (action === 'publish') {
     const ownerId = cleanToken(body.ownerId)
+    const sessionUserId = sessionToken(body.sessionUserId)
     const id = cleanToken(body.id)
     const assignmentId = cleanToken(body.assignmentId)
     const title = cleanName(body.title)
@@ -255,7 +291,7 @@ export function applyInvite(store: InviteStore, action: string, payload: unknown
     if (!ownerId || !id || !assignmentId || !title || !due || !attach) {
       return { store, result: { ok: false, reason: 'invalid' } }
     }
-    const index = rooms.findIndex((room) => room.id === id && room.ownerId === ownerId)
+    const index = rooms.findIndex((room) => room.id === id && roomVisible(room, ownerId, sessionUserId))
     if (index < 0) return { store, result: { ok: false, reason: 'missing' } }
     const room = rooms[index]
     if (!room.assignments.some((row) => row.id === assignmentId)) {
@@ -283,12 +319,14 @@ function readLocal(): InviteStore {
       const id = cleanToken(record.id)
       const code = cleanCode(record.code)
       const ownerId = cleanToken(record.ownerId)
+      const sessionUserId = cleanToken(record.sessionUserId)
       const name = cleanName(record.name)
       if (!id || !code || !ownerId || !name) continue
       rooms.push({
         id,
         code,
         ownerId,
+        sessionUserId,
         name,
         members: Array.isArray(record.members)
           ? record.members.flatMap((member) => {
@@ -482,7 +520,13 @@ function supabaseEnv(): { url: string; key: string } | null {
   return { url, key }
 }
 
-async function remoteApply(action: string, payload: unknown): Promise<InviteResult | null> {
+function bearerToken(request: Request): string {
+  const value = request.headers.get('authorization')?.trim() ?? ''
+  const match = /^Bearer\s+([A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)$/.exec(value)
+  return match?.[1] ?? ''
+}
+
+async function remoteApply(action: string, payload: unknown, accessToken = ''): Promise<InviteResult | null> {
   const env = supabaseEnv()
   if (!env) return null
   try {
@@ -490,7 +534,7 @@ async function remoteApply(action: string, payload: unknown): Promise<InviteResu
       method: 'POST',
       headers: {
         apikey: env.key,
-        Authorization: `Bearer ${env.key}`,
+        Authorization: `Bearer ${accessToken || env.key}`,
         'Content-Type': 'application/json',
       },
       signal: AbortSignal.timeout(12_000),
@@ -503,6 +547,16 @@ async function remoteApply(action: string, payload: unknown): Promise<InviteResu
   } catch {
     return null
   }
+}
+
+/** Prefer the signed-in teacher. A rejected token still lists by the device token. */
+async function dispatchRemote(action: string, payload: unknown, accessToken: string): Promise<InviteResult | null> {
+  if (!supabaseEnv()) return null
+  if (accessToken) {
+    const authed = await remoteApply(action, payload, accessToken)
+    if (authed) return authed
+  }
+  return remoteApply(action, payload)
 }
 
 const RATE_WINDOW_MS = 10 * 60 * 1000
@@ -581,6 +635,8 @@ export async function handleClassInvite(request: Request): Promise<Response> {
   if (rateLimited(request)) return json(429, { ok: false, reason: 'full' })
   const body = await readBody(request)
   if (!body) return json(400, { ok: false, reason: 'invalid' })
+  delete body.sessionUserId
+  const accessToken = bearerToken(request)
   const action = typeof body.action === 'string' ? body.action : ''
   if (action === 'mark-list' || action === 'mark-confirm') {
     const result = await enqueue(async () => localApplyMarks(action, body))
@@ -592,7 +648,7 @@ export async function handleClassInvite(request: Request): Promise<Response> {
     if (!ownerId || !name) return json(400, { ok: false, reason: 'invalid' })
     for (let attempt = 0; attempt < 5; attempt++) {
       const payload = { ownerId, name, id: makeInviteToken('r'), code: makeInviteCode() }
-      const remote = supabaseEnv() ? await remoteApply('create', payload) : null
+      const remote = await dispatchRemote('create', payload, accessToken)
       const result = remote ?? (await enqueue(async () => localApply('create', payload)))
       if (result.ok || result.reason !== 'conflict') return json(statusFor(result), result)
     }
@@ -600,7 +656,7 @@ export async function handleClassInvite(request: Request): Promise<Response> {
   }
   const allowed = action === 'list' || action === 'get' || action === 'join' || action === 'submit' || action === 'publish'
   if (!allowed) return json(404, { ok: false, reason: 'action' })
-  const remote = supabaseEnv() ? await remoteApply(action, body) : null
+  const remote = await dispatchRemote(action, body, accessToken)
   if (supabaseEnv() && !remote) return json(502, { ok: false, reason: 'unavailable' })
   const result = remote ?? (await enqueue(async () => localApply(action, body)))
   return json(statusFor(result), result)
