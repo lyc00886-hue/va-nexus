@@ -37,6 +37,11 @@ export function useAuth(): AuthSnapshot {
   return useSyncExternalStore(subscribe, () => snap, () => snap)
 }
 
+/** Access token for the signed-in teacher, or empty when this device is a guest. */
+export function currentAccessToken(): string {
+  return snap.session?.access_token ?? ''
+}
+
 export async function signInWithGoogle() {
   if (!supabase) throw new Error('Supabase not configured')
   const { error } = await supabase.auth.signInWithOAuth({

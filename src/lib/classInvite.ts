@@ -1,8 +1,11 @@
 /**
  * Browser door to the shared classroom route.
- * The roster lives on that route. These keys only remember which room this device opened.
+ * The roster lives on that route.
+ * This device token still opens rooms it created.
+ * A signed-in teacher also lists those rooms from another device.
  */
 import { useEffect, useSyncExternalStore } from 'react'
+import { currentAccessToken, useAuth } from './auth'
 
 const OWNER_KEY = 'va-nexus:class-owner:v1'
 const MEMBER_KEY = 'va-nexus:class-member:v1'
@@ -105,11 +108,18 @@ function writeJoinedPointer(code: string) {
   }
 }
 
+function inviteHeaders(): Record<string, string> {
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+  const token = currentAccessToken()
+  if (token) headers.Authorization = `Bearer ${token}`
+  return headers
+}
+
 async function postInvite(body: Record<string, unknown>): Promise<InviteResult | null> {
   try {
     const res = await fetch('/api/class-invite', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: inviteHeaders(),
       body: JSON.stringify(body),
     })
     if (!res.ok) return null
@@ -128,7 +138,7 @@ function isRoom(value: unknown): value is InviteRoom {
 }
 
 export async function refreshRealClassrooms(): Promise<InviteRoom[]> {
-  const gen = listGen
+  const gen = ++listGen
   const result = await postInvite({ action: 'list', ownerId: classOwnerId() })
   if (gen !== listGen || !result?.rooms) return rooms
   rooms = result.rooms.filter(isRoom)
@@ -253,6 +263,8 @@ let joinedUsers = 0
 let joinedStop: (() => void) | null = null
 
 export function useRealClassrooms(): InviteRoom[] {
+  const { ready, user } = useAuth()
+  const userId = user?.id ?? ''
   const snapshot = useSyncExternalStore(subscribeRooms, () => rooms, () => rooms)
   useEffect(() => {
     roomUsers += 1
@@ -265,6 +277,10 @@ export function useRealClassrooms(): InviteRoom[] {
       }
     }
   }, [])
+  useEffect(() => {
+    if (!ready) return
+    void refreshRealClassrooms()
+  }, [ready, userId])
   return snapshot
 }
 

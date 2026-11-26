@@ -7,7 +7,9 @@ import {
   INVITE_ALPHABET,
   applyInvite,
   emptyInviteStore,
+  handleClassInvite,
   makeInviteCode,
+  resetLocalInviteStoreForTests,
   type InviteStore,
 } from '../../api/class-invite.ts'
 
@@ -195,5 +197,119 @@ describe('shared classroom invite', () => {
     }
     const store = emptyInviteStore()
     assert.equal((store as InviteStore).rooms.length, 0)
+  })
+
+  it('opens an existing classroom for the signed-in teacher on another device', () => {
+    const deviceOwner = 'owner1234'
+    const sessionUserId = 'teacher-session-1'
+    const otherDevice = 'otherdev1'
+    const stranger = 'stranger1'
+    const created = applyInvite(emptyInviteStore(), 'create', {
+      ownerId: deviceOwner,
+      name: '午後課',
+      id: 'room12345',
+      code: 'K7M2Q9',
+    })
+    const joined = applyInvite(created.store, 'join', { code: 'K7M2Q9', memberId: 'member123' })
+    const handed = applyInvite(joined.store, 'submit', {
+      code: 'K7M2Q9',
+      memberId: 'member123',
+      assignmentId: 'demo-november',
+      fileName: 'work.png',
+    })
+    assert.equal(handed.store.rooms.length, 1)
+    assert.equal(handed.store.rooms[0]?.sessionUserId, '')
+
+    const unsigned = applyInvite(handed.store, 'list', { ownerId: otherDevice })
+    assert.deepEqual(unsigned.result.rooms, [])
+    assert.equal(unsigned.store.rooms.length, 1)
+
+    const claimed = applyInvite(handed.store, 'list', { ownerId: deviceOwner, sessionUserId })
+    assert.equal(claimed.store.rooms[0]?.sessionUserId, sessionUserId)
+    assert.equal(claimed.store.rooms.length, 1)
+    assert.equal(claimed.result.rooms?.length, 1)
+    assert.equal(claimed.result.rooms?.[0]?.submissions[0]?.assignmentId, 'demo-november')
+    assert.equal(claimed.result.rooms?.[0]?.sessionUserId, '')
+
+    const opened = applyInvite(claimed.store, 'list', { ownerId: otherDevice, sessionUserId })
+    assert.equal(opened.result.rooms?.length, 1)
+    assert.equal(opened.result.rooms?.[0]?.id, 'room12345')
+    assert.equal(opened.result.rooms?.[0]?.submissions[0]?.fileName, 'work.png')
+    assert.equal(opened.store.rooms.length, 1)
+    assert.equal(opened.store, claimed.store)
+
+    const hidden = applyInvite(claimed.store, 'list', { ownerId: otherDevice, sessionUserId: stranger })
+    assert.deepEqual(hidden.result.rooms, [])
+    const stillThere = applyInvite(claimed.store, 'list', { ownerId: deviceOwner })
+    assert.equal(stillThere.result.rooms?.length, 1)
+
+    const published = applyInvite(claimed.store, 'publish', {
+      ownerId: otherDevice,
+      sessionUserId,
+      id: 'room12345',
+      assignmentId: 'assign-1234',
+      title: '課後練習',
+      due: '2026年12月1日',
+      instructions: '',
+      attach: 'none',
+    })
+    assert.equal(published.result.ok, true)
+    assert.equal(published.store.rooms.length, 1)
+  })
+
+  it('does not let a posted session id open another device classroom', async () => {
+    resetLocalInviteStoreForTests()
+    const created = await handleClassInvite(
+      new Request('http://localhost/api/class-invite', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action: 'create', ownerId: 'owner1234', name: '午後課' }),
+      }),
+    )
+    assert.equal(created.status, 200)
+    const forged = await handleClassInvite(
+      new Request('http://localhost/api/class-invite', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          action: 'list',
+          ownerId: 'otherdev1',
+          sessionUserId: 'teacher-session-1',
+        }),
+      }),
+    )
+    assert.equal(forged.status, 200)
+    const body = (await forged.json()) as { rooms?: unknown[] }
+    assert.deepEqual(body.rooms, [])
+    const mine = await handleClassInvite(
+      new Request('http://localhost/api/class-invite', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ action: 'list', ownerId: 'owner1234' }),
+      }),
+    )
+    const listed = (await mine.json()) as { rooms?: unknown[] }
+    assert.equal(listed.rooms?.length, 1)
+  })
+
+  it('keeps list-open on the signed-in session and create-new on the existing button', () => {
+    const client = read('src/lib/classInvite.ts')
+    const page = read('src/components/ClassroomManagement.tsx')
+    const sql = read('supabase/migrations/20261127_class_invite_session_owner.sql')
+    const auth = read('src/lib/auth.ts')
+    assert.match(client, /currentAccessToken\(\)/)
+    assert.match(client, /Authorization/)
+    assert.match(client, /const gen = \+\+listGen/)
+    assert.match(client, /useAuth\(\)/)
+    assert.equal(client.includes('sessionUserId'), false)
+    assert.match(auth, /export function currentAccessToken/)
+    assert.match(page, /openShared\(room\)/)
+    assert.match(page, /setScreen\('create'\)/)
+    assert.match(page, /sharedRoom=\{openRow\.demo \? null : realRoom\}/)
+    assert.equal(page.includes('createRealClassroom'), false)
+    assert.match(sql, /auth\.uid\(\)/)
+    assert.match(sql, /session_user_id/)
+    assert.equal(sql.includes("p_payload->>'sessionUserId'"), false)
+    assert.equal(sql.includes('\u8a55\u5206\u6821\u6e96'), false)
   })
 })
