@@ -570,20 +570,62 @@ html[data-soft-screen='focus'] main [data-ai-screen] {
   white-space: nowrap;
 }
 
-/* Map title, grades, version tabs, and the motion switch stay put while the path scrolls.
-   The plate sits above the path layer so titles, nodes, and homework cannot paint through it
-   or through the site header. */
+/* The quest page itself does not scroll. The plate stays under the site header,
+   and the path, nodes, scene art, and homework scroll in the region beneath it. */
+html:has([data-quest-map]),
+html:has([data-quest-map]) body {
+  height: 100%;
+  overflow: hidden;
+}
+#root:has([data-quest-map]) > div {
+  display: flex;
+  height: 100dvh;
+  max-height: 100dvh;
+  flex-direction: column;
+  overflow: hidden;
+}
+#root:has([data-quest-map]) > div > header {
+  flex-shrink: 0;
+}
+#root:has([data-quest-map]) > div > .flex {
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+#root:has([data-quest-map]) main {
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+#root:has([data-quest-map]) main > .mx-auto,
+#root:has([data-quest-map]) .tab-panel-enter,
+#root:has([data-quest-map]) [data-map-shell='one'],
+#root:has([data-quest-map]) [data-quest-frame] {
+  display: flex;
+  min-height: 0;
+  min-width: 0;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
 .quest-map-sticky {
-  position: sticky;
-  z-index: 30;
-  isolation: isolate;
-  top: calc(max(0px, var(--platform-header-offset, 0px) - 1px));
+  position: relative;
+  z-index: 2;
+  flex: 0 0 auto;
   background-color: #FFF9E9;
 }
 .quest-map-under {
   position: relative;
   z-index: 0;
-  isolation: isolate;
+  min-height: 0;
+  flex: 1 1 auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 html:has([data-quest-map]) .platform-header {
   background-color: #FFF9E9;
@@ -593,38 +635,18 @@ html:has([data-quest-map]) .platform-header {
 .quest-current-mark {
   animation: none;
 }
+@media (min-width: 768px) {
+  #root:has([data-quest-map]) nav.map-one-chrome {
+    position: relative;
+    top: 0;
+    height: auto;
+    max-height: 100%;
+    overflow-y: auto;
+  }
+}
 
 /* Phone: the bottom bar sits under the quest map instead of covering unit buttons or homework. */
 @media (max-width: 767px) {
-  .quest-map-sticky {
-    top: 0;
-  }
-  html:has([data-quest-map]),
-  html:has([data-quest-map]) body {
-    height: 100%;
-    overflow: hidden;
-  }
-  #root:has([data-quest-map]) > div {
-    display: flex;
-    height: 100dvh;
-    max-height: 100dvh;
-    flex-direction: column;
-    overflow: visible;
-  }
-  #root:has([data-quest-map]) > div > header {
-    flex-shrink: 0;
-  }
-  #root:has([data-quest-map]) > div > .flex {
-    min-height: 0;
-    flex: 1 1 auto;
-    overflow: hidden;
-  }
-  #root:has([data-quest-map]) main {
-    padding-top: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    scroll-padding-bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
-  }
   #root:has([data-quest-map]) nav.map-one-chrome {
     position: static;
     flex-shrink: 0;

@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Check } from 'lucide-react'
 import { getF4Units } from '../../game/f4Demo'
 import { getF5Units } from '../../game/f5Demo'
@@ -107,15 +108,16 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
   }
 
   return (
+    <>
     <section
       data-quest-map
       data-quest-form={form}
       data-quest-motion={motion ? 'on' : 'off'}
-      className="relative rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-3 pb-32 sm:px-4"
+      className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-3 sm:px-4"
     >
       <div
         data-quest-sticky="controls"
-        className="quest-map-sticky -mx-3 mb-2 rounded-t-[1.55rem] border-b border-[#d7efe9] bg-[#FFF9E9] px-3 pt-2.5 pb-2 sm:-mx-4 sm:px-4"
+        className="quest-map-sticky -mx-3 shrink-0 rounded-t-[1.55rem] border-b border-[#d7efe9] bg-[#FFF9E9] px-3 pt-2.5 pb-2 sm:-mx-4 sm:px-4"
       >
         <MapVersionToggle mapOne bar />
         <div className="mt-2 flex flex-wrap items-end justify-between gap-2">
@@ -123,7 +125,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
           <QuestMotionButton />
         </div>
       </div>
-      <div data-quest-under className="quest-map-under">
+      <div data-quest-under className="quest-map-under min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain pb-32">
         {form === 's4' && !openYear ? (
           <div className="mt-3">
             <F4SlidesEntry />
@@ -194,12 +196,18 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
           <HomeworkMapEntry />
         </div>
       </div>
-      <div data-quest-lesson-host>
-        {openLesson ? (
-          <LessonPlayer lesson={openLesson} kind="lesson" exitLabel={chrome.back} onExit={() => setLessonId(null)} />
-        ) : null}
-      </div>
     </section>
+    {typeof document === 'undefined'
+      ? null
+      : createPortal(
+          <div data-quest-lesson-host>
+            {openLesson ? (
+              <LessonPlayer lesson={openLesson} kind="lesson" exitLabel={chrome.back} onExit={() => setLessonId(null)} />
+            ) : null}
+          </div>,
+          document.body,
+        )}
+    </>
   )
 }
 

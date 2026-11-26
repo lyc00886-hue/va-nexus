@@ -79,10 +79,8 @@ export function QuestTraining({ art, media }: { art: Unit[]; media: Unit[] }) {
   )
 }
 
-/** Keep the fixed lesson above the map plate. The plate's stacking context must not cover it. */
+/** Keep the fixed lesson on the document, outside the map scroller. */
 function QuestLessonPortal({ children }: { children: ReactNode }) {
   if (typeof document === 'undefined') return children
-  const host = document.querySelector('[data-quest-lesson-host]')
-  if (!host) return children
-  return createPortal(children, host)
+  return createPortal(children, document.body)
 }
