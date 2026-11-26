@@ -7,6 +7,7 @@ import { getF6Units } from '../../game/f6Demo'
 import type { Unit } from '../../game/types'
 import { useT, type MessageKey } from '../../i18n'
 import { QUEST_CHROME, questXpMoves, type QuestFormId } from '../../lib/mapQuest'
+import { isSupabaseConfigured } from '../../lib/supabase'
 import { useQuestForm, useQuestMotionPlay } from '../../lib/useQuestForm'
 import { QuestMotionButton, QuestSectionSwitch } from './MapQuestChrome'
 import { MapVersionToggle } from './MapVersionToggle'
@@ -21,6 +22,7 @@ import {
   type QuestBandId,
   type QuestNodeProgress,
 } from '../../lib/questPathLayout'
+import { CommitmentFooter } from '../CommitmentBadges'
 import { HomeworkMapEntry } from '../HomeworkStudent'
 import { InspectMapEntry } from '../InspectMapEntry'
 import { BiSpan } from './BilingualText'
@@ -113,11 +115,11 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
       data-quest-map
       data-quest-form={form}
       data-quest-motion={motion ? 'on' : 'off'}
-      className="relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-3 sm:px-4"
+      className="relative grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] overflow-hidden rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-3 sm:px-4"
     >
       <div
         data-quest-sticky="controls"
-        className="quest-map-sticky -mx-3 shrink-0 rounded-t-[1.55rem] border-b border-[#d7efe9] bg-[#FFF9E9] px-3 pt-2.5 pb-6 sm:-mx-4 sm:px-4"
+        className="quest-map-sticky -mx-3 shrink-0 rounded-t-[1.55rem] border-b border-[#d7efe9] bg-[#FFF9E9] px-3 pt-2.5 pb-3 sm:-mx-4 sm:px-4"
       >
         <MapVersionToggle mapOne bar />
         <div className="mt-2 flex flex-wrap items-end justify-between gap-2">
@@ -125,7 +127,8 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
           <QuestMotionButton />
         </div>
       </div>
-      <div data-quest-under className="quest-map-under min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain pb-32">
+      <div data-quest-under className="quest-map-under min-h-0 overflow-x-hidden overflow-y-auto overscroll-contain">
+        <div className="pb-32">
         {form === 's4' && !openYear ? (
           <div className="mt-3">
             <F4SlidesEntry />
@@ -194,6 +197,8 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
         <div data-quest-follow className="mt-4 space-y-3">
           <InspectMapEntry grade={form === 's5' ? 'f5' : form === 's6' ? 'f6' : 'f4'} />
           <HomeworkMapEntry />
+        </div>
+        <CommitmentFooter dataLine={t(isSupabaseConfigured ? 'app.footer.live' : 'app.footer.mock')} />
         </div>
       </div>
     </section>
