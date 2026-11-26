@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { HTML_LANG, useT, type MessageKey } from '../i18n'
+import { useRealClassrooms } from '../lib/classInvite'
 import { gradeLabelKey, useInspectRows, type InspectView } from '../lib/useInspectClass'
 import {
   fileFollowKind,
@@ -7,19 +8,23 @@ import {
   inSchoolCommentForStudent,
   inSchoolMarkForStudent,
   preferredHomework,
+  realRoomSubmissions,
   useHomeworkSubmissions,
   useHomeworkTeacherComments,
   useHomeworkTeacherMarks,
   type FileFollowKind,
+  type HwSubmission,
 } from '../lib/homeworkSubmit'
 import {
   collectedReportValue,
+  inspectExportDate,
   learningProgressFilename,
   renderInspectReportHtml,
   studentHomeworkCollected,
   teacherCommentText,
   type ReportSection,
 } from '../lib/inspectReport'
+import { StaffStudentName } from './InSchoolPrivacyName'
 
 export type InspectPreview = { kind: 'one'; id: string } | { kind: 'class' }
 
@@ -85,13 +90,64 @@ function sectionFor(
   }
 }
 
+function mergeReportSubmissions(local: readonly HwSubmission[], remote: readonly HwSubmission[]): HwSubmission[] {
+  if (remote.length === 0) return [...local]
+  const seen = new Set(local.map((row) => row.id))
+  return [...local, ...remote.filter((row) => !seen.has(row.id))]
+}
+
+function realReportViews(
+  rows: readonly InspectView[],
+  submissions: readonly HwSubmission[],
+  privacyLabel: string,
+  none: string,
+  unset: string,
+): InspectView[] {
+  const known = new Set(rows.map((row) => row.id))
+  const views: InspectView[] = []
+  const seen = new Set<string>()
+  for (const row of submissions) {
+    if (row.demo || known.has(row.studentId) || seen.has(row.studentId)) continue
+    seen.add(row.studentId)
+    const preferred = preferredHomework(submissions, row.studentId)
+    const kind = preferred ? fileFollowKind(preferred.assignmentId) : null
+    views.push({
+      id: row.studentId,
+      name: privacyLabel,
+      demo: false,
+      grade: kind === 'f5' ? 'f5' : kind === 'f4' ? 'f4' : null,
+      manualAttention: false,
+      status: { missing: false, behind: false, attention: false, steady: true },
+      done: 1,
+      total: 1,
+      units: none,
+      mcScore: none,
+      written: none,
+      artwork: none,
+      research: none,
+      band: unset,
+      date: inspectExportDate(),
+    })
+  }
+  return views
+}
+
 export function InspectReport({ preview, onClose }: { preview: InspectPreview | null; onClose: () => void }) {
   const { t, locale } = useT()
   const rows = useInspectRows()
-  const submissions = useHomeworkSubmissions()
+  const localSubmissions = useHomeworkSubmissions()
+  const rooms = useRealClassrooms()
+  const remoteSubmissions = rooms.flatMap((room) => realRoomSubmissions(room))
+  const submissions = mergeReportSubmissions(localSubmissions, remoteSubmissions)
   const marks = useHomeworkTeacherMarks()
   const comments = useHomeworkTeacherComments()
-  const shown = preview?.kind === 'class' ? rows : rows.filter((row) => row.id === preview?.id)
+  const privacyLabel = t('cropask.staff.student')
+  const none = t('inspect.report.none')
+  const unset = t('inspect.report.unsetBand')
+  const realViews = realReportViews(rows, remoteSubmissions, privacyLabel, none, unset)
+  const privacyIds = new Set(realViews.map((row) => row.id))
+  const classRows = [...rows, ...realViews]
+  const shown = preview?.kind === 'class' ? classRows : rows.filter((row) => row.id === preview?.id)
 
   function collectionFor(row: InspectView): {
     homework: string
@@ -207,11 +263,13 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
               const collection = collectionFor(row)
               return (
               <div key={row.id}>
-                <h3 className="text-base font-bold text-[#0D9488]">{row.name}</h3>
+                <h3 className="text-base font-bold text-[#0D9488]">
+                  {privacyIds.has(row.id) ? <StaffStudentName studentId={row.id} /> : row.name}
+                </h3>
                 <dl className="mt-2 space-y-2 text-sm">
                   <div>
                     <dt className="font-semibold text-slate-900">{t('inspect.report.student')}</dt>
-                    <dd>{row.name}</dd>
+                    <dd>{privacyIds.has(row.id) ? <StaffStudentName studentId={row.id} /> : row.name}</dd>
                   </div>
                   <div>
                     <dt className="font-semibold text-slate-900">{t('inspect.report.grade')}</dt>
@@ -348,7 +406,7 @@ export function InspectReport({ preview, onClose }: { preview: InspectPreview | 
               type="button"
               data-testid="inspect-export-class"
               disabled={preview.kind !== 'class'}
-              onClick={() => download(rows)}
+              onClick={() => download(classRows)}
               className="rounded-full border border-[#0D9488] bg-white px-4 py-2 text-sm font-semibold text-[#0D9488] disabled:opacity-40"
             >
               {t('inspect.staff.exportClass')}

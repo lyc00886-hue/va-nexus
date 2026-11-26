@@ -12,6 +12,7 @@ import {
 import { assignmentsForClass, useAssignList, visibleAssignment } from '../lib/assignList'
 import type { InviteRoom } from '../lib/classInvite'
 import {
+  assignmentsForSharedRoom,
   confirmHomeworkTeacherMark,
   homeworkCounts,
   fileFollowKind,
@@ -20,7 +21,8 @@ import {
   homeworkRosterIds,
   homeworkRows,
   homeworkSessionFile,
-  homeworkSubmissionId,
+  mergeSharedAssignments,
+  realRoomSubmissions,
   type FileFollowKind,
   saveHomeworkTeacherComment,
   teacherCommentForSubmission,
@@ -30,12 +32,7 @@ import {
   useHomeworkTeacherMarks,
   type HwSubmission,
 } from '../lib/homeworkSubmit'
-
-const NAME_KEY: Record<string, MessageKey> = {
-  'demo-a': 'inspect.demo.a',
-  'demo-b': 'inspect.demo.b',
-  'demo-c': 'inspect.demo.c',
-}
+import { StaffStudentName } from './InSchoolPrivacyName'
 
 /**
  * Submission list for one opened class, placed after the published assignments.
@@ -53,21 +50,12 @@ export function HomeworkReview({
   sharedRoom?: InviteRoom | null
 }) {
   const { t } = useT()
-  const assignments = assignmentsForClass({ assignments: useAssignList() }, classId)
+  const localAssignments = assignmentsForClass({ assignments: useAssignList() }, classId)
+  const assignments = sharedRoom
+    ? mergeSharedAssignments(assignmentsForSharedRoom(sharedRoom), localAssignments)
+    : localAssignments
   const localSubmissions = useHomeworkSubmissions()
-  const remoteSubmissions: HwSubmission[] = (sharedRoom?.submissions ?? []).flatMap((row) => {
-    if (!row.memberId || !row.assignmentId || !row.fileName) return []
-    return [
-      {
-        id: homeworkSubmissionId(classId, row.assignmentId, row.memberId),
-        classId,
-        assignmentId: row.assignmentId,
-        studentId: row.memberId,
-        fileName: row.fileName,
-        demo: false,
-      },
-    ]
-  })
+  const remoteSubmissions = sharedRoom ? realRoomSubmissions(sharedRoom) : []
   const submissions = [...localSubmissions, ...remoteSubmissions]
   const sharedRoster = sharedRoom ? sharedRoom.members.map((member) => member.id) : null
   const reviewed =
@@ -160,7 +148,6 @@ export function HomeworkReview({
                     <ul className="m-0 list-none space-y-3 p-0">
                       {rows.map((row) => {
                         const submitted = row.status === 'submitted'
-                        const nameKey = NAME_KEY[row.studentId]
                         const fileName = row.submission ? homeworkFileLabel(row.submission, t('hw.staff.genericFile')) : ''
                         return (
                           <li
@@ -169,7 +156,9 @@ export function HomeworkReview({
                             data-hw-status={row.status}
                             className="rounded-3xl border border-[#0D9488]/30 bg-white p-4"
                           >
-                            <p className="font-semibold text-slate-900">{nameKey ? t(nameKey) : row.studentId}</p>
+                            <p className="font-semibold text-slate-900">
+                              <StaffStudentName studentId={row.studentId} />
+                            </p>
                             <p className="mt-2">
                               <span
                                 className={
@@ -233,6 +222,18 @@ export function HomeworkReview({
     />
     </>
   )
+}
+
+export function HomeworkFileReview({
+  submission,
+  classId,
+  onBack,
+}: {
+  submission: HwSubmission
+  classId: string
+  onBack: () => void
+}) {
+  return <SubmittedFile submission={submission} classId={classId} onBack={onBack} />
 }
 
 function SubmittedFile({
@@ -526,7 +527,9 @@ function ClassAnalysis({
       <ul className="m-0 list-none space-y-3 p-0">
         {roster.map((studentId) => (
           <li key={studentId} data-testid={`staff-class-analysis-${studentId}`} className="rounded-3xl border border-[#0D9488]/30 bg-[#FFF9E9] p-4">
-            <p className="font-semibold text-slate-900">{NAME_KEY[studentId] ? t(NAME_KEY[studentId]) : studentId}</p>
+            <p className="font-semibold text-slate-900">
+              <StaffStudentName studentId={studentId} />
+            </p>
             <div className="mt-3 space-y-3">
               {assignments.map((assignment) => {
                 const shown = visibleAssignment(assignment, demoCopy, f5Copy)
@@ -561,7 +564,9 @@ function WorkRow({ studentId, submitted, saved }: { studentId: string; submitted
   const { t } = useT()
   return (
     <li className="rounded-3xl border border-[#0D9488]/30 bg-[#FFF9E9] p-4">
-      <p className="font-semibold text-slate-900">{NAME_KEY[studentId] ? t(NAME_KEY[studentId]) : studentId}</p>
+      <p className="font-semibold text-slate-900">
+        <StaffStudentName studentId={studentId} />
+      </p>
       <p className="mt-2 flex flex-wrap gap-2">
         <StatusChip tone={submitted ? 'teal' : 'quiet'}>
           {submitted ? t('hw.staff.homeworkDoneChip') : t('hw.staff.homeworkChip')}
@@ -692,7 +697,6 @@ function CompareReview({ submission }: { submission: HwSubmission }) {
   }, [])
   const [picked, setPicked] = useState<string | null>(null)
   const selected = works.find((work) => work.image === picked) ?? works[0] ?? null
-  const nameKey = NAME_KEY[submission.studentId]
   const session = homeworkSessionFile(submission.id)
   const image = session && session.mime.startsWith('image/') ? session.url : null
   const fileName = homeworkFileLabel(submission, t('hw.staff.genericFile'))
@@ -708,7 +712,9 @@ function CompareReview({ submission }: { submission: HwSubmission }) {
       <div>
         <h3 className="text-lg font-bold text-[#0D9488]">{t('hw.staff.compareTitle')}</h3>
         <p className="mt-1 text-sm leading-relaxed text-slate-600">{t('hw.staff.reviewPairIntro')}</p>
-        <p className="mt-2 font-semibold text-[#0D9488]">{nameKey ? t(nameKey) : submission.studentId}</p>
+        <p className="mt-2 font-semibold text-[#0D9488]">
+          <StaffStudentName studentId={submission.studentId} />
+        </p>
       </div>
       <div className="grid gap-4 lg:grid-cols-2">
         <div>

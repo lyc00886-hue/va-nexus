@@ -1,17 +1,12 @@
 import type { ReactNode } from 'react'
-import { useT, type MessageKey } from '../i18n'
+import { useT } from '../i18n'
+import { StaffStudentName } from './InSchoolPrivacyName'
 import {
   presentationOverrideFor,
   setPresentationOverride,
   usePresentationOverrides,
   type PresentationMode,
 } from '../lib/lessonPresentation'
-
-const NAME_KEY: Record<string, MessageKey> = {
-  'demo-a': 'inspect.demo.a',
-  'demo-b': 'inspect.demo.b',
-  'demo-c': 'inspect.demo.c',
-}
 
 const MODE_BUTTON =
   'whitespace-nowrap rounded-full border border-[#0D9488] px-4 py-2 text-sm font-semibold'
@@ -35,8 +30,6 @@ export function StudentPresentControl({
   const overrides = usePresentationOverrides()
   const saved = presentationOverrideFor(overrides, studentId)
   const current: PresentationMode = saved ?? 'standard'
-  const nameKey = NAME_KEY[studentId]
-  const name = nameKey ? t(nameKey) : studentId
 
   function choose(mode: PresentationMode) {
     setPresentationOverride(studentId, mode)
@@ -62,7 +55,7 @@ export function StudentPresentControl({
           onClick={onOpen}
           className="text-left font-semibold text-slate-900"
         >
-          {name}
+          <StaffStudentName studentId={studentId} />
         </button>
         {extra ? <div className="mt-2">{extra}</div> : null}
         {open ? (

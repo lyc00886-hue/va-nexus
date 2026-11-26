@@ -8,7 +8,7 @@
  * No API route is added.
  */
 import { useSyncExternalStore } from 'react'
-import { DEMO_ASSIGN_ID, F5_DEMO_ASSIGN_ID } from './assignList.ts'
+import { DEMO_ASSIGN_ID, F5_DEMO_ASSIGN_ID, type StaffAssignment } from './assignList.ts'
 import { DEMO_CLASS_ID } from './classList.ts'
 
 export const HW_LIST_KEY = 'va-nexus:hw-submissions:v1'
@@ -73,6 +73,135 @@ export function demoHomework(): HwStore {
 export function homeworkRosterIds(classId: string, demoClass: boolean): readonly string[] {
   if (demoClass || classId === DEMO_CLASS_ID) return HW_ROSTER_IDS
   return []
+}
+
+export type SharedRoomWork = {
+  id: string
+  members: readonly { id: string }[]
+  submissions: readonly { memberId: string; assignmentId: string; fileName: string }[]
+  assignments: readonly {
+    id: string
+    title: string
+    due: string
+    instructions: string
+    attach: 'none' | 'paper'
+    demo: boolean
+  }[]
+}
+
+function roomMemberIds(room: { members: readonly { id: string }[] }): Set<string> {
+  const ids = new Set<string>()
+  for (const member of room.members) {
+    const id = member.id.trim()
+    if (id) ids.add(id)
+  }
+  return ids
+}
+
+/** A classmate on this room handed in a named file. Example rows do not count. */
+export function roomHasRealSubmission(room: {
+  members: readonly { id: string }[]
+  submissions: readonly { memberId: string; assignmentId: string; fileName: string }[]
+}): boolean {
+  const members = roomMemberIds(room)
+  return room.submissions.some((row) => {
+    const memberId = row.memberId.trim()
+    const assignmentId = row.assignmentId.trim()
+    return memberId !== '' && assignmentId !== '' && row.fileName.trim() !== '' && members.has(memberId)
+  })
+}
+
+/** Files already stored on the shared room, keyed for the existing homework review. */
+export function realRoomSubmissions(room: {
+  id: string
+  members: readonly { id: string }[]
+  submissions: readonly { memberId: string; assignmentId: string; fileName: string }[]
+}): HwSubmission[] {
+  const members = roomMemberIds(room)
+  const submissions: HwSubmission[] = []
+  const seen = new Set<string>()
+  for (const row of room.submissions) {
+    const memberId = row.memberId.trim()
+    const assignmentId = row.assignmentId.trim()
+    const fileName = row.fileName.trim().slice(0, 200)
+    if (!members.has(memberId) || assignmentId === '' || fileName === '') continue
+    const id = homeworkSubmissionId(room.id, assignmentId, memberId)
+    if (seen.has(id)) continue
+    seen.add(id)
+    submissions.push({
+      id,
+      classId: room.id,
+      assignmentId,
+      studentId: memberId,
+      fileName,
+      demo: false,
+    })
+  }
+  return submissions
+}
+
+function officialSharedAssignment(classId: string, id: string): StaffAssignment {
+  return {
+    id,
+    classId,
+    title: '',
+    due: '',
+    instructions: '',
+    attach: 'paper',
+    demo: true,
+  }
+}
+
+/**
+ * Homework the teacher can already review for one shared room.
+ * The live November item stays `demo-november`. This does not publish a second item.
+ */
+export function assignmentsForSharedRoom(room: SharedRoomWork): StaffAssignment[] {
+  const rows: StaffAssignment[] = []
+  const seen = new Set<string>()
+  const hasMember = room.members.some((member) => member.id.trim() !== '')
+  const hasNovember = room.submissions.some(
+    (row) => row.assignmentId.trim() === DEMO_ASSIGN_ID && row.fileName.trim() !== '',
+  )
+  if (hasMember || hasNovember) {
+    rows.push(officialSharedAssignment(room.id, DEMO_ASSIGN_ID))
+    seen.add(DEMO_ASSIGN_ID)
+  }
+  const hasF5 = room.submissions.some(
+    (row) => row.assignmentId.trim() === F5_DEMO_ASSIGN_ID && row.fileName.trim() !== '',
+  )
+  if (hasF5) {
+    rows.push(officialSharedAssignment(room.id, F5_DEMO_ASSIGN_ID))
+    seen.add(F5_DEMO_ASSIGN_ID)
+  }
+  for (const row of room.assignments) {
+    const id = row.id.trim()
+    if (!id || row.demo || seen.has(id)) continue
+    const title = row.title.trim()
+    const due = row.due.trim()
+    if (!title || !due) continue
+    if (row.attach !== 'none' && row.attach !== 'paper') continue
+    seen.add(id)
+    rows.push({
+      id,
+      classId: room.id,
+      title,
+      due,
+      instructions: row.instructions.trim(),
+      attach: row.attach,
+      demo: false,
+    })
+  }
+  return rows
+}
+
+/** Shared official rows win. A local published row is added only when it is not an example row. */
+export function mergeSharedAssignments(
+  shared: readonly StaffAssignment[],
+  local: readonly StaffAssignment[],
+): StaffAssignment[] {
+  const seen = new Set(shared.map((row) => row.id))
+  return [...shared, ...local.filter((row) => !row.demo && !seen.has(row.id))]
 }
 
 export function homeworkSubmissionId(classId: string, assignmentId: string, studentId: string): string {
