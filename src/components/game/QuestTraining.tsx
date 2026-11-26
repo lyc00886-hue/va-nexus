@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
 import { useGame } from '../../context/GameContext'
 import { isSequentialUnlocked } from '../../game/mediaCatalog'
 import type { Unit } from '../../game/types'
@@ -57,14 +58,14 @@ export function QuestTraining({ art, media }: { art: Unit[]; media: Unit[] }) {
                         </span>
                       </button>
                       {shown ? (
-                        <div className="mt-3">
+                        <QuestLessonPortal>
                           <LessonPlayer
                             lesson={lesson}
                             kind="lesson"
                             exitLabel={t('map.train.back')}
                             onExit={() => setOpen((prev) => ({ ...prev, [lesson.id]: false }))}
                           />
-                        </div>
+                        </QuestLessonPortal>
                       ) : null}
                     </li>
                   )
@@ -76,4 +77,10 @@ export function QuestTraining({ art, media }: { art: Unit[]; media: Unit[] }) {
       ))}
     </div>
   )
+}
+
+/** Keep the fixed lesson on the document, outside the map scroller. */
+function QuestLessonPortal({ children }: { children: ReactNode }) {
+  if (typeof document === 'undefined') return children
+  return createPortal(children, document.body)
 }

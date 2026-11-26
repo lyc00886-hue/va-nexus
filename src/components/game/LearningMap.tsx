@@ -210,7 +210,10 @@ export function LearningMap() {
     return (
       <div data-map-shell="one" data-map-scope="quest" data-soft-shell={shell} className="space-y-5">
         {easy.preview ? <EasyReadBar /> : null}
-        <div className={onPath ? 'space-y-3 rounded-[2rem] bg-[#FFF9E9] p-3 sm:p-4' : 'space-y-5'}>
+        <div
+          data-quest-frame={onPath ? '' : undefined}
+          className={onPath ? 'space-y-3 rounded-[2rem] bg-[#FFF9E9] p-3 sm:p-4' : 'space-y-5'}
+        >
           {onPath ? null : <MapVersionToggle mapOne />}
           {shell === 'atlas' ? (
             <SoftAtlas onShell={onShell} />
