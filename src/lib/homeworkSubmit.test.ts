@@ -3,15 +3,19 @@ import { readdirSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { DEMO_ASSIGN_ID } from './assignList.ts'
+import { DEMO_ASSIGN_ID, visibleAssignment } from './assignList.ts'
 import { DEMO_CLASS_ID } from './classList.ts'
 import {
   HW_FILE_BYTES,
   HW_LEARNER_ID,
   HW_LIST_KEY,
+  assignmentsForSharedRoom,
   demoHomework,
   emptyHomework,
   fileFollowKind,
+  mergeSharedAssignments,
+  realRoomSubmissions,
+  roomHasRealSubmission,
   homeworkCounts,
   mergeClassShellMarks,
   homeworkFileError,
@@ -412,6 +416,102 @@ describe('homework copy and wiring', () => {
       assert.equal(source.includes('\u7684'), false, file)
       assert.equal(source.includes('\u628a'), false, file)
       assert.equal(source.includes('\u5572'), false, file)
+      assert.equal(BANNED.test(source), false, file)
+    }
+  })
+
+  it('reviews a real room file on the live November homework without a second item', () => {
+    const room = {
+      id: 'room12345',
+      members: [{ id: 'member123' }],
+      submissions: [{ memberId: 'member123', assignmentId: DEMO_ASSIGN_ID, fileName: 'walk.png' }],
+      assignments: [],
+    }
+    assert.equal(roomHasRealSubmission(room), true)
+    assert.equal(roomHasRealSubmission({ ...room, members: [] }), false)
+    assert.equal(roomHasRealSubmission({ id: 'older', members: [], submissions: [] }), false)
+    const assignments = assignmentsForSharedRoom(room)
+    assert.deepEqual(
+      assignments.map((row) => row.id),
+      [DEMO_ASSIGN_ID],
+    )
+    assert.equal(assignments[0]?.demo, true)
+    assert.equal(assignments[0]?.classId, 'room12345')
+    assert.equal(fileFollowKind(assignments[0]?.id ?? ''), 'f4')
+    assert.equal(
+      visibleAssignment(assignments[0]!, { title: '十一月：走進社區觀察課業', due: 'due', instructions: 'note' }).title,
+      '十一月：走進社區觀察課業',
+    )
+    const handed = realRoomSubmissions(room)
+    assert.equal(handed.length, 1)
+    assert.equal(handed[0]?.fileName, 'walk.png')
+    assert.equal(handed[0]?.demo, false)
+    assert.equal(handed[0]?.assignmentId, DEMO_ASSIGN_ID)
+    assert.notEqual(handed[0]?.studentId, 'demo-a')
+    const waiting = assignmentsForSharedRoom({
+      id: 'room12345',
+      members: [{ id: 'member123' }],
+      submissions: [],
+      assignments: [],
+    })
+    assert.deepEqual(
+      waiting.map((row) => row.id),
+      [DEMO_ASSIGN_ID],
+    )
+    assert.equal(roomHasRealSubmission({ id: 'room12345', members: [{ id: 'member123' }], submissions: [] }), false)
+    assert.equal(assignmentsForSharedRoom({ id: 'older', members: [], submissions: [], assignments: [] }).length, 0)
+    const merged = mergeSharedAssignments(assignments, [
+      {
+        id: DEMO_ASSIGN_ID,
+        classId: DEMO_CLASS_ID,
+        title: '',
+        due: '',
+        instructions: '',
+        attach: 'paper',
+        demo: true,
+      },
+      {
+        id: 'assign-local',
+        classId: 'room12345',
+        title: 'after class',
+        due: 'friday',
+        instructions: '',
+        attach: 'none',
+        demo: false,
+      },
+    ])
+    assert.deepEqual(
+      merged.map((row) => row.id),
+      [DEMO_ASSIGN_ID, 'assign-local'],
+    )
+    const queue = read('src/components/CropAskStaffQueue.tsx')
+    const invite = read('src/components/ClassInviteStaff.tsx')
+    const review = read('src/components/HomeworkReview.tsx')
+    const report = read('src/components/InspectReport.tsx')
+    assert.match(queue, /realRoomSubmissions/)
+    assert.match(queue, /cropask\.staff\.demoNote/)
+    assert.match(invite, /roomHasRealSubmission/)
+    assert.match(invite, /inspect\.demo\.a/)
+    assert.match(review, /assignmentsForSharedRoom/)
+    assert.match(review, /hw\.staff\.openFile/)
+    assert.match(review, /hw\.staff\.autoGradeLabel/)
+    assert.match(review, /hw\.staff\.adjustLabel/)
+    assert.match(review, /hw\.staff\.teacherGradeLabel/)
+    assert.equal(review.includes('report.staff'), false)
+    assert.match(report, /realRoomSubmissions/)
+    assert.match(report, /StaffStudentName/)
+    for (const file of [
+      'src/components/InSchoolPrivacyName.tsx',
+      'src/components/RealHandInCard.tsx',
+      'src/components/CropAskStaffQueue.tsx',
+      'src/components/ClassInviteStaff.tsx',
+      'src/components/StudentPresentControl.tsx',
+      'src/components/InspectReport.tsx',
+    ]) {
+      const source = read(file)
+      assert.equal(source.includes('CCCKLC'), false, file)
+      assert.equal(source.includes('XB49ZD'), false, file)
+      assert.equal(source.includes('\u7684'), false, file)
       assert.equal(BANNED.test(source), false, file)
     }
   })

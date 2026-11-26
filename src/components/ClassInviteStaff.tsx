@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useT, type MessageKey } from '../i18n'
 import { createRealClassroom, type InviteRoom } from '../lib/classInvite'
+import { roomHasRealSubmission } from '../lib/homeworkSubmit'
 import { PORTFOLIO_LABEL_MAX } from '../lib/teacherDraftBand'
 import { StudentPresentControl } from './StudentPresentControl'
 
@@ -137,28 +138,30 @@ export function ClassInviteRoom({ room, onBack }: { room: InviteRoom; onBack: ()
         </div>
       ) : null}
 
-      <div data-testid="class-example-roster" className="space-y-3">
-        <p className="text-sm text-[#0D9488]">{t('inspect.staff.demoNote')}</p>
-        <p className="text-sm leading-relaxed text-slate-600">{t('class.staff.sharedNote')}</p>
-        <ul className="m-0 list-none space-y-3 p-0">
-          {EXAMPLE_ROWS.map((row) => (
-            <li key={row.id} data-example-student={row.id} className="rounded-3xl border border-[#0D9488]/30 bg-white p-4">
-              <p className="font-semibold text-slate-900">{t(row.name)}</p>
-              <p className="mt-2">
-                <span
-                  className={
-                    row.handedIn
-                      ? 'inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]'
-                      : 'inline-flex rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
-                  }
-                >
-                  {row.handedIn ? t('hw.staff.homeworkDoneChip') : t('hw.staff.homeworkChip')}
-                </span>
-              </p>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {roomHasRealSubmission(room) ? null : (
+        <div data-testid="class-example-roster" className="space-y-3">
+          <p className="text-sm text-[#0D9488]">{t('inspect.staff.demoNote')}</p>
+          <p className="text-sm leading-relaxed text-slate-600">{t('class.staff.sharedNote')}</p>
+          <ul className="m-0 list-none space-y-3 p-0">
+            {EXAMPLE_ROWS.map((row) => (
+              <li key={row.id} data-example-student={row.id} className="rounded-3xl border border-[#0D9488]/30 bg-white p-4">
+                <p className="font-semibold text-slate-900">{t(row.name)}</p>
+                <p className="mt-2">
+                  <span
+                    className={
+                      row.handedIn
+                        ? 'inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]'
+                        : 'inline-flex rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
+                    }
+                  >
+                    {row.handedIn ? t('hw.staff.homeworkDoneChip') : t('hw.staff.homeworkChip')}
+                  </span>
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {room.members.length > 0 ? (
         <ul className="m-0 list-none space-y-3 p-0" data-testid="class-joined-roster">

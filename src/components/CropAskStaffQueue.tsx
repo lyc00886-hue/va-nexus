@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { useT, type MessageKey } from '../i18n'
+import { useRealClassrooms } from '../lib/classInvite'
 import {
-  pendingReviewCount,
   reviewDrafts,
   speculationDisplay,
   staffNeedsNames,
@@ -11,9 +11,11 @@ import {
   type CropRect,
 } from '../lib/cropAsk'
 import { useInspectClassStore } from '../lib/inspectClass'
+import { realRoomSubmissions } from '../lib/homeworkSubmit'
 import { GRADE_LABEL } from '../lib/softGoMaps'
 import { confirmCropAsk, saveCropAskTeacherEdit, unconfirmCropAsk, useCropAskStore } from '../lib/useCropAsk'
 import { CropAskDisclaimer, SpeculationBlock } from './CropAskWork'
+import { RealHandInCard } from './RealHandInCard'
 
 const AXIS_LABEL: Record<CropAskAxis, MessageKey> = {
   theme: 'inspect.axis.theme',
@@ -49,16 +51,20 @@ export function CropAskStaffQueue() {
   const { t } = useT()
   const store = useCropAskStore()
   const roster = useInspectClassStore()
-  const rows = reviewDrafts(store)
-  const pending = pendingReviewCount(store)
+  const rooms = useRealClassrooms()
+  const realSubs = rooms.flatMap((room) => realRoomSubmissions(room))
+  const hasReal = realSubs.length > 0
+  const rows = reviewDrafts(store).filter((row) => (hasReal ? !row.demoId : true))
+  const pending =
+    rows.filter((row) => row.status === 'pending' || row.status === 'edited').length + realSubs.length
   const [openId, setOpenId] = useState<string | null>(null)
   const [editing, setEditing] = useState(false)
   const [seen, setSeen] = useState('')
   const [understood, setUnderstood] = useState('')
   const [evidence, setEvidence] = useState('')
   const [regionOnly, setRegionOnly] = useState(false)
-  const demo = staffUsesDemo(roster.students, rows)
-  const noNames = staffNeedsNames(roster.students, rows)
+  const demo = !hasReal && staffUsesDemo(roster.students, rows)
+  const noNames = !hasReal && staffNeedsNames(roster.students, rows)
   const open = rows.find((row) => row.id === openId) ?? null
 
   function openRow(row: CropAskReview) {
@@ -71,7 +77,11 @@ export function CropAskStaffQueue() {
   }
 
   return (
-    <section data-testid="crop-ask-staff" className="rounded-3xl border-2 border-[#0D9488] bg-[#FFF9E9] p-4 sm:p-6">
+    <section
+      data-testid="crop-ask-staff"
+      data-real-handin={hasReal ? 'true' : 'false'}
+      className="rounded-3xl border-2 border-[#0D9488] bg-[#FFF9E9] p-4 sm:p-6"
+    >
       <h2 className="text-xl font-bold text-slate-900">{t('cropask.staff.blockTitle')}</h2>
       <p className="mt-1 text-sm leading-relaxed text-slate-700">{t('cropask.staff.intro')}</p>
       {demo ? (
@@ -81,8 +91,13 @@ export function CropAskStaffQueue() {
       ) : null}
       {pending > 0 ? <p className="mt-2 text-sm font-semibold text-slate-800">{t('cropask.staff.count', { pending })}</p> : null}
       {noNames ? <p className="mt-3 text-sm text-slate-700">{t('cropask.staff.noNames')}</p> : null}
-      {rows.length === 0 ? <p className="mt-3 text-sm text-slate-700">{t('cropask.staff.empty')}</p> : null}
+      {rows.length === 0 && realSubs.length === 0 ? (
+        <p className="mt-3 text-sm text-slate-700">{t('cropask.staff.empty')}</p>
+      ) : null}
       <ul className="mt-4 space-y-3">
+        {realSubs.map((submission) => (
+          <RealHandInCard key={submission.id} submission={submission} />
+        ))}
         {rows.map((row) => {
           const expanded = open?.id === row.id
           const name = row.demoId ? t(DEMO_LABEL[row.demoId]) : row.studentKey
