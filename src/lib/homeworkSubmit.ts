@@ -8,7 +8,7 @@
  * No API route is added.
  */
 import { useSyncExternalStore } from 'react'
-import { DEMO_ASSIGN_ID, F5_DEMO_ASSIGN_ID, type StaffAssignment } from './assignList.ts'
+import { DEMO_ASSIGN_ID, F5_DEMO_ASSIGN_ID, LEARNING_WORKSHEET_ASSIGN_ID, type StaffAssignment } from './assignList.ts'
 import { DEMO_CLASS_ID } from './classList.ts'
 
 export const HW_LIST_KEY = 'va-nexus:hw-submissions:v1'
@@ -154,7 +154,8 @@ function officialSharedAssignment(classId: string, id: string): StaffAssignment 
 
 /**
  * Homework the teacher can already review for one shared room.
- * The live November item stays `demo-november`. This does not publish a second item.
+ * The live November item stays `demo-november`.
+ * A stored learning-worksheet file is opened on this same list.
  */
 export function assignmentsForSharedRoom(room: SharedRoomWork): StaffAssignment[] {
   const rows: StaffAssignment[] = []
@@ -166,6 +167,13 @@ export function assignmentsForSharedRoom(room: SharedRoomWork): StaffAssignment[
   if (hasMember || hasNovember) {
     rows.push(officialSharedAssignment(room.id, DEMO_ASSIGN_ID))
     seen.add(DEMO_ASSIGN_ID)
+  }
+  const hasWorksheet = room.submissions.some(
+    (row) => row.assignmentId.trim() === LEARNING_WORKSHEET_ASSIGN_ID && row.fileName.trim() !== '',
+  )
+  if (hasWorksheet) {
+    rows.push(officialSharedAssignment(room.id, LEARNING_WORKSHEET_ASSIGN_ID))
+    seen.add(LEARNING_WORKSHEET_ASSIGN_ID)
   }
   const hasF5 = room.submissions.some(
     (row) => row.assignmentId.trim() === F5_DEMO_ASSIGN_ID && row.fileName.trim() !== '',
@@ -398,7 +406,7 @@ export type FileFollowKind = 'f4' | 'f5'
 
 /** Official Form 4 and Form 5 demo files. Other assignments stay on the older fixed sentence. */
 export function fileFollowKind(assignmentId: string): FileFollowKind | null {
-  if (assignmentId === DEMO_ASSIGN_ID) return 'f4'
+  if (assignmentId === DEMO_ASSIGN_ID || assignmentId === LEARNING_WORKSHEET_ASSIGN_ID) return 'f4'
   if (assignmentId === F5_DEMO_ASSIGN_ID) return 'f5'
   return null
 }

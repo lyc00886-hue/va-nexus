@@ -9,7 +9,9 @@ import {
   type AppreciationPack,
   type VerifiedWork,
 } from '../game/verifiedArtworks'
-import { assignmentsForClass, useAssignList, visibleAssignment } from '../lib/assignList'
+import { LEARNING_WORKSHEET_ASSIGN_ID, assignmentsForClass, useAssignList, visibleAssignment } from '../lib/assignList'
+import { withLearningWorksheet } from '../game/learningWorksheet'
+import { LearningWorksheetFile } from './game/LearningWorksheetFile'
 import type { InviteRoom } from '../lib/classInvite'
 import {
   assignmentsForSharedRoom,
@@ -51,9 +53,10 @@ export function HomeworkReview({
 }) {
   const { t } = useT()
   const localAssignments = assignmentsForClass({ assignments: useAssignList() }, classId)
-  const assignments = sharedRoom
+  const listed = sharedRoom
     ? mergeSharedAssignments(assignmentsForSharedRoom(sharedRoom), localAssignments)
     : localAssignments
+  const assignments = demoClass ? withLearningWorksheet(listed, classId) : listed
   const localSubmissions = useHomeworkSubmissions()
   const remoteSubmissions = sharedRoom ? realRoomSubmissions(sharedRoom) : []
   const submissions = [...localSubmissions, ...remoteSubmissions]
@@ -129,7 +132,8 @@ export function HomeworkReview({
                 const plate = homeworkPlateMatch(counts)
                 return (
                   <div key={assignment.id} data-testid={`hw-staff-assignment-${assignment.id}`} className="space-y-3">
-                    <h3 className="text-lg font-bold text-slate-900">{shown.title}</h3>
+                    {shown.title ? <h3 className="text-lg font-bold text-slate-900">{shown.title}</h3> : null}
+                    {assignment.id === LEARNING_WORKSHEET_ASSIGN_ID ? <LearningWorksheetFile /> : null}
                     {roster.length > 0 ? (
                       <div
                         data-testid="hw-staff-counts"
@@ -267,6 +271,11 @@ function SubmittedFile({
           <a href={pdf}>{name}</a>
         </object>
       ) : null}
+      {submission.assignmentId === LEARNING_WORKSHEET_ASSIGN_ID && image ? (
+        <img src={image} alt="" className="max-h-80 w-full rounded-2xl border border-[#0D9488]/30 bg-white object-contain" />
+      ) : null}
+      {submission.assignmentId === LEARNING_WORKSHEET_ASSIGN_ID ? <LearningWorksheetFile /> : null}
+      {submission.assignmentId === LEARNING_WORKSHEET_ASSIGN_ID ? null : (
       <ol data-testid="hw-staff-pages" data-hw-pages="3" aria-label={t('hw.staff.pagesHint')} className="m-0 grid list-none gap-3 p-0 sm:grid-cols-3">
         <li data-hw-page="1" className="rounded-2xl border border-[#0D9488]/30 bg-white p-3">
           <p className="text-xs font-semibold text-[#0D9488]">1</p>
@@ -296,6 +305,7 @@ function SubmittedFile({
           </div>
         </li>
       </ol>
+      )}
       <p data-testid="hw-staff-pages-hint" className="text-sm leading-relaxed text-slate-600">
         {t('hw.staff.pagesHint')}
       </p>
@@ -466,7 +476,7 @@ function AssignmentAnalysis({
         const kind = fileFollowKind(assignment.id)
         return (
           <div key={assignment.id} data-testid={`staff-assignment-analysis-${assignment.id}`} className="space-y-3">
-            <h3 className="text-lg font-bold text-slate-900">{shown.title}</h3>
+            {shown.title ? <h3 className="text-lg font-bold text-slate-900">{shown.title}</h3> : null}
             {roster.length > 0 ? (
               <p className="text-sm font-semibold text-[#0D9488]">
                 {plate ? t('hw.staff.count') : `${counts.submitted}\uFF0F${counts.total}`}
@@ -538,7 +548,7 @@ function ClassAnalysis({
                 const saved = row?.submission != null && teacherMarkForSubmission(marks, row.submission.id) != null
                 return (
                   <div key={assignment.id}>
-                    <p className="text-sm text-slate-700">{shown.title}</p>
+                    {shown.title ? <p className="text-sm text-slate-700">{shown.title}</p> : null}
                     <p className="mt-2 flex flex-wrap gap-2">
                       <StatusChip tone={submitted ? 'teal' : 'quiet'}>
                         {submitted ? t('hw.staff.homeworkDoneChip') : t('hw.staff.homeworkChip')}
