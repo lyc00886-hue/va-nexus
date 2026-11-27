@@ -659,4 +659,7 @@ html:has([data-quest-map]) .platform-header {
   [data-lesson-worksheet='F4-U3-L4'] [data-worksheet-case] {
     background: #FFFFFF !important;
   }
+  [data-learning-worksheet] {
+    display: none !important;
+  }
 }

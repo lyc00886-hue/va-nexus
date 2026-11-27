@@ -10,6 +10,8 @@ import { portfolioKey } from './teacherDraftBand.ts'
 export const ASSIGN_LIST_KEY = 'va-nexus:assign-list:v1'
 export const DEMO_ASSIGN_ID = 'demo-november'
 export const F5_DEMO_ASSIGN_ID = 'demo-f5-heritage'
+/** Hand-in id for the official Form 4 learning worksheet. Not a second sample row. */
+export const LEARNING_WORKSHEET_ASSIGN_ID = 'demo-f4-worksheet'
 
 const OFFICIAL_DEMO_IDS = [DEMO_ASSIGN_ID, F5_DEMO_ASSIGN_ID] as const
 
@@ -148,6 +150,9 @@ export function visibleAssignment(
   demo: AssignmentCopy,
   f5demo?: AssignmentCopy,
 ): AssignmentCopy & { attach: AssignAttach } {
+  if (row.id === LEARNING_WORKSHEET_ASSIGN_ID) {
+    return { title: '', due: '', instructions: '', attach: row.attach }
+  }
   if (row.demo && row.id === F5_DEMO_ASSIGN_ID && f5demo) {
     return { title: f5demo.title, due: f5demo.due, instructions: f5demo.instructions, attach: row.attach }
   }

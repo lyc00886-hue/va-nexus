@@ -3,11 +3,14 @@ import { getLocale, HTML_LANG, t, useT, type MessageKey } from '../i18n'
 import {
   DEMO_ASSIGN_ID,
   F5_DEMO_ASSIGN_ID,
+  LEARNING_WORKSHEET_ASSIGN_ID,
   assignmentsForClass,
   useAssignList,
   visibleAssignment,
   type StaffAssignment,
 } from '../lib/assignList'
+import { learningWorksheetAssignment, withLearningWorksheet } from '../game/learningWorksheet'
+import { LearningWorksheetFile } from './game/LearningWorksheetFile'
 import { joinRealClassroom, submitJoinedHomework, useJoinedClassroom, type InviteRoom } from '../lib/classInvite'
 import {
   F5_INSTRUCTIONS_DOWNLOAD_NAME,
@@ -168,6 +171,16 @@ function JoinedHomework({ room }: { room: InviteRoom }) {
           roomName={room.name}
           joined
         />
+        <HomeworkCard
+          assignment={learningWorksheetAssignment(room.id)}
+          due=""
+          title=""
+          instructions=""
+          classId={room.id}
+          roomCode={room.code}
+          roomName=""
+          joined
+        />
         {published.map((assignment) => (
           <HomeworkCard
             key={assignment.id}
@@ -194,7 +207,10 @@ function JoinedHomework({ room }: { room: InviteRoom }) {
 export function HomeworkStudent() {
   const { t } = useT()
   const joined = useJoinedClassroom()
-  const rows = assignmentsForClass({ assignments: useAssignList() }, DEMO_CLASS_ID)
+  const rows = withLearningWorksheet(
+    assignmentsForClass({ assignments: useAssignList() }, DEMO_CLASS_ID),
+    DEMO_CLASS_ID,
+  )
   if (joined) return <JoinedHomework room={joined} />
   const titleId = 'hw-student-title'
   const demoCopy = {
@@ -384,24 +400,32 @@ function HomeworkCard({
           : 'rounded-3xl border border-[#0D9488]/30 bg-white p-4'
       }
     >
-      <h3 className="text-lg font-bold text-slate-900">{title}</h3>
+      {assignment.id === LEARNING_WORKSHEET_ASSIGN_ID ? <LearningWorksheetFile /> : null}
+      {title ? <h3 className="text-lg font-bold text-slate-900">{title}</h3> : null}
       {joined && roomName ? <p className="mt-1 text-sm text-slate-700">{roomName}</p> : null}
-      <p className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-700">
-        {joined ? (
-          <span
-            className={
-              handedIn
-                ? 'inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]'
-                : 'inline-flex rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
-            }
-          >
-            {handedIn ? t('inspect.practice.submitted') : t('inspect.practice.notSubmitted')}
-          </span>
-        ) : null}
-        <span>
-          {t('hw.student.due')} {due}
-        </span>
-      </p>
+      {joined || due ? (
+        <p className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-700">
+          {joined ? (
+            <span
+              className={
+                handedIn
+                  ? 'inline-flex rounded-full bg-[#0D9488] px-3 py-1 text-sm font-semibold text-[#FFF9E9]'
+                  : 'inline-flex rounded-full bg-slate-200 px-3 py-1 text-sm font-semibold text-slate-600'
+              }
+            >
+              {handedIn ? t('inspect.practice.submitted') : t('inspect.practice.notSubmitted')}
+            </span>
+          ) : null}
+          {due ? (
+            <span>
+              {t('hw.student.due')} {due}
+            </span>
+          ) : null}
+        </p>
+      ) : null}
+      {assignment.id === LEARNING_WORKSHEET_ASSIGN_ID && !joined && !handedIn ? (
+        <p className="mt-3 text-sm leading-relaxed text-slate-600">{t('hw.student.wholeFile')}</p>
+      ) : null}
       {instructions ? <p className="mt-2 text-sm leading-relaxed text-slate-700">{instructions}</p> : null}
       {joined && assignment.id === DEMO_ASSIGN_ID ? (
         <p className="mt-3">

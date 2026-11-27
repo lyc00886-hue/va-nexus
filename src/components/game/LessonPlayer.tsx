@@ -62,6 +62,8 @@ import { F4ThematicResearch } from './F4ThematicResearch'
 import { OfficialLessonParts } from './OfficialFormat'
 import { LessonShortTrial } from './LessonShortTrial'
 import { LessonWorksheet } from './LessonWorksheet'
+import { LearningWorksheetFile, LearningWorksheetForLesson } from './LearningWorksheetFile'
+import { learningWorksheetLesson } from '../../game/learningWorksheet'
 import { imageDecision, questionImageBlocked } from '../../lib/imageLicence'
 import { loadPresentation, savePresentation, useTeacherPresentation, type PresentationMode } from '../../lib/lessonPresentation'
 import { LessonCardArt } from './LessonCardArt'
@@ -455,6 +457,7 @@ export function LessonPlayer({
           <CommunityLessonIntro lessonId={lesson.id} subtitle={lesson.subtitle} showEmbed={false} />
           <CommunityGoalOutcomes lessonId={lesson.id} />
           <LessonWorksheet lessonId={lesson.id} />
+          <LearningWorksheetForLesson lessonId={lesson.id} />
         </div>
       </div>
     )
@@ -637,6 +640,11 @@ export function LessonPlayer({
           )}
         </div>
       </div>
+      {learningWorksheetLesson(lesson.id) ? (
+        <div className="mx-auto mt-4 w-full md:max-w-2xl">
+          <LearningWorksheetFile />
+        </div>
+      ) : null}
     </div>
   )
 }
