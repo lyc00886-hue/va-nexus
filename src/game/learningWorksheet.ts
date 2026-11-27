@@ -1,6 +1,6 @@
 /**
  * Official Form 4 community-art learning worksheet.
- * The file bytes stay the original PDF. Activity papers stay on their own lessons.
+ * The served file is the ordinary-lines work copy. Activity papers stay on their own lessons.
  * November homework stays `demo-november`. This id only joins the live hand-in list.
  */
 import {
@@ -12,8 +12,8 @@ import {
 export { LEARNING_WORKSHEET_ASSIGN_ID }
 
 export const LEARNING_WORKSHEET_URL = '/content/f4-community-art-learning-worksheet.pdf'
-export const LEARNING_WORKSHEET_SHA256 = '0b69763c6c7693c5e9c82a9ecfca093bbe85d0160c668fa7f9aacd6a8e43283b'
-export const LEARNING_WORKSHEET_BYTES = 775251
+export const LEARNING_WORKSHEET_SHA256 = '581e75cb217bcd665afee6ba5101dc7c299b493d4cd64db18b9183ff5ab6071a'
+export const LEARNING_WORKSHEET_BYTES = 775841
 export const LEARNING_WORKSHEET_PAGES = 8
 
 export const LEARNING_WORKSHEET_LESSONS = ['F4-U3-L3', 'F4-U3-L4'] as const
