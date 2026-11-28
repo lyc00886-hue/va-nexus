@@ -740,10 +740,13 @@ html[data-reading-tint='blue']:not(.sen-contrast) .quest-map-sticky {
   box-shadow: 0 0.4rem 0 var(--reading-tint);
 }
 
-/* Line guide. No motion of its own; reduced motion must not flash it. */
+/* Line guide sits inside the lesson line. A fixed bar on body is clipped when the
+   lesson sets overflow:hidden, which hides it on a phone. */
 .reading-ruler {
-  position: fixed;
-  z-index: 55;
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
   pointer-events: none;
   border-radius: 0.65rem;
   background: rgba(13, 148, 136, 0.18);
