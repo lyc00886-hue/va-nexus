@@ -1,11 +1,18 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Check } from 'lucide-react'
+import { useSen } from '../../context/SenContext'
+import { isCommunityCaseLesson } from '../../game/communityCases'
 import { getF4Units } from '../../game/f4Demo'
 import { getF5Units } from '../../game/f5Demo'
 import { getF6Units } from '../../game/f6Demo'
 import type { Unit } from '../../game/types'
-import { useT, type MessageKey } from '../../i18n'
+import { getLocale, useT, type MessageKey } from '../../i18n'
+import { englishAlt } from '../../lib/bilingualCatalog'
+import { beginGestureAutoRead, stopGestureAutoRead } from '../../lib/gestureAutoRead'
+import { openingCardSpeech, speechSeparator } from '../../lib/lessonStepReading'
+import { loadPresentation, useTeacherPresentation } from '../../lib/lessonPresentation'
+import { speakDuringGesture } from '../../lib/useSpeech'
 import { QUEST_CHROME, questXpMoves, type QuestFormId } from '../../lib/mapQuest'
 import { isSupabaseConfigured } from '../../lib/supabase'
 import { useQuestForm, useQuestMotionPlay } from '../../lib/useQuestForm'
@@ -65,7 +72,9 @@ function usePlatformHeaderOffset() {
 }
 
 export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Unit[]; media?: Unit[] }) {
-  const { locale, t, bilingual } = useT()
+  const { locale, t, bilingual, zhSide } = useT()
+  const { settings } = useSen()
+  const teacherPresentation = useTeacherPresentation()
   usePlatformHeaderOffset()
   const pathRef = useRef<HTMLDivElement>(null)
   const [pathWidth, setPathWidth] = useState(360)
@@ -111,6 +120,39 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
     setLessonId(null)
   }
 
+  function openQuestLesson(id: string | null) {
+    if (!id) {
+      stopGestureAutoRead()
+      setLessonId(null)
+      return
+    }
+    try {
+      const lesson = openYear?.nodes.find((node) => node.id === id)
+      if (lesson) {
+        const readingEasy = settings.dyslexia || (teacherPresentation ?? loadPresentation()) === 'easy'
+        const opening = openingCardSpeech({
+          lessonId: lesson.id,
+          cards: lesson.cards,
+          questionCount: lesson.questions.length,
+          media: isCommunityCaseLesson(lesson.id),
+          readingEasy,
+          bilingual,
+          sep: speechSeparator(getLocale()),
+          alt: (text) => englishAlt(zhSide, text),
+        })
+        if (opening) {
+          beginGestureAutoRead(
+            { auto: settings.readAloud, key: opening.key, text: opening.text },
+            speakDuringGesture,
+          )
+        }
+      }
+    } catch {
+      /* a speech failure still opens the card */
+    }
+    setLessonId(id)
+  }
+
   return (
     <>
     <section
@@ -147,7 +189,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
               setOpenUnitId(null)
               setLessonId(null)
             }}
-            onLesson={setLessonId}
+            onLesson={openQuestLesson}
           />
         ) : (
           <div

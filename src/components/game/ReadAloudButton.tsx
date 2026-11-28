@@ -1,7 +1,16 @@
 import { Square, Volume2 } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { useSenSupport } from '../../context/SenSupportContext'
-import { planAutoRead } from '../../lib/lessonStepReading'
+import {
+  gestureAttempted,
+  gestureSessionOwns,
+  readGestureAutoRead,
+  releaseGestureKey,
+  retainGestureKey,
+  stopGestureAutoRead,
+  subscribeGestureAutoRead,
+} from '../../lib/gestureAutoRead'
+import { planAutoRead, readAloudFace } from '../../lib/lessonStepReading'
 import { useSpeech } from '../../lib/useSpeech'
 import { t } from '../../i18n'
 
@@ -25,6 +34,10 @@ export function ReadAloudButton({
 }) {
   const tts = useSpeech()
   const { reportSignal } = useSenSupport()
+  const gesture = useSyncExternalStore(subscribeGestureAutoRead, readGestureAutoRead, () => null)
+  const gestureLive = Boolean(auto && gestureSessionOwns(autoKey) && gesture)
+  const face = readAloudFace({ speaking: tts.speaking, gestureLive })
+  const label = face === 'stop' ? t('tts.stop') : t('tts.read')
   const armed = useRef<string | undefined>(undefined)
   const stopped = useRef<string | undefined>(undefined)
   const tries = useRef(0)
@@ -41,6 +54,17 @@ export function ReadAloudButton({
   }, [autoKey, voiceCount])
 
   useEffect(() => {
+    if (!autoKey) return
+    retainGestureKey(autoKey)
+    return () => releaseGestureKey(autoKey)
+  }, [autoKey])
+
+  useEffect(() => {
+    // The open click already spoke. A second speak here cancels it.
+    if (autoKey && (gestureSessionOwns(autoKey) || gestureAttempted(autoKey))) {
+      armed.current = autoKey
+      return
+    }
     const plan = planAutoRead({
       auto,
       autoKey,
@@ -77,12 +101,12 @@ export function ReadAloudButton({
   }, [auto, autoKey, text, supported, voicesReady, voiceCount, retry])
 
   if (!supported && !tucked && !pill) return null
-  const tuckedLabel = `${t('settings.reading')} · ${tts.speaking ? t('tts.stop') : t('tts.read')}`
+  const tuckedLabel = `${t('settings.reading')} · ${label}`
   const cls = tucked
     ? 'inline-flex shrink-0 items-center text-sm font-bold text-[#0D9488]'
     : pill
       ? `inline-flex shrink-0 items-center rounded-full border border-[#0D9488] px-3 py-1.5 text-base font-semibold ${
-          tts.speaking ? 'bg-[#0D9488] text-white' : 'bg-white text-[#0D9488]'
+          face === 'stop' ? 'bg-[#0D9488] text-white' : 'bg-white text-[#0D9488]'
         }`
     : small
       ? 'inline-flex shrink-0 items-center gap-1 rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
@@ -94,10 +118,12 @@ export function ReadAloudButton({
         data-reading-settings=""
         data-auto-read={auto ? 'on' : 'off'}
         data-read-key={autoKey ?? ''}
+        data-read-label={face}
         onClick={() => {
           if (!supported) return
-          if (tts.speaking) {
+          if (tts.speaking || gestureLive) {
             if (autoKey) stopped.current = autoKey
+            stopGestureAutoRead(autoKey)
             tts.stop()
             return
           }
@@ -105,17 +131,18 @@ export function ReadAloudButton({
           speak(text)
         }}
         className={cls}
-        aria-label={pill ? (tts.speaking ? t('tts.stop') : t('tts.read')) : tuckedLabel}
+        aria-label={pill ? label : tuckedLabel}
       >
-        {pill ? (tts.speaking ? t('tts.stop') : t('tts.read')) : tuckedLabel}
+        {pill ? label : tuckedLabel}
       </button>
     )
   }
-  return tts.speaking ? (
+  return face === 'stop' ? (
     <button
       type="button"
       onClick={() => {
         if (autoKey) stopped.current = autoKey
+        stopGestureAutoRead(autoKey)
         tts.stop()
       }}
       className={cls}
