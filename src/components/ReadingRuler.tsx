@@ -30,8 +30,10 @@ const LINE_SELECTOR = [
   '[data-lesson-scroll] h3',
 ].join(', ')
 
-function bandAt(clientX: number, clientY: number, target: EventTarget | null): Band | null {
-  const node = target instanceof Element ? target : target instanceof Node ? target.parentElement : null
+function bandAt(clientX: number, clientY: number): Band | null {
+  if (!Number.isFinite(clientX) || !Number.isFinite(clientY)) return null
+  const hit = document.elementFromPoint(clientX, clientY)
+  const node = hit instanceof Element ? hit : null
   const zone = node?.closest(LINE_SELECTOR)
   if (!(zone instanceof HTMLElement)) return null
   const rect = zone.getBoundingClientRect()
@@ -91,25 +93,32 @@ export function ReadingRuler() {
       frame = window.requestAnimationFrame(paint)
     }
 
-    const onPointer = (event: PointerEvent) => schedule(bandAt(event.clientX, event.clientY, event.target))
+    const onPoint = (event: MouseEvent) => schedule(bandAt(event.clientX, event.clientY))
     const onTouch = (event: TouchEvent) => {
       const touch = event.touches[0]
       if (!touch) return
-      schedule(bandAt(touch.clientX, touch.clientY, document.elementFromPoint(touch.clientX, touch.clientY)))
+      schedule(bandAt(touch.clientX, touch.clientY))
     }
     const hide = () => schedule(null)
+    const listen = { passive: true, capture: true } as const
 
-    document.addEventListener('pointermove', onPointer, { passive: true, capture: true })
-    document.addEventListener('pointerdown', onPointer, { passive: true, capture: true })
-    document.addEventListener('touchstart', onTouch, { passive: true, capture: true })
-    document.addEventListener('touchmove', onTouch, { passive: true, capture: true })
+    // Device mode on a phone turns a pointer drag into mousemove only.
+    // pointermove.target stays on the first line, so the line comes from the coordinates.
+    document.addEventListener('pointermove', onPoint, listen)
+    document.addEventListener('mousemove', onPoint, listen)
+    document.addEventListener('pointerdown', onPoint, listen)
+    document.addEventListener('mousedown', onPoint, listen)
+    document.addEventListener('touchstart', onTouch, listen)
+    document.addEventListener('touchmove', onTouch, listen)
     window.addEventListener('blur', hide)
     return () => {
       window.cancelAnimationFrame(frame)
-      document.removeEventListener('pointermove', onPointer, { capture: true })
-      document.removeEventListener('pointerdown', onPointer, { capture: true })
-      document.removeEventListener('touchstart', onTouch, { capture: true })
-      document.removeEventListener('touchmove', onTouch, { capture: true })
+      document.removeEventListener('pointermove', onPoint, listen)
+      document.removeEventListener('mousemove', onPoint, listen)
+      document.removeEventListener('pointerdown', onPoint, listen)
+      document.removeEventListener('mousedown', onPoint, listen)
+      document.removeEventListener('touchstart', onTouch, listen)
+      document.removeEventListener('touchmove', onTouch, listen)
       window.removeEventListener('blur', hide)
       releaseHost()
       bar.remove()
