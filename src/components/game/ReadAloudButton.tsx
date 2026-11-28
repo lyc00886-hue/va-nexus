@@ -1,6 +1,7 @@
 import { Square, Volume2 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSenSupport } from '../../context/SenSupportContext'
+import { planAutoRead } from '../../lib/lessonStepReading'
 import { useSpeech } from '../../lib/useSpeech'
 import { t } from '../../i18n'
 
@@ -24,17 +25,48 @@ export function ReadAloudButton({
 }) {
   const tts = useSpeech()
   const { reportSignal } = useSenSupport()
-  const lastAuto = useRef<string | undefined>(undefined)
+  const armed = useRef<string | undefined>(undefined)
+  const stopped = useRef<string | undefined>(undefined)
+  const tries = useRef(0)
+  const [retry, setRetry] = useState(0)
   const { speak, supported } = tts
+  const speakRef = useRef(speak)
 
   useEffect(() => {
-    if (!auto || !supported || !autoKey || lastAuto.current === autoKey) return
-    const id = window.setTimeout(() => {
-      lastAuto.current = autoKey
-      speak(text)
-    }, 250)
-    return () => window.clearTimeout(id)
-  }, [auto, autoKey, text, speak, supported])
+    speakRef.current = speak
+  })
+
+  useEffect(() => {
+    tries.current = 0
+  }, [autoKey])
+
+  useEffect(() => {
+    const plan = planAutoRead({
+      auto,
+      autoKey,
+      text,
+      armedKey: armed.current,
+      stoppedKey: stopped.current,
+    })
+    if (!plan.start || !supported || !plan.arm) return
+    const arm = plan.arm
+    if (stopped.current === arm) return
+    // Voice list updates must not cancel this start. speak() itself waits only after a real cancel.
+    speakRef.current(text, {
+      onstart: () => {
+        armed.current = arm
+      },
+      onerror: () => {
+        if (stopped.current === arm || armed.current === arm) return
+        if (tries.current >= 1) {
+          armed.current = arm
+          return
+        }
+        tries.current += 1
+        setRetry((n) => n + 1)
+      },
+    })
+  }, [auto, autoKey, text, supported, retry])
 
   if (!supported && !tucked && !pill) return null
   const tuckedLabel = `${t('settings.reading')} · ${tts.speaking ? t('tts.stop') : t('tts.read')}`
@@ -52,9 +84,12 @@ export function ReadAloudButton({
       <button
         type="button"
         data-reading-settings=""
+        data-auto-read={auto ? 'on' : 'off'}
+        data-read-key={autoKey ?? ''}
         onClick={() => {
           if (!supported) return
           if (tts.speaking) {
+            if (autoKey) stopped.current = autoKey
             tts.stop()
             return
           }
@@ -69,7 +104,15 @@ export function ReadAloudButton({
     )
   }
   return tts.speaking ? (
-    <button type="button" onClick={tts.stop} className={cls} aria-label={t('tts.stopAria')}>
+    <button
+      type="button"
+      onClick={() => {
+        if (autoKey) stopped.current = autoKey
+        tts.stop()
+      }}
+      className={cls}
+      aria-label={t('tts.stopAria')}
+    >
       <Square className="h-3.5 w-3.5" aria-hidden /> {t('tts.stop')}
     </button>
   ) : (

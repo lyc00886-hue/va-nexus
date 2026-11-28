@@ -45,14 +45,14 @@ export function ThinPace({ clear = false }: { clear?: boolean }) {
 
 function PromptText({ text, easy }: { text: string; easy: boolean }) {
   if (!easy) return (
-    <p className="mt-3 text-xl font-bold leading-relaxed text-slate-900">
+    <p data-lesson-body className="mt-3 text-xl font-bold leading-relaxed text-slate-900">
       <BiSpan text={text} />
     </p>
   )
   return (
     <div className="mt-3 space-y-2">
       {easyPromptLines(text).map((line, index) => (
-        <p key={`${index}-${line}`} className="text-2xl font-bold leading-loose text-slate-900">
+        <p data-lesson-body key={`${index}-${line}`} className="text-2xl font-bold leading-loose text-slate-900">
           <BiSpan text={line} />
         </p>
       ))}
@@ -384,7 +384,7 @@ function DualReadFrame({ image, credit, fill = false }: { image?: string; credit
           onError={() => setFailed(true)}
         />
       </div>
-      {credit ? <figcaption className="mt-1 text-[11px] leading-snug text-slate-500">{credit}</figcaption> : null}
+      {credit ? <figcaption className="mt-1 text-[0.6875rem] leading-snug text-slate-500">{credit}</figcaption> : null}
     </figure>
   )
 }

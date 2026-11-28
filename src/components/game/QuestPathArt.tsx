@@ -120,7 +120,7 @@ function BandLabel({ x, y, text, anchor }: { x: number; y: number; text: string;
   const width = Math.min(168, Math.max(46, text.length * (wide ? 6.4 : 12) + 16))
   const left = anchor === 'end' ? x - width : x
   return (
-    <g>
+    <g className="quest-band-label">
       <rect x={left} y={y} width={width} height="20" rx="10" fill={CREAM} stroke="#9FD4CE" strokeWidth="1.2" />
       <text
         x={left + width / 2}
