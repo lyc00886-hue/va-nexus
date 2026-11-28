@@ -3,6 +3,7 @@ import { AbilityChart } from './components/AbilityChart'
 import { ArtistCompare } from './components/ArtistCompare'
 import { CommitmentFooter } from './components/CommitmentBadges'
 import { FocusTunnel } from './components/FocusTunnel'
+import { ReadingRuler } from './components/ReadingRuler'
 import { Header } from './components/Header'
 import { SbaQuest } from './components/SbaQuest'
 import { PracticeGuestDraftPrompt } from './components/PracticeGuestDraftPrompt'
@@ -139,6 +140,7 @@ export default function App() {
       </div>
       <MobileNav active={activeTab} onChange={setTab} extraTabs={extraTabs} />
       <FocusTunnel />
+      <ReadingRuler />
       <NudgeToast />
       <CheckInModal />
       <PrivacyModal />

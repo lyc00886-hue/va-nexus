@@ -1,4 +1,4 @@
-export type SenMode = 'standard' | 'spld' | 'adhd'
+export type SenMode = 'standard' | 'spld' | 'adhd' | 'lowSensory'
 
 export type Artist = {
   id: string

@@ -498,7 +498,7 @@ export function LessonPlayer({
         <div className="shrink-0">
           <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
             <p className="text-xs font-semibold text-slate-600">{t('lp.progress')}</p>
-            <p className="text-center text-sm font-bold text-[#0D9488]">
+            <p data-focus-step-label="" className="text-center text-sm font-bold text-[#0D9488]">
               {t('lp.step', { x: stepIdx + 1, y: Math.max(steps.length, 1) })}
             </p>
             <div className="justify-self-end">

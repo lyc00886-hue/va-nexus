@@ -2,47 +2,30 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
   type ReactNode,
 } from 'react'
+import {
+  applyReadingPreset,
+  matchReadingPreset,
+  paintedReadingTint,
+  READING_DEFAULTS,
+  sanitizeReadingSettings,
+  type FontSizeLevel,
+  type ReadingPresetId,
+  type ReadingSettings,
+} from '../lib/readingSettings'
 import type { SenMode } from '../types'
 
-export type FontSizeLevel = 'md' | 'lg' | 'xl'
-
-export type SenSettings = {
-  fontSize: FontSizeLevel
-  highContrast: boolean
-  dyslexia: boolean
-  reduceMotion: boolean
-  /** Opt-in celebrate sound and motion. Default off. Separate from reduceMotion. */
-  soundMotion: boolean
-  focusTunnel: boolean
-  /** Auto read-aloud lesson cards (TTS) */
-  readAloud: boolean
-}
+export type { FontSizeLevel }
+export type SenSettings = ReadingSettings
 
 export const FONT_SCALES: Record<FontSizeLevel, number> = { md: 1, lg: 1.15, xl: 1.3 }
 
-const DEFAULTS: SenSettings = {
-  fontSize: 'md',
-  highContrast: false,
-  dyslexia: false,
-  reduceMotion: false,
-  soundMotion: false,
-  focusTunnel: false,
-  readAloud: false,
-}
-
-export const PRESETS: Record<SenMode, SenSettings> = {
-  standard: DEFAULTS,
-  spld: { ...DEFAULTS, fontSize: 'lg', dyslexia: true },
-  adhd: { ...DEFAULTS, reduceMotion: true, focusTunnel: true },
-}
-
 type SenContextValue = {
-  /** Matching preset, or 'custom' when settings were tweaked individually */
+  /** Matching preset, or 'custom' when the bundle was tweaked */
   mode: SenMode | 'custom'
   setMode: (m: SenMode) => void
   settings: SenSettings
@@ -63,7 +46,7 @@ const STORAGE_KEY = 'va-nexus:sen-settings'
 function loadSettings(): SenSettings {
   try {
     const raw = localStorage.getItem(STORAGE_KEY)
-    if (raw) return { ...DEFAULTS, ...(JSON.parse(raw) as Partial<SenSettings>) }
+    if (raw) return sanitizeReadingSettings(JSON.parse(raw) as unknown)
   } catch {
     /* ignore */
   }
@@ -72,11 +55,11 @@ function loadSettings(): SenSettings {
     window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
   const prefersContrast =
     typeof window !== 'undefined' && window.matchMedia?.('(prefers-contrast: more)').matches
-  return { ...DEFAULTS, reduceMotion: Boolean(prefersReduced), highContrast: Boolean(prefersContrast) }
-}
-
-function samePreset(a: SenSettings, b: SenSettings) {
-  return (Object.keys(a) as (keyof SenSettings)[]).every((k) => a[k] === b[k])
+  return sanitizeReadingSettings({
+    ...READING_DEFAULTS,
+    reduceMotion: Boolean(prefersReduced),
+    highContrast: Boolean(prefersContrast),
+  })
 }
 
 const SenContext = createContext<SenContextValue | null>(null)
@@ -84,36 +67,45 @@ const SenContext = createContext<SenContextValue | null>(null)
 export function SenProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<SenSettings>(loadSettings)
 
-  // persist + apply to <html> so every tab benefits
-  useEffect(() => {
+  // persist + apply to <html> before paint, so a preset's reduced-motion flag is already on
+  useLayoutEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
     } catch {
       /* ignore */
     }
     const root = document.documentElement
+    const paint = paintedReadingTint(settings)
     root.style.setProperty('--sen-font-scale', String(FONT_SCALES[settings.fontSize]))
     root.dataset.senFont = settings.fontSize
+    root.dataset.readingTint = settings.tint
+    root.dataset.readingPaint = paint ?? 'none'
+    root.dataset.readingRuler = settings.ruler ? 'on' : 'off'
+    root.dataset.focusMinutes = String(settings.focusMinutes)
+    root.dataset.hideTimer = settings.hideTimer ? 'on' : 'off'
     root.classList.toggle('sen-contrast', settings.highContrast)
     root.classList.toggle('sen-dyslexia', settings.dyslexia)
     root.classList.toggle('sen-reduce-motion', settings.reduceMotion)
+    root.dataset.reduceMotion = settings.reduceMotion ? 'on' : 'off'
     root.dataset.soundMotion = settings.soundMotion ? 'on' : 'off'
     root.classList.toggle('sen-focus', settings.focusTunnel)
     root.classList.toggle('sen-read-aloud', settings.readAloud)
   }, [settings])
 
   const update = useCallback(<K extends keyof SenSettings>(key: K, value: SenSettings[K]) => {
-    setSettings((s) => ({ ...s, [key]: value }))
+    setSettings((s) => sanitizeReadingSettings({ ...s, [key]: value }))
   }, [])
-  const setMode = useCallback((m: SenMode) => setSettings(PRESETS[m]), [])
-  const applyMany = useCallback((patch: Partial<SenSettings>) => setSettings((s) => ({ ...s, ...patch })), [])
-  const reset = useCallback(() => setSettings(DEFAULTS), [])
+  const setMode = useCallback((m: ReadingPresetId) => {
+    setSettings((current) => applyReadingPreset(current, m))
+  }, [])
+  const applyMany = useCallback((patch: Partial<SenSettings>) => {
+    setSettings((s) => sanitizeReadingSettings({ ...s, ...patch }))
+  }, [])
+  const reset = useCallback(() => setSettings({ ...READING_DEFAULTS }), [])
 
   const value = useMemo<SenContextValue>(() => {
-    const mode =
-      (Object.keys(PRESETS) as SenMode[]).find((m) => samePreset(PRESETS[m], settings)) ?? 'custom'
     return {
-      mode,
+      mode: matchReadingPreset(settings),
       setMode,
       settings,
       update,
@@ -121,7 +113,7 @@ export function SenProvider({ children }: { children: ReactNode }) {
       fontScale: FONT_SCALES[settings.fontSize],
       cardPadding: settings.dyslexia || settings.fontSize !== 'md' ? 'p-5' : 'p-4',
       focusTunnel: settings.focusTunnel,
-      supportsOn: !samePreset(DEFAULTS, settings),
+      supportsOn: matchReadingPreset(settings) !== 'standard',
       easyRead: settings.dyslexia,
       applyMany,
     }

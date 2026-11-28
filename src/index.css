@@ -425,6 +425,9 @@ html[data-soft-screen='focus'] .map-one-chrome {
 .sen-focus [data-lesson-wizard] [data-lesson-step]:not([data-focus-step='current']) {
   display: none;
 }
+.sen-focus [data-lesson-wizard] [data-focus-step-label] {
+  display: block;
+}
 .sen-focus [data-lesson-wizard] [data-lesson-extra] {
   display: none;
 }
@@ -701,4 +704,64 @@ html[data-sen-font='xl'] .quest-band-label {
   [data-learning-worksheet] {
     display: none !important;
   }
+}
+
+/* Decorative reading tints. Cream #FFF9E9 is already the canvas, so it is not painted again.
+   Pale green #EAF6EF and light blue #EAF4F8 replace that canvas.
+   High contrast does not stack with these tints. */
+html[data-reading-tint='green']:not(.sen-contrast) {
+  --reading-tint: #EAF6EF;
+}
+html[data-reading-tint='blue']:not(.sen-contrast) {
+  --reading-tint: #EAF4F8;
+}
+html[data-reading-tint='green']:not(.sen-contrast) body,
+html[data-reading-tint='blue']:not(.sen-contrast) body,
+html[data-reading-tint='green']:not(.sen-contrast) #root > div,
+html[data-reading-tint='blue']:not(.sen-contrast) #root > div,
+html[data-reading-tint='green']:not(.sen-contrast) [class*='bg-[#FFF9E9]'],
+html[data-reading-tint='blue']:not(.sen-contrast) [class*='bg-[#FFF9E9]'],
+html[data-reading-tint='green']:not(.sen-contrast) [data-lesson-card],
+html[data-reading-tint='blue']:not(.sen-contrast) [data-lesson-card],
+html[data-reading-tint='green']:not(.sen-contrast) [data-lesson-wizard] [data-lesson-step],
+html[data-reading-tint='blue']:not(.sen-contrast) [data-lesson-wizard] [data-lesson-step],
+html[data-reading-tint='green']:not(.sen-contrast) .quest-map-sticky,
+html[data-reading-tint='blue']:not(.sen-contrast) .quest-map-sticky,
+html[data-reading-tint='green']:not(.sen-contrast) .platform-header,
+html[data-reading-tint='blue']:not(.sen-contrast) .platform-header,
+html[data-reading-tint='green']:not(.sen-contrast)[data-soft-nav='atlas'] main,
+html[data-reading-tint='blue']:not(.sen-contrast)[data-soft-nav='atlas'] main,
+html[data-reading-tint='green']:not(.sen-contrast) #root:has([data-quest-map]) nav.map-one-chrome,
+html[data-reading-tint='blue']:not(.sen-contrast) #root:has([data-quest-map]) nav.map-one-chrome {
+  background-color: var(--reading-tint);
+}
+html[data-reading-tint='green']:not(.sen-contrast) .quest-map-sticky,
+html[data-reading-tint='blue']:not(.sen-contrast) .quest-map-sticky {
+  box-shadow: 0 0.4rem 0 var(--reading-tint);
+}
+
+/* One-line guide. Fixed on the root in viewport coordinates.
+   No block wash and no fade, including when reduced motion is on. */
+.reading-ruler {
+  position: fixed;
+  z-index: 80;
+  inset: auto;
+  margin: 0;
+  border: 0;
+  padding: 0;
+  overflow: visible;
+  pointer-events: none;
+  border-radius: 0.45rem;
+  background: rgba(13, 148, 136, 0.32);
+  box-shadow: inset 0 0 0 1px rgba(13, 148, 136, 0.55);
+  opacity: 1;
+  transition: none !important;
+  animation: none !important;
+}
+[data-reading-line] {
+  background: transparent;
+}
+.sen-reduce-motion .reading-ruler {
+  transition: none !important;
+  animation: none !important;
 }

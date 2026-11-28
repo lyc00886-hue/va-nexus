@@ -29,7 +29,7 @@ export function ReadAloudButton({
   const stopped = useRef<string | undefined>(undefined)
   const tries = useRef(0)
   const [retry, setRetry] = useState(0)
-  const { speak, supported } = tts
+  const { speak, supported, voicesReady, voiceCount } = tts
   const speakRef = useRef(speak)
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export function ReadAloudButton({
 
   useEffect(() => {
     tries.current = 0
-  }, [autoKey])
+  }, [autoKey, voiceCount])
 
   useEffect(() => {
     const plan = planAutoRead({
@@ -48,25 +48,33 @@ export function ReadAloudButton({
       armedKey: armed.current,
       stoppedKey: stopped.current,
     })
-    if (!plan.start || !supported || !plan.arm) return
+    // Wait for the voice list. A start that never reaches onstart stays unarmed and can try again.
+    if (!plan.start || !supported || !voicesReady || !plan.arm) return
     const arm = plan.arm
     if (stopped.current === arm) return
-    // Voice list updates must not cancel this start. speak() itself waits only after a real cancel.
+    let alive = true
     speakRef.current(text, {
       onstart: () => {
         armed.current = arm
       },
       onerror: () => {
-        if (stopped.current === arm || armed.current === arm) return
-        if (tries.current >= 1) {
-          armed.current = arm
-          return
-        }
+        if (!alive || stopped.current === arm || armed.current === arm) return
+        if (tries.current >= 8) return
         tries.current += 1
-        setRetry((n) => n + 1)
+        window.setTimeout(() => setRetry((n) => n + 1), 80)
       },
     })
-  }, [auto, autoKey, text, supported, retry])
+    const watchdog = window.setTimeout(() => {
+      if (!alive || armed.current === arm || stopped.current === arm) return
+      if (tries.current >= 8) return
+      tries.current += 1
+      setRetry((n) => n + 1)
+    }, 450)
+    return () => {
+      alive = false
+      window.clearTimeout(watchdog)
+    }
+  }, [auto, autoKey, text, supported, voicesReady, voiceCount, retry])
 
   if (!supported && !tucked && !pill) return null
   const tuckedLabel = `${t('settings.reading')} · ${tts.speaking ? t('tts.stop') : t('tts.read')}`
