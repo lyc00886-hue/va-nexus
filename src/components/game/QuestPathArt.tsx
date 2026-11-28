@@ -137,33 +137,35 @@ function BandLabel({ x, y, text, anchor }: { x: number; y: number; text: string;
   )
 }
 
-function Garden({ label, motion }: { label: string; motion: boolean }) {
+function Garden({ label, motion, width }: { label: string; motion: boolean; width: number }) {
+  const sx = width / 360
+  const X = (x: number) => x * sx
   return (
     <g data-quest-band="garden">
-      <rect x="0" y="0" width="360" height="210" fill="#E7F3EC" />
-      <ellipse cx="70" cy="168" rx="120" ry="36" fill="#D5E8DC" />
-      <ellipse cx="280" cy="176" rx="130" ry="34" fill="#E7F0E4" />
-      <Tree x={36} y={46} />
-      <Tree x={68} y={58} scale={0.78} />
-      <Tree x={104} y={42} scale={0.7} />
-      <Tree x={250} y={40} scale={0.82} />
-      <Tree x={286} y={54} />
-      <Tree x={324} y={44} scale={0.76} />
-      <Bush x={28} y={168} scale={0.9} />
-      <Bush x={332} y={150} scale={0.8} />
-      <Screen x={292} y={78} />
-      <Easel x={300} y={132} scale={0.85} />
-      <Pebble x={168} y={96} />
-      <Pebble x={188} y={108} />
-      <Pebble x={206} y={92} />
-      <BandLabel x={348} y={14} text={label} anchor="end" />
+      <rect x="0" y="0" width={width} height="210" fill="#E7F3EC" />
+      <ellipse cx={X(70)} cy="168" rx={120 * sx} ry="36" fill="#D5E8DC" />
+      <ellipse cx={X(280)} cy="176" rx={130 * sx} ry="34" fill="#E7F0E4" />
+      <Tree x={X(36)} y={46} />
+      <Tree x={X(68)} y={58} scale={0.78} />
+      <Tree x={X(104)} y={42} scale={0.7} />
+      <Tree x={X(250)} y={40} scale={0.82} />
+      <Tree x={X(286)} y={54} />
+      <Tree x={X(324)} y={44} scale={0.76} />
+      <Bush x={X(28)} y={168} scale={0.9} />
+      <Bush x={X(332)} y={150} scale={0.8} />
+      <Screen x={X(292)} y={78} />
+      <Easel x={X(300)} y={132} scale={0.85} />
+      <Pebble x={X(168)} y={96} />
+      <Pebble x={X(188)} y={108} />
+      <Pebble x={X(206)} y={92} />
+      <BandLabel x={width - 12} y={14} text={label} anchor="end" />
       {motion ? (
         <g className="quest-env-hint">
-          <path d="M78 18 l5 9 l-10 2 z" fill="#5EBEAE" />
-          <path d="M168 14 l4 8 l-8 1.5 z" fill="#8FD4C8" />
-          <path d="M248 20 l5 9 l-10 2 z" fill="#5EBEAE" />
-          <circle cx="214" cy="48" r="3" fill="#7DCFC0" />
-          <circle cx="332" cy="78" r="3.2" fill="#9FD4CE" />
+          <path d={`M${X(78)} 18 l5 9 l-10 2 z`} fill="#5EBEAE" />
+          <path d={`M${X(168)} 14 l4 8 l-8 1.5 z`} fill="#8FD4C8" />
+          <path d={`M${X(248)} 20 l5 9 l-10 2 z`} fill="#5EBEAE" />
+          <circle cx={X(214)} cy="48" r="3" fill="#7DCFC0" />
+          <circle cx={X(332)} cy="78" r="3.2" fill="#9FD4CE" />
         </g>
       ) : null}
     </g>
@@ -269,6 +271,8 @@ export function QuestPathArt({
   const { width, height, points } = layout
   const d = sandyPath(points)
   const garden = bands[0]?.id === 'garden' ? bands[0] : undefined
+  const wide = width > 360
+  const road = wide ? 34 * Math.max(1, Math.min(1.85, Math.sqrt(width / 360))) : 34
   return (
     <svg
       data-quest-art="path"
@@ -277,8 +281,8 @@ export function QuestPathArt({
       className="block h-auto w-full"
       aria-hidden
     >
-      <rect width={width} height={height} fill={CREAM} />
-      {garden ? <Garden label={garden.label} motion={motion} /> : null}
+      <rect width={width} height={height} fill={wide ? '#E7F3EC' : CREAM} />
+      {garden ? <Garden label={garden.label} motion={motion} width={width} /> : null}
       {points.map((point, index) => {
         const band = bands[index]
         if (!band || band.id === 'garden') return null
@@ -287,7 +291,7 @@ export function QuestPathArt({
             key={`ground-${point.y}`}
             cx={point.x + (index % 2 === 0 ? 70 : -70)}
             cy={point.y + 36}
-            rx="120"
+            rx={wide ? Math.max(120, width * 0.28) : 120}
             ry="42"
             fill={index % 2 === 0 ? '#E7F0E4' : '#F3E6C4'}
           />
@@ -295,18 +299,18 @@ export function QuestPathArt({
       })}
       {d ? (
         <>
-          <path d={d} fill="none" stroke={SAND} strokeWidth="34" strokeLinecap="round" strokeLinejoin="round" />
-          <path d={d} fill="none" stroke={SAND_LIGHT} strokeWidth="24" strokeLinecap="round" strokeLinejoin="round" />
-          <path d={d} fill="none" stroke={CREAM} strokeWidth="2.2" strokeDasharray="7 11" strokeLinecap="round" />
+          <path d={d} fill="none" stroke={SAND} strokeWidth={road} strokeLinecap="round" strokeLinejoin="round" />
+          <path d={d} fill="none" stroke={SAND_LIGHT} strokeWidth={road * (24 / 34)} strokeLinecap="round" strokeLinejoin="round" />
+          <path d={d} fill="none" stroke={CREAM} strokeWidth={Math.max(2.2, road * (2.2 / 34))} strokeDasharray="7 11" strokeLinecap="round" />
         </>
       ) : null}
       {points.map((point, index) => {
         const band = bands[index]
         if (!band || band.id === 'garden') return null
-        return <Scene key={band.id + point.y} band={band} box={questSceneBox(index, point)} />
+        return <Scene key={band.id + point.y} band={band} box={questSceneBox(index, point, width)} />
       })}
       {points.map((point, index) => {
-        const outer = index % 2 === 0 ? 16 : 344
+        const outer = index % 2 === 0 ? 16 : width - 16
         return (
           <g key={`edge-${point.y}`}>
             <Bush x={outer} y={point.y + 20} scale={0.58} />

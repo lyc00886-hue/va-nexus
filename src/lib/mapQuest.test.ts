@@ -26,6 +26,7 @@ import {
   questLabelBox,
   questNodeFramed,
   questNodeProgress,
+  questLabelSpan,
   questPathLayout,
   questPathSpacing,
   questSceneBox,
@@ -251,7 +252,32 @@ describe('quest map structure', () => {
       }
     }
     const questSource = read('src/components/game/MapQuest.tsx')
-    assert.match(questSource, /QUEST_LABEL_WIDTH_RATIO/)
+    assert.match(questSource, /questLabelSpan/)
+    assert.match(questSource, /className="relative mt-2 w-full"/)
+    assert.equal(questSource.includes('max-w-[24rem]'), false)
+    const phone = questPathLayout(7)
+    assert.equal(phone.width, 360)
+    assert.equal(phone.points[0].x, 112)
+    assert.equal(phone.points[1].x, 248)
+    const frame = questPathLayout(7, 236, 124, 960)
+    assert.equal(frame.width, 960)
+    assert.ok(frame.points[0].x < 180)
+    assert.ok(frame.points[1].x > 780)
+    assert.ok(frame.points[1].x - frame.points[0].x > frame.width * 0.7)
+    assert.ok(Math.abs(questLabelSpan(360) - 0.56) < 0.001)
+    assert.ok(questLabelSpan(960) < 0.25)
+    for (let i = 0; i < frame.points.length; i++) {
+      const label = questLabelBox(frame.points[i], frame.width)
+      assert.ok(label.x >= 0)
+      assert.ok(label.x + label.w <= frame.width + 0.5)
+      for (let j = 0; j < frame.points.length; j++) {
+        if (questBand(j) === 'garden') continue
+        const scene = questSceneBox(j, frame.points[j], frame.width)
+        assert.equal(overlaps(label, scene), false, `wide label ${i} scene ${j}`)
+        assert.ok(scene.x >= 0)
+        assert.ok(scene.x + scene.w <= frame.width + 0.5)
+      }
+    }
     assert.match(questSource, /QuestPathArt/)
     assert.match(questSource, /unit\.coverImage/)
     assert.match(questSource, /data-unit-image/)
