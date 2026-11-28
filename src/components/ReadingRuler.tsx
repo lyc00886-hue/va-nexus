@@ -9,6 +9,8 @@ const LINE_SELECTOR = [
   '[data-lesson-scroll] h3',
 ].join(', ')
 
+const LINE_MARK = 'data-reading-line'
+
 type LineBox = { left: number; top: number; width: number; height: number }
 
 function caretHit(x: number, y: number): Node | null {
@@ -53,6 +55,10 @@ function lineRects(zone: HTMLElement): DOMRect[] {
 /** Viewport line box under the pointer. One wrapped line, not the whole paragraph. */
 function lineBoxAt(x: number, y: number): LineBox | null {
   if (!Number.isFinite(x) || !Number.isFinite(y)) return null
+  const marked = document
+    .elementsFromPoint(x, y)
+    .find((el) => el instanceof HTMLElement && el.hasAttribute(LINE_MARK))
+  if (marked instanceof HTMLElement) return boxFromMark(marked)
   const zone = zoneOf(caretHit(x, y)) ?? zoneOf(document.elementFromPoint(x, y))
   if (!zone) return null
   const host = zone.getBoundingClientRect()
@@ -74,6 +80,18 @@ function lineBoxAt(x: number, y: number): LineBox | null {
   return { left: host.left, top, width: host.width, height }
 }
 
+function boxFromMark(el: HTMLElement): LineBox | null {
+  const zone = el.closest(LINE_SELECTOR)
+  const host = zone instanceof HTMLElement ? zone.getBoundingClientRect() : el.getBoundingClientRect()
+  const rect = el.getBoundingClientRect()
+  if (rect.height < 1 || host.width < 1) return null
+  const top = Math.max(rect.top, host.top)
+  const bottom = Math.min(rect.bottom, host.bottom)
+  const height = bottom - top
+  if (height < 1) return null
+  return { left: host.left, top, width: host.width, height }
+}
+
 function pointOf(event: Event): { x: number; y: number } | null {
   if (window.TouchEvent && event instanceof TouchEvent) {
     const touch = event.touches[0] ?? event.changedTouches[0]
@@ -86,7 +104,68 @@ function pointOf(event: Event): { x: number; y: number } | null {
   return null
 }
 
-/** Soft one-line guide. Follows pointer and finger from the event coordinates. No fade. */
+function unwrapLines(root: ParentNode) {
+  const parents = new Set<Node>()
+  for (const span of [...root.querySelectorAll(`[${LINE_MARK}]`)]) {
+    const parent = span.parentNode
+    span.replaceWith(document.createTextNode(span.textContent ?? ''))
+    if (parent) parents.add(parent)
+  }
+  for (const parent of parents) parent.normalize()
+}
+
+/** One span per wrapped line, so a device-mode cursor can rest on that line alone. */
+function splitLines(root: ParentNode) {
+  const zones = [...root.querySelectorAll(LINE_SELECTOR)]
+  for (const zone of zones) {
+    if (!(zone instanceof HTMLElement) || zone.closest(`[${LINE_MARK}]`)) continue
+    const texts: Text[] = []
+    const walker = document.createTreeWalker(zone, NodeFilter.SHOW_TEXT)
+    let node = walker.nextNode()
+    while (node) {
+      const parent = node.parentElement
+      if (parent?.closest(`[${LINE_MARK}]`)) {
+        node = walker.nextNode()
+        continue
+      }
+      if ((node.textContent ?? '').trim()) texts.push(node as Text)
+      node = walker.nextNode()
+    }
+    for (const text of texts) splitText(text)
+  }
+}
+
+function splitText(text: Text) {
+  const content = text.textContent ?? ''
+  if (!content.trim() || !text.parentNode) return
+  const range = document.createRange()
+  const groups: { start: number; end: number; top: number }[] = []
+  for (let i = 0; i < content.length; i += 1) {
+    range.setStart(text, i)
+    range.setEnd(text, i + 1)
+    const rect = range.getClientRects()[0]
+    if (!rect || rect.width < 0.2 || rect.height < 1) continue
+    const top = Math.round(rect.top)
+    const last = groups[groups.length - 1]
+    if (!last || Math.abs(last.top - top) > 1) groups.push({ start: i, end: i + 1, top })
+    else last.end = i + 1
+  }
+  if (groups.length === 0) return
+  const frag = document.createDocumentFragment()
+  let cursor = 0
+  for (const group of groups) {
+    if (group.start > cursor) frag.append(content.slice(cursor, group.start))
+    const span = document.createElement('span')
+    span.setAttribute(LINE_MARK, '')
+    span.textContent = content.slice(group.start, group.end)
+    frag.append(span)
+    cursor = group.end
+  }
+  if (cursor < content.length) frag.append(content.slice(cursor))
+  text.parentNode.replaceChild(frag, text)
+}
+
+/** Soft one-line guide. Follows pointer and finger. No fade. */
 export function ReadingRuler() {
   const { settings } = useSen()
 
@@ -96,15 +175,10 @@ export function ReadingRuler() {
     bar.className = 'reading-ruler'
     bar.setAttribute('data-line-guide', 'off')
     bar.setAttribute('aria-hidden', 'true')
-    bar.setAttribute('popover', 'manual')
     bar.style.visibility = 'hidden'
     document.documentElement.appendChild(bar)
-    try {
-      bar.showPopover()
-    } catch {
-      /* the fixed bar stays on the root when the top layer is unavailable */
-    }
 
+    let framing = false
     const paint = (box: LineBox | null) => {
       if (!box) {
         bar.style.visibility = 'hidden'
@@ -118,6 +192,15 @@ export function ReadingRuler() {
       bar.style.height = `${box.height}px`
       bar.setAttribute('data-line-guide', 'on')
     }
+
+    const reframe = () => {
+      if (framing) return
+      framing = true
+      unwrapLines(document)
+      splitLines(document)
+      framing = false
+    }
+    reframe()
 
     let lastX = Number.NaN
     let lastY = Number.NaN
@@ -136,6 +219,22 @@ export function ReadingRuler() {
       paint(lineBoxAt(lastX, lastY))
     }
     const hide = () => paint(null)
+    // The device-mode cursor updates which line span is hovered without a pointermove.
+    let hoverEl: Element | null = null
+    let watch = 0
+    const watchHover = () => {
+      watch = window.requestAnimationFrame(watchHover)
+      const el = document.querySelector(`[${LINE_MARK}]:hover`)
+      if (!(el instanceof HTMLElement)) return
+      if (el === hoverEl) return
+      const box = boxFromMark(el)
+      if (!box) return
+      // Ignore a hover resting far from the last delivered pointer point.
+      if (Number.isFinite(lastY) && Math.abs(box.top + box.height / 2 - lastY) > box.height * 1.5) return
+      hoverEl = el
+      paint(box)
+    }
+    watch = window.requestAnimationFrame(watchHover)
     const listen = { passive: true, capture: true } as const
     const types = [
       'pointermove',
@@ -143,23 +242,48 @@ export function ReadingRuler() {
       'pointerrawupdate',
       'pointerover',
       'mouseover',
+      'pointerenter',
+      'mouseenter',
       'pointerdown',
       'mousedown',
       'touchstart',
       'touchmove',
     ]
-    for (const type of types) window.addEventListener(type, onEvent, listen)
+    for (const type of types) {
+      window.addEventListener(type, onEvent, listen)
+      document.addEventListener(type, onEvent, listen)
+    }
     document.addEventListener('scroll', onScroll, listen)
+    window.addEventListener('resize', reframe)
     window.addEventListener('blur', hide)
+    const observer = new MutationObserver((records) => {
+      if (framing) return
+      const needs = records.some((record) => {
+        const nodes: Node[] = [record.target, ...record.addedNodes]
+        return nodes.some((node) => {
+          const el = node instanceof Element ? node : node.parentElement
+          if (!el || el.closest(`[${LINE_MARK}]`)) return false
+          return Boolean(
+            el.matches(LINE_SELECTOR) || el.querySelector(LINE_SELECTOR) || el.closest(LINE_SELECTOR),
+          )
+        })
+      })
+      if (needs) window.requestAnimationFrame(reframe)
+    })
+    observer.observe(document.body, { childList: true, subtree: true })
+
     return () => {
-      for (const type of types) window.removeEventListener(type, onEvent, listen)
-      document.removeEventListener('scroll', onScroll, listen)
-      window.removeEventListener('blur', hide)
-      try {
-        bar.hidePopover()
-      } catch {
-        /* already closed */
+      window.cancelAnimationFrame(watch)
+      for (const type of types) {
+        window.removeEventListener(type, onEvent, listen)
+        document.removeEventListener(type, onEvent, listen)
       }
+      document.removeEventListener('scroll', onScroll, listen)
+      window.removeEventListener('resize', reframe)
+      window.removeEventListener('blur', hide)
+      observer.disconnect()
+      framing = true
+      unwrapLines(document)
       bar.remove()
     }
   }, [settings.ruler])

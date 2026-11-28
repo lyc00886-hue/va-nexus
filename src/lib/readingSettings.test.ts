@@ -259,6 +259,8 @@ describe('deepened display and reading settings', () => {
     assert.match(ruler, /passive: true/)
     assert.match(ruler, /caretRangeFromPoint/)
     assert.match(ruler, /caretPositionFromPoint/)
+    assert.match(ruler, /data-reading-line/)
+    assert.match(ruler, /:hover/)
     assert.equal(ruler.includes('backgroundColor'), false)
     assert.match(css, /\.reading-ruler/)
     assert.match(css, /\.sen-reduce-motion \.reading-ruler/)

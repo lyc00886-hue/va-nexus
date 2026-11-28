@@ -740,10 +740,9 @@ html[data-reading-tint='blue']:not(.sen-contrast) .quest-map-sticky {
   box-shadow: 0 0.4rem 0 var(--reading-tint);
 }
 
-/* One-line guide. Fixed on the root, in the top layer, using viewport coordinates.
+/* One-line guide. Fixed on the root in viewport coordinates.
    No block wash and no fade, including when reduced motion is on. */
-.reading-ruler,
-.reading-ruler:popover-open {
+.reading-ruler {
   position: fixed;
   z-index: 80;
   inset: auto;
@@ -755,15 +754,12 @@ html[data-reading-tint='blue']:not(.sen-contrast) .quest-map-sticky {
   border-radius: 0.45rem;
   background: rgba(13, 148, 136, 0.32);
   box-shadow: inset 0 0 0 1px rgba(13, 148, 136, 0.55);
-  color: transparent;
   opacity: 1;
   transition: none !important;
   animation: none !important;
 }
-@starting-style {
-  .reading-ruler:popover-open {
-    opacity: 1;
-  }
+[data-reading-line] {
+  background: transparent;
 }
 .sen-reduce-motion .reading-ruler {
   transition: none !important;
