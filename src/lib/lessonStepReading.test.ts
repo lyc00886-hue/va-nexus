@@ -3,7 +3,24 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { bilingualSpeech, planAutoRead, releaseOwnsSpeech, speechNeedsCancel } from './lessonStepReading.ts'
+import { easyReadLines } from './lessonReadingSurface.ts'
+import { READING_DEFAULTS, applyReadingPreset } from './readingSettings.ts'
+import {
+  beginGestureAutoRead,
+  readGestureAutoRead,
+  stopGestureAutoRead,
+} from './gestureAutoRead.ts'
+import {
+  bilingualSpeech,
+  gestureSpeakTiming,
+  openingCardSpeech,
+  planAutoRead,
+  planGestureAutoRead,
+  readAloudFace,
+  releaseOwnsSpeech,
+  speechNeedsCancel,
+  spokenCardText,
+} from './lessonStepReading.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -208,5 +225,164 @@ describe('inclusive learning settings on the student entrance', () => {
     assert.equal(hant['sen.toggle.read.desc'], '打開短課卡時自動讀出內容（可隨時停止）')
     assert.equal(css.includes('#FFF9E9'), true)
     assert.equal(css.includes('#0D9488'), true)
+  })
+})
+
+const DRAW_BODY = '寫生由觀察開始：先睇整體形狀同比例，再加細節，唔好一開始就抄陰影。'
+
+describe('讀寫支援 starts the open card in the click', () => {
+  const card = {
+    title: '重點 1',
+    body: DRAW_BODY,
+    easy: easyReadLines(DRAW_BODY),
+  }
+
+  function opening(readingEasy: boolean) {
+    return openingCardSpeech({
+      lessonId: 'F4-U2-L1',
+      cards: [card],
+      questionCount: 6,
+      media: false,
+      readingEasy,
+      bilingual: false,
+      sep: '。',
+    })
+  }
+
+  it('speaks the first drawing card when auto-read is on, and stays quiet when it is off', () => {
+    const supported = opening(true)
+    assert.ok(supported)
+    assert.equal(supported.key, 'F4-U2-L1-card-0')
+    assert.equal(supported.text, spokenCardText({ ...card, readingEasy: true, bilingual: false, sep: '。' }))
+    assert.equal(supported.text.includes('先睇整體形狀同比例'), true)
+    assert.equal(supported.text.includes(DRAW_BODY), false)
+    const plain = opening(false)
+    assert.equal(plain?.text, `重點 1。${DRAW_BODY}`)
+    assert.equal(
+      planGestureAutoRead({ auto: true, key: supported.key, text: supported.text }).speak,
+      true,
+    )
+    assert.equal(
+      planGestureAutoRead({ auto: false, key: supported.key, text: supported.text }).speak,
+      false,
+    )
+    assert.equal(
+      planGestureAutoRead({ auto: true, key: supported.key, text: '   ', stoppedKey: undefined }).speak,
+      false,
+    )
+    assert.equal(
+      planGestureAutoRead({
+        auto: true,
+        key: supported.key,
+        text: supported.text,
+        stoppedKey: supported.key,
+      }).speak,
+      false,
+    )
+    assert.equal(openingCardSpeech({ ...{
+      lessonId: 'F4-U3-L3',
+      cards: [card],
+      questionCount: 1,
+      media: true,
+      readingEasy: true,
+      bilingual: false,
+      sep: '。',
+    } }), null)
+
+    const spld = applyReadingPreset(READING_DEFAULTS, 'spld')
+    const quiet = applyReadingPreset(READING_DEFAULTS, 'lowSensory')
+    assert.equal(spld.readAloud, true)
+    assert.equal(spld.dyslexia, true)
+    assert.equal(quiet.readAloud, false)
+    assert.equal(quiet.dyslexia, false)
+    assert.equal(READING_DEFAULTS.readAloud, false)
+    assert.equal(planGestureAutoRead({ auto: spld.readAloud, key: supported.key, text: supported.text }).speak, true)
+    assert.equal(planGestureAutoRead({ auto: quiet.readAloud, key: plain?.key ?? '', text: plain?.text ?? '' }).speak, false)
+    assert.equal(
+      planGestureAutoRead({ auto: READING_DEFAULTS.readAloud, key: plain?.key ?? '', text: plain?.text ?? '' }).speak,
+      false,
+    )
+  })
+
+  it('shows the short stop label as soon as the open click has spoken', () => {
+    assert.equal(readAloudFace({ speaking: false, gestureLive: true }), 'stop')
+    assert.equal(readAloudFace({ speaking: true, gestureLive: false }), 'stop')
+    assert.equal(readAloudFace({ speaking: false, gestureLive: false }), 'read')
+    assert.equal(gestureSpeakTiming(false), 'now')
+    assert.equal(gestureSpeakTiming(true), 'after-cancel')
+
+    stopGestureAutoRead()
+    const spoken: string[] = []
+    const started = beginGestureAutoRead(
+      { auto: true, key: 'F4-U2-L1-card-0', text: '重點 1。先睇整體形狀同比例' },
+      (text) => {
+        spoken.push(text)
+        return true
+      },
+    )
+    assert.equal(started, true)
+    assert.deepEqual(spoken, ['重點 1。先睇整體形狀同比例'])
+    assert.equal(readGestureAutoRead()?.phase, 'starting')
+    assert.equal(readAloudFace({ speaking: false, gestureLive: true }), 'stop')
+    const again = beginGestureAutoRead(
+      { auto: true, key: 'F4-U2-L1-card-0', text: '重點 1。先睇整體形狀同比例' },
+      () => {
+        spoken.push('again')
+        return true
+      },
+    )
+    assert.equal(again, true)
+    assert.deepEqual(spoken, ['重點 1。先睇整體形狀同比例'])
+    const quiet = beginGestureAutoRead({ auto: false, key: 'F4-U2-L1-card-0', text: '唔好讀' }, () => {
+      spoken.push('quiet')
+      return true
+    })
+    assert.equal(quiet, false)
+    assert.equal(spoken.length, 1)
+    stopGestureAutoRead('F4-U2-L1-card-0')
+    assert.equal(readGestureAutoRead(), null)
+    const refused = beginGestureAutoRead({ auto: true, key: 'F4-U2-L1-card-0', text: '再試' }, () => false)
+    assert.equal(refused, false)
+    assert.equal(readGestureAutoRead(), null)
+    let hooks: { onstart?: () => void; onend?: () => void; onerror?: (reason?: string) => void } | undefined
+    const held = beginGestureAutoRead({ auto: true, key: 'F4-U2-L1-card-0', text: '重點 1' }, (_text, next) => {
+      hooks = next
+      return true
+    })
+    assert.equal(held, true)
+    hooks?.onerror?.('synthesis-failed')
+    hooks?.onend?.()
+    assert.equal(readGestureAutoRead()?.phase, 'starting')
+    assert.equal(readAloudFace({ speaking: false, gestureLive: true }), 'stop')
+    hooks?.onstart?.()
+    assert.equal(readGestureAutoRead()?.phase, 'speaking')
+    hooks?.onend?.()
+    assert.equal(readGestureAutoRead(), null)
+    stopGestureAutoRead()
+  })
+
+  it('keeps the open-click wiring, the short stop label, and a quiet low-sensory preset', () => {
+    const button = read('src/components/game/ReadAloudButton.tsx')
+    const quest = read('src/components/game/MapQuest.tsx')
+    const speech = read('src/lib/useSpeech.ts')
+    const panel = read('src/components/SenSettingsPanel.tsx')
+    const player = read('src/components/game/LessonPlayer.tsx')
+    const gesture = speech.slice(speech.indexOf('export function speakDuringGesture'), speech.indexOf('export function useSpeech'))
+    assert.match(player, /spokenCardText\(/)
+    assert.match(quest, /onLesson=\{openQuestLesson\}/)
+    assert.match(quest, /beginGestureAutoRead\(\s*\{ auto: settings\.readAloud, key: opening\.key, text: opening\.text \},\s*speakDuringGesture,\s*\)/)
+    assert.match(quest, /stopGestureAutoRead\(\)/)
+    assert.match(button, /gestureSessionOwns\(autoKey\) \|\| gestureAttempted\(autoKey\)/)
+    assert.match(button, /readAloudFace\(\{ speaking: tts\.speaking, gestureLive \}\)/)
+    assert.match(button, /const label = face === 'stop' \? t\('tts\.stop'\) : t\('tts\.read'\)/)
+    assert.match(button, /data-read-label=\{face\}/)
+    assert.equal(button.includes('停止朗讀'), false)
+    assert.match(gesture, /gestureSpeakTiming\(busy\) === 'now'\) run\(\)/)
+    assert.match(gesture, /synth\.speak\(u\)/)
+    assert.equal(gesture.includes('voicesReady'), false)
+    assert.match(panel, /preset\.id === 'spld'\) primeSpeechEngine\(\)/)
+    assert.equal(panel.includes('speakDuringGesture'), false)
+    assert.equal(JSON.parse(read('src/i18n/zh-Hant.json'))['tts.stop'], '停止')
+    assert.equal(JSON.parse(read('src/i18n/zh-Hant.json'))['tts.read'], '朗讀')
   })
 })

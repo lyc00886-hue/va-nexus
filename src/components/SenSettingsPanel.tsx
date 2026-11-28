@@ -5,6 +5,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { useSen, type FontSizeLevel } from '../context/SenContext'
 import { t, type MessageKey } from '../i18n'
 import { contentJson } from '../i18n/content'
+import { primeSpeechEngine, stopGestureAutoRead } from '../lib/gestureAutoRead'
 import { nextContainedScrollTop, wheelDeltaPixels, wheelHitsPanel } from '../lib/panelWheel'
 import { FOCUS_MINUTE_CHOICES, READING_TINT_HEX, type FocusMinutes, type ReadingTint } from '../lib/readingSettings'
 import type { SenMode } from '../types'
@@ -229,7 +230,11 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
                 type="button"
                 data-preset={preset.id}
                 aria-pressed={selected}
-                onClick={() => setMode(preset.id)}
+                onClick={() => {
+                  if (preset.id === 'spld') primeSpeechEngine()
+                  else stopGestureAutoRead()
+                  setMode(preset.id)
+                }}
                 className={`w-full rounded-xl border px-3 py-2 text-left ${
                   selected ? 'border-teal-700 bg-teal-50' : 'border-teal-200 bg-white hover:bg-teal-50'
                 }`}
@@ -242,7 +247,10 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
         </div>
         <button
           type="button"
-          onClick={reset}
+          onClick={() => {
+            stopGestureAutoRead()
+            reset()
+          }}
           className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-teal-800 hover:underline"
         >
           <RotateCcw className="h-3.5 w-3.5" aria-hidden /> {t('sen.reset')}
@@ -386,7 +394,11 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
           label={t('support.readAloud')}
           desc={t('sen.toggle.read.desc')}
           checked={settings.readAloud}
-          onChange={(v) => update('readAloud', v)}
+          onChange={(v) => {
+            if (v) primeSpeechEngine()
+            else stopGestureAutoRead()
+            update('readAloud', v)
+          }}
         />
       </div>
 

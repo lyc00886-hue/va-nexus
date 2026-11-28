@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { getLocale, SPEECH_LANG, type Locale } from '../i18n'
-import { releaseOwnsSpeech, speechNeedsCancel } from './lessonStepReading'
+import { gestureSpeakTiming, releaseOwnsSpeech, speechNeedsCancel } from './lessonStepReading'
 
 /** Voice language preferences per UI locale (first match wins). */
 const LANG_PREFS: Record<Locale, string[]> = {
@@ -27,7 +27,42 @@ let lastSpeechCancel = 0
 
 export type SpeechHooks = {
   onstart?: () => void
-  onerror?: () => void
+  onend?: () => void
+  onerror?: (reason?: string) => void
+}
+
+/**
+ * Speak inside the click that opened the card.
+ * Do not wait for the voice list, and do not defer an idle engine:
+ * a later effect is outside the click, and Chrome often never starts it.
+ */
+export function speakDuringGesture(text: string, hooks?: SpeechHooks): boolean {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) return false
+  const trimmed = text.trim()
+  if (!trimmed) return false
+  const synth = window.speechSynthesis
+  const busy = speechNeedsCancel({ speaking: Boolean(synth.speaking), pending: Boolean(synth.pending) })
+  if (busy) {
+    lastSpeechCancel = Date.now()
+    synth.cancel()
+  }
+  const locale = getLocale()
+  const voice = pickVoice(synth.getVoices(), locale)
+  const u = new SpeechSynthesisUtterance(trimmed)
+  u.lang = voice?.lang ?? SPEECH_LANG[locale]
+  if (voice) u.voice = voice
+  u.rate = 0.9
+  u.onstart = () => hooks?.onstart?.()
+  u.onend = () => hooks?.onend?.()
+  u.onerror = (event) => hooks?.onerror?.(event.error)
+  const run = () => {
+    synth.resume()
+    synth.speak(u)
+    synth.resume()
+  }
+  if (gestureSpeakTiming(busy) === 'now') run()
+  else window.setTimeout(run, 80)
+  return true
 }
 
 /** Minimal Web Speech API wrapper; voice language follows the UI locale (zh-HK / zh-CN / en-GB). */
@@ -93,10 +128,13 @@ export function useSpeech() {
         setSpeaking(true)
         hooks?.onstart?.()
       }
-      u.onend = () => setSpeaking(false)
-      u.onerror = () => {
+      u.onend = () => {
         setSpeaking(false)
-        hooks?.onerror?.()
+        hooks?.onend?.()
+      }
+      u.onerror = (event) => {
+        setSpeaking(false)
+        hooks?.onerror?.(event.error)
       }
       // A fresh page can leave the synth paused. speak() then never reaches onstart.
       const run = () => {

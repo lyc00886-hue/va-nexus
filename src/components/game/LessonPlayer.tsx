@@ -29,7 +29,7 @@ import {
 import { PASS_ACCURACY, getBadgeById, masteryFor, masteryHint, masteryLabel } from '../../game/rewards'
 import { softMotionPlay } from '../../game/softMotion'
 import { getLocale, joinList, t, tIn, useT } from '../../i18n'
-import { bilingualSpeech } from '../../lib/lessonStepReading'
+import { bilingualSpeech, spokenCardText, speechSeparator } from '../../lib/lessonStepReading'
 import { englishAlt } from '../../lib/bilingualCatalog'
 import { bindLessonPageScroll } from '../../lib/lessonPageScroll'
 import { contentJson } from '../../i18n/content'
@@ -394,13 +394,19 @@ export function LessonPlayer({
     advance()
   }
 
-  const sep = getLocale() === 'en' ? '. ' : '。'
+  const sep = speechSeparator(getLocale())
   const card = lesson.cards[cardIdx]
-  const cardBody = card ? (readingEasy ? card.easy.join(sep) : card.body) : ''
   const cardText = card
-    ? bilingual
-      ? [englishAlt(zhSide, card.title), englishAlt(zhSide, card.body), card.title, cardBody].filter(Boolean).join(sep)
-      : `${card.title}${sep}${cardBody}`
+    ? spokenCardText({
+        title: card.title,
+        body: card.body,
+        easy: card.easy,
+        readingEasy,
+        bilingual,
+        englishTitle: englishAlt(zhSide, card.title),
+        englishBody: englishAlt(zhSide, card.body),
+        sep,
+      })
     : ''
   const lastCard = cardIdx >= lesson.cards.length - 1
   const nextTone = shortLessonFooterCta({
