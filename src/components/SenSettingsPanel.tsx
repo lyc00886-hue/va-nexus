@@ -70,12 +70,14 @@ function Toggle({
   desc,
   checked,
   onChange,
+  flag,
 }: {
   icon: ReactNode
   label: string
   desc: string
   checked: boolean
   onChange: (v: boolean) => void
+  flag?: string
 }) {
   return (
     <label className="flex cursor-pointer items-start gap-3 rounded-xl px-2 py-2 hover:bg-teal-50">
@@ -92,16 +94,17 @@ function Toggle({
         aria-checked={checked}
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
+        data-reduce-motion={flag === 'reduce-motion' ? (checked ? 'on' : 'off') : undefined}
         className="peer sr-only"
       />
       <span
         aria-hidden
-        className={`relative mt-1 inline-flex h-5 w-9 shrink-0 rounded-full transition peer-focus-visible:ring-2 peer-focus-visible:ring-teal-400 ${
+        className={`relative mt-1 inline-flex h-5 w-9 shrink-0 rounded-full peer-focus-visible:ring-2 peer-focus-visible:ring-teal-400 ${
           checked ? 'bg-teal-700' : 'bg-slate-300'
         }`}
       >
         <span
-          className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition ${
+          className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow ${
             checked ? 'left-[18px]' : 'left-0.5'
           }`}
         />
@@ -329,6 +332,7 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
           desc={t('sen.toggle.motion.desc')}
           checked={settings.reduceMotion}
           onChange={(v) => update('reduceMotion', v)}
+          flag="reduce-motion"
         />
         <Toggle
           icon={<Ruler className="h-4 w-4" />}

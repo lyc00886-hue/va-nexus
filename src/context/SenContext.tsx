@@ -2,7 +2,7 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -67,8 +67,8 @@ const SenContext = createContext<SenContextValue | null>(null)
 export function SenProvider({ children }: { children: ReactNode }) {
   const [settings, setSettings] = useState<SenSettings>(loadSettings)
 
-  // persist + apply to <html> so every tab benefits
-  useEffect(() => {
+  // persist + apply to <html> before paint, so a preset's reduced-motion flag is already on
+  useLayoutEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
     } catch {
@@ -86,6 +86,7 @@ export function SenProvider({ children }: { children: ReactNode }) {
     root.classList.toggle('sen-contrast', settings.highContrast)
     root.classList.toggle('sen-dyslexia', settings.dyslexia)
     root.classList.toggle('sen-reduce-motion', settings.reduceMotion)
+    root.dataset.reduceMotion = settings.reduceMotion ? 'on' : 'off'
     root.dataset.soundMotion = settings.soundMotion ? 'on' : 'off'
     root.classList.toggle('sen-focus', settings.focusTunnel)
     root.classList.toggle('sen-read-aloud', settings.readAloud)

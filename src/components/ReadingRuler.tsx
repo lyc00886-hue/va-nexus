@@ -1,27 +1,6 @@
 import { useEffect } from 'react'
 import { useSen } from '../context/SenContext'
 
-type Band = { zone: HTMLElement; top: number; height: number }
-
-function lineBand(el: HTMLElement): number {
-  const style = getComputedStyle(el)
-  const font = Number.parseFloat(style.fontSize)
-  const fontPx = Number.isFinite(font) && font > 0 ? font : 16
-  const cap = fontPx * 2.4
-  const text = el.matches('li, p, h3, h4') ? el : (el.querySelector('li, p, h3, h4') ?? el)
-  const node = [...text.childNodes].find((child) => child.nodeType === Node.TEXT_NODE && (child.textContent ?? '').trim())
-  if (node?.textContent) {
-    const range = document.createRange()
-    range.setStart(node, 0)
-    range.setEnd(node, Math.min(node.textContent.length, 1))
-    const box = range.getClientRects()[0]
-    if (box && box.height > 0 && box.height <= cap) return box.height
-  }
-  const parsed = Number.parseFloat(style.lineHeight)
-  if (Number.isFinite(parsed) && parsed > 0 && parsed <= cap) return parsed
-  return fontPx * 1.6
-}
-
 const LINE_SELECTOR = [
   '[data-lesson-body]',
   '[data-official-parts] p',
@@ -30,20 +9,84 @@ const LINE_SELECTOR = [
   '[data-lesson-scroll] h3',
 ].join(', ')
 
-function bandAt(clientX: number, clientY: number): Band | null {
-  if (!Number.isFinite(clientX) || !Number.isFinite(clientY)) return null
-  const hit = document.elementFromPoint(clientX, clientY)
-  const node = hit instanceof Element ? hit : null
-  const zone = node?.closest(LINE_SELECTOR)
-  if (!(zone instanceof HTMLElement)) return null
-  const rect = zone.getBoundingClientRect()
-  if (clientY < rect.top || clientY > rect.bottom || clientX < rect.left || clientX > rect.right) return null
-  const height = Math.min(lineBand(zone), Math.max(rect.height, 1))
-  const top = Math.min(Math.max(clientY - rect.top - height / 2, 0), Math.max(rect.height - height, 0))
-  return { zone, top, height }
+type LineBox = { left: number; top: number; width: number; height: number }
+
+function caretHit(x: number, y: number): Node | null {
+  const doc = document as Document & {
+    caretRangeFromPoint?: (x: number, y: number) => Range | null
+    caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node } | null
+  }
+  if (typeof doc.caretRangeFromPoint === 'function') {
+    const range = doc.caretRangeFromPoint(x, y)
+    if (range?.startContainer) return range.startContainer
+  }
+  if (typeof doc.caretPositionFromPoint === 'function') {
+    const pos = doc.caretPositionFromPoint(x, y)
+    if (pos?.offsetNode) return pos.offsetNode
+  }
+  return null
 }
 
-/** Soft line highlight inside the lesson line. No fade, so reduced motion does not flash. */
+function zoneOf(node: Node | null): HTMLElement | null {
+  const el = node instanceof Element ? node : node?.parentElement
+  const zone = el?.closest(LINE_SELECTOR)
+  return zone instanceof HTMLElement ? zone : null
+}
+
+function lineRects(zone: HTMLElement): DOMRect[] {
+  const rects: DOMRect[] = []
+  const walker = document.createTreeWalker(zone, NodeFilter.SHOW_TEXT)
+  let node = walker.nextNode()
+  while (node) {
+    if ((node.textContent ?? '').trim()) {
+      const range = document.createRange()
+      range.selectNodeContents(node)
+      for (const rect of range.getClientRects()) {
+        if (rect.width > 0 && rect.height > 0 && rect.height < 80) rects.push(rect)
+      }
+    }
+    node = walker.nextNode()
+  }
+  return rects
+}
+
+/** Viewport line box under the pointer. One wrapped line, not the whole paragraph. */
+function lineBoxAt(x: number, y: number): LineBox | null {
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return null
+  const zone = zoneOf(caretHit(x, y)) ?? zoneOf(document.elementFromPoint(x, y))
+  if (!zone) return null
+  const host = zone.getBoundingClientRect()
+  if (y < host.top - 3 || y > host.bottom + 3 || x < host.left - 3 || x > host.right + 3) return null
+  const rects = lineRects(zone)
+  let line = rects.find((rect) => y >= rect.top - 2 && y <= rect.bottom + 2)
+  if (!line && rects.length > 0) {
+    line = rects.reduce((best, rect) => {
+      const mid = (rect.top + rect.bottom) / 2
+      const bestMid = (best.top + best.bottom) / 2
+      return Math.abs(mid - y) < Math.abs(bestMid - y) ? rect : best
+    })
+  }
+  if (!line) return null
+  const top = Math.max(line.top, host.top)
+  const bottom = Math.min(line.bottom, host.bottom)
+  const height = bottom - top
+  if (height < 1 || host.width < 1) return null
+  return { left: host.left, top, width: host.width, height }
+}
+
+function pointOf(event: Event): { x: number; y: number } | null {
+  if (window.TouchEvent && event instanceof TouchEvent) {
+    const touch = event.touches[0] ?? event.changedTouches[0]
+    if (!touch || !Number.isFinite(touch.clientX) || !Number.isFinite(touch.clientY)) return null
+    return { x: touch.clientX, y: touch.clientY }
+  }
+  if (event instanceof MouseEvent && Number.isFinite(event.clientX) && Number.isFinite(event.clientY)) {
+    return { x: event.clientX, y: event.clientY }
+  }
+  return null
+}
+
+/** Soft one-line guide. Follows pointer and finger from the event coordinates. No fade. */
 export function ReadingRuler() {
   const { settings } = useSen()
 
@@ -53,91 +96,70 @@ export function ReadingRuler() {
     bar.className = 'reading-ruler'
     bar.setAttribute('data-line-guide', 'off')
     bar.setAttribute('aria-hidden', 'true')
-    bar.hidden = true
-    let frame = 0
-    let pending: Band | null = null
-    let host: HTMLElement | null = null
-    let hostPosition = ''
-
-    const releaseHost = () => {
-      if (!host) return
-      host.style.position = hostPosition
-      host = null
-      hostPosition = ''
+    bar.setAttribute('popover', 'manual')
+    bar.style.visibility = 'hidden'
+    document.documentElement.appendChild(bar)
+    try {
+      bar.showPopover()
+    } catch {
+      /* the fixed bar stays on the root when the top layer is unavailable */
     }
 
-    const clearWash = (el: HTMLElement) => {
-      el.style.backgroundColor = ''
-      el.style.boxShadow = ''
-    }
-
-    const paint = () => {
-      frame = 0
-      if (!pending) {
-        bar.hidden = true
+    const paint = (box: LineBox | null) => {
+      if (!box) {
+        bar.style.visibility = 'hidden'
         bar.setAttribute('data-line-guide', 'off')
-        if (host) clearWash(host)
-        releaseHost()
         return
       }
-      if (host !== pending.zone) {
-        if (host) clearWash(host)
-        releaseHost()
-        host = pending.zone
-        hostPosition = host.style.position
-      }
-      const rect = pending.zone.getBoundingClientRect()
-      const oneLine = rect.height <= pending.height * 1.6
-      if (oneLine) {
-        host!.style.backgroundColor = 'rgba(13, 148, 136, 0.32)'
-        host!.style.boxShadow = 'inset 0 0 0 1px rgba(13, 148, 136, 0.55)'
-      } else if (host) {
-        clearWash(host)
-      }
-      if (bar.parentElement !== document.documentElement) document.documentElement.appendChild(bar)
-      bar.hidden = false
-      bar.style.left = `${rect.left}px`
-      bar.style.width = `${rect.width}px`
-      bar.style.top = `${rect.top + pending.top}px`
-      bar.style.height = `${pending.height}px`
+      bar.style.visibility = 'visible'
+      bar.style.left = `${box.left}px`
+      bar.style.top = `${box.top}px`
+      bar.style.width = `${box.width}px`
+      bar.style.height = `${box.height}px`
       bar.setAttribute('data-line-guide', 'on')
     }
 
-    const schedule = (next: Band | null) => {
-      pending = next
-      if (frame) return
-      frame = window.requestAnimationFrame(paint)
+    let lastX = Number.NaN
+    let lastY = Number.NaN
+    const follow = (x: number, y: number) => {
+      lastX = x
+      lastY = y
+      paint(lineBoxAt(x, y))
     }
-
-    const onPoint = (event: MouseEvent) => schedule(bandAt(event.clientX, event.clientY))
-    const onTouch = (event: TouchEvent) => {
-      const touch = event.touches[0]
-      if (!touch) return
-      schedule(bandAt(touch.clientX, touch.clientY))
+    const onEvent = (event: Event) => {
+      const point = pointOf(event)
+      if (!point) return
+      follow(point.x, point.y)
     }
-    const hide = () => schedule(null)
+    const onScroll = () => {
+      if (!Number.isFinite(lastX) || !Number.isFinite(lastY)) return
+      paint(lineBoxAt(lastX, lastY))
+    }
+    const hide = () => paint(null)
     const listen = { passive: true, capture: true } as const
-
-    // Device mode on a phone turns a pointer drag into mousemove only.
-    // pointermove.target stays on the first line, so the line comes from the coordinates.
-    document.addEventListener('pointermove', onPoint, listen)
-    document.addEventListener('mousemove', onPoint, listen)
-    document.addEventListener('pointerdown', onPoint, listen)
-    document.addEventListener('mousedown', onPoint, listen)
-    document.addEventListener('touchstart', onTouch, listen)
-    document.addEventListener('touchmove', onTouch, listen)
+    const types = [
+      'pointermove',
+      'mousemove',
+      'pointerrawupdate',
+      'pointerover',
+      'mouseover',
+      'pointerdown',
+      'mousedown',
+      'touchstart',
+      'touchmove',
+    ]
+    for (const type of types) window.addEventListener(type, onEvent, listen)
+    document.addEventListener('scroll', onScroll, listen)
     window.addEventListener('blur', hide)
     return () => {
-      window.cancelAnimationFrame(frame)
-      document.removeEventListener('pointermove', onPoint, listen)
-      document.removeEventListener('mousemove', onPoint, listen)
-      document.removeEventListener('pointerdown', onPoint, listen)
-      document.removeEventListener('mousedown', onPoint, listen)
-      document.removeEventListener('touchstart', onTouch, listen)
-      document.removeEventListener('touchmove', onTouch, listen)
+      for (const type of types) window.removeEventListener(type, onEvent, listen)
+      document.removeEventListener('scroll', onScroll, listen)
       window.removeEventListener('blur', hide)
-      if (host) clearWash(host)
-      releaseHost()
+      try {
+        bar.hidePopover()
+      } catch {
+        /* already closed */
+      }
       bar.remove()
     }
   }, [settings.ruler])
