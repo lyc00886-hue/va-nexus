@@ -1,5 +1,5 @@
 import { Square, Volume2 } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSenSupport } from '../../context/SenSupportContext'
 import { planAutoRead } from '../../lib/lessonStepReading'
 import { useSpeech } from '../../lib/useSpeech'
@@ -27,7 +27,18 @@ export function ReadAloudButton({
   const { reportSignal } = useSenSupport()
   const armed = useRef<string | undefined>(undefined)
   const stopped = useRef<string | undefined>(undefined)
+  const tries = useRef(0)
+  const [retry, setRetry] = useState(0)
   const { speak, supported } = tts
+  const speakRef = useRef(speak)
+
+  useEffect(() => {
+    speakRef.current = speak
+  })
+
+  useEffect(() => {
+    tries.current = 0
+  }, [autoKey])
 
   useEffect(() => {
     const plan = planAutoRead({
@@ -39,13 +50,23 @@ export function ReadAloudButton({
     })
     if (!plan.start || !supported || !plan.arm) return
     const arm = plan.arm
-    const id = window.setTimeout(() => {
-      if (stopped.current === arm) return
-      armed.current = arm
-      speak(text)
-    }, 250)
-    return () => window.clearTimeout(id)
-  }, [auto, autoKey, text, speak, supported])
+    if (stopped.current === arm) return
+    // Voice list updates must not cancel this start. speak() itself waits only after a real cancel.
+    speakRef.current(text, {
+      onstart: () => {
+        armed.current = arm
+      },
+      onerror: () => {
+        if (stopped.current === arm || armed.current === arm) return
+        if (tries.current >= 1) {
+          armed.current = arm
+          return
+        }
+        tries.current += 1
+        setRetry((n) => n + 1)
+      },
+    })
+  }, [auto, autoKey, text, supported, retry])
 
   if (!supported && !tucked && !pill) return null
   const tuckedLabel = `${t('settings.reading')} · ${tts.speaking ? t('tts.stop') : t('tts.read')}`

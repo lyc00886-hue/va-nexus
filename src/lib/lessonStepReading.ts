@@ -23,8 +23,10 @@ export type AutoReadPlan = {
 }
 
 /**
- * Opening a new step, including a critique step after a question, starts reading.
+ * Opening a new step starts reading. That includes the first teaching card
+ * and a critique step after a question.
  * The same key does not start again. Stop on that key stays stopped.
+ * A start that never armed (speech was dropped) may start again.
  */
 export function planAutoRead(input: {
   auto: boolean
@@ -41,4 +43,9 @@ export function planAutoRead(input: {
 /** A replaced reader must not cancel speech that a newer reader already owns. */
 export function releaseOwnsSpeech(activeToken: number, myToken: number): boolean {
   return myToken !== 0 && activeToken === myToken
+}
+
+/** Cancel only when speech is already playing. An idle first card must not be cancelled before it starts. */
+export function speechNeedsCancel(input: { speaking: boolean; pending: boolean }): boolean {
+  return input.speaking || input.pending
 }

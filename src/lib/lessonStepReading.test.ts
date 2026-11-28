@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { bilingualSpeech, planAutoRead, releaseOwnsSpeech } from './lessonStepReading.ts'
+import { bilingualSpeech, planAutoRead, releaseOwnsSpeech, speechNeedsCancel } from './lessonStepReading.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -81,6 +81,48 @@ describe('auto-read starts a critique step and stop holds', () => {
     assert.equal(releaseOwnsSpeech(2, 2), true)
     assert.equal(releaseOwnsSpeech(0, 0), false)
   })
+
+  it('starts the first teaching card, and stop on that card does not restart it', () => {
+    const first = planAutoRead({
+      auto: true,
+      autoKey: 'F4-U3-L2-card-0',
+      text: '社區觀察：由環境搵主題。課堂觀察',
+      armedKey: undefined,
+      stoppedKey: undefined,
+    })
+    assert.equal(first.start, true)
+    assert.equal(first.arm, 'F4-U3-L2-card-0')
+    const dropped = planAutoRead({
+      auto: true,
+      autoKey: 'F4-U3-L2-card-0',
+      text: '社區觀察：由環境搵主題。課堂觀察',
+      armedKey: undefined,
+      stoppedKey: undefined,
+    })
+    assert.equal(dropped.start, true)
+    const held = planAutoRead({
+      auto: true,
+      autoKey: 'F4-U3-L2-card-0',
+      text: '社區觀察：由環境搵主題。課堂觀察',
+      armedKey: first.arm,
+      stoppedKey: 'F4-U3-L2-card-0',
+    })
+    assert.equal(held.start, false)
+    const next = planAutoRead({
+      auto: true,
+      autoKey: 'F4-U3-L2-card-1',
+      text: '創作可以同社區有關',
+      armedKey: first.arm,
+      stoppedKey: 'F4-U3-L2-card-0',
+    })
+    assert.equal(next.start, true)
+  })
+
+  it('does not cancel an idle synth before the first teaching card speaks', () => {
+    assert.equal(speechNeedsCancel({ speaking: false, pending: false }), false)
+    assert.equal(speechNeedsCancel({ speaking: true, pending: false }), true)
+    assert.equal(speechNeedsCancel({ speaking: false, pending: true }), true)
+  })
 })
 
 describe('inclusive learning settings on the student entrance', () => {
@@ -126,6 +168,8 @@ describe('inclusive learning settings on the student entrance', () => {
     assert.match(player, /readText=\{critiqueOpen \? critiqueRead : questionRead\}/)
     assert.match(player, /auto=\{settings\.readAloud\}/)
     assert.match(player, /autoKey=\{`\$\{lesson\.id\}-card-\$\{cardIdx\}`\}/)
+    assert.match(read('src/lib/useSpeech.ts'), /speechNeedsCancel/)
+    assert.match(read('src/components/game/ReadAloudButton.tsx'), /onstart: \(\) => \{\s*armed\.current = arm/)
     assert.match(read('src/components/game/ReadAloudButton.tsx'), /planAutoRead/)
     assert.match(read('src/components/game/ReadAloudButton.tsx'), /stopped\.current = autoKey/)
     assert.match(read('src/lib/useSpeech.ts'), /releaseOwnsSpeech/)
