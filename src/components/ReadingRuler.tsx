@@ -66,23 +66,39 @@ export function ReadingRuler() {
       hostPosition = ''
     }
 
+    const clearWash = (el: HTMLElement) => {
+      el.style.backgroundColor = ''
+      el.style.boxShadow = ''
+    }
+
     const paint = () => {
       frame = 0
       if (!pending) {
         bar.hidden = true
         bar.setAttribute('data-line-guide', 'off')
+        if (host) clearWash(host)
         releaseHost()
         return
       }
       if (host !== pending.zone) {
+        if (host) clearWash(host)
         releaseHost()
         host = pending.zone
         hostPosition = host.style.position
-        if (getComputedStyle(host).position === 'static') host.style.position = 'relative'
-        host.appendChild(bar)
       }
+      const rect = pending.zone.getBoundingClientRect()
+      const oneLine = rect.height <= pending.height * 1.6
+      if (oneLine) {
+        host!.style.backgroundColor = 'rgba(13, 148, 136, 0.32)'
+        host!.style.boxShadow = 'inset 0 0 0 1px rgba(13, 148, 136, 0.55)'
+      } else if (host) {
+        clearWash(host)
+      }
+      if (bar.parentElement !== document.documentElement) document.documentElement.appendChild(bar)
       bar.hidden = false
-      bar.style.top = `${pending.top}px`
+      bar.style.left = `${rect.left}px`
+      bar.style.width = `${rect.width}px`
+      bar.style.top = `${rect.top + pending.top}px`
       bar.style.height = `${pending.height}px`
       bar.setAttribute('data-line-guide', 'on')
     }
@@ -120,6 +136,7 @@ export function ReadingRuler() {
       document.removeEventListener('touchstart', onTouch, listen)
       document.removeEventListener('touchmove', onTouch, listen)
       window.removeEventListener('blur', hide)
+      if (host) clearWash(host)
       releaseHost()
       bar.remove()
     }

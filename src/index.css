@@ -740,21 +740,28 @@ html[data-reading-tint='blue']:not(.sen-contrast) .quest-map-sticky {
   box-shadow: 0 0.4rem 0 var(--reading-tint);
 }
 
-/* Line guide sits inside the lesson line. A fixed bar on body is clipped when the
-   lesson sets overflow:hidden, which hides it on a phone. */
+/* Line guide. Drawn on the line itself and as a fixed bar on the root, so a phone
+   lesson that clips body overflow cannot hide it behind the card. No fade. */
 .reading-ruler {
-  position: absolute;
-  left: 0;
-  right: 0;
-  z-index: 1;
+  position: fixed;
+  z-index: 80;
   pointer-events: none;
-  border-radius: 0.65rem;
-  background: rgba(13, 148, 136, 0.18);
-  box-shadow: inset 0 0 0 1px rgba(13, 148, 136, 0.28);
+  border-radius: 0.45rem;
+  background: rgba(13, 148, 136, 0.32);
+  box-shadow: inset 0 0 0 1px rgba(13, 148, 136, 0.55);
   transition: none;
   animation: none;
 }
 .sen-reduce-motion .reading-ruler {
   transition: none !important;
   animation: none !important;
+}
+html[data-reading-ruler='on'] [data-official-parts] p:hover,
+html[data-reading-ruler='on'] [data-official-parts] h3:hover,
+html[data-reading-ruler='on'] [data-official-parts] h4:hover,
+html[data-reading-ruler='on'] [data-lesson-body]:hover,
+html[data-reading-ruler='on'] [data-lesson-scroll] h3:hover {
+  background-color: rgba(13, 148, 136, 0.32);
+  box-shadow: inset 0 0 0 1px rgba(13, 148, 136, 0.55);
+  transition: none;
 }
