@@ -24,7 +24,7 @@ export function QuestionTypeChips({
   const chip =
     variant === 'outline'
       ? 'rounded-full border border-[#0D9488] bg-white px-3 py-1 text-sm font-semibold text-[#0D9488]'
-      : 'rounded-full bg-[#e7f7f5] px-2 py-0.5 text-[11px] font-semibold text-[#0F766E]'
+      : 'rounded-full bg-[#e7f7f5] px-2 py-0.5 text-[0.6875rem] font-semibold text-[#0F766E]'
   return (
     <span data-qtype-chips className="flex flex-wrap gap-1">
       {present.map((type) => (

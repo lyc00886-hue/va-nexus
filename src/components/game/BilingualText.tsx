@@ -4,7 +4,7 @@ import { QuestLabelText } from './QuestLabelText'
 
 function LangChip({ children }: { children: string }) {
   return (
-    <span className="mt-0.5 inline-flex shrink-0 items-center rounded-full border border-[#0D9488] bg-white px-1.5 py-0.5 text-[10px] font-bold leading-none text-[#0D9488]">
+    <span className="mt-0.5 inline-flex shrink-0 items-center rounded-full border border-[#0D9488] bg-white px-1.5 py-0.5 text-[0.625rem] font-bold leading-none text-[#0D9488]">
       {children}
     </span>
   )

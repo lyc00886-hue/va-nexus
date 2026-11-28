@@ -1,5 +1,6 @@
 import { Pause, Play, RotateCcw, Timer, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useSen } from '../context/SenContext'
 import { t } from '../i18n'
 
@@ -38,9 +39,12 @@ export function FocusTunnel() {
   const mm = String(Math.floor(left / 60)).padStart(2, '0')
   const ss = String(left % 60).padStart(2, '0')
 
-  return (
+  const timer = (
     <>
-      <div className="fixed bottom-20 right-4 z-30 flex items-center gap-2 md:bottom-6">
+      <div
+        data-focus-timer=""
+        className="fixed bottom-20 right-4 z-[60] flex items-center gap-2 md:bottom-6"
+      >
         <button
           type="button"
           onClick={() => update('focusTunnel', false)}
@@ -64,7 +68,7 @@ export function FocusTunnel() {
           role="dialog"
           aria-modal="true"
           aria-label={t('focus.dialog')}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-teal-950/90 p-6 text-center text-white"
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-teal-950/90 p-6 text-center text-white"
         >
           <div className="w-full max-w-sm">
             <p className="text-sm uppercase tracking-widest text-teal-200">{t('focus.kicker')}</p>
@@ -115,4 +119,6 @@ export function FocusTunnel() {
       )}
     </>
   )
+  if (typeof document === 'undefined') return timer
+  return createPortal(timer, document.body)
 }

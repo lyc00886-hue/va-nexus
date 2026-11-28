@@ -420,6 +420,34 @@ html {
 html[data-soft-screen='focus'] .map-one-chrome {
   display: none;
 }
+/* Focus tunnel: the open lesson keeps the current step. An outline is not the effect.
+   The 25-minute timer is portaled above this shell. */
+.sen-focus [data-lesson-wizard] [data-lesson-step]:not([data-focus-step='current']) {
+  display: none;
+}
+.sen-focus [data-lesson-wizard] [data-lesson-extra] {
+  display: none;
+}
+/* Keep the timer reachable during a lesson without covering the step button. */
+html[data-lesson-wizard='on'] [data-focus-timer] {
+  top: max(0.75rem, env(safe-area-inset-top, 0px));
+  right: 0.75rem;
+  bottom: auto;
+}
+/* 寬鬆間距 and 高對比 on the quest-map labels, the on-screen worksheet, and homework text.
+   Large type stays on the root rem scale. PDF page interiors are not restyled here. */
+.sen-dyslexia [data-worksheet-paper],
+.sen-dyslexia [data-quest-map] .quest-label,
+.sen-dyslexia [data-testid='hw-student-joined'] {
+  letter-spacing: 0.04em;
+  word-spacing: 0.16em;
+  line-height: 1.85;
+}
+.sen-contrast [data-worksheet-paper],
+.sen-contrast [data-quest-map] .quest-label {
+  color: #000000;
+}
+
 /* One-card lesson: hide the tab bar and the page behind the fixed shell. */
 html[data-lesson-wizard='on'] .platform-header,
 html[data-lesson-wizard='on'] .map-one-chrome {
@@ -608,6 +636,17 @@ html:has([data-quest-map]) .platform-header {
 }
 .quest-current-mark {
   animation: none;
+}
+/* Lesson-card credits stay in the locked art component. Scale the caption with the root step. */
+[data-testid='lesson-card-art'] figcaption {
+  font-size: 0.6875rem;
+}
+/* Map band names sit in the illustration. Grow them with 大字 without moving the default size. */
+html[data-sen-font='lg'] .quest-band-label,
+html[data-sen-font='xl'] .quest-band-label {
+  transform: scale(var(--sen-font-scale));
+  transform-box: fill-box;
+  transform-origin: center;
 }
 /* The phone tab bar stays on screen. An opaque bar clips the map instead of letting it show through. */
 @media (max-width: 767px) {

@@ -28,7 +28,8 @@ import {
 } from '../../game/otterMascot'
 import { PASS_ACCURACY, getBadgeById, masteryFor, masteryHint, masteryLabel } from '../../game/rewards'
 import { softMotionPlay } from '../../game/softMotion'
-import { getLocale, joinList, t, useT } from '../../i18n'
+import { getLocale, joinList, t, tIn, useT } from '../../i18n'
+import { bilingualSpeech } from '../../lib/lessonStepReading'
 import { englishAlt } from '../../lib/bilingualCatalog'
 import { bindLessonPageScroll } from '../../lib/lessonPageScroll'
 import { contentJson } from '../../i18n/content'
@@ -68,7 +69,7 @@ import { imageDecision, questionImageBlocked } from '../../lib/imageLicence'
 import { loadPresentation, savePresentation, useTeacherPresentation, type PresentationMode } from '../../lib/lessonPresentation'
 import { LessonCardArt } from './LessonCardArt'
 import { MetWorkFacts } from './MetWorkFacts'
-import { BiSpan } from './BilingualText'
+import { BiKey, BiSpan } from './BilingualText'
 import { OtterChest, OtterPose } from './OtterPose'
 import { PresentationBar } from './PresentationBar'
 import { CritiqueFace, ImageBlockedFace, ImageRuleFace } from './ClassroomFaces'
@@ -486,6 +487,7 @@ export function LessonPlayer({
     <div
       ref={shellRef}
       data-lesson-wizard=""
+      data-focus-tunnel={focusTunnel ? 'on' : 'off'}
       className="fixed inset-0 z-50 w-full max-w-none space-y-3 overflow-y-auto wrap-anywhere bg-[#FFF9E9] p-3 sm:p-6"
     >
       <div className="mx-auto flex w-full max-w-none flex-col space-y-4 wrap-anywhere rounded-[1.75rem] border-2 border-[#0D9488] bg-white px-4 py-3 md:max-w-2xl">
@@ -531,16 +533,22 @@ export function LessonPlayer({
 
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
           {step?.kind === 'rest' ? (
-            <RestStage
-              onReview={() => {
-                const cardAt = steps.findIndex((item) => item.kind === 'card')
-                goTo(cardAt >= 0 ? cardAt : 0)
-              }}
-              onContinue={advance}
-            />
+            <div
+              data-lesson-step={stepIdx + 1}
+              data-focus-step={focusTunnel ? 'current' : undefined}
+            >
+              <RestStage
+                onReview={() => {
+                  const cardAt = steps.findIndex((item) => item.kind === 'card')
+                  goTo(cardAt >= 0 ? cardAt : 0)
+                }}
+                onContinue={advance}
+              />
+            </div>
           ) : (
             <article
               data-lesson-step={stepIdx + 1}
+              data-focus-step={focusTunnel ? 'current' : undefined}
               data-lesson-kind={step?.kind ?? 'card'}
               data-lesson-count={steps.length}
               data-presentation={readingMode}
@@ -551,7 +559,7 @@ export function LessonPlayer({
               className={
                 step?.kind === 'question'
                   ? 'flex min-h-0 flex-1 flex-col overflow-hidden'
-                  : `flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm ${focusTunnel ? 'ring-4 ring-amber-200' : ''}`
+                  : 'flex min-h-0 flex-1 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm'
               }
             >
               {step?.kind === 'media' ? (
@@ -559,7 +567,8 @@ export function LessonPlayer({
                   leading={leading}
                   presentation={readingMode}
                   onPresentation={chooseReading}
-                  readText={cardText}
+                  autoRead={settings.readAloud}
+                  autoKey={`${lesson.id}-media`}
                 />
               ) : null}
               {step?.kind === 'card' && card ? (
@@ -572,10 +581,10 @@ export function LessonPlayer({
                   onPresentation={chooseReading}
                   fontSize={settings.fontSize}
                   highContrast={settings.highContrast}
-                  focus={false}
+                  focus={focusTunnel}
                   cardText={cardText}
                   autoRead={settings.readAloud}
-                  autoKey={`${lesson.id}-${cardIdx}`}
+                  autoKey={`${lesson.id}-card-${cardIdx}`}
                   nextLabel={lastCard ? t('lp.continue') : t('lp.next')}
                   nextTone={nextTone}
                   leading={
@@ -598,7 +607,9 @@ export function LessonPlayer({
                     <ReadingBar
                       mode={readingMode}
                       onMode={chooseReading}
-                      readText={[t('critique.title'), t('critique.lead'), t('critique.flex'), critiqueLine, t('critique.nudge')].join('\n')}
+                      readText={critiqueSpeech(critiqueLine, bilingual, (text) => englishAlt(zhSide, text))}
+                      auto={settings.readAloud}
+                      autoKey={`${lesson.id}-critique-${stepIdx}`}
                     />
                     <CritiqueFace lessonId={lesson.id} objectText={critiqueLine} />
                   </div>
@@ -617,6 +628,8 @@ export function LessonPlayer({
                     onAnswer={answer}
                     onGate={onGate}
                     leading={leading}
+                    autoRead={settings.readAloud}
+                    autoKey={`${lesson.id}-q-${stepIdx}`}
                   />
                 )
               ) : null}
@@ -641,7 +654,7 @@ export function LessonPlayer({
         </div>
       </div>
       {learningWorksheetLesson(lesson.id) ? (
-        <div className="mx-auto mt-4 w-full md:max-w-2xl">
+        <div data-lesson-extra="" className="mx-auto mt-4 w-full md:max-w-2xl">
           <LearningWorksheetFile />
         </div>
       ) : null}
@@ -749,7 +762,8 @@ function CardsStage({
   return (
     <div
       {...lessonCardReadingAttrs({ fontSize, dyslexia: easyRead, highContrast })}
-      className={`flex min-h-0 flex-1 flex-col ${focus ? 'ring-4 ring-amber-200' : ''}`}
+      data-focus-card={focus ? 'on' : 'off'}
+      className="flex min-h-0 flex-1 flex-col"
     >
       <ReadingBar mode={presentation} onMode={onPresentation} readText={cardText} auto={autoRead} autoKey={autoKey} />
       {showCardArt ? (
@@ -809,6 +823,8 @@ function QuizStage({
   onAnswer,
   onGate,
   leading,
+  autoRead,
+  autoKey,
 }: {
   lessonId: string
   question: Question
@@ -823,13 +839,25 @@ function QuizStage({
   onAnswer: (correct: boolean, explain: string) => void
   onGate: (gate: AnswerGate) => void
   leading?: ReactNode
+  autoRead: boolean
+  autoKey: string
 }) {
+  const { bilingual, zhSide } = useT()
+  const { settings } = useSen()
   const mark = exerciseIdForQuestion(question.type)
   const staged = question.type === 'dualRead' || question.type === 'order' || question.type === 'short'
   const gentle = presentation === 'easy' && Boolean(feedback && !feedback.correct)
+  const readText = questionSpeech(question, bilingual, (text) => englishAlt(zhSide, text))
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <ReadingBar mode={presentation} onMode={onPresentation} readText={questionSpeech(question)} />
+    <div
+      {...lessonCardReadingAttrs({
+        fontSize: settings.fontSize,
+        dyslexia: settings.dyslexia,
+        highContrast: settings.highContrast,
+      })}
+      className="flex min-h-0 flex-1 flex-col"
+    >
+      <ReadingBar mode={presentation} onMode={onPresentation} readText={readText} auto={autoRead} autoKey={autoKey} />
       <div className="px-4 pt-3">
         <ThinPace clear />
         <p className="mt-2">
@@ -1025,19 +1053,36 @@ function MediaStage({
   leading,
   presentation,
   onPresentation,
-  readText,
+  autoRead,
+  autoKey,
 }: {
   leading?: ReactNode
   presentation: PresentationMode
   onPresentation: (mode: PresentationMode) => void
-  readText: string
+  autoRead: boolean
+  autoKey: string
 }) {
+  const { bilingual } = useT()
   const [detailsOpen, setDetailsOpen] = useState(false)
   const watchUrl = classroomWatchUrl(HILL_VIDEO_ID)
+  const sep = getLocale() === 'en' ? '. ' : '。'
+  const readText = (['case.hill.title', 'video.hillTitle', 'video.classroomOnly'] as const)
+    .map((key) => bilingualSpeech(t(key), tIn('en', key), bilingual, sep))
+    .join(sep)
+  const { settings } = useSen()
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <ReadingBar mode={presentation} onMode={onPresentation} readText={readText || t('case.hill.title')} />
-      <h3 className="shrink-0 px-4 pt-4 text-xl font-bold text-slate-900">{t('case.hill.title')}</h3>
+    <div
+      {...lessonCardReadingAttrs({
+        fontSize: settings.fontSize,
+        dyslexia: settings.dyslexia,
+        highContrast: settings.highContrast,
+      })}
+      className="flex min-h-0 flex-1 flex-col"
+    >
+      <ReadingBar mode={presentation} onMode={onPresentation} readText={readText} auto={autoRead} autoKey={autoKey} />
+      <h3 data-lesson-body className="shrink-0 px-4 pt-4 text-xl font-bold text-slate-900">
+        <BiKey name="case.hill.title" />
+      </h3>
       <div data-lesson-scroll="body" className="min-h-0 flex-1 overflow-y-auto px-4 pb-4">
         {leading}
         <iframe
@@ -1050,8 +1095,12 @@ function MediaStage({
           referrerPolicy="strict-origin-when-cross-origin"
           allowFullScreen
         />
-        <p className="mt-3 text-sm leading-relaxed text-slate-700">{t('video.hillTitle')}</p>
-        <p className="mt-2 text-sm font-semibold text-[#0D9488]">{t('video.classroomOnly')}</p>
+        <p data-lesson-body className="mt-3 text-sm leading-relaxed text-slate-700">
+          <BiKey name="video.hillTitle" />
+        </p>
+        <p data-lesson-body className="mt-2 text-sm font-semibold text-[#0D9488]">
+          <BiKey name="video.classroomOnly" />
+        </p>
         <button
           type="button"
           aria-expanded={detailsOpen}
@@ -1062,8 +1111,12 @@ function MediaStage({
         </button>
         {detailsOpen ? (
           <div className="mt-3 space-y-2 text-sm leading-relaxed text-slate-700">
-            <p>{t('case.hill.source')}</p>
-            <p>{t('video.noDownload')}</p>
+            <p>
+              <BiKey name="case.hill.source" />
+            </p>
+            <p>
+              <BiKey name="video.noDownload" />
+            </p>
             <a href={HILL_PAGE_URL} className="block break-all font-semibold text-[#0D9488]" target="_blank" rel="noopener noreferrer">
               {HILL_PAGE_URL}
             </a>
@@ -1080,16 +1133,32 @@ function MediaStage({
   )
 }
 
-function questionSpeech(q: Question) {
+function questionSpeech(q: Question, bilingual: boolean, alt: (text: string) => string | undefined) {
   const sep = getLocale() === 'en' ? '. ' : '。'
+  const line = (text: string) => bilingualSpeech(text, alt(text), bilingual, sep)
   if (q.type === 'mcq')
-    return `${q.prompt} ${q.options.map((o, i) => t('lp.speech.option', { n: i + 1, text: o })).join(sep)}`
-  if (q.type === 'fill')
-    return `${q.prompt.replace('＿＿', t('lp.speech.blank'))} ${t('lp.speech.choices', { list: joinList(q.bank) })}`
-  if (q.type === 'match') return `${q.prompt} ${joinList(q.pairs.map((p) => p.left))}`
-  if (q.type === 'order') return `${q.prompt} ${joinList(q.items)}`
-  if (q.type === 'dualRead') return `${q.prompt} ${joinList(q.labels)}`
-  return q.prompt
+    return `${line(q.prompt)} ${q.options.map((o, i) => t('lp.speech.option', { n: i + 1, text: line(o) })).join(sep)}`
+  if (q.type === 'fill') {
+    const blanked = q.prompt.replace('＿＿', t('lp.speech.blank'))
+    const english = alt(q.prompt)?.replace('＿＿', tIn('en', 'lp.speech.blank'))
+    return `${bilingualSpeech(blanked, english, bilingual, sep)} ${t('lp.speech.choices', { list: joinList(q.bank.map((item) => line(item))) })}`
+  }
+  if (q.type === 'match') return `${line(q.prompt)} ${joinList(q.pairs.map((p) => line(p.left)))}`
+  if (q.type === 'order') return `${line(q.prompt)} ${joinList(q.items.map((item) => line(item)))}`
+  if (q.type === 'dualRead') return `${line(q.prompt)} ${joinList(q.labels.map((label) => line(label)))}`
+  return line(q.prompt)
+}
+
+function critiqueSpeech(objectLine: string, bilingual: boolean, alt: (text: string) => string | undefined) {
+  const sep = getLocale() === 'en' ? '. ' : '。'
+  const lines = [
+    bilingualSpeech(t('critique.title'), tIn('en', 'critique.title'), bilingual, sep),
+    bilingualSpeech(t('critique.lead'), tIn('en', 'critique.lead'), bilingual, sep),
+    bilingualSpeech(t('critique.flex'), tIn('en', 'critique.flex'), bilingual, sep),
+    bilingualSpeech(objectLine, alt(objectLine), bilingual, sep),
+    bilingualSpeech(t('critique.nudge'), tIn('en', 'critique.nudge'), bilingual, sep),
+  ]
+  return lines.filter(Boolean).join('\n')
 }
 
 type QProps<T> = {
@@ -1141,7 +1210,7 @@ function Mcq({ q, locked, easyRead, presentation = 'standard', onAnswer, onGate 
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
       <MetWorkFacts image={q.image} />
-      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead || presentation === 'easy' ? 'text-2xl leading-loose' : 'text-xl'}`}>
+      <p data-lesson-body className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead || presentation === 'easy' ? 'text-2xl leading-loose' : 'text-xl'}`}>
         <BiSpan text={q.prompt} />
       </p>
       <div className={`mt-4 grid gap-3 ${presentation === 'easy' && q.options.length === 2 ? 'grid-cols-2' : ''}`}>
@@ -1176,7 +1245,7 @@ function Fill({ q, seed, locked, easyRead, presentation = 'standard', onAnswer, 
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
       <MetWorkFacts image={q.image} />
-      <div className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
+      <div data-lesson-body className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
         <BiSpan text={q.prompt} englishOnly />
         <p className="mt-2">
         {before}
@@ -1291,7 +1360,7 @@ function Match({ q, seed, locked, easyRead, onAnswer, onGate }: QProps<MatchQues
     <div>
       <LessonCardArt image={q.image} credit={q.imageCredit} />
       <MetWorkFacts image={q.image} />
-      <p className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
+      <p data-lesson-body className={`mt-3 font-semibold leading-relaxed text-slate-900 ${easyRead ? 'text-2xl' : 'text-xl'}`}>
         <BiSpan text={q.prompt} />
       </p>
       <p className="text-xs text-slate-500">{t('lp.matchHint')}</p>

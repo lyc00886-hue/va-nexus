@@ -39,15 +39,15 @@ function ArtistChip({ artist }: { artist: LessonArtistRef }) {
           onError={() => setFailed(true)}
         />
       ) : (
-        <span className="flex h-20 w-full items-center justify-center rounded-lg border border-dashed border-slate-300 px-1 text-center text-[10px] font-medium leading-tight text-slate-500">
+        <span className="flex h-20 w-full items-center justify-center rounded-lg border border-dashed border-slate-300 px-1 text-center text-[0.625rem] font-medium leading-tight text-slate-500">
           {t('ac.media.empty')}
         </span>
       )}
-      <span className="text-[11px] font-semibold leading-tight text-slate-800">{name}</span>
+      <span className="text-[0.6875rem] font-semibold leading-tight text-slate-800">{name}</span>
       {show && artist.reference ? (
-        <span className="line-clamp-3 text-[10px] leading-snug text-slate-500">{t('image.reference.caption')}</span>
+        <span className="line-clamp-3 text-[0.625rem] leading-snug text-slate-500">{t('image.reference.caption')}</span>
       ) : show && artist.credit ? (
-        <span className="line-clamp-3 text-[10px] leading-snug text-slate-500">{artist.credit}</span>
+        <span className="line-clamp-3 text-[0.625rem] leading-snug text-slate-500">{artist.credit}</span>
       ) : null}
     </span>
   )
@@ -155,7 +155,7 @@ function artistSiteHref(artist: LessonArtistRef): string | undefined {
 function ArtistCredit({ artist, name, show }: { artist: LessonArtistRef; name: string; show: boolean }) {
   const site = show && artist.reference ? artistSiteHref(artist) : undefined
   return (
-    <figcaption className="mt-2 space-y-0.5 px-1 text-[11px] leading-snug text-slate-600">
+    <figcaption className="mt-2 space-y-0.5 px-1 text-[0.6875rem] leading-snug text-slate-600">
       <span className="block font-semibold text-slate-900">{name}</span>
       {show && artist.reference ? <span className="block">{t('image.reference.caption')}</span> : null}
       {show && !artist.reference && artist.credit ? <span className="block">{artist.credit}</span> : null}
