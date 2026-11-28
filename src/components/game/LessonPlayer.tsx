@@ -473,6 +473,9 @@ export function LessonPlayer({
       )
     : ''
   const critiqueOpen = Boolean(feedback) && critiqueLine.length > 0 && question?.type === 'dualRead' && !licenceFace
+  const speakAlt = (text: string) => englishAlt(zhSide, text)
+  const questionRead = question ? questionSpeech(question, bilingual, speakAlt) : ''
+  const critiqueRead = critiqueSpeech(critiqueLine, bilingual, speakAlt)
   const primaryLabel =
     licenceFace === 'rule'
       ? t('lp.continue')
@@ -602,35 +605,34 @@ export function LessonPlayer({
                   <ImageRuleFace />
                 ) : licenceFace === 'blocked' ? (
                   <ImageBlockedFace />
-                ) : critiqueOpen ? (
+                ) : (
                   <div className="flex min-h-0 flex-1 flex-col">
                     <ReadingBar
                       mode={readingMode}
                       onMode={chooseReading}
-                      readText={critiqueSpeech(critiqueLine, bilingual, (text) => englishAlt(zhSide, text))}
+                      readText={critiqueOpen ? critiqueRead : questionRead}
                       auto={settings.readAloud}
-                      autoKey={`${lesson.id}-critique-${stepIdx}`}
+                      autoKey={critiqueOpen ? `${lesson.id}-critique-${stepIdx}` : `${lesson.id}-q-${stepIdx}`}
                     />
-                    <CritiqueFace lessonId={lesson.id} objectText={critiqueLine} />
+                    {critiqueOpen ? (
+                      <CritiqueFace lessonId={lesson.id} objectText={critiqueLine} />
+                    ) : (
+                      <QuizStage
+                        lessonId={lesson.id}
+                        question={question}
+                        showRetry={question.id in firstTry && !feedback}
+                        feedback={feedback}
+                        attemptSeed={attemptSeed}
+                        easyRead={readingEasy}
+                        presentation={readingMode}
+                        otterOn={otterOn}
+                        reduceMotion={!motion}
+                        onAnswer={answer}
+                        onGate={onGate}
+                        leading={leading}
+                      />
+                    )}
                   </div>
-                ) : (
-                  <QuizStage
-                    lessonId={lesson.id}
-                    question={question}
-                    showRetry={question.id in firstTry && !feedback}
-                    feedback={feedback}
-                    attemptSeed={attemptSeed}
-                    easyRead={readingEasy}
-                    presentation={readingMode}
-                    onPresentation={chooseReading}
-                    otterOn={otterOn}
-                    reduceMotion={!motion}
-                    onAnswer={answer}
-                    onGate={onGate}
-                    leading={leading}
-                    autoRead={settings.readAloud}
-                    autoKey={`${lesson.id}-q-${stepIdx}`}
-                  />
                 )
               ) : null}
             </article>
@@ -817,14 +819,11 @@ function QuizStage({
   attemptSeed,
   easyRead,
   presentation,
-  onPresentation,
   otterOn,
   reduceMotion,
   onAnswer,
   onGate,
   leading,
-  autoRead,
-  autoKey,
 }: {
   lessonId: string
   question: Question
@@ -833,21 +832,16 @@ function QuizStage({
   attemptSeed: number
   easyRead: boolean
   presentation: PresentationMode
-  onPresentation: (mode: PresentationMode) => void
   otterOn: boolean
   reduceMotion: boolean
   onAnswer: (correct: boolean, explain: string) => void
   onGate: (gate: AnswerGate) => void
   leading?: ReactNode
-  autoRead: boolean
-  autoKey: string
 }) {
-  const { bilingual, zhSide } = useT()
   const { settings } = useSen()
   const mark = exerciseIdForQuestion(question.type)
   const staged = question.type === 'dualRead' || question.type === 'order' || question.type === 'short'
   const gentle = presentation === 'easy' && Boolean(feedback && !feedback.correct)
-  const readText = questionSpeech(question, bilingual, (text) => englishAlt(zhSide, text))
   return (
     <div
       {...lessonCardReadingAttrs({
@@ -857,7 +851,6 @@ function QuizStage({
       })}
       className="flex min-h-0 flex-1 flex-col"
     >
-      <ReadingBar mode={presentation} onMode={onPresentation} readText={readText} auto={autoRead} autoKey={autoKey} />
       <div className="px-4 pt-3">
         <ThinPace clear />
         <p className="mt-2">

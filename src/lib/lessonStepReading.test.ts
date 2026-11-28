@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { describe, it } from 'node:test'
 import { fileURLToPath } from 'node:url'
-import { bilingualSpeech } from './lessonStepReading.ts'
+import { bilingualSpeech, planAutoRead, releaseOwnsSpeech } from './lessonStepReading.ts'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '../..')
 
@@ -22,6 +22,64 @@ describe('bilingual speech for an open lesson step', () => {
   it('reads English then the active Chinese line when both differ', () => {
     assert.equal(bilingualSpeech('藝術評賞比較', 'Compare works', true, '。'), 'Compare works。藝術評賞比較')
     assert.equal(bilingualSpeech('艺术评赏比较', 'Compare works', true, '。'), 'Compare works。艺术评赏比较')
+  })
+})
+
+describe('auto-read starts a critique step and stop holds', () => {
+  it('starts when a critique step opens after a question, and does not restart that step', () => {
+    const question = planAutoRead({
+      auto: true,
+      autoKey: 'L-q-2',
+      text: 'Compare works',
+      armedKey: undefined,
+      stoppedKey: undefined,
+    })
+    assert.equal(question.start, true)
+    assert.equal(question.arm, 'L-q-2')
+    const critique = planAutoRead({
+      auto: true,
+      autoKey: 'L-critique-2',
+      text: '評賞提示',
+      armedKey: question.arm,
+      stoppedKey: undefined,
+    })
+    assert.equal(critique.start, true)
+    assert.equal(critique.arm, 'L-critique-2')
+    const again = planAutoRead({
+      auto: true,
+      autoKey: 'L-critique-2',
+      text: '評賞提示',
+      armedKey: critique.arm,
+      stoppedKey: undefined,
+    })
+    assert.equal(again.start, false)
+  })
+
+  it('does not start when auto-read is off, the line is empty, or the student already stopped that step', () => {
+    assert.equal(
+      planAutoRead({ auto: false, autoKey: 'L-critique-2', text: '評賞提示', armedKey: undefined, stoppedKey: undefined }).start,
+      false,
+    )
+    assert.equal(
+      planAutoRead({ auto: true, autoKey: 'L-critique-2', text: '   ', armedKey: undefined, stoppedKey: undefined }).start,
+      false,
+    )
+    assert.equal(
+      planAutoRead({
+        auto: true,
+        autoKey: 'L-critique-2',
+        text: '評賞提示',
+        armedKey: undefined,
+        stoppedKey: 'L-critique-2',
+      }).start,
+      false,
+    )
+  })
+
+  it('lets a newer reader keep speech when an older reader unmounts', () => {
+    assert.equal(releaseOwnsSpeech(2, 1), false)
+    assert.equal(releaseOwnsSpeech(2, 2), true)
+    assert.equal(releaseOwnsSpeech(0, 0), false)
   })
 })
 
@@ -58,15 +116,19 @@ describe('inclusive learning settings on the student entrance', () => {
   it('auto-reads teaching, media, question, and critique steps and keeps the manual control', () => {
     const media = player.slice(player.indexOf('function MediaStage'), player.indexOf('function questionSpeech'))
     const quiz = player.slice(player.indexOf('function QuizStage'), player.indexOf('function RestStage'))
-    const critique = player.slice(player.indexOf('critiqueOpen ?'), player.indexOf('function CardsStage'))
     assert.match(media, /auto=\{autoRead\}/)
     assert.match(media, /autoKey=\{autoKey\}/)
-    assert.match(quiz, /auto=\{autoRead\}/)
-    assert.match(quiz, /autoKey=\{autoKey\}/)
-    assert.match(critique, /auto=\{settings\.readAloud\}/)
-    assert.match(critique, /autoKey=\{`\$\{lesson\.id\}-critique-\$\{stepIdx\}`\}/)
+    assert.equal(quiz.includes('<ReadingBar'), false)
+    assert.match(
+      player,
+      /autoKey=\{critiqueOpen \? `\$\{lesson\.id\}-critique-\$\{stepIdx\}` : `\$\{lesson\.id\}-q-\$\{stepIdx\}`\}/,
+    )
+    assert.match(player, /readText=\{critiqueOpen \? critiqueRead : questionRead\}/)
+    assert.match(player, /auto=\{settings\.readAloud\}/)
     assert.match(player, /autoKey=\{`\$\{lesson\.id\}-card-\$\{cardIdx\}`\}/)
-    assert.match(player, /autoKey=\{`\$\{lesson\.id\}-q-\$\{stepIdx\}`\}/)
+    assert.match(read('src/components/game/ReadAloudButton.tsx'), /planAutoRead/)
+    assert.match(read('src/components/game/ReadAloudButton.tsx'), /stopped\.current = autoKey/)
+    assert.match(read('src/lib/useSpeech.ts'), /releaseOwnsSpeech/)
     assert.match(read('src/components/game/PresentationBar.tsx'), /<ReadAloudButton text=\{readText\} auto=\{auto\} autoKey=\{autoKey\} pill \/>/)
     assert.match(read('src/components/game/ReadAloudButton.tsx'), /t\('tts\.stop'\)/)
     assert.match(read('src/components/game/ReadAloudButton.tsx'), /t\('tts\.read'\)/)
