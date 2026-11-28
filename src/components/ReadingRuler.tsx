@@ -23,9 +23,17 @@ function lineBand(el: HTMLElement): number {
   return fontPx * 1.6
 }
 
+const LINE_SELECTOR = [
+  '[data-lesson-body]',
+  '[data-official-parts] p',
+  '[data-official-parts] h3',
+  '[data-official-parts] h4',
+  '[data-lesson-scroll] h3',
+].join(', ')
+
 function bandAt(clientX: number, clientY: number, target: EventTarget | null): Band | null {
-  const node = target instanceof Element ? target : null
-  const zone = node?.closest('[data-lesson-body]')
+  const node = target instanceof Element ? target : target instanceof Node ? target.parentElement : null
+  const zone = node?.closest(LINE_SELECTOR)
   if (!(zone instanceof HTMLElement)) return null
   const rect = zone.getBoundingClientRect()
   if (clientY < rect.top || clientY > rect.bottom || clientX < rect.left || clientX > rect.right) return null

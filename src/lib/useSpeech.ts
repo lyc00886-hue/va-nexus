@@ -19,6 +19,8 @@ function pickVoice(voices: SpeechSynthesisVoice[], locale: Locale) {
 
 /** Newer readers increment this so an unmounted reader does not cancel them. */
 let speechOwner = 0
+/** Chrome drops speak() in the same turn as cancel(). */
+let lastSpeechCancel = 0
 
 export type SpeechHooks = {
   onstart?: () => void
@@ -30,6 +32,8 @@ export function useSpeech() {
   const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
   const [speaking, setSpeaking] = useState(false)
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
+  /** False until the voice list arrives, or a short wait so a browser with no list can still speak. */
+  const [voicesReady, setVoicesReady] = useState(false)
   const locale = getLocale()
   const pending = useRef(0)
 
@@ -37,14 +41,21 @@ export function useSpeech() {
     if (!supported) return
     const mine = ++speechOwner
     const synth = window.speechSynthesis
-    const load = () => setVoices(synth.getVoices())
+    const load = () => {
+      const next = synth.getVoices()
+      setVoices(next)
+      if (next.length > 0) setVoicesReady(true)
+    }
     load()
     synth.addEventListener('voiceschanged', load)
+    const fallback = window.setTimeout(() => setVoicesReady(true), 400)
     return () => {
       synth.removeEventListener('voiceschanged', load)
+      window.clearTimeout(fallback)
       window.clearTimeout(pending.current)
       if (releaseOwnsSpeech(speechOwner, mine)) {
         speechOwner += 1
+        lastSpeechCancel = Date.now()
         synth.cancel()
       }
     }
@@ -53,6 +64,7 @@ export function useSpeech() {
   const stop = useCallback(() => {
     if (!supported) return
     window.clearTimeout(pending.current)
+    lastSpeechCancel = Date.now()
     window.speechSynthesis.cancel()
     setSpeaking(false)
   }, [supported])
@@ -63,7 +75,10 @@ export function useSpeech() {
       const synth = window.speechSynthesis
       window.clearTimeout(pending.current)
       const busy = speechNeedsCancel({ speaking: synth.speaking, pending: Boolean(synth.pending) })
-      if (busy) synth.cancel()
+      if (busy) {
+        lastSpeechCancel = Date.now()
+        synth.cancel()
+      }
       const voice = pickVoice(voices.length ? voices : synth.getVoices(), locale)
       const u = new SpeechSynthesisUtterance(text)
       u.lang = voice?.lang ?? SPEECH_LANG[locale]
@@ -80,7 +95,9 @@ export function useSpeech() {
       }
       const run = () => synth.speak(u)
       // Chrome drops speak() in the same turn as cancel(). An idle synth can speak immediately.
-      if (busy) pending.current = window.setTimeout(run, 50)
+      const sinceCancel = Date.now() - lastSpeechCancel
+      const delay = busy ? 80 : sinceCancel < 80 ? 80 - sinceCancel : 0
+      if (delay > 0) pending.current = window.setTimeout(run, delay)
       else run()
     },
     [supported, voices, locale],
@@ -88,5 +105,5 @@ export function useSpeech() {
 
   const voiceLang = pickVoice(voices, locale)?.lang ?? null
 
-  return { supported, speaking, speak, stop, voiceLang }
+  return { supported, speaking, speak, stop, voiceLang, voicesReady }
 }
