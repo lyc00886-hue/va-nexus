@@ -11,10 +11,13 @@ export type QuestBandId = (typeof QUEST_BANDS)[number]
 
 export type QuestNodeProgress = 'done' | 'current' | 'locked'
 
-/** Left node, right node. Scene cards sit on the opposite side. */
+/** Left node, right node, on the phone-width stage. Scene cards sit on the opposite side. */
 const NODE_X = [112, 248] as const
 
-const WIDTH = 360
+/** Phone column the path was drawn in. A wider map frame spreads the same lane out to the frame edges. */
+export const QUEST_PATH_STAGE = 360
+
+const WIDTH = QUEST_PATH_STAGE
 const TOP = 118
 /** Room under a two-line unit name so the tag clears the next scene card. */
 const GAP = 236
@@ -51,19 +54,39 @@ export function questNodeProgress(index: number, currentIndex: number): QuestNod
   return 'locked'
 }
 
+/** Room for a unit-name tag so a wide frame still keeps the title inside the path. */
+function laneInset(): number {
+  return (QUEST_PATH_STAGE * QUEST_LABEL_WIDTH_RATIO) / 2 + 12
+}
+
+/** Phone stage keeps the drawn lane. A wider frame carries the lane out to both edges. */
+function laneX(index: number, stage: number): number {
+  if (stage <= QUEST_PATH_STAGE) return NODE_X[index % 2]
+  const inset = laneInset()
+  return index % 2 === 0 ? inset : stage - inset
+}
+
 export function questPathLayout(
   count: number,
   gap = GAP,
   bottom = BOTTOM,
+  width = QUEST_PATH_STAGE,
 ): { width: number; height: number; points: QuestPathPoint[] } {
+  const stage = Math.max(QUEST_PATH_STAGE, Math.round(width) || QUEST_PATH_STAGE)
   const step = Math.max(160, gap)
   const tail = Math.max(BOTTOM, bottom)
   const points = Array.from({ length: Math.max(count, 0) }, (_, index) => ({
-    x: NODE_X[index % 2],
+    x: laneX(index, stage),
     y: TOP + index * step,
   }))
   const height = (points[points.length - 1]?.y ?? TOP) + tail
-  return { width: WIDTH, height, points }
+  return { width: stage, height, points }
+}
+
+/** Fraction of the stage taken by a unit-name tag. The tag keeps its phone size on a wide frame. */
+export function questLabelSpan(stageWidth: number): number {
+  const stage = Math.max(QUEST_PATH_STAGE, stageWidth || QUEST_PATH_STAGE)
+  return (QUEST_PATH_STAGE * QUEST_LABEL_WIDTH_RATIO) / stage
 }
 
 /**
@@ -84,16 +107,27 @@ export function questPathSpacing(pathWidth: number, bilingual: boolean): { gap: 
 }
 
 /** Scene card on the side opposite the node, inset from the unit-name tag. */
-export function questSceneBox(index: number, point: QuestPathPoint): { x: number; y: number; w: number; h: number } {
+export function questSceneBox(
+  index: number,
+  point: QuestPathPoint,
+  width = QUEST_PATH_STAGE,
+): { x: number; y: number; w: number; h: number } {
   const w = 128
   const h = 124
   const y = point.y - 52
-  const x = index % 2 === 0 ? 226 : 6
-  return { x, y, w, h }
+  const baseNode = NODE_X[index % 2]
+  const baseScene = index % 2 === 0 ? 226 : 6
+  const raw = point.x + (baseScene - baseNode)
+  const maxX = Math.max(0, width - w)
+  return { x: Math.min(Math.max(0, raw), maxX), y, w, h }
 }
 
 /** Unit-name tag under the node. The box stays in the path corridor, clear of scene art. */
-export function questLabelBox(point: QuestPathPoint): { x: number; y: number; w: number; h: number } {
-  const w = WIDTH * QUEST_LABEL_WIDTH_RATIO
-  return { x: point.x - w / 2, y: point.y + LABEL_TOP, w, h: LABEL_HEIGHT }
+export function questLabelBox(
+  point: QuestPathPoint,
+  width = QUEST_PATH_STAGE,
+): { x: number; y: number; w: number; h: number } {
+  const w = QUEST_PATH_STAGE * QUEST_LABEL_WIDTH_RATIO
+  const maxX = Math.max(0, width - w)
+  return { x: Math.min(Math.max(0, point.x - w / 2), maxX), y: point.y + LABEL_TOP, w, h: LABEL_HEIGHT }
 }

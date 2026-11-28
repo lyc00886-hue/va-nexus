@@ -16,7 +16,7 @@ import {
   questCurrentIndex,
   questNodeFramed,
   questNodeProgress,
-  QUEST_LABEL_WIDTH_RATIO,
+  questLabelSpan,
   questPathLayout,
   questPathSpacing,
   type QuestBandId,
@@ -96,7 +96,9 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
   const openYear = yearUnits.find((unit) => unit.id === openUnitId)
   const openLesson = openYear?.nodes.find((node) => node.id === lessonId) ?? null
   const spacing = questPathSpacing(pathWidth, bilingual)
-  const layout = questPathLayout(yearUnits.length, spacing.gap, spacing.bottom)
+  const stageWidth = Math.max(360, pathWidth)
+  const layout = questPathLayout(yearUnits.length, spacing.gap, spacing.bottom, stageWidth)
+  const labelSpan = questLabelSpan(layout.width)
   const currentIndex = questCurrentIndex(0, yearUnits.length)
   const bands = Array.from({ length: yearUnits.length }, (_, index) => {
     const id = questBand(index)
@@ -156,7 +158,7 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
             data-quest-gap={spacing.gap}
             data-quest-path-width={pathWidth}
             data-quest-bilingual={bilingual ? 'on' : 'off'}
-            className="relative mx-auto mt-2 w-full max-w-[24rem]"
+            className="relative mt-2 w-full"
           >
             <QuestPathArt layout={layout} bands={bands} motion={motion} />
             <ol className="absolute inset-0 m-0 list-none p-0">
@@ -169,9 +171,9 @@ export function MapQuest({ art = EMPTY_UNITS, media = EMPTY_UNITS }: { art?: Uni
                     key={unit.id}
                     className="absolute text-center"
                     style={{
-                      left: `calc(${(point.x / layout.width) * 100}% - ${QUEST_LABEL_WIDTH_RATIO * 50}%)`,
+                      left: `calc(${(point.x / layout.width) * 100}% - ${labelSpan * 50}%)`,
                       top: `calc(${(point.y / layout.height) * 100}% - 1.5rem)`,
-                      width: `${QUEST_LABEL_WIDTH_RATIO * 100}%`,
+                      width: `${labelSpan * 100}%`,
                       minWidth: 0,
                       maxWidth: '78%',
                     }}
