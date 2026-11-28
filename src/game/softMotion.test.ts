@@ -55,7 +55,7 @@ describe('early wire covers and soft motion', () => {
     assert.equal(softMotionPlay({ soundMotion: true, reduceMotion: true }), false)
     assert.equal(softMotionPlay({ soundMotion: true, reduceMotion: false }), true)
     const settings = read('src/context/SenContext.tsx')
-    assert.match(settings, /soundMotion: false/)
+    assert.match(read('src/lib/readingSettings.ts'), /soundMotion: false/)
     assert.match(settings, /dataset\.soundMotion/)
     const panel = read('src/components/SenSettingsPanel.tsx')
     assert.match(panel, /settings\.soundMotion/)

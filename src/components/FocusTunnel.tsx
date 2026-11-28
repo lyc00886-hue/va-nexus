@@ -3,25 +3,28 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useSen } from '../context/SenContext'
 import { t } from '../i18n'
+import { focusClock } from '../lib/readingSettings'
 
 const FOCUS_SECONDS = 25 * 60
 
 export function FocusTunnel() {
-  const { focusTunnel, update } = useSen()
+  const { focusTunnel, settings, update } = useSen()
+  const total = settings.focusMinutes === 25 ? FOCUS_SECONDS : settings.focusMinutes * 60
+  const sessionKey = `${focusTunnel ? 'on' : 'off'}:${total}`
   const [open, setOpen] = useState(false)
-  const [running, setRunning] = useState(false)
-  const [left, setLeft] = useState(FOCUS_SECONDS)
+  const [session, setSession] = useState({ key: sessionKey, left: total, running: false })
   const [task, setTask] = useState('')
+  if (session.key !== sessionKey) setSession({ key: sessionKey, left: total, running: false })
+  const left = session.left
+  const running = session.running
+  const clock = focusClock(left, settings.hideTimer)
 
   useEffect(() => {
     if (!running) return
     const id = window.setInterval(() => {
-      setLeft((s) => {
-        if (s <= 1) {
-          setRunning(false)
-          return 0
-        }
-        return s - 1
+      setSession((current) => {
+        if (current.left <= 1) return { ...current, left: 0, running: false }
+        return { ...current, left: current.left - 1 }
       })
     }, 1000)
     return () => window.clearInterval(id)
@@ -36,13 +39,12 @@ export function FocusTunnel() {
 
   if (!focusTunnel) return null
 
-  const mm = String(Math.floor(left / 60)).padStart(2, '0')
-  const ss = String(left % 60).padStart(2, '0')
-
   const timer = (
     <>
       <div
         data-focus-timer=""
+        data-countdown={settings.hideTimer ? 'hidden' : 'shown'}
+        data-focus-minutes={settings.focusMinutes}
         className="fixed bottom-20 right-4 z-[60] flex items-center gap-2 md:bottom-6"
       >
         <button
@@ -59,7 +61,8 @@ export function FocusTunnel() {
           className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-4 py-2 text-sm font-bold text-white shadow-lg hover:bg-amber-600"
         >
           <Timer className="h-4 w-4" aria-hidden />
-          {t('focus.timer')} {mm}:{ss}
+          {t('focus.timer')}
+          {clock ? ` ${clock}` : ''}
         </button>
       </div>
 
@@ -81,14 +84,16 @@ export function FocusTunnel() {
                 className="mt-1 w-full rounded-xl bg-white/10 px-3 py-2 text-base text-white placeholder:text-teal-200/60 focus:outline-none focus:ring-2 focus:ring-amber-400"
               />
             </label>
-            <p className="mt-6 font-mono text-5xl font-bold tabular-nums" aria-live="polite">
-              {mm}:{ss}
-            </p>
+            {clock ? (
+              <p className="mt-6 font-mono text-5xl font-bold tabular-nums" aria-live="polite">
+                {clock}
+              </p>
+            ) : null}
             {left === 0 && <p className="mt-2 text-amber-300">{t('focus.done')}</p>}
             <div className="mt-6 flex justify-center gap-3">
               <button
                 type="button"
-                onClick={() => setRunning((r) => !r)}
+                onClick={() => setSession((current) => ({ ...current, running: !current.running }))}
                 disabled={left === 0}
                 className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-2 text-sm font-bold hover:bg-amber-600 disabled:opacity-50"
               >
@@ -98,8 +103,7 @@ export function FocusTunnel() {
               <button
                 type="button"
                 onClick={() => {
-                  setRunning(false)
-                  setLeft(FOCUS_SECONDS)
+                  setSession((current) => ({ ...current, running: false, left: total }))
                 }}
                 className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm hover:bg-white/20"
               >

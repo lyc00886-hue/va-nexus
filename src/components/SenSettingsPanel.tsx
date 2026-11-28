@@ -1,4 +1,4 @@
-import { Contrast, Focus, RotateCcw, Sparkles, Type, Wind, X, BookOpenText, Volume2, ClipboardList } from 'lucide-react'
+import { Contrast, Focus, RotateCcw, Sparkles, Type, Wind, X, BookOpenText, Volume2, ClipboardList, Palette, Ruler } from 'lucide-react'
 import { EasyReadBar } from './easy-read/EasyReadBar'
 import { useSenSupport } from '../context/SenSupportContext'
 import { useEffect, useRef, type ReactNode } from 'react'
@@ -6,6 +6,8 @@ import { useSen, type FontSizeLevel } from '../context/SenContext'
 import { t, type MessageKey } from '../i18n'
 import { contentJson } from '../i18n/content'
 import { nextContainedScrollTop, wheelDeltaPixels, wheelHitsPanel } from '../lib/panelWheel'
+import { FOCUS_MINUTE_CHOICES, READING_TINT_HEX, type FocusMinutes, type ReadingTint } from '../lib/readingSettings'
+import type { SenMode } from '../types'
 
 type EasyReadStudentCopy = {
   disclaimer: string
@@ -18,6 +20,25 @@ const FONT_LEVELS: { id: FontSizeLevel; label: MessageKey }[] = [
   { id: 'lg', label: 'sen.font.lg' },
   { id: 'xl', label: 'sen.font.xl' },
 ]
+
+const PRESET_CHOICES: { id: Exclude<SenMode, 'standard'>; label: MessageKey; hint: MessageKey }[] = [
+  { id: 'spld', label: 'sen.preset.spld', hint: 'sen.preset.spld.hint' },
+  { id: 'adhd', label: 'sen.preset.adhd', hint: 'sen.preset.adhd.hint' },
+  { id: 'lowSensory', label: 'sen.preset.lowSensory', hint: 'sen.preset.lowSensory.hint' },
+]
+
+const TINT_CHOICES: { id: ReadingTint; label: MessageKey }[] = [
+  { id: 'cream', label: 'sen.tint.cream' },
+  { id: 'green', label: 'sen.tint.green' },
+  { id: 'blue', label: 'sen.tint.blue' },
+]
+
+const DURATION_LABEL: Record<FocusMinutes, MessageKey> = {
+  5: 'sen.focus.duration.5',
+  10: 'sen.focus.duration.10',
+  15: 'sen.focus.duration.15',
+  25: 'sen.focus.duration.25',
+}
 
 function lineBox(el: HTMLElement): number {
   const style = getComputedStyle(el)
@@ -90,7 +111,7 @@ function Toggle({
 }
 
 export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
-  const { settings, update, reset } = useSen()
+  const { settings, update, reset, setMode, mode, applyMany } = useSen()
   const { openCheckIn } = useSenSupport()
   const easyCopy = contentJson<EasyReadStudentCopy>('easy-read-mode')
   const ref = useRef<HTMLDivElement>(null)
@@ -193,6 +214,38 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
         </span>
       </button>
 
+      <div className="mt-4" data-testid="one-tap-presets">
+        <p className="text-sm font-semibold text-teal-950">{t('sen.presets')}</p>
+        <p className="mt-1 text-xs text-teal-800/80">{t('sen.presets.desc')}</p>
+        <div className="mt-2 space-y-1.5">
+          {PRESET_CHOICES.map((preset) => {
+            const selected = mode === preset.id
+            return (
+              <button
+                key={preset.id}
+                type="button"
+                data-preset={preset.id}
+                aria-pressed={selected}
+                onClick={() => setMode(preset.id)}
+                className={`w-full rounded-xl border px-3 py-2 text-left ${
+                  selected ? 'border-teal-700 bg-teal-50' : 'border-teal-200 bg-white hover:bg-teal-50'
+                }`}
+              >
+                <span className="block text-sm font-semibold text-teal-950">{t(preset.label)}</span>
+                <span className="mt-0.5 block text-xs font-normal text-teal-800/80">{t(preset.hint)}</span>
+              </button>
+            )
+          })}
+        </div>
+        <button
+          type="button"
+          onClick={reset}
+          className="mt-2 inline-flex items-center gap-1.5 text-xs font-semibold text-teal-800 hover:underline"
+        >
+          <RotateCcw className="h-3.5 w-3.5" aria-hidden /> {t('sen.reset')}
+        </button>
+      </div>
+
       <div className="mt-4">
         <p className="flex items-center gap-1.5 text-sm font-semibold text-teal-950">
           <Type className="h-4 w-4 text-teal-700" aria-hidden /> {t('sen.font')}
@@ -235,6 +288,34 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
             onChange={(v) => update('highContrast', v)}
           />
         </div>
+        <div className="px-2 py-2" data-testid="reading-tint">
+          <p className="flex items-center gap-1.5 text-sm font-semibold text-teal-950">
+            <Palette className="h-4 w-4 text-teal-700" aria-hidden /> {t('sen.tint')}
+          </p>
+          <p className="mt-1 text-xs text-teal-800/80">{t('sen.tint.desc')}</p>
+          <div className="mt-1.5 grid grid-cols-3 gap-1.5" role="radiogroup" aria-label={t('sen.tint')}>
+            {TINT_CHOICES.map((tint) => {
+              const selected = !settings.highContrast && settings.tint === tint.id
+              return (
+                <button
+                  key={tint.id}
+                  type="button"
+                  role="radio"
+                  data-tint={tint.id}
+                  data-tint-swatch=""
+                  aria-checked={selected}
+                  onClick={() => applyMany({ tint: tint.id, highContrast: false })}
+                  className={`rounded-xl border px-2 py-2 text-xs font-semibold text-teal-950 ${
+                    selected ? 'border-teal-700 ring-2 ring-teal-600' : 'border-teal-200'
+                  }`}
+                  style={{ backgroundColor: READING_TINT_HEX[tint.id] }}
+                >
+                  {t(tint.label)}
+                </button>
+              )
+            })}
+          </div>
+        </div>
         <Toggle
           icon={<Sparkles className="h-4 w-4" />}
           label={t('settings.soundMotion')}
@@ -250,11 +331,51 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
           onChange={(v) => update('reduceMotion', v)}
         />
         <Toggle
+          icon={<Ruler className="h-4 w-4" />}
+          label={t('sen.toggle.ruler')}
+          desc={t('sen.toggle.ruler.desc')}
+          checked={settings.ruler}
+          onChange={(v) => update('ruler', v)}
+        />
+        <Toggle
           icon={<Focus className="h-4 w-4" />}
           label={t('support.focus')}
           desc={t('sen.toggle.focus.desc')}
           checked={settings.focusTunnel}
           onChange={(v) => update('focusTunnel', v)}
+        />
+        <div className="px-2 py-2" data-testid="focus-duration">
+          <p className="text-sm font-semibold text-teal-950">{t('sen.focus.duration')}</p>
+          <p className="mt-1 text-xs text-teal-800/80">{t('sen.focus.duration.desc')}</p>
+          <div className="mt-1.5 grid grid-cols-4 gap-1.5" role="radiogroup" aria-label={t('sen.focus.duration')}>
+            {FOCUS_MINUTE_CHOICES.map((minutes) => {
+              const selected = settings.focusMinutes === minutes
+              return (
+                <button
+                  key={minutes}
+                  type="button"
+                  role="radio"
+                  data-focus-minutes={minutes}
+                  aria-checked={selected}
+                  onClick={() => update('focusMinutes', minutes)}
+                  className={`rounded-xl border px-1 py-1.5 text-xs font-semibold ${
+                    selected
+                      ? 'border-teal-700 bg-teal-700 text-white'
+                      : 'border-teal-200 bg-white text-teal-900 hover:bg-teal-50'
+                  }`}
+                >
+                  {t(DURATION_LABEL[minutes])}
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        <Toggle
+          icon={<Focus className="h-4 w-4" />}
+          label={t('sen.toggle.hideTimer')}
+          desc={t('sen.toggle.hideTimer.desc')}
+          checked={settings.hideTimer}
+          onChange={(v) => update('hideTimer', v)}
         />
         <Toggle
           icon={<Volume2 className="h-4 w-4" />}
@@ -265,14 +386,7 @@ export function SenSettingsPanel({ onClose }: { onClose: () => void }) {
         />
       </div>
 
-      <button
-        type="button"
-        onClick={reset}
-        className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-teal-800 hover:underline"
-      >
-        <RotateCcw className="h-3.5 w-3.5" aria-hidden /> {t('sen.reset')}
-      </button>
-      <p className="mt-2 text-[11px] text-teal-800/70">{t('sen.savedNote')}</p>
+      <p className="mt-3 text-[11px] text-teal-800/70">{t('sen.savedNote')}</p>
     </div>
   )
 }

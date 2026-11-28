@@ -108,8 +108,11 @@ describe('soft leftover display chrome', () => {
 
     const panel = read('src/components/SenSettingsPanel.tsx')
     assert.match(panel, /EasyReadBar/)
-    assert.equal(panel.includes('sen.preset.spld'), false)
-    assert.equal(panel.includes('sen.preset.adhd'), false)
+    assert.match(panel, /sen\.preset\.spld/)
+    assert.match(panel, /sen\.preset\.adhd/)
+    assert.match(panel, /sen\.preset\.lowSensory/)
+    assert.equal(panel.includes('讀寫友善'), false)
+    assert.equal(panel.includes('極致專注'), false)
     assert.equal(/SEN/.test(panel), false)
 
     const feedback = read('api/feedback.ts')
